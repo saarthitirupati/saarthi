@@ -1,0 +1,482 @@
+[
+  {
+    "date": "2026-04-27",
+    "path": "/",
+    "count": 100
+  },
+  {
+    "date": "2026-04-27",
+    "path": "/explore",
+    "count": 77
+  },
+  {
+    "date": "2026-04-27",
+    "path": "/planner",
+    "count": 50
+  },
+  {
+    "date": "2026-04-27",
+    "path": "/plans",
+    "count": 52
+  },
+  {
+    "date": "2026-04-27",
+    "path": "/generating",
+    "count": 53
+  },
+  {
+    "date": "2026-04-28",
+    "path": "/",
+    "count": 112
+  },
+  {
+    "date": "2026-04-28",
+    "path": "/explore",
+    "count": 68
+  },
+  {
+    "date": "2026-04-28",
+    "path": "/planner",
+    "count": 40
+  },
+  {
+    "date": "2026-04-28",
+    "path": "/plans",
+    "count": 68
+  },
+  {
+    "date": "2026-04-28",
+    "path": "/generating",
+    "count": 35
+  },
+  {
+    "date": "2026-04-29",
+    "path": "/",
+    "count": 89
+  },
+  {
+    "date": "2026-04-29",
+    "path": "/explore",
+    "count": 83
+  },
+  {
+    "date": "2026-04-29",
+    "path": "/planner",
+    "count": 66
+  },
+  {
+    "date": "2026-04-29",
+    "path": "/plans",
+    "count": 33
+  },
+  {
+    "date": "2026-04-29",
+    "path": "/generating",
+    "count": 37
+  },
+  {
+    "date": "2026-04-30",
+    "path": "/",
+    "count": 103
+  },
+  {
+    "date": "2026-04-30",
+    "path": "/explore",
+    "count": 50
+  },
+  {
+    "date": "2026-04-30",
+    "path": "/planner",
+    "count": 51
+  },
+  {
+    "date": "2026-04-30",
+    "path": "/plans",
+    "count": 35
+  },
+  {
+    "date": "2026-04-30",
+    "path": "/generating",
+    "count": 30
+  },
+  {
+    "date": "2026-05-01",
+    "path": "/",
+    "count": 117
+  },
+  {
+    "date": "2026-05-01",
+    "path": "/explore",
+    "count": 88
+  },
+  {
+    "date": "2026-05-01",
+    "path": "/planner",
+    "count": 38
+  },
+  {
+    "date": "2026-05-01",
+    "path": "/plans",
+    "count": 68
+  },
+  {
+    "date": "2026-05-01",
+    "path": "/generating",
+    "count": 69
+  },
+  {
+    "date": "2026-05-02",
+    "path": "/",
+    "count": 118
+  },
+  {
+    "date": "2026-05-02",
+    "path": "/explore",
+    "count": 87
+  },
+  {
+    "date": "2026-05-02",
+    "path": "/planner",
+    "count": 42
+  },
+  {
+    "date": "2026-05-02",
+    "path": "/plans",
+    "count": 62
+  },
+  {
+    "date": "2026-05-02",
+    "path": "/generating",
+    "count": 61
+  },
+  {
+    "date": "2026-05-03",
+    "path": "/",
+    "count": 198
+  },
+  {
+    "date": "2026-05-03",
+    "path": "/explore",
+    "count": 107
+  },
+  {
+    "date": "2026-05-03",
+    "path": "/planner",
+    "count": 64
+  },
+  {
+    "date": "2026-05-03",
+    "path": "/plans",
+    "count": 48
+  },
+  {
+    "date": "2026-05-03",
+    "path": "/generating",
+    "count": 52
+  },
+  {
+    "date": "2026-05-03",
+    "path": "/itinerary/budget",
+    "count": 4
+  },
+  {
+    "date": "2026-05-03",
+    "path": "/itinerary/premium",
+    "count": 1
+  },
+  {
+    "date": "2026-05-03",
+    "path": "/place/venkateswara",
+    "count": 3
+  },
+  {
+    "date": "2026-05-03",
+    "path": "/place/silathoranam",
+    "count": 2
+  },
+  {
+    "date": "2026-05-03",
+    "path": "/place/gogarbham",
+    "count": 1
+  },
+  {
+    "date": "2026-05-03",
+    "path": "/place/mamandur-village",
+    "count": 1
+  },
+  {
+    "date": "2026-05-03",
+    "path": "/place/talakona-falls",
+    "count": 3
+  },
+  {
+    "date": "2026-05-03",
+    "path": "/place/deer-park-tirupati",
+    "count": 3
+  },
+  {
+    "date": "2026-05-03",
+    "path": "/place/akasaganga-theertham",
+    "count": 2
+  },
+  {
+    "date": "2026-05-03",
+    "path": "/profile",
+    "count": 10
+  },
+  {
+    "date": "2026-05-03",
+    "path": "/place/japali-hanuman",
+    "count": 2
+  },
+  {
+    "date": "2026-05-03",
+    "path": "/itinerary",
+    "count": 3
+  },
+  {
+    "date": "2026-05-03",
+    "path": "/itinerary/best",
+    "count": 1
+  },
+  {
+    "date": "2026-05-05",
+    "path": "/",
+    "count": 16
+  },
+  {
+    "date": "2026-05-05",
+    "path": "/planner",
+    "count": 3
+  },
+  {
+    "date": "2026-05-05",
+    "path": "/generating",
+    "count": 4
+  },
+  {
+    "date": "2026-05-05",
+    "path": "/plans",
+    "count": 2
+  },
+  {
+    "date": "2026-05-05",
+    "path": "/explore",
+    "count": 2
+  },
+  {
+    "date": "2026-05-05",
+    "path": "/studio",
+    "count": 3
+  },
+  {
+    "date": "2026-05-05",
+    "path": "/place/japali-hanuman",
+    "count": 1
+  },
+  {
+    "date": "2026-05-14",
+    "path": "/",
+    "count": 15
+  },
+  {
+    "date": "2026-05-14",
+    "path": "/planner",
+    "count": 5
+  },
+  {
+    "date": "2026-05-14",
+    "path": "/generating",
+    "count": 4
+  },
+  {
+    "date": "2026-05-14",
+    "path": "/plans",
+    "count": 5
+  },
+  {
+    "date": "2026-05-14",
+    "path": "/itinerary/premium",
+    "count": 1
+  },
+  {
+    "date": "2026-05-14",
+    "path": "/explore",
+    "count": 7
+  },
+  {
+    "date": "2026-05-14",
+    "path": "/place/anjanadri-jungle-book",
+    "count": 1
+  },
+  {
+    "date": "2026-05-14",
+    "path": "/place/japali-hanuman",
+    "count": 1
+  },
+  {
+    "date": "2026-05-14",
+    "path": "/profile",
+    "count": 1
+  },
+  {
+    "date": "2026-05-14",
+    "path": "/itinerary",
+    "count": 1
+  },
+  {
+    "date": "2026-05-14",
+    "path": "/itinerary/best",
+    "count": 1
+  },
+  {
+    "date": "2026-05-14",
+    "path": "/place/venkateswara",
+    "count": 1
+  },
+  {
+    "date": "2026-05-19",
+    "path": "/",
+    "count": 18
+  },
+  {
+    "date": "2026-05-19",
+    "path": "/planner",
+    "count": 7
+  },
+  {
+    "date": "2026-05-19",
+    "path": "/generating",
+    "count": 8
+  },
+  {
+    "date": "2026-05-19",
+    "path": "/plans",
+    "count": 18
+  },
+  {
+    "date": "2026-05-19",
+    "path": "/itinerary/best",
+    "count": 7
+  },
+  {
+    "date": "2026-05-19",
+    "path": "/place/swami-pushkarini",
+    "count": 3
+  },
+  {
+    "date": "2026-05-19",
+    "path": "/explore",
+    "count": 3
+  },
+  {
+    "date": "2026-05-19",
+    "path": "/itinerary/premium",
+    "count": 1
+  },
+  {
+    "date": "2026-05-19",
+    "path": "/place/narayanavanam",
+    "count": 1
+  },
+  {
+    "date": "2026-05-19",
+    "path": "/place/venkateswara",
+    "count": 1
+  },
+  {
+    "date": "2026-05-19",
+    "path": "/place/mamandur-village",
+    "count": 1
+  },
+  {
+    "date": "2026-06-24",
+    "path": "/",
+    "count": 31
+  },
+  {
+    "date": "2026-06-24",
+    "path": "/explore",
+    "count": 13
+  },
+  {
+    "date": "2026-06-24",
+    "path": "/place/venkateswara",
+    "count": 2
+  },
+  {
+    "date": "2026-06-24",
+    "path": "/place/akasaganga-theertham",
+    "count": 1
+  },
+  {
+    "date": "2026-06-24",
+    "path": "/place/chandragiri-fort",
+    "count": 1
+  },
+  {
+    "date": "2026-06-24",
+    "path": "/place/tirupati-main-market",
+    "count": 1
+  },
+  {
+    "date": "2026-06-24",
+    "path": "/planner",
+    "count": 1
+  },
+  {
+    "date": "2026-06-24",
+    "path": "/studio",
+    "count": 1
+  },
+  {
+    "date": "2026-06-24",
+    "path": "/saved",
+    "count": 1
+  },
+  {
+    "date": "2026-06-24",
+    "path": "/place/silathoranam",
+    "count": 3
+  },
+  {
+    "date": "2026-06-25",
+    "path": "/",
+    "count": 31
+  },
+  {
+    "date": "2026-06-25",
+    "path": "/explore",
+    "count": 9
+  },
+  {
+    "date": "2026-06-25",
+    "path": "/saved",
+    "count": 3
+  },
+  {
+    "date": "2026-06-25",
+    "path": "/profile",
+    "count": 5
+  },
+  {
+    "date": "2026-06-25",
+    "path": "/place/mamandur-village",
+    "count": 1
+  },
+  {
+    "date": "2026-06-25",
+    "path": "/place/iskcon-tirupati",
+    "count": 1
+  },
+  {
+    "date": "2026-06-25",
+    "path": "/place/silathoranam",
+    "count": 1
+  },
+  {
+    "date": "2026-06-25",
+    "path": "/place/venkateswara",
+    "count": 1
+  }
+]

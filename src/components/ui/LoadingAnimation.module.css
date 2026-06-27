@@ -1,0 +1,52 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-8);
+  width: 100%;
+}
+
+.logoContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  background: rgba(255, 122, 0, 0.1);
+  margin-bottom: var(--space-6);
+}
+
+.logoIcon {
+  color: var(--color-saffron-500);
+}
+
+.title {
+  font-family: var(--font-display);
+  font-size: var(--text-h3);
+  color: var(--color-earth-800);
+  margin-bottom: var(--space-6);
+}
+
+.progressContainer {
+  width: 80%;
+  max-width: 300px;
+  height: 8px;
+  background-color: var(--color-stone-200);
+  border-radius: var(--radius-full);
+  overflow: hidden;
+  margin-bottom: var(--space-4);
+}
+
+.progressBar {
+  height: 100%;
+  background: var(--gradient-brand);
+  border-radius: var(--radius-full);
+}
+
+.status {
+  font-family: var(--font-body);
+  font-size: var(--text-body-md);
+  color: var(--color-text-secondary);
+}

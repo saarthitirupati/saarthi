@@ -1,0 +1,338 @@
+:root {
+  /* --- Primary/Secondary Mappings for Legacy/Modern compatibility --- */
+  --primary: var(--color-teal-500);
+  --secondary: var(--color-saffron-500);
+
+  /* =========================================
+     JEEVAPATH DESIGN SYSTEM — TRAVEL MODERNISM
+     ========================================= */
+
+  /* --- Teal (Primary Brand — Actions, Trust, AI) --- */
+  --color-teal-50:  #F0FAFA;
+  --color-teal-100: #CCECEE;
+  --color-teal-200: #99D8DC;
+  --color-teal-300: #5CBFC6;
+  --color-teal-400: #2EA3AD;
+  --color-teal-500: #0E6B72;  /* Primary */
+  --color-teal-600: #0A5259;
+  --color-teal-700: #073D43;
+  --color-teal-800: #042A2E;
+  --color-teal-900: #021A1C;
+
+  /* --- Saffron (CTA Accent — Energy, Progress, Highlights) --- */
+  --color-saffron-50:  #FFF8F0;
+  --color-saffron-100: #FFE8D1;
+  --color-saffron-200: #FFD4A8;
+  --color-saffron-300: #FFB870;
+  --color-saffron-400: #FF9B3D;
+  --color-saffron-500: #E9801D;  /* CTA Accent */
+  --color-saffron-600: #D06A10;
+  --color-saffron-700: #B0550C;
+  --color-saffron-800: #8A4008;
+  --color-saffron-900: #5E2B05;
+
+  /* --- Earth (Secondary — Warmth, Cultural Depth) --- */
+  --color-earth-50:  #F7F4F0;
+  --color-earth-100: #E8E0D5;
+  --color-earth-200: #D4C4B0;
+  --color-earth-300: #BFA88B;
+  --color-earth-400: #A68D6D;
+  --color-earth-500: #8C7355;
+  --color-earth-600: #6F5B43;
+  --color-earth-700: #554533;
+  --color-earth-800: #3D3126;
+  --color-earth-900: #1E1B18;  /* Ink */
+
+  /* --- Stone (Neutral) --- */
+  --color-stone-50:  #FAFAF7;  /* Mist Background */
+  --color-stone-100: #F5F5F2;
+  --color-stone-200: #E7E3DD;  /* Soft Stone */
+  --color-stone-300: #D1CCC5;
+  --color-stone-400: #A8A29E;
+  --color-stone-500: #78716C;
+  --color-stone-600: #57534E;
+  --color-stone-700: #44403C;
+  --color-stone-800: #292524;
+  --color-stone-900: #1C1917;
+
+  /* --- Forest (Nature Category, Success) --- */
+  --color-forest:       #2F6144;
+  --color-forest-light: #6B9F7D;
+  --color-forest-dark:  #1A3825;
+
+  /* --- Water Blue (Navigation, Calm Info) --- */
+  --color-water:       #3C8FB6;
+  --color-water-light: #7DBDD4;
+  --color-water-dark:  #1E6A8A;
+
+  /* --- Gold (Premium Accents Only) --- */
+  --color-gold:       #D0A73D;
+  --color-gold-light: #F4D979;
+  --color-gold-dark:  #A8831F;
+
+  /* --- Sunset (Romantic / Fun highlights) --- */
+  --color-sunset:       #D95F31;
+  --color-sunset-light: #F0906A;
+  --color-sunset-dark:  #B04220;
+
+  /* --- Category Colors --- */
+  --color-category-spiritual: #D0A73D;   /* Gold */
+  --color-category-nature:    #2F6144;   /* Forest */
+  --color-category-water:     #3C8FB6;   /* Water */
+  --color-category-food:      #D95F31;   /* Sunset */
+  --color-category-heritage:  #8C7355;   /* Earth */
+  --color-category-hidden:    #0E6B72;   /* Teal */
+  --color-category-family:    #E9801D;   /* Saffron */
+  --color-category-shopping:  #7B5EA7;   /* Plum */
+
+  /* --- Semantic Colors --- */
+  --color-success: #2F6144;
+  --color-warning: #E9801D;
+  --color-error:   #D64545;
+  --color-info:    #0E6B72;
+
+  --color-background:        #FAFAF7;
+  --color-surface:           #FFFFFF;
+  --color-surface-elevated:  #FFFFFF;
+  --color-border:            #E7E3DD;
+  --color-border-strong:     #D1CCC5;
+
+  --color-text-primary:   #1E1B18;
+  --color-text-secondary: #57534E;
+  --color-text-tertiary:  #A8A29E;
+  --color-text-inverse:   #FFFFFF;
+
+  --color-overlay: rgba(30, 27, 24, 0.5);
+  --color-scrim:   rgba(30, 27, 24, 0.82);
+
+  /* --- Gradients --- */
+  --gradient-brand:   linear-gradient(135deg, #0E6B72 0%, #2F6144 100%);
+  --gradient-cta:     linear-gradient(135deg, #E9801D 0%, #D95F31 100%);
+  --gradient-sunrise: linear-gradient(180deg, #FFE8D1 0%, #FFB870 50%, #E9801D 100%);
+  --gradient-subtle:  linear-gradient(180deg, #FAFAF7 0%, #F5F5F2 100%);
+  --gradient-hero:    linear-gradient(180deg, rgba(14,107,114,0.15) 0%, rgba(30,27,24,0.7) 100%);
+
+  /* --- Typography --- */
+  --text-display-xl: 72px;
+  --text-display-lg: 60px;
+  --text-display-md: 48px;
+  --text-display-sm: 36px;
+
+  --text-h1: 32px;
+  --text-h2: 28px;
+  --text-h3: 24px;
+  --text-h4: 20px;
+  --text-h5: 18px;
+
+  --text-body-xl: 18px;
+  --text-body-lg: 16px;
+  --text-body-md: 14px;
+  --text-body-sm: 12px;
+  --text-body-xs: 11px;
+
+  --line-height-tight:   1.2;
+  --line-height-snug:    1.375;
+  --line-height-normal:  1.5;
+  --line-height-relaxed: 1.625;
+  --line-height-loose:   2;
+
+  --font-weight-regular:  400;
+  --font-weight-medium:   500;
+  --font-weight-semibold: 600;
+  --font-weight-bold:     700;
+
+  --letter-spacing-tight:  -0.02em;
+  --letter-spacing-normal: 0;
+  --letter-spacing-wide:   0.025em;
+  --letter-spacing-wider:  0.05em;
+
+  /* --- Spacing --- */
+  --space-0:  0px;
+  --space-1:  4px;
+  --space-2:  8px;
+  --space-3:  12px;
+  --space-4:  16px;
+  --space-5:  20px;
+  --space-6:  24px;
+  --space-7:  28px;
+  --space-8:  32px;
+  --space-10: 40px;
+  --space-12: 48px;
+  --space-16: 64px;
+  --space-20: 80px;
+  --space-24: 96px;
+  --space-32: 128px;
+
+  /* --- Border Radius --- */
+  --radius-sm:   4px;
+  --radius-md:   8px;
+  --radius-lg:   12px;
+  --radius-xl:   16px;
+  --radius-2xl:  24px;
+  --radius-full: 9999px;
+
+  /* --- Shadows --- */
+  --shadow-xs:    0 1px 2px rgba(30, 27, 24, 0.05);
+  --shadow-sm:    0 2px 4px rgba(30, 27, 24, 0.07);
+  --shadow-md:    0 4px 12px rgba(30, 27, 24, 0.10);
+  --shadow-lg:    0 8px 24px rgba(30, 27, 24, 0.14);
+  --shadow-xl:    0 16px 40px rgba(30, 27, 24, 0.18);
+  --shadow-2xl:   0 24px 64px rgba(30, 27, 24, 0.22);
+  --shadow-inner: inset 0 2px 4px rgba(30, 27, 24, 0.06);
+  --shadow-teal:  0 0 24px rgba(14, 107, 114, 0.25);
+  --shadow-glow:  0 0 20px rgba(233, 128, 29, 0.28);
+
+  /* --- Motion Tokens --- */
+  --ease-standard:   cubic-bezier(0.4, 0.0, 0.2, 1);
+  --ease-decelerate: cubic-bezier(0.0, 0.0, 0.2, 1);
+  --ease-accelerate: cubic-bezier(0.4, 0.0, 1, 1);
+  --ease-bounce:     cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  --ease-smooth:     cubic-bezier(0.645, 0.045, 0.355, 1);
+
+  --duration-fast:    180ms;
+  --duration-normal:  280ms;
+  --duration-slow:    420ms;
+  --duration-slower:  600ms;
+  --duration-slowest: 900ms;
+}
+
+body {
+  background-color: var(--color-background);
+  color: var(--color-text-primary);
+  font-family: var(--font-body);
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-display);
+  margin: 0;
+  font-weight: var(--font-weight-bold);
+  letter-spacing: var(--letter-spacing-tight);
+  color: var(--color-earth-900);
+}
+
+p {
+  line-height: var(--line-height-relaxed);
+  margin: 0;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+* {
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Custom Text Selection Highlight matching JeevaPath Brand */
+::selection {
+  background-color: rgba(233, 128, 29, 0.2); /* Soft saffron branding color */
+  color: inherit;
+}
+
+/* Disable accidental text selection on interactive elements */
+button,
+a,
+input[type="submit"],
+.btn {
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+/* Glassmorphism utility */
+.glass {
+  background: rgba(255, 255, 255, 0.88);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb {
+  background: var(--color-stone-300);
+  border-radius: var(--radius-full);
+}
+::-webkit-scrollbar-thumb:hover { background: var(--color-stone-400); }
+
+/* Typography Utility Classes */
+.hero-title {
+  font-family: var(--font-display);
+  font-size: var(--text-display-lg);
+  font-weight: var(--font-weight-bold);
+  line-height: var(--line-height-tight);
+  letter-spacing: var(--letter-spacing-tight);
+  color: var(--color-earth-900);
+}
+
+.section-header {
+  font-family: var(--font-display);
+  font-size: var(--text-h2);
+  font-weight: var(--font-weight-semibold);
+  line-height: var(--line-height-snug);
+  color: var(--color-earth-800);
+}
+
+.body-text {
+  font-family: var(--font-body);
+  font-size: var(--text-body-lg);
+  font-weight: var(--font-weight-regular);
+  line-height: var(--line-height-relaxed);
+  color: var(--color-text-secondary);
+}
+
+.button-text {
+  font-family: var(--font-body);
+  font-size: var(--text-body-md);
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: var(--letter-spacing-wide);
+  text-transform: uppercase;
+}
+
+.caption {
+  font-family: var(--font-body);
+  font-size: var(--text-body-sm);
+  font-weight: var(--font-weight-medium);
+  line-height: var(--line-height-normal);
+  color: var(--color-text-tertiary);
+  letter-spacing: var(--letter-spacing-wide);
+}
+
+/* Core Animations */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes scaleBounce {
+  0%   { opacity: 0; transform: scale(0.9); }
+  50%  { transform: scale(1.02); }
+  100% { opacity: 1; transform: scale(1); }
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.55; }
+}
+
+@keyframes routeDraw {
+  from { stroke-dashoffset: 1000; }
+  to   { stroke-dashoffset: 0; }
+}
+
+@keyframes mapPulse {
+  0%, 100% { transform: scale(1); opacity: 0.6; }
+  50%       { transform: scale(1.4); opacity: 1; }
+}

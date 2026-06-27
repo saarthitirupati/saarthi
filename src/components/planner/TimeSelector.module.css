@@ -1,0 +1,81 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  padding: var(--space-6);
+}
+
+.header {
+  margin-bottom: var(--space-8);
+}
+
+.header h2 {
+  margin-bottom: var(--space-2);
+}
+
+.optionsGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-4);
+  margin-bottom: var(--space-8);
+}
+
+.timeCard {
+  background: var(--color-surface);
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--space-6) var(--space-4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all var(--duration-fast) var(--ease-standard);
+  box-shadow: var(--shadow-sm);
+}
+
+.timeCard.selected {
+  border-color: var(--color-teal-500);
+  background: rgba(14, 107, 114, 0.06);
+  box-shadow: 0 0 0 2px rgba(14, 107, 114, 0.12);
+}
+
+.timeLabel {
+  font-family: var(--font-body);
+  font-size: var(--text-body-lg);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-earth-800);
+}
+
+.selected .timeLabel {
+  color: var(--color-teal-600);
+  font-weight: var(--font-weight-bold);
+}
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: auto;
+}
+
+.nextButton {
+  background: var(--color-teal-500);
+  color: var(--color-text-inverse);
+  padding: var(--space-3) var(--space-8);
+  border-radius: var(--radius-full);
+  border: none;
+  cursor: pointer;
+  font-family: var(--font-body);
+  font-size: var(--text-body-md);
+  font-weight: var(--font-weight-semibold);
+  transition: all var(--duration-fast) ease;
+  box-shadow: 0 4px 16px rgba(14, 107, 114, 0.28);
+}
+
+.nextButton:hover {
+  background: var(--color-teal-600);
+}
+
+.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}

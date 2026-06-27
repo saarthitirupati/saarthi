@@ -1,0 +1,65 @@
+.nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-top: 1px solid rgba(0,0,0,0.05);
+  padding: 10px 0 calc(10px + env(safe-area-inset-bottom, 0px));
+  z-index: 1000;
+  box-shadow: 0 -4px 20px rgba(0,0,0,0.03);
+}
+
+.container {
+  max-width: 600px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.navLink {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  text-decoration: none;
+  min-width: 64px;
+}
+
+.navLink span {
+  font-size: 0.65rem;
+  font-weight: 600;
+  color: #999;
+  transition: color 0.3s;
+}
+
+.activeLabel {
+  color: var(--primary) !important;
+}
+
+.iconWrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 32px;
+  color: #999;
+  transition: color 0.3s;
+}
+
+.active {
+  color: var(--primary);
+}
+
+.activeIndicator {
+  position: absolute;
+  top: -8px;
+  width: 24px;
+  height: 2px;
+  background: var(--primary);
+  border-radius: 2px;
+}

@@ -1,0 +1,362 @@
+/* ─── Live Tirumala Status Banner ─────────────────────────────── */
+
+.banner {
+  margin: 0 var(--space-6) 12px;
+  background: #FFFFFF;
+  border: 1.5px solid #E9D9C8;
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 2px 12px rgba(163, 95, 33, 0.08);
+}
+
+/* Top row */
+.topRow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  cursor: pointer;
+  user-select: none;
+}
+
+/* Live chip */
+.liveChip {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 12px;
+  font-weight: 700;
+  color: #92400E;
+  letter-spacing: 0.2px;
+  flex-shrink: 0;
+}
+
+.liveDot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  display: inline-block;
+  animation: pulse 1.6s ease-in-out infinite;
+  flex-shrink: 0;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50%       { opacity: 0.5; transform: scale(1.35); }
+}
+
+/* Crowd badge */
+.crowdBadge {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 3px 10px;
+  border-radius: 20px;
+  flex-shrink: 0;
+}
+
+/* Wait time */
+.waitTime {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 12px;
+  color: #6B7280;
+  font-weight: 600;
+  margin-left: auto;
+  flex-shrink: 0;
+}
+
+/* Toggle */
+.toggleBtn {
+  color: #9CA3AF;
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+/* Expanded section */
+.details {
+  overflow: hidden;
+  border-top: 1px solid #F3E8D9;
+  padding: 12px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* Wait Meter */
+.meterContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.meterLabels {
+  display: flex;
+  justify-content: space-between;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.meterTitle {
+  color: #6B7280;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.meterVal {
+  color: #1F2937;
+}
+
+.meterTrack {
+  height: 6px;
+  background: #F3F4F6;
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.meterBar {
+  height: 100%;
+  border-radius: 3px;
+  transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Grid of status cards */
+.statusGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.gridCard {
+  background: #FAFAFA;
+  border: 1px solid #EAEAEA;
+  border-radius: 10px;
+  padding: 8px 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.cardHeader {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 10px;
+  color: #9CA3AF;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+
+.cardValue {
+  font-size: 12px;
+  font-weight: 600;
+  color: #374151;
+  margin: 0;
+}
+
+.innerBadge {
+  font-size: 10px;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 6px;
+  align-self: flex-start;
+  margin-top: 2px;
+}
+
+/* Icons */
+.iconGold { color: #D0A73D; }
+.iconCyan { color: #0EA5E9; }
+.iconBlue { color: #3B82F6; }
+.iconOrange { color: #F97316; }
+
+.noticeBox {
+  display: flex;
+  align-items: flex-start;
+  gap: 6px;
+  background: #FFF7ED;
+  border: 1px solid #FED7AA;
+  border-radius: 8px;
+  padding: 8px 10px;
+  font-size: 11px;
+  color: #92400E;
+  line-height: 1.4;
+}
+
+.noticeBox svg {
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+/* Expanded Footer */
+.expandedFooter {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 4px;
+}
+
+.refreshButton {
+  background: #F3F4F6;
+  border: none;
+  color: #4B5563;
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-size: 10px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  transition: all 0.2s;
+}
+
+.refreshButton:hover {
+  background: #E5E7EB;
+  color: #1F2937;
+}
+
+.refreshSpin svg {
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.updatedAt {
+  font-size: 9px;
+  color: #9CA3AF;
+  margin: 0;
+}
+
+/* Darshan breakdown table list */
+.darshanList {
+  display: flex;
+  flex-direction: column;
+  background: #F9FAFB;
+  border: 1px solid #E5E7EB;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.darshanHeader {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr 1.5fr;
+  padding: 6px 10px;
+  background: #F3F4F6;
+  font-size: 9px;
+  font-weight: 700;
+  color: #6B7280;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+  border-bottom: 1px solid #E5E7EB;
+}
+
+.darshanRow {
+  display: grid;
+  grid-template-columns: 1.4fr 0.9fr 1.5fr;
+  padding: 8px 10px;
+  border-bottom: 1px solid #F3F4F6;
+  font-size: 11px;
+  align-items: center;
+}
+
+.darshanRow:last-child {
+  border-bottom: none;
+}
+
+.darshanNameCol {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.darshanName {
+  font-weight: 600;
+  color: #374151;
+  font-size: 11.5px;
+}
+
+.darshanTimeCol {
+  display: flex;
+  justify-content: center;
+}
+
+.darshanTimeBadge {
+  font-size: 10px;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: 12px;
+  text-align: center;
+  display: inline-block;
+  white-space: nowrap;
+}
+
+.darshanPeakCol {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 4px;
+}
+
+.clockIcon {
+  color: #9CA3AF;
+  flex-shrink: 0;
+}
+
+.darshanPeak {
+  color: #4B5563;
+  font-size: 10px;
+  font-weight: 500;
+}
+
+@media (max-width: 600px) {
+  .banner {
+    margin: 0 12px 12px;
+  }
+  .topRow {
+    padding: 8px 10px;
+    gap: 8px;
+  }
+  .liveChip {
+    font-size: 11px;
+  }
+  .crowdBadge {
+    font-size: 10px;
+    padding: 2.5px 6px;
+  }
+  .waitTime {
+    font-size: 11px;
+  }
+  .details {
+    padding: 10px 10px;
+    gap: 10px;
+  }
+  .darshanHeader {
+    grid-template-columns: 1.2fr 0.8fr 1.2fr;
+    font-size: 8.5px;
+    padding: 6px 8px;
+  }
+  .darshanRow {
+    grid-template-columns: 1.2fr 0.8fr 1.2fr;
+    font-size: 10px;
+    padding: 6px 8px;
+  }
+  .darshanName {
+    font-size: 10.5px;
+  }
+  .darshanTimeBadge {
+    font-size: 9px;
+    padding: 2px 6px;
+    border-radius: 8px;
+  }
+  .darshanPeak {
+    font-size: 9.5px;
+  }
+}

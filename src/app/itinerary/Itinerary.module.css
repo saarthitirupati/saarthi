@@ -1,0 +1,453 @@
+.main {
+  min-height: 100vh;
+  padding-bottom: 120px;
+  background-color: var(--background);
+}
+
+.header {
+  height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20px;
+  background: white;
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 64px;
+  width: 100%;
+  z-index: 40;
+}
+
+.header h1 {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--text-main);
+}
+
+.backButton {
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  border-radius: 50%;
+  transition: background 0.2s;
+}
+
+.hero {
+  height: 200px;
+  background: linear-gradient(135deg, var(--secondary), var(--primary));
+  position: relative;
+  display: flex;
+  align-items: center;
+  padding: 0 20px;
+  color: white;
+}
+
+.heroOverlay h2 {
+  font-size: 1.8rem;
+  margin-bottom: 8px;
+}
+
+.heroOverlay p {
+  font-size: 0.9rem;
+  opacity: 0.9;
+  margin-bottom: 16px;
+}
+
+.statsRow {
+  display: flex;
+  gap: 16px;
+}
+
+.stat {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.8rem;
+  background: rgba(255, 255, 255, 0.2);
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-weight: 600;
+}
+
+.timeline {
+  padding: 30px 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+.timelineItem {
+  display: flex;
+  gap: 16px;
+}
+
+.timeLine {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 20px;
+  flex-shrink: 0;
+}
+
+.dot {
+  width: 12px;
+  height: 12px;
+  background: var(--border);
+  border-radius: 50%;
+  z-index: 2;
+  margin-top: 6px;
+}
+
+.dotVisited {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #22C55E;
+  border: 3px solid white;
+  box-shadow: 0 0 0 2px #22C55E;
+  z-index: 1;
+}
+
+.itemVisited {
+  opacity: 0.6;
+}
+
+.visitedBadge {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(255,255,255,0.8);
+  padding: 8px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.visitedToggle {
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 6px 12px;
+  border-radius: 20px;
+  border: 1px solid var(--primary);
+  background: transparent;
+  color: var(--primary);
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.activeToggle {
+  background: var(--primary);
+  color: white;
+}
+
+.dotActive {
+  width: 14px;
+  height: 14px;
+  background: var(--primary);
+  border-radius: 50%;
+  z-index: 2;
+  box-shadow: 0 0 0 4px rgba(255,153,51,0.2);
+  margin-top: 5px;
+}
+
+.line {
+  flex: 1;
+  width: 2px;
+  background: var(--border);
+  margin: 4px 0;
+}
+
+.travelTime {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: white;
+  border: 1px solid var(--border);
+  padding: 10px 16px;
+  border-radius: 30px;
+  margin: 15px 0 15px 20px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--text-main);
+  width: fit-content;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+  position: relative;
+}
+
+.travelTime::before {
+  content: "↓";
+  position: absolute;
+  top: -20px;
+  left: 24px;
+  color: var(--primary);
+  font-size: 1.2rem;
+  font-weight: 900;
+}
+
+.itemContent {
+  flex: 1;
+  padding-bottom: 30px;
+}
+
+.timeLabel {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--text-light);
+  margin-bottom: 8px;
+}
+
+.templeCard {
+  background: white;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.02);
+  border: 1px solid var(--border);
+  display: flex;
+}
+
+.cardImage {
+  width: 80px;
+  height: 100px;
+  background-size: cover;
+  background-position: center;
+  flex-shrink: 0;
+}
+
+.cardInfo {
+  padding: 12px 16px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.cardHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 6px;
+}
+
+.headerTitle {
+  flex: 1;
+}
+
+.headerTitle h1 {
+  font-size: 1.1rem;
+  font-weight: 800;
+  margin: 0;
+}
+
+.overallProgress {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.progressTrack {
+  width: 140px;
+  height: 6px;
+  background: #f0f0f0;
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.progressFill {
+  height: 100%;
+  background: var(--primary);
+  border-radius: 3px;
+}
+
+.overallProgress span {
+  font-size: 0.65rem;
+  color: var(--text-light);
+  font-weight: 700;
+}
+
+.cardHeader h3 {
+  font-size: 1rem;
+  font-weight: 700;
+  margin: 0;
+}
+
+.categoryBadge {
+  font-size: 0.65rem;
+  font-weight: 800;
+  padding: 2px 8px;
+  border-radius: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 4px;
+  display: inline-block;
+}
+
+.coreBadge { background: #fee2e2; color: #ef4444; }
+.spotBadge { background: #dcfce7; color: #22c55e; }
+.nearbyBadge { background: #fef9c3; color: #ca8a04; }
+
+.note {
+  font-size: 0.75rem;
+  color: var(--text-light);
+  display: flex;
+  gap: 6px;
+  margin-bottom: 10px;
+  line-height: 1.4;
+}
+
+.itemFooter {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.detailsLink {
+  color: var(--primary);
+}
+
+.stickyFooter {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 16px 20px 32px;
+  background: white;
+  border-top: 1px solid var(--border);
+  z-index: 101;
+}
+
+.startButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  background: #1A1A1A;
+  color: white;
+  padding: 16px;
+  border-radius: 12px;
+  font-weight: 700;
+  font-size: 1.1rem;
+  width: 100%;
+  border: none;
+}
+
+.tabs {
+  display: flex;
+  padding: 0 20px;
+  gap: 20px;
+  background: white;
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 144px; /* header is 80px, Navbar is 64px */
+  z-index: 30;
+  overflow-x: auto;
+}
+
+.tabItem {
+  padding: 16px 4px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  background: none;
+  border: none;
+  color: var(--text-light);
+  position: relative;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.activeTab {
+  color: var(--primary);
+}
+
+.underline {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: var(--primary);
+  border-radius: 3px 3px 0 0;
+}
+
+@media (max-width: 768px) {
+  .templeCard {
+    height: auto;
+  }
+}
+
+.shareButton {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: var(--primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  position: relative;
+  transition: background 0.2s;
+}
+
+.shareButton:hover {
+  background: rgba(255, 153, 51, 0.1);
+}
+
+.copyTooltip {
+  position: absolute;
+  bottom: -30px;
+  background: var(--text);
+  color: white;
+  font-size: 0.7rem;
+  padding: 4px 8px;
+  border-radius: 4px;
+  white-space: nowrap;
+  animation: fadeInOut 2s forwards;
+}
+
+@keyframes fadeInOut {
+  0% { opacity: 0; transform: translateY(-5px); }
+  10% { opacity: 1; transform: translateY(0); }
+  80% { opacity: 1; transform: translateY(0); }
+  100% { opacity: 0; transform: translateY(-5px); }
+}
+
+.driverTipBox {
+  background: linear-gradient(to right, #FFFBF7, white);
+  border: 1px dashed rgba(255, 153, 51, 0.5);
+  border-left: 4px solid var(--primary);
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 24px;
+  box-shadow: 0 4px 12px rgba(255, 153, 51, 0.05);
+}
+
+.driverTipHeader {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.driverTipHeader h4 {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--primary);
+  margin: 0;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.driverTipBox p {
+  font-size: 0.85rem;
+  color: var(--text-main);
+  line-height: 1.5;
+  margin: 0;
+}

@@ -1,0 +1,33 @@
+{
+  "waitTime": "5",
+  "crowdLevel": "low",
+  "sevaStatus": "All sevas open",
+  "notice": "bharmmothsavam",
+  "lastUpdated": "2026-06-24T14:53:40.013Z",
+  "darshanSpeed": "normal",
+  "accommodationStatus": "available",
+  "ladduAvailability": "available",
+  "weather": "Pleasant, 24°C",
+  "darshans": [
+    {
+      "name": "Sarva Darshan (Free)",
+      "waitTime": "12-15 hours",
+      "peakHours": "Daily 10 AM - 6 PM"
+    },
+    {
+      "name": "Special Entry (₹300)",
+      "waitTime": "3-4 hours",
+      "peakHours": "Daily 9 AM - 3 PM"
+    },
+    {
+      "name": "Divya Darshan (Footpath)",
+      "waitTime": "8-10 hours",
+      "peakHours": "Daily 8 AM - 4 PM"
+    },
+    {
+      "name": "VIP / Srivani Break",
+      "waitTime": "1.5 hours",
+      "peakHours": "Daily 6 AM - 8 AM"
+    }
+  ]
+}

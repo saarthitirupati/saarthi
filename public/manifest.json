@@ -1,0 +1,9 @@
+{
+  "name": "Smart Travel Companion",
+  "short_name": "Travel",
+  "description": "Your trusted guide for authentic local experiences in Tirupati.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#FFFAF5",
+  "theme_color": "#FF9933"
+}

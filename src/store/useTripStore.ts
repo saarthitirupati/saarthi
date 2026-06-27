@@ -1,0 +1,246 @@
+'use client';
+
+import { useState, useEffect } from 'react';
+
+export interface PlanStop {
+  placeId: string;
+  arrivalTime: string;
+  departureTime: string;
+  travelToNext: number; // mins
+  travelMode: string;
+  estimatedCost: number;
+}
+
+export interface Plan {
+  type: 'best' | 'budget' | 'premium';
+  title: string;
+  emoji: string;
+  tagline: string;
+  stops: PlanStop[];
+  totalMins: number;
+  totalCost: number;
+  highlights: string[];
+}
+
+export interface PlannerInput {
+  timeMins: number;
+  budget: number;
+  budgetTier: 'budget' | 'medium' | 'premium';
+  interests: string[];
+  groupType: 'solo' | 'couple' | 'family' | 'elderly' | 'friends';
+  travelMode: 'walk' | 'bike' | 'car' | 'cab' | 'public';
+}
+
+export interface TripState {
+  days: number;
+  savedMantras: string[];
+  savedPlaces: string[];
+  visitedPlaces: string[];
+  viewedPlaces: string[];
+  isInitialized: boolean;
+  plannerInput: PlannerInput;
+  generatedPlans: Plan[] | null;
+  recommendations: any[] | null;
+  userLocation: { lat: number; lng: number } | null;
+  locationPermission: 'default' | 'granted' | 'denied';
+  savedPlans: (Plan & { id: string; savedAt: string })[];
+}
+
+const initialPlannerInput: PlannerInput = {
+  timeMins: 180,
+  budget: 1000,
+  budgetTier: 'medium',
+  interests: ['nature'],
+  groupType: 'family',
+  travelMode: 'car'
+};
+
+export function useTripStore() {
+  const [state, setState] = useState<TripState>({
+    days: 0,
+    savedMantras: [],
+    savedPlaces: [],
+    visitedPlaces: [],
+    viewedPlaces: [],
+    isInitialized: false,
+    plannerInput: initialPlannerInput,
+    generatedPlans: null,
+    recommendations: null,
+    userLocation: null,
+    locationPermission: 'default',
+    savedPlans: []
+  });
+
+  // Load from LocalStorage on mount
+  useEffect(() => {
+    const saved = localStorage.getItem('jeevapath_trip_state');
+    if (saved) {
+      try {
+        const parsed = JSON.parse(saved);
+        setState({ 
+          ...state,
+          ...parsed, 
+          visitedPlaces: parsed.visitedPlaces || [],
+          viewedPlaces: parsed.viewedPlaces || [],
+          plannerInput: parsed.plannerInput || initialPlannerInput,
+          generatedPlans: parsed.generatedPlans || null,
+          recommendations: parsed.recommendations || null,
+          userLocation: parsed.userLocation || null,
+          locationPermission: parsed.locationPermission || 'default',
+          savedPlans: parsed.savedPlans || [],
+          isInitialized: true 
+        });
+      } catch (e) {
+        setState(prev => ({ ...prev, isInitialized: true }));
+      }
+    } else {
+      setState(prev => ({ ...prev, isInitialized: true }));
+    }
+  }, []);
+
+  // Save to LocalStorage on change
+  useEffect(() => {
+    if (state.isInitialized) {
+      localStorage.setItem('jeevapath_trip_state', JSON.stringify(state));
+    }
+  }, [state]);
+
+  const setDays = (days: number) => setState(prev => ({ ...prev, days }));
+  
+  const toggleMantra = (mantra: string) => {
+    setState(prev => ({
+      ...prev,
+      savedMantras: prev.savedMantras.includes(mantra)
+        ? prev.savedMantras.filter(m => m !== mantra)
+        : [...prev.savedMantras, mantra]
+    }));
+  };
+
+  const togglePlace = (placeId: string) => {
+    setState(prev => {
+      const nextSaved = prev.savedPlaces.includes(placeId)
+        ? prev.savedPlaces.filter(id => id !== placeId)
+        : [...prev.savedPlaces, placeId];
+      
+      // Train ML recommendation weights based on updated saves
+      if (typeof window !== 'undefined') {
+        try {
+          import('@/lib/recommendation-engine').then(m => {
+            m.trainMLModel(nextSaved);
+          });
+        } catch (e) {
+          console.error('Failed to run ML training step', e);
+        }
+      }
+
+      return {
+        ...prev,
+        savedPlaces: nextSaved
+      };
+    });
+  };
+
+  const toggleVisited = (placeId: string) => {
+    setState(prev => ({
+      ...prev,
+      visitedPlaces: prev.visitedPlaces.includes(placeId)
+        ? prev.visitedPlaces.filter(id => id !== placeId)
+        : [...prev.visitedPlaces, placeId]
+    }));
+  };
+
+  const setPlannerInput = (input: Partial<PlannerInput>) => {
+    setState(prev => ({
+      ...prev,
+      plannerInput: { ...prev.plannerInput, ...input }
+    }));
+  };
+
+  const setGeneratedPlans = (plans: Plan[] | null, recommendations: any[] | null = null) => {
+    setState(prev => ({ ...prev, generatedPlans: plans, recommendations }));
+  };
+
+  const savePlan = (plan: Plan) => {
+    setState(prev => {
+      const alreadySaved = prev.savedPlans.some(p => 
+        p.type === plan.type && p.totalCost === plan.totalCost && p.stops.length === plan.stops.length
+      );
+      if (alreadySaved) return prev;
+
+      return {
+        ...prev,
+        savedPlans: [
+          ...prev.savedPlans, 
+          { ...plan, id: `plan_${Date.now()}`, savedAt: new Date().toISOString() }
+        ]
+      };
+    });
+  };
+
+  const removePlan = (id: string) => {
+    setState(prev => ({
+      ...prev,
+      savedPlans: prev.savedPlans.filter(p => p.id !== id)
+    }));
+  };
+
+  const resetTrip = () => {
+    setState({
+      days: 0,
+      savedMantras: [],
+      savedPlaces: [],
+      visitedPlaces: [],
+      viewedPlaces: [],
+      isInitialized: true,
+      plannerInput: initialPlannerInput,
+      generatedPlans: null,
+      recommendations: null,
+      userLocation: null,
+      locationPermission: 'default',
+      savedPlans: []
+    });
+  };
+
+  const addViewedPlace = (placeId: string) => {
+    setState(prev => {
+      const filtered = (prev.viewedPlaces || []).filter(id => id !== placeId);
+      const nextViewed = [placeId, ...filtered].slice(0, 20);
+      return {
+        ...prev,
+        viewedPlaces: nextViewed
+      };
+    });
+  };
+
+  const clearViewedHistory = () => {
+    setState(prev => ({
+      ...prev,
+      viewedPlaces: []
+    }));
+  };
+
+  const setUserLocation = (userLocation: { lat: number; lng: number } | null) => {
+    setState(prev => ({ ...prev, userLocation }));
+  };
+
+  const setLocationPermission = (locationPermission: 'default' | 'granted' | 'denied') => {
+    setState(prev => ({ ...prev, locationPermission }));
+  };
+
+  return {
+    ...state,
+    setDays,
+    toggleMantra,
+    togglePlace,
+    toggleVisited,
+    addViewedPlace,
+    clearViewedHistory,
+    setPlannerInput,
+    setGeneratedPlans,
+    savePlan,
+    removePlan,
+    resetTrip,
+    setUserLocation,
+    setLocationPermission
+  };
+}
