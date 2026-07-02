@@ -1,5 +1,4 @@
-function requireEnv(name: string): string {
-  const value = process.env[name];
+function requireEnv(value: string | undefined, name: string): string {
   if (!value) {
     throw new Error(`Missing environment variable: ${name}`);
   }
@@ -7,7 +6,14 @@ function requireEnv(name: string): string {
 }
 
 export const env = {
-  NEXT_PUBLIC_SUPABASE_URL: requireEnv("NEXT_PUBLIC_SUPABASE_URL"),
-  NEXT_PUBLIC_SUPABASE_ANON_KEY: requireEnv("NEXT_PUBLIC_SUPABASE_ANON_KEY"),
-  DATABASE_URL: requireEnv("DATABASE_URL"),
+  get NEXT_PUBLIC_SUPABASE_URL() {
+    return requireEnv(process.env.NEXT_PUBLIC_SUPABASE_URL, "NEXT_PUBLIC_SUPABASE_URL");
+  },
+  get NEXT_PUBLIC_SUPABASE_ANON_KEY() {
+    return requireEnv(process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY, "NEXT_PUBLIC_SUPABASE_ANON_KEY");
+  },
+  get DATABASE_URL() {
+    if (typeof window !== 'undefined') return '';
+    return requireEnv(process.env.DATABASE_URL, "DATABASE_URL");
+  },
 };

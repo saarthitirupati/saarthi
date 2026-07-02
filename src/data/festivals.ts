@@ -1,15 +1,6 @@
-export interface Festival {
-  id: string;
-  name: string;
-  date: string; // ISO format 'YYYY-MM-DD'
-  location: string;
-  gravityScore: number; // 1-10 scale representing the festival's inherent magnitude
-  expectedCrowd: 'Low' | 'Moderate' | 'High' | 'Very High';
-  recommendedTime: string;
-  dressCode: string;
-  parking: 'Available' | 'Limited' | 'Very Limited';
-  specialTips: string;
-}
+import { Festival } from '@/types/festival';
+
+export type { Festival };
 
 export const FESTIVALS_2026: Festival[] = [
   {

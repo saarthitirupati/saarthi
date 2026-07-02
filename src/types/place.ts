@@ -74,4 +74,32 @@ export interface Place {
     photoRule?: string;
     entryRule?: string;
   };
+  guideAudio?: string;
+
+  // Sprint 1 Schema Fields
+  architecture?: string;
+  importance?: string;
+  deity?: string;
+  deityType?: string;
+  breakTimings?: { from: string; to: string }[];
+  isHiddenGem?: boolean;
+  rituals?: {
+    daily?: string[];
+    weekly?: string[];
+    monthly?: string[];
+    annual?: string[];
+    sevas?: string[];
+  };
+  facilities?: {
+    locker?: string;
+    toilets?: string;
+    drinkingWater?: string;
+    wheelchair?: string;
+    parking?: string;
+    food?: string;
+  };
+  difficulty?: 'easy' | 'moderate' | 'hard';
+  bestSeason?: string;
+  relatedPlaces?: string[];
+  nearbyTemples?: string[];
 }
