@@ -61,7 +61,7 @@ export default function StoryOfTheDay() {
         width: '100%',
         height: '30vh',
         minHeight: '250px',
-        backgroundImage: `linear-gradient(to bottom, rgba(0,0,0,0.1), rgba(0,0,0,0.7)), url(${story.image})`,
+        backgroundImage: `linear-gradient(to bottom, rgba(0,0,0,0.25), rgba(0,0,0,0.85)), url(${story.image})`,
         backgroundSize: 'cover',
         backgroundPosition: 'center',
         display: 'flex',
@@ -71,11 +71,11 @@ export default function StoryOfTheDay() {
         color: 'white'
       }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
-          <BookOpen size={16} />
-          <span style={{ fontSize: '0.85rem', fontWeight: 500, textTransform: 'uppercase', letterSpacing: '1px' }}>{story.readTime} Read</span>
+          <BookOpen size={16} style={{ filter: 'drop-shadow(0 1px 2px rgba(0,0,0,0.5))' }} />
+          <span style={{ fontSize: '0.85rem', fontWeight: 500, textTransform: 'uppercase', letterSpacing: '1px', textShadow: '0 1px 3px rgba(0,0,0,0.6)' }}>{story.readTime} Read</span>
         </div>
-        <h2 style={{ fontSize: '2rem', fontWeight: 800, margin: '0 0 4px 0', lineHeight: 1.1 }}>{story.title}</h2>
-        <p style={{ fontSize: '1rem', opacity: 0.9, margin: 0 }}>{story.subtitle}</p>
+        <h2 style={{ fontSize: '2rem', fontWeight: 800, margin: '0 0 4px 0', lineHeight: 1.1, color: '#FFFFFF', textShadow: '0 2px 8px rgba(0,0,0,0.9)' }}>{story.title}</h2>
+        <p style={{ fontSize: '1rem', opacity: 0.9, margin: 0, color: '#F3F4F6', textShadow: '0 1px 4px rgba(0,0,0,0.7)' }}>{story.subtitle}</p>
       </div>
 
       {/* Content */}
