@@ -147,7 +147,7 @@ export default function AdminPlaces() {
                   ))}
                 </AnimatePresence>
                 {filtered.length === 0 && (
-                  <tr><td colSpan={6} className={styles.emptyState}>No experiences found for "{q}"</td></tr>
+                  <tr><td colSpan={6} className={styles.emptyState}>No experiences found for &quot;{q}&quot;</td></tr>
                 )}
               </tbody>
             </table>

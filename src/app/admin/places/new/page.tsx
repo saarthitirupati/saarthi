@@ -2,12 +2,12 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { ArrowLeft, Save, Image as ImageIcon, Sparkles, MapPin, Clock, Compass, Coins, ShieldAlert } from 'lucide-react';
+import { ArrowLeft, Save, Image as ImageIcon, Sparkles, Clock, Compass, Coins, ShieldAlert } from 'lucide-react';
 import styles from '../../admin.module.css';
 import { motion } from 'framer-motion';
 
 const PLACE_TYPES   = ['spiritual','nature','water','food','historical','hidden','leisure','culture'];
-const BUDGET_LEVELS = ['budget','medium','premium'];
+
 const CATEGORIES    = ['Tirumala Spot','Core Temple','Historical','Nature','Day Trip','Parks & Leisure','Hidden Gem','Local Culture'];
 const INTERESTS_ALL = ['spiritual','nature','trekking','history','culture','architecture','food','shopping','family','wildlife','water','geology','viewpoint','arts','hidden','marriage'];
 

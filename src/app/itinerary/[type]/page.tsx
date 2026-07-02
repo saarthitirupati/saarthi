@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
-import { ChevronLeft, Clock, Wallet, MapPin, Navigation, Sparkles, Bookmark, AlertTriangle, ExternalLink } from 'lucide-react';
+import { ChevronLeft, Clock, Wallet, Navigation, Sparkles, Bookmark, ExternalLink } from 'lucide-react';
 import styles from './Itinerary.module.css';
 import { useTrip } from '@/components/TripContext';
 import { PLACES, Place } from '@/data/places';
@@ -93,7 +93,7 @@ export default function ItineraryPage() {
       <div className={styles.content}>
         <div className={styles.aiInsight}>
           <Sparkles size={20} color="var(--color-teal-500)" />
-          <p>"AI Insight: This path minimises travel time while maximising your experience across {plan.stops.length} curated stops."</p>
+          <p>&quot;AI Insight: This path minimises travel time while maximising your experience across {plan.stops.length} curated stops.&quot;</p>
         </div>
 
         <div className={styles.statsCard}>

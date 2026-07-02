@@ -91,7 +91,7 @@ export default function ProfilePage() {
           ) : (
             <div className={styles.emptyState}>
               <Bookmark size={40} color="var(--color-text-dim)" />
-              <p>You haven't saved any plans yet.</p>
+              <p>You haven&apos;t saved any plans yet.</p>
               <button 
                 onClick={() => router.push('/planner')}
                 style={{ marginTop: 20, color: 'var(--color-teal-500)', fontWeight: 600, background: 'none', border: 'none' }}

@@ -1,6 +1,6 @@
 'use client';
 
-import { PLACES, Place, getPlaceGuideData } from '@/data/places';
+import { PLACES, getPlaceGuideData } from '@/data/places';
 import { ArrowLeft, Heart, Share2, Star, MapPin, Clock, Compass, Coins, PlayCircle, Camera, Check, Copy, Volume2, VolumeX, ShieldAlert, X, ChevronLeft, ChevronRight } from 'lucide-react';
 import { use, useState, useEffect } from 'react';
 import Link from 'next/link';
@@ -68,7 +68,7 @@ export default function PlaceDetails({ params }: { params: Promise<{ id: string 
       if (match && match[2].length === 11) {
         return `https://img.youtube.com/vi/${match[2]}/0.jpg`;
       }
-    } catch (e) {}
+    } catch {}
     return '/assets/ai/hero_heritage.png'; // fallback
   };
 
@@ -178,7 +178,7 @@ export default function PlaceDetails({ params }: { params: Promise<{ id: string 
                   <div className={styles.mantraBox}>
                     <span className={styles.detailLabel}>Sacred Mantra</span>
                     <div className={styles.mantraContent}>
-                      <span className={styles.mantraText}>"{place.spiritualInfo.mantra}"</span>
+                      <span className={styles.mantraText}>&quot;{place.spiritualInfo.mantra}&quot;</span>
                       <button onClick={handleCopyMantra} className={styles.copyBtn} title="Copy Mantra">
                         {copied ? <Check size={16} /> : <Copy size={16} />}
                       </button>

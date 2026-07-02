@@ -4,8 +4,7 @@ import { useState, useEffect, useMemo } from 'react';
 import { motion } from 'framer-motion';
 import { useRouter } from 'next/navigation';
 import {
-  MapPin, User, Search, Heart,
-  Compass, Bookmark, Landmark, Waves, UtensilsCrossed, Map as MapIcon
+  MapPin, User, Search, Heart, Landmark, Waves, UtensilsCrossed, Map as MapIcon
 } from 'lucide-react';
 import styles from './Home.module.css';
 import { useTrip } from '@/components/TripContext';

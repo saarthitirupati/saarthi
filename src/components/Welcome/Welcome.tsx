@@ -1,7 +1,7 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { Calendar, Sparkles, ChevronRight, MapPin } from 'lucide-react';
+import { Sparkles, ChevronRight, MapPin } from 'lucide-react';
 import styles from './Welcome.module.css';
 
 interface WelcomeProps {
@@ -48,7 +48,7 @@ export default function Welcome({ onSelectDays }: WelcomeProps) {
           animate={{ opacity: 1 }}
           transition={{ delay: 0.6 }}
         >
-          Select how many days you'll be spending in the spiritual heart of India. We'll curate the perfect experience for you.
+          Select how many days you&apos;ll be spending in the spiritual heart of India. We&apos;ll curate the perfect experience for you.
         </motion.p>
 
         <div className={styles.optionsList}>

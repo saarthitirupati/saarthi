@@ -39,8 +39,8 @@ export default function GroupTravelSelector({ onGenerate, onBack }: GroupTravelS
       transition={{ duration: 0.28 }}
     >
       <div className={styles.header}>
-        <h2 className="section-header">Who's joining & how?</h2>
-        <p className="body-text">We'll tailor routes and stops to your group.</p>
+        <h2 className="section-header">Who&apos;s joining & how?</h2>
+        <p className="body-text">We&apos;ll tailor routes and stops to your group.</p>
       </div>
 
       <div className={styles.section}>

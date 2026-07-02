@@ -1,5 +1,5 @@
 import { PLACES, Place } from '@/data/places';
-import { Plan, PlanStop, PlannerInput } from '@/store/useTripStore';
+import { Plan, PlanStop } from '@/store/useTripStore';
 
 export interface UserPreferences {
   timeMins: number;
@@ -222,7 +222,7 @@ export function scorePlace(place: Place, prefs: UserPreferences, type: 'best' | 
   if (uLength === 0 || pLength === 0) return 0;
   
   const cosineSim = dotProduct / (uLength * pLength);
-  let finalScore = Math.max(0, cosineSim * 100) + budgetStrategyPenalty;
+  const finalScore = Math.max(0, cosineSim * 100) + budgetStrategyPenalty;
   
   return finalScore;
 }

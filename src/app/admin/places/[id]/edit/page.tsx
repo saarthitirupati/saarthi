@@ -2,7 +2,7 @@
 import { useEffect, useState, use } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { ArrowLeft, Save, Image as ImageIcon, Sparkles, MapPin, Clock, Compass, Coins, ShieldAlert } from 'lucide-react';
+import { ArrowLeft, Save, Image as ImageIcon, Sparkles, Clock, Compass, Coins, ShieldAlert } from 'lucide-react';
 import styles from '../../../admin.module.css';
 import { motion } from 'framer-motion';
 

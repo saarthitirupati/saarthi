@@ -1,7 +1,7 @@
 'use client';
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { MapPin, TrendingUp, Eye, PlusCircle, Sparkles, Pencil, Activity, Users, Clock, Bell, Save } from 'lucide-react';
+import { MapPin, TrendingUp, Eye, PlusCircle, Sparkles, Pencil } from 'lucide-react';
 import styles from './admin.module.css';
 import { PLACES } from '@/data/places';
 import { motion } from 'framer-motion';

@@ -1,7 +1,7 @@
 'use client';
 
 import { PLACES as PLACES } from '@/data/places';
-import { ArrowLeft, MapPin, Clock, Navigation, CheckCircle, Info, Car, Share2, Lightbulb } from 'lucide-react';
+import { ArrowLeft, Clock, Navigation, CheckCircle, Info, Car, Share2, Lightbulb } from 'lucide-react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { useState, useMemo } from 'react';

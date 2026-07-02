@@ -133,7 +133,7 @@ function poolPremium(all: Place[]): Place[] {
 }
 
 // Best uses the full list (balanced)
-function poolBest(all: Place[]): Place[] {
+function _poolBest(all: Place[]): Place[] {
   return all;
 }
 

@@ -1,10 +1,10 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   Activity, Clock, Users, Bell, ChevronDown, ChevronUp, 
-  RefreshCw, CloudSun, Box, Hotel, Zap, CalendarDays,
+  RefreshCw, Zap, CalendarDays,
   Ticket, Star
 } from 'lucide-react';
 import styles from './LiveStatus.module.css';

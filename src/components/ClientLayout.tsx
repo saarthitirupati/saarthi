@@ -3,9 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { usePathname } from 'next/navigation';
 import SplashScreen from '@/components/Splash/Splash';
-import Navbar from '@/components/Navbar/Navbar';
 import SideMenu from '@/components/SideMenu/SideMenu';
-import ProfileMenu from '@/components/ProfileMenu/ProfileMenu';
 import BottomNav from '@/components/BottomNav/BottomNav';
 import { TripProvider, useTrip } from '@/components/TripContext';
 import LocationPrompt from '@/components/LocationPrompt/LocationPrompt';

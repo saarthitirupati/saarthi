@@ -41,7 +41,7 @@ export function addPlace(data: Omit<Place, 'travelEstimates'> & { travelEstimate
 
 export function updatePlace(id: string, updates: Partial<Place>): DynamicPlace | null {
   const places = readDynamicPlaces();
-  let idx = places.findIndex(p => p.id === id);
+  const idx = places.findIndex(p => p.id === id);
   
   if (idx === -1) {
     // Check static fallback

@@ -117,10 +117,31 @@ Three-tier information architecture (Overview, Experience, Spiritual Deep Dive).
 
 ---
 
-## 💡 **The Killer Feature: "Zero Irrelevance Guarantee"**
+## 💡 **The Killer Feature: "Zero Irrelevance Guarantee" (Phase 1)**
 
 **Promise to Users:**
 > "JeevaPath will never show you something you don't want to see. If you don't select 'Spiritual,' you won't see a single temple. If you don't select 'Shopping,' you won't see a single mall. Your trip, your rules."
+
+---
+
+## 🔄 **The Habit Loop: Daily Engagement System (Phase 2)**
+
+**The Core Question:** *"What habit am I trying to create?"*
+**The Answer:** *"Before every outing, open Saarthi first."*
+
+We are transforming Saarthi from a single-use trip planning app to a daily local companion. 
+This relies on creating a predictable product loop:
+1. **Trigger:** "What's happening today?"
+2. **Action:** Open Saarthi.
+3. **Reward:** Useful live information + Discovery + Progress + Achievement.
+4. **Repeat.**
+
+**4 Product Pillars:**
+- **Live Today:** Real-time dashboards (crowd, weather, transit) and contextual nearby smart alerts.
+- **Discover:** Hidden place unlocks, weekend explorer suggestions, and daily fresh content.
+- **Learn:** Daily interactive quizzes, 30-second local stories, and actionable festival countdowns.
+- **Journey:** Memory timeline, explorer passport badges, and personal travel statistics.
+- **Today's Mood Journey:** A daily personalized AI check-in ("How do you feel today?") that curates micro-plans based on real-time factors.
 
 ---
 

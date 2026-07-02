@@ -90,7 +90,7 @@ export function useTripStore() {
           savedPlans: parsed.savedPlans || [],
           isInitialized: true 
         });
-      } catch (e) {
+      } catch {
         setState(prev => ({ ...prev, isInitialized: true }));
       }
     } else {
@@ -128,7 +128,7 @@ export function useTripStore() {
           import('@/lib/recommendation-engine').then(m => {
             m.trainMLModel(nextSaved);
           });
-        } catch (e) {
+        } catch (e: any) {
           console.error('Failed to run ML training step', e);
         }
       }

@@ -1,7 +1,7 @@
 'use client';
 
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Home, Compass, Calendar, Award, Info, ChevronRight, LogIn } from 'lucide-react';
+import { X, Home, Compass, Calendar, Award, Info, ChevronRight } from 'lucide-react';
 import Link from 'next/link';
 import styles from './SideMenu.module.css';
 

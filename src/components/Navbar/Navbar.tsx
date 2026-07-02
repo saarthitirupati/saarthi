@@ -2,7 +2,7 @@
 
 import Logo from '@/components/Logo/Logo';
 import Link from 'next/link';
-import { Menu, User } from 'lucide-react';
+import { Menu } from 'lucide-react';
 import styles from './Navbar.module.css';
 
 export default function Navbar({ 

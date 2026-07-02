@@ -33,7 +33,7 @@ export default function MoodSelector({ onNext, onBack }: MoodSelectorProps) {
       transition={{ duration: 0.28 }}
     >
       <div className={styles.header}>
-        <h2 className="section-header">What's your mood?</h2>
+        <h2 className="section-header">What&apos;s your mood?</h2>
         <p className="body-text">This shapes the kind of experience we craft for you.</p>
       </div>
 

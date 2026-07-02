@@ -28,10 +28,10 @@ export default function InterestSelector({ onGenerate, onBack }: InterestSelecto
     .filter(opt => state.selectedInterests.includes(opt.id))
     .map(opt => opt.preview);
 
-  const unselectedPreviews = INTEREST_OPTIONS
+  /* const _unselectedPreviews = INTEREST_OPTIONS
     .filter(opt => !state.selectedInterests.includes(opt.id))
     .slice(0, 2)
-    .map(opt => opt.label);
+    .map(opt => opt.label); */
 
   return (
     <motion.div 
@@ -67,7 +67,7 @@ export default function InterestSelector({ onGenerate, onBack }: InterestSelecto
                 ))}
               </ul>
             ) : (
-              <p className={styles.emptyPreview}>Select interests to see what we'll plan for you.</p>
+              <p className={styles.emptyPreview}>Select interests to see what we&apos;ll plan for you.</p>
             )}
           </div>
         </div>

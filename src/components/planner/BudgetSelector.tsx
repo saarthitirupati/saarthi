@@ -49,7 +49,7 @@ export default function BudgetSelector({ onNext, onBack }: BudgetSelectorProps) 
       exit={{ opacity: 0, x: -20 }}
     >
       <div className={styles.header}>
-        <h2 className="section-header">What's your budget?</h2>
+        <h2 className="section-header">What&apos;s your budget?</h2>
         <p className="body-text">Per person estimate to tailor your experience.</p>
       </div>
 

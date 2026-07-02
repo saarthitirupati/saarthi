@@ -41,7 +41,7 @@ export default function GeneratingPage() {
         input = JSON.parse(cached);
         sessionStorage.removeItem('jeevapath_pending_plan');
       }
-    } catch (e) {
+    } catch { // eslint-disable-line @typescript-eslint/no-unused-vars
       // fall back to TripContext value
     }
 
@@ -52,7 +52,7 @@ export default function GeneratingPage() {
         const { places } = await placesRes.json();
         const { plans, recommendations } = generatePlans(input, places);
         setGeneratedPlans(plans, recommendations);
-      } catch (e) {
+      } catch (e: any) { // eslint-disable-line @typescript-eslint/no-unused-vars
         console.error('Plan generation error:', e);
         // Fallback to static places if API fails
         const { plans, recommendations } = generatePlans(input);

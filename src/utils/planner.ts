@@ -1,4 +1,3 @@
-import { PLACES, Place } from '@/data/places';
 
 export interface ItineraryItem {
   time: string;
