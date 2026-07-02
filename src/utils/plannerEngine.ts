@@ -1,6 +1,36 @@
 import { PLACES, Place } from '@/data/places';
 import { PlannerInput, Plan, PlanStop } from '@/store/useTripStore';
 
+function isDuringBreak(breaks: { from: string; to: string }[] | undefined, time: Date): boolean {
+  if (!breaks || breaks.length === 0) return false;
+
+  const parseTime = (str: string): number => {
+    // Handles '1:00 PM', '13:00', etc.
+    const match12 = str.match(/(\d+):(\d+)\s*(AM|PM)/i);
+    if (match12) {
+      let hr = parseInt(match12[1], 10);
+      const min = parseInt(match12[2], 10);
+      if (match12[3].toUpperCase() === 'PM' && hr < 12) hr += 12;
+      if (match12[3].toUpperCase() === 'AM' && hr === 12) hr = 0;
+      return hr * 60 + min;
+    }
+    // 24h format fallback
+    const parts = str.split(':').map(Number);
+    return (parts[0] || 0) * 60 + (parts[1] || 0);
+  };
+
+  const checkMinutes = time.getHours() * 60 + time.getMinutes();
+
+  return breaks.some(b => {
+    const start = parseTime(b.from);
+    const end = parseTime(b.to);
+    if (start <= end) {
+      return checkMinutes >= start && checkMinutes <= end;
+    }
+    return checkMinutes >= start || checkMinutes <= end;
+  });
+}
+
 // ── Interest synonym expansion ────────────────────────────────────────────────
 const INTEREST_MAP: Record<string, string[]> = {
   spiritual: ['spiritual', 'dosha-nivarana', 'marriage'],
@@ -175,6 +205,25 @@ function buildRoute(
       const totalNeeded = place.durationMins + travelTime;
 
       if (totalNeeded > remainingTime) continue;
+
+      // 1. Temple Break Timings Constraint
+      const potentialArrival = new Date(currentTime.getTime() + travelTime * 60_000);
+      if (isDuringBreak(place.breakTimings, potentialArrival)) continue;
+
+      // 2. Difficulty & Fatigue Constraints
+      // Elderly group skips hard places entirely
+      if (input.groupType === 'elderly' && place.difficulty === 'hard') {
+        continue;
+      }
+
+      // Prevent back-to-back hard places
+      const lastStop = stops[stops.length - 1];
+      if (lastStop) {
+        const prevPlace = allPlaces.find(pl => pl.id === lastStop.placeId);
+        const isPrevHard = prevPlace?.difficulty === 'hard';
+        const isCurrentHard = place.difficulty === 'hard';
+        if (isPrevHard && isCurrentHard) continue;
+      }
 
       // PRD: Proportional Blending / Diversity Bonus
       let diversityBonus = 1.0;
