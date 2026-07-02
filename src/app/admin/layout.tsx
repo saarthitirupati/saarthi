@@ -4,14 +4,17 @@ import { usePathname, useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { 
   LayoutDashboard, MapPin, PlusCircle, BarChart3, LogOut, Map, Database, Activity,
-  Menu, X
+  Menu, X, BookOpen, HelpCircle, Calendar, Bookmark
 } from 'lucide-react';
 import styles from './admin.module.css';
 
 const NAV = [
   { href: '/admin',         icon: LayoutDashboard, label: 'Dashboard' },
   { href: '/admin/places',  icon: MapPin,           label: 'All Places' },
-  { href: '/admin/places/new', icon: PlusCircle,   label: 'Add Place' },
+  { href: '/admin/stories', icon: BookOpen,         label: 'Stories' },
+  { href: '/admin/quizzes', icon: HelpCircle,       label: 'Quizzes' },
+  { href: '/admin/festivals', icon: Calendar,       label: 'Festivals' },
+  { href: '/admin/encyclopedia', icon: Bookmark,    label: 'Encyclopedia' },
   { href: '/admin/live-status', icon: Activity,     label: 'Live Status' },
   { href: '/admin/traffic', icon: BarChart3,        label: 'Traffic' },
   { href: '/studio',        icon: Database,         label: 'Sanity Studio' },

@@ -1,7 +1,7 @@
 'use client';
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { MapPin, TrendingUp, Eye, PlusCircle, Sparkles, Pencil } from 'lucide-react';
+import { MapPin, TrendingUp, Eye, PlusCircle, Sparkles, Pencil, BookOpen, HelpCircle, Calendar, Bookmark } from 'lucide-react';
 import styles from './admin.module.css';
 import { PLACES } from '@/data/places';
 import { motion } from 'framer-motion';
@@ -17,6 +17,10 @@ export default function AdminDashboard() {
   const [traffic, setTraffic] = useState<TrafficSummary | null>(null);
   const [dynCount, setDynCount] = useState(0);
   const [allPlaces, setAllPlaces] = useState<any[]>([]);
+  const [storiesCount, setStoriesCount] = useState(0);
+  const [quizzesCount, setQuizzesCount] = useState(0);
+  const [festivalsCount, setFestivalsCount] = useState(0);
+  const [encyclopediaCount, setEncyclopediaCount] = useState(0);
 
   useEffect(() => {
     fetch('/api/admin/traffic').then(r => r.json()).then(setTraffic);
@@ -25,6 +29,10 @@ export default function AdminDashboard() {
       setAllPlaces(p);
       setDynCount(p.filter((x: any) => x._dynamic).length);
     });
+    fetch('/api/admin/stories').then(r => r.json()).then(d => setStoriesCount((d.stories || []).length));
+    fetch('/api/admin/quizzes').then(r => r.json()).then(d => setQuizzesCount((d.quizzes || []).length));
+    fetch('/api/admin/festivals').then(r => r.json()).then(d => setFestivalsCount((d.festivals || []).length));
+    fetch('/api/admin/encyclopedia').then(r => r.json()).then(d => setEncyclopediaCount((d.encyclopedia || []).length));
   }, []);
 
   const maxBar = traffic ? Math.max(...traffic.last7.map(d => d.total), 1) : 1;
@@ -76,6 +84,35 @@ export default function AdminDashboard() {
               {s.delta}
             </div>
           </motion.div>
+        ))}
+      </div>
+
+      {/* Content Library Stats */}
+      <h2 style={{ fontSize: 14, fontWeight: 600, color: '#94A3B8', marginTop: 32, marginBottom: 16, textTransform: 'uppercase', letterSpacing: '0.05em' }}>Content Library</h2>
+      <div className={styles.statsRow}>
+        {[
+          { label: 'Stories Catalog', value: storiesCount, delta: 'Mythology & History', icon: BookOpen, href: '/admin/stories' },
+          { label: 'Spiritual Quizzes', value: quizzesCount, delta: 'Interactive checkpoints', icon: HelpCircle, href: '/admin/quizzes' },
+          { label: 'Festivals Tracker', value: festivalsCount, delta: 'Calendar & Crowds', icon: Calendar, href: '/admin/festivals' },
+          { label: 'Encyclopedia Articles', value: encyclopediaCount, delta: 'Glossary & Facts', icon: Bookmark, href: '/admin/encyclopedia' },
+        ].map((s, i) => (
+          <Link href={s.href} key={s.label} style={{ textDecoration: 'none', display: 'block' }}>
+            <motion.div 
+              className={styles.statCard}
+              style={{ cursor: 'pointer', height: '100%' }}
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 0.2 + i * 0.1 }}
+              whileHover={{ scale: 1.02, borderColor: 'rgba(45, 212, 191, 0.4)' }}
+            >
+              <p className={styles.statLabel} style={{ display: 'flex', alignItems: 'center', gap: 6, margin: 0 }}>
+                <s.icon size={14} style={{ color: '#2DD4BF' }} />
+                {s.label}
+              </p>
+              <p className={styles.statValue} style={{ margin: '8px 0' }}>{s.value}</p>
+              <div className={styles.statDelta}>{s.delta}</div>
+            </motion.div>
+          </Link>
         ))}
       </div>
 
