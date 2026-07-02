@@ -6,7 +6,11 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "type-check": "tsc --noEmit",
+    "verify": "npm run lint && npm run type-check && npm run build",
+    "clean": "rm -rf .next node_modules package-lock.json && npm install",
+    "analyze": "ANALYZE=true next build"
   },
   "dependencies": {
     "@sanity/client": "^7.22.0",

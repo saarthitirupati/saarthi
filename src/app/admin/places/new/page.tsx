@@ -6,10 +6,7 @@ import { ArrowLeft, Save, Image as ImageIcon, Sparkles, Clock, Compass, Coins, S
 import styles from '../../admin.module.css';
 import { motion } from 'framer-motion';
 
-const PLACE_TYPES   = ['spiritual','nature','water','food','historical','hidden','leisure','culture'];
-
-const CATEGORIES    = ['Tirumala Spot','Core Temple','Historical','Nature','Day Trip','Parks & Leisure','Hidden Gem','Local Culture'];
-const INTERESTS_ALL = ['spiritual','nature','trekking','history','culture','architecture','food','shopping','family','wildlife','water','geology','viewpoint','arts','hidden','marriage'];
+import { PLACE_TYPES, CATEGORIES, INTERESTS_ALL } from '@/constants/categories';
 
 const EMPTY = {
   name:'', category:'Core Temple', placeType:'spiritual' as any, location:'', distanceKms:0,

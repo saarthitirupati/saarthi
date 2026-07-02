@@ -6,9 +6,8 @@ import { ArrowLeft, Save, Image as ImageIcon, Sparkles, Clock, Compass, Coins, S
 import styles from '../../../admin.module.css';
 import { motion } from 'framer-motion';
 
-const PLACE_TYPES   = ['spiritual','nature','water','food','historical','hidden','leisure','culture'];
-const BUDGET_LEVELS = ['budget','medium','premium'];
-const INTERESTS_ALL = ['spiritual','nature','trekking','history','culture','architecture','food','shopping','family','wildlife','water','geology','viewpoint','arts','hidden','marriage'];
+import { PLACE_TYPES, INTERESTS_ALL, BUDGET_LEVELS } from '@/constants/categories';
+
 
 export default function EditPlace({ params }: { params: Promise<{ id: string }> }) {
   const { id }    = use(params);
