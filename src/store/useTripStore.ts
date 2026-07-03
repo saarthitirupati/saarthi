@@ -101,12 +101,29 @@ export function useTripStore() {
   };
 
   const toggleVisited = (placeId: string) => {
-    setState(prev => ({
-      ...prev,
-      visitedPlaces: prev.visitedPlaces.includes(placeId)
+    setState(prev => {
+      const nextVisited = prev.visitedPlaces.includes(placeId)
         ? prev.visitedPlaces.filter(id => id !== placeId)
-        : [...prev.visitedPlaces, placeId]
-    }));
+        : [...prev.visitedPlaces, placeId];
+
+      // Train ML recommendation weights based on visited history
+      if (typeof window !== 'undefined') {
+        try {
+          import('@/lib/recommendation-engine').then(m => {
+            // Combine saved and visited for training signals
+            const combined = Array.from(new Set([...prev.savedPlaces, ...nextVisited]));
+            m.trainMLModel(combined);
+          });
+        } catch (e: any) {
+          console.error('Failed to run ML training step', e);
+        }
+      }
+
+      return {
+        ...prev,
+        visitedPlaces: nextVisited
+      };
+    });
   };
 
   const setPlannerInput = (input: Partial<PlannerInput>) => {
