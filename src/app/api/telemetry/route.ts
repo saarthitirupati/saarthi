@@ -10,13 +10,13 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: 'Missing sessionId or eventType' }, { status: 400 });
     }
 
-    const { data, error } = await supabase
+        const { data, error } = await supabase
       .from('user_events')
       .insert([{
-        session_id: sessionId,
-        event_type: eventType,
-        entity_type: entityType || null,
-        entity_id: entityId || null,
+        sessionId,
+        eventType,
+        entityType: entityType || null,
+        entityId: entityId || null,
         metadata: metadata || {}
       }])
       .select();

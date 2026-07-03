@@ -7,12 +7,12 @@ import styles from '../admin.module.css';
 
 interface UserEvent {
   id: string;
-  session_id: string;
-  event_type: string;
-  entity_type: string | null;
-  entity_id: string | null;
+  sessionId: string;
+  eventType: string;
+  entityType: string | null;
+  entityId: string | null;
   metadata: any;
-  created_at: string;
+  createdAt: string;
 }
 
 export default function TelemetryPage() {
@@ -45,13 +45,13 @@ export default function TelemetryPage() {
     return () => clearInterval(interval);
   }, [autoRefresh]);
 
-  const eventTypes = ['all', ...Array.from(new Set(events.map(e => e.event_type)))];
+  const eventTypes = ['all', ...Array.from(new Set(events.map(e => e.eventType)))];
 
-  const filteredEvents = events.filter(e => filter === 'all' || e.event_type === filter);
+  const filteredEvents = events.filter(e => filter === 'all' || e.eventType === filter);
 
   // Group stats
   const typeCounts = events.reduce((acc, e) => {
-    acc[e.event_type] = (acc[e.event_type] || 0) + 1;
+    acc[e.eventType] = (acc[e.eventType] || 0) + 1;
     return acc;
   }, {} as Record<string, number>);
 
@@ -156,26 +156,26 @@ export default function TelemetryPage() {
             <tbody>
               {filteredEvents.map(e => (
                 <tr key={e.id}>
-                  <td style={{ whiteSpace: 'nowrap', fontSize: 13, color: '#94A3B8' }}>{fmtTime(e.created_at)}</td>
-                  <td style={{ fontSize: 12, fontFamily: 'monospace', color: '#64748B' }} title={e.session_id}>
-                    {e.session_id.slice(0, 8)}...
+                  <td style={{ whiteSpace: 'nowrap', fontSize: 13, color: '#94A3B8' }}>{fmtTime(e.createdAt)}</td>
+                  <td style={{ fontSize: 12, fontFamily: 'monospace', color: '#64748B' }} title={e.sessionId}>
+                    {e.sessionId.slice(0, 8)}...
                   </td>
                   <td>
                     <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-                      {getEventIcon(e.event_type)}
+                      {getEventIcon(e.eventType)}
                       <span className={styles.placeCellName} style={{ textTransform: 'capitalize', fontSize: 13 }}>
-                        {e.event_type.replace('_', ' ')}
+                        {e.eventType.replace('_', ' ')}
                       </span>
                     </div>
                   </td>
                   <td>
-                    {e.entity_type ? (
+                    {e.entityType ? (
                       <span className={styles.badge} style={{ backgroundColor: 'rgba(45, 212, 191, 0.1)', color: '#2DD4BF' }}>
-                        {e.entity_type}
+                        {e.entityType}
                       </span>
                     ) : '—'}
                   </td>
-                  <td style={{ fontSize: 12, fontFamily: 'monospace', color: '#64748B' }}>{e.entity_id || '—'}</td>
+                  <td style={{ fontSize: 12, fontFamily: 'monospace', color: '#64748B' }}>{e.entityId || '—'}</td>
                   <td style={{ fontSize: 12, color: '#94A3B8' }}>
                     <pre style={{ margin: 0, fontSize: 11, fontFamily: 'monospace', overflowX: 'auto', maxWidth: 300 }}>
                       {JSON.stringify(e.metadata || {})}

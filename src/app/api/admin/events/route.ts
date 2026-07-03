@@ -6,7 +6,7 @@ export async function GET() {
     const { data, error } = await supabase
       .from('user_events')
       .select('*')
-      .order('created_at', { ascending: false })
+      .order('createdAt', { ascending: false })
       .limit(30);
 
     if (error) throw error;
