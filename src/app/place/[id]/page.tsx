@@ -20,6 +20,7 @@ export default function PlaceDetails({ params }: { params: Promise<{ id: string 
   const [copied, setCopied] = useState(false);
   const [copiedLink, setCopiedLink] = useState(false);
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
+  const [isRoundTrip, setIsRoundTrip] = useState(false);
   
   const { togglePlace, savedPlaces, addViewedPlace, userLocation, setUserLocation, setLocationPermission } = useTrip();
   const { isSpeaking, isSupported, toggleSpeak } = useSpeechSynthesis();
@@ -48,6 +49,12 @@ export default function PlaceDetails({ params }: { params: Promise<{ id: string 
   };
 
   const distanceVal = getDistance();
+  const isTirumalaSpot = place.location.toLowerCase().includes('tirumala') || 
+                         place.location.toLowerCase().includes('narayanagiri') || 
+                         place.category.toLowerCase().includes('tirumala');
+  const drivingDistance = distanceVal !== null 
+    ? (isTirumalaSpot && distanceVal < 24 ? Math.max(25, distanceVal * 1.6) : distanceVal)
+    : null;
 
   const handleDetectLocation = () => {
     if (typeof window !== 'undefined' && navigator.geolocation) {
@@ -567,7 +574,7 @@ export default function PlaceDetails({ params }: { params: Promise<{ id: string 
               </div>
             </div>
 
-            {distanceVal !== null ? (
+            {distanceVal !== null && drivingDistance !== null ? (
               <div style={{
                 background: 'linear-gradient(135deg, #F0FDF4, #DCFCE7)',
                 borderRadius: 12,
@@ -578,35 +585,86 @@ export default function PlaceDetails({ params }: { params: Promise<{ id: string 
                 flexDirection: 'column',
                 gap: 12
               }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                  <span style={{ fontSize: 13, fontWeight: 700, color: '#166534', display: 'flex', alignItems: 'center', gap: 6 }}>
-                    📍 Real-Time Cost Estimator
-                  </span>
-                  <span style={{ fontSize: 12, fontWeight: 700, color: '#166534', background: 'rgba(22, 101, 52, 0.1)', padding: '2px 8px', borderRadius: 99 }}>
-                    {distanceVal.toFixed(1)} km from you
-                  </span>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <span style={{ fontSize: 13, fontWeight: 700, color: '#166534', display: 'flex', alignItems: 'center', gap: 6 }}>
+                      📍 Real-Time Cost Estimator
+                    </span>
+                    <span style={{ fontSize: 12, fontWeight: 700, color: '#166534', background: 'rgba(22, 101, 52, 0.1)', padding: '2px 8px', borderRadius: 99 }}>
+                      {distanceVal.toFixed(1)} km (aerial)
+                    </span>
+                  </div>
+                  {isTirumalaSpot && (
+                    <div style={{ fontSize: 11, color: '#047857', fontWeight: 500, display: 'flex', alignItems: 'center', gap: 4, marginTop: 2 }}>
+                      ⚠️ Includes Mountain Ghat Road (~{drivingDistance.toFixed(1)} km drive)
+                    </div>
+                  )}
+                </div>
+
+                {/* Toggle Segment Control */}
+                <div style={{ display: 'flex', gap: 6, margin: '4px 0 8px 0', background: 'rgba(22, 101, 52, 0.06)', padding: 4, borderRadius: 8 }}>
+                  <button 
+                    onClick={() => setIsRoundTrip(false)}
+                    style={{
+                      flex: 1, padding: '6px 12px', borderRadius: 6, border: 'none', fontSize: 11, fontWeight: 700,
+                      background: !isRoundTrip ? 'white' : 'transparent',
+                      color: !isRoundTrip ? '#065F46' : '#047857',
+                      boxShadow: !isRoundTrip ? '0 1px 3px rgba(0,0,0,0.06)' : 'none',
+                      cursor: 'pointer', transition: 'all 0.15s ease'
+                    }}
+                  >
+                    One-Way
+                  </button>
+                  <button 
+                    onClick={() => setIsRoundTrip(true)}
+                    style={{
+                      flex: 1, padding: '6px 12px', borderRadius: 6, border: 'none', fontSize: 11, fontWeight: 700,
+                      background: isRoundTrip ? 'white' : 'transparent',
+                      color: isRoundTrip ? '#065F46' : '#047857',
+                      boxShadow: isRoundTrip ? '0 1px 3px rgba(0,0,0,0.06)' : 'none',
+                      cursor: 'pointer', transition: 'all 0.15s ease'
+                    }}
+                  >
+                    Round-Trip
+                  </button>
                 </div>
                 
                 <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
                   <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 12, color: '#1E293B', borderBottom: '1px dashed rgba(22, 101, 52, 0.1)', paddingBottom: 6 }}>
-                    <span>🚌 APSRTC Bus (One-way)</span>
+                    <span>🚌 APSRTC Bus ({isRoundTrip ? 'Round-trip' : 'One-way'})</span>
                     <span style={{ fontWeight: 600 }}>
-                      {place.location.includes('Tirumala') || place.category.includes('Tirumala') 
-                        ? '₹90 (Ordinary) / ₹110 (Electric)' 
-                        : `₹${Math.max(15, Math.round(distanceVal * 3))} (City Bus)`}
+                      {isTirumalaSpot 
+                        ? (isRoundTrip ? '₹180 (Ord) / ₹220 (Elec)' : '₹90 (Ord) / ₹110 (Elec)')
+                        : (isRoundTrip ? `₹${Math.max(30, Math.round(drivingDistance * 6))} (City)` : `₹${Math.max(15, Math.round(drivingDistance * 3))} (City)`)}
                     </span>
                   </div>
                   <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 12, color: '#1E293B', borderBottom: '1px dashed rgba(22, 101, 52, 0.1)', paddingBottom: 6 }}>
                     <span>🏍️ Two-Wheeler / Bike Petrol</span>
-                    <span style={{ fontWeight: 600 }}>~₹{Math.round(distanceVal * 3.5)}</span>
+                    <span style={{ fontWeight: 600 }}>
+                      {isRoundTrip 
+                        ? `₹${Math.round(drivingDistance * 6.5)} - ₹${Math.round(drivingDistance * 8)}`
+                        : `₹${Math.round(drivingDistance * 3.2)} - ₹${Math.round(drivingDistance * 4)}`}
+                    </span>
                   </div>
                   <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 12, color: '#1E293B', borderBottom: '1px dashed rgba(22, 101, 52, 0.1)', paddingBottom: 6 }}>
                     <span>🚗 Private Cab / Sedan</span>
-                    <span style={{ fontWeight: 600 }}>~₹{Math.round(distanceVal * 16 + 250)}</span>
+                    <span style={{ fontWeight: 600 }}>
+                      {isTirumalaSpot 
+                        ? (isRoundTrip ? '₹1,800 - ₹2,400' : '₹950 - ₹1,350')
+                        : (isRoundTrip 
+                            ? `₹${Math.round(drivingDistance * 28 + 300)} - ₹${Math.round(drivingDistance * 36 + 500)}` 
+                            : `₹${Math.round(drivingDistance * 14 + 150)} - ₹${Math.round(drivingDistance * 18 + 250)}`)}
+                    </span>
                   </div>
                   <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 12, color: '#1E293B', paddingBottom: 2 }}>
                     <span>🚐 SUV / Innova Rental</span>
-                    <span style={{ fontWeight: 600 }}>~₹{Math.round(distanceVal * 24 + 250)}</span>
+                    <span style={{ fontWeight: 600 }}>
+                      {isTirumalaSpot 
+                        ? (isRoundTrip ? '₹3,200 - ₹4,200' : '₹1,800 - ₹2,300')
+                        : (isRoundTrip 
+                            ? `₹${Math.round(drivingDistance * 40 + 400)} - ₹${Math.round(drivingDistance * 52 + 600)}` 
+                            : `₹${Math.round(drivingDistance * 20 + 200)} - ₹${Math.round(drivingDistance * 26 + 300)}`)}
+                    </span>
                   </div>
                 </div>
               </div>
