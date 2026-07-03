@@ -56,6 +56,24 @@ export default function PlaceDetails({ params }: { params: Promise<{ id: string 
     ? (isTirumalaSpot && distanceVal < 24 ? Math.max(25, distanceVal * 1.6) : distanceVal)
     : null;
 
+  const getNearbyPlaces = () => {
+    if (!userLocation) return [];
+    return (places.length > 0 ? places : PLACES)
+      .filter(p => p.id !== place.id)
+      .map(p => {
+        if (!p.coordinates) return { place: p, dist: 999 };
+        const dLat = userLocation.lat - p.coordinates.lat;
+        const dLng = userLocation.lng - p.coordinates.lng;
+        const dist = Math.sqrt(dLat * dLat + dLng * dLng) * 111;
+        return { place: p, dist };
+      })
+      .sort((a, b) => a.dist - b.dist)
+      .filter(x => x.dist < 25)
+      .slice(0, 6);
+  };
+
+  const nearbyPlacesList = getNearbyPlaces();
+
   const handleDetectLocation = () => {
     if (typeof window !== 'undefined' && navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
@@ -498,6 +516,78 @@ export default function PlaceDetails({ params }: { params: Promise<{ id: string 
             </div>
           </section>
         )}
+
+        {/* 4g. NEARBY YOU */}
+        <section className={styles.section} id="nearby-you">
+          <h2 className={styles.sectionTitle}>Nearby You</h2>
+          {userLocation ? (
+            nearbyPlacesList.length === 0 ? (
+              <div style={{ padding: 16, background: '#F8FAFC', borderRadius: 12, border: '1px solid #E2E8F0', fontSize: 13, color: '#64748B', textAlign: 'center' }}>
+                No other temples or tourist spots found within 25 km of your location.
+              </div>
+            ) : (
+              <div style={{ display: 'flex', gap: 12, overflowX: 'auto', paddingBottom: 8 }}>
+                {nearbyPlacesList.map(({ place: p, dist }) => (
+                  <Link href={`/place/${p.id}`} key={p.id} style={{ textDecoration: 'none', flexShrink: 0 }}>
+                    <div style={{
+                      width: 150, borderRadius: 14, overflow: 'hidden',
+                      border: '1px solid rgba(0,0,0,0.06)', background: 'white',
+                    }}>
+                      <div style={{
+                        width: '100%', height: 90,
+                        backgroundImage: `url(${p.image})`,
+                        backgroundSize: 'cover', backgroundPosition: 'center',
+                      }} />
+                      <div style={{ padding: '8px 10px' }}>
+                        <h4 style={{ fontSize: 13, fontWeight: 700, color: '#1a1a2e', margin: 0, lineHeight: 1.2, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                          {p.name}
+                        </h4>
+                        <div style={{ fontSize: 11, color: '#047857', fontWeight: 600, marginTop: 4, display: 'flex', alignItems: 'center', gap: 4 }}>
+                          📍 {dist.toFixed(1)} km away
+                        </div>
+                        <div style={{ fontSize: 10, color: '#888', marginTop: 2, display: 'flex', alignItems: 'center', gap: 4 }}>
+                          <Star size={10} fill="#FFD700" color="#FFD700" />
+                          {p.rating}
+                        </div>
+                      </div>
+                    </div>
+                  </Link>
+                ))}
+              </div>
+            )
+          ) : (
+            <div style={{
+              background: '#F8FAFC',
+              borderRadius: 12,
+              padding: 16,
+              border: '1px solid #E2E8F0',
+              textAlign: 'center'
+            }}>
+              <p style={{ fontSize: 12, color: '#475569', margin: '0 0 10px 0' }}>
+                Enable location access to discover holy shrines and spots close to your current position.
+              </p>
+              <button 
+                onClick={handleDetectLocation}
+                style={{
+                  background: 'var(--color-saffron-500)',
+                  color: 'white',
+                  border: 'none',
+                  borderRadius: 8,
+                  padding: '8px 16px',
+                  fontSize: 12,
+                  fontWeight: 600,
+                  cursor: 'pointer',
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: 6
+                }}
+              >
+                <Navigation size={14} />
+                <span>Find Nearby Places</span>
+              </button>
+            </div>
+          )}
+        </section>
 
         {/* 5. TRAVEL OPTIONS */}
         <section className={styles.section} id="travel">
