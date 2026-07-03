@@ -25,6 +25,7 @@ export default function PlaceDetails({ params }: { params: Promise<{ id: string 
   const [passengers, setPassengers] = useState<number>(1);
   const [isBreakdownOpen, setIsBreakdownOpen] = useState(false);
   const [fuelRates, setFuelRates] = useState<{ petrol: number; diesel: number }>({ petrol: 118.00, diesel: 105.00 });
+  const [isLegendExpanded, setIsLegendExpanded] = useState(false);
   
   const { togglePlace, savedPlaces, addViewedPlace, userLocation, setUserLocation, setLocationPermission } = useTrip();
   const { isSpeaking, isSupported, toggleSpeak } = useSpeechSynthesis();
@@ -109,16 +110,21 @@ export default function PlaceDetails({ params }: { params: Promise<{ id: string 
     const entryFee = passengers * place.entryFeeNum;
 
     if (vehicleType === 'bus') {
-      const ticketPrice = isTirumala ? 110 : 15;
+      // Tirumala ghat route has fixed APSRTC fare; all others scale with distance
+      const ticketPrice = isTirumala
+        ? 110
+        : Math.max(30, Math.round(effDist * 1.8)); // ~₹1.8/km, min ₹30
       fare = passengers * ticketPrice * (isRoundTrip ? 2 : 1);
     } else if (vehicleType === 'car') {
-      const economy = isTirumala ? 8 : 12;
+      // Ghat roads 8 km/L, open highway 14 km/L
+      const economy = isTirumala ? 8 : 14;
       liters = (effDist / economy) * (isRoundTrip ? 2 : 1);
       fuel = liters * fuelRates.petrol;
-      tolls = isTirumala ? 250 : 0;
+      tolls = isTirumala ? 250 : effDist > 60 ? 80 : 0; // highway toll for long trips
       parking = 50;
     } else if (vehicleType === 'bike') {
-      const economy = isTirumala ? 25 : 50;
+      // Ghat roads 25 km/L, open roads 40 km/L
+      const economy = isTirumala ? 25 : 40;
       liters = (effDist / economy) * (isRoundTrip ? 2 : 1);
       fuel = liters * fuelRates.petrol;
       parking = 15;
@@ -260,17 +266,22 @@ export default function PlaceDetails({ params }: { params: Promise<{ id: string 
             <span style={{
               display: 'inline-flex',
               alignItems: 'center',
-              gap: 4,
-              backgroundColor: 'rgba(16, 185, 129, 0.15)',
-              color: '#34D399',
-              fontSize: 11,
-              fontWeight: 600,
-              padding: '4px 8px',
+              gap: 6,
+              backgroundColor: 'rgba(6, 95, 70, 0.85)',
+              backdropFilter: 'blur(4px)',
+              WebkitBackdropFilter: 'blur(4px)',
+              color: '#ffffff',
+              fontSize: 10,
+              fontWeight: 700,
+              letterSpacing: '0.03em',
+              textTransform: 'uppercase',
+              padding: '4px 10px',
               borderRadius: 99,
-              border: '1px solid rgba(16, 185, 129, 0.25)',
-              whiteSpace: 'nowrap'
+              border: '1px solid rgba(52, 211, 153, 0.4)',
+              whiteSpace: 'nowrap',
+              boxShadow: '0 2px 10px rgba(0, 0, 0, 0.1)'
             }}>
-              <span style={{ width: 6, height: 6, borderRadius: '50%', backgroundColor: '#10B981', display: 'inline-block' }}></span>
+              <span style={{ width: 6, height: 6, borderRadius: '50%', backgroundColor: '#34D399', display: 'inline-block', boxShadow: '0 0 6px #34D399' }}></span>
               Data Verified Today
             </span>
           </div>
@@ -343,6 +354,56 @@ export default function PlaceDetails({ params }: { params: Promise<{ id: string 
             )}
           </div>
         </section>
+
+        {/* 3b. THE LEGEND — Progressive Disclosure Story */}
+        {place.history && place.history.length > 30 && (
+          <section className={styles.section} id="legend">
+            <h2 className={styles.sectionTitle}>The Legend</h2>
+            <div className={styles.legendCard}>
+              {/* Header */}
+              <div className={styles.legendHeader}>
+                <div className={styles.legendIconRing}>
+                  <span style={{ fontSize: 20 }}>📜</span>
+                </div>
+                <div style={{ flex: 1 }}>
+                  <p className={styles.legendLabel}>Origin Story</p>
+                  <p className={styles.legendSub}>Historical &amp; Mythological Context</p>
+                </div>
+                {/* Audio pill */}
+                {isSupported && (
+                  <button
+                    onClick={() => toggleSpeak(place.history, 'en-IN')}
+                    className={styles.audioPill}
+                    aria-label={isSpeaking ? 'Stop audio' : 'Listen to legend'}
+                  >
+                    <span style={{ fontSize: 13 }}>{isSpeaking ? '⏹' : '▶'}</span>
+                    <span>{isSpeaking ? 'Stop' : 'Listen'}</span>
+                  </button>
+                )}
+              </div>
+
+              {/* Story body with progressive disclosure */}
+              <div className={styles.legendBody}>
+                <div
+                  className={styles.legendTextWrap}
+                  style={{ maxHeight: isLegendExpanded ? 'none' : '5em', overflow: 'hidden', position: 'relative' }}
+                >
+                  <p className={styles.legendText}>{place.history}</p>
+                  {!isLegendExpanded && (
+                    <div className={styles.legendFade} />
+                  )}
+                </div>
+
+                <button
+                  onClick={() => setIsLegendExpanded(v => !v)}
+                  className={styles.legendToggle}
+                >
+                  {isLegendExpanded ? '▲ Collapse legend' : '▼ Read full legend'}
+                </button>
+              </div>
+            </div>
+          </section>
+        )}
 
         {/* 4. TIMINGS AND DURATION */}
         <section className={styles.section} id="timings">
@@ -825,9 +886,16 @@ export default function PlaceDetails({ params }: { params: Promise<{ id: string 
                   <div style={{ fontSize: 10, color: '#94A3B8', textTransform: 'uppercase' }}>Estimated Total Cost</div>
                   <div style={{ fontSize: 11, color: '#34D399', fontWeight: 600 }}>Taxes, toll & entry included</div>
                 </div>
-                <div style={{ fontSize: 26, fontWeight: 800, color: '#10B981', display: 'flex', alignItems: 'center' }}>
-                  ₹{calc.total}
-                </div>
+                {calc.total < calc.effDist * 2 && calc.effDist > 10 ? (
+                  <div style={{ textAlign: 'right' }}>
+                    <div style={{ fontSize: 13, fontWeight: 700, color: '#F59E0B' }}>⚠ Check inputs</div>
+                    <div style={{ fontSize: 10, color: '#94A3B8' }}>Adjust vehicle or trip type</div>
+                  </div>
+                ) : (
+                  <div style={{ fontSize: 26, fontWeight: 800, color: '#10B981', display: 'flex', alignItems: 'center' }}>
+                    ₹{calc.total}
+                  </div>
+                )}
               </div>
             </div>
 
@@ -865,7 +933,7 @@ export default function PlaceDetails({ params }: { params: Promise<{ id: string 
                   )}
                   {calc.tolls > 0 && (
                     <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 12, color: '#475569' }}>
-                      <span>🛣️ Mountain Ghat Toll (Alipiri)</span>
+                      <span>🛣️ {isTirumalaSpot ? 'Mountain Ghat Toll (Alipiri)' : 'Highway Toll'}</span>
                       <span style={{ fontWeight: 600 }}>₹{calc.tolls}</span>
                     </div>
                   )}
@@ -899,13 +967,19 @@ export default function PlaceDetails({ params }: { params: Promise<{ id: string 
               <div style={{ fontSize: 12, color: '#78350F', lineHeight: 1.4 }}>
                 <strong style={{ display: 'block', marginBottom: 2 }}>Saarthi Recommendation</strong>
                 {vehicleType === 'bus' ? (
-                  `APSRTC Bus is the most cost-effective and secure way to ascend the mountain. A great choice for ${passengers} ${passengers === 1 ? 'person' : 'people'}!`
+                  isTirumalaSpot
+                    ? `APSRTC Bus is the most cost-effective and secure way to ascend the Tirumala ghats. Great choice for ${passengers} ${passengers === 1 ? 'person' : 'people'}!`
+                    : `APSRTC Bus is the smartest budget option — direct state buses run this route regularly. Great for ${passengers} ${passengers === 1 ? 'solo traveller' : 'people'}!`
                 ) : passengers === 1 && vehicleType === 'bike' ? (
-                  "Perfect! Renting or riding a bike is the fastest way to navigate the 36 hairpin bends and save ~18 minutes of traffic."
+                  isTirumalaSpot
+                    ? "A bike is the fastest way to navigate the 36 hairpin bends — but ride carefully on the ghat road."
+                    : `A bike is the most flexible option for this ${calc.effDist.toFixed(0)} km highway trip — fuel-efficient and easy to park at the destination.`
                 ) : passengers >= 5 ? (
-                  "With a group of 5+, booking an SUV or a Private Cab guarantees collective safety, comfort, and shared luggage space."
+                  "With a group of 5+, booking an SUV or Private Cab guarantees collective safety, comfort, and shared luggage space."
                 ) : (
-                  `Self-driving via Car gives you ultimate scheduling freedom. Be sure to pay the Alipiri toll before beginning the ghat ascent.`
+                  isTirumalaSpot
+                    ? `Self-driving via Car gives you full scheduling freedom. Pay the Alipiri toll before the ghat ascent.`
+                    : `Self-driving is ideal for this route — cruise the highway comfortably. Keep fuel full before you start.`
                 )}
               </div>
             </div>
