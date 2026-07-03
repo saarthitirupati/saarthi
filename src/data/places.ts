@@ -1012,6 +1012,7 @@ export const PLACES: Place[] = [
     openTo: 20,
     isMustVisit: false,
     description: 'Nestled right off the Chennai-Bangalore highway, the Mogili Eswara Temple is an ancient Shaivite shrine famous for its perennially flowing water source.',
+    shortIntro: 'Nestled right off the Chennai-Bangalore highway, the Mogili Eswara Temple is an ancient Shaivite shrine famous for its perennially flowing water source. Fresh, cold water trickles directly from the feet of the sacred Nandi bull idol inside the courtyard. Remarkably, this natural stream flows year-round and has never dried up—even during the harshest summers.',
     history: 'Century ago, this sacred valley was covered entirely by dense Mogili (Screw-pine) bushes. Local folklore tells of a cowherd named Mogilappa who noticed his prized cow secretly releasing her milk over a hidden stone beneath the roots. Frustrated, he struck the thicket with his axe, only to hear a deep groan as the rock began to bleed profusely. Overcome with remorse, he uncovered a hidden, natural Swayambhu Lingam. Today, the marvel lives on: a continuous, cold perennial stream of fresh water flows mysteriously out from beneath the feet of the temple\'s sacred Nandi idol, year-round, never drying up even in the peak of summer.',
     timings: '6:00 AM - 8:00 PM',
     entryFee: 'Free',
@@ -1022,7 +1023,7 @@ export const PLACES: Place[] = [
     coordinates: { lat: 13.2000, lng: 78.8500 },
     tags: ['Waterfall', 'Shiva', 'Highway Spot'],
     bestTime: 'Morning',
-    whyVisit: 'The core marvel here is the perennial water stream flowing year-round from the feet of the sacred Nandi bull idol inside the temple courtyard.',
+    whyVisit: 'The core marvel here is the perennial water stream flowing year-round from the feet of the sacred Nandi bull idol inside the temple courtyard. Known for its vibrant roadside energy, historical architecture, and deep spiritual heritage, it serves as a serene, essential stopover for travelers and pilgrims alike.',
     practicalInfo: { dressCode: 'Modest', food: 'Highway dhabas & restaurants', parking: 'Available' },
     travelEstimates: { 'tirupati': '2.5 hours' }
   },
