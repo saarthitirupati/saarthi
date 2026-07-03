@@ -100,12 +100,14 @@ export default function PlaceDetails({ params }: { params: Promise<{ id: string 
       const ticketPrice = isTirumala ? 110 : 15;
       fare = passengers * ticketPrice * (isRoundTrip ? 2 : 1);
     } else if (vehicleType === 'car') {
-      liters = (effDist / 12) * (isRoundTrip ? 2 : 1);
+      const economy = isTirumala ? 8 : 12;
+      liters = (effDist / economy) * (isRoundTrip ? 2 : 1);
       fuel = liters * 100;
       tolls = isTirumala ? 250 : 0;
       parking = 50;
     } else if (vehicleType === 'bike') {
-      liters = (effDist / 45) * (isRoundTrip ? 2 : 1);
+      const economy = isTirumala ? 25 : 50;
+      liters = (effDist / economy) * (isRoundTrip ? 2 : 1);
       fuel = liters * 100;
       parking = 15;
     } else if (vehicleType === 'cab') {
