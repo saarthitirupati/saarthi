@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import SplashScreen from '@/components/Splash/Splash';
 import SideMenu from '@/components/SideMenu/SideMenu';
 import BottomNav from '@/components/BottomNav/BottomNav';
@@ -64,6 +64,9 @@ export default function ClientLayout({
   const [showSplash, setShowSplash] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const pathname = usePathname();
+  const router = useRouter();
+
+  const isAdmin = pathname?.startsWith('/admin');
 
   useEffect(() => {
     const splashShown = sessionStorage.getItem('splashShown');
@@ -72,12 +75,19 @@ export default function ClientLayout({
     }
   }, [pathname]);
 
+  useEffect(() => {
+    if (!isAdmin && pathname && pathname !== '/onboarding') {
+      const hasSeen = localStorage.getItem('hasSeenOnboarding');
+      if (!hasSeen) {
+        router.push('/onboarding');
+      }
+    }
+  }, [pathname, isAdmin, router]);
+
   const handleSplashFinish = () => {
     setShowSplash(false);
     sessionStorage.setItem('splashShown', 'true');
   };
-
-  const isAdmin = pathname?.startsWith('/admin');
 
   // Track page views (skip admin routes)
   useEffect(() => {
