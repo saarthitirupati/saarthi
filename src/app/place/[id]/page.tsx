@@ -320,12 +320,66 @@ export default function PlaceDetails({ params }: { params: Promise<{ id: string 
               <div className={styles.mattersIconWrapper}>
                 <Compass size={24} color="var(--color-saffron-500)" />
               </div>
-              <div>
+              <div style={{ flex: 1 }}>
                 <h3>Historical & Spiritual Essence</h3>
-                <p>Cultural context & significance</p>
+                <p>Cultural context &amp; significance</p>
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6, marginTop: 8 }}>
+                  {place.architecture && (
+                    <span style={{
+                      fontSize: 10, fontWeight: 700, background: '#F1F5F9', color: '#475569',
+                      padding: '3px 8px', borderRadius: 6, textTransform: 'uppercase', letterSpacing: '0.03em', border: '1px solid #E2E8F0'
+                    }}>
+                      🏛️ {place.architecture}
+                    </span>
+                  )}
+                  {place.importance && (
+                    <span style={{
+                      fontSize: 10, fontWeight: 700, background: 'rgba(16, 185, 129, 0.08)', color: '#059669',
+                      padding: '3px 8px', borderRadius: 6, textTransform: 'uppercase', letterSpacing: '0.03em', border: '1px solid rgba(16, 185, 129, 0.15)'
+                    }}>
+                      🌟 {place.importance}
+                    </span>
+                  )}
+                  {place.tags && place.tags.slice(0, 2).map((t, idx) => (
+                    <span key={idx} style={{
+                      fontSize: 10, fontWeight: 700, background: 'rgba(233, 128, 29, 0.08)', color: 'var(--color-saffron-700)',
+                      padding: '3px 8px', borderRadius: 6, textTransform: 'uppercase', letterSpacing: '0.03em', border: '1px solid rgba(233, 128, 29, 0.15)'
+                    }}>
+                      ✦ {t}
+                    </span>
+                  ))}
+                </div>
               </div>
             </div>
-            <p className={styles.mattersContent}>{guide.whyVisit}</p>
+            <div className={styles.mattersContent} style={{ marginTop: 14 }}>
+              {(() => {
+                const sentences = guide.whyVisit ? guide.whyVisit.split(/(?<=[.!?])\s+/) : [];
+                if (sentences.length > 1) {
+                  return (
+                    <ul style={{ margin: 0, padding: 0, listStyle: 'none', display: 'flex', flexDirection: 'column', gap: 8 }}>
+                      {sentences.map((sentence, idx) => {
+                        let formattedText = sentence;
+                        if (sentence.includes('Chola')) {
+                          formattedText = sentence.replace('Originally constructed during the Chola dynasty', '<strong>Ancient Chola Legacy:</strong> Originally constructed during the Chola dynasty');
+                        } else if (sentence.includes('fault lines') || sentence.includes('groundwater')) {
+                          formattedText = sentence.replace('Built specifically over valley fault lines', '<strong>The Perennial Mystery:</strong> Built specifically over valley fault lines');
+                        } else if (sentence.includes('gateway shrine') || sentence.includes('between empires')) {
+                          formattedText = sentence.replace('Positioned as a historical gateway shrine', '<strong>Highway Sanctuary:</strong> Positioned as a historical gateway shrine');
+                        }
+                        
+                        return (
+                          <li key={idx} style={{ fontSize: 13, lineHeight: 1.5, color: '#475569', display: 'flex', gap: 8, alignItems: 'flex-start' }}>
+                            <span style={{ color: 'var(--color-saffron-500)', fontSize: 14, lineHeight: '1.2' }}>•</span>
+                            <span dangerouslySetInnerHTML={{ __html: formattedText }} />
+                          </li>
+                        );
+                      })}
+                    </ul>
+                  );
+                }
+                return <p style={{ margin: 0, fontSize: 13, lineHeight: 1.6, color: '#475569' }}>{guide.whyVisit}</p>;
+              })()}
+            </div>
             
             {isSpiritualPlace && place.spiritualInfo && (
               <div className={styles.spiritualDetails}>

@@ -1023,7 +1023,9 @@ export const PLACES: Place[] = [
     coordinates: { lat: 13.2000, lng: 78.8500 },
     tags: ['Waterfall', 'Shiva', 'Highway Spot'],
     bestTime: 'Morning',
-    whyVisit: 'The core marvel here is the perennial water stream flowing year-round from the feet of the sacred Nandi bull idol inside the temple courtyard. Known for its vibrant roadside energy, historical architecture, and deep spiritual heritage, it serves as a serene, essential stopover for travelers and pilgrims alike.',
+    architecture: 'Chola Rock-Cut',
+    importance: 'Perennial Nandi Stream',
+    whyVisit: 'Originally constructed during the Chola dynasty, featuring distinct rock-cut architecture. Built specifically over valley fault lines where natural groundwater is continuously pressurized. Positioned as a historical gateway shrine for centuries of travelers moving between empires (modern Chennai-Bangalore route).',
     practicalInfo: { dressCode: 'Modest', food: 'Highway dhabas & restaurants', parking: 'Available' },
     travelEstimates: { 'tirupati': '2.5 hours' }
   },
