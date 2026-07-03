@@ -5,7 +5,7 @@ import { motion } from 'framer-motion';
 import { useRouter } from 'next/navigation';
 import {
   MapPin, User, Search, Heart, Landmark, Waves, UtensilsCrossed, Map as MapIcon,
-  BookOpen, HelpCircle, Calendar, Sparkles, Award
+  BookOpen, Calendar, Sparkles, Award
 } from 'lucide-react';
 import styles from './Home.module.css';
 import { useTrip } from '@/components/TripContext';

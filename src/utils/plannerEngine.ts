@@ -162,11 +162,6 @@ function poolPremium(all: Place[]): Place[] {
   return pool.length >= 4 ? pool : all.filter(p => p.rating >= 4.2);
 }
 
-// Best uses the full list (balanced)
-function _poolBest(all: Place[]): Place[] {
-  return all;
-}
-
 // ── Greedy route builder ──────────────────────────────────────────────────────
 
 function buildRoute(

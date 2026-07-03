@@ -1,38 +1,30 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { ChevronLeft, CalendarHeart, Info } from 'lucide-react';
+import { ChevronLeft, CalendarHeart, Info, Loader2 } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { useState, useEffect } from 'react';
 
-const FESTIVALS = [
-  {
-    id: 1,
-    title: 'Srivari Salakatla Brahmotsavams',
-    date: 'Sep 26 - Oct 4, 2026',
-    desc: 'The most important annual festival at Tirumala. The deity is processed in different vahanas (vehicles) each day, drawing millions of pilgrims.',
-    color: '#EC4899',
-    bg: '#FCE7F3'
-  },
-  {
-    id: 2,
-    title: 'Vaikunta Ekadasi',
-    date: 'Dec 19, 2026',
-    desc: 'The Vaikunta Dwaram is opened on this day. It is believed that passing through the Dwaram brings salvation.',
-    color: '#8B5CF6',
-    bg: '#EDE9FE'
-  },
-  {
-    id: 3,
-    title: 'Rathasapthami',
-    date: 'Feb 12, 2027',
-    desc: 'Also known as Surya Jayanthi, the Lord is taken on seven different vahanas around the temple streets in a single day.',
-    color: '#F59E0B',
-    bg: '#FEF3C7'
-  }
-];
+const COLORS = ['#EC4899', '#8B5CF6', '#F59E0B', '#10B981', '#3B82F6', '#EF4444'];
+const BGS = ['#FCE7F3', '#EDE9FE', '#FEF3C7', '#ECFDF5', '#EFF6FF', '#FEF2F2'];
 
 export default function FestivalsPage() {
   const router = useRouter();
+  const [festivals, setFestivals] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetch('/api/festivals/upcoming')
+      .then(r => r.json())
+      .then(d => setFestivals(d.festivals || []))
+      .catch(() => {})
+      .finally(() => setLoading(false));
+  }, []);
+
+  const fmt = (d: string) => {
+    try { return new Date(d).toLocaleDateString('en-IN', { month: 'short', day: 'numeric', year: 'numeric' }); }
+    catch { return d; }
+  };
 
   return (
     <div style={{ minHeight: '100vh', backgroundColor: '#FDF8F5', paddingBottom: 40, fontFamily: 'var(--font-sans)' }}>
@@ -52,28 +44,72 @@ export default function FestivalsPage() {
           </p>
         </div>
 
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
-          {FESTIVALS.map((fest, index) => (
-            <motion.div 
-              key={fest.id}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: index * 0.1 }}
-              style={{ background: 'white', borderRadius: 20, padding: 20, boxShadow: '0 4px 12px rgba(0,0,0,0.04)', borderLeft: `6px solid ${fest.color}` }}
-            >
-              <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 12 }}>
-                <div style={{ width: 40, height: 40, borderRadius: 12, backgroundColor: fest.bg, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                  <CalendarHeart size={20} color={fest.color} />
-                </div>
-                <div>
-                  <h3 style={{ margin: 0, fontSize: 16, fontWeight: 700, color: '#1F2937' }}>{fest.title}</h3>
-                  <span style={{ fontSize: 14, color: fest.color, fontWeight: 600 }}>{fest.date}</span>
-                </div>
-              </div>
-              <p style={{ margin: 0, fontSize: 14, color: '#6B7280', lineHeight: 1.5 }}>{fest.desc}</p>
-            </motion.div>
-          ))}
-        </div>
+        {loading ? (
+          <div style={{ textAlign: 'center', padding: 40 }}>
+            <Loader2 size={28} color="#FF9933" style={{ animation: 'spin 1s linear infinite' }} />
+            <p style={{ color: '#999', fontSize: 14, marginTop: 12 }}>Loading festivals...</p>
+          </div>
+        ) : festivals.length === 0 ? (
+          <div style={{ textAlign: 'center', padding: 40, color: '#888' }}>
+            <p>No upcoming festivals found.</p>
+          </div>
+        ) : (
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+            {festivals.map((fest, index) => {
+              const color = COLORS[index % COLORS.length];
+              const bg = BGS[index % BGS.length];
+              const dateStr = fest.date
+                ? `${fmt(fest.date)}${fest.dateEnd ? ` — ${fmt(fest.dateEnd)}` : ''}`
+                : fest.dateStart
+                  ? `${fmt(fest.dateStart)}${fest.dateEnd ? ` — ${fmt(fest.dateEnd)}` : ''}`
+                  : '';
+
+              return (
+                <motion.div
+                  key={fest.id}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: index * 0.08 }}
+                  style={{
+                    background: 'white', borderRadius: 20, padding: 20,
+                    boxShadow: '0 4px 12px rgba(0,0,0,0.04)',
+                    borderLeft: `6px solid ${color}`,
+                  }}
+                >
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 12 }}>
+                    <div style={{ width: 40, height: 40, borderRadius: 12, backgroundColor: bg, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                      <CalendarHeart size={20} color={color} />
+                    </div>
+                    <div style={{ flex: 1 }}>
+                      <h3 style={{ margin: 0, fontSize: 16, fontWeight: 700, color: '#1F2937' }}>{fest.name || fest.title}</h3>
+                      {dateStr && <span style={{ fontSize: 14, color, fontWeight: 600 }}>{dateStr}</span>}
+                    </div>
+                  </div>
+                  {fest.description && (
+                    <p style={{ margin: '0 0 10px', fontSize: 14, color: '#6B7280', lineHeight: 1.5 }}>{fest.description}</p>
+                  )}
+                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
+                    {fest.crowdPrediction && (
+                      <span style={{ fontSize: 11, padding: '3px 10px', borderRadius: 12, background: '#FEF3C7', color: '#92400E', fontWeight: 600 }}>
+                        👥 {fest.crowdPrediction}
+                      </span>
+                    )}
+                    {fest.location && (
+                      <span style={{ fontSize: 11, padding: '3px 10px', borderRadius: 12, background: '#EFF6FF', color: '#1E40AF', fontWeight: 600 }}>
+                        📍 {fest.location}
+                      </span>
+                    )}
+                    {fest.dressCode && (
+                      <span style={{ fontSize: 11, padding: '3px 10px', borderRadius: 12, background: '#F3F0FF', color: '#6C63FF', fontWeight: 600 }}>
+                        👕 {fest.dressCode}
+                      </span>
+                    )}
+                  </div>
+                </motion.div>
+              );
+            })}
+          </div>
+        )}
       </div>
     </div>
   );

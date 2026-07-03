@@ -7,7 +7,7 @@ import styles from './Navbar.module.css';
 
 export default function Navbar({ 
   onMenuToggle, 
-  onProfileToggle 
+  onProfileToggle: _onProfileToggle 
 }: { 
   onMenuToggle: () => void; 
   onProfileToggle: () => void;

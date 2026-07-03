@@ -15,18 +15,7 @@ interface DarshanTypeStatus {
   peakHours: string;
 }
 
-interface TirumalaStatus {
-  waitTime: string;
-  crowdLevel: 'low' | 'moderate' | 'high' | 'very-high';
-  sevaStatus: string;
-  notice: string;
-  lastUpdated: string;
-  darshanSpeed: 'fast' | 'normal' | 'slow';
-  accommodationStatus: 'available' | 'limited' | 'full';
-  ladduAvailability: 'available' | 'limited' | 'no-stock';
-  weather: string;
-  darshans?: DarshanTypeStatus[];
-}
+// Status shape inferred from useRealtimeStatus hook
 
 const CROWD_META = {
   low:       { label: 'Less Crowded', color: '#16A34A', bg: '#DCFCE7', pulse: '#16A34A', percent: 15 },
@@ -59,7 +48,7 @@ export default function LiveStatus() {
   const [expanded, setExpanded] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
   
-  const { status, loading } = useRealtimeStatus();
+  const { status } = useRealtimeStatus();
 
   const handleRefresh = () => {
     setRefreshing(true);
@@ -69,9 +58,9 @@ export default function LiveStatus() {
   if (!status) return null;
 
   const meta = CROWD_META[status.crowdLevel] ?? CROWD_META.moderate;
-  const roomMeta = ACCOMMODATION_META[status.accommodationStatus] ?? ACCOMMODATION_META.available;
-  const ladduMeta = LADDU_META[status.ladduAvailability] ?? LADDU_META.available;
-  const flowMeta = DARSHAN_FLOW_META[status.darshanSpeed] ?? DARSHAN_FLOW_META.normal;
+  const _roomMeta = ACCOMMODATION_META[status.accommodationStatus] ?? ACCOMMODATION_META.available;
+  const _ladduMeta = LADDU_META[status.ladduAvailability] ?? LADDU_META.available;
+  const _flowMeta = DARSHAN_FLOW_META[status.darshanSpeed] ?? DARSHAN_FLOW_META.normal;
 
   const formatHeaderWait = (timeStr: string) => {
     const clean = timeStr.toLowerCase().replace('wait', '').replace('time', '').trim();
