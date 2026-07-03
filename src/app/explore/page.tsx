@@ -1,8 +1,8 @@
 'use client';
 
 import { PLACES, Place } from '@/data/places';
-import { Search, Star, Filter, ArrowLeft } from 'lucide-react';
-import { useState, useMemo, Suspense, useEffect } from 'react';
+import { Search, Star, Filter, ArrowLeft, BookOpen, GraduationCap } from 'lucide-react';
+import { useState, useMemo, Suspense, useEffect, useCallback, useRef } from 'react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { useSearchParams } from 'next/navigation';
@@ -15,16 +15,42 @@ function ExploreContent() {
   const searchParams = useSearchParams();
   const initialQuery = searchParams.get('q') || '';
   
-  const { places, loading } = useRealtimePlaces(PLACES);
+  const { places, loading: _loading } = useRealtimePlaces(PLACES);
   const [searchQuery, setSearchQuery] = useState(initialQuery);
   const [activeFilter, setActiveFilter] = useState('All');
   const { userLocation, setUserLocation, setLocationPermission } = useTrip();
+
+  // Cross-collection search results from Supabase
+  const [crossResults, setCrossResults] = useState<{ stories: any[]; encyclopedia: any[] }>({ stories: [], encyclopedia: [] });
+  const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
     if (initialQuery) {
       setSearchQuery(initialQuery);
     }
   }, [initialQuery]);
+
+  // Debounced cross-collection search
+  const fetchCrossResults = useCallback((q: string) => {
+    if (debounceRef.current) clearTimeout(debounceRef.current);
+    if (!q || q.trim().length < 2) {
+      setCrossResults({ stories: [], encyclopedia: [] });
+      return;
+    }
+    debounceRef.current = setTimeout(async () => {
+      try {
+        const res = await fetch(`/api/search?q=${encodeURIComponent(q)}`);
+        if (res.ok) {
+          const data = await res.json();
+          setCrossResults({ stories: data.stories || [], encyclopedia: data.encyclopedia || [] });
+        }
+      } catch { /* silently fail */ }
+    }, 300);
+  }, []);
+
+  useEffect(() => {
+    fetchCrossResults(searchQuery);
+  }, [searchQuery, fetchCrossResults]);
 
   const filters = ['All', 'Nearby', 'Spiritual', 'Nature', 'Water', 'Food', 'Historical', 'Hidden', 'Leisure', 'Culture'];
 
@@ -111,7 +137,7 @@ function ExploreContent() {
           <Search size={20} color="#999" />
           <input 
             type="text" 
-            placeholder="Find a place..." 
+            placeholder="Search places, stories, encyclopedia…" 
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
           />
@@ -232,9 +258,94 @@ function ExploreContent() {
           ) : (
             <div className={styles.noResults}>
               <p>No places found matching your search.</p>
+              {searchQuery.length >= 2 && crossResults.stories.length === 0 && crossResults.encyclopedia.length === 0 && (
+                <p style={{ fontSize: 13, color: '#999', marginTop: 4 }}>Try searching for temples, festivals, stories, or landmarks.</p>
+              )}
             </div>
           )}
         </div>
+
+        {/* Cross-Collection Results from Supabase */}
+        {searchQuery.length >= 2 && (crossResults.stories.length > 0 || crossResults.encyclopedia.length > 0) && (
+          <div style={{ marginTop: 24 }}>
+            {crossResults.stories.length > 0 && (
+              <div style={{ marginBottom: 20 }}>
+                <h3 style={{ fontSize: 16, fontWeight: 700, color: '#1a1a2e', marginBottom: 12, display: 'flex', alignItems: 'center', gap: 8 }}>
+                  <BookOpen size={18} color="#FF9933" /> Stories
+                </h3>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+                  {crossResults.stories.slice(0, 4).map((story: any) => (
+                    <Link href="/learn/story-of-the-day" key={story.id} style={{ textDecoration: 'none' }}>
+                      <motion.div
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        style={{
+                          background: 'linear-gradient(135deg, #FFF8F0, #FFF3E0)',
+                          borderRadius: 12,
+                          padding: '14px 16px',
+                          border: '1px solid rgba(255,153,51,0.15)',
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: 12,
+                        }}
+                      >
+                        {story.image && (
+                          <div style={{
+                            width: 48, height: 48, borderRadius: 10,
+                            backgroundImage: `url(${story.image})`,
+                            backgroundSize: 'cover', backgroundPosition: 'center',
+                            flexShrink: 0,
+                          }} />
+                        )}
+                        <div>
+                          <h4 style={{ fontSize: 14, fontWeight: 700, color: '#1a1a2e', margin: 0 }}>{story.title}</h4>
+                          <p style={{ fontSize: 12, color: '#666', margin: '2px 0 0', lineHeight: 1.3 }}>{story.snippet?.slice(0, 80)}...</p>
+                        </div>
+                      </motion.div>
+                    </Link>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {crossResults.encyclopedia.length > 0 && (
+              <div>
+                <h3 style={{ fontSize: 16, fontWeight: 700, color: '#1a1a2e', marginBottom: 12, display: 'flex', alignItems: 'center', gap: 8 }}>
+                  <GraduationCap size={18} color="#6C63FF" /> Encyclopedia
+                </h3>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+                  {crossResults.encyclopedia.slice(0, 4).map((entry: any) => (
+                    <motion.div
+                      key={entry.id}
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      style={{
+                        background: 'linear-gradient(135deg, #F3F0FF, #EDE7F6)',
+                        borderRadius: 12,
+                        padding: '14px 16px',
+                        border: '1px solid rgba(108,99,255,0.12)',
+                      }}
+                    >
+                      <h4 style={{ fontSize: 14, fontWeight: 700, color: '#1a1a2e', margin: 0 }}>{entry.title}</h4>
+                      <p style={{ fontSize: 12, color: '#666', margin: '4px 0 0', lineHeight: 1.4 }}>
+                        {(entry.summary || entry.content || '').slice(0, 100)}...
+                      </p>
+                      {entry.category && (
+                        <span style={{
+                          display: 'inline-block', marginTop: 6,
+                          fontSize: 11, padding: '2px 8px',
+                          background: 'rgba(108,99,255,0.1)', borderRadius: 6,
+                          color: '#6C63FF', fontWeight: 600,
+                        }}>{entry.category}</span>
+                      )}
+                    </motion.div>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+        )}
+
       </section>
     </main>
   );
