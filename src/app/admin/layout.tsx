@@ -4,7 +4,7 @@ import { usePathname, useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { 
   LayoutDashboard, MapPin, PlusCircle, BarChart3, LogOut, Map, Database, Activity,
-  Menu, X, BookOpen, HelpCircle, Calendar, Bookmark
+  Menu, X, BookOpen, HelpCircle, Calendar, Bookmark, Zap
 } from 'lucide-react';
 import styles from './admin.module.css';
 
@@ -17,6 +17,7 @@ const NAV = [
   { href: '/admin/encyclopedia', icon: Bookmark,    label: 'Encyclopedia' },
   { href: '/admin/live-status', icon: Activity,     label: 'Live Status' },
   { href: '/admin/traffic', icon: BarChart3,        label: 'Traffic' },
+  { href: '/admin/telemetry', icon: Zap,            label: 'Telemetry' },
   { href: '/studio',        icon: Database,         label: 'Sanity Studio' },
 ];
 
