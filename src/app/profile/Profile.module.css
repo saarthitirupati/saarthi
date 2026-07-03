@@ -170,3 +170,114 @@
   align-items: center;
   justify-content: center;
 }
+
+.weightsCard {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 20px;
+  padding: 24px;
+  margin-top: 16px;
+}
+
+.weightsHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  padding-bottom: 12px;
+}
+
+.weightsTitle {
+  font-size: 16px;
+  fontWeight: 700;
+  color: var(--color-text-main);
+  margin: 0;
+}
+
+.trainingBadge {
+  font-size: 11px;
+  background: rgba(255, 153, 51, 0.15);
+  color: var(--color-saffron-500);
+  padding: 4px 8px;
+  border-radius: 8px;
+  font-weight: 700;
+}
+
+.weightsGrid {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.weightRow {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.weightLabelRow {
+  display: flex;
+  justify-content: space-between;
+  font-size: 13px;
+  font-weight: 600;
+  text-transform: capitalize;
+}
+
+.weightVal {
+  color: var(--color-saffron-500);
+  font-family: monospace;
+}
+
+.sliderContainer {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.slider {
+  flex: 1;
+  -webkit-appearance: none;
+  appearance: none;
+  height: 6px;
+  border-radius: 3px;
+  background: rgba(255, 255, 255, 0.1);
+  outline: none;
+}
+
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--color-saffron-500);
+  cursor: pointer;
+  transition: transform 0.1s ease;
+}
+
+.slider::-webkit-slider-thumb:hover {
+  transform: scale(1.2);
+}
+
+.resetBtn {
+  background: rgba(239, 68, 68, 0.1);
+  border: 1px solid rgba(239, 68, 68, 0.2);
+  color: #EF4444;
+  border-radius: 12px;
+  padding: 8px 16px;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  margin-top: 16px;
+  align-self: flex-start;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.resetBtn:hover {
+  background: rgba(239, 68, 68, 0.2);
+}
+

@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { useRouter } from 'next/navigation';
 import { 
@@ -9,10 +9,13 @@ import {
   Bookmark, 
   Clock, 
   Trash2, 
-  ExternalLink
+  ExternalLink,
+  Sliders,
+  RotateCcw
 } from 'lucide-react';
 import styles from './Profile.module.css';
 import { useTrip } from '@/components/TripContext';
+import { getMLWeights, saveMLWeights, resetMLWeights, MLWeights } from '@/lib/recommendation-engine';
 
 export default function ProfilePage() {
   const router = useRouter();
@@ -22,8 +25,42 @@ export default function ProfilePage() {
     removePlan 
   } = useTrip();
 
+  const [weights, setWeights] = useState<MLWeights | null>(null);
+
+  useEffect(() => {
+    setWeights(getMLWeights());
+  }, []);
+
   const handleViewPlan = (type: string) => {
     router.push(`/itinerary/${type}`);
+  };
+
+  const handleWeightChange = (category: keyof MLWeights['interests'], value: number) => {
+    if (!weights) return;
+    const newWeights = {
+      ...weights,
+      interests: {
+        ...weights.interests,
+        [category]: value
+      }
+    };
+    setWeights(newWeights);
+    saveMLWeights(newWeights);
+  };
+
+  const handleParamWeightChange = (key: 'rating' | 'mustVisit' | 'duration', value: number) => {
+    if (!weights) return;
+    const newWeights = {
+      ...weights,
+      [key]: value
+    };
+    setWeights(newWeights);
+    saveMLWeights(newWeights);
+  };
+
+  const handleReset = () => {
+    resetMLWeights();
+    setWeights(getMLWeights());
   };
 
   return (
@@ -47,6 +84,117 @@ export default function ProfilePage() {
           <span className={styles.statLabel}>Places Visited</span>
         </div>
       </div>
+
+      {weights && (
+        <section className={styles.section}>
+          <h3 className={styles.sectionTitle}>
+            <Sliders size={20} />
+            AI Recommendation Engine
+          </h3>
+          <p style={{ fontSize: 13, color: 'var(--color-text-dim)', marginTop: -10, marginBottom: 16 }}>
+            Saarthi trains weights automatically based on your saved/visited history. Fine-tune them below to shape your recommendations.
+          </p>
+
+          <div className={styles.weightsCard}>
+            <div className={styles.weightsHeader}>
+              <span className={styles.weightsTitle}>Interest Preferences</span>
+              <span className={styles.trainingBadge}>
+                🧠 Model Trained {weights.trainingCount || 0}x
+              </span>
+            </div>
+
+            <div className={styles.weightsGrid}>
+              {Object.keys(weights.interests).map((interestKey) => {
+                const val = weights.interests[interestKey as keyof MLWeights['interests']] || 1.0;
+                return (
+                  <div key={interestKey} className={styles.weightRow}>
+                    <div className={styles.weightLabelRow}>
+                      <span>{interestKey}</span>
+                      <span className={styles.weightVal}>{val.toFixed(2)}</span>
+                    </div>
+                    <div className={styles.sliderContainer}>
+                      <input 
+                        type="range" 
+                        min="0.1" 
+                        max="5.0" 
+                        step="0.1"
+                        value={val}
+                        onChange={(e) => handleWeightChange(interestKey as keyof MLWeights['interests'], parseFloat(e.target.value))}
+                        className={styles.slider}
+                      />
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+
+            <div className={styles.weightsHeader} style={{ marginTop: 24 }}>
+              <span className={styles.weightsTitle}>General Scoring Modifiers</span>
+            </div>
+
+            <div className={styles.weightsGrid}>
+              <div className={styles.weightRow}>
+                <div className={styles.weightLabelRow}>
+                  <span>Rating Importance</span>
+                  <span className={styles.weightVal}>{weights.rating.toFixed(2)}</span>
+                </div>
+                <div className={styles.sliderContainer}>
+                  <input 
+                    type="range" 
+                    min="0.1" 
+                    max="5.0" 
+                    step="0.1"
+                    value={weights.rating}
+                    onChange={(e) => handleParamWeightChange('rating', parseFloat(e.target.value))}
+                    className={styles.slider}
+                  />
+                </div>
+              </div>
+
+              <div className={styles.weightRow}>
+                <div className={styles.weightLabelRow}>
+                  <span>Must-Visit Priority</span>
+                  <span className={styles.weightVal}>{weights.mustVisit.toFixed(2)}</span>
+                </div>
+                <div className={styles.sliderContainer}>
+                  <input 
+                    type="range" 
+                    min="0.1" 
+                    max="5.0" 
+                    step="0.1"
+                    value={weights.mustVisit}
+                    onChange={(e) => handleParamWeightChange('mustVisit', parseFloat(e.target.value))}
+                    className={styles.slider}
+                  />
+                </div>
+              </div>
+
+              <div className={styles.weightRow}>
+                <div className={styles.weightLabelRow}>
+                  <span>Optimal Duration Fit</span>
+                  <span className={styles.weightVal}>{weights.duration.toFixed(2)}</span>
+                </div>
+                <div className={styles.sliderContainer}>
+                  <input 
+                    type="range" 
+                    min="0.1" 
+                    max="5.0" 
+                    step="0.1"
+                    value={weights.duration}
+                    onChange={(e) => handleParamWeightChange('duration', parseFloat(e.target.value))}
+                    className={styles.slider}
+                  />
+                </div>
+              </div>
+            </div>
+
+            <button onClick={handleReset} className={styles.resetBtn}>
+              <RotateCcw size={14} />
+              Reset to AI Defaults
+            </button>
+          </div>
+        </section>
+      )}
 
       <section className={styles.section}>
         <h3 className={styles.sectionTitle}>
