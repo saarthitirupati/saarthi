@@ -76,13 +76,13 @@ export default function ClientLayout({
   }, [pathname]);
 
   useEffect(() => {
-    if (!isAdmin && pathname && pathname !== '/onboarding') {
+    if (!showSplash && !isAdmin && pathname && pathname !== '/onboarding') {
       const hasSeen = localStorage.getItem('hasSeenOnboarding');
       if (!hasSeen) {
         router.push('/onboarding');
       }
     }
-  }, [pathname, isAdmin, router]);
+  }, [pathname, isAdmin, router, showSplash]);
 
   const handleSplashFinish = () => {
     setShowSplash(false);
