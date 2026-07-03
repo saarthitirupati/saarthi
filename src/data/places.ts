@@ -87,7 +87,7 @@ export const PLACES: Place[] = [
     travelByRTC: "APSRTC operates continuous, high-frequency bus services (Saptagiri Express) from Tirupati Central Bus Station (CBS) to Tirumala every 2 minutes, running round-the-clock.",
     travelByCar: "Drive via the scenic, well-monitored Alipiri-Tirumala Ghat Road. A speed limit of 40 km/h is enforced. Personal cars and private cabs are allowed up the hill, subject to security checks at Alipiri toll gate.",
     travelByBike: "Two-wheelers are allowed on the Tirumala Ghat roads between 4:00 AM and 10:00 PM. Ride carefully on the hairpin bends; helmets are mandatory for both rider and pillion.",
-    approxRTCFare: "₹65 per adult one-way",
+    approxRTCFare: "₹90 (Ordinary) / ₹110 (Electric bus) one-way from Tirupati",
     approxCarCost: "₹250 Alipiri toll fee + ₹300-₹500 petrol, or ₹1,500-₹2,000 for local taxi rental.",
     approxBikeCost: "₹100-₹150 for petrol round trip.",
     youtubeLink: "https://www.youtube.com/watch?v=kYJc-V6nE6k",
@@ -196,7 +196,7 @@ export const PLACES: Place[] = [
     travelByRTC: 'Free TTD internal shuttle buses and frequent APSRTC local buses run regularly from the Kalyani Choultry / Central Reception Office (CRO) in Tirumala directly towards the entry base.',
     travelByCar: 'Accessible via steep, winding roads. A dedicated parking lot accommodating up to 25 cars is available near the base of the steps.',
     travelByBike: 'Accessible via steep winding roads. Ride with caution due to sharp curves, narrow hairpins, and morning fog. Helmets are mandatory.',
-    approxRTCFare: 'Free TTD shuttle, or ₹63 per person one-way for APSRTC buses from Tirupati CBS.',
+    approxRTCFare: 'Free TTD shuttle, or ₹90 (Ordinary) / ₹110 (Electric bus) one-way from Tirupati',
     approxCarCost: '~₹500 for fuel (or ~₹1000 for taxi fare)',
     approxBikeCost: '~₹200 for petrol round trip',
     visitorTips: {

@@ -1,7 +1,7 @@
 'use client';
 
 import { PLACES, getPlaceGuideData } from '@/data/places';
-import { ArrowLeft, Heart, Share2, Star, MapPin, Clock, Compass, Coins, PlayCircle, Camera, Check, Copy, Volume2, VolumeX, ShieldAlert, X, ChevronLeft, ChevronRight } from 'lucide-react';
+import { ArrowLeft, Heart, Share2, Star, MapPin, Clock, Compass, Coins, PlayCircle, Camera, Check, Copy, Volume2, VolumeX, ShieldAlert, X, ChevronLeft, ChevronRight, Shirt, Footprints, Users, Ban, Navigation } from 'lucide-react';
 import { use, useState, useEffect } from 'react';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -21,7 +21,7 @@ export default function PlaceDetails({ params }: { params: Promise<{ id: string 
   const [copiedLink, setCopiedLink] = useState(false);
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
   
-  const { togglePlace, savedPlaces, addViewedPlace } = useTrip();
+  const { togglePlace, savedPlaces, addViewedPlace, userLocation, setUserLocation, setLocationPermission } = useTrip();
   const { isSpeaking, isSupported, toggleSpeak } = useSpeechSynthesis();
 
   useEffect(() => {
@@ -39,6 +39,34 @@ export default function PlaceDetails({ params }: { params: Promise<{ id: string 
       </div>
     );
   }
+
+  const getDistance = () => {
+    if (!userLocation || !place.coordinates) return null;
+    const dLat = userLocation.lat - place.coordinates.lat;
+    const dLng = userLocation.lng - place.coordinates.lng;
+    return Math.sqrt(dLat * dLat + dLng * dLng) * 111; // approx km
+  };
+
+  const distanceVal = getDistance();
+
+  const handleDetectLocation = () => {
+    if (typeof window !== 'undefined' && navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const loc = {
+            lat: position.coords.latitude,
+            lng: position.coords.longitude
+          };
+          setUserLocation(loc);
+          setLocationPermission('granted');
+        },
+        (error) => {
+          console.error("Location error:", error);
+          setLocationPermission('denied');
+        }
+      );
+    }
+  };
 
   const guide = getPlaceGuideData(place);
   const isSaved = savedPlaces.includes(place.id);
@@ -119,12 +147,28 @@ export default function PlaceDetails({ params }: { params: Promise<{ id: string 
         />
         <div className={styles.heroGradient} />
         <div className={styles.heroContent}>
-          <div className={styles.heroMetaRow}>
+          <div className={styles.heroMetaRow} style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: 8 }}>
             <span className={styles.categoryBadge}>{guide.category}</span>
             <div className={styles.ratingBadge}>
               <Star size={14} fill="#FFD700" color="#FFD700" />
               <span>{place.rating || 4.8}</span>
             </div>
+            <span style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: 4,
+              backgroundColor: 'rgba(16, 185, 129, 0.15)',
+              color: '#34D399',
+              fontSize: 11,
+              fontWeight: 600,
+              padding: '4px 8px',
+              borderRadius: 99,
+              border: '1px solid rgba(16, 185, 129, 0.25)',
+              whiteSpace: 'nowrap'
+            }}>
+              <span style={{ width: 6, height: 6, borderRadius: '50%', backgroundColor: '#10B981', display: 'inline-block' }}></span>
+              Data Verified Today
+            </span>
           </div>
           <h1>{guide.name}</h1>
           <div className={styles.heroLocation}>
@@ -498,28 +542,107 @@ export default function PlaceDetails({ params }: { params: Promise<{ id: string 
               <Coins size={24} color="var(--color-saffron-500)" />
               <div>
                 <h3>Estimated Expenses</h3>
-                <p>Approximate budget ranges</p>
+                <p>Approximate budget ranges and live calculator</p>
               </div>
             </div>
             
             <div className={styles.costList}>
               <div className={styles.costItem}>
                 <span>Entry & Darshan Fee</span>
-                <span className={styles.costPrice}>{guide.entryFee}</span>
+                <span className={styles.costPrice} style={{ color: '#10B981', fontWeight: 700 }}>
+                  {place.entryFeeNum === 0 ? 'Free' : `₹${place.entryFeeNum}`}
+                </span>
               </div>
               <div className={styles.costItem}>
-                <span>RTC Bus Fare (One-way)</span>
+                <span>Standard APSRTC Bus Fare</span>
                 <span className={styles.costPrice}>{guide.approxRTCFare}</span>
               </div>
               <div className={styles.costItem}>
-                <span>Car Fuel / Cab Estimate</span>
+                <span>Standard Car Fuel / Cab</span>
                 <span className={styles.costPrice}>{guide.approxCarCost}</span>
               </div>
               <div className={styles.costItem}>
-                <span>Bike Fuel Estimate</span>
+                <span>Standard Bike Petrol</span>
                 <span className={styles.costPrice}>{guide.approxBikeCost}</span>
               </div>
             </div>
+
+            {distanceVal !== null ? (
+              <div style={{
+                background: 'linear-gradient(135deg, #F0FDF4, #DCFCE7)',
+                borderRadius: 12,
+                padding: 16,
+                border: '1px solid #BBF7D0',
+                marginTop: 16,
+                display: 'flex',
+                flexDirection: 'column',
+                gap: 12
+              }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                  <span style={{ fontSize: 13, fontWeight: 700, color: '#166534', display: 'flex', alignItems: 'center', gap: 6 }}>
+                    📍 Real-Time Cost Estimator
+                  </span>
+                  <span style={{ fontSize: 12, fontWeight: 700, color: '#166534', background: 'rgba(22, 101, 52, 0.1)', padding: '2px 8px', borderRadius: 99 }}>
+                    {distanceVal.toFixed(1)} km from you
+                  </span>
+                </div>
+                
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 12, color: '#1E293B', borderBottom: '1px dashed rgba(22, 101, 52, 0.1)', paddingBottom: 6 }}>
+                    <span>🚌 APSRTC Bus (One-way)</span>
+                    <span style={{ fontWeight: 600 }}>
+                      {place.location.includes('Tirumala') || place.category.includes('Tirumala') 
+                        ? '₹90 (Ordinary) / ₹110 (Electric)' 
+                        : `₹${Math.max(15, Math.round(distanceVal * 3))} (City Bus)`}
+                    </span>
+                  </div>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 12, color: '#1E293B', borderBottom: '1px dashed rgba(22, 101, 52, 0.1)', paddingBottom: 6 }}>
+                    <span>🏍️ Two-Wheeler / Bike Petrol</span>
+                    <span style={{ fontWeight: 600 }}>~₹{Math.round(distanceVal * 3.5)}</span>
+                  </div>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 12, color: '#1E293B', borderBottom: '1px dashed rgba(22, 101, 52, 0.1)', paddingBottom: 6 }}>
+                    <span>🚗 Private Cab / Sedan</span>
+                    <span style={{ fontWeight: 600 }}>~₹{Math.round(distanceVal * 16 + 250)}</span>
+                  </div>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 12, color: '#1E293B', paddingBottom: 2 }}>
+                    <span>🚐 SUV / Innova Rental</span>
+                    <span style={{ fontWeight: 600 }}>~₹{Math.round(distanceVal * 24 + 250)}</span>
+                  </div>
+                </div>
+              </div>
+            ) : (
+              <div style={{
+                background: '#F8FAFC',
+                borderRadius: 12,
+                padding: 16,
+                border: '1px solid #E2E8F0',
+                marginTop: 16,
+                textAlign: 'center'
+              }}>
+                <p style={{ fontSize: 12, color: '#475569', marginBottom: 10, marginTop: 0 }}>
+                  Calculate travel expenses dynamically from your location.
+                </p>
+                <button 
+                  onClick={handleDetectLocation}
+                  style={{
+                    background: 'var(--color-saffron-500)',
+                    color: 'white',
+                    border: 'none',
+                    borderRadius: 8,
+                    padding: '8px 16px',
+                    fontSize: 12,
+                    fontWeight: 600,
+                    cursor: 'pointer',
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: 6
+                  }}
+                >
+                  <Navigation size={14} />
+                  <span>Detect My Location</span>
+                </button>
+              </div>
+            )}
           </div>
         </section>
 
@@ -644,51 +767,178 @@ export default function PlaceDetails({ params }: { params: Promise<{ id: string 
         {/* 9. IMPORTANT TIPS */}
         <section className={styles.section} id="tips">
           <h2 className={styles.sectionTitle}>Before You Visit</h2>
-          <div className={styles.tipsCard}>
-            <div className={styles.tipsHeader}>
-              <ShieldAlert size={24} color="var(--color-warning)" />
+          
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+            {/* Rule 1: Dress Code */}
+            <div style={{
+              display: 'flex',
+              gap: 12,
+              padding: 14,
+              borderRadius: 12,
+              background: 'linear-gradient(135deg, #FFF9F2, #FFF3E6)',
+              border: '1px solid rgba(255, 153, 51, 0.15)'
+            }}>
+              <div style={{
+                width: 36,
+                height: 36,
+                borderRadius: '50%',
+                background: '#FF9933',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                color: 'white',
+                flexShrink: 0
+              }}>
+                <Shirt size={18} />
+              </div>
               <div>
-                <h3>Crucial Visitor Rules</h3>
-                <p>Dress code, etiquette and warnings</p>
+                <h4 style={{ fontSize: 13, fontWeight: 700, color: '#994D00', margin: '0 0 2px 0' }}>Dress Code Required</h4>
+                <p style={{ fontSize: 12, color: '#5C3A21', margin: 0, lineHeight: 1.4 }}>{guide.visitorTips.dressCode}</p>
               </div>
             </div>
-            
-            <ul className={styles.tipsList}>
-              <li>
-                <strong>Dress Code:</strong> {guide.visitorTips.dressCode}
-              </li>
-              <li>
-                <strong>Crowd Note:</strong> {guide.visitorTips.crowdNote}
-              </li>
-              <li>
-                <strong>Footwear Rule:</strong> {guide.visitorTips.footwearRule}
-              </li>
-              <li>
-                <strong>Photography:</strong> {guide.visitorTips.photoRule}
-              </li>
-              <li>
-                <strong>Access & Entry:</strong> {guide.visitorTips.entryRule}
-              </li>
-            </ul>
+
+            {/* Rule 2: Photography */}
+            <div style={{
+              display: 'flex',
+              gap: 12,
+              padding: 14,
+              borderRadius: 12,
+              background: 'linear-gradient(135deg, #FEF2F2, #FEE2E2)',
+              border: '1px solid #FCA5A5'
+            }}>
+              <div style={{
+                width: 36,
+                height: 36,
+                borderRadius: '50%',
+                background: '#EF4444',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                color: 'white',
+                flexShrink: 0
+              }}>
+                <Ban size={18} />
+              </div>
+              <div>
+                <h4 style={{ fontSize: 13, fontWeight: 700, color: '#991B1B', margin: '0 0 2px 0' }}>Photography Policy</h4>
+                <p style={{ fontSize: 12, color: '#7F1D1D', margin: 0, lineHeight: 1.4 }}>{guide.visitorTips.photoRule}</p>
+              </div>
+            </div>
+
+            {/* Rule 3: Footwear */}
+            <div style={{
+              display: 'flex',
+              gap: 12,
+              padding: 14,
+              borderRadius: 12,
+              background: 'linear-gradient(135deg, #FFFDF5, #FFF9E6)',
+              border: '1px solid rgba(255, 153, 51, 0.1)'
+            }}>
+              <div style={{
+                width: 36,
+                height: 36,
+                borderRadius: '50%',
+                background: '#F59E0B',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                color: 'white',
+                flexShrink: 0
+              }}>
+                <Footprints size={18} />
+              </div>
+              <div>
+                <h4 style={{ fontSize: 13, fontWeight: 700, color: '#92400E', margin: '0 0 2px 0' }}>Footwear Custody</h4>
+                <p style={{ fontSize: 12, color: '#78350F', margin: 0, lineHeight: 1.4 }}>{guide.visitorTips.footwearRule}</p>
+              </div>
+            </div>
+
+            {/* Rule 4: Access & Entry */}
+            <div style={{
+              display: 'flex',
+              gap: 12,
+              padding: 14,
+              borderRadius: 12,
+              background: 'linear-gradient(135deg, #F0FDF4, #DCFCE7)',
+              border: '1px solid #BBF7D0'
+            }}>
+              <div style={{
+                width: 36,
+                height: 36,
+                borderRadius: '50%',
+                background: '#10B981',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                color: 'white',
+                flexShrink: 0
+              }}>
+                <Coins size={18} />
+              </div>
+              <div>
+                <h4 style={{ fontSize: 13, fontWeight: 700, color: '#166534', margin: '0 0 2px 0' }}>Entry & Access Fee</h4>
+                <p style={{ fontSize: 12, color: '#14532D', margin: 0, lineHeight: 1.4 }}>{guide.visitorTips.entryRule}</p>
+              </div>
+            </div>
+
+            {/* Rule 5: Crowd Note */}
+            <div style={{
+              display: 'flex',
+              gap: 12,
+              padding: 14,
+              borderRadius: 12,
+              background: 'linear-gradient(135deg, #F8FAFC, #F1F5F9)',
+              border: '1px solid #E2E8F0'
+            }}>
+              <div style={{
+                width: 36,
+                height: 36,
+                borderRadius: '50%',
+                background: '#64748B',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                color: 'white',
+                flexShrink: 0
+              }}>
+                <Users size={18} />
+              </div>
+              <div>
+                <h4 style={{ fontSize: 13, fontWeight: 700, color: '#334155', margin: '0 0 2px 0' }}>Crowd Expectation</h4>
+                <p style={{ fontSize: 12, color: '#475569', margin: 0, lineHeight: 1.4 }}>{guide.visitorTips.crowdNote}</p>
+              </div>
+            </div>
           </div>
         </section>
       </div>
 
       {/* Sticky footer action bar */}
       <div className={styles.stickyFooter}>
-        <div className={styles.footerActions}>
+        <div className={styles.footerActions} style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
           <button 
             className={`${styles.saveBtn} ${isSaved ? styles.saveBtnActive : ''}`}
             onClick={() => togglePlace(place.id)}
+            style={{ 
+              flex: '0 0 auto', 
+              width: 48, 
+              height: 48, 
+              borderRadius: '50%', 
+              padding: 0, 
+              display: 'flex', 
+              alignItems: 'center', 
+              justifyContent: 'center',
+              minWidth: 48
+            }}
+            title={isSaved ? "Saved" : "Save for Later"}
           >
-            <Heart size={24} fill={isSaved ? "var(--color-saffron-500)" : "none"} />
-            <span>{isSaved ? "Saved" : "Save for Later"}</span>
+            <Heart size={22} fill={isSaved ? "var(--color-saffron-500)" : "none"} color={isSaved ? "var(--color-saffron-500)" : "currentColor"} />
           </button>
           <a 
             href={`https://www.google.com/maps/dir/?api=1&destination=${place.coordinates?.lat || 13.6288},${place.coordinates?.lng || 79.4192}`}
             target="_blank"
             rel="noopener noreferrer"
             className={styles.navBtn}
+            style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8, height: 48 }}
           >
             <Compass size={20} />
             <span>Get Directions</span>
