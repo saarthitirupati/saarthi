@@ -2,9 +2,27 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { ChevronLeft, CloudSun,  Sun, Droplets, Wind, MapPin } from 'lucide-react';
+import { ChevronLeft, CloudSun, Sun, Droplets, Wind, MapPin, Cloud, CloudRain, CloudLightning } from 'lucide-react';
 import { useTrip } from '@/components/TripContext';
 import { TIRUPATI_CENTER } from '@/utils/location';
+
+function getWeatherIcon(code: number) {
+  if (code === 0) return <Sun size={24} color="#F59E0B" />;
+  if ([1, 2, 3].includes(code)) return <CloudSun size={24} color="#F59E0B" />;
+  if ([45, 48].includes(code)) return <Cloud size={24} color="#9CA3AF" />;
+  if ([51, 53, 55, 56, 57, 61, 63, 65, 66, 67, 80, 81, 82].includes(code)) return <CloudRain size={24} color="#3B82F6" />;
+  if ([95, 96, 99].includes(code)) return <CloudLightning size={24} color="#6B7280" />;
+  return <CloudSun size={24} color="#F59E0B" />;
+}
+
+function getLargeWeatherIcon(code: number) {
+  if (code === 0) return <Sun size={80} color="white" style={{ opacity: 0.9 }} />;
+  if ([1, 2, 3].includes(code)) return <CloudSun size={80} color="white" style={{ opacity: 0.9 }} />;
+  if ([45, 48].includes(code)) return <Cloud size={80} color="white" style={{ opacity: 0.9 }} />;
+  if ([51, 53, 55, 56, 57, 61, 63, 65, 66, 67, 80, 81, 82].includes(code)) return <CloudRain size={80} color="white" style={{ opacity: 0.9 }} />;
+  if ([95, 96, 99].includes(code)) return <CloudLightning size={80} color="white" style={{ opacity: 0.9 }} />;
+  return <CloudSun size={80} color="white" style={{ opacity: 0.9 }} />;
+}
 
 export default function WeatherPage() {
   const router = useRouter();
@@ -58,7 +76,7 @@ export default function WeatherPage() {
                   Feels like {Math.round(weather.current?.apparent_temperature || 0)}°
                 </div>
               </div>
-              <Sun size={80} color="white" style={{ opacity: 0.9 }} />
+              {getLargeWeatherIcon(weather.current?.weather_code || 0)}
             </div>
 
             <div style={{ display: 'flex', gap: 24, marginTop: 32, paddingTop: 24, borderTop: '1px solid rgba(255,255,255,0.2)' }}>
@@ -80,7 +98,7 @@ export default function WeatherPage() {
                 <span style={{ fontSize: 15, fontWeight: 600, color: '#4B5563', width: 100 }}>
                   {i === 0 ? 'Today' : new Date(date).toLocaleDateString('en-US', { weekday: 'short' })}
                 </span>
-                <CloudSun size={24} color="#F59E0B" />
+                {getWeatherIcon(weather.daily.weather_code[i])}
                 <div style={{ display: 'flex', gap: 16, fontWeight: 600 }}>
                   <span style={{ color: '#1F2937' }}>{Math.round(weather.daily.temperature_2m_max[i])}°</span>
                   <span style={{ color: '#9CA3AF' }}>{Math.round(weather.daily.temperature_2m_min[i])}°</span>
