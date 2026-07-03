@@ -21,6 +21,9 @@ export default function PlaceDetails({ params }: { params: Promise<{ id: string 
   const [copiedLink, setCopiedLink] = useState(false);
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
   const [isRoundTrip, setIsRoundTrip] = useState(false);
+  const [vehicleType, setVehicleType] = useState<'car' | 'bus' | 'bike' | 'cab' | 'suv'>('car');
+  const [passengers, setPassengers] = useState<number>(1);
+  const [isBreakdownOpen, setIsBreakdownOpen] = useState(false);
   
   const { togglePlace, savedPlaces, addViewedPlace, userLocation, setUserLocation, setLocationPermission } = useTrip();
   const { isSpeaking, isSupported, toggleSpeak } = useSpeechSynthesis();
@@ -77,6 +80,64 @@ export default function PlaceDetails({ params }: { params: Promise<{ id: string 
   };
 
   const nearbyPlacesList = getNearbyPlaces();
+
+  const getCalculatorResults = () => {
+    const isTirumala = place.location.toLowerCase().includes('tirumala') || 
+                       place.location.toLowerCase().includes('narayanagiri') || 
+                       place.category.toLowerCase().includes('tirumala');
+    
+    const effDist = drivingDistance !== null ? drivingDistance : place.distanceKms;
+    const estTime = Math.round(effDist * 2.2);
+
+    let fare = 0;
+    let fuel = 0;
+    let liters = 0;
+    let tolls = 0;
+    let parking = 0;
+    const entryFee = passengers * place.entryFeeNum;
+
+    if (vehicleType === 'bus') {
+      const ticketPrice = isTirumala ? 110 : 15;
+      fare = passengers * ticketPrice * (isRoundTrip ? 2 : 1);
+    } else if (vehicleType === 'car') {
+      liters = (effDist / 12) * (isRoundTrip ? 2 : 1);
+      fuel = liters * 100;
+      tolls = isTirumala ? 250 : 0;
+      parking = 50;
+    } else if (vehicleType === 'bike') {
+      liters = (effDist / 45) * (isRoundTrip ? 2 : 1);
+      fuel = liters * 100;
+      parking = 15;
+    } else if (vehicleType === 'cab') {
+      if (isTirumala) {
+        fare = isRoundTrip ? 2100 : 1100;
+      } else {
+        fare = isRoundTrip ? 350 + effDist * 30 : 200 + effDist * 15;
+      }
+    } else if (vehicleType === 'suv') {
+      if (isTirumala) {
+        fare = isRoundTrip ? 3700 : 2000;
+      } else {
+        fare = isRoundTrip ? 500 + effDist * 44 : 300 + effDist * 22;
+      }
+    }
+
+    const total = fare + fuel + tolls + parking + entryFee;
+
+    return {
+      effDist,
+      estTime,
+      fare,
+      fuel,
+      liters,
+      tolls,
+      parking,
+      entryFee,
+      total: Math.round(total)
+    };
+  };
+
+  const calc = getCalculatorResults();
 
   const handleDetectLocation = () => {
     if (typeof window !== 'undefined' && navigator.geolocation) {
@@ -600,74 +661,84 @@ export default function PlaceDetails({ params }: { params: Promise<{ id: string 
 
         {/* 6. ESTIMATED COST */}
         <section className={styles.section} id="cost">
-          <h2 className={styles.sectionTitle}>Travel Cost & Entry Fares</h2>
-          <div className={styles.costCard}>
-            <div className={styles.costHeader}>
-              <Coins size={24} color="var(--color-saffron-500)" />
-              <div>
-                <h3>Estimated Expenses</h3>
-                <p>Approximate budget ranges and live calculator</p>
-              </div>
-            </div>
+          <h2 className={styles.sectionTitle}>Travel Cost Estimator</h2>
+          <div className={styles.costCard} style={{ padding: 18 }}>
             
-            <div className={styles.costList}>
-              <div className={styles.costItem}>
-                <span>Entry & Darshan Fee</span>
-                <span className={styles.costPrice} style={{ color: '#10B981', fontWeight: 700 }}>
-                  {place.entryFeeNum === 0 ? 'Free' : `₹${place.entryFeeNum}`}
+            {/* Live Status Header */}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 4, background: '#F8FAFC', padding: 12, borderRadius: 10, border: '1px solid #E2E8F0', marginBottom: 16 }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <span style={{ fontSize: 13, fontWeight: 700, color: '#1E293B', display: 'flex', alignItems: 'center', gap: 6 }}>
+                  💰 Live Trip Estimator
+                </span>
+                <span style={{ fontSize: 11, fontWeight: 700, color: '#475569', background: 'rgba(71, 85, 105, 0.1)', padding: '2px 8px', borderRadius: 99 }}>
+                  {calc.effDist.toFixed(1)} km away
                 </span>
               </div>
-              <div className={styles.costItem}>
-                <span>Standard APSRTC Bus Fare</span>
-                <span className={styles.costPrice}>{guide.approxRTCFare}</span>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: 4 }}>
+                <span style={{ fontSize: 11, color: '#64748B' }}>
+                  📍 {userLocation ? 'Based on your location' : 'Default: from Tirupati Central'}
+                </span>
+                {!userLocation && (
+                  <button 
+                    onClick={handleDetectLocation}
+                    style={{
+                      background: 'none', border: 'none', color: 'var(--color-saffron-600)', fontSize: 11, fontWeight: 700, cursor: 'pointer', display: 'inline-flex', alignItems: 'center', gap: 4, padding: 0
+                    }}
+                  >
+                    Use Live Location
+                  </button>
+                )}
               </div>
-              <div className={styles.costItem}>
-                <span>Standard Car Fuel / Cab</span>
-                <span className={styles.costPrice}>{guide.approxCarCost}</span>
-              </div>
-              <div className={styles.costItem}>
-                <span>Standard Bike Petrol</span>
-                <span className={styles.costPrice}>{guide.approxBikeCost}</span>
+              {isTirumalaSpot && (
+                <div style={{ fontSize: 11, color: '#B45309', fontWeight: 600, display: 'flex', alignItems: 'center', gap: 4, marginTop: 4 }}>
+                  ⚠️ Includes Mountain Ghat Road Winding Route
+                </div>
+              )}
+            </div>
+
+            {/* Vehicle Selector */}
+            <div style={{ marginBottom: 16 }}>
+              <label style={{ fontSize: 12, fontWeight: 700, color: '#475569', display: 'block', marginBottom: 8 }}>Select Vehicle</label>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: 6 }}>
+                {[
+                  { type: 'car', icon: '🚗', label: 'Car' },
+                  { type: 'bus', icon: '🚌', label: 'Bus' },
+                  { type: 'bike', icon: '🏍️', label: 'Bike' },
+                  { type: 'cab', icon: '🚕', label: 'Cab' },
+                  { type: 'suv', icon: '🚐', label: 'SUV' }
+                ].map(v => (
+                  <button
+                    key={v.type}
+                    onClick={() => setVehicleType(v.type as any)}
+                    style={{
+                      display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 4, padding: '8px 4px', borderRadius: 10, border: '1px solid',
+                      borderColor: vehicleType === v.type ? 'var(--color-saffron-300)' : 'rgba(0,0,0,0.06)',
+                      background: vehicleType === v.type ? 'linear-gradient(135deg, #FFFBEB, #FEF3C7)' : 'white',
+                      color: vehicleType === v.type ? 'var(--color-saffron-800)' : '#475569',
+                      fontWeight: vehicleType === v.type ? 700 : 500,
+                      fontSize: 11, cursor: 'pointer', transition: 'all 0.2s ease',
+                      boxShadow: vehicleType === v.type ? '0 2px 4px rgba(217, 119, 6, 0.1)' : 'none'
+                    }}
+                  >
+                    <span style={{ fontSize: 16 }}>{v.icon}</span>
+                    <span style={{ fontSize: 10 }}>{v.label}</span>
+                  </button>
+                ))}
               </div>
             </div>
 
-            {distanceVal !== null && drivingDistance !== null ? (
-              <div style={{
-                background: 'linear-gradient(135deg, #F0FDF4, #DCFCE7)',
-                borderRadius: 12,
-                padding: 16,
-                border: '1px solid #BBF7D0',
-                marginTop: 16,
-                display: 'flex',
-                flexDirection: 'column',
-                gap: 12
-              }}>
-                <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                    <span style={{ fontSize: 13, fontWeight: 700, color: '#166534', display: 'flex', alignItems: 'center', gap: 6 }}>
-                      📍 Real-Time Cost Estimator
-                    </span>
-                    <span style={{ fontSize: 12, fontWeight: 700, color: '#166534', background: 'rgba(22, 101, 52, 0.1)', padding: '2px 8px', borderRadius: 99 }}>
-                      {distanceVal.toFixed(1)} km (aerial)
-                    </span>
-                  </div>
-                  {isTirumalaSpot && (
-                    <div style={{ fontSize: 11, color: '#047857', fontWeight: 500, display: 'flex', alignItems: 'center', gap: 4, marginTop: 2 }}>
-                      ⚠️ Includes Mountain Ghat Road (~{drivingDistance.toFixed(1)} km drive)
-                    </div>
-                  )}
-                </div>
-
-                {/* Toggle Segment Control */}
-                <div style={{ display: 'flex', gap: 6, margin: '4px 0 8px 0', background: 'rgba(22, 101, 52, 0.06)', padding: 4, borderRadius: 8 }}>
+            {/* Trip Type & Passenger Selectors */}
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1.5fr', gap: 12, marginBottom: 16 }}>
+              <div>
+                <label style={{ fontSize: 12, fontWeight: 700, color: '#475569', display: 'block', marginBottom: 6 }}>Trip Type</label>
+                <div style={{ display: 'flex', gap: 4, background: '#F1F5F9', padding: 3, borderRadius: 8 }}>
                   <button 
                     onClick={() => setIsRoundTrip(false)}
                     style={{
-                      flex: 1, padding: '6px 12px', borderRadius: 6, border: 'none', fontSize: 11, fontWeight: 700,
+                      flex: 1, padding: '6px 4px', borderRadius: 6, border: 'none', fontSize: 11, fontWeight: 700,
                       background: !isRoundTrip ? 'white' : 'transparent',
-                      color: !isRoundTrip ? '#065F46' : '#047857',
-                      boxShadow: !isRoundTrip ? '0 1px 3px rgba(0,0,0,0.06)' : 'none',
-                      cursor: 'pointer', transition: 'all 0.15s ease'
+                      color: !isRoundTrip ? 'var(--color-saffron-800)' : '#64748B',
+                      boxShadow: !isRoundTrip ? '0 1px 2px rgba(0,0,0,0.05)' : 'none', cursor: 'pointer'
                     }}
                   >
                     One-Way
@@ -675,89 +746,161 @@ export default function PlaceDetails({ params }: { params: Promise<{ id: string 
                   <button 
                     onClick={() => setIsRoundTrip(true)}
                     style={{
-                      flex: 1, padding: '6px 12px', borderRadius: 6, border: 'none', fontSize: 11, fontWeight: 700,
+                      flex: 1, padding: '6px 4px', borderRadius: 6, border: 'none', fontSize: 11, fontWeight: 700,
                       background: isRoundTrip ? 'white' : 'transparent',
-                      color: isRoundTrip ? '#065F46' : '#047857',
-                      boxShadow: isRoundTrip ? '0 1px 3px rgba(0,0,0,0.06)' : 'none',
-                      cursor: 'pointer', transition: 'all 0.15s ease'
+                      color: isRoundTrip ? 'var(--color-saffron-800)' : '#64748B',
+                      boxShadow: isRoundTrip ? '0 1px 2px rgba(0,0,0,0.05)' : 'none', cursor: 'pointer'
                     }}
                   >
-                    Round-Trip
+                    Round
                   </button>
                 </div>
-                
-                <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 12, color: '#1E293B', borderBottom: '1px dashed rgba(22, 101, 52, 0.1)', paddingBottom: 6 }}>
-                    <span>🚌 APSRTC Bus ({isRoundTrip ? 'Round-trip' : 'One-way'})</span>
-                    <span style={{ fontWeight: 600 }}>
-                      {isTirumalaSpot 
-                        ? (isRoundTrip ? '₹180 (Ord) / ₹220 (Elec)' : '₹90 (Ord) / ₹110 (Elec)')
-                        : (isRoundTrip ? `₹${Math.max(30, Math.round(drivingDistance * 6))} (City)` : `₹${Math.max(15, Math.round(drivingDistance * 3))} (City)`)}
-                    </span>
+              </div>
+
+              <div>
+                <label style={{ fontSize: 12, fontWeight: 700, color: '#475569', display: 'block', marginBottom: 6 }}>Passengers</label>
+                <div style={{ display: 'flex', gap: 4, background: '#F1F5F9', padding: 3, borderRadius: 8 }}>
+                  {[1, 2, 3, 4, 6].map(p => (
+                    <button
+                      key={p}
+                      onClick={() => setPassengers(p)}
+                      style={{
+                        flex: 1, padding: '6px 0', borderRadius: 6, border: 'none', fontSize: 11, fontWeight: 700,
+                        background: passengers === p ? 'white' : 'transparent',
+                        color: passengers === p ? 'var(--color-saffron-800)' : '#64748B',
+                        boxShadow: passengers === p ? '0 1px 2px rgba(0,0,0,0.05)' : 'none', cursor: 'pointer'
+                      }}
+                    >
+                      {p === 6 ? '5+' : p}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            {/* Journey Summary */}
+            <div style={{
+              background: 'linear-gradient(135deg, #1E293B, #0F172A)',
+              borderRadius: 14,
+              padding: 18,
+              color: 'white',
+              boxShadow: '0 4px 12px rgba(15, 23, 42, 0.15)',
+              marginBottom: 16
+            }}>
+              <h3 style={{ fontSize: 12, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em', color: '#94A3B8', margin: '0 0 12px 0' }}>Journey Summary</h3>
+              
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12, borderBottom: '1px solid rgba(255,255,255,0.08)', paddingBottom: 12, marginBottom: 12 }}>
+                <div>
+                  <div style={{ fontSize: 10, color: '#94A3B8' }}>Distance</div>
+                  <div style={{ fontSize: 14, fontWeight: 700, color: '#F1F5F9' }}>{calc.effDist.toFixed(1)} km</div>
+                </div>
+                <div>
+                  <div style={{ fontSize: 10, color: '#94A3B8' }}>Travel Time</div>
+                  <div style={{ fontSize: 14, fontWeight: 700, color: '#F1F5F9' }}>~{calc.estTime} mins</div>
+                </div>
+                {calc.liters > 0 && (
+                  <div style={{ gridColumn: 'span 2' }}>
+                    <div style={{ fontSize: 10, color: '#94A3B8' }}>Est. Fuel Consumption</div>
+                    <div style={{ fontSize: 13, fontWeight: 600, color: '#E2E8F0' }}>{calc.liters.toFixed(1)} Liters</div>
                   </div>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 12, color: '#1E293B', borderBottom: '1px dashed rgba(22, 101, 52, 0.1)', paddingBottom: 6 }}>
-                    <span>🏍️ Two-Wheeler / Bike Petrol</span>
-                    <span style={{ fontWeight: 600 }}>
-                      {isRoundTrip 
-                        ? `₹${Math.round(drivingDistance * 6.5)} - ₹${Math.round(drivingDistance * 8)}`
-                        : `₹${Math.round(drivingDistance * 3.2)} - ₹${Math.round(drivingDistance * 4)}`}
-                    </span>
-                  </div>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 12, color: '#1E293B', borderBottom: '1px dashed rgba(22, 101, 52, 0.1)', paddingBottom: 6 }}>
-                    <span>🚗 Private Cab / Sedan</span>
-                    <span style={{ fontWeight: 600 }}>
-                      {isTirumalaSpot 
-                        ? (isRoundTrip ? '₹1,800 - ₹2,400' : '₹950 - ₹1,350')
-                        : (isRoundTrip 
-                            ? `₹${Math.round(drivingDistance * 28 + 300)} - ₹${Math.round(drivingDistance * 36 + 500)}` 
-                            : `₹${Math.round(drivingDistance * 14 + 150)} - ₹${Math.round(drivingDistance * 18 + 250)}`)}
-                    </span>
-                  </div>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 12, color: '#1E293B', paddingBottom: 2 }}>
-                    <span>🚐 SUV / Innova Rental</span>
-                    <span style={{ fontWeight: 600 }}>
-                      {isTirumalaSpot 
-                        ? (isRoundTrip ? '₹3,200 - ₹4,200' : '₹1,800 - ₹2,300')
-                        : (isRoundTrip 
-                            ? `₹${Math.round(drivingDistance * 40 + 400)} - ₹${Math.round(drivingDistance * 52 + 600)}` 
-                            : `₹${Math.round(drivingDistance * 20 + 200)} - ₹${Math.round(drivingDistance * 26 + 300)}`)}
+                )}
+              </div>
+
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <div>
+                  <div style={{ fontSize: 10, color: '#94A3B8', textTransform: 'uppercase' }}>Estimated Total Cost</div>
+                  <div style={{ fontSize: 11, color: '#34D399', fontWeight: 600 }}>Taxes, toll & entry included</div>
+                </div>
+                <div style={{ fontSize: 26, fontWeight: 800, color: '#10B981', display: 'flex', alignItems: 'center' }}>
+                  ₹{calc.total}
+                </div>
+              </div>
+            </div>
+
+            {/* Collapsible Breakdown */}
+            <div style={{ marginBottom: 16 }}>
+              <button 
+                onClick={() => setIsBreakdownOpen(!isBreakdownOpen)}
+                style={{
+                  width: '100%', padding: '10px 14px', borderRadius: 10, border: '1px solid rgba(0,0,0,0.06)', background: '#F8FAFC',
+                  fontSize: 12, fontWeight: 700, color: '#475569', display: 'flex', justifyContent: 'space-between', alignItems: 'center', cursor: 'pointer'
+                }}
+              >
+                <span>{isBreakdownOpen ? '▼ Hide Detailed Breakdown' : '▶ View Detailed Breakdown'}</span>
+                <span style={{ fontSize: 11, color: 'var(--color-saffron-600)', background: 'white', padding: '2px 8px', borderRadius: 6, border: '1px solid rgba(0,0,0,0.05)' }}>
+                  Itemized
+                </span>
+              </button>
+              
+              {isBreakdownOpen && (
+                <div style={{
+                  marginTop: 8, padding: '12px 14px', borderRadius: 10, border: '1px solid rgba(0,0,0,0.05)', background: 'white',
+                  display: 'flex', flexDirection: 'column', gap: 8
+                }}>
+                  {calc.fare > 0 && (
+                    <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 12, color: '#475569' }}>
+                      <span>🚌 Transit Ticket Fare ({passengers} {passengers === 1 ? 'passenger' : 'passengers'})</span>
+                      <span style={{ fontWeight: 600 }}>₹{calc.fare}</span>
+                    </div>
+                  )}
+                  {calc.fuel > 0 && (
+                    <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 12, color: '#475569' }}>
+                      <span>⛽ Fuel Cost (~₹100/L)</span>
+                      <span style={{ fontWeight: 600 }}>₹{Math.round(calc.fuel)}</span>
+                    </div>
+                  )}
+                  {calc.tolls > 0 && (
+                    <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 12, color: '#475569' }}>
+                      <span>🛣️ Mountain Ghat Toll (Alipiri)</span>
+                      <span style={{ fontWeight: 600 }}>₹{calc.tolls}</span>
+                    </div>
+                  )}
+                  {calc.parking > 0 && (
+                    <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 12, color: '#475569' }}>
+                      <span>🅿️ Vehicle Parking Fee</span>
+                      <span style={{ fontWeight: 600 }}>₹{calc.parking}</span>
+                    </div>
+                  )}
+                  <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 12, color: '#475569' }}>
+                    <span>🎟️ Entry Fee ({passengers} x {place.entryFeeNum === 0 ? 'Free' : `₹${place.entryFeeNum}`})</span>
+                    <span style={{ fontWeight: 600, color: calc.entryFee === 0 ? '#10B981' : '#475569' }}>
+                      {calc.entryFee === 0 ? 'Free' : `₹${calc.entryFee}`}
                     </span>
                   </div>
                 </div>
+              )}
+            </div>
+
+            {/* Saarthi Recommendation */}
+            <div style={{
+              background: 'linear-gradient(135deg, #FFFBEB, #FEF3C7)',
+              borderRadius: 12,
+              padding: 14,
+              border: '1px solid #FDE68A',
+              marginBottom: 8,
+              display: 'flex',
+              gap: 10
+            }}>
+              <div style={{ fontSize: 18 }}>💡</div>
+              <div style={{ fontSize: 12, color: '#78350F', lineHeight: 1.4 }}>
+                <strong style={{ display: 'block', marginBottom: 2 }}>Saarthi Recommendation</strong>
+                {vehicleType === 'bus' ? (
+                  `APSRTC Bus is the most cost-effective and secure way to ascend the mountain. A great choice for ${passengers} ${passengers === 1 ? 'person' : 'people'}!`
+                ) : passengers === 1 && vehicleType === 'bike' ? (
+                  "Perfect! Renting or riding a bike is the fastest way to navigate the 36 hairpin bends and save ~18 minutes of traffic."
+                ) : passengers >= 5 ? (
+                  "With a group of 5+, booking an SUV or a Private Cab guarantees collective safety, comfort, and shared luggage space."
+                ) : (
+                  `Self-driving via Car gives you ultimate scheduling freedom. Be sure to pay the Alipiri toll before beginning the ghat ascent.`
+                )}
               </div>
-            ) : (
-              <div style={{
-                background: '#F8FAFC',
-                borderRadius: 12,
-                padding: 16,
-                border: '1px solid #E2E8F0',
-                marginTop: 16,
-                textAlign: 'center'
-              }}>
-                <p style={{ fontSize: 12, color: '#475569', marginBottom: 10, marginTop: 0 }}>
-                  Calculate travel expenses dynamically from your location.
-                </p>
-                <button 
-                  onClick={handleDetectLocation}
-                  style={{
-                    background: 'var(--color-saffron-500)',
-                    color: 'white',
-                    border: 'none',
-                    borderRadius: 8,
-                    padding: '8px 16px',
-                    fontSize: 12,
-                    fontWeight: 600,
-                    cursor: 'pointer',
-                    display: 'inline-flex',
-                    alignItems: 'center',
-                    gap: 6
-                  }}
-                >
-                  <Navigation size={14} />
-                  <span>Detect My Location</span>
-                </button>
-              </div>
-            )}
+            </div>
+
+            {/* Transparency disclaimer */}
+            <div style={{ fontSize: 10, color: '#94A3B8', textAlign: 'center', lineHeight: 1.4, margin: '8px 0 0 0' }}>
+              Estimated using: ✓ Current fuel price (~₹100/L) • ✓ Google Distance matrix • ✓ TTD/APSRTC fare guidelines • ✓ Approximate parking
+            </div>
+
           </div>
         </section>
 
@@ -1056,7 +1199,7 @@ export default function PlaceDetails({ params }: { params: Promise<{ id: string 
             style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8, height: 48 }}
           >
             <Compass size={20} />
-            <span>Get Directions</span>
+            <span>Start Journey</span>
           </a>
         </div>
       </div>
