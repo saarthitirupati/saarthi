@@ -175,11 +175,11 @@ export const PLACES: Place[] = [
     openFrom: 6,
     openTo: 18,
     isMustVisit: true,
-    description: 'The divine footprints of Lord Venkateswara.',
-    history: 'Spot where the Lord first set foot on Earth.',
+    description: 'A sacred spot featuring the divine footprints of Lord Venkateswara, located atop the highest peak of the Tirumala hills.',
+    history: 'According to local tradition, this is the place where Lord Venkateswara first placed his feet on earth, marking his landing site on Narayanagiri hill.',
     timings: '6:00 AM - 6:00 PM',
     entryFee: 'Free',
-    address: 'High point, Tirumala',
+    address: 'Narayanagiri Hill, Tirumala, AP',
     rating: 4.7,
     reviewCount: 5400,
     image: '/assets/temples/srivari-padalu.png',
@@ -187,7 +187,31 @@ export const PLACES: Place[] = [
     tags: ['Footprints', 'Vantage Point'],
     bestTime: 'Morning',
     practicalInfo: { dressCode: 'Modest', food: 'Limited', parking: 'Available' },
-    travelEstimates: { 'venkateswara': '15 mins drive' }
+    travelEstimates: { 'venkateswara': '15 mins drive' },
+    shortIntro: 'Srivari Paadaalu features the sacred stone footprints of Lord Venkateswara at the highest peak of the seven Tirumala hills.',
+    whyVisit: 'Highly recommended for its unique ambiance, architectural grandeur, scenic valley views, and historical/religious importance.',
+    openingTime: '6:00 AM',
+    closingTime: '6:00 PM',
+    duration: '45 mins to 1 hour',
+    travelByRTC: 'Frequent APSRTC public buses run from Tirupati Central Bus Station directly towards Narayanagiri Hill.',
+    travelByCar: 'Accessible via well-paved roads for cars and taxis.',
+    travelByBike: 'Accessible via well-paved roads for bikes. Ride carefully as the roads wind up the hill. Keep a helmet on.',
+    approxRTCFare: '₹63 per person one-way',
+    approxCarCost: '~₹500 for fuel (or ~₹1000 for taxi fare)',
+    approxBikeCost: '~₹200 for petrol round trip',
+    visitorTips: {
+      dressCode: 'Modest clothing is required.',
+      crowdNote: 'Generally low to moderate, though it spikes significantly on weekends and festival days.',
+      footwearRule: 'Footwear must be removed before entering the inner footprint enclosure premises.',
+      photoRule: 'Strictly prohibited inside the main footprint enclosure/mandapam. Allowed in outer areas.',
+      entryRule: 'Free public access. Decorum must be maintained.'
+    },
+    spiritualInfo: {
+      god: 'Lord Venkateswara (Footprints)',
+      knownFor: 'Divine landing footprints where the Lord first set foot on Earth',
+      mantra: 'Om Namo Venkateshaya',
+      devoteeTips: ['Remove footwear before entering the footprint sanctum.', 'Visit early in the morning for fog/mist view.']
+    }
   },
   {
     id: 'silathoranam',
