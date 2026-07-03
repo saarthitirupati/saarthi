@@ -15,6 +15,7 @@ import { client } from '@/sanity/lib/client';
 import { urlForImage } from '@/sanity/lib/image';
 import { calculateDistance, TIRUPATI_CENTER } from '@/utils/location';
 import LiveStatus from '@/components/LiveStatus/LiveStatus';
+import { getContextualRecommendations } from '@/lib/recommendation-engine';
 
 const CATEGORIES = [
   { id: 'spiritual', label: 'Spiritual', icon: '🛕', color: '#FDF1E6', accent: '#D0A73D' },
@@ -180,6 +181,11 @@ export default function Home() {
     })
     .sort((a, b) => a.computedDistance - b.computedDistance)
     .slice(0, 6);
+  }, [userLocation, places]);
+
+  const contextualRecommendations = useMemo(() => {
+    // Fallback to static interests if user has none
+    return getContextualRecommendations(places, userLocation, ['spiritual', 'nature']);
   }, [userLocation, places]);
 
   if (!mounted) return null;
@@ -368,6 +374,53 @@ export default function Home() {
               </motion.div>
             )}
 
+          </div>
+        </section>
+      )}
+
+      {/* ─── RECOMMENDATIONS FOR YOU ─── */}
+      {contextualRecommendations.length > 0 && (
+        <section className={styles.placesSection}>
+          <div className={styles.sectionHeader}>
+            <h2 className={styles.sectionTitle}>Recommended for You</h2>
+            <Sparkles size={18} color="#FF9933" />
+          </div>
+          <div className={styles.horizontalScroll}>
+            {contextualRecommendations.map(place => {
+              const isSaved = savedPlaces.includes(place.id);
+              return (
+                <motion.div 
+                  key={place.id} 
+                  className={styles.scrollCard} 
+                  onClick={() => {
+                    logTelemetry('recommendation_click', 'place', place.id);
+                    router.push(`/place/${place.id}`);
+                  }}
+                  whileHover={{ y: -6 }}
+                  whileTap={{ scale: 0.98 }}
+                  transition={{ duration: 0.2, ease: "easeOut" }}
+                >
+                  <div className={styles.cardImg} style={{ backgroundImage: `url(${place.image})` }}>
+                    <button 
+                      className={`${styles.saveBtn} ${isSaved ? styles.saved : ''}`}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        togglePlace(place.id);
+                      }}
+                      title={isSaved ? "Saved" : "Save Place"}
+                    >
+                      <Heart size={14} fill={isSaved ? '#E9801D' : 'none'} color={isSaved ? '#E9801D' : '#fff'} strokeWidth={isSaved ? 0 : 2} />
+                    </button>
+                  </div>
+                  <div className={styles.cardInfo}>
+                    <h3>{place.name}</h3>
+                    <p style={{ color: '#E9801D', fontWeight: 600, fontSize: '10px', marginTop: '2px' }}>
+                      {place.reason}
+                    </p>
+                  </div>
+                </motion.div>
+              );
+            })}
           </div>
         </section>
       )}

@@ -440,3 +440,69 @@ function distance(p1: Place, p2: Place): number {
   const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
   return R * c;
 }
+
+export function getContextualRecommendations(
+  allPlaces: Place[],
+  userLocation: { lat: number; lng: number } | null,
+  interests: string[] = ['spiritual', 'nature']
+): (Place & { score: number; reason: string })[] {
+  const currentHour = new Date().getHours();
+  const timeOfDay = currentHour < 12 ? 'morning' : currentHour < 16 ? 'afternoon' : currentHour < 20 ? 'evening' : 'night';
+
+  const dummyPrefs: UserPreferences = {
+    interests: interests.length > 0 ? interests : ['spiritual', 'nature'],
+    budgetTier: 'medium',
+    timeMins: 240
+  };
+
+  return allPlaces
+    .map(place => {
+      let score = scorePlace(place, dummyPrefs, 'best');
+      if (score === 0) return null;
+
+      let reason = 'Recommended for you';
+
+      if (timeOfDay === 'morning') {
+        if (place.placeType === 'spiritual') {
+          score += 25;
+          reason = '🌅 Ideal for morning darshan';
+        } else if (place.placeType === 'nature') {
+          score += 15;
+          reason = '🍃 Fresh morning nature walk';
+        }
+      } else if (timeOfDay === 'afternoon') {
+        if (place.placeType === 'food') {
+          score += 30;
+          reason = '🍽️ Great spot for lunch';
+        } else if (place.placeType === 'historical' || place.category?.toLowerCase().includes('museum')) {
+          score += 20;
+          reason = '🏛️ Perfect indoor afternoon visit';
+        }
+      } else if (timeOfDay === 'evening') {
+        if (place.placeType === 'hidden' || place.placeType === 'nature' || place.placeType === 'leisure') {
+          score += 25;
+          reason = '🌇 Perfect evening view';
+        }
+      } else {
+        if (place.placeType === 'food' || place.placeType === 'leisure') {
+          score += 20;
+          reason = '🌙 Great evening dining';
+        }
+      }
+
+      if (userLocation && place.coordinates) {
+        const dist = distance({ coordinates: userLocation } as any, place);
+        if (dist < 5) {
+          score += 30;
+          reason = `📍 Very close to you (${dist.toFixed(1)} km)`;
+        } else if (dist < 15) {
+          score += 15;
+        }
+      }
+
+      return { ...place, score, reason };
+    })
+    .filter((p): p is (Place & { score: number; reason: string }) => p !== null)
+    .sort((a, b) => b.score - a.score)
+    .slice(0, 6);
+}
