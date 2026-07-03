@@ -223,6 +223,231 @@ export default function PlaceDetails({ params }: { params: Promise<{ id: string 
           </div>
         </section>
 
+        {/* 4b. BREAK TIMINGS */}
+        {place.breakTimings && place.breakTimings.length > 0 && (
+          <section className={styles.section} id="break-timings">
+            <h2 className={styles.sectionTitle}>Break Timings</h2>
+            <div style={{
+              background: 'linear-gradient(135deg, #FFF8F0, #FFF3E0)',
+              borderRadius: 14, padding: 16,
+              border: '1px solid rgba(255,153,51,0.12)',
+            }}>
+              <p style={{ fontSize: 13, color: '#666', marginBottom: 10 }}>
+                The temple closes for darshan during these hours. Plan your visit accordingly.
+              </p>
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: 10 }}>
+                {place.breakTimings.map((b, i) => (
+                  <div key={i} style={{
+                    background: 'white', borderRadius: 10, padding: '10px 16px',
+                    border: '1px solid rgba(0,0,0,0.06)',
+                    display: 'flex', alignItems: 'center', gap: 8,
+                  }}>
+                    <Clock size={16} color="#FF9933" />
+                    <span style={{ fontWeight: 600, fontSize: 14, color: '#1a1a2e' }}>
+                      {b.from} — {b.to}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </section>
+        )}
+
+        {/* 4c. RITUALS & SEVAS */}
+        {place.rituals && (place.rituals.daily?.length || place.rituals.weekly?.length || place.rituals.sevas?.length) && (
+          <section className={styles.section} id="rituals">
+            <h2 className={styles.sectionTitle}>Rituals & Sevas</h2>
+            <div style={{
+              background: 'linear-gradient(135deg, #FFFBF5, #FFF8EE)',
+              borderRadius: 14, padding: 16,
+              border: '1px solid rgba(255,153,51,0.1)',
+            }}>
+              {place.rituals.daily && place.rituals.daily.length > 0 && (
+                <div style={{ marginBottom: 16 }}>
+                  <h4 style={{ fontSize: 14, fontWeight: 700, color: '#B8860B', marginBottom: 8, display: 'flex', alignItems: 'center', gap: 6 }}>
+                    🕉️ Daily Rituals
+                  </h4>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+                    {place.rituals.daily.map((r, i) => (
+                      <div key={i} style={{
+                        background: 'white', borderRadius: 8, padding: '8px 12px',
+                        fontSize: 13, color: '#333', border: '1px solid rgba(0,0,0,0.04)',
+                      }}>
+                        {r}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+              {place.rituals.weekly && place.rituals.weekly.length > 0 && (
+                <div style={{ marginBottom: 16 }}>
+                  <h4 style={{ fontSize: 14, fontWeight: 700, color: '#B8860B', marginBottom: 8 }}>
+                    📿 Weekly Rituals
+                  </h4>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+                    {place.rituals.weekly.map((r, i) => (
+                      <div key={i} style={{
+                        background: 'white', borderRadius: 8, padding: '8px 12px',
+                        fontSize: 13, color: '#333', border: '1px solid rgba(0,0,0,0.04)',
+                      }}>
+                        {r}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+              {place.rituals.annual && place.rituals.annual.length > 0 && (
+                <div style={{ marginBottom: 16 }}>
+                  <h4 style={{ fontSize: 14, fontWeight: 700, color: '#B8860B', marginBottom: 8 }}>
+                    🎉 Annual Festivals
+                  </h4>
+                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
+                    {place.rituals.annual.map((r, i) => (
+                      <span key={i} style={{
+                        background: '#FFF3E0', borderRadius: 20, padding: '5px 12px',
+                        fontSize: 12, color: '#C65D00', fontWeight: 600,
+                        border: '1px solid rgba(198,93,0,0.12)',
+                      }}>
+                        {r}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              )}
+              {place.rituals.sevas && place.rituals.sevas.length > 0 && (
+                <div>
+                  <h4 style={{ fontSize: 14, fontWeight: 700, color: '#B8860B', marginBottom: 8 }}>
+                    🙏 Sevas Available
+                  </h4>
+                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
+                    {place.rituals.sevas.map((s, i) => (
+                      <span key={i} style={{
+                        background: 'white', borderRadius: 20, padding: '5px 12px',
+                        fontSize: 12, color: '#555', fontWeight: 500,
+                        border: '1px solid rgba(0,0,0,0.08)',
+                      }}>
+                        {s}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+          </section>
+        )}
+
+        {/* 4d. ARCHITECTURE & DEITY INFO */}
+        {(place.architecture || place.deity || place.importance) && (
+          <section className={styles.section} id="architecture">
+            <h2 className={styles.sectionTitle}>Architecture & Heritage</h2>
+            <div style={{
+              background: 'linear-gradient(135deg, #F8F6FF, #EDE7F6)',
+              borderRadius: 14, padding: 16,
+              border: '1px solid rgba(108,99,255,0.1)',
+            }}>
+              {place.deity && (
+                <div style={{ marginBottom: 14, display: 'flex', alignItems: 'center', gap: 10 }}>
+                  <div style={{
+                    width: 40, height: 40, borderRadius: 10,
+                    background: 'linear-gradient(135deg, #FF9933, #FF6B00)',
+                    display: 'flex', alignItems: 'center', justifyContent: 'center',
+                    color: 'white', fontWeight: 800, fontSize: 18,
+                  }}>
+                    🙏
+                  </div>
+                  <div>
+                    <span style={{ fontSize: 12, color: '#888', fontWeight: 500 }}>Presiding Deity</span>
+                    <div style={{ fontSize: 15, fontWeight: 700, color: '#1a1a2e' }}>{place.deity}</div>
+                    {place.deityType && <span style={{ fontSize: 12, color: '#6C63FF' }}>{place.deityType}</span>}
+                  </div>
+                </div>
+              )}
+              {place.architecture && (
+                <div style={{ marginBottom: 12 }}>
+                  <h4 style={{ fontSize: 13, fontWeight: 700, color: '#555', marginBottom: 6 }}>Architecture</h4>
+                  <p style={{ fontSize: 13, color: '#333', lineHeight: 1.6 }}>{place.architecture}</p>
+                </div>
+              )}
+              {place.importance && (
+                <div>
+                  <h4 style={{ fontSize: 13, fontWeight: 700, color: '#555', marginBottom: 6 }}>Significance</h4>
+                  <p style={{ fontSize: 13, color: '#333', lineHeight: 1.6 }}>{place.importance}</p>
+                </div>
+              )}
+            </div>
+          </section>
+        )}
+
+        {/* 4e. FACILITIES */}
+        {place.facilities && (
+          <section className={styles.section} id="facilities">
+            <h2 className={styles.sectionTitle}>Facilities</h2>
+            <div style={{
+              display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 10,
+            }}>
+              {Object.entries(place.facilities)
+                .filter(([, v]) => v && v !== 'N/A')
+                .map(([key, value]) => {
+                  const icons: Record<string, string> = {
+                    locker: '🔐', toilets: '🚻', drinkingWater: '💧',
+                    wheelchair: '♿', parking: '🅿️', food: '🍽️',
+                  };
+                  const labels: Record<string, string> = {
+                    locker: 'Lockers', toilets: 'Toilets', drinkingWater: 'Drinking Water',
+                    wheelchair: 'Wheelchair', parking: 'Parking', food: 'Food',
+                  };
+                  return (
+                    <div key={key} style={{
+                      background: 'white', borderRadius: 12, padding: '12px 14px',
+                      border: '1px solid rgba(0,0,0,0.06)',
+                      display: 'flex', alignItems: 'flex-start', gap: 10,
+                    }}>
+                      <span style={{ fontSize: 20 }}>{icons[key] || '📌'}</span>
+                      <div>
+                        <div style={{ fontSize: 13, fontWeight: 700, color: '#1a1a2e' }}>{labels[key] || key}</div>
+                        <div style={{ fontSize: 12, color: '#666', marginTop: 2 }}>{value}</div>
+                      </div>
+                    </div>
+                  );
+                })}
+            </div>
+          </section>
+        )}
+
+        {/* 4f. RELATED PLACES */}
+        {place.relatedPlaces && place.relatedPlaces.length > 0 && (
+          <section className={styles.section} id="related">
+            <h2 className={styles.sectionTitle}>Related Places</h2>
+            <div style={{ display: 'flex', gap: 12, overflowX: 'auto', paddingBottom: 8 }}>
+              {place.relatedPlaces.map(relId => {
+                const rel = PLACES.find(p => p.id === relId);
+                if (!rel) return null;
+                return (
+                  <Link href={`/place/${rel.id}`} key={rel.id} style={{ textDecoration: 'none', flexShrink: 0 }}>
+                    <div style={{
+                      width: 150, borderRadius: 14, overflow: 'hidden',
+                      border: '1px solid rgba(0,0,0,0.06)', background: 'white',
+                    }}>
+                      <div style={{
+                        width: '100%', height: 90,
+                        backgroundImage: `url(${rel.image})`,
+                        backgroundSize: 'cover', backgroundPosition: 'center',
+                      }} />
+                      <div style={{ padding: '8px 10px' }}>
+                        <h4 style={{ fontSize: 13, fontWeight: 700, color: '#1a1a2e', margin: 0, lineHeight: 1.2 }}>{rel.name}</h4>
+                        <div style={{ fontSize: 11, color: '#888', marginTop: 4, display: 'flex', alignItems: 'center', gap: 4 }}>
+                          <Star size={10} fill="#FFD700" color="#FFD700" />
+                          {rel.rating} • {rel.distanceKms}km
+                        </div>
+                      </div>
+                    </div>
+                  </Link>
+                );
+              })}
+            </div>
+          </section>
+        )}
+
         {/* 5. TRAVEL OPTIONS */}
         <section className={styles.section} id="travel">
           <h2 className={styles.sectionTitle}>How to Reach</h2>
