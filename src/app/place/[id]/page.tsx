@@ -24,9 +24,21 @@ export default function PlaceDetails({ params }: { params: Promise<{ id: string 
   const [vehicleType, setVehicleType] = useState<'car' | 'bus' | 'bike' | 'cab' | 'suv'>('car');
   const [passengers, setPassengers] = useState<number>(1);
   const [isBreakdownOpen, setIsBreakdownOpen] = useState(false);
+  const [fuelRates, setFuelRates] = useState<{ petrol: number; diesel: number }>({ petrol: 118.00, diesel: 105.00 });
   
   const { togglePlace, savedPlaces, addViewedPlace, userLocation, setUserLocation, setLocationPermission } = useTrip();
   const { isSpeaking, isSupported, toggleSpeak } = useSpeechSynthesis();
+
+  useEffect(() => {
+    fetch('/api/admin/fuel')
+      .then(r => r.json())
+      .then(data => {
+        if (data.petrol && data.diesel) {
+          setFuelRates({ petrol: data.petrol, diesel: data.diesel });
+        }
+      })
+      .catch(() => {});
+  }, []);
 
   useEffect(() => {
     if (place?.id) {
@@ -102,13 +114,13 @@ export default function PlaceDetails({ params }: { params: Promise<{ id: string 
     } else if (vehicleType === 'car') {
       const economy = isTirumala ? 8 : 12;
       liters = (effDist / economy) * (isRoundTrip ? 2 : 1);
-      fuel = liters * 100;
+      fuel = liters * fuelRates.petrol;
       tolls = isTirumala ? 250 : 0;
       parking = 50;
     } else if (vehicleType === 'bike') {
       const economy = isTirumala ? 25 : 50;
       liters = (effDist / economy) * (isRoundTrip ? 2 : 1);
-      fuel = liters * 100;
+      fuel = liters * fuelRates.petrol;
       parking = 15;
     } else if (vehicleType === 'cab') {
       if (isTirumala) {
@@ -847,7 +859,7 @@ export default function PlaceDetails({ params }: { params: Promise<{ id: string 
                   )}
                   {calc.fuel > 0 && (
                     <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 12, color: '#475569' }}>
-                      <span>⛽ Fuel Cost (~₹100/L)</span>
+                      <span>⛽ Fuel Cost (~₹{fuelRates.petrol.toFixed(2)}/L)</span>
                       <span style={{ fontWeight: 600 }}>₹{Math.round(calc.fuel)}</span>
                     </div>
                   )}
@@ -900,7 +912,7 @@ export default function PlaceDetails({ params }: { params: Promise<{ id: string 
 
             {/* Transparency disclaimer */}
             <div style={{ fontSize: 10, color: '#94A3B8', textAlign: 'center', lineHeight: 1.4, margin: '8px 0 0 0' }}>
-              Estimated using: ✓ Current fuel price (~₹100/L) • ✓ Google Distance matrix • ✓ TTD/APSRTC fare guidelines • ✓ Approximate parking
+              Estimated using: ✓ Current fuel price (~₹{fuelRates.petrol.toFixed(2)}/L) • ✓ Google Distance matrix • ✓ TTD/APSRTC fare guidelines • ✓ Approximate parking
             </div>
 
           </div>

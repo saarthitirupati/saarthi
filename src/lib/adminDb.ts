@@ -189,3 +189,40 @@ export function updateStatus(updates: Partial<TirumalaStatus>): TirumalaStatus {
   fs.writeFileSync(STATUS_FILE, JSON.stringify(next, null, 2));
   return next;
 }
+
+// ── Fuel Rates ────────────────────────────────────────────────────────────────
+
+export interface FuelRates {
+  petrol: number;
+  diesel: number;
+  lastUpdated: string;
+}
+
+const DEFAULT_FUEL: FuelRates = {
+  petrol: 118.00,
+  diesel: 105.00,
+  lastUpdated: new Date().toISOString()
+};
+
+export function readFuelRates(): FuelRates {
+  ensureDir();
+  const FUEL_FILE = path.join(DATA_DIR, 'fuel.json');
+  if (!fs.existsSync(FUEL_FILE)) {
+    fs.writeFileSync(FUEL_FILE, JSON.stringify(DEFAULT_FUEL, null, 2));
+    return DEFAULT_FUEL;
+  }
+  try {
+    return { ...DEFAULT_FUEL, ...JSON.parse(fs.readFileSync(FUEL_FILE, 'utf-8')) };
+  } catch {
+    return DEFAULT_FUEL;
+  }
+}
+
+export function updateFuelRates(updates: Partial<FuelRates>): FuelRates {
+  const current = readFuelRates();
+  const next: FuelRates = { ...current, ...updates, lastUpdated: new Date().toISOString() };
+  ensureDir();
+  const FUEL_FILE = path.join(DATA_DIR, 'fuel.json');
+  fs.writeFileSync(FUEL_FILE, JSON.stringify(next, null, 2));
+  return next;
+}
