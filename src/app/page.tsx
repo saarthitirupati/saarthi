@@ -244,6 +244,11 @@ export default function Home() {
     }
   };
 
+  const handleQuickFeedback = (rating: string) => {
+    logTelemetry('passenger_feedback', 'cab', cabRef || 'general', { rating });
+    setFeedbackSent(true);
+  };
+
   const handleFeedbackSubmit = () => {
     if (!feedbackText.trim()) return;
     logTelemetry('passenger_feedback', 'cab', cabRef || 'general', { text: feedbackText.trim() });
@@ -1027,6 +1032,57 @@ export default function Home() {
                               ? `Help us improve! Tell us about your journey uphill or report any live queues you encounter.`
                               : `Saarthi is in Beta. Help us improve by submitting your feedback or reporting live queue status.`}
                           </p>
+                          
+                          {/* Quick Yes/No Options */}
+                          <div style={{ display: 'flex', gap: '8px', marginBottom: '10px' }}>
+                            <button
+                              onClick={() => handleQuickFeedback('Helpful')}
+                              style={{
+                                flex: 1,
+                                padding: '8px 10px',
+                                background: '#FFFFFF',
+                                border: '1px solid #16A34A',
+                                borderRadius: '8px',
+                                fontSize: '11px',
+                                fontWeight: 700,
+                                color: '#16A34A',
+                                cursor: 'pointer',
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                gap: '4px'
+                              }}
+                            >
+                              👍 Yes, Helpful
+                            </button>
+                            <button
+                              onClick={() => handleQuickFeedback('Needs Work')}
+                              style={{
+                                flex: 1,
+                                padding: '8px 10px',
+                                background: '#FFFFFF',
+                                border: '1px solid #DC2626',
+                                borderRadius: '8px',
+                                fontSize: '11px',
+                                fontWeight: 700,
+                                color: '#DC2626',
+                                cursor: 'pointer',
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                gap: '4px'
+                              }}
+                            >
+                              👎 Needs Work
+                            </button>
+                          </div>
+
+                          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', margin: '12px 0 8px 0', justifyContent: 'center' }}>
+                            <span style={{ height: '1px', background: '#F0E5D8', flex: 1 }}></span>
+                            <span style={{ fontSize: '9px', color: '#B49B7F', fontWeight: 800, letterSpacing: '0.5px' }}>OR SHARE LIVE UPDATE</span>
+                            <span style={{ height: '1px', background: '#F0E5D8', flex: 1 }}></span>
+                          </div>
+
                           <textarea
                             style={{
                               width: '100%',
