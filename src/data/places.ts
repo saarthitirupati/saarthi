@@ -1621,30 +1621,46 @@ export const PLACES: Place[] = [
   {
     id: 'sree-padmagiri-subramanya',
     name: 'Sree Padmagiri Subramanya Swamy Temple',
-    category: 'Tirupati Rural',
+    category: 'Temples',
     placeType: 'spiritual',
     location: 'Thanapalli, Tirupati Rural',
-    distanceKms: 6.5,
-    durationMins: 60,
+    distanceKms: 5.4,
+    durationMins: 90,
     budgetLevel: 'budget',
     entryFeeNum: 0,
-    interests: ['spiritual', 'history'],
-    openFrom: 6,
-    openTo: 20,
+    interests: ['spiritual', 'culture', 'history'],
+    openFrom: 7,
+    openTo: 19,
     isMustVisit: true,
-    description: 'The only temple in Andhra Pradesh depicting Lord Subramanya Swamy in a Brahmachari avatar, standing on a Shatkona Yantra Peetam.',
-    history: 'Established in 1979 by Sri La Sri Ganapathi Swamy, this temple is built on the lotus-shaped Sri Padmagiri hill.',
-    timings: '6:00 AM - 8:00 PM',
+    description: 'The only temple in Andhra Pradesh depicting Lord Subramanya Swamy in his celibate Brahmachari avatar, standing atop the lotus-shaped Sri Padmagiri hill.',
+    whyVisit: 'Andhra\'s only celibate avatar of Lord Subramanya. Consecrated upon a sacred Shatkona Yantra Peetam on a lotus-shaped hill, surrounded by ancient caves used by Siddhars like Sri Digambara Swamy.',
+    history: 'Founded in 1979 by saint Sri La Sri Ganapathi Swamy following a divine vision. The saint performed severe penance in the hill\'s caves. Esoteric rituals and the Subramanya Yantra custody were passed down in 2006 to his son, Sri La Sri Shanmugha Swamy.',
+    timings: 'Morning: 7:00 AM - 12:00 PM, Evening: 4:30 PM - 7:00 PM (Tuesdays: 5:30 AM - 12:30 PM & 4:00 PM - 8:00 PM)',
     entryFee: 'Free',
-    address: 'Thanapalli Cross Road, Tirupati Rural, Andhra Pradesh',
+    address: 'Sri Padmagiri Hill, Thanapalli, Tirupati Rural, Andhra Pradesh',
     rating: 4.8,
     reviewCount: 250,
-    image: '/assets/temples/kannappa.png',
-    coordinates: { lat: 13.6015, lng: 79.4312 },
-    tags: ['Subramanya Swamy', 'Thanapalli', 'Brahmachari Avatar', 'Shatkona Yantra'],
-    bestTime: 'Morning and Evening',
-    practicalInfo: { dressCode: 'Traditional / Conservative', food: 'Nearby in Tirupati', parking: 'Available at base' },
-    travelEstimates: { 'padmavathi': '10 mins' }
+    image: '/assets/temples/subramanya-thanapalli.png',
+    coordinates: { lat: 13.5898, lng: 79.4089 },
+    tags: ['Subramanya Swamy', 'Thanapalli', 'Brahmachari Avatar', 'Shatkona Yantra', 'Hill Temple', 'Ascetic'],
+    bestTime: 'Tuesdays (extended hours) or Guru Pournami',
+    practicalInfo: { dressCode: 'Strict traditional wear (Dhoti/Kurta for men, Saree/Chudidar for women).', food: 'Foothill stalls', parking: 'Available at base' },
+    travelEstimates: { 'tirupati': '15 mins drive' },
+    breakTimings: [{ from: '12:00', to: '16:30' }],
+    rituals: {
+      daily: [
+        'Abhishekam (7:30 AM)',
+        'Kavadi Chelimpu',
+        'Thalaneelalu (Hair tonsuring)',
+        'Vivaham (Marriages)'
+      ],
+      weekly: [
+        'Special Tuesday Abhishekam (6:00 AM)'
+      ],
+      annual: [
+        'Guru Pournami Special Alankaram'
+      ]
+    }
   }
 ];
 
