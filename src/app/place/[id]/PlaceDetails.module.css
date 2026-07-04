@@ -1190,86 +1190,237 @@
 }
 
 .breakDetailsCard {
-  background: linear-gradient(135deg, #FFF8F0, #FFF3E0);
-  border-radius: 14px;
-  padding: 16px;
-  border: 1px solid rgba(255, 153, 51, 0.12);
+  background: linear-gradient(135deg, #FFFDF9, #FFF7EC);
+  border-radius: 16px;
+  padding: 20px;
+  border: 1px solid rgba(233, 128, 29, 0.12);
+  box-shadow: 0 4px 20px rgba(233, 128, 29, 0.03);
+}
+
+.breakStatusBanner {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px;
+  border-radius: 10px;
+  font-size: 12px;
+  font-weight: 700;
+  margin-bottom: 14px;
+  width: fit-content;
+}
+
+.breakStatusClosed {
+  background: #FEF2F2;
+  color: #DC2626;
+  border: 1px solid rgba(220, 38, 38, 0.15);
+}
+
+.breakStatusOpen {
+  background: #F0FDF4;
+  color: #16A34A;
+  border: 1px solid rgba(22, 163, 74, 0.15);
+}
+
+.pulseDot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: currentColor;
+  animation: pulseAnimation 2s infinite;
+}
+
+@keyframes pulseAnimation {
+  0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(220, 38, 38, 0.4); }
+  70% { transform: scale(1); box-shadow: 0 0 0 6px rgba(220, 38, 38, 0); }
+  100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(220, 38, 38, 0); }
 }
 
 .breakText {
   font-size: 13px;
-  color: #666;
-  margin-bottom: 10px;
+  color: #4B5563;
+  line-height: 1.5;
+  margin-bottom: 16px;
+  font-weight: 500;
 }
 
 .breakTimesContainer {
   display: flex;
   flex-wrap: wrap;
-  gap: 10px;
+  gap: 12px;
 }
 
 .breakTimeItem {
   background: white;
-  border-radius: 10px;
-  padding: 10px 16px;
-  border: 1px solid rgba(0, 0, 0, 0.06);
+  border-radius: 12px;
+  padding: 12px 18px;
+  border: 1px solid rgba(233, 128, 29, 0.08);
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.015);
+  transition: transform 0.2s;
+  cursor: default;
+}
+
+.breakTimeItem:hover {
+  transform: translateY(-1px);
 }
 
 .breakTimeValue {
-  font-weight: 600;
+  font-weight: 700;
   font-size: 14px;
-  color: #1a1a2e;
+  color: #1F2937;
+  letter-spacing: 0.1px;
 }
 
 .ritualsContainer {
-  background: linear-gradient(135deg, #FFFBF5, #FFF8EE);
-  border-radius: 14px;
-  padding: 16px;
-  border: 1px solid rgba(255, 153, 51, 0.1);
+  background: linear-gradient(135deg, #FFFDF9, #FDF7EE);
+  border-radius: 16px;
+  padding: 20px;
+  border: 1px solid rgba(233, 128, 29, 0.12);
+  box-shadow: 0 4px 20px rgba(233, 128, 29, 0.03);
 }
 
 .ritualGroupHeader {
-  font-size: 14px;
-  font-weight: 700;
-  color: #B8860B;
-  margin-bottom: 8px;
+  font-size: 13px;
+  font-weight: 800;
+  color: #A0522D;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  margin-bottom: 12px;
+  margin-top: 16px;
   display: flex;
   align-items: center;
   gap: 6px;
 }
 
-.ritualItemsColumn {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
+.ritualGroupHeader:first-of-type {
+  margin-top: 0;
 }
 
-.ritualItemCard {
+/* Vertical Timeline */
+.timeline {
+  position: relative;
+  padding-left: 20px;
+  margin-top: 15px;
+  margin-bottom: 15px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.timeline::before {
+  content: '';
+  position: absolute;
+  left: 5px;
+  top: 8px;
+  bottom: 8px;
+  width: 2px;
+  background: linear-gradient(to bottom, #E9801D, #FFCC66, #E9801D);
+  opacity: 0.3;
+}
+
+.timelineItem {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+}
+
+.timelineDot {
+  position: absolute;
+  left: -20px;
+  top: 8px;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #E9801D;
+  border: 3px solid #FFFDF9;
+  box-shadow: 0 0 0 2px rgba(233, 128, 29, 0.15);
+  z-index: 2;
+  transition: transform 0.2s;
+}
+
+.timelineItem:hover .timelineDot {
+  transform: scale(1.25);
+  background: #E9801D;
+}
+
+.timelineContent {
+  flex: 1;
   background: white;
-  border-radius: 8px;
-  padding: 8px 12px;
+  border-radius: 12px;
+  padding: 12px 14px;
+  border: 1px solid rgba(233, 128, 29, 0.06);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.015);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: transform 0.2s, box-shadow 0.2s;
+  cursor: default;
+}
+
+.timelineContent:hover {
+  transform: translateX(3px);
+  box-shadow: 0 4px 12px rgba(233, 128, 29, 0.05);
+}
+
+.timelineTitle {
   font-size: 13px;
-  color: #333;
-  border: 1px solid rgba(0, 0, 0, 0.04);
+  font-weight: 700;
+  color: #1F2937;
+}
+
+.timelineTime {
+  font-size: 10px;
+  font-weight: 800;
+  color: #E9801D;
+  background: #FFF3E0;
+  padding: 4px 8px;
+  border-radius: 6px;
+  letter-spacing: 0.2px;
+  white-space: nowrap;
+}
+
+/* Festivals Grid */
+.festivalsGrid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.festivalCard {
+  background: white;
+  border: 1px solid rgba(233, 128, 29, 0.1);
+  border-radius: 12px;
+  padding: 10px 14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  font-weight: 700;
+  color: #8C551F;
+  box-shadow: 0 2px 6px rgba(233, 128, 29, 0.02);
+  transition: transform 0.2s, border-color 0.2s;
+  cursor: default;
+}
+
+.festivalCard:hover {
+  transform: translateY(-1px);
+  border-color: #E9801D;
+}
+
+.festivalIcon {
+  font-size: 14px;
 }
 
 .pillsContainer {
   display: flex;
   flex-wrap: wrap;
-  gap: 6px;
-}
-
-.annualPill {
-  background: #FFF3E0;
-  border-radius: 20px;
-  padding: 5px 12px;
-  font-size: 12px;
-  color: #C65D00;
-  font-weight: 600;
-  border: 1px solid rgba(198, 93, 0, 0.12);
+  gap: 8px;
+  margin-top: 10px;
+  margin-bottom: 10px;
 }
 
 .sevaPill {

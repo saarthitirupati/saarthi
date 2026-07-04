@@ -18,6 +18,39 @@ export default function PlaceDetails({ params }: { params: Promise<{ id: string 
   const { places, loading } = useRealtimePlaces(PLACES);
 
   const place = (places.length > 0 ? places : PLACES).find(t => t.id === id);
+
+  const formatTo12Hour = (timeStr: string) => {
+    try {
+      const [hStr, mStr] = timeStr.split(':');
+      const h = parseInt(hStr, 10);
+      const ampm = h >= 12 ? 'PM' : 'AM';
+      const formattedHour = h % 12 === 0 ? 12 : h % 12;
+      return `${formattedHour}:${mStr} ${ampm}`;
+    } catch {
+      return timeStr;
+    }
+  };
+
+  const isCurrentlyInBreak = useMemo(() => {
+    if (!place?.breakTimings || place.breakTimings.length === 0) return false;
+    const now = new Date();
+    const currentHours = now.getHours();
+    const currentMinutes = now.getMinutes();
+    const currentTimeVal = currentHours * 60 + currentMinutes;
+
+    return place.breakTimings.some(b => {
+      const [fromH, fromM] = b.from.split(':').map(Number);
+      const [toH, toM] = b.to.split(':').map(Number);
+      const fromTimeVal = fromH * 60 + fromM;
+      const toTimeVal = toH * 60 + toM;
+
+      if (toTimeVal < fromTimeVal) {
+        return currentTimeVal >= fromTimeVal || currentTimeVal <= toTimeVal;
+      }
+      return currentTimeVal >= fromTimeVal && currentTimeVal <= toTimeVal;
+    });
+  }, [place?.breakTimings]);
+
   const [copied, setCopied] = useState(false);
   const [copiedLink, setCopiedLink] = useState(false);
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
@@ -517,15 +550,32 @@ export default function PlaceDetails({ params }: { params: Promise<{ id: string 
               <section className={styles.section} id="break-timings">
                 <h2 className={styles.sectionTitle}>Break Timings</h2>
                 <div className={styles.breakDetailsCard}>
+                  
+                  {/* Dynamic Status Alert Banner */}
+                  {isCurrentlyInBreak ? (
+                    <div className={`${styles.breakStatusBanner} ${styles.breakStatusClosed}`}>
+                      <div className={styles.pulseDot} />
+                      <span>🔒 Currently Closed for Break</span>
+                    </div>
+                  ) : (
+                    <div className={`${styles.breakStatusBanner} ${styles.breakStatusOpen}`}>
+                      <div className={styles.pulseDot} style={{ background: '#16A34A' }} />
+                      <span>🟢 Open for Darshan</span>
+                    </div>
+                  )}
+
                   <p className={styles.breakText}>
-                    The temple closes for darshan during these hours. Plan your visit accordingly.
+                    {isCurrentlyInBreak 
+                      ? "Avoid visiting right now! The temple doors are temporarily closed for regular rituals." 
+                      : "The temple is currently open. Plan your travel to complete darshan before the next break."}
                   </p>
+
                   <div className={styles.breakTimesContainer}>
                     {place.breakTimings.map((b, i) => (
                       <div key={i} className={styles.breakTimeItem}>
-                        <Clock size={16} color="#FF9933" />
+                        <Clock size={16} color="#E9801D" />
                         <span className={styles.breakTimeValue}>
-                          {b.from} — {b.to}
+                          {formatTo12Hour(b.from)} — {formatTo12Hour(b.to)}
                         </span>
                       </div>
                     ))}
@@ -535,49 +585,73 @@ export default function PlaceDetails({ params }: { params: Promise<{ id: string 
             )}
 
             {/* 4c. RITUALS & SEVAS */}
-            {place.rituals && (place.rituals.daily?.length || place.rituals.weekly?.length || place.rituals.sevas?.length) && (
+            {place.rituals && (place.rituals.daily?.length || place.rituals.weekly?.length || place.rituals.annual?.length || place.rituals.sevas?.length) && (
               <section className={styles.section} id="rituals">
                 <h2 className={styles.sectionTitle}>Rituals & Sevas</h2>
                 <div className={styles.ritualsContainer}>
                   {place.rituals.daily && place.rituals.daily.length > 0 && (
-                    <div style={{ marginBottom: 16 }}>
+                    <div style={{ marginBottom: 20 }}>
                       <h4 className={styles.ritualGroupHeader}>
-                        Daily Rituals
+                        Daily Schedule
                       </h4>
-                      <div className={styles.ritualItemsColumn}>
-                        {place.rituals.daily.map((r, i) => (
-                          <div key={i} className={styles.ritualItemCard}>
-                            {r}
-                          </div>
-                        ))}
+                      <div className={styles.timeline}>
+                        {place.rituals.daily.map((r, i) => {
+                          const match = r.match(/(.*?)\s*\((.*?)\)/);
+                          const title = match ? match[1].trim() : r;
+                          const time = match ? match[2].trim() : 'Daily';
+                          return (
+                            <div key={i} className={styles.timelineItem}>
+                              <div className={styles.timelineDot} />
+                              <div className={styles.timelineContent}>
+                                <span className={styles.timelineTitle}>{title}</span>
+                                <span className={styles.timelineTime}>{time}</span>
+                              </div>
+                            </div>
+                          );
+                        })}
                       </div>
                     </div>
                   )}
                   {place.rituals.weekly && place.rituals.weekly.length > 0 && (
-                    <div style={{ marginBottom: 16 }}>
+                    <div style={{ marginBottom: 20 }}>
                       <h4 className={styles.ritualGroupHeader}>
-                        Weekly Rituals
+                        Weekly Schedule
                       </h4>
-                      <div className={styles.ritualItemsColumn}>
-                        {place.rituals.weekly.map((r, i) => (
-                          <div key={i} className={styles.ritualItemCard}>
-                            {r}
-                          </div>
-                        ))}
+                      <div className={styles.timeline}>
+                        {place.rituals.weekly.map((r, i) => {
+                          const match = r.match(/(.*?)\s*\((.*?)\)/);
+                          const title = match ? match[1].trim() : r;
+                          const time = match ? match[2].trim() : 'Weekly';
+                          return (
+                            <div key={i} className={styles.timelineItem}>
+                              <div className={styles.timelineDot} />
+                              <div className={styles.timelineContent}>
+                                <span className={styles.timelineTitle}>{title}</span>
+                                <span className={styles.timelineTime}>{time}</span>
+                              </div>
+                            </div>
+                          );
+                        })}
                       </div>
                     </div>
                   )}
                   {place.rituals.annual && place.rituals.annual.length > 0 && (
-                    <div style={{ marginBottom: 16 }}>
+                    <div style={{ marginBottom: 20 }}>
                       <h4 className={styles.ritualGroupHeader}>
                         Annual Festivals
                       </h4>
-                      <div className={styles.pillsContainer}>
-                        {place.rituals.annual.map((r, i) => (
-                          <span key={i} className={styles.annualPill}>
-                            {r}
-                          </span>
-                        ))}
+                      <div className={styles.festivalsGrid}>
+                        {place.rituals.annual.map((r, i) => {
+                          const festivalIcon = r.toLowerCase().includes('ratha') ? '🛕' : 
+                                               r.toLowerCase().includes('janmashtami') ? '🪶' : 
+                                               r.toLowerCase().includes('brahmotsavam') ? '✨' : '🌸';
+                          return (
+                            <div key={i} className={styles.festivalCard}>
+                              <span className={styles.festivalIcon}>{festivalIcon}</span>
+                              <span>{r}</span>
+                            </div>
+                          );
+                        })}
                       </div>
                     </div>
                   )}
