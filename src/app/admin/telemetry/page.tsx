@@ -55,6 +55,22 @@ export default function TelemetryPage() {
     return acc;
   }, {} as Record<string, number>);
 
+  // Group QR scans by Cab/Driver ID
+  const qrScanCounts = Object.entries(
+    events
+      .filter(e => e.eventType === 'qr_scan')
+      .reduce((acc, e) => {
+        const cab = e.entityId || 'unknown';
+        acc[cab] = (acc[cab] || 0) + 1;
+        return acc;
+      }, {} as Record<string, number>)
+  ).sort((a, b) => b[1] - a[1]);
+
+  // Filter passenger feedback events
+  const feedbackLogs = events
+    .filter(e => e.eventType === 'passenger_feedback')
+    .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+
   const getEventIcon = (type: string) => {
     switch (type) {
       case 'viewed_temple': return <Eye size={16} color="#3B82F6" />;
@@ -117,6 +133,52 @@ export default function TelemetryPage() {
             <div className={styles.statDelta}>{c.desc}</div>
           </div>
         ))}
+      </div>
+
+      {/* GTM QR Pilot & Feedback Analytics */}
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(340px, 1fr))', gap: '24px', marginTop: '32px' }}>
+        {/* Leaderboard Card */}
+        <div className={styles.tableCard} style={{ margin: 0, padding: '20px' }}>
+          <p className={styles.tableTitle} style={{ marginBottom: '16px' }}>🚕 QR Referral Leaderboard</p>
+          {qrScanCounts.length === 0 ? (
+            <div style={{ fontSize: '13px', color: '#94A3B8', textAlign: 'center', padding: '20px' }}>No scans recorded yet.</div>
+          ) : (
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+              {qrScanCounts.map(([cab, count]) => (
+                <div key={cab} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '8px 12px', background: '#1E293B', borderRadius: '8px', border: '1px solid #334155' }}>
+                  <span style={{ fontSize: '13px', fontWeight: 700, color: '#F1F5F9' }}>{cab}</span>
+                  <span className={styles.badge} style={{ backgroundColor: 'rgba(45, 212, 191, 0.15)', color: '#2DD4BF', fontWeight: 800 }}>
+                    {count} Scans
+                  </span>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+
+        {/* Feedback Logs Card */}
+        <div className={styles.tableCard} style={{ margin: 0, padding: '20px' }}>
+          <p className={styles.tableTitle} style={{ marginBottom: '16px' }}>💬 Passenger Feedback Log</p>
+          {feedbackLogs.length === 0 ? (
+            <div style={{ fontSize: '13px', color: '#94A3B8', textAlign: 'center', padding: '20px' }}>No feedback submitted yet.</div>
+          ) : (
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', maxHeight: '220px', overflowY: 'auto' }}>
+              {feedbackLogs.map((log) => (
+                <div key={log.id} style={{ padding: '10px 12px', background: '#1E293B', borderRadius: '8px', border: '1px solid #334155' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '6px' }}>
+                    <span className={styles.badge} style={{ backgroundColor: 'rgba(233, 128, 29, 0.15)', color: '#E9801D', fontSize: '11px', fontWeight: 800 }}>
+                      {log.entityId || 'general'}
+                    </span>
+                    <span style={{ fontSize: '11px', color: '#64748B' }}>{fmtTime(log.createdAt)}</span>
+                  </div>
+                  <p style={{ fontSize: '12px', color: '#E2E8F0', margin: 0, lineHeight: 1.4, fontStyle: 'italic' }}>
+                    "{log.metadata?.text || '—'}"
+                  </p>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
       </div>
 
       {/* Filter and Feed */}

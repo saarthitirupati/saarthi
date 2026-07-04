@@ -33,6 +33,8 @@ export default function Home() {
   const [showCounters, setShowCounters] = useState<boolean>(false);
   const [showCompleteDarshan, setShowCompleteDarshan] = useState<boolean>(false);
   const [showPersonalizeBanner, setShowPersonalizeBanner] = useState<boolean>(false);
+  const [feedbackText, setFeedbackText] = useState<string>('');
+  const [feedbackSent, setFeedbackSent] = useState<boolean>(false);
   
   // Daily Progress Tracker checklist state
   const [completedSteps, setCompletedSteps] = useState<{
@@ -67,6 +69,13 @@ export default function Home() {
       if (ref) {
         localStorage.setItem('saarthi_cab_ref', ref);
         setCabRef(ref);
+        
+        // Log QR scan event once per session
+        const loggedKey = `saarthi_qr_logged_${ref}`;
+        if (!sessionStorage.getItem(loggedKey)) {
+          logTelemetry('qr_scan', 'cab', ref, { source: 'qr_code_scan' });
+          sessionStorage.setItem(loggedKey, 'true');
+        }
       } else {
         setCabRef(localStorage.getItem('saarthi_cab_ref'));
       }
@@ -233,6 +242,13 @@ export default function Home() {
     } catch (e) {
       console.error(e);
     }
+  };
+
+  const handleFeedbackSubmit = () => {
+    if (!feedbackText.trim()) return;
+    logTelemetry('passenger_feedback', 'cab', cabRef || 'general', { text: feedbackText.trim() });
+    setFeedbackSent(true);
+    setFeedbackText('');
   };
 
   const handleQuizAnswer = (optionId: string, isCorrect: boolean) => {
@@ -999,38 +1015,80 @@ export default function Home() {
                         <span style={{ fontSize: '14px' }}>💬</span>
                         {cabRef ? `Riding in Cab ${cabRef}` : 'Tell us your thoughts!'}
                       </span>
-                      <p style={{ fontSize: '12px', color: '#6B4C25', margin: '0 0 12px 0', lineHeight: '1.5', fontWeight: 500 }}>
-                        {cabRef 
-                          ? `Help us improve! Tell us about your journey uphill or report any live queues you encounter.`
-                          : `Saarthi is in Beta. Chat directly with the founders on WhatsApp to report bugs or ask questions.`}
-                      </p>
-                      <a 
-                        href={`https://wa.me/918123456789?text=${encodeURIComponent(
-                          cabRef 
-                            ? `Hi Saarthi, I scanned the QR code in cab ${cabRef}. Here is my feedback/live report: `
-                            : "Hi Saarthi team, I am using the app and have some feedback: "
-                        )}`}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        style={{
-                          display: 'inline-flex',
-                          alignItems: 'center',
-                          justifyContent: 'center',
-                          gap: '8px',
-                          width: '100%',
-                          padding: '10px 14px',
-                          background: '#25D366',
-                          color: '#FFFFFF',
-                          borderRadius: '8px',
-                          fontSize: '13px',
-                          fontWeight: 700,
-                          textDecoration: 'none',
-                          boxShadow: '0 4px 10px rgba(37, 211, 102, 0.2)',
-                          transition: 'transform 0.2s'
-                        }}
-                      >
-                        Share Feedback via WhatsApp
-                      </a>
+                      
+                      {feedbackSent ? (
+                        <div style={{ fontSize: '12px', color: '#15803D', fontWeight: 600, padding: '4px 0' }}>
+                          ✅ Thank you! Your feedback has been logged in our system. Safe travels uphill!
+                        </div>
+                      ) : (
+                        <>
+                          <p style={{ fontSize: '12px', color: '#6B4C25', margin: '0 0 10px 0', lineHeight: '1.5', fontWeight: 500 }}>
+                            {cabRef 
+                              ? `Help us improve! Tell us about your journey uphill or report any live queues you encounter.`
+                              : `Saarthi is in Beta. Help us improve by submitting your feedback or reporting live queue status.`}
+                          </p>
+                          <textarea
+                            style={{
+                              width: '100%',
+                              height: '54px',
+                              padding: '8px 10px',
+                              borderRadius: '8px',
+                              border: '1px solid #E2E8F0',
+                              fontSize: '12px',
+                              marginBottom: '10px',
+                              resize: 'none',
+                              outline: 'none',
+                              fontFamily: 'inherit',
+                              color: '#1F2937'
+                            }}
+                            placeholder="Type your feedback or live queue report..."
+                            value={feedbackText}
+                            onChange={(e) => setFeedbackText(e.target.value)}
+                          />
+                          <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                            <button
+                              onClick={handleFeedbackSubmit}
+                              disabled={!feedbackText.trim()}
+                              style={{
+                                width: '100%',
+                                padding: '10px 14px',
+                                background: feedbackText.trim() ? '#E9801D' : '#E2E8F0',
+                                color: feedbackText.trim() ? '#FFFFFF' : '#94A3B8',
+                                border: 'none',
+                                borderRadius: '8px',
+                                fontSize: '12px',
+                                fontWeight: 700,
+                                cursor: feedbackText.trim() ? 'pointer' : 'not-allowed',
+                              }}
+                            >
+                              Submit Live Report
+                            </button>
+                            <a 
+                              href={`https://wa.me/918123456789?text=${encodeURIComponent(
+                                cabRef 
+                                  ? `Hi Saarthi, I scanned the QR code in cab ${cabRef}. Here is my feedback/live report: `
+                                  : "Hi Saarthi team, I am using the app and have some feedback: "
+                              )}`}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              style={{
+                                display: 'inline-flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                gap: '6px',
+                                fontSize: '11px',
+                                fontWeight: 700,
+                                color: '#16A34A',
+                                textDecoration: 'none',
+                                textAlign: 'center',
+                                padding: '4px'
+                              }}
+                            >
+                              Or Chat Directly on WhatsApp ➔
+                            </a>
+                          </div>
+                        </>
+                      )}
                     </div>
 
                     {/* Counter Locations */}
