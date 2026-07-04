@@ -83,14 +83,67 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         </nav>
 
         <div className={styles.sidebarFooter}>
-          <div className={styles.adminBadge}>
-            <div className={styles.adminAvatar}>A</div>
-            <div>
-              <p className={styles.adminName}>Admin</p>
-              <p className={styles.adminEmail}>admin@jeevapath.in</p>
-            </div>
+          {/* Executive Role Switcher Dropdown */}
+          <div style={{ marginBottom: 12, padding: '0 4px' }}>
+            <label style={{ display: 'block', fontSize: '10px', fontWeight: 800, color: '#64748B', textTransform: 'uppercase', letterSpacing: '0.6px', marginBottom: 6 }}>
+              Select Active Role
+            </label>
+            <select
+              value={localStorage.getItem('saarthi_admin_role') || 'CEO'}
+              onChange={(e) => {
+                localStorage.setItem('saarthi_admin_role', e.target.value);
+                // Trigger a page reload or state sync
+                window.location.reload();
+              }}
+              style={{
+                width: '100%',
+                background: 'rgba(255, 255, 255, 0.04)',
+                border: '1px solid rgba(255, 255, 255, 0.08)',
+                borderRadius: '8px',
+                padding: '6px 8px',
+                color: '#F1F5F9',
+                fontSize: '12px',
+                fontWeight: 600,
+                outline: 'none',
+                cursor: 'pointer'
+              }}
+            >
+              <option value="CEO" style={{ background: '#0F172A', color: '#F1F5F9' }}>Chief Executive Officer (CEO)</option>
+              <option value="Chairman" style={{ background: '#0F172A', color: '#F1F5F9' }}>Chairman of the Board</option>
+              <option value="President" style={{ background: '#0F172A', color: '#F1F5F9' }}>President</option>
+              <option value="VicePresident" style={{ background: '#0F172A', color: '#F1F5F9' }}>Vice President (VP)</option>
+              <option value="Founder" style={{ background: '#0F172A', color: '#F1F5F9' }}>Founder & Managing Director</option>
+              <option value="HRAdmin" style={{ background: '#0F172A', color: '#F1F5F9' }}>HR & Administration Head</option>
+            </select>
           </div>
-          <button onClick={logout} className={styles.logoutBtn}>
+
+          {/* Dynamic Profile Badge */}
+          {(() => {
+            const activeKey = (typeof window !== 'undefined' ? localStorage.getItem('saarthi_admin_role') : 'CEO') || 'CEO';
+            const rolesMap: Record<string, { name: string; title: string; email: string; avatar: string }> = {
+              CEO: { name: 'Sunil Thatra', title: 'CEO & Founder', email: 'sunil@jeevapath.in', avatar: 'ST' },
+              Chairman: { name: 'Dr. R. Prasad', title: 'Chairman', email: 'prasad@jeevapath.in', avatar: 'RP' },
+              President: { name: 'M. S. Moorthy', title: 'President', email: 'moorthy@jeevapath.in', avatar: 'MM' },
+              VicePresident: { name: 'A. K. Shastri', title: 'Vice President', email: 'shastri@jeevapath.in', avatar: 'AS' },
+              Founder: { name: 'K. R. Murthy', title: 'Co-Founder & MD', email: 'murthy@jeevapath.in', avatar: 'KM' },
+              HRAdmin: { name: 'V. S. Latha', title: 'HR & Admin Head', email: 'latha@jeevapath.in', avatar: 'VL' }
+            };
+            const activeProfile = rolesMap[activeKey] || rolesMap.CEO;
+            return (
+              <div className={styles.adminBadge}>
+                <div className={styles.adminAvatar}>{activeProfile.avatar}</div>
+                <div>
+                  <p className={styles.adminName}>{activeProfile.name}</p>
+                  <p className={styles.adminEmail} style={{ color: '#E9801D', fontWeight: 700, fontSize: '10px', textTransform: 'uppercase', marginTop: '1px' }}>
+                    {activeProfile.title}
+                  </p>
+                  <p className={styles.adminEmail} style={{ opacity: 0.8 }}>{activeProfile.email}</p>
+                </div>
+              </div>
+            );
+          })()}
+
+          <button onClick={logout} className={styles.logoutBtn} style={{ marginTop: 8 }}>
             <LogOut size={16} /> Logout
           </button>
         </div>
