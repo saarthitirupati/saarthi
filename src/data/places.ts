@@ -664,7 +664,7 @@ export const PLACES: Place[] = [
     address: 'Hare Krishna Road, Tirupati',
     rating: 4.8,
     reviewCount: 35000,
-    image: '/assets/temples/iskaon.png',
+    image: '/assets/temples/iskcon.png',
     coordinates: { lat: 13.6468, lng: 79.4138 },
     tags: ['Krishna', 'Modern'],
     bestTime: 'Evening Aarti (Sandhya Aarti at 7:00 PM)',
