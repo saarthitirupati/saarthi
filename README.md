@@ -23,6 +23,8 @@ We have completed the core foundation and hyperlocal GTM pilot features for Phas
 * Stores referral tags persistently in browser `localStorage` to attribute subsequent sessions.
 * Connects to a closed-loop **WhatsApp Feedback Card** that pre-populates template messages (e.g., *"Hi Saarthi, I scanned the QR code in cab cab_402. Here is my feedback..."*).
 
+![Cab QR Pilot Mockup](public/assets/cab_qr_mockup.png)
+
 ---
 
 ## 🛠️ Architecture & Tech Stack
@@ -32,6 +34,8 @@ We have completed the core foundation and hyperlocal GTM pilot features for Phas
 * **Database:** Supabase (PostgreSQL with Realtime WebSockets)
 * **State Management:** React Context & useTripStore
 * **Attribution & Logs:** Telemetry Route Handler (`/api/telemetry` & `/api/track`)
+
+![Saarthi System Architecture](public/assets/architecture.png)
 
 ---
 
