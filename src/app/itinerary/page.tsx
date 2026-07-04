@@ -1,26 +1,51 @@
 'use client';
 
-import { PLACES as PLACES } from '@/data/places';
-import { ArrowLeft, Clock, Navigation, CheckCircle, Info, Car, Share2, Lightbulb } from 'lucide-react';
+import { PLACES } from '@/data/places';
+import { ArrowLeft, Clock, Navigation, CheckCircle, Info, Car, Share2, Lightbulb, Star } from 'lucide-react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { useState, useMemo } from 'react';
 import styles from './Itinerary.module.css';
 import { useTrip } from '@/components/TripContext';
 import { generateItinerary } from '@/utils/planner';
+import { useRealtimePlaces } from '@/lib/useRealtimePlaces';
+import { calculateDistance } from '@/utils/location';
 
 export default function Itinerary() {
-  const { days, visitedPlaces, toggleVisited } = useTrip();
+  const { days, visitedPlaces, toggleVisited, userLocation } = useTrip();
   const [activeDay, setActiveDay] = useState(1);
+  const { places } = useRealtimePlaces(PLACES);
   
   const itinerary = useMemo(() => generateItinerary(days || 1), [days]);
   const currentDayPlan = itinerary.find(d => d.day === activeDay) || itinerary[0];
 
-  const fullDayPlan = currentDayPlan.items.map(item => ({
-    ...item,
-    place: PLACES.find(t => t.id === item.placeId)!,
-    isVisited: visitedPlaces.includes(item.placeId)
-  }));
+  const fullDayPlan = useMemo(() => {
+    const activePlaces = places.length > 0 ? places : PLACES;
+    return currentDayPlan.items.map(item => ({
+      ...item,
+      place: activePlaces.find(t => t.id === item.placeId)!,
+      isVisited: visitedPlaces.includes(item.placeId)
+    }));
+  }, [currentDayPlan, places, visitedPlaces]);
+
+  const followRouteUrl = useMemo(() => {
+    if (fullDayPlan.length === 0) return '#';
+    const coords = fullDayPlan
+      .map(item => item.place?.coordinates)
+      .filter(Boolean) as { lat: number; lng: number }[];
+    if (coords.length === 0) return '#';
+    
+    const originStr = userLocation ? `&origin=${userLocation.lat},${userLocation.lng}` : '';
+    const destination = coords[coords.length - 1];
+    const destinationStr = `&destination=${destination.lat},${destination.lng}`;
+    
+    const waypoints = coords.slice(0, -1);
+    const waypointsStr = waypoints.length > 0
+      ? `&waypoints=${waypoints.map(w => `${w.lat},${w.lng}`).join('|')}`
+      : '';
+      
+    return `https://www.google.com/maps/dir/?api=1${originStr}${destinationStr}${waypointsStr}&travelmode=driving`;
+  }, [fullDayPlan, userLocation]);
 
   const totalPlaces = itinerary.reduce((acc, d) => acc + d.items.length, 0);
   const totalVisited = visitedPlaces.length;
@@ -30,10 +55,11 @@ export default function Itinerary() {
 
   const shareItinerary = () => {
     let text = `My ${days}-Day Tirupati Journey\n\n`;
+    const activePlaces = places.length > 0 ? places : PLACES;
     itinerary.forEach(d => {
       text += `Day ${d.day}: ${d.theme}\n`;
       d.items.forEach(item => {
-        const t = PLACES.find(t => t.id === item.placeId);
+        const t = activePlaces.find(t => t.id === item.placeId);
         text += `- ${item.time}: ${t?.name} (${item.duration})\n`;
       });
       text += '\n';
@@ -191,6 +217,13 @@ export default function Itinerary() {
                     </p>
                     <div className={styles.itemFooter}>
                       <span><Clock size={12} /> {item.duration}</span>
+                      {item.place && (
+                        <span style={{ fontSize: 12, color: 'var(--color-saffron-600)', fontWeight: 600, display: 'inline-flex', alignItems: 'center', gap: 4 }}>
+                          📍 {userLocation && item.place.coordinates
+                            ? `${calculateDistance(userLocation.lat, userLocation.lng, item.place.coordinates.lat, item.place.coordinates.lng).toFixed(1)} km`
+                            : `${item.place.distanceKms} km`}
+                        </span>
+                      )}
                       <Link href={`/place/${item.placeId}`} className={styles.detailsLink}>Details</Link>
                     </div>
                   </div>
@@ -202,10 +235,16 @@ export default function Itinerary() {
       </section>
 
       <div className={styles.stickyFooter}>
-        <button className={styles.startButton}>
+        <a 
+          href={followRouteUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          className={styles.startButton}
+          style={{ textDecoration: 'none', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: 8 }}
+        >
           <Navigation size={20} />
-          <span>Follow Day {activeDay} Route</span>
-        </button>
+          <span>Follow Day {activeDay} Route →</span>
+        </a>
       </div>
     </main>
   );

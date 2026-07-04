@@ -14,7 +14,7 @@ export const STORIES = [
     subtitle: 'A 2.5 Million Year Old Geological Marvel',
     snippet: 'A natural rock formation in Tirumala, believed to be the spot where Lord Venkateswara first set foot.',
     fullText: 'Silathoranam, a natural rock formation in Tirumala, is one of the few natural stone arches in the world. Geological studies suggest it is over 2.5 million years old. According to mythology, it is believed to be the exact spot where Lord Venkateswara first set foot on Earth. The arch resembles the hood of Adisesha, the divine serpent, and the conch and discus (Shanka and Chakra). Visiting this spot offers a profound connection to the ancient origins of the sacred hills.',
-    image: '/assets/ai/hero_spiritual_sunset.png',
+    image: '/assets/temples/silathoranam.png',
     readTime: '20 Seconds'
   },
   {
@@ -23,7 +23,7 @@ export const STORIES = [
     subtitle: 'The Tale of Bhakta Kannappa',
     snippet: 'The incredible story of Bhakta Kannappa, who offered his eyes to Lord Shiva out of pure devotion.',
     fullText: 'Srikalahasti is famed for the legend of Bhakta Kannappa. A devout tribal hunter, Kannappa noticed one of the eyes of the Shiva Lingam bleeding. Unable to bear the Lord\'s pain, he plucked out his own eye and placed it on the Lingam. When the other eye began to bleed, he prepared to pluck out his second eye, placing his toe on the Lingam to mark the spot. Touched by his supreme devotion, Lord Shiva appeared and granted him liberation. This temple stands as a testament to the fact that pure devotion transcends all rituals.',
-    image: '/assets/ai/hero_nature.png',
+    image: '/assets/temples/sri-kalahasti.png',
     readTime: '45 Seconds'
   },
   {

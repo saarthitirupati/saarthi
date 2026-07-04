@@ -28,6 +28,10 @@ export async function PUT(req: Request, { params }: { params: Promise<{ id: stri
   const body = await req.json();
 
   try {
+    // Fetch schema columns to prevent database mismatches
+    const { data: schemaRow } = await supabase.from('places').select('*').limit(1);
+    const validKeys = schemaRow && schemaRow.length > 0 ? new Set(Object.keys(schemaRow[0])) : null;
+
     // Map body fields to fit Supabase update payload
     const updates = {
       name: body.name,
@@ -59,6 +63,21 @@ export async function PUT(req: Request, { params }: { params: Promise<{ id: stri
       spiritualInfo: body.spiritualInfo,
       practicalInfo: body.practicalInfo,
       videoUrl: body.videoUrl,
+      // Phase 1 Schema Fields
+      shortIntro: body.shortIntro,
+      whyVisit: body.whyVisit,
+      openingTime: body.openingTime,
+      closingTime: body.closingTime,
+      duration: body.duration,
+      travelByRTC: body.travelByRTC,
+      travelByCar: body.travelByCar,
+      travelByBike: body.travelByBike,
+      approxRTCFare: body.approxRTCFare,
+      approxCarCost: body.approxCarCost,
+      approxBikeCost: body.approxBikeCost,
+      youtubeLink: body.youtubeLink,
+      visitorTips: body.visitorTips,
+      guideAudio: body.guideAudio,
       // Sprint 1 columns
       architecture: body.architecture,
       importance: body.importance,
@@ -76,10 +95,12 @@ export async function PUT(req: Request, { params }: { params: Promise<{ id: stri
       nearbyTemples: body.nearbyTemples
     };
 
-    // Filter undefined values
+    // Filter undefined values and keep only valid columns
     const cleanUpdates: any = {};
     for (const [k, v] of Object.entries(updates)) {
-      if (v !== undefined) cleanUpdates[k] = v;
+      if (v !== undefined && (!validKeys || validKeys.has(k))) {
+        cleanUpdates[k] = v;
+      }
     }
 
     const { data, error } = await supabase.from('places').update(cleanUpdates).eq('id', id).select();

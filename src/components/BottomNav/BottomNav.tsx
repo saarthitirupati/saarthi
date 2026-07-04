@@ -23,17 +23,17 @@ export default function BottomNav() {
           const isActive = pathname === item.href;
           return (
             <Link key={item.name} href={item.href} className={styles.navLink}>
-              <div className={`${styles.iconWrapper} ${isActive ? styles.active : ''}`}>
-                <item.icon size={24} />
+              <div className={styles.iconWrapper}>
                 {isActive && (
                   <motion.div 
-                    layoutId="navTab"
-                    className={styles.activeIndicator}
-                    transition={{ type: 'spring', bounce: 0.2, duration: 0.6 }}
+                    layoutId="activePill"
+                    className={styles.activePill}
+                    transition={{ type: 'spring', bounce: 0.18, duration: 0.45 }}
                   />
                 )}
+                <item.icon size={22} className={isActive ? styles.activeIcon : styles.inactiveIcon} style={{ zIndex: 2 }} />
               </div>
-              <span className={isActive ? styles.activeLabel : ''}>{item.name}</span>
+              <span className={isActive ? styles.activeLabel : styles.inactiveLabel}>{item.name}</span>
             </Link>
           );
         })}

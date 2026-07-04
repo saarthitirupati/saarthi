@@ -8,11 +8,13 @@ import Link from 'next/link';
 import { motion } from 'framer-motion';
 import styles from './Saved.module.css';
 
+import { calculateDistance, calculateDrivingDistance } from '@/utils/location';
+
 export default function SavedPage() {
   const [places, setPlaces] = useState<Place[]>([]);
   const [loading, setLoading] = useState(true);
 
-  const { savedPlaces, viewedPlaces, togglePlace, clearViewedHistory } = useTrip();
+  const { savedPlaces, viewedPlaces, togglePlace, clearViewedHistory, userLocation } = useTrip();
 
   useEffect(() => {
     fetch('/api/admin/places')
@@ -80,7 +82,11 @@ export default function SavedPage() {
                         <h3>{place.name}</h3>
                         <div className={styles.location}>
                           <MapPin size={12} />
-                          <span>{place.location} • {place.distanceKms} km</span>
+                          <span>
+                            {place.location} • {userLocation && place.coordinates
+                              ? `${calculateDrivingDistance(userLocation.lat, userLocation.lng, place.coordinates.lat, place.coordinates.lng, place.location.toLowerCase().includes('tirumala') || place.location.toLowerCase().includes('narayanagiri') || !!(place.category && place.category.toLowerCase().includes('tirumala'))).toFixed(1)} km away`
+                              : `${place.distanceKms} km`}
+                          </span>
                         </div>
                       </div>
                     </Link>

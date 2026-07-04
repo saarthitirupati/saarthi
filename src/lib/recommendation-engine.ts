@@ -457,6 +457,9 @@ export function getContextualRecommendations(
 
   return allPlaces
     .map(place => {
+      if (place.placeType === 'food' || place.category === 'Food' || (place.interests && place.interests.includes('food'))) {
+        return null;
+      }
       let score = scorePlace(place, dummyPrefs, 'best');
       if (score === 0) return null;
 
@@ -471,10 +474,7 @@ export function getContextualRecommendations(
           reason = '🍃 Fresh morning nature walk';
         }
       } else if (timeOfDay === 'afternoon') {
-        if (place.placeType === 'food') {
-          score += 30;
-          reason = '🍽️ Great spot for lunch';
-        } else if (place.placeType === 'historical' || place.category?.toLowerCase().includes('museum')) {
+        if (place.placeType === 'historical' || place.category?.toLowerCase().includes('museum')) {
           score += 20;
           reason = '🏛️ Perfect indoor afternoon visit';
         }
@@ -484,9 +484,9 @@ export function getContextualRecommendations(
           reason = '🌇 Perfect evening view';
         }
       } else {
-        if (place.placeType === 'food' || place.placeType === 'leisure') {
+        if (place.placeType === 'leisure') {
           score += 20;
-          reason = '🌙 Great evening dining';
+          reason = '🌙 Great evening activities';
         }
       }
 

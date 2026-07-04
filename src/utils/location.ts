@@ -22,7 +22,32 @@ export function calculateDistance(
   const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
   const d = R * c; // Distance in km
   
-  return Number(d.toFixed(1)); // return with 1 decimal place (e.g. 2.4)
+  return d; // Return raw value for nesting math
+}
+
+/**
+ * Calculates a realistic driving distance by applying road routing factors
+ */
+export function calculateDrivingDistance(
+  lat1: number,
+  lon1: number,
+  lat2: number,
+  lon2: number,
+  isTirumalaSpot: boolean = false
+): number {
+  const dist = calculateDistance(lat1, lon1, lat2, lon2);
+  if (isTirumalaSpot && dist < 24) {
+    return Number(Math.max(25, dist * 1.6).toFixed(1));
+  }
+  
+  let factor = 1.15;
+  if (dist < 15) {
+    factor = 1.35;
+  } else if (dist < 40) {
+    factor = 1.25;
+  }
+  
+  return Number((dist * factor).toFixed(1));
 }
 
 /**

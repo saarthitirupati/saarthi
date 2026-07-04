@@ -129,11 +129,9 @@ export default function AdminPlaces() {
                       </td>
                       <td>
                         <div className={styles.actionRow}>
-                          {p._dynamic && (
-                            <Link href={`/admin/places/${p.id}/edit`} className={styles.btnSecondary} style={{ padding: '6px 10px' }}>
-                              <Pencil size={14} />
-                            </Link>
-                          )}
+                          <Link href={`/admin/places/${p.id}/edit`} className={styles.btnSecondary} style={{ padding: '6px 10px' }}>
+                            <Pencil size={14} />
+                          </Link>
                           <button
                             onClick={() => del(p.id, !!p._dynamic)}
                             className={styles.btnDanger}

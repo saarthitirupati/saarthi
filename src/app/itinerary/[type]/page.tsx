@@ -1,26 +1,42 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
 import { ChevronLeft, Clock, Wallet, Navigation, Sparkles, Bookmark, ExternalLink } from 'lucide-react';
 import styles from './Itinerary.module.css';
 import { useTrip } from '@/components/TripContext';
 import { PLACES, Place } from '@/data/places';
+import { useRealtimePlaces } from '@/lib/useRealtimePlaces';
+import { calculateDistance } from '@/utils/location';
 
 export default function ItineraryPage() {
   const { type } = useParams();
-  const { generatedPlans, savePlan } = useTrip();
+  const { generatedPlans, savePlan, userLocation } = useTrip();
   const router = useRouter();
-  const [places, setPlaces] = useState<Place[]>([]);
-
-  useEffect(() => {
-    fetch('/api/admin/places')
-      .then(r => r.json())
-      .then(d => setPlaces(d.places || PLACES));
-  }, []);
+  const { places } = useRealtimePlaces(PLACES);
 
   const plan = generatedPlans?.find(p => p.type === type);
+
+  const startRouteUrl = useMemo(() => {
+    if (!plan || plan.stops.length === 0) return '#';
+    const activePlaces = places.length > 0 ? places : PLACES;
+    const coords = plan.stops
+      .map(stop => activePlaces.find(p => p.id === stop.placeId)?.coordinates)
+      .filter(Boolean) as { lat: number; lng: number }[];
+    if (coords.length === 0) return '#';
+    
+    const originStr = userLocation ? `&origin=${userLocation.lat},${userLocation.lng}` : '';
+    const destination = coords[coords.length - 1];
+    const destinationStr = `&destination=${destination.lat},${destination.lng}`;
+    
+    const waypoints = coords.slice(0, -1);
+    const waypointsStr = waypoints.length > 0
+      ? `&waypoints=${waypoints.map(w => `${w.lat},${w.lng}`).join('|')}`
+      : '';
+      
+    return `https://www.google.com/maps/dir/?api=1${originStr}${destinationStr}${waypointsStr}&travelmode=driving`;
+  }, [plan, places, userLocation]);
 
   if (!plan) {
     return <div className={styles.container}>Plan not found</div>;
@@ -150,6 +166,12 @@ export default function ItineraryPage() {
                           <Wallet size={12} />
                           <span>₹{stop.estimatedCost}</span>
                         </div>
+                        {userLocation && place.coordinates && (
+                          <div className={styles.metaItem} style={{ color: 'var(--color-saffron-600)', fontWeight: 600 }}>
+                            <Navigation size={12} />
+                            <span>{calculateDistance(userLocation.lat, userLocation.lng, place.coordinates.lat, place.coordinates.lng).toFixed(1)} km</span>
+                          </div>
+                        )}
                       </div>
                     </div>
                   </motion.div>
@@ -176,10 +198,16 @@ export default function ItineraryPage() {
           <ExternalLink size={20} />
           Share
         </button>
-        <button className={`${styles.btnAction} ${styles.btnStart}`}>
+        <a 
+          href={startRouteUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          className={`${styles.btnAction} ${styles.btnStart}`}
+          style={{ textDecoration: 'none', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6 }}
+        >
           <Navigation size={20} />
           Start
-        </button>
+        </a>
       </div>
     </div>
   );

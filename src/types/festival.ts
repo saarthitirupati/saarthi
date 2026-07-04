@@ -9,7 +9,7 @@ export interface Festival {
   description?: string;
   rituals?: string[];
   crowdPrediction?: string;
-  parking?: 'Available' | 'Limited' | 'Very Limited';
+  parking?: string;
   parkingStatus?: string; // DB mapping
   alternateRoutes?: string[];
   recommendedTime: string;

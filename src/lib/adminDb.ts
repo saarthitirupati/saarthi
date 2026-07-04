@@ -138,17 +138,34 @@ export interface DarshanTypeStatus {
   peakHours: string;        // e.g. "Weekends 6 AM - 10 PM"
 }
 
+export interface SsdTokenSlot {
+  slotTime: string;       // e.g. "9:00 AM - 10:00 AM"
+  status: 'available' | 'filling' | 'closed';
+  tokensLeft?: string;    // e.g. "~200 remaining" or "Full"
+}
+
+export interface SsdCounter {
+  name: string;
+  description: string;
+}
+
 export interface TirumalaStatus {
-  waitTime: string;         // e.g. "2-3 hours"
+  waitTime: string;
   crowdLevel: 'low' | 'moderate' | 'high' | 'very-high';
-  sevaStatus: string;       // e.g. "All sevas open"
-  notice: string;           // free-text notice / announcement
-  lastUpdated: string;      // ISO timestamp
+  sevaStatus: string;
+  notice: string;
+  lastUpdated: string;
   darshanSpeed: 'fast' | 'normal' | 'slow';
   accommodationStatus: 'available' | 'limited' | 'full';
   ladduAvailability: 'available' | 'limited' | 'no-stock';
   weather: string;
   darshans: DarshanTypeStatus[];
+  ssdTokenStatus: 'issuing' | 'paused' | 'closed-for-day';
+  ssdNextTokenTime: string;    // e.g. "2:00 PM" or "Tomorrow 5 AM"
+  ssdTokenSlots: SsdTokenSlot[];
+  ssdNotice: string;           // e.g. "Tokens exhausted for morning slots"
+  ssdTimingsGuide: string;
+  ssdCounters: SsdCounter[];
 }
 
 const DEFAULT_STATUS: TirumalaStatus = {
@@ -166,7 +183,24 @@ const DEFAULT_STATUS: TirumalaStatus = {
     { name: 'Special Entry (₹300)', waitTime: '3-4 hours', peakHours: 'Daily 9 AM - 3 PM' },
     { name: 'Divya Darshan (Footpath)', waitTime: '8-10 hours', peakHours: 'Daily 8 AM - 4 PM' },
     { name: 'VIP / Srivani Break', waitTime: '1.5 hours', peakHours: 'Daily 6 AM - 8 AM' }
-  ]
+  ],
+  ssdTokenStatus: 'issuing',
+  ssdNextTokenTime: '2:00 PM',
+  ssdTokenSlots: [
+    { slotTime: '5:00 AM - 7:00 AM', status: 'closed', tokensLeft: 'Full' },
+    { slotTime: '7:00 AM - 9:00 AM', status: 'closed', tokensLeft: 'Full' },
+    { slotTime: '9:00 AM - 11:00 AM', status: 'filling', tokensLeft: '~200 remaining' },
+    { slotTime: '11:00 AM - 1:00 PM', status: 'available', tokensLeft: 'Available' },
+    { slotTime: '2:00 PM - 4:00 PM', status: 'available', tokensLeft: 'Available' },
+    { slotTime: '4:00 PM - 6:00 PM', status: 'available', tokensLeft: 'Available' },
+  ],
+  ssdNotice: '',
+  ssdTimingsGuide: 'Offline free SSD tokens are released daily starting at 3:00 AM / 4:00 AM. Batches are allocated hourly for that day\'s Darshan. Counters close as soon as the daily quota runs out (~15,000 - 20,000 tokens).',
+  ssdCounters: [
+    { name: 'Vishnu Nivasam Counter', description: 'Located opposite Tirupati Railway Station (Highly convenient for train travelers)' },
+    { name: 'Srinivasam Complex Counter', description: 'Located opposite Tirupati RTC Central Bus Stand (Ideal for bus travelers)' },
+    { name: 'Bhudevi Complex Counter', description: 'Located near Alipiri Footpath Link Road (Ideal for pedestrian pilgrims)' },
+  ],
 };
 
 export function readStatus(): TirumalaStatus {

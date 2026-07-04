@@ -2,6 +2,8 @@ import { NextResponse } from 'next/server';
 import { supabase } from '@/lib/supabase';
 import { predictCrowdMetrics } from '@/utils/crowdPredictor';
 
+export const dynamic = 'force-dynamic';
+
 export async function GET() {
   const today = new Date();
   today.setHours(0, 0, 0, 0);

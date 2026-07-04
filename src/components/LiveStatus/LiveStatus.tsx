@@ -48,11 +48,12 @@ export default function LiveStatus() {
   const [expanded, setExpanded] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
   
-  const { status } = useRealtimeStatus();
+  const { status, refresh } = useRealtimeStatus();
 
-  const handleRefresh = () => {
+  const handleRefresh = async () => {
     setRefreshing(true);
-    setTimeout(() => setRefreshing(false), 600);
+    await refresh();
+    setRefreshing(false);
   };
 
   if (!status) return null;

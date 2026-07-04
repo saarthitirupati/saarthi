@@ -1,8 +1,8 @@
 'use client';
 
-import { PLACES, getPlaceGuideData } from '@/data/places';
-import { ArrowLeft, Heart, Share2, Star, MapPin, Clock, Compass, Coins, PlayCircle, Camera, Check, Copy, Volume2, VolumeX, ShieldAlert, X, ChevronLeft, ChevronRight, Shirt, Footprints, Users, Ban, Navigation } from 'lucide-react';
-import { use, useState, useEffect } from 'react';
+import { PLACES, getPlaceGuideData, Place } from '@/data/places';
+import { ArrowLeft, Heart, Share2, Star, MapPin, Clock, Compass, Coins, PlayCircle, Camera, Check, Copy, Volume2, VolumeX, ShieldAlert, X, ChevronLeft, ChevronRight, Shirt, Footprints, Users, Ban, Navigation, Info } from 'lucide-react';
+import { use, useState, useEffect, useMemo } from 'react';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
 import styles from './PlaceDetails.module.css';
@@ -10,6 +10,7 @@ import { useTrip } from '@/components/TripContext';
 import MantraPlayer from '@/components/MantraPlayer/MantraPlayer';
 import { useSpeechSynthesis } from '@/utils/useSpeechSynthesis';
 import { useRealtimePlaces } from '@/lib/useRealtimePlaces';
+import { calculateDrivingDistance } from '@/utils/location';
 
 export default function PlaceDetails({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params);
@@ -26,6 +27,10 @@ export default function PlaceDetails({ params }: { params: Promise<{ id: string 
   const [isBreakdownOpen, setIsBreakdownOpen] = useState(false);
   const [fuelRates, setFuelRates] = useState<{ petrol: number; diesel: number }>({ petrol: 118.00, diesel: 105.00 });
   const [isLegendExpanded, setIsLegendExpanded] = useState(false);
+  const [isTuesday, setIsTuesday] = useState(false);
+
+  // Tabbed layout state
+  const [activeTab, setActiveTab] = useState<'overview' | 'timings' | 'gallery' | 'transport' | 'guide'>('overview');
   
   const { togglePlace, savedPlaces, addViewedPlace, userLocation, setUserLocation, setLocationPermission } = useTrip();
   const { isSpeaking, isSupported, toggleSpeak } = useSpeechSynthesis();
@@ -47,6 +52,16 @@ export default function PlaceDetails({ params }: { params: Promise<{ id: string 
     }
   }, [place?.id]);
 
+  useEffect(() => {
+    setIsTuesday(new Date().getDay() === 2);
+  }, []);
+
+  useEffect(() => {
+    if (vehicleType !== 'bus') {
+      setPassengers(1);
+    }
+  }, [vehicleType]);
+
   if (loading) return <div className={styles.loadingContainer}>Loading details...</div>;
   if (!place) {
     return (
@@ -57,25 +72,28 @@ export default function PlaceDetails({ params }: { params: Promise<{ id: string 
     );
   }
 
-  const getDistance = () => {
-    if (!userLocation || !place.coordinates) return null;
-    const dLat = userLocation.lat - place.coordinates.lat;
-    const dLng = userLocation.lng - place.coordinates.lng;
-    return Math.sqrt(dLat * dLat + dLng * dLng) * 111; // approx km
+  const getRelDistance = (rel: Place) => {
+    if (!userLocation || !rel.coordinates) return `${rel.distanceKms} km`;
+    const isRelTirumala = rel.location.toLowerCase().includes('tirumala') || 
+                          rel.location.toLowerCase().includes('narayanagiri') || 
+                          rel.category.toLowerCase().includes('tirumala');
+    const dist = calculateDrivingDistance(userLocation.lat, userLocation.lng, rel.coordinates.lat, rel.coordinates.lng, isRelTirumala);
+    return `${dist.toFixed(1)} km`;
   };
 
-  const distanceVal = getDistance();
   const isTirumalaSpot = place.location.toLowerCase().includes('tirumala') || 
                          place.location.toLowerCase().includes('narayanagiri') || 
                          place.category.toLowerCase().includes('tirumala');
-  const drivingDistance = distanceVal !== null 
-    ? (isTirumalaSpot && distanceVal < 24 ? Math.max(25, distanceVal * 1.6) : distanceVal)
+  
+  const drivingDistance = userLocation && place.coordinates
+    ? calculateDrivingDistance(userLocation.lat, userLocation.lng, place.coordinates.lat, place.coordinates.lng, isTirumalaSpot)
     : null;
 
   const getNearbyPlaces = () => {
     if (!place.coordinates) return [];
+    const relatedIds = place.relatedPlaces || [];
     return (places.length > 0 ? places : PLACES)
-      .filter(p => p.id !== place.id)
+      .filter(p => p.id !== place.id && !relatedIds.includes(p.id))
       .map(p => {
         if (!p.coordinates) return { place: p, dist: 999 };
         const dLat = place.coordinates.lat - p.coordinates.lat;
@@ -110,20 +128,17 @@ export default function PlaceDetails({ params }: { params: Promise<{ id: string 
     const entryFee = passengers * place.entryFeeNum;
 
     if (vehicleType === 'bus') {
-      // Tirumala ghat route has fixed APSRTC fare; all others scale with distance
       const ticketPrice = isTirumala
         ? 110
-        : Math.max(30, Math.round(effDist * 1.8)); // ~₹1.8/km, min ₹30
+        : Math.max(30, Math.round(effDist * 1.8));
       fare = passengers * ticketPrice * (isRoundTrip ? 2 : 1);
     } else if (vehicleType === 'car') {
-      // Ghat roads 8 km/L, open highway 14 km/L
       const economy = isTirumala ? 8 : 14;
       liters = (effDist / economy) * (isRoundTrip ? 2 : 1);
       fuel = liters * fuelRates.petrol;
-      tolls = isTirumala ? 250 : effDist > 60 ? 80 : 0; // highway toll for long trips
+      tolls = isTirumala ? 250 : effDist > 60 ? 80 : 0;
       parking = 50;
     } else if (vehicleType === 'bike') {
-      // Ghat roads 25 km/L, open roads 40 km/L
       const economy = isTirumala ? 25 : 40;
       liters = (effDist / economy) * (isRoundTrip ? 2 : 1);
       fuel = liters * fuelRates.petrol;
@@ -198,16 +213,15 @@ export default function PlaceDetails({ params }: { params: Promise<{ id: string 
     }
   };
 
-  // Helper to extract youtube video ID for thumbnail
   const getYoutubeThumb = (url: string) => {
     try {
       const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
       const match = url.match(regExp);
       if (match && match[2].length === 11) {
-        return `https://img.youtube.com/vi/${match[2]}/0.jpg`;
+        return `https://img.youtube.com/vi/${match[2]}/hqdefault.jpg`;
       }
     } catch {}
-    return '/assets/ai/hero_heritage.png'; // fallback
+    return '/assets/ai/hero_heritage.png';
   };
 
   return (
@@ -244,7 +258,7 @@ export default function PlaceDetails({ params }: { params: Promise<{ id: string 
             onClick={() => togglePlace(place.id)}
             title="Save Place"
           >
-            <Heart size={20} fill={isSaved ? "var(--color-saffron-500)" : "none"} />
+            <Heart size={20} fill={isSaved ? "var(--color-saffron-500)" : "none"} color={isSaved ? "var(--color-saffron-500)" : "currentColor"} />
           </button>
         </div>
       </header>
@@ -263,444 +277,952 @@ export default function PlaceDetails({ params }: { params: Promise<{ id: string 
               <Star size={14} fill="#FFD700" color="#FFD700" />
               <span>{place.rating || 4.8}</span>
             </div>
-            <span style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: 6,
-              backgroundColor: 'rgba(6, 95, 70, 0.85)',
-              backdropFilter: 'blur(4px)',
-              WebkitBackdropFilter: 'blur(4px)',
-              color: '#ffffff',
-              fontSize: 10,
-              fontWeight: 700,
-              letterSpacing: '0.03em',
-              textTransform: 'uppercase',
-              padding: '4px 10px',
-              borderRadius: 99,
-              border: '1px solid rgba(52, 211, 153, 0.4)',
-              whiteSpace: 'nowrap',
-              boxShadow: '0 2px 10px rgba(0, 0, 0, 0.1)'
-            }}>
-              <span style={{ width: 6, height: 6, borderRadius: '50%', backgroundColor: '#34D399', display: 'inline-block', boxShadow: '0 0 6px #34D399' }}></span>
+            <span className={styles.verifiedText}>
+              <span className={styles.verifiedDot}></span>
               Data Verified Today
             </span>
           </div>
           <h1>{guide.name}</h1>
           <div className={styles.heroLocation}>
             <MapPin size={16} />
-            <span>{guide.location} • {guide.distanceKms} km from Tirupati</span>
+            <span>
+              {guide.location} • {drivingDistance !== null
+                ? `${drivingDistance.toFixed(1)} km from you`
+                : `${guide.distanceKms} km from Tirupati`}
+            </span>
           </div>
           <p className={styles.heroReason}>{guide.whyVisit}</p>
         </div>
       </section>
 
+      {/* Sticky Tab Navigation Bar */}
+      <div className={styles.tabNavBar}>
+        {[
+          { id: 'overview', label: 'Overview', icon: <Compass size={16} /> },
+          { id: 'timings', label: 'Timings', icon: <Clock size={16} /> },
+          { id: 'gallery', label: 'Gallery', icon: <Camera size={16} /> },
+          { id: 'transport', label: 'Transport', icon: <Navigation size={16} /> },
+          { id: 'guide', label: 'Guide', icon: <Info size={16} /> },
+        ].map(tab => (
+          <button
+            key={tab.id}
+            className={`${styles.tabBtn} ${activeTab === tab.id ? styles.tabBtnActive : ''}`}
+            onClick={() => setActiveTab(tab.id as any)}
+          >
+            {tab.icon}
+            <span>{tab.label}</span>
+          </button>
+        ))}
+      </div>
+
       <div className={styles.scrollableContent}>
-        {/* 2. BRIEF INTRODUCTION */}
-        <section className={styles.section} id="intro">
-          <h2 className={styles.sectionTitle}>Overview</h2>
-          <div className={styles.introCard}>
-            <p className={styles.introText}>{guide.shortIntro}</p>
-            {isSupported && (
-              <button 
-                className={styles.speakBtn} 
-                onClick={() => toggleSpeak(guide.shortIntro, 'en-IN')}
-              >
-                {isSpeaking ? <VolumeX size={18} /> : <Volume2 size={18} />}
-                <span>{isSpeaking ? "Stop Listening" : "Listen to Guide"}</span>
-              </button>
-            )}
-          </div>
-        </section>
-
-        {/* 3. WHY THIS PLACE MATTERS */}
-        <section className={styles.section} id="why-matters">
-          <h2 className={styles.sectionTitle}>Why it Matters</h2>
-          <div className={styles.mattersCard}>
-            <div className={styles.mattersHeader}>
-              <div className={styles.mattersIconWrapper}>
-                <Compass size={24} color="var(--color-saffron-500)" />
-              </div>
-              <div style={{ flex: 1 }}>
-                <h3>Historical & Spiritual Essence</h3>
-                <p>Cultural context &amp; significance</p>
-                <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6, marginTop: 8 }}>
-                  {place.architecture && (
-                    <span style={{
-                      fontSize: 10, fontWeight: 700, background: '#F1F5F9', color: '#475569',
-                      padding: '3px 8px', borderRadius: 6, textTransform: 'uppercase', letterSpacing: '0.03em', border: '1px solid #E2E8F0'
-                    }}>
-                      🏛️ {place.architecture}
-                    </span>
-                  )}
-                  {place.importance && (
-                    <span style={{
-                      fontSize: 10, fontWeight: 700, background: 'rgba(16, 185, 129, 0.08)', color: '#059669',
-                      padding: '3px 8px', borderRadius: 6, textTransform: 'uppercase', letterSpacing: '0.03em', border: '1px solid rgba(16, 185, 129, 0.15)'
-                    }}>
-                      🌟 {place.importance}
-                    </span>
-                  )}
-                  {place.tags && place.tags.slice(0, 2).map((t, idx) => (
-                    <span key={idx} style={{
-                      fontSize: 10, fontWeight: 700, background: 'rgba(233, 128, 29, 0.08)', color: 'var(--color-saffron-700)',
-                      padding: '3px 8px', borderRadius: 6, textTransform: 'uppercase', letterSpacing: '0.03em', border: '1px solid rgba(233, 128, 29, 0.15)'
-                    }}>
-                      ✦ {t}
-                    </span>
-                  ))}
-                </div>
-              </div>
-            </div>
-            <div className={styles.mattersContent} style={{ marginTop: 14 }}>
-              {(() => {
-                const sentences = guide.whyVisit ? guide.whyVisit.split(/(?<=[.!?])\s+/) : [];
-                if (sentences.length > 1) {
-                  return (
-                    <ul style={{ margin: 0, padding: 0, listStyle: 'none', display: 'flex', flexDirection: 'column', gap: 8 }}>
-                      {sentences.map((sentence, idx) => {
-                        let formattedText = sentence;
-                        if (sentence.includes('Chola')) {
-                          formattedText = sentence.replace('Originally constructed during the Chola dynasty', '<strong>Ancient Chola Legacy:</strong> Originally constructed during the Chola dynasty');
-                        } else if (sentence.includes('fault lines') || sentence.includes('groundwater')) {
-                          formattedText = sentence.replace('Built specifically over valley fault lines', '<strong>The Perennial Mystery:</strong> Built specifically over valley fault lines');
-                        } else if (sentence.includes('gateway shrine') || sentence.includes('between empires')) {
-                          formattedText = sentence.replace('Positioned as a historical gateway shrine', '<strong>Highway Sanctuary:</strong> Positioned as a historical gateway shrine');
-                        }
-                        
-                        return (
-                          <li key={idx} style={{ fontSize: 13, lineHeight: 1.5, color: '#475569', display: 'flex', gap: 8, alignItems: 'flex-start' }}>
-                            <span style={{ color: 'var(--color-saffron-500)', fontSize: 14, lineHeight: '1.2' }}>•</span>
-                            <span dangerouslySetInnerHTML={{ __html: formattedText }} />
-                          </li>
-                        );
-                      })}
-                    </ul>
-                  );
-                }
-                return <p style={{ margin: 0, fontSize: 13, lineHeight: 1.6, color: '#475569' }}>{guide.whyVisit}</p>;
-              })()}
-            </div>
-            
-            {isSpiritualPlace && place.spiritualInfo && (
-              <div className={styles.spiritualDetails}>
-                <div className={styles.deityDetail}>
-                  <span className={styles.detailLabel}>Presiding Deity</span>
-                  <span className={styles.detailValue}>{place.spiritualInfo.god}</span>
-                </div>
-                {place.spiritualInfo.mantra && (
-                  <div className={styles.mantraBox}>
-                    <span className={styles.detailLabel}>Sacred Mantra</span>
-                    <div className={styles.mantraContent}>
-                      <span className={styles.mantraText}>&quot;{place.spiritualInfo.mantra}&quot;</span>
-                      <button onClick={handleCopyMantra} className={styles.copyBtn} title="Copy Mantra">
-                        {copied ? <Check size={16} /> : <Copy size={16} />}
-                      </button>
-                    </div>
-                  </div>
-                )}
-                {place.spiritualInfo.mantra && (
-                  <MantraPlayer 
-                    mantra={place.spiritualInfo.mantra} 
-                    deity={place.spiritualInfo.god} 
-                  />
-                )}
-              </div>
-            )}
-          </div>
-        </section>
-
-        {/* 3b. THE LEGEND — Progressive Disclosure Story */}
-        {place.history && place.history.length > 30 && (
-          <section className={styles.section} id="legend">
-            <h2 className={styles.sectionTitle}>The Legend</h2>
-            <div className={styles.legendCard}>
-              {/* Header */}
-              <div className={styles.legendHeader}>
-                <div className={styles.legendIconRing}>
-                  <span style={{ fontSize: 20 }}>📜</span>
-                </div>
-                <div style={{ flex: 1 }}>
-                  <p className={styles.legendLabel}>Origin Story</p>
-                  <p className={styles.legendSub}>Historical &amp; Mythological Context</p>
-                </div>
-                {/* Audio pill */}
+        {activeTab === 'overview' && (
+          <>
+            {/* 2. BRIEF INTRODUCTION */}
+            <section className={styles.section} id="intro">
+              <h2 className={styles.sectionTitle}>Overview</h2>
+              <div className={styles.introCard}>
+                <p className={styles.introText}>{guide.shortIntro}</p>
                 {isSupported && (
-                  <button
-                    onClick={() => toggleSpeak(place.history, 'en-IN')}
-                    className={styles.audioPill}
-                    aria-label={isSpeaking ? 'Stop audio' : 'Listen to legend'}
+                  <button 
+                    className={styles.speakBtn} 
+                    onClick={() => toggleSpeak(guide.shortIntro, 'en-IN')}
                   >
-                    <span style={{ fontSize: 13 }}>{isSpeaking ? '⏹' : '▶'}</span>
-                    <span>{isSpeaking ? 'Stop' : 'Listen'}</span>
+                    {isSpeaking ? <VolumeX size={18} /> : <Volume2 size={18} />}
+                    <span>{isSpeaking ? "Stop Listening" : "Listen to Guide"}</span>
                   </button>
                 )}
               </div>
+            </section>
 
-              {/* Story body with progressive disclosure */}
-              <div className={styles.legendBody}>
-                <div
-                  className={styles.legendTextWrap}
-                  style={{ maxHeight: isLegendExpanded ? 'none' : '5em', overflow: 'hidden', position: 'relative' }}
+            {/* 3. WHY THIS PLACE MATTERS */}
+            <section className={styles.section} id="why-matters">
+              <h2 className={styles.sectionTitle}>Why it Matters</h2>
+              <div className={styles.mattersCard}>
+                <div className={styles.mattersHeader}>
+                  <div className={styles.mattersIconWrapper}>
+                    <Compass size={24} color="var(--color-saffron-500)" />
+                  </div>
+                  <div style={{ flex: 1 }}>
+                    <h3>Historical & Spiritual Essence</h3>
+                    <p>Cultural context &amp; significance</p>
+                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6, marginTop: 8 }}>
+                      {place.architecture && (
+                        <span className={styles.heritageTag}>
+                          {place.architecture}
+                        </span>
+                      )}
+                      {place.importance && (
+                        <span className={styles.importanceTag}>
+                          {place.importance}
+                        </span>
+                      )}
+                      {place.tags && place.tags.slice(0, 2).map((t, idx) => (
+                        <span key={idx} className={styles.interestTag}>
+                          {t}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+                <div className={styles.mattersContent} style={{ marginTop: 14 }}>
+                  {(() => {
+                    const sentences = guide.whyVisit ? guide.whyVisit.split(/(?<=[.!?])\s+/) : [];
+                    if (sentences.length > 1) {
+                      return (
+                        <ul className={styles.whyVisitList}>
+                          {sentences.map((sentence, idx) => {
+                            let formattedText = sentence;
+                            if (sentence.includes('Chola')) {
+                              formattedText = sentence.replace('Originally constructed during the Chola dynasty', '<strong>Ancient Chola Legacy:</strong> Originally constructed during the Chola dynasty');
+                            } else if (sentence.includes('fault lines') || sentence.includes('groundwater')) {
+                              formattedText = sentence.replace('Built specifically over valley fault lines', '<strong>The Perennial Mystery:</strong> Built specifically over valley fault lines');
+                            } else if (sentence.includes('gateway shrine') || sentence.includes('between empires')) {
+                              formattedText = sentence.replace('Positioned as a historical gateway shrine', '<strong>Highway Sanctuary:</strong> Positioned as a historical gateway shrine');
+                            }
+                            
+                            return (
+                              <li key={idx} className={styles.whyVisitItem}>
+                                <span className={styles.bulletSpan}>•</span>
+                                <span dangerouslySetInnerHTML={{ __html: formattedText }} />
+                              </li>
+                            );
+                          })}
+                        </ul>
+                      );
+                    }
+                    return <p className={styles.plainReasonText}>{guide.whyVisit}</p>;
+                  })()}
+                </div>
+                
+                {isSpiritualPlace && place.spiritualInfo && (
+                  <div className={styles.spiritualDetails}>
+                    <div className={styles.deityDetail}>
+                      <span className={styles.detailLabel}>Presiding Deity</span>
+                      <span className={styles.detailValue}>{place.spiritualInfo.god}</span>
+                    </div>
+                    {place.spiritualInfo.mantra && (
+                      <div className={styles.mantraBox}>
+                        <span className={styles.detailLabel}>Sacred Mantra</span>
+                        <div className={styles.mantraContent}>
+                          <span className={styles.mantraText}>&quot;{place.spiritualInfo.mantra}&quot;</span>
+                          <button onClick={handleCopyMantra} className={styles.copyBtn} title="Copy Mantra">
+                            {copied ? <Check size={16} /> : <Copy size={16} />}
+                          </button>
+                        </div>
+                      </div>
+                    )}
+                    {place.spiritualInfo.mantra && (
+                      <MantraPlayer 
+                        mantra={place.spiritualInfo.mantra} 
+                        deity={place.spiritualInfo.god} 
+                      />
+                    )}
+                  </div>
+                )}
+              </div>
+            </section>
+
+            {/* 3b. THE LEGEND — Origin Story */}
+            {guide.history && guide.history.length > 30 && (
+              <section className={styles.section} id="legend">
+                <h2 className={styles.sectionTitle}>The Legend</h2>
+                <div className={styles.legendCard}>
+                  <div className={styles.legendHeader}>
+                    <div className={styles.legendIconRing}>
+                      <Info size={20} color="var(--color-saffron-600)" />
+                    </div>
+                    <div style={{ flex: 1 }}>
+                      <p className={styles.legendLabel}>Origin Story</p>
+                      <p className={styles.legendSub}>Historical &amp; Mythological Context</p>
+                    </div>
+                    {isSupported && (
+                      <button
+                        onClick={() => toggleSpeak(guide.history, 'en-IN')}
+                        className={styles.audioPill}
+                        aria-label={isSpeaking ? 'Stop audio' : 'Listen to legend'}
+                      >
+                        <span>{isSpeaking ? <VolumeX size={12} /> : <Volume2 size={12} />}</span>
+                        <span>{isSpeaking ? 'Stop' : 'Listen'}</span>
+                      </button>
+                    )}
+                  </div>
+
+                  <div className={styles.legendBody}>
+                    <div
+                      className={styles.legendTextWrap}
+                      style={{ maxHeight: isLegendExpanded ? 'none' : '5em', overflow: 'hidden', position: 'relative' }}
+                    >
+                      <p className={styles.legendText}>{guide.history}</p>
+                      {!isLegendExpanded && (
+                        <div className={styles.legendFade} />
+                      )}
+                    </div>
+
+                    <button
+                      onClick={() => setIsLegendExpanded(v => !v)}
+                      className={styles.legendToggle}
+                    >
+                      {isLegendExpanded ? '▲ Collapse legend' : '▼ Read full legend'}
+                    </button>
+                  </div>
+                </div>
+              </section>
+            )}
+          </>
+        )}
+
+        {activeTab === 'timings' && (
+          <>
+            {/* 4. TIMINGS AND DURATION */}
+            <section className={styles.section} id="timings">
+              <h2 className={styles.sectionTitle}>Timings & Best Visit</h2>
+              <div className={styles.timingsGrid}>
+                <div className={styles.timingCard}>
+                  <Clock size={24} className={styles.timingCardIcon} />
+                  <h3>Opening Hours</h3>
+                  <p className={styles.timingValue}>
+                    {guide.openingTime} - {guide.closingTime}
+                  </p>
+                  {place.id === 'sv-zoo-park' ? (
+                    <span className={styles.zooOpenBadge} style={{ 
+                      color: isTuesday ? '#FFFFFF' : '#059669', 
+                      background: isTuesday ? '#EF4444' : '#D1FAE5',
+                    }}>
+                      {isTuesday ? 'Closed Today (Weekly Holiday - Tuesdays)' : 'Open Today (8:30 AM - 5:00 PM)'}
+                    </span>
+                  ) : (
+                    <span className={styles.timingSub}>All days open</span>
+                  )}
+                </div>
+                <div className={styles.timingCard}>
+                  <Star size={24} className={styles.timingCardIcon} />
+                  <h3>Best Slot</h3>
+                  <p className={styles.timingValue}>{guide.bestTime}</p>
+                  <span className={styles.timingSub}>Recommended time</span>
+                </div>
+                <div className={styles.timingCard}>
+                  <Clock size={24} className={styles.timingCardIcon} />
+                  <h3>Duration</h3>
+                  <p className={styles.timingValue}>{guide.duration}</p>
+                  <span className={styles.timingSub}>
+                    {place.id === 'sv-zoo-park' ? 'Electric carts & bicycles available at the counter' : 'Average stay duration'}
+                  </span>
+                </div>
+              </div>
+            </section>
+
+            {/* 4b. BREAK TIMINGS */}
+            {place.breakTimings && place.breakTimings.length > 0 && (
+              <section className={styles.section} id="break-timings">
+                <h2 className={styles.sectionTitle}>Break Timings</h2>
+                <div className={styles.breakDetailsCard}>
+                  <p className={styles.breakText}>
+                    The temple closes for darshan during these hours. Plan your visit accordingly.
+                  </p>
+                  <div className={styles.breakTimesContainer}>
+                    {place.breakTimings.map((b, i) => (
+                      <div key={i} className={styles.breakTimeItem}>
+                        <Clock size={16} color="#FF9933" />
+                        <span className={styles.breakTimeValue}>
+                          {b.from} — {b.to}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </section>
+            )}
+
+            {/* 4c. RITUALS & SEVAS */}
+            {place.rituals && (place.rituals.daily?.length || place.rituals.weekly?.length || place.rituals.sevas?.length) && (
+              <section className={styles.section} id="rituals">
+                <h2 className={styles.sectionTitle}>Rituals & Sevas</h2>
+                <div className={styles.ritualsContainer}>
+                  {place.rituals.daily && place.rituals.daily.length > 0 && (
+                    <div style={{ marginBottom: 16 }}>
+                      <h4 className={styles.ritualGroupHeader}>
+                        Daily Rituals
+                      </h4>
+                      <div className={styles.ritualItemsColumn}>
+                        {place.rituals.daily.map((r, i) => (
+                          <div key={i} className={styles.ritualItemCard}>
+                            {r}
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                  {place.rituals.weekly && place.rituals.weekly.length > 0 && (
+                    <div style={{ marginBottom: 16 }}>
+                      <h4 className={styles.ritualGroupHeader}>
+                        Weekly Rituals
+                      </h4>
+                      <div className={styles.ritualItemsColumn}>
+                        {place.rituals.weekly.map((r, i) => (
+                          <div key={i} className={styles.ritualItemCard}>
+                            {r}
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                  {place.rituals.annual && place.rituals.annual.length > 0 && (
+                    <div style={{ marginBottom: 16 }}>
+                      <h4 className={styles.ritualGroupHeader}>
+                        Annual Festivals
+                      </h4>
+                      <div className={styles.pillsContainer}>
+                        {place.rituals.annual.map((r, i) => (
+                          <span key={i} className={styles.annualPill}>
+                            {r}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                  {place.rituals.sevas && place.rituals.sevas.length > 0 && (
+                    <div>
+                      <h4 className={styles.ritualGroupHeader}>
+                        Sevas Available
+                      </h4>
+                      <div className={styles.pillsContainer}>
+                        {place.rituals.sevas.map((s, i) => (
+                          <span key={i} className={styles.sevaPill}>
+                            {s}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </section>
+            )}
+          </>
+        )}
+
+        {activeTab === 'gallery' && (
+          <>
+            {/* 7. VIDEO GUIDE */}
+            {guide.youtubeLink && (
+              <section className={styles.section} id="video">
+                <h2 className={styles.sectionTitle}>Video Guide</h2>
+                <a 
+                  href={guide.youtubeLink} 
+                  target="_blank" 
+                  rel="noopener noreferrer" 
+                  className={styles.videoCard}
                 >
-                  <p className={styles.legendText}>{place.history}</p>
-                  {!isLegendExpanded && (
-                    <div className={styles.legendFade} />
+                  <div 
+                    className={styles.videoThumbnail}
+                    style={{ backgroundImage: `url(${getYoutubeThumb(guide.youtubeLink)})` }}
+                  >
+                    <div className={styles.playOverlay}>
+                      <PlayCircle size={60} color="#fff" />
+                    </div>
+                  </div>
+                  <div className={styles.videoText}>
+                    <h3>Watch Explainer & History</h3>
+                    <p>Understand the origins, mythology, and visitor experience in this documentary guide.</p>
+                    <span className={styles.videoLink}>Watch on YouTube →</span>
+                  </div>
+                </a>
+              </section>
+            )}
+
+            {/* 8. PHOTO GALLERY */}
+            {guide.images && guide.images.length > 0 && (
+              <section className={styles.section} id="photos">
+                <h2 className={styles.sectionTitle}>
+                  <Camera size={20} style={{ marginRight: 8, verticalAlign: 'middle' }} />
+                  Photo Gallery{' '}
+                  <span className={styles.galleryCount}>{guide.images.length} photos</span>
+                </h2>
+                <div className={styles.photoGrid}>
+                  {guide.images.map((imgUrl, idx) => (
+                    <motion.div
+                      key={idx}
+                      className={`${styles.gridItem} ${idx === 0 ? styles.gridItemLarge : ''}`}
+                      style={{ background: `url(${imgUrl}) center/cover no-repeat` }}
+                      title={`${guide.name} view ${idx + 1}`}
+                      onClick={() => setLightboxIndex(idx)}
+                      whileTap={{ scale: 0.97 }}
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: idx * 0.08, duration: 0.4 }}
+                    >
+                      <div className={styles.gridOverlay}>
+                        <Camera size={16} />
+                        <span>{idx + 1}/{guide.images.length}</span>
+                      </div>
+                    </motion.div>
+                  ))}
+                </div>
+              </section>
+            )}
+          </>
+        )}
+
+        {activeTab === 'transport' && (
+          <>
+            {/* 5. JOURNEY ASSISTANT - BEST WAY TO REACH */}
+            <section className={styles.section} id="travel">
+              <h2 className={styles.sectionTitle}>🚗 Best Way to Reach</h2>
+              
+              <div className={styles.routeLiveHeader}>
+                <div className={styles.liveIndicatorContainer}>
+                  <span className={styles.livePulseDot} />
+                  <span className={styles.liveTextLabel}>From Your Location</span>
+                </div>
+                <div className={styles.liveRouteValue}>
+                  {drivingDistance !== null
+                    ? `${drivingDistance.toFixed(1)} km • ~${Math.round(drivingDistance * 2.2)} mins`
+                    : `${guide.distanceKms} km • ~${Math.round(guide.distanceKms * 2)} mins`}
+                </div>
+                <span className={styles.liveUpdatedBadge}>Updated now</span>
+              </div>
+
+              <div className={styles.journeyModesHierarchyList}>
+                {/* 1. CAR/CAB CARD */}
+                <div className={styles.journeyModeCardFeatured}>
+                  <div className={styles.modeCardHeader}>
+                    <span className={styles.modeFeaturedBadge}>⭐ BEST CHOICE TODAY</span>
+                    <h3 className={styles.modeTitle}>Car / Private Cab</h3>
+                  </div>
+                  
+                  <div className={styles.modeCardStatsRow}>
+                    <div className={styles.modeStatMini}>
+                      <Clock size={14} />
+                      <span>{drivingDistance !== null ? `${Math.round(drivingDistance * 2.2)} mins` : `${Math.round(guide.distanceKms * 2)} mins`}</span>
+                    </div>
+                    <div className={styles.modeStatMini}>
+                      <Coins size={14} />
+                      <span>Est. Fuel: ₹{Math.round(drivingDistance !== null ? (drivingDistance / (isTirumalaSpot ? 8 : 14)) * fuelRates.petrol : (guide.distanceKms / 14) * fuelRates.petrol)}</span>
+                    </div>
+                  </div>
+
+                  <p className={styles.modeCardDescription}>
+                    {guide.travelByCar || 'Driving is the fastest, most flexible way to visit. Scenic mountain ghat drive route available.'}
+                  </p>
+
+                  <div className={styles.modeCardFeaturesGrid}>
+                    <div className={styles.modeFeatureLine}>
+                      <Check size={12} color="#10B981" />
+                      <span>Fastest route today</span>
+                    </div>
+                    <div className={styles.modeFeatureLine}>
+                      <Check size={12} color="#10B981" />
+                      <span>Least traffic congestion</span>
+                    </div>
+                    <div className={styles.modeFeatureLine}>
+                      <Check size={12} color="#10B981" />
+                      <span>Easy parking at spot</span>
+                    </div>
+                  </div>
+
+                  <button 
+                    className={styles.modeCardActionBtn}
+                    onClick={() => {
+                      if (place.coordinates) {
+                        window.open(`https://www.google.com/maps/dir/?api=1&destination=${place.coordinates.lat},${place.coordinates.lng}`, '_blank');
+                      }
+                    }}
+                  >
+                    <span>Start Navigation →</span>
+                  </button>
+                </div>
+
+                {/* 2. PUBLIC BUS CARD */}
+                <div className={styles.journeyModeCard}>
+                  <div className={styles.modeCardHeader}>
+                    <span className={styles.modeBudgetBadge}>🚌 BUDGET FRIENDLY</span>
+                    <h3 className={styles.modeTitle}>APSRTC Public Bus</h3>
+                  </div>
+
+                  <div className={styles.modeCardStatsRow}>
+                    <div className={styles.modeStatMini}>
+                      <Clock size={14} />
+                      <span>{drivingDistance !== null ? `${Math.round(drivingDistance * 2.5)} mins` : `${Math.round(guide.distanceKms * 2.5)} mins`}</span>
+                    </div>
+                    <div className={styles.modeStatMini}>
+                      <Coins size={14} />
+                      <span>Ticket: ₹{isTirumalaSpot ? 110 : Math.max(30, Math.round((drivingDistance || guide.distanceKms) * 1.8))}</span>
+                    </div>
+                  </div>
+
+                  <p className={styles.modeCardDescription}>
+                    {guide.travelByRTC || 'Frequent direct transport buses operate directly from Tirupati Central Bus Station.'}
+                  </p>
+
+                  <div className={styles.modeCardFeaturesGrid}>
+                    <div className={styles.modeFeatureLine}>
+                      <Check size={12} color="#10B981" />
+                      <span>Buses run every 10-15 mins</span>
+                    </div>
+                    <div className={styles.modeFeatureLine}>
+                      <Check size={12} color="#10B981" />
+                      <span>Ghat-certified safe transit</span>
+                    </div>
+                  </div>
+
+                  <button 
+                    className={styles.modeCardActionBtnSecondary}
+                    onClick={() => {
+                      setActiveTab('guide');
+                      setTimeout(() => {
+                        const el = document.getElementById('tips');
+                        if (el) el.scrollIntoView({ behavior: 'smooth' });
+                      }, 100);
+                    }}
+                  >
+                    <span>View Bus Guide</span>
+                  </button>
+                </div>
+
+                {/* 3. BIKE CARD */}
+                <div className={styles.journeyModeCard}>
+                  <div className={styles.modeCardHeader}>
+                    <h3 className={styles.modeTitle}>Bike / Two-Wheeler</h3>
+                  </div>
+
+                  <div className={styles.modeCardStatsRow}>
+                    <div className={styles.modeStatMini}>
+                      <Clock size={14} />
+                      <span>{drivingDistance !== null ? `${Math.round(drivingDistance * 2.0)} mins` : `${Math.round(guide.distanceKms * 1.8)} mins`}</span>
+                    </div>
+                    <div className={styles.modeStatMini}>
+                      <Coins size={14} />
+                      <span>Est. Fuel: ₹{Math.round(drivingDistance !== null ? (drivingDistance / (isTirumalaSpot ? 25 : 40)) * fuelRates.petrol : (guide.distanceKms / 40) * fuelRates.petrol)}</span>
+                    </div>
+                  </div>
+
+                  <p className={styles.modeCardDescription}>
+                    {guide.travelByBike || 'Excellent choice for solo travelers. Easily bypass local junction bottlenecks.'}
+                  </p>
+
+                  <div className={styles.modeCardFeaturesGrid}>
+                    <div className={styles.modeFeatureLine}>
+                      <Check size={12} color="#10B981" />
+                      <span>Avoid city traffic hold-ups</span>
+                    </div>
+                    <div className={styles.modeFeatureLine}>
+                      <Check size={12} color="#10B981" />
+                      <span>Convenient parking layouts</span>
+                    </div>
+                  </div>
+
+                  <button 
+                    className={styles.modeCardActionBtnSecondary}
+                    onClick={() => {
+                      if (place.coordinates) {
+                        window.open(`https://www.google.com/maps/dir/?api=1&destination=${place.coordinates.lat},${place.coordinates.lng}`, '_blank');
+                      }
+                    }}
+                  >
+                    <span>Start Navigation →</span>
+                  </button>
+                </div>
+              </div>
+            </section>
+
+            {/* 5b. TRAVEL INSIGHTS & ADVISORY */}
+            <section className={styles.section} id="travel-insights">
+              <h2 className={styles.sectionTitle}>💡 Travel Tips</h2>
+              <div className={styles.travelInsightsList}>
+                <div className={styles.insightDetailCard}>
+                  <strong>Visit before 9:00 AM</strong>
+                  <p>Avoid mid-day heat and secure parking slots closer to the entrance gates. Queue times are significantly shorter.</p>
+                </div>
+                {isTirumalaSpot && (
+                  <div className={styles.insightDetailCard} style={{ background: '#FFFDF0', borderColor: '#E9E3C5' }}>
+                    <strong style={{ color: '#A37000' }}>⚠️ Ghat Road Access Limits</strong>
+                    <p>Two-wheelers (bikes/scooters) are strictly prohibited on the Tirumala ascending/descending ghat roads between 10:00 PM and 6:00 AM daily.</p>
+                  </div>
+                )}
+              </div>
+            </section>
+
+            {/* 5c. NEARBY SERVICES */}
+            <section className={styles.section} id="nearby-services">
+              <h2 className={styles.sectionTitle}>Nearby Services</h2>
+              <div className={styles.nearbyServicesGrid}>
+                <div className={styles.serviceMiniItem}>
+                  <span className={styles.serviceMiniEmoji}>🅿️</span>
+                  <div>
+                    <strong>Parking Area</strong>
+                    <span>100 m away</span>
+                  </div>
+                </div>
+                <div className={styles.serviceMiniItem}>
+                  <span className={styles.serviceMiniEmoji}>🚻</span>
+                  <div>
+                    <strong>Washrooms</strong>
+                    <span>200 m away</span>
+                  </div>
+                </div>
+                <div className={styles.serviceMiniItem}>
+                  <span className={styles.serviceMiniEmoji}>🍴</span>
+                  <div>
+                    <strong>Food & Prasadam</strong>
+                    <span>500 m away</span>
+                  </div>
+                </div>
+                <div className={styles.serviceMiniItem}>
+                  <span className={styles.serviceMiniEmoji}>☕</span>
+                  <div>
+                    <strong>Coffee & Tea</strong>
+                    <span>300 m away</span>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            {/* 5d. INTERACTIVE LOCATION MAP */}
+            {place.coordinates && (
+              <section className={styles.section} id="map-section">
+                <h2 className={styles.sectionTitle}>🗺️ Mini Route Map</h2>
+                <div className={styles.mapIframeContainer}>
+                  <iframe
+                    title="OpenStreetMap Location"
+                    width="100%"
+                    height="100%"
+                    style={{ border: 0 }}
+                    src={`https://www.openstreetmap.org/export/embed.html?bbox=${place.coordinates.lng - 0.015},${place.coordinates.lat - 0.012},${place.coordinates.lng + 0.015},${place.coordinates.lat + 0.012}&layer=mapnik&marker=${place.coordinates.lat},${place.coordinates.lng}`}
+                  />
+                </div>
+                <div className={styles.mapCredits}>
+                  <span>
+                    Map data © <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener noreferrer">OpenStreetMap</a> contributors
+                  </span>
+                  <a 
+                    href={`https://www.openstreetmap.org/?mlat=${place.coordinates.lat}&mlon=${place.coordinates.lng}#map=15/${place.coordinates.lat}/${place.coordinates.lng}`}
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className={styles.mapLargerLink}
+                  >
+                    View Larger Map ↗
+                  </a>
+                </div>
+              </section>
+            )}
+
+            {/* 6. TRAVEL COST ESTIMATOR */}
+            <section className={styles.section} id="cost">
+              <h2 className={styles.sectionTitle}>Travel Cost Estimator</h2>
+              <div className={styles.costCard} style={{ padding: 18 }}>
+                <div className={styles.estimatorHeaderCard}>
+                  <div className={styles.estimatorHeaderRow}>
+                    <span className={styles.estimatorTitle}>
+                      Live Trip Estimator
+                    </span>
+                    <span className={styles.estimatorKmBadge}>
+                      {calc.effDist.toFixed(1)} km away
+                    </span>
+                  </div>
+                  <div className={styles.estimatorLocationRow}>
+                    <span>
+                      {userLocation ? 'Based on your location' : 'Default: from Tirupati Central'}
+                    </span>
+                    {!userLocation && (
+                      <button 
+                        onClick={handleDetectLocation}
+                        className={styles.detectLocationBtn}
+                      >
+                        Use Live Location
+                      </button>
+                    )}
+                  </div>
+                  {isTirumalaSpot && (
+                    <div className={styles.ghatRoadWarning}>
+                      ⚠️ Includes Mountain Ghat Road Winding Route
+                    </div>
                   )}
                 </div>
 
-                <button
-                  onClick={() => setIsLegendExpanded(v => !v)}
-                  className={styles.legendToggle}
-                >
-                  {isLegendExpanded ? '▲ Collapse legend' : '▼ Read full legend'}
-                </button>
-              </div>
-            </div>
-          </section>
-        )}
-
-        {/* 4. TIMINGS AND DURATION */}
-        <section className={styles.section} id="timings">
-          <h2 className={styles.sectionTitle}>Timings & Best Visit</h2>
-          <div className={styles.timingsGrid}>
-            <div className={styles.timingCard}>
-              <Clock size={24} className="text-teal-600" />
-              <h3>Opening Hours</h3>
-              <p className={styles.timingValue}>
-                {guide.openingTime} - {guide.closingTime}
-              </p>
-              <span className={styles.timingSub}>All days open</span>
-            </div>
-            <div className={styles.timingCard}>
-              <Star size={24} className="text-amber-500" />
-              <h3>Best Slot</h3>
-              <p className={styles.timingValue}>{guide.bestTime}</p>
-              <span className={styles.timingSub}>Recommended time</span>
-            </div>
-            <div className={styles.timingCard}>
-              <Clock size={24} className="text-indigo-500" />
-              <h3>Duration</h3>
-              <p className={styles.timingValue}>{guide.duration}</p>
-              <span className={styles.timingSub}>Average stay duration</span>
-            </div>
-          </div>
-        </section>
-
-        {/* 4b. BREAK TIMINGS */}
-        {place.breakTimings && place.breakTimings.length > 0 && (
-          <section className={styles.section} id="break-timings">
-            <h2 className={styles.sectionTitle}>Break Timings</h2>
-            <div style={{
-              background: 'linear-gradient(135deg, #FFF8F0, #FFF3E0)',
-              borderRadius: 14, padding: 16,
-              border: '1px solid rgba(255,153,51,0.12)',
-            }}>
-              <p style={{ fontSize: 13, color: '#666', marginBottom: 10 }}>
-                The temple closes for darshan during these hours. Plan your visit accordingly.
-              </p>
-              <div style={{ display: 'flex', flexWrap: 'wrap', gap: 10 }}>
-                {place.breakTimings.map((b, i) => (
-                  <div key={i} style={{
-                    background: 'white', borderRadius: 10, padding: '10px 16px',
-                    border: '1px solid rgba(0,0,0,0.06)',
-                    display: 'flex', alignItems: 'center', gap: 8,
-                  }}>
-                    <Clock size={16} color="#FF9933" />
-                    <span style={{ fontWeight: 600, fontSize: 14, color: '#1a1a2e' }}>
-                      {b.from} — {b.to}
-                    </span>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </section>
-        )}
-
-        {/* 4c. RITUALS & SEVAS */}
-        {place.rituals && (place.rituals.daily?.length || place.rituals.weekly?.length || place.rituals.sevas?.length) && (
-          <section className={styles.section} id="rituals">
-            <h2 className={styles.sectionTitle}>Rituals & Sevas</h2>
-            <div style={{
-              background: 'linear-gradient(135deg, #FFFBF5, #FFF8EE)',
-              borderRadius: 14, padding: 16,
-              border: '1px solid rgba(255,153,51,0.1)',
-            }}>
-              {place.rituals.daily && place.rituals.daily.length > 0 && (
+                {/* Vehicle Selector */}
                 <div style={{ marginBottom: 16 }}>
-                  <h4 style={{ fontSize: 14, fontWeight: 700, color: '#B8860B', marginBottom: 8, display: 'flex', alignItems: 'center', gap: 6 }}>
-                    🕉️ Daily Rituals
-                  </h4>
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
-                    {place.rituals.daily.map((r, i) => (
-                      <div key={i} style={{
-                        background: 'white', borderRadius: 8, padding: '8px 12px',
-                        fontSize: 13, color: '#333', border: '1px solid rgba(0,0,0,0.04)',
-                      }}>
-                        {r}
-                      </div>
+                  <label className={styles.selectorLabel}>Select Vehicle</label>
+                  <div className={styles.vehicleBtnGrid}>
+                    {[
+                      { type: 'car', label: 'Car' },
+                      { type: 'bus', label: 'Bus' },
+                      { type: 'bike', label: 'Bike' },
+                      { type: 'cab', label: 'Cab' },
+                      { type: 'suv', label: 'SUV' }
+                    ].map(v => (
+                      <button
+                        key={v.type}
+                        onClick={() => setVehicleType(v.type as any)}
+                        className={`${styles.vehicleBtn} ${vehicleType === v.type ? styles.vehicleBtnActive : ''}`}
+                      >
+                        <span>{v.label}</span>
+                      </button>
                     ))}
                   </div>
                 </div>
-              )}
-              {place.rituals.weekly && place.rituals.weekly.length > 0 && (
-                <div style={{ marginBottom: 16 }}>
-                  <h4 style={{ fontSize: 14, fontWeight: 700, color: '#B8860B', marginBottom: 8 }}>
-                    📿 Weekly Rituals
-                  </h4>
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
-                    {place.rituals.weekly.map((r, i) => (
-                      <div key={i} style={{
-                        background: 'white', borderRadius: 8, padding: '8px 12px',
-                        fontSize: 13, color: '#333', border: '1px solid rgba(0,0,0,0.04)',
-                      }}>
-                        {r}
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
-              {place.rituals.annual && place.rituals.annual.length > 0 && (
-                <div style={{ marginBottom: 16 }}>
-                  <h4 style={{ fontSize: 14, fontWeight: 700, color: '#B8860B', marginBottom: 8 }}>
-                    🎉 Annual Festivals
-                  </h4>
-                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
-                    {place.rituals.annual.map((r, i) => (
-                      <span key={i} style={{
-                        background: '#FFF3E0', borderRadius: 20, padding: '5px 12px',
-                        fontSize: 12, color: '#C65D00', fontWeight: 600,
-                        border: '1px solid rgba(198,93,0,0.12)',
-                      }}>
-                        {r}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-              )}
-              {place.rituals.sevas && place.rituals.sevas.length > 0 && (
-                <div>
-                  <h4 style={{ fontSize: 14, fontWeight: 700, color: '#B8860B', marginBottom: 8 }}>
-                    🙏 Sevas Available
-                  </h4>
-                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
-                    {place.rituals.sevas.map((s, i) => (
-                      <span key={i} style={{
-                        background: 'white', borderRadius: 20, padding: '5px 12px',
-                        fontSize: 12, color: '#555', fontWeight: 500,
-                        border: '1px solid rgba(0,0,0,0.08)',
-                      }}>
-                        {s}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-              )}
-            </div>
-          </section>
-        )}
 
-        {/* 4d. ARCHITECTURE & DEITY INFO */}
-        {(place.architecture || place.deity || place.importance) && (
-          <section className={styles.section} id="architecture">
-            <h2 className={styles.sectionTitle}>Architecture & Heritage</h2>
-            <div style={{
-              background: 'linear-gradient(135deg, #F8F6FF, #EDE7F6)',
-              borderRadius: 14, padding: 16,
-              border: '1px solid rgba(108,99,255,0.1)',
-            }}>
-              {place.deity && (
-                <div style={{ marginBottom: 14, display: 'flex', alignItems: 'center', gap: 10 }}>
-                  <div style={{
-                    width: 40, height: 40, borderRadius: 10,
-                    background: 'linear-gradient(135deg, #FF9933, #FF6B00)',
-                    display: 'flex', alignItems: 'center', justifyContent: 'center',
-                    color: 'white', fontWeight: 800, fontSize: 18,
-                  }}>
-                    🙏
-                  </div>
+                {/* Trip Type & Passenger Selectors */}
+                <div className={styles.logisticsSelectorsGrid}>
                   <div>
-                    <span style={{ fontSize: 12, color: '#888', fontWeight: 500 }}>Presiding Deity</span>
-                    <div style={{ fontSize: 15, fontWeight: 700, color: '#1a1a2e' }}>{place.deity}</div>
-                    {place.deityType && <span style={{ fontSize: 12, color: '#6C63FF' }}>{place.deityType}</span>}
+                    <label className={styles.selectorLabel}>Trip Type</label>
+                    <div className={styles.tripTypeSelector}>
+                      <button 
+                        onClick={() => setIsRoundTrip(false)}
+                        className={`${styles.tripTypeOption} ${!isRoundTrip ? styles.tripTypeOptionActive : ''}`}
+                      >
+                        One-Way
+                      </button>
+                      <button 
+                        onClick={() => setIsRoundTrip(true)}
+                        className={`${styles.tripTypeOption} ${isRoundTrip ? styles.tripTypeOptionActive : ''}`}
+                      >
+                        Round
+                      </button>
+                    </div>
                   </div>
-                </div>
-              )}
-              {place.architecture && (
-                <div style={{ marginBottom: 12 }}>
-                  <h4 style={{ fontSize: 13, fontWeight: 700, color: '#555', marginBottom: 6 }}>Architecture</h4>
-                  <p style={{ fontSize: 13, color: '#333', lineHeight: 1.6 }}>{place.architecture}</p>
-                </div>
-              )}
-              {place.importance && (
-                <div>
-                  <h4 style={{ fontSize: 13, fontWeight: 700, color: '#555', marginBottom: 6 }}>Significance</h4>
-                  <p style={{ fontSize: 13, color: '#333', lineHeight: 1.6 }}>{place.importance}</p>
-                </div>
-              )}
-            </div>
-          </section>
-        )}
 
-        {/* 4e. FACILITIES */}
-        {place.facilities && (
-          <section className={styles.section} id="facilities">
-            <h2 className={styles.sectionTitle}>Facilities</h2>
-            <div style={{
-              display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 10,
-            }}>
-              {Object.entries(place.facilities)
-                .filter(([, v]) => v && v !== 'N/A')
-                .map(([key, value]) => {
-                  const icons: Record<string, string> = {
-                    locker: '🔐', toilets: '🚻', drinkingWater: '💧',
-                    wheelchair: '♿', parking: '🅿️', food: '🍽️',
-                  };
-                  const labels: Record<string, string> = {
-                    locker: 'Lockers', toilets: 'Toilets', drinkingWater: 'Drinking Water',
-                    wheelchair: 'Wheelchair', parking: 'Parking', food: 'Food',
-                  };
-                  return (
-                    <div key={key} style={{
-                      background: 'white', borderRadius: 12, padding: '12px 14px',
-                      border: '1px solid rgba(0,0,0,0.06)',
-                      display: 'flex', alignItems: 'flex-start', gap: 10,
-                    }}>
-                      <span style={{ fontSize: 20 }}>{icons[key] || '📌'}</span>
-                      <div>
-                        <div style={{ fontSize: 13, fontWeight: 700, color: '#1a1a2e' }}>{labels[key] || key}</div>
-                        <div style={{ fontSize: 12, color: '#666', marginTop: 2 }}>{value}</div>
+                  {vehicleType === 'bus' && (
+                    <div>
+                      <label className={styles.selectorLabel}>Passengers</label>
+                      <div className={styles.tripTypeSelector}>
+                        {[1, 2, 3, 4, 6].map(p => (
+                          <button
+                            key={p}
+                            onClick={() => setPassengers(p)}
+                            className={`${styles.tripTypeOption} ${passengers === p ? styles.tripTypeOptionActive : ''}`}
+                          >
+                            {p === 6 ? '5+' : p}
+                          </button>
+                        ))}
                       </div>
                     </div>
-                  );
-                })}
-            </div>
-          </section>
+                  )}
+                </div>
+
+                {/* Journey Summary */}
+                <div className={styles.journeySummaryCard}>
+                  <h3 className={styles.summaryTitle}>Journey Summary</h3>
+                  
+                  <div className={styles.summaryDetailsRow}>
+                    <div>
+                      <div className={styles.summaryLabel}>Distance</div>
+                      <div className={styles.summaryValue}>{calc.effDist.toFixed(1)} km</div>
+                    </div>
+                    <div>
+                      <div className={styles.summaryLabel}>Travel Time</div>
+                      <div className={styles.summaryValue}>~{calc.estTime} mins</div>
+                    </div>
+                    {calc.liters > 0 && (
+                      <div style={{ gridColumn: 'span 2' }}>
+                        <div className={styles.summaryLabel}>Est. Fuel Consumption</div>
+                        <div className={styles.summarySubvalue}>{calc.liters.toFixed(1)} Liters</div>
+                      </div>
+                    )}
+                  </div>
+
+                  <div className={styles.summaryFooterRow}>
+                    <div>
+                      <div className={styles.summaryLabel} style={{ textTransform: 'uppercase' }}>Estimated Total Cost</div>
+                      <div className={styles.taxesMessage}>Taxes, toll & entry included</div>
+                    </div>
+                    <div className={styles.costTotalText}>
+                      ₹{calc.total}
+                    </div>
+                  </div>
+                </div>
+
+                {/* Collapsible Breakdown */}
+                <div style={{ marginBottom: 16 }}>
+                  <button 
+                    onClick={() => setIsBreakdownOpen(!isBreakdownOpen)}
+                    className={styles.breakdownHeaderBtn}
+                  >
+                    <span>{isBreakdownOpen ? '▼ Hide Detailed Breakdown' : '▶ View Detailed Breakdown'}</span>
+                    <span className={styles.breakdownHeaderBadge}>
+                      Itemized
+                    </span>
+                  </button>
+                  
+                  {isBreakdownOpen && (
+                    <div className={styles.breakdownDetailsList}>
+                      {calc.fare > 0 && (
+                        <div className={styles.breakdownItemRow}>
+                          <span>Transit Ticket Fare ({passengers} {passengers === 1 ? 'passenger' : 'passengers'})</span>
+                          <span style={{ fontWeight: 600 }}>₹{calc.fare}</span>
+                        </div>
+                      )}
+                      {calc.fuel > 0 && (
+                        <div className={styles.breakdownItemRow}>
+                          <span>Fuel Cost (~₹{fuelRates.petrol.toFixed(2)}/L)</span>
+                          <span style={{ fontWeight: 600 }}>₹{Math.round(calc.fuel)}</span>
+                        </div>
+                      )}
+                      {calc.tolls > 0 && (
+                        <div className={styles.breakdownItemRow}>
+                          <span>{isTirumalaSpot ? 'Mountain Ghat Toll (Alipiri)' : 'Highway Toll'}</span>
+                          <span style={{ fontWeight: 600 }}>₹{calc.tolls}</span>
+                        </div>
+                      )}
+                      {calc.parking > 0 && (
+                        <div className={styles.breakdownItemRow}>
+                          <span>Vehicle Parking Fee</span>
+                          <span style={{ fontWeight: 600 }}>₹{calc.parking}</span>
+                        </div>
+                      )}
+                      <div className={styles.breakdownItemRow}>
+                        <span>Entry Fee ({passengers} x {place.entryFeeNum === 0 ? 'Free' : `₹${place.entryFeeNum}`})</span>
+                        <span style={{ fontWeight: 600, color: calc.entryFee === 0 ? '#10B981' : '#475569' }}>
+                          {calc.entryFee === 0 ? 'Free' : `₹${calc.entryFee}`}
+                        </span>
+                      </div>
+                    </div>
+                  )}
+                </div>
+
+                {/* Saarthi Recommendation */}
+                <div className={styles.saarthiRecCard}>
+                  <div className={styles.saarthiRecText}>
+                    <strong style={{ display: 'block', marginBottom: 2 }}>Saarthi Recommendation</strong>
+                    {vehicleType === 'bus' ? (
+                      isTirumalaSpot
+                        ? `APSRTC Bus is the most cost-effective and secure way to ascend the Tirumala ghats. Great choice for ${passengers} ${passengers === 1 ? 'person' : 'people'}!`
+                        : `APSRTC Bus is the smartest budget option — direct state buses run this route regularly. Great for ${passengers} ${passengers === 1 ? 'solo traveller' : 'people'}!`
+                    ) : passengers === 1 && vehicleType === 'bike' ? (
+                      isTirumalaSpot
+                        ? "A bike is the fastest way to navigate the 36 hairpin bends — but ride carefully on the ghat road."
+                        : `A bike is the most flexible option for this ${calc.effDist.toFixed(0)} km highway trip — fuel-efficient and easy to park at the destination.`
+                    ) : passengers >= 5 ? (
+                      "With a group of 5+, booking an SUV or Private Cab guarantees collective safety, comfort, and shared luggage space."
+                    ) : (
+                      isTirumalaSpot
+                        ? `Self-driving via Car gives you full scheduling freedom. Pay the Alipiri toll before the ghat ascent.`
+                        : `Self-driving is ideal for this route — cruise the highway comfortably. Keep fuel full before you start.`
+                    )}
+                  </div>
+                </div>
+
+                <div className={styles.disclaimerText}>
+                  Estimated using: ✓ Current fuel price (~₹{fuelRates.petrol.toFixed(2)}/L) • ✓ Google Distance matrix • ✓ TTD/APSRTC fare guidelines • ✓ Approximate parking
+                </div>
+              </div>
+            </section>
+          </>
+        )}
+
+        {activeTab === 'guide' && (
+          <>
+            {/* 4e. FACILITIES */}
+            {place.facilities && (
+              <section className={styles.section} id="facilities">
+                <h2 className={styles.sectionTitle}>Facilities Available</h2>
+                <div className={styles.facilitiesGrid}>
+                  {Object.entries(place.facilities)
+                    .filter(([, v]) => v && v !== 'N/A')
+                    .map(([key, value]) => {
+                      const labels: Record<string, string> = {
+                        locker: 'Lockers', toilets: 'Toilets', drinkingWater: 'Drinking Water',
+                        wheelchair: 'Wheelchair Support', parking: 'Parking Area', food: 'Food / Prasadam',
+                      };
+                      return (
+                        <div key={key} className={styles.facilityItemCard}>
+                          <div className={styles.facilityIcon}>
+                            <Info size={16} color="#E9801D" />
+                          </div>
+                          <div>
+                            <div style={{ fontSize: 13, fontWeight: 700, color: '#1a1a2e' }}>{labels[key] || key}</div>
+                            <div style={{ fontSize: 12, color: '#666', marginTop: 2 }}>{value}</div>
+                          </div>
+                        </div>
+                      );
+                    })}
+                </div>
+              </section>
+            )}
+
+            {/* 9. IMPORTANT TIPS */}
+            <section className={styles.section} id="tips">
+              <h2 className={styles.sectionTitle}>Before You Visit</h2>
+              
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+                {/* Rule 1: Dress Code */}
+                <div className={styles.tipCard} style={{ background: 'linear-gradient(135deg, #FFF9F2, #FFF3E6)', borderColor: 'rgba(255, 153, 51, 0.15)' }}>
+                  <div className={styles.tipIconCircle} style={{ background: '#FF9933' }}>
+                    <Shirt size={18} />
+                  </div>
+                  <div>
+                    <h4 className={styles.tipTitle} style={{ color: '#994D00' }}>Dress Code Required</h4>
+                    <p className={styles.tipDescription} style={{ color: '#5C3A21' }}>{guide.visitorTips.dressCode}</p>
+                  </div>
+                </div>
+
+                {/* Rule 2: Photography */}
+                <div className={styles.tipCard} style={{ background: 'linear-gradient(135deg, #FEF2F2, #FEE2E2)', borderColor: '#FCA5A5' }}>
+                  <div className={styles.tipIconCircle} style={{ background: '#EF4444' }}>
+                    <Ban size={18} />
+                  </div>
+                  <div>
+                    <h4 className={styles.tipTitle} style={{ color: '#991B1B' }}>Photography Policy</h4>
+                    <p className={styles.tipDescription} style={{ color: '#7F1D1D' }}>{guide.visitorTips.photoRule}</p>
+                  </div>
+                </div>
+
+                {/* Rule 3: Footwear */}
+                <div className={styles.tipCard} style={{ background: 'linear-gradient(135deg, #FFFDF5, #FFF9E6)', borderColor: 'rgba(255, 153, 51, 0.1)' }}>
+                  <div className={styles.tipIconCircle} style={{ background: '#F59E0B' }}>
+                    <Footprints size={18} />
+                  </div>
+                  <div>
+                    <h4 className={styles.tipTitle} style={{ color: '#92400E' }}>Footwear Custody</h4>
+                    <p className={styles.tipDescription} style={{ color: '#78350F' }}>{guide.visitorTips.footwearRule}</p>
+                  </div>
+                </div>
+
+                {/* Rule 4: Access & Entry */}
+                <div className={styles.tipCard} style={{ background: 'linear-gradient(135deg, #F0FDF4, #DCFCE7)', borderColor: '#BBF7D0' }}>
+                  <div className={styles.tipIconCircle} style={{ background: '#10B981' }}>
+                    <Coins size={18} />
+                  </div>
+                  <div>
+                    <h4 className={styles.tipTitle} style={{ color: '#166534' }}>Entry & Access Fee</h4>
+                    <p className={styles.tipDescription} style={{ color: '#14532D' }}>{guide.visitorTips.entryRule}</p>
+                  </div>
+                </div>
+
+                {/* Rule 5: Crowd Note */}
+                <div className={styles.tipCard} style={{ background: 'linear-gradient(135deg, #F8FAFC, #F1F5F9)', borderColor: '#E2E8F0' }}>
+                  <div className={styles.tipIconCircle} style={{ background: '#64748B' }}>
+                    <Users size={18} />
+                  </div>
+                  <div>
+                    <h4 className={styles.tipTitle} style={{ color: '#334155' }}>Crowd Expectation</h4>
+                    <p className={styles.tipDescription} style={{ color: '#475569' }}>{guide.visitorTips.crowdNote}</p>
+                  </div>
+                </div>
+              </div>
+            </section>
+          </>
         )}
 
         {/* 4f. RELATED PLACES */}
         {place.relatedPlaces && place.relatedPlaces.length > 0 && (
           <section className={styles.section} id="related">
             <h2 className={styles.sectionTitle}>Related Places</h2>
-            <div style={{ display: 'flex', gap: 12, overflowX: 'auto', paddingBottom: 8 }}>
+            <div className={styles.relatedPlacesScroll}>
               {place.relatedPlaces.map(relId => {
                 const rel = PLACES.find(p => p.id === relId);
                 if (!rel) return null;
                 return (
-                  <Link href={`/place/${rel.id}`} key={rel.id} style={{ textDecoration: 'none', flexShrink: 0 }}>
-                    <div style={{
-                      width: 150, borderRadius: 14, overflow: 'hidden',
-                      border: '1px solid rgba(0,0,0,0.06)', background: 'white',
-                    }}>
-                      <div style={{
-                        width: '100%', height: 90,
-                        backgroundImage: `url(${rel.image})`,
-                        backgroundSize: 'cover', backgroundPosition: 'center',
-                      }} />
-                      <div style={{ padding: '8px 10px' }}>
-                        <h4 style={{ fontSize: 13, fontWeight: 700, color: '#1a1a2e', margin: 0, lineHeight: 1.2 }}>{rel.name}</h4>
-                        <div style={{ fontSize: 11, color: '#888', marginTop: 4, display: 'flex', alignItems: 'center', gap: 4 }}>
+                  <Link href={`/place/${rel.id}`} key={rel.id} className={styles.relatedCardLink}>
+                    <div className={styles.relatedCard}>
+                      <div 
+                        className={styles.relatedCardImg}
+                        style={{ backgroundImage: `url(${rel.image})` }} 
+                      />
+                      <div className={styles.relatedCardInfo}>
+                        <h4>{rel.name}</h4>
+                        <div className={styles.relatedCardMeta}>
                           <Star size={10} fill="#FFD700" color="#FFD700" />
-                          {rel.rating} • {rel.distanceKms}km
+                          <span>{rel.rating} • {getRelDistance(rel)}</span>
                         </div>
                       </div>
                     </div>
@@ -715,28 +1237,19 @@ export default function PlaceDetails({ params }: { params: Promise<{ id: string 
         {nearbyPlacesList.length > 0 && (
           <section className={styles.section} id="nearby-attractions">
             <h2 className={styles.sectionTitle}>Nearby Attractions</h2>
-            <div style={{ display: 'flex', gap: 12, overflowX: 'auto', paddingBottom: 8 }}>
+            <div className={styles.relatedPlacesScroll}>
               {nearbyPlacesList.map(({ place: p, dist }) => (
-                <Link href={`/place/${p.id}`} key={p.id} style={{ textDecoration: 'none', flexShrink: 0 }}>
-                  <div style={{
-                    width: 150, borderRadius: 14, overflow: 'hidden',
-                    border: '1px solid rgba(0,0,0,0.06)', background: 'white',
-                  }}>
-                    <div style={{
-                      width: '100%', height: 90,
-                      backgroundImage: `url(${p.image})`,
-                      backgroundSize: 'cover', backgroundPosition: 'center',
-                    }} />
-                    <div style={{ padding: '8px 10px' }}>
-                      <h4 style={{ fontSize: 13, fontWeight: 700, color: '#1a1a2e', margin: 0, lineHeight: 1.2, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }} title={p.name}>
-                        {p.name}
-                      </h4>
-                      <div style={{ fontSize: 11, color: 'var(--color-saffron-600)', fontWeight: 600, marginTop: 4, display: 'flex', alignItems: 'center', gap: 4 }}>
-                        📍 {dist.toFixed(1)} km away
-                      </div>
-                      <div style={{ fontSize: 10, color: '#888', marginTop: 2, display: 'flex', alignItems: 'center', gap: 4 }}>
+                <Link href={`/place/${p.id}`} key={p.id} className={styles.relatedCardLink}>
+                  <div className={styles.relatedCard}>
+                    <div 
+                      className={styles.relatedCardImg}
+                      style={{ backgroundImage: `url(${p.image})` }} 
+                    />
+                    <div className={styles.relatedCardInfo}>
+                      <h4>{p.name}</h4>
+                      <div className={styles.relatedCardMeta}>
                         <Star size={10} fill="#FFD700" color="#FFD700" />
-                        {p.rating}
+                        <span>{p.rating} • {dist.toFixed(1)} km</span>
                       </div>
                     </div>
                   </div>
@@ -745,603 +1258,89 @@ export default function PlaceDetails({ params }: { params: Promise<{ id: string 
             </div>
           </section>
         )}
+      </div>
 
-        {/* 5. TRAVEL OPTIONS */}
-        <section className={styles.section} id="travel">
-          <h2 className={styles.sectionTitle}>How to Reach</h2>
-          <div className={styles.travelCard}>
-            <div className={styles.travelRouteSummary}>
-              <div className={styles.routeStat}>
-                <label>Distance</label>
-                <span>{guide.distanceKms} km</span>
-              </div>
-              <div className={styles.routeDivider} />
-              <div className={styles.routeStat}>
-                <label>Est. Travel Time</label>
-                <span>~{Math.round(guide.distanceKms * 2)} mins</span>
-              </div>
-            </div>
+      {/* Fullscreen Photo Lightbox */}
+      <AnimatePresence>
+        {lightboxIndex !== null && guide.images && (
+          <motion.div
+            className={styles.lightbox}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.25 }}
+            onClick={() => setLightboxIndex(null)}
+          >
+            <motion.img
+              key={lightboxIndex}
+              src={guide.images[lightboxIndex]}
+              alt={`${guide.name} photo ${lightboxIndex + 1}`}
+              className={styles.lightboxImage}
+              initial={{ scale: 0.85, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.85, opacity: 0 }}
+              transition={{ duration: 0.3, ease: 'easeOut' }}
+              onClick={(e) => e.stopPropagation()}
+            />
 
-            <div className={styles.travelModes}>
-              <div className={styles.modeItem}>
-                <div className={styles.modeIconBg}><Compass size={20} /></div>
-                <div className={styles.modeInfo}>
-                  <h4>RTC / Public Bus</h4>
-                  <p>{guide.travelByRTC}</p>
-                </div>
-              </div>
-              <div className={styles.modeItem}>
-                <div className={styles.modeIconBg}><Compass size={20} /></div>
-                <div className={styles.modeInfo}>
-                  <h4>Car / Cab</h4>
-                  <p>{guide.travelByCar}</p>
-                </div>
-              </div>
-              <div className={styles.modeItem}>
-                <div className={styles.modeIconBg}><Compass size={20} /></div>
-                <div className={styles.modeInfo}>
-                  <h4>Bike / Two-Wheeler</h4>
-                  <p>{guide.travelByBike}</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* 6. ESTIMATED COST */}
-        <section className={styles.section} id="cost">
-          <h2 className={styles.sectionTitle}>Travel Cost Estimator</h2>
-          <div className={styles.costCard} style={{ padding: 18 }}>
-            
-            {/* Live Status Header */}
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 4, background: '#F8FAFC', padding: 12, borderRadius: 10, border: '1px solid #E2E8F0', marginBottom: 16 }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <span style={{ fontSize: 13, fontWeight: 700, color: '#1E293B', display: 'flex', alignItems: 'center', gap: 6 }}>
-                  💰 Live Trip Estimator
-                </span>
-                <span style={{ fontSize: 11, fontWeight: 700, color: '#475569', background: 'rgba(71, 85, 105, 0.1)', padding: '2px 8px', borderRadius: 99 }}>
-                  {calc.effDist.toFixed(1)} km away
-                </span>
-              </div>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: 4 }}>
-                <span style={{ fontSize: 11, color: '#64748B' }}>
-                  📍 {userLocation ? 'Based on your location' : 'Default: from Tirupati Central'}
-                </span>
-                {!userLocation && (
-                  <button 
-                    onClick={handleDetectLocation}
-                    style={{
-                      background: 'none', border: 'none', color: 'var(--color-saffron-600)', fontSize: 11, fontWeight: 700, cursor: 'pointer', display: 'inline-flex', alignItems: 'center', gap: 4, padding: 0
-                    }}
-                  >
-                    Use Live Location
-                  </button>
-                )}
-              </div>
-              {isTirumalaSpot && (
-                <div style={{ fontSize: 11, color: '#B45309', fontWeight: 600, display: 'flex', alignItems: 'center', gap: 4, marginTop: 4 }}>
-                  ⚠️ Includes Mountain Ghat Road Winding Route
-                </div>
-              )}
-            </div>
-
-            {/* Vehicle Selector */}
-            <div style={{ marginBottom: 16 }}>
-              <label style={{ fontSize: 12, fontWeight: 700, color: '#475569', display: 'block', marginBottom: 8 }}>Select Vehicle</label>
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: 6 }}>
-                {[
-                  { type: 'car', icon: '🚗', label: 'Car' },
-                  { type: 'bus', icon: '🚌', label: 'Bus' },
-                  { type: 'bike', icon: '🏍️', label: 'Bike' },
-                  { type: 'cab', icon: '🚕', label: 'Cab' },
-                  { type: 'suv', icon: '🚐', label: 'SUV' }
-                ].map(v => (
-                  <button
-                    key={v.type}
-                    onClick={() => setVehicleType(v.type as any)}
-                    style={{
-                      display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 4, padding: '8px 4px', borderRadius: 10, border: '1px solid',
-                      borderColor: vehicleType === v.type ? 'var(--color-saffron-300)' : 'rgba(0,0,0,0.06)',
-                      background: vehicleType === v.type ? 'linear-gradient(135deg, #FFFBEB, #FEF3C7)' : 'white',
-                      color: vehicleType === v.type ? 'var(--color-saffron-800)' : '#475569',
-                      fontWeight: vehicleType === v.type ? 700 : 500,
-                      fontSize: 11, cursor: 'pointer', transition: 'all 0.2s ease',
-                      boxShadow: vehicleType === v.type ? '0 2px 4px rgba(217, 119, 6, 0.1)' : 'none'
-                    }}
-                  >
-                    <span style={{ fontSize: 16 }}>{v.icon}</span>
-                    <span style={{ fontSize: 10 }}>{v.label}</span>
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            {/* Trip Type & Passenger Selectors */}
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1.5fr', gap: 12, marginBottom: 16 }}>
-              <div>
-                <label style={{ fontSize: 12, fontWeight: 700, color: '#475569', display: 'block', marginBottom: 6 }}>Trip Type</label>
-                <div style={{ display: 'flex', gap: 4, background: '#F1F5F9', padding: 3, borderRadius: 8 }}>
-                  <button 
-                    onClick={() => setIsRoundTrip(false)}
-                    style={{
-                      flex: 1, padding: '6px 4px', borderRadius: 6, border: 'none', fontSize: 11, fontWeight: 700,
-                      background: !isRoundTrip ? 'white' : 'transparent',
-                      color: !isRoundTrip ? 'var(--color-saffron-800)' : '#64748B',
-                      boxShadow: !isRoundTrip ? '0 1px 2px rgba(0,0,0,0.05)' : 'none', cursor: 'pointer'
-                    }}
-                  >
-                    One-Way
-                  </button>
-                  <button 
-                    onClick={() => setIsRoundTrip(true)}
-                    style={{
-                      flex: 1, padding: '6px 4px', borderRadius: 6, border: 'none', fontSize: 11, fontWeight: 700,
-                      background: isRoundTrip ? 'white' : 'transparent',
-                      color: isRoundTrip ? 'var(--color-saffron-800)' : '#64748B',
-                      boxShadow: isRoundTrip ? '0 1px 2px rgba(0,0,0,0.05)' : 'none', cursor: 'pointer'
-                    }}
-                  >
-                    Round
-                  </button>
-                </div>
-              </div>
-
-              <div>
-                <label style={{ fontSize: 12, fontWeight: 700, color: '#475569', display: 'block', marginBottom: 6 }}>Passengers</label>
-                <div style={{ display: 'flex', gap: 4, background: '#F1F5F9', padding: 3, borderRadius: 8 }}>
-                  {[1, 2, 3, 4, 6].map(p => (
-                    <button
-                      key={p}
-                      onClick={() => setPassengers(p)}
-                      style={{
-                        flex: 1, padding: '6px 0', borderRadius: 6, border: 'none', fontSize: 11, fontWeight: 700,
-                        background: passengers === p ? 'white' : 'transparent',
-                        color: passengers === p ? 'var(--color-saffron-800)' : '#64748B',
-                        boxShadow: passengers === p ? '0 1px 2px rgba(0,0,0,0.05)' : 'none', cursor: 'pointer'
-                      }}
-                    >
-                      {p === 6 ? '5+' : p}
-                    </button>
-                  ))}
-                </div>
-              </div>
-            </div>
-
-            {/* Journey Summary */}
-            <div style={{
-              background: 'linear-gradient(135deg, #1E293B, #0F172A)',
-              borderRadius: 14,
-              padding: 18,
-              color: 'white',
-              boxShadow: '0 4px 12px rgba(15, 23, 42, 0.15)',
-              marginBottom: 16
-            }}>
-              <h3 style={{ fontSize: 12, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em', color: '#94A3B8', margin: '0 0 12px 0' }}>Journey Summary</h3>
-              
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12, borderBottom: '1px solid rgba(255,255,255,0.08)', paddingBottom: 12, marginBottom: 12 }}>
-                <div>
-                  <div style={{ fontSize: 10, color: '#94A3B8' }}>Distance</div>
-                  <div style={{ fontSize: 14, fontWeight: 700, color: '#F1F5F9' }}>{calc.effDist.toFixed(1)} km</div>
-                </div>
-                <div>
-                  <div style={{ fontSize: 10, color: '#94A3B8' }}>Travel Time</div>
-                  <div style={{ fontSize: 14, fontWeight: 700, color: '#F1F5F9' }}>~{calc.estTime} mins</div>
-                </div>
-                {calc.liters > 0 && (
-                  <div style={{ gridColumn: 'span 2' }}>
-                    <div style={{ fontSize: 10, color: '#94A3B8' }}>Est. Fuel Consumption</div>
-                    <div style={{ fontSize: 13, fontWeight: 600, color: '#E2E8F0' }}>{calc.liters.toFixed(1)} Liters</div>
-                  </div>
-                )}
-              </div>
-
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <div>
-                  <div style={{ fontSize: 10, color: '#94A3B8', textTransform: 'uppercase' }}>Estimated Total Cost</div>
-                  <div style={{ fontSize: 11, color: '#34D399', fontWeight: 600 }}>Taxes, toll & entry included</div>
-                </div>
-                {calc.total < calc.effDist * 2 && calc.effDist > 10 ? (
-                  <div style={{ textAlign: 'right' }}>
-                    <div style={{ fontSize: 13, fontWeight: 700, color: '#F59E0B' }}>⚠ Check inputs</div>
-                    <div style={{ fontSize: 10, color: '#94A3B8' }}>Adjust vehicle or trip type</div>
-                  </div>
-                ) : (
-                  <div style={{ fontSize: 26, fontWeight: 800, color: '#10B981', display: 'flex', alignItems: 'center' }}>
-                    ₹{calc.total}
-                  </div>
-                )}
-              </div>
-            </div>
-
-            {/* Collapsible Breakdown */}
-            <div style={{ marginBottom: 16 }}>
-              <button 
-                onClick={() => setIsBreakdownOpen(!isBreakdownOpen)}
-                style={{
-                  width: '100%', padding: '10px 14px', borderRadius: 10, border: '1px solid rgba(0,0,0,0.06)', background: '#F8FAFC',
-                  fontSize: 12, fontWeight: 700, color: '#475569', display: 'flex', justifyContent: 'space-between', alignItems: 'center', cursor: 'pointer'
-                }}
-              >
-                <span>{isBreakdownOpen ? '▼ Hide Detailed Breakdown' : '▶ View Detailed Breakdown'}</span>
-                <span style={{ fontSize: 11, color: 'var(--color-saffron-600)', background: 'white', padding: '2px 8px', borderRadius: 6, border: '1px solid rgba(0,0,0,0.05)' }}>
-                  Itemized
-                </span>
-              </button>
-              
-              {isBreakdownOpen && (
-                <div style={{
-                  marginTop: 8, padding: '12px 14px', borderRadius: 10, border: '1px solid rgba(0,0,0,0.05)', background: 'white',
-                  display: 'flex', flexDirection: 'column', gap: 8
-                }}>
-                  {calc.fare > 0 && (
-                    <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 12, color: '#475569' }}>
-                      <span>🚌 Transit Ticket Fare ({passengers} {passengers === 1 ? 'passenger' : 'passengers'})</span>
-                      <span style={{ fontWeight: 600 }}>₹{calc.fare}</span>
-                    </div>
-                  )}
-                  {calc.fuel > 0 && (
-                    <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 12, color: '#475569' }}>
-                      <span>⛽ Fuel Cost (~₹{fuelRates.petrol.toFixed(2)}/L)</span>
-                      <span style={{ fontWeight: 600 }}>₹{Math.round(calc.fuel)}</span>
-                    </div>
-                  )}
-                  {calc.tolls > 0 && (
-                    <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 12, color: '#475569' }}>
-                      <span>🛣️ {isTirumalaSpot ? 'Mountain Ghat Toll (Alipiri)' : 'Highway Toll'}</span>
-                      <span style={{ fontWeight: 600 }}>₹{calc.tolls}</span>
-                    </div>
-                  )}
-                  {calc.parking > 0 && (
-                    <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 12, color: '#475569' }}>
-                      <span>🅿️ Vehicle Parking Fee</span>
-                      <span style={{ fontWeight: 600 }}>₹{calc.parking}</span>
-                    </div>
-                  )}
-                  <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 12, color: '#475569' }}>
-                    <span>🎟️ Entry Fee ({passengers} x {place.entryFeeNum === 0 ? 'Free' : `₹${place.entryFeeNum}`})</span>
-                    <span style={{ fontWeight: 600, color: calc.entryFee === 0 ? '#10B981' : '#475569' }}>
-                      {calc.entryFee === 0 ? 'Free' : `₹${calc.entryFee}`}
-                    </span>
-                  </div>
-                </div>
-              )}
-            </div>
-
-            {/* Saarthi Recommendation */}
-            <div style={{
-              background: 'linear-gradient(135deg, #FFFBEB, #FEF3C7)',
-              borderRadius: 12,
-              padding: 14,
-              border: '1px solid #FDE68A',
-              marginBottom: 8,
-              display: 'flex',
-              gap: 10
-            }}>
-              <div style={{ fontSize: 18 }}>💡</div>
-              <div style={{ fontSize: 12, color: '#78350F', lineHeight: 1.4 }}>
-                <strong style={{ display: 'block', marginBottom: 2 }}>Saarthi Recommendation</strong>
-                {vehicleType === 'bus' ? (
-                  isTirumalaSpot
-                    ? `APSRTC Bus is the most cost-effective and secure way to ascend the Tirumala ghats. Great choice for ${passengers} ${passengers === 1 ? 'person' : 'people'}!`
-                    : `APSRTC Bus is the smartest budget option — direct state buses run this route regularly. Great for ${passengers} ${passengers === 1 ? 'solo traveller' : 'people'}!`
-                ) : passengers === 1 && vehicleType === 'bike' ? (
-                  isTirumalaSpot
-                    ? "A bike is the fastest way to navigate the 36 hairpin bends — but ride carefully on the ghat road."
-                    : `A bike is the most flexible option for this ${calc.effDist.toFixed(0)} km highway trip — fuel-efficient and easy to park at the destination.`
-                ) : passengers >= 5 ? (
-                  "With a group of 5+, booking an SUV or Private Cab guarantees collective safety, comfort, and shared luggage space."
-                ) : (
-                  isTirumalaSpot
-                    ? `Self-driving via Car gives you full scheduling freedom. Pay the Alipiri toll before the ghat ascent.`
-                    : `Self-driving is ideal for this route — cruise the highway comfortably. Keep fuel full before you start.`
-                )}
-              </div>
-            </div>
-
-            {/* Transparency disclaimer */}
-            <div style={{ fontSize: 10, color: '#94A3B8', textAlign: 'center', lineHeight: 1.4, margin: '8px 0 0 0' }}>
-              Estimated using: ✓ Current fuel price (~₹{fuelRates.petrol.toFixed(2)}/L) • ✓ Google Distance matrix • ✓ TTD/APSRTC fare guidelines • ✓ Approximate parking
-            </div>
-
-          </div>
-        </section>
-
-        {/* 7. HISTORY VIDEO CARD */}
-        {guide.youtubeLink && (
-          <section className={styles.section} id="video">
-            <h2 className={styles.sectionTitle}>Video Guide</h2>
-            <a 
-              href={guide.youtubeLink} 
-              target="_blank" 
-              rel="noopener noreferrer" 
-              className={styles.videoCard}
-            >
-              <div 
-                className={styles.videoThumbnail}
-                style={{ backgroundImage: `url(${getYoutubeThumb(guide.youtubeLink)})` }}
-              >
-                <div className={styles.playOverlay}>
-                  <PlayCircle size={60} color="#fff" />
-                </div>
-              </div>
-              <div className={styles.videoText}>
-                <h3>Watch Explainer & History</h3>
-                <p>Understand the origins, mythology, and visitor experience in this documentary guide.</p>
-                <span className={styles.videoLink}>Watch on YouTube →</span>
-              </div>
-            </a>
-          </section>
-        )}
-
-        {/* 8. PHOTO GALLERY */}
-        {guide.images && guide.images.length > 0 && (
-          <section className={styles.section} id="photos">
-            <h2 className={styles.sectionTitle}>
-              <Camera size={20} style={{ marginRight: 8, verticalAlign: 'middle' }} />
-              Photo Gallery{' '}
-              <span className={styles.galleryCount}>{guide.images.length} photos</span>
-            </h2>
-            <div className={styles.photoGrid}>
-              {guide.images.map((imgUrl, idx) => (
-                <motion.div
-                  key={idx}
-                  className={`${styles.gridItem} ${idx === 0 ? styles.gridItemLarge : ''}`}
-                  style={{ background: `url(${imgUrl}) center/cover no-repeat` }}
-                  title={`${guide.name} view ${idx + 1}`}
-                  onClick={() => setLightboxIndex(idx)}
-                  whileTap={{ scale: 0.97 }}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: idx * 0.08, duration: 0.4 }}
-                >
-                  <div className={styles.gridOverlay}>
-                    <Camera size={16} />
-                    <span>{idx + 1}/{guide.images.length}</span>
-                  </div>
-                </motion.div>
-              ))}
-            </div>
-          </section>
-        )}
-
-        {/* FULLSCREEN LIGHTBOX */}
-        <AnimatePresence>
-          {lightboxIndex !== null && guide.images && (
-            <motion.div
-              className={styles.lightbox}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.25 }}
+            <button
+              className={styles.lightboxClose}
               onClick={() => setLightboxIndex(null)}
             >
-              <motion.img
-                key={lightboxIndex}
-                src={guide.images[lightboxIndex]}
-                alt={`${guide.name} photo ${lightboxIndex + 1}`}
-                className={styles.lightboxImage}
-                initial={{ scale: 0.85, opacity: 0 }}
-                animate={{ scale: 1, opacity: 1 }}
-                exit={{ scale: 0.85, opacity: 0 }}
-                transition={{ duration: 0.3, ease: 'easeOut' }}
-                onClick={(e) => e.stopPropagation()}
-              />
+              <X size={24} />
+            </button>
 
-              <button
-                className={styles.lightboxClose}
-                onClick={() => setLightboxIndex(null)}
-              >
-                <X size={24} />
-              </button>
-
-              <div className={styles.lightboxCounter}>
-                {lightboxIndex + 1} / {guide.images.length}
-              </div>
-
-              {guide.images.length > 1 && (
-                <>
-                  <button
-                    className={`${styles.lightboxNav} ${styles.lightboxPrev}`}
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      setLightboxIndex(lightboxIndex === 0 ? guide.images!.length - 1 : lightboxIndex - 1);
-                    }}
-                  >
-                    <ChevronLeft size={28} />
-                  </button>
-                  <button
-                    className={`${styles.lightboxNav} ${styles.lightboxNext}`}
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      setLightboxIndex(lightboxIndex === guide.images!.length - 1 ? 0 : lightboxIndex + 1);
-                    }}
-                  >
-                    <ChevronRight size={28} />
-                  </button>
-                </>
-              )}
-            </motion.div>
-          )}
-        </AnimatePresence>
-
-        {/* 9. IMPORTANT TIPS */}
-        <section className={styles.section} id="tips">
-          <h2 className={styles.sectionTitle}>Before You Visit</h2>
-          
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-            {/* Rule 1: Dress Code */}
-            <div style={{
-              display: 'flex',
-              gap: 12,
-              padding: 14,
-              borderRadius: 12,
-              background: 'linear-gradient(135deg, #FFF9F2, #FFF3E6)',
-              border: '1px solid rgba(255, 153, 51, 0.15)'
-            }}>
-              <div style={{
-                width: 36,
-                height: 36,
-                borderRadius: '50%',
-                background: '#FF9933',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                color: 'white',
-                flexShrink: 0
-              }}>
-                <Shirt size={18} />
-              </div>
-              <div>
-                <h4 style={{ fontSize: 13, fontWeight: 700, color: '#994D00', margin: '0 0 2px 0' }}>Dress Code Required</h4>
-                <p style={{ fontSize: 12, color: '#5C3A21', margin: 0, lineHeight: 1.4 }}>{guide.visitorTips.dressCode}</p>
-              </div>
+            <div className={styles.lightboxCounter}>
+              {lightboxIndex + 1} / {guide.images.length}
             </div>
 
-            {/* Rule 2: Photography */}
-            <div style={{
-              display: 'flex',
-              gap: 12,
-              padding: 14,
-              borderRadius: 12,
-              background: 'linear-gradient(135deg, #FEF2F2, #FEE2E2)',
-              border: '1px solid #FCA5A5'
-            }}>
-              <div style={{
-                width: 36,
-                height: 36,
-                borderRadius: '50%',
-                background: '#EF4444',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                color: 'white',
-                flexShrink: 0
-              }}>
-                <Ban size={18} />
-              </div>
-              <div>
-                <h4 style={{ fontSize: 13, fontWeight: 700, color: '#991B1B', margin: '0 0 2px 0' }}>Photography Policy</h4>
-                <p style={{ fontSize: 12, color: '#7F1D1D', margin: 0, lineHeight: 1.4 }}>{guide.visitorTips.photoRule}</p>
-              </div>
-            </div>
-
-            {/* Rule 3: Footwear */}
-            <div style={{
-              display: 'flex',
-              gap: 12,
-              padding: 14,
-              borderRadius: 12,
-              background: 'linear-gradient(135deg, #FFFDF5, #FFF9E6)',
-              border: '1px solid rgba(255, 153, 51, 0.1)'
-            }}>
-              <div style={{
-                width: 36,
-                height: 36,
-                borderRadius: '50%',
-                background: '#F59E0B',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                color: 'white',
-                flexShrink: 0
-              }}>
-                <Footprints size={18} />
-              </div>
-              <div>
-                <h4 style={{ fontSize: 13, fontWeight: 700, color: '#92400E', margin: '0 0 2px 0' }}>Footwear Custody</h4>
-                <p style={{ fontSize: 12, color: '#78350F', margin: 0, lineHeight: 1.4 }}>{guide.visitorTips.footwearRule}</p>
-              </div>
-            </div>
-
-            {/* Rule 4: Access & Entry */}
-            <div style={{
-              display: 'flex',
-              gap: 12,
-              padding: 14,
-              borderRadius: 12,
-              background: 'linear-gradient(135deg, #F0FDF4, #DCFCE7)',
-              border: '1px solid #BBF7D0'
-            }}>
-              <div style={{
-                width: 36,
-                height: 36,
-                borderRadius: '50%',
-                background: '#10B981',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                color: 'white',
-                flexShrink: 0
-              }}>
-                <Coins size={18} />
-              </div>
-              <div>
-                <h4 style={{ fontSize: 13, fontWeight: 700, color: '#166534', margin: '0 0 2px 0' }}>Entry & Access Fee</h4>
-                <p style={{ fontSize: 12, color: '#14532D', margin: 0, lineHeight: 1.4 }}>{guide.visitorTips.entryRule}</p>
-              </div>
-            </div>
-
-            {/* Rule 5: Crowd Note */}
-            <div style={{
-              display: 'flex',
-              gap: 12,
-              padding: 14,
-              borderRadius: 12,
-              background: 'linear-gradient(135deg, #F8FAFC, #F1F5F9)',
-              border: '1px solid #E2E8F0'
-            }}>
-              <div style={{
-                width: 36,
-                height: 36,
-                borderRadius: '50%',
-                background: '#64748B',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                color: 'white',
-                flexShrink: 0
-              }}>
-                <Users size={18} />
-              </div>
-              <div>
-                <h4 style={{ fontSize: 13, fontWeight: 700, color: '#334155', margin: '0 0 2px 0' }}>Crowd Expectation</h4>
-                <p style={{ fontSize: 12, color: '#475569', margin: 0, lineHeight: 1.4 }}>{guide.visitorTips.crowdNote}</p>
-              </div>
-            </div>
-          </div>
-        </section>
-      </div>
+            {guide.images.length > 1 && (
+              <>
+                <button
+                  className={`${styles.lightboxNav} ${styles.lightboxPrev}`}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setLightboxIndex(lightboxIndex === 0 ? guide.images!.length - 1 : lightboxIndex - 1);
+                  }}
+                >
+                  <ChevronLeft size={28} />
+                </button>
+                <button
+                  className={`${styles.lightboxNav} ${styles.lightboxNext}`}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setLightboxIndex(lightboxIndex === guide.images!.length - 1 ? 0 : lightboxIndex + 1);
+                  }}
+                >
+                  <ChevronRight size={28} />
+                </button>
+              </>
+            )}
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* Sticky footer action bar */}
       <div className={styles.stickyFooter}>
-        <div className={styles.footerActions} style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+        <div className={styles.footerActions}>
           <button 
-            className={`${styles.saveBtn} ${isSaved ? styles.saveBtnActive : ''}`}
+            className={`${styles.saveIconBtn} ${isSaved ? styles.saveIconBtnActive : ''}`}
             onClick={() => togglePlace(place.id)}
-            style={{ 
-              flex: '0 0 auto', 
-              width: 48, 
-              height: 48, 
-              borderRadius: '50%', 
-              padding: 0, 
-              display: 'flex', 
-              alignItems: 'center', 
-              justifyContent: 'center',
-              minWidth: 48
-            }}
             title={isSaved ? "Saved" : "Save for Later"}
           >
             <Heart size={22} fill={isSaved ? "var(--color-saffron-500)" : "none"} color={isSaved ? "var(--color-saffron-500)" : "currentColor"} />
           </button>
           <a 
-            href={`https://www.google.com/maps/dir/?api=1&destination=${place.coordinates?.lat || 13.6288},${place.coordinates?.lng || 79.4192}`}
+            href={place.coordinates 
+              ? `https://www.google.com/maps/dir/?api=1&destination=${place.coordinates.lat},${place.coordinates.lng}${userLocation ? `&origin=${userLocation.lat},${userLocation.lng}` : ''}`
+              : `https://www.google.com/maps/dir/?api=1&destination=13.6288,79.4192`
+            }
             target="_blank"
             rel="noopener noreferrer"
             className={styles.navBtn}
-            style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8, height: 48 }}
           >
-            <Compass size={20} />
-            <span>Start Journey</span>
+            <Navigation size={20} />
+            <span>Navigate Now</span>
           </a>
         </div>
       </div>

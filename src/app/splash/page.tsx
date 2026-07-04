@@ -9,9 +9,13 @@ export default function SplashPage() {
   const router = useRouter();
 
   useEffect(() => {
-    // Navigate after a few seconds
     const timer = setTimeout(() => {
-      router.push('/');
+      const hasSeenOnboarding = localStorage.getItem('hasSeenOnboarding');
+      if (!hasSeenOnboarding) {
+        router.push('/onboarding');
+      } else {
+        router.push('/');
+      }
     }, 4000);
     return () => clearTimeout(timer);
   }, [router]);

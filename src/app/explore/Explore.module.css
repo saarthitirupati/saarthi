@@ -119,15 +119,15 @@
 .templeLink {
   white-space: normal;
   display: flex;
-  height: 120px;
+  min-height: 120px;
 }
 
 .itemImage {
   width: 120px;
-  height: 100%;
   background-size: cover;
   background-position: center;
   flex-shrink: 0;
+  align-self: stretch;
 }
 
 .itemInfo {
@@ -210,7 +210,6 @@
   display: flex;
   gap: 16px;
   overflow-x: auto;
-  padding-bottom: 16px;
   margin: 0 -20px;
   padding: 0 20px 16px;
   scrollbar-width: none;
@@ -270,7 +269,7 @@
 
 @media (max-width: 768px) {
   .templeLink {
-    height: 130px;
+    min-height: 130px;
   }
   .itemImage {
     width: 110px;

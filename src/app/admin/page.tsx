@@ -1,10 +1,10 @@
 'use client';
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { MapPin, TrendingUp, Eye, PlusCircle, Sparkles, Pencil, BookOpen, HelpCircle, Calendar, Bookmark } from 'lucide-react';
+import { MapPin, TrendingUp, Eye, PlusCircle, Sparkles, Pencil, BookOpen, HelpCircle, Calendar, Bookmark, Database, CheckCircle2 } from 'lucide-react';
 import styles from './admin.module.css';
 import { PLACES } from '@/data/places';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 
 interface TrafficSummary {
   last7: { date: string; total: number }[];
@@ -21,6 +21,29 @@ export default function AdminDashboard() {
   const [quizzesCount, setQuizzesCount] = useState(0);
   const [festivalsCount, setFestivalsCount] = useState(0);
   const [encyclopediaCount, setEncyclopediaCount] = useState(0);
+  const [syncing, setSyncing] = useState(false);
+  const [toast, setToast] = useState<{ message: string; isError?: boolean } | null>(null);
+
+  const handleSync = async () => {
+    setSyncing(true);
+    setToast(null);
+    try {
+      const res = await fetch('/api/admin/sync', { method: 'POST' });
+      const data = await res.json();
+      if (data.success) {
+        setToast({ 
+          message: `Successfully synced database! (${data.count} places, ${data.storyCount} stories, ${data.festivalCount} festivals)` 
+        });
+      } else {
+        setToast({ message: `Sync failed: ${data.error}`, isError: true });
+      }
+    } catch (e: any) {
+      setToast({ message: `Error syncing: ${e.message}`, isError: true });
+    } finally {
+      setSyncing(false);
+      setTimeout(() => setToast(null), 4000);
+    }
+  };
 
   useEffect(() => {
     fetch('/api/admin/traffic').then(r => r.json()).then(setTraffic);
@@ -57,10 +80,48 @@ export default function AdminDashboard() {
           <h1 className={styles.pageTitle}>Dashboard</h1>
           <p className={styles.pageSubtitle}>Real-time overview of JeevaPath platform</p>
         </div>
-        <Link href="/admin/places/new" className={styles.btnPrimary}>
-          <PlusCircle size={16} /> Add Place
-        </Link>
+        <div style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
+          <button 
+            onClick={handleSync}
+            disabled={syncing}
+            className={styles.btnSecondary}
+            style={{ 
+              display: 'flex', 
+              alignItems: 'center', 
+              gap: 8, 
+              cursor: syncing ? 'not-allowed' : 'pointer', 
+              opacity: syncing ? 0.7 : 1,
+              padding: '12px 20px',
+              borderRadius: '14px',
+              height: 'fit-content'
+            }}
+          >
+            <Database size={16} className={syncing ? 'animate-spin' : ''} />
+            {syncing ? 'Syncing to Supabase...' : 'Sync to Supabase'}
+          </button>
+          <Link href="/admin/places/new" className={styles.btnPrimary}>
+            <PlusCircle size={16} /> Add Place
+          </Link>
+        </div>
       </div>
+
+      <AnimatePresence>
+        {toast && (
+          <motion.div 
+            className={styles.successToast}
+            style={{ 
+              background: toast.isError ? 'linear-gradient(135deg, #EF4444 0%, #B91C1C 100%)' : undefined,
+              boxShadow: toast.isError ? '0 12px 40px rgba(239, 68, 68, 0.4)' : undefined
+            }}
+            initial={{ opacity: 0, y: -20, x: 20 }}
+            animate={{ opacity: 1, y: 0, x: 0 }}
+            exit={{ opacity: 0, y: -20, x: 20 }}
+          >
+            <CheckCircle2 size={16} />
+            <span>{toast.message}</span>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* Stats */}
       <div className={styles.statsRow}>

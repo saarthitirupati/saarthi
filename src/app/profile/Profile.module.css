@@ -1,7 +1,7 @@
 .container {
   min-height: 100vh;
-  background: var(--color-bg-dark);
-  color: var(--color-text-main);
+  background: #FCF8F2;
+  color: #1A1A1A;
   padding: 80px 24px 100px;
 }
 
@@ -17,7 +17,7 @@
 }
 
 .subtitle {
-  color: var(--color-text-dim);
+  color: #888;
   font-size: 16px;
 }
 
@@ -29,24 +29,34 @@
 }
 
 .statCard {
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: white;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
   border-radius: 20px;
   padding: 24px;
   display: flex;
   flex-direction: column;
   gap: 8px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.statCard:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.06);
 }
 
 .statVal {
   font-size: 28px;
   font-weight: 800;
-  color: var(--color-saffron-500);
+  color: var(--color-saffron-500, #E9801D);
 }
 
 .statLabel {
   font-size: 14px;
-  color: var(--color-text-dim);
+  color: #666;
+  display: flex;
+  align-items: center;
+  gap: 6px;
 }
 
 .section {
@@ -60,32 +70,7 @@
   display: flex;
   align-items: center;
   gap: 10px;
-}
-
-.themeSelector {
-  display: flex;
-  background: rgba(255, 255, 255, 0.05);
-  border-radius: 12px;
-  padding: 4px;
-  gap: 4px;
-}
-
-.themeBtn {
-  flex: 1;
-  padding: 10px;
-  border-radius: 8px;
-  border: none;
-  background: transparent;
-  color: var(--color-text-dim);
-  font-size: 14px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.themeBtnActive {
-  background: var(--color-teal-500);
-  color: white;
+  color: #1A1A1A;
 }
 
 .planList {
@@ -95,24 +80,32 @@
 }
 
 .planCard {
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: white;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
   border-radius: 16px;
   padding: 20px;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.planCard:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.06);
 }
 
 .planInfo h4 {
   font-size: 18px;
   font-weight: 700;
   margin-bottom: 4px;
+  color: #1A1A1A;
 }
 
 .planMeta {
   font-size: 13px;
-  color: var(--color-text-dim);
+  color: #888;
   display: flex;
   gap: 12px;
 }
@@ -127,8 +120,8 @@
   height: 40px;
   border-radius: 10px;
   border: none;
-  background: rgba(255, 255, 255, 0.05);
-  color: var(--color-text-main);
+  background: #F7F4F0;
+  color: #1A1A1A;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -136,21 +129,25 @@
   transition: all 0.2s ease;
 }
 
+.actionBtn:hover {
+  background: #E8E0D5;
+}
+
 .deleteBtn:hover {
-  background: rgba(239, 68, 68, 0.2);
+  background: rgba(239, 68, 68, 0.1);
   color: #ef4444;
 }
 
 .emptyState {
   text-align: center;
   padding: 60px 20px;
-  background: rgba(255, 255, 255, 0.02);
+  background: white;
   border-radius: 24px;
-  border: 1px dashed rgba(255, 255, 255, 0.1);
+  border: 1px dashed rgba(0, 0, 0, 0.1);
 }
 
 .emptyState p {
-  color: var(--color-text-dim);
+  color: #888;
   margin-top: 12px;
 }
 
@@ -162,122 +159,19 @@
   width: 44px;
   height: 44px;
   border-radius: 50%;
-  background: rgba(0,0,0,0.5);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255,255,255,0.1);
-  color: white;
+  background: white;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  color: #1A1A1A;
   display: flex;
   align-items: center;
   justify-content: center;
-}
-
-.weightsCard {
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 20px;
-  padding: 24px;
-  margin-top: 16px;
-}
-
-.weightsHeader {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 20px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-  padding-bottom: 12px;
-}
-
-.weightsTitle {
-  font-size: 16px;
-  fontWeight: 700;
-  color: var(--color-text-main);
-  margin: 0;
-}
-
-.trainingBadge {
-  font-size: 11px;
-  background: rgba(255, 153, 51, 0.15);
-  color: var(--color-saffron-500);
-  padding: 4px 8px;
-  border-radius: 8px;
-  font-weight: 700;
-}
-
-.weightsGrid {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
-
-.weightRow {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
-
-.weightLabelRow {
-  display: flex;
-  justify-content: space-between;
-  font-size: 13px;
-  font-weight: 600;
-  text-transform: capitalize;
-}
-
-.weightVal {
-  color: var(--color-saffron-500);
-  font-family: monospace;
-}
-
-.sliderContainer {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-.slider {
-  flex: 1;
-  -webkit-appearance: none;
-  appearance: none;
-  height: 6px;
-  border-radius: 3px;
-  background: rgba(255, 255, 255, 0.1);
-  outline: none;
-}
-
-.slider::-webkit-slider-thumb {
-  -webkit-appearance: none;
-  appearance: none;
-  width: 16px;
-  height: 16px;
-  border-radius: 50%;
-  background: var(--color-saffron-500);
   cursor: pointer;
-  transition: transform 0.1s ease;
+  transition: transform 0.2s ease;
 }
 
-.slider::-webkit-slider-thumb:hover {
-  transform: scale(1.2);
+.backBtn:hover {
+  transform: scale(1.05);
 }
 
-.resetBtn {
-  background: rgba(239, 68, 68, 0.1);
-  border: 1px solid rgba(239, 68, 68, 0.2);
-  color: #EF4444;
-  border-radius: 12px;
-  padding: 8px 16px;
-  font-size: 13px;
-  font-weight: 700;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  margin-top: 16px;
-  align-self: flex-start;
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-}
-
-.resetBtn:hover {
-  background: rgba(239, 68, 68, 0.2);
-}
 

@@ -85,11 +85,11 @@ export default function AdminFuelManager() {
         </div>
       </div>
 
-      <div style={{ background: 'white', border: '1px solid #E2E8F0', borderRadius: 16, padding: 24, marginTop: 24, boxShadow: '0 1px 3px rgba(0,0,0,0.05)' }}>
+      <div className={styles.formCard} style={{ marginTop: 24 }}>
         <form onSubmit={handleSave} style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
           
           <div className={styles.field}>
-            <label className={styles.label} style={{ fontSize: 13, fontWeight: 700, color: '#334155', display: 'block', marginBottom: 6 }}>
+            <label className={styles.label}>
               Petrol Price (per Litre)
             </label>
             <input 
@@ -99,9 +99,6 @@ export default function AdminFuelManager() {
               value={petrol} 
               onChange={e => setPetrol(e.target.value)} 
               placeholder="e.g. 118.25"
-              style={{
-                width: '100%', padding: '10px 14px', borderRadius: 8, border: '1px solid #CBD5E1', fontSize: 14, outline: 'none'
-              }}
             />
             <span style={{ fontSize: 11, color: '#64748B', display: 'block', marginTop: 4 }}>
               Current market retail: ₹117.75 to ₹118.50 per litre.
@@ -109,7 +106,7 @@ export default function AdminFuelManager() {
           </div>
 
           <div className={styles.field}>
-            <label className={styles.label} style={{ fontSize: 13, fontWeight: 700, color: '#334155', display: 'block', marginBottom: 6 }}>
+            <label className={styles.label}>
               Diesel Price (per Litre)
             </label>
             <input 
@@ -119,9 +116,6 @@ export default function AdminFuelManager() {
               value={diesel} 
               onChange={e => setDiesel(e.target.value)} 
               placeholder="e.g. 105.20"
-              style={{
-                width: '100%', padding: '10px 14px', borderRadius: 8, border: '1px solid #CBD5E1', fontSize: 14, outline: 'none'
-              }}
             />
             <span style={{ fontSize: 11, color: '#64748B', display: 'block', marginTop: 4 }}>
               Current market retail: ₹104.50 to ₹105.70 per litre.
@@ -129,13 +123,13 @@ export default function AdminFuelManager() {
           </div>
 
           {error && (
-            <div style={{ color: '#EF4444', background: '#FEF2F2', padding: 12, borderRadius: 8, fontSize: 12, border: '1px solid #FEE2E2', fontWeight: 500 }}>
+            <div style={{ color: '#F87171', background: 'rgba(239, 68, 68, 0.1)', padding: 12, borderRadius: 8, fontSize: 12, border: '1px solid rgba(239, 68, 68, 0.2)', fontWeight: 500 }}>
               ⚠️ {error}
             </div>
           )}
 
           {savedMessage && (
-            <div style={{ color: '#10B981', background: '#ECFDF5', padding: 12, borderRadius: 8, fontSize: 12, border: '1px solid #D1FAE5', display: 'flex', alignItems: 'center', gap: 6, fontWeight: 500 }}>
+            <div style={{ color: '#34D399', background: 'rgba(16, 185, 129, 0.1)', padding: 12, borderRadius: 8, fontSize: 12, border: '1px solid rgba(16, 185, 129, 0.2)', display: 'flex', alignItems: 'center', gap: 6, fontWeight: 500 }}>
               <CheckCircle size={16} /> Fuel rates updated successfully! Dynamic travel calculators are now live with these prices.
             </div>
           )}
@@ -145,9 +139,6 @@ export default function AdminFuelManager() {
               type="submit" 
               className={styles.btnPrimary} 
               disabled={saving}
-              style={{
-                display: 'inline-flex', alignItems: 'center', gap: 8, cursor: 'pointer', padding: '10px 20px', borderRadius: 8, border: 'none', fontWeight: 600, fontSize: 13
-              }}
             >
               <Save size={16} />
               {saving ? 'Saving...' : 'Save Settings'}

@@ -7,7 +7,7 @@ import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { useSearchParams } from 'next/navigation';
 import styles from './Explore.module.css';
-import { calculateDistance, TIRUPATI_CENTER } from '@/utils/location';
+import { calculateDrivingDistance, TIRUPATI_CENTER } from '@/utils/location';
 import { useTrip } from '@/components/TripContext';
 import { useRealtimePlaces } from '@/lib/useRealtimePlaces';
 
@@ -52,7 +52,7 @@ function ExploreContent() {
     fetchCrossResults(searchQuery);
   }, [searchQuery, fetchCrossResults]);
 
-  const filters = ['All', 'Nearby', 'Spiritual', 'Nature', 'Water', 'Food', 'Historical', 'Hidden', 'Leisure', 'Culture'];
+  const filters = ['All', 'Nearby', 'Spiritual', 'Nature', 'Water', 'Historical', 'Hidden', 'Leisure', 'Culture'];
 
   const handleFilterClick = (filter: string) => {
     if (filter === 'Nearby') {
@@ -91,16 +91,18 @@ function ExploreContent() {
   const filteredPlaces = useMemo(() => {
     const source = places.length > 0 ? places : PLACES;
     let result = source.filter((place: Place) => {
-      const matchesSearch = 
-        place.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        place.placeType.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        (searchQuery.toLowerCase() === 'heritage' && place.placeType === 'historical') ||
-        (place.category && place.category.toLowerCase().includes(searchQuery.toLowerCase())) ||
-        (place.spiritualInfo && place.spiritualInfo.god.toLowerCase().includes(searchQuery.toLowerCase())) ||
-        place.tags.some((tag: string) => tag.toLowerCase().includes(searchQuery.toLowerCase())) ||
-        (place.interests && place.interests.some((interest: string) => interest.toLowerCase().includes(searchQuery.toLowerCase())));
+      const q = searchQuery.toLowerCase();
+      const nameMatch = (place.name || '').toLowerCase().includes(q);
+      const typeMatch = (place.placeType || '').toLowerCase().includes(q);
+      const heritageMatch = q === 'heritage' && place.placeType === 'historical';
+      const categoryMatch = (place.category || '').toLowerCase().includes(q);
+      const godMatch = !!(place.spiritualInfo?.god && place.spiritualInfo.god.toLowerCase().includes(q));
+      const tagsMatch = !!(place.tags && place.tags.some((tag: string) => tag.toLowerCase().includes(q)));
+      const interestsMatch = !!(place.interests && place.interests.some((interest: string) => interest.toLowerCase().includes(q)));
+
+      const matchesSearch = nameMatch || typeMatch || heritageMatch || categoryMatch || godMatch || tagsMatch || interestsMatch;
         
-      const matchesFilter = activeFilter === 'All' || activeFilter === 'Nearby' || place.placeType.toLowerCase() === activeFilter.toLowerCase();
+      const matchesFilter = activeFilter === 'All' || activeFilter === 'Nearby' || (place.placeType || '').toLowerCase() === activeFilter.toLowerCase();
       return matchesSearch && matchesFilter;
     });
 
@@ -108,7 +110,10 @@ function ExploreContent() {
       result = result.map(p => {
         const lat = p.coordinates?.lat || TIRUPATI_CENTER.lat;
         const lng = p.coordinates?.lng || TIRUPATI_CENTER.lng;
-        const dist = calculateDistance(userLocation.lat, userLocation.lng, lat, lng);
+        const isTirumala = p.location.toLowerCase().includes('tirumala') || 
+                           p.location.toLowerCase().includes('narayanagiri') || 
+                           !!(p.category && p.category.toLowerCase().includes('tirumala'));
+        const dist = calculateDrivingDistance(userLocation.lat, userLocation.lng, lat, lng, isTirumala);
         return { ...p, computedDistance: dist } as any;
       });
 
@@ -127,7 +132,7 @@ function ExploreContent() {
           <ArrowLeft size={24} />
         </Link>
         <h1>Explore Places</h1>
-        <button className={styles.filterIcon}>
+        <button className={styles.filterIcon} onClick={() => { const el = document.getElementById('explore-filter-list'); el?.scrollIntoView({ behavior: 'smooth' }); }}>
           <Filter size={20} />
         </button>
       </header>
@@ -143,7 +148,7 @@ function ExploreContent() {
           />
         </div>
 
-        <div className={styles.filterList}>
+        <div className={styles.filterList} id="explore-filter-list">
           {filters.map((filter) => (
             <button
               key={filter}
@@ -275,7 +280,7 @@ function ExploreContent() {
                 </h3>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
                   {crossResults.stories.slice(0, 4).map((story: any) => (
-                    <Link href="/learn/story-of-the-day" key={story.id} style={{ textDecoration: 'none' }}>
+                    <Link href={story.slug ? `/learn/stories/${story.slug}` : `/learn/story-of-the-day`} key={story.id} style={{ textDecoration: 'none' }}>
                       <motion.div
                         initial={{ opacity: 0, y: 10 }}
                         animate={{ opacity: 1, y: 0 }}
@@ -315,30 +320,32 @@ function ExploreContent() {
                 </h3>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
                   {crossResults.encyclopedia.slice(0, 4).map((entry: any) => (
-                    <motion.div
-                      key={entry.id}
-                      initial={{ opacity: 0, y: 10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      style={{
-                        background: 'linear-gradient(135deg, #F3F0FF, #EDE7F6)',
-                        borderRadius: 12,
-                        padding: '14px 16px',
-                        border: '1px solid rgba(108,99,255,0.12)',
-                      }}
-                    >
-                      <h4 style={{ fontSize: 14, fontWeight: 700, color: '#1a1a2e', margin: 0 }}>{entry.title}</h4>
-                      <p style={{ fontSize: 12, color: '#666', margin: '4px 0 0', lineHeight: 1.4 }}>
-                        {(entry.summary || entry.content || '').slice(0, 100)}...
-                      </p>
-                      {entry.category && (
-                        <span style={{
-                          display: 'inline-block', marginTop: 6,
-                          fontSize: 11, padding: '2px 8px',
-                          background: 'rgba(108,99,255,0.1)', borderRadius: 6,
-                          color: '#6C63FF', fontWeight: 600,
-                        }}>{entry.category}</span>
-                      )}
-                    </motion.div>
+                    <Link href={`/learn?q=${encodeURIComponent(entry.title)}`} key={entry.id} style={{ textDecoration: 'none' }}>
+                      <motion.div
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        style={{
+                          background: 'linear-gradient(135deg, #F3F0FF, #EDE7F6)',
+                          borderRadius: 12,
+                          padding: '14px 16px',
+                          border: '1px solid rgba(108,99,255,0.12)',
+                          cursor: 'pointer',
+                        }}
+                      >
+                        <h4 style={{ fontSize: 14, fontWeight: 700, color: '#1a1a2e', margin: 0 }}>{entry.title}</h4>
+                        <p style={{ fontSize: 12, color: '#666', margin: '4px 0 0', lineHeight: 1.4 }}>
+                          {(entry.summary || entry.content || '').slice(0, 100)}...
+                        </p>
+                        {entry.category && (
+                          <span style={{
+                            display: 'inline-block', marginTop: 6,
+                            fontSize: 11, padding: '2px 8px',
+                            background: 'rgba(108,99,255,0.1)', borderRadius: 6,
+                            color: '#6C63FF', fontWeight: 600,
+                          }}>{entry.category}</span>
+                        )}
+                      </motion.div>
+                    </Link>
                   ))}
                 </div>
               </div>

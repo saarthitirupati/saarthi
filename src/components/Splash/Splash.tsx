@@ -106,7 +106,7 @@ export default function SplashScreen({ onFinish }: { onFinish: () => void }) {
             ))}
           </div>
 
-          {/* Central Logo Reveal without text */}
+          {/* Central Logo Reveal with brand text */}
           <div className={styles.content}>
             <div className={styles.logoContainer}>
               <motion.div 
@@ -131,6 +131,17 @@ export default function SplashScreen({ onFinish }: { onFinish: () => void }) {
                 <Logo size={130} />
               </motion.div>
             </div>
+
+            {/* Premium cinematic brand text animation */}
+            <motion.div
+              className={styles.brandWrapper}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 1.8, duration: 1.2, ease: [0.25, 1, 0.5, 1] }}
+            >
+              <h1 className={styles.title}>SAARTHI</h1>
+              <p className={styles.tagline}>Your Spiritual Companion</p>
+            </motion.div>
           </div>
         </motion.div>
       )}

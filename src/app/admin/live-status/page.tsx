@@ -21,6 +21,12 @@ interface TirumalaStatus {
   ladduAvailability: 'available' | 'limited' | 'no-stock';
   weather: string;
   darshans: DarshanTypeStatus[];
+  ssdTokenStatus: 'issuing' | 'paused' | 'closed-for-day';
+  ssdNextTokenTime: string;
+  ssdTokenSlots: { slotTime: string; status: 'available' | 'filling' | 'closed'; tokensLeft?: string }[];
+  ssdNotice: string;
+  ssdTimingsGuide: string;
+  ssdCounters: { name: string; description: string }[];
 }
 
 export default function LiveStatusEditor() {
@@ -35,6 +41,12 @@ export default function LiveStatusEditor() {
     ladduAvailability: 'available',
     weather: 'Pleasant, 24°C',
     darshans: [],
+    ssdTokenStatus: 'issuing',
+    ssdNextTokenTime: '',
+    ssdTokenSlots: [],
+    ssdNotice: '',
+    ssdTimingsGuide: '',
+    ssdCounters: [],
   });
   const [statusSaving, setStatusSaving] = useState(false);
   const [statusSaved, setStatusSaved] = useState(false);
@@ -175,6 +187,155 @@ export default function LiveStatusEditor() {
                 );
               })}
             </div>
+          </div>
+
+          {/* SSD Token Timing Management */}
+          <div style={{ gridColumn: '1 / -1', marginTop: 12, borderTop: '1px solid #334155', paddingTop: 16 }}>
+            <label style={{ fontSize: 11, color: '#94A3B8', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.5px', display: 'block', marginBottom: 14 }}>
+              🎟 SSD Token Timing Management
+            </label>
+
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: 12, marginBottom: 12 }}>
+              <div>
+                <label style={{ fontSize: 10, color: '#94A3B8', fontWeight: 700, display: 'block', marginBottom: 4, textTransform: 'uppercase', letterSpacing: '0.3px' }}>
+                  Token Status
+                </label>
+                <select
+                  value={status.ssdTokenStatus}
+                  onChange={e => setStatus(s => ({ ...s, ssdTokenStatus: e.target.value as any }))}
+                  style={{ width: '100%', padding: '8px 10px', borderRadius: 8, border: '1px solid #475569', background: '#0F172A', color: '#E2E8F0', fontSize: 12 }}
+                >
+                  <option value="issuing">🟢 Issuing Tokens</option>
+                  <option value="paused">🟡 Paused</option>
+                  <option value="closed-for-day">🔴 Closed for Day</option>
+                </select>
+              </div>
+
+              <div>
+                <label style={{ fontSize: 10, color: '#94A3B8', fontWeight: 700, display: 'block', marginBottom: 4, textTransform: 'uppercase', letterSpacing: '0.3px' }}>
+                  Next Token Time
+                </label>
+                <input
+                  type="text"
+                  value={status.ssdNextTokenTime}
+                  onChange={e => setStatus(s => ({ ...s, ssdNextTokenTime: e.target.value }))}
+                  placeholder="e.g. 2:00 PM"
+                  style={{ width: '100%', padding: '8px 10px', borderRadius: 8, border: '1px solid #475569', background: '#0F172A', color: '#E2E8F0', fontSize: 12, boxSizing: 'border-box' }}
+                />
+              </div>
+            </div>
+
+            <div style={{ marginBottom: 12 }}>
+              <label style={{ fontSize: 10, color: '#94A3B8', fontWeight: 700, display: 'block', marginBottom: 4, textTransform: 'uppercase', letterSpacing: '0.3px' }}>
+                SSD Notice
+              </label>
+              <textarea
+                value={status.ssdNotice}
+                onChange={e => setStatus(s => ({ ...s, ssdNotice: e.target.value }))}
+                placeholder="e.g. Morning tokens exhausted, next batch at 2 PM"
+                rows={2}
+                style={{ width: '100%', padding: '8px 10px', borderRadius: 8, border: '1px solid #475569', background: '#0F172A', color: '#E2E8F0', fontSize: 12, resize: 'vertical', boxSizing: 'border-box', fontFamily: 'inherit' }}
+              />
+            </div>
+
+            <div style={{ marginBottom: 12 }}>
+              <label style={{ fontSize: 10, color: '#94A3B8', fontWeight: 700, display: 'block', marginBottom: 4, textTransform: 'uppercase', letterSpacing: '0.3px' }}>
+                SSD Timings Guide (When TTD issues tokens)
+              </label>
+              <textarea
+                value={status.ssdTimingsGuide || ''}
+                onChange={e => setStatus(s => ({ ...s, ssdTimingsGuide: e.target.value }))}
+                placeholder="e.g. Offline free SSD tokens are released daily starting at 3:00 AM / 4:00 AM..."
+                rows={3}
+                style={{ width: '100%', padding: '8px 10px', borderRadius: 8, border: '1px solid #475569', background: '#0F172A', color: '#E2E8F0', fontSize: 12, resize: 'vertical', boxSizing: 'border-box', fontFamily: 'inherit' }}
+              />
+            </div>
+
+            {/* Counters Locations (Where to get tokens) */}
+            <div style={{ marginBottom: 16, borderTop: '1px dashed #334155', paddingTop: 12 }}>
+              <label style={{ fontSize: 11, color: '#94A3B8', fontWeight: 700, display: 'block', marginBottom: 10, textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+                📍 SSD Counter Location Settings
+              </label>
+              {(status.ssdCounters || []).map((counter, idx) => (
+                <div key={idx} style={{ background: '#1E293B', padding: '10px', borderRadius: '8px', border: '1px solid #334155', marginBottom: '8px', display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                  <div>
+                    <label style={{ fontSize: '9px', color: '#94A3B8', fontWeight: 700, display: 'block', marginBottom: '2px', textTransform: 'uppercase' }}>
+                      Counter Name
+                    </label>
+                    <input
+                      type="text"
+                      value={counter.name}
+                      onChange={e => {
+                        const list = [...status.ssdCounters];
+                        list[idx] = { ...list[idx], name: e.target.value };
+                        setStatus(s => ({ ...s, ssdCounters: list }));
+                      }}
+                      style={{ width: '100%', padding: '6px 8px', borderRadius: '6px', border: '1px solid #475569', background: '#0F172A', color: '#E2E8F0', fontSize: '11px', boxSizing: 'border-box' }}
+                    />
+                  </div>
+                  <div>
+                    <label style={{ fontSize: '9px', color: '#94A3B8', fontWeight: 700, display: 'block', marginBottom: '2px', textTransform: 'uppercase' }}>
+                      Counter Description / Directions
+                    </label>
+                    <input
+                      type="text"
+                      value={counter.description}
+                      onChange={e => {
+                        const list = [...status.ssdCounters];
+                        list[idx] = { ...list[idx], description: e.target.value };
+                        setStatus(s => ({ ...s, ssdCounters: list }));
+                      }}
+                      style={{ width: '100%', padding: '6px 8px', borderRadius: '6px', border: '1px solid #475569', background: '#0F172A', color: '#E2E8F0', fontSize: '11px', boxSizing: 'border-box' }}
+                    />
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {(status.ssdTokenSlots || []).map((slot, idx) => (
+              <div key={idx} style={{ background: '#1E293B', padding: 14, borderRadius: 12, border: '1px solid #334155', display: 'grid', gridTemplateColumns: 'auto 1fr 1fr', gap: 10, alignItems: 'end', marginBottom: 10 }}>
+                <div>
+                  <label style={{ fontSize: 10, color: '#94A3B8', fontWeight: 700, display: 'block', marginBottom: 4, textTransform: 'uppercase', letterSpacing: '0.3px' }}>
+                    Slot Time
+                  </label>
+                  <span style={{ fontSize: 13, fontWeight: 700, color: '#F1F5F9', padding: '8px 0', display: 'block' }}>{slot.slotTime}</span>
+                </div>
+                <div>
+                  <label style={{ fontSize: 10, color: '#94A3B8', fontWeight: 700, display: 'block', marginBottom: 4, textTransform: 'uppercase', letterSpacing: '0.3px' }}>
+                    Status
+                  </label>
+                  <select
+                    value={slot.status}
+                    onChange={e => {
+                      const list = [...status.ssdTokenSlots];
+                      list[idx] = { ...list[idx], status: e.target.value as any };
+                      setStatus(s => ({ ...s, ssdTokenSlots: list }));
+                    }}
+                    style={{ width: '100%', padding: '8px 10px', borderRadius: 8, border: '1px solid #475569', background: '#0F172A', color: '#E2E8F0', fontSize: 12 }}
+                  >
+                    <option value="available">Available</option>
+                    <option value="filling">Filling</option>
+                    <option value="closed">Closed</option>
+                  </select>
+                </div>
+                <div>
+                  <label style={{ fontSize: 10, color: '#94A3B8', fontWeight: 700, display: 'block', marginBottom: 4, textTransform: 'uppercase', letterSpacing: '0.3px' }}>
+                    Tokens Left
+                  </label>
+                  <input
+                    type="text"
+                    value={slot.tokensLeft || ''}
+                    onChange={e => {
+                      const list = [...status.ssdTokenSlots];
+                      list[idx] = { ...list[idx], tokensLeft: e.target.value };
+                      setStatus(s => ({ ...s, ssdTokenSlots: list }));
+                    }}
+                    placeholder="e.g. 500"
+                    style={{ width: '100%', padding: '8px 10px', borderRadius: 8, border: '1px solid #475569', background: '#0F172A', color: '#E2E8F0', fontSize: 12, boxSizing: 'border-box' }}
+                  />
+                </div>
+              </div>
+            ))}
           </div>
 
           {/* Notice */}

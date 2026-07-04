@@ -34,10 +34,11 @@ export function useTripStore() {
   // Load from LocalStorage on mount
   useEffect(() => {
     const saved = localStorage.getItem('jeevapath_trip_state');
+    let loadedState = state;
     if (saved) {
       try {
         const parsed = JSON.parse(saved);
-        setState({ 
+        loadedState = { 
           ...state,
           ...parsed, 
           visitedPlaces: parsed.visitedPlaces || [],
@@ -49,12 +50,29 @@ export function useTripStore() {
           locationPermission: parsed.locationPermission || 'default',
           savedPlans: parsed.savedPlans || [],
           isInitialized: true 
-        });
+        };
+        setState(loadedState);
       } catch {
         setState(prev => ({ ...prev, isInitialized: true }));
       }
     } else {
       setState(prev => ({ ...prev, isInitialized: true }));
+    }
+
+    // Refresh coordinates dynamically on mount if permission was previously granted or browser has geolocation
+    if (typeof window !== 'undefined' && navigator.geolocation) {
+      const permission = saved ? loadedState.locationPermission : 'default';
+      if (permission === 'granted' || permission === 'default') {
+        navigator.geolocation.getCurrentPosition(
+          (position) => {
+            const loc = { lat: position.coords.latitude, lng: position.coords.longitude };
+            setState(prev => ({ ...prev, userLocation: loc, locationPermission: 'granted' }));
+          },
+          () => {
+            // fallback silently on load
+          }
+        );
+      }
     }
   }, []);
 
