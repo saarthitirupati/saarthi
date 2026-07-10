@@ -60,18 +60,40 @@ export function useTripStore() {
     }
 
     // Refresh coordinates dynamically on mount if permission was previously granted or browser has geolocation
-    if (typeof window !== 'undefined' && navigator.geolocation) {
-      const permission = saved ? loadedState.locationPermission : 'default';
-      if (permission === 'granted' || permission === 'default') {
-        navigator.geolocation.getCurrentPosition(
-          (position) => {
-            const loc = { lat: position.coords.latitude, lng: position.coords.longitude };
-            setState(prev => ({ ...prev, userLocation: loc, locationPermission: 'granted' }));
-          },
-          () => {
-            // fallback silently on load
-          }
-        );
+    if (typeof window !== 'undefined') {
+      if (navigator.geolocation) {
+        const permission = saved ? loadedState.locationPermission : 'default';
+        if (permission === 'granted' || permission === 'default') {
+          navigator.geolocation.getCurrentPosition(
+            (position) => {
+              const loc = { lat: position.coords.latitude, lng: position.coords.longitude };
+              setState(prev => ({ ...prev, userLocation: loc, locationPermission: 'granted' }));
+            },
+            () => {
+              // Fallback silently to IP geolocation on load error
+              fetch('https://ipapi.co/json/')
+                .then(res => res.json())
+                .then(ipData => {
+                  if (ipData && typeof ipData.latitude === 'number' && typeof ipData.longitude === 'number') {
+                    const loc = { lat: ipData.latitude, lng: ipData.longitude };
+                    setState(prev => ({ ...prev, userLocation: loc, locationPermission: 'granted' }));
+                  }
+                })
+                .catch(() => {});
+            }
+          );
+        }
+      } else {
+        // Fallback silently if unsupported
+        fetch('https://ipapi.co/json/')
+          .then(res => res.json())
+          .then(ipData => {
+            if (ipData && typeof ipData.latitude === 'number' && typeof ipData.longitude === 'number') {
+              const loc = { lat: ipData.latitude, lng: ipData.longitude };
+              setState(prev => ({ ...prev, userLocation: loc, locationPermission: 'granted' }));
+            }
+          })
+          .catch(() => {});
       }
     }
   }, []);

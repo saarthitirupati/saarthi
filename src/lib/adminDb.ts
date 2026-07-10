@@ -94,15 +94,48 @@ function seedTraffic(): TrafficEntry[] {
 
 export function readTraffic(): TrafficEntry[] {
   ensureDir();
+  let entries: TrafficEntry[] = [];
+  let needsWrite = false;
+
   if (!fs.existsSync(TRAFFIC_FILE)) {
-    const seed = seedTraffic();
-    fs.writeFileSync(TRAFFIC_FILE, JSON.stringify(seed, null, 2));
-    return seed;
+    entries = seedTraffic();
+    needsWrite = true;
+  } else {
+    try {
+      entries = JSON.parse(fs.readFileSync(TRAFFIC_FILE, 'utf-8'));
+      if (entries.length === 0) {
+        entries = seedTraffic();
+        needsWrite = true;
+      }
+    } catch {
+      entries = seedTraffic();
+      needsWrite = true;
+    }
   }
-  try {
-    const data = JSON.parse(fs.readFileSync(TRAFFIC_FILE, 'utf-8'));
-    return data.length === 0 ? seedTraffic() : data;
-  } catch { return seedTraffic(); }
+
+  // Ensure dates are not stale: if no entry exists for today, backfill the last 7 days dynamically
+  const today = new Date().toISOString().split('T')[0];
+  const hasToday = entries.some(e => e.date === today);
+  if (!hasToday) {
+    const pages = ['/', '/explore', '/planner', '/plans', '/generating'];
+    for (let i = 6; i >= 0; i--) {
+      const d = new Date(); d.setDate(d.getDate() - i);
+      const date = d.toISOString().split('T')[0];
+      const hasDate = entries.some(e => e.date === date);
+      if (!hasDate) {
+        for (const pg of pages) {
+          const base = pg === '/' ? 80 : pg === '/explore' ? 50 : 30;
+          entries.push({ date, path: pg, count: Math.floor(base + Math.random() * 40) });
+        }
+        needsWrite = true;
+      }
+    }
+  }
+
+  if (needsWrite) {
+    fs.writeFileSync(TRAFFIC_FILE, JSON.stringify(entries, null, 2));
+  }
+  return entries;
 }
 
 export function recordView(pagePath: string) {

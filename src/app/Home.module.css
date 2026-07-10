@@ -1839,8 +1839,8 @@
 
 .feedItem {
   display: flex;
-  align-items: flex-start;
-  gap: 10px;
+  align-items: center;
+  gap: 12px;
   padding: 10px 0;
   border-bottom: 1px solid rgba(0, 0, 0, 0.04);
 }
@@ -1850,11 +1850,13 @@
   padding-bottom: 0;
 }
 
-.feedDot {
-  width: 6px;
-  height: 6px;
+.feedIconWrapper {
+  width: 24px;
+  height: 24px;
   border-radius: 50%;
-  margin-top: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   flex-shrink: 0;
 }
 

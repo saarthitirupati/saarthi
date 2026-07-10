@@ -51,7 +51,7 @@ export default function ItineraryPage() {
     const url = window.location.href;
     if (navigator.share) {
       navigator.share({
-        title: `JeevaPath Itinerary: ${plan.title}`,
+        title: `Saarthi Itinerary: ${plan.title}`,
         text: `Check out this journey: ${plan.tagline}`,
         url: url,
       });

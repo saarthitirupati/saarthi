@@ -106,20 +106,19 @@ function ExploreContent() {
       return matchesSearch && matchesFilter;
     });
 
-    if (userLocation) {
-      result = result.map(p => {
-        const lat = p.coordinates?.lat || TIRUPATI_CENTER.lat;
-        const lng = p.coordinates?.lng || TIRUPATI_CENTER.lng;
-        const isTirumala = p.location.toLowerCase().includes('tirumala') || 
-                           p.location.toLowerCase().includes('narayanagiri') || 
-                           !!(p.category && p.category.toLowerCase().includes('tirumala'));
-        const dist = calculateDrivingDistance(userLocation.lat, userLocation.lng, lat, lng, isTirumala);
-        return { ...p, computedDistance: dist } as any;
-      });
+    const effectiveLocation = userLocation || TIRUPATI_CENTER;
+    result = result.map(p => {
+      const lat = p.coordinates?.lat || TIRUPATI_CENTER.lat;
+      const lng = p.coordinates?.lng || TIRUPATI_CENTER.lng;
+      const isTirumala = p.location?.toLowerCase().includes('tirumala') || 
+                         p.location?.toLowerCase().includes('narayanagiri') || 
+                         !!(p.category && p.category.toLowerCase().includes('tirumala'));
+      const dist = calculateDrivingDistance(effectiveLocation.lat, effectiveLocation.lng, lat, lng, isTirumala);
+      return { ...p, computedDistance: dist } as any;
+    });
 
-      if (activeFilter === 'Nearby') {
-        result.sort((a: any, b: any) => (a.computedDistance ?? 999) - (b.computedDistance ?? 999));
-      }
+    if (activeFilter === 'Nearby') {
+      result.sort((a: any, b: any) => (a.computedDistance ?? 999) - (b.computedDistance ?? 999));
     }
 
     return result;
@@ -178,8 +177,40 @@ function ExploreContent() {
             );
           }).slice(0, 6);
 
+          const effectiveLocation = userLocation || TIRUPATI_CENTER;
+          const nearbyPlaces = source
+            .map(p => {
+              const lat = p.coordinates?.lat || TIRUPATI_CENTER.lat;
+              const lng = p.coordinates?.lng || TIRUPATI_CENTER.lng;
+              const isTirumala = p.location?.toLowerCase().includes('tirumala') || 
+                                 p.location?.toLowerCase().includes('narayanagiri') || 
+                                 !!(p.category && p.category.toLowerCase().includes('tirumala'));
+              const dist = calculateDrivingDistance(effectiveLocation.lat, effectiveLocation.lng, lat, lng, isTirumala);
+              return { ...p, computedDistance: dist };
+            })
+            .sort((a: any, b: any) => a.computedDistance - b.computedDistance)
+            .slice(0, 6);
+
           return (
             <>
+              {/* Nearby Places Section */}
+              <div className={styles.curatedSection}>
+                <h2 className={styles.curatedTitle}>Nearby Places 📍</h2>
+                <div className={styles.horizontalScroll}>
+                  {nearbyPlaces.map((place) => (
+                    <Link href={`/place/${place.id}`} key={place.id} className={styles.curatedCard}>
+                      <div className={styles.curatedImage} style={{ backgroundImage: `url(${place.image})` }} />
+                      <div className={styles.curatedInfo}>
+                        <h4>{place.name}</h4>
+                        <span style={{ color: '#2F6144', fontWeight: 700 }}>
+                          {Number((place as any).computedDistance).toFixed(1)} km away
+                        </span>
+                      </div>
+                    </Link>
+                  ))}
+                </div>
+              </div>
+
               <div className={styles.curatedSection}>
                 <h2 className={styles.curatedTitle}>Must-Visit ✨</h2>
                 <div className={styles.horizontalScroll}>

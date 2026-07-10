@@ -78,7 +78,7 @@ export default function AdminDashboard() {
       <div className={styles.topRow}>
         <div className={styles.pageHeader}>
           <h1 className={styles.pageTitle}>Dashboard</h1>
-          <p className={styles.pageSubtitle}>Real-time overview of JeevaPath platform</p>
+          <p className={styles.pageSubtitle}>Real-time overview of Saarthi platform</p>
         </div>
         <div style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
           <button 

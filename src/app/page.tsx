@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation';
 import {
   MapPin, User, Users, Search, Heart, Landmark, Waves, Map as MapIcon,
   Calendar, Sparkles, Award, Check, Sunrise, Sun, Sunset, Moon, Camera, Leaf, Info, Footprints,
-  Clock, Compass, ShieldCheck, ChevronRight, Bell, Ticket, Star, Zap, Calendar as CalendarDays
+  Clock, Compass, ShieldCheck, ChevronRight, Bell, Ticket, Star, Zap, Calendar as CalendarDays, X, Car
 } from 'lucide-react';
 import styles from './Home.module.css';
 import { useTrip } from '@/components/TripContext';
@@ -16,10 +16,23 @@ import { calculateDrivingDistance, TIRUPATI_CENTER } from '@/utils/location';
 import { urlForImage } from '@/sanity/lib/image';
 import { useRealtimeStatus } from '@/lib/useRealtimeStatus';
 import { getBestForToday } from '@/lib/contextEngine';
+import Link from 'next/link';
+import { CHECKLIST_ITEMS } from '@/data/knowledge';
+import { useRealtimeAlerts } from '@/lib/useRealtimeAlerts';
 
 export default function Home() {
   const router = useRouter();
   const [mounted, setMounted] = useState(false);
+  const { alerts } = useRealtimeAlerts();
+  const [activePopupAlert, setActivePopupAlert] = useState<any>(null);
+  const [dismissedAlertIds, setDismissedAlertIds] = useState<string[]>([]);
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const dismissed = JSON.parse(localStorage.getItem('saarthi_dismissed_alerts') || '[]');
+      setDismissedAlertIds(dismissed);
+    }
+  }, []);
 
   const { userLocation, setLocationPermission, setUserLocation, togglePlace, savedPlaces, plannerInput } = useTrip();
   const [locationName, setLocationName] = useState<string>('Tirupati');
@@ -27,6 +40,9 @@ export default function Home() {
   const [selectedQuizOption, setSelectedQuizOption] = useState<string | null>(null);
   const [quizAnswered, setQuizAnswered] = useState<boolean>(false);
   const [userName, setUserName] = useState<string>('Explorer');
+  const [showWelcomeOverlay, setShowWelcomeOverlay] = useState<boolean>(false);
+  const [showFlashNotification, setShowFlashNotification] = useState<boolean>(false);
+  const [tempName, setTempName] = useState<string>('');
   
   // Custom states for CPO experience
   const [startQuiz, setStartQuiz] = useState<boolean>(false);
@@ -36,6 +52,22 @@ export default function Home() {
   const [feedbackText, setFeedbackText] = useState<string>('');
   const [feedbackSent, setFeedbackSent] = useState<boolean>(false);
   
+  // Pilgrim Essentials home checklist state
+  const [homeChecklist, setHomeChecklist] = useState<Record<string, boolean>>({});
+
+  const handleToggleHomeCheck = (itemId: string, storageKey: string) => {
+    const newState = !homeChecklist[itemId];
+    setHomeChecklist(prev => ({ ...prev, [itemId]: newState }));
+    localStorage.setItem(storageKey, String(newState));
+  };
+
+  const homeChecklistStats = useMemo(() => {
+    const total = CHECKLIST_ITEMS.length;
+    const checked = Object.values(homeChecklist).filter(Boolean).length;
+    const pct = total > 0 ? Math.round((checked / total) * 100) : 0;
+    return { total, checked, pct };
+  }, [homeChecklist]);
+  
   // Daily Progress Tracker checklist state
   const [completedSteps, setCompletedSteps] = useState<{
     story: boolean;
@@ -43,24 +75,81 @@ export default function Home() {
     visit: boolean;
   }>({ story: false, quiz: false, visit: false });
 
-  // Rotating Search Placeholders
-  const searchHints = [
-    'Search darshan timings, SSD tokens...',
-    'Search temples, waterfalls, treks...',
-    'Search laddu, prasadam, accommodation...',
-    'Search festivals, VIP entry, parking...',
-    'Search history, stories, hidden gems...',
-  ];
-  const [hintIndex, setHintIndex] = useState(0);
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setHintIndex((prev) => (prev + 1) % searchHints.length);
-    }, 4000);
-    return () => clearInterval(interval);
-  }, []);
+  // Smart search: keyword aliases route users to the right place
+  const smartSearch = (query: string) => {
+    const q = query.trim().toLowerCase();
+    if (!q) return;
+    const aliases: Record<string, string> = {
+      phone: '/explore?q=Mobile+Deposit',
+      mobile: '/explore?q=Mobile+Deposit',
+      bags: '/explore?q=Lockers',
+      locker: '/explore?q=Lockers',
+      luggage: '/explore?q=Lockers',
+      food: '/explore?q=Annaprasadam',
+      annaprasadam: '/explore?q=Annaprasadam',
+      meal: '/explore?q=Annaprasadam',
+      queue: '/essentials',
+      darshan: '/essentials',
+      ssd: '/essentials',
+      token: '/essentials',
+      elderly: '/essentials',
+      wheelchair: '/essentials',
+      disabled: '/essentials',
+      history: '/learn/story-of-the-day',
+      story: '/learn/story-of-the-day',
+      nature: '/explore?q=Nature',
+      waterfall: '/explore?q=Nature',
+      shopping: '/explore?q=Gandhi+Road',
+      iskcon: '/place/iskcon',
+      japali: '/place/japali-hanuman',
+      zoo: '/place/tirupati-zoo',
+    };
+    const matched = Object.entries(aliases).find(([key]) => q.includes(key));
+    router.push(matched ? matched[1] : `/explore?q=${encodeURIComponent(query.trim())}`);
+  };
 
   const [cabRef, setCabRef] = useState<string | null>(null);
+
+  // Popup Alert Trigger Logic
+  useEffect(() => {
+    if (!alerts || alerts.length === 0) return;
+    
+    const popupAlert = alerts.find(alert => {
+      if (alert.popup_type !== 'Popup' && alert.popup_type !== 'Fullscreen' && alert.severity !== 'Critical') {
+        return false;
+      }
+      
+      if (dismissedAlertIds.includes(alert.id)) {
+        return false;
+      }
+      
+      if (alert.target_location !== 'All Users') {
+        if (userLocation) {
+          const lat = userLocation.lat;
+          const lon = userLocation.lng;
+          
+          if (alert.target_location === 'Tirumala') {
+            const isNearTirumala = Math.abs(lat - 13.6833) < 0.08 && Math.abs(lon - 79.3500) < 0.08;
+            if (!isNearTirumala) return false;
+          } else if (alert.target_location === 'Tirupati') {
+            const isNearTirupati = Math.abs(lat - 13.6288) < 0.08 && Math.abs(lon - 79.4192) < 0.08;
+            if (!isNearTirupati) return false;
+          }
+        } else {
+          return false;
+        }
+      }
+      
+      return true;
+    });
+
+    if (popupAlert) {
+      setActivePopupAlert(popupAlert);
+    } else {
+      setActivePopupAlert(null);
+    }
+  }, [alerts, userLocation, dismissedAlertIds]);
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -84,6 +173,13 @@ export default function Home() {
       if (!hasSeen) {
         setShowPersonalizeBanner(true);
       }
+
+      // Load checklist state
+      const savedChecklist: Record<string, boolean> = {};
+      CHECKLIST_ITEMS.forEach(item => {
+        savedChecklist[item.id] = localStorage.getItem(item.localStorageKey) === 'true';
+      });
+      setHomeChecklist(savedChecklist);
     }
   }, []);
 
@@ -158,6 +254,18 @@ export default function Home() {
     return base;
   }, [rawLiveStatus, FALLBACK_STATUS, realtimeWeather]);
 
+  const formattedWaitTime = useMemo(() => {
+    if (!liveStatus) return '2-3 hours';
+    const val = liveStatus.waitTime;
+    if (!val) return '2-3 hours';
+    const clean = val.trim();
+    if (/^\d+$/.test(clean)) {
+      const num = parseInt(clean, 10);
+      return `${num} ${num === 1 ? 'hour' : 'hours'}`;
+    }
+    return clean;
+  }, [liveStatus]);
+
   const bestForToday = useMemo(() => {
     if (!places || !places.length) return null;
     const crowd = liveStatus?.crowdLevel || 'moderate';
@@ -166,46 +274,78 @@ export default function Home() {
   }, [places, liveStatus, plannerInput]);
 
   const tirumalaVerdict = useMemo(() => {
-    if (!liveStatus) return { visit: true, reason: 'Crowd is low, parking is available', label: '✅ Yes', currentWait: '2-3 hours', recommendedArrival: '5:00 AM' };
+    if (!liveStatus) {
+      return { 
+        visit: true, 
+        reason: 'Crowd is low, parking is available', 
+        label: '✅ Yes', 
+        currentWait: '2-3 hours', 
+        recommendedArrival: '5:00 AM',
+        theme: 'green' as const
+      };
+    }
     const level = liveStatus.crowdLevel;
     const weather = liveStatus.weather;
     const parking = liveStatus.accommodationStatus;
-    const currentWait = liveStatus.waitTime || '2-3 hours';
+    const currentWait = formattedWaitTime;
     
+    // Parse wait time hours
+    let hours = 2; // Default fallback to low/green
+    if (currentWait) {
+      const matches = currentWait.match(/\d+/g);
+      if (matches && matches.length > 0) {
+        const numbers = matches.map(Number);
+        hours = numbers.reduce((a, b) => a + b, 0) / numbers.length;
+      } else {
+        // Fallback to crowdLevel if no numbers are present
+        if (level === 'very-high') hours = 12;
+        else if (level === 'high') hours = 8;
+        else if (level === 'moderate') hours = 4;
+        else hours = 2;
+      }
+    }
+
+    let theme: 'green' | 'yellow' | 'red' = 'green';
     let visit = true;
     let label = '✅ Yes';
     let reason = 'Conditions are great right now.';
     let recommendedArrival = '5:00 AM';
-    
-    if (level === 'very-high') {
+
+    if (hours < 5) {
+      theme = 'green';
+      visit = true;
+      label = '✅ Yes';
+      reason = `Low crowd, pleasant weather (${weather.split(',')[1]?.trim() || weather}).`;
+      recommendedArrival = '5:00 AM';
+    } else if (hours < 10) {
+      theme = 'yellow';
+      visit = true;
+      label = '⚠️ Moderate Wait';
+      reason = `Moderate crowd, pleasant weather (${weather.split(',')[1]?.trim() || weather}).`;
+      recommendedArrival = '8:00 AM';
+    } else {
+      theme = 'red';
       visit = false;
-      label = '⚠️ Better after 6 PM';
+      label = '⚠️ Delay Visit';
       reason = 'Extremely heavy queue line crowd right now.';
       recommendedArrival = '6:00 PM';
-    } else if (level === 'high') {
-      visit = false;
-      label = '⚠️ Better after 4 PM';
-      reason = 'Heavy crowd, wait times exceed 12 hours.';
-      recommendedArrival = '4:00 PM';
-    } else if (parking === 'full') {
+    }
+
+    // Special cases / overrides
+    if (parking === 'full') {
       visit = false;
       label = '⚠️ Delay Visit';
       reason = 'Accommodation & parking is completely full.';
       recommendedArrival = 'After 6 PM';
-    } else if (/rain/i.test(weather)) {
-      visit = true;
+      theme = 'red';
+    } else if (/rain/i.test(weather) && theme === 'green') {
       label = '✅ Yes, carry umbrella';
       reason = 'Rain reported on hills, but queues are indoor.';
       recommendedArrival = '8:00 AM';
-    } else {
-      visit = true;
-      label = '✅ Yes';
-      reason = `Moderate crowd, pleasant weather (${weather.split(',')[1]?.trim() || weather}).`;
-      recommendedArrival = '5:00 AM';
     }
-    
-    return { visit, label, reason, currentWait, recommendedArrival };
-  }, [liveStatus]);
+
+    return { visit, label, reason, currentWait, recommendedArrival, theme };
+  }, [liveStatus, formattedWaitTime]);
 
   const getMinutesAgo = (isoTime: string) => {
     if (!isoTime) return 'now';
@@ -219,7 +359,7 @@ export default function Home() {
     }
   };
 
-  const logTelemetry = async (eventType: string, entityType?: string, entityId?: string, metadata?: any) => {
+  async function logTelemetry(eventType: string, entityType?: string, entityId?: string, metadata?: any) {
     try {
       let sessId = typeof window !== 'undefined' ? sessionStorage.getItem('saarthi_session_id') : null;
       if (!sessId && typeof window !== 'undefined') {
@@ -289,6 +429,14 @@ export default function Home() {
     return `Good Night, ${name}`;
   };
 
+  const handleWelcomeSubmit = () => {
+    const finalName = tempName.trim();
+    if (!finalName) return;
+    localStorage.setItem('saarthi_user_name', finalName);
+    setUserName(finalName);
+    setShowWelcomeOverlay(false);
+  };
+
   useEffect(() => {
     setMounted(true);
     logTelemetry('home_view');
@@ -296,7 +444,17 @@ export default function Home() {
     const storedName = localStorage.getItem('saarthi_user_name');
     if (storedName) {
       setUserName(storedName);
+    } else {
+      setShowWelcomeOverlay(true);
     }
+
+    const flashTimer = setTimeout(() => {
+      setShowFlashNotification(true);
+    }, 1500);
+
+    const dismissTimer = setTimeout(() => {
+      setShowFlashNotification(false);
+    }, 8500);
 
     // Initialize progress tracker state from localStorage
     const storyRead = localStorage.getItem('story_read_today') === 'true';
@@ -318,6 +476,11 @@ export default function Home() {
         }
       })
       .catch(console.error);
+
+    return () => {
+      clearTimeout(flashTimer);
+      clearTimeout(dismissTimer);
+    };
   }, []);
 
   useEffect(() => {
@@ -403,15 +566,55 @@ export default function Home() {
           setLocationPermission('granted');
         },
         (error) => {
-          alert("Location access denied or unavailable. Defaulting to Tirupati Center.");
-          setUserLocation(TIRUPATI_CENTER);
-          setLocationPermission('denied');
+          console.warn("Browser Geolocation failed, trying IP-based fallback...", error);
+          fetch('https://ipapi.co/json/')
+            .then(res => res.json())
+            .then(ipData => {
+              if (ipData && typeof ipData.latitude === 'number' && typeof ipData.longitude === 'number') {
+                setUserLocation({
+                  lat: ipData.latitude,
+                  lng: ipData.longitude
+                });
+                setLocationPermission('granted');
+                if (ipData.city) {
+                  setLocationName(ipData.city);
+                }
+              } else {
+                throw new Error("Invalid IP geocoding response");
+              }
+            })
+            .catch(err => {
+              console.error("IP-based geolocation fallback failed:", err);
+              alert("Location access denied or unavailable. Defaulting to Tirupati Center.");
+              setUserLocation(TIRUPATI_CENTER);
+              setLocationPermission('denied');
+            });
         }
       );
     } else {
-      alert("Geolocation is not supported by your browser.");
-      setUserLocation(TIRUPATI_CENTER);
-      setLocationPermission('denied');
+      console.warn("Browser Geolocation unsupported, trying IP-based fallback...");
+      fetch('https://ipapi.co/json/')
+        .then(res => res.json())
+        .then(ipData => {
+          if (ipData && typeof ipData.latitude === 'number' && typeof ipData.longitude === 'number') {
+            setUserLocation({
+              lat: ipData.latitude,
+              lng: ipData.longitude
+            });
+            setLocationPermission('granted');
+            if (ipData.city) {
+              setLocationName(ipData.city);
+            }
+          } else {
+            throw new Error("Invalid IP geocoding response");
+          }
+        })
+        .catch(err => {
+          console.error("IP-based geolocation fallback failed:", err);
+          alert("Geolocation is not supported by your browser.");
+          setUserLocation(TIRUPATI_CENTER);
+          setLocationPermission('denied');
+        });
     }
   };
 
@@ -501,11 +704,41 @@ export default function Home() {
     if (!liveStatus) return [];
     const items = [];
     if (liveStatus.notice) {
-      items.push({ text: `🔔 Alert: ${liveStatus.notice}`, time: 'Live', color: '#EF4444' });
+      items.push({ 
+        icon: <Bell size={13} style={{ color: '#EF4444' }} />, 
+        text: liveStatus.notice, 
+        color: '#EF4444' 
+      });
     }
-    items.push({ text: `👥 Crowd status is currently ${getCrowdStatus(liveStatus.crowdLevel).label} (${liveStatus.waitTime} wait time)`, time: 'Updated', color: getCrowdStatus(liveStatus.crowdLevel).color });
-    items.push({ text: `⛅ Weather is currently ${liveStatus.weather}`, time: 'Updated', color: '#3B82F6' });
-    items.push({ text: `🍬 Laddu prasadam availability is ${getParkingStatus(liveStatus.ladduAvailability).label}`, time: 'Updated', color: getParkingStatus(liveStatus.ladduAvailability).color });
+    
+    const crowdLabel = liveStatus.crowdLevel === 'low' ? 'Normal crowd' : liveStatus.crowdLevel === 'moderate' ? 'Moderate crowd' : liveStatus.crowdLevel === 'high' ? 'Heavy crowd' : 'Extremely heavy crowd';
+    items.push({ 
+      icon: <Users size={13} style={{ color: getCrowdStatus(liveStatus.crowdLevel).color }} />, 
+      text: `${crowdLabel} today — about ${formattedWaitTime} wait`, 
+      color: getCrowdStatus(liveStatus.crowdLevel).color 
+    });
+    
+    const weatherShort = liveStatus.weather.replace(/,\s*/, ', ');
+    items.push({ 
+      icon: <Sun size={13} style={{ color: '#F59E0B' }} />, 
+      text: `${weatherShort} on the hills`, 
+      color: '#3B82F6' 
+    });
+    
+    const ladduLabel = liveStatus.ladduAvailability === 'available' ? 'Laddu prasadam available' : liveStatus.ladduAvailability === 'limited' ? 'Laddu prasadam running low' : 'Laddu prasadam sold out';
+    items.push({ 
+      icon: <Sparkles size={13} style={{ color: getParkingStatus(liveStatus.ladduAvailability).color }} />, 
+      text: ladduLabel, 
+      color: getParkingStatus(liveStatus.ladduAvailability).color 
+    });
+    
+    const parkingLabel = liveStatus.accommodationStatus === 'available' ? 'Parking available on Tirumala road' : liveStatus.accommodationStatus === 'limited' ? 'Parking filling up fast' : 'Parking full — consider early departure';
+    items.push({ 
+      icon: <Car size={13} style={{ color: getParkingStatus(liveStatus.accommodationStatus).color }} />, 
+      text: parkingLabel, 
+      color: getParkingStatus(liveStatus.accommodationStatus).color 
+    });
+    
     return items;
   };
 
@@ -546,12 +779,13 @@ export default function Home() {
         </h1>
       </section>
 
+
       {showPersonalizeBanner && (
         <motion.div 
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
           style={{
-            margin: '16px 16px 8px 16px',
+            margin: '8px 16px',
             padding: '12px 14px',
             background: 'linear-gradient(135deg, #FFF1E6, #FFFAF5)',
             border: '1px dashed #E9801D',
@@ -568,7 +802,7 @@ export default function Home() {
             <span style={{ fontSize: '18px' }}>✨</span>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '1px' }}>
               <span style={{ fontSize: '12px', fontWeight: 800, color: '#1F2937' }}>Personalize Your Itinerary</span>
-              <span style={{ fontSize: '10px', color: '#6B7280' }}>Optimize walk times & accessibility.</span>
+              <span style={{ fontSize: '10px', color: '#6B7280' }}>Optimize walk times &amp; accessibility.</span>
             </div>
           </div>
           <button style={{
@@ -586,147 +820,200 @@ export default function Home() {
         </motion.div>
       )}
 
-      {/* ─── SEARCH / DISCOVERY BAR ─── */}
-      <section className={styles.searchSection}>
-        <div className={styles.searchBar}>
-          <Search 
-            size={20} 
-            color="var(--color-text-secondary)" 
-            style={{ cursor: 'pointer' }}
-            onClick={(e) => {
-              const input = e.currentTarget.nextElementSibling as HTMLInputElement;
-              if (input && input.value.trim()) {
-                router.push(`/explore?q=${input.value.trim()}`);
-              }
-            }}
-          />
-          <input 
-            type="text" 
-            placeholder={searchHints[hintIndex]} 
-            onKeyDown={(e) => {
-              if (e.key === 'Enter' && e.currentTarget.value.trim()) {
-                router.push(`/explore?q=${e.currentTarget.value.trim()}`);
-              }
-            }}
-          />
-        </div>
-      </section>
+      {/* ─── LIVE ALERTS SYSTEM BANNER ─── */}
+      {alerts && alerts.filter(a => a.popup_type === 'Banner' && !dismissedAlertIds.includes(a.id)).length > 0 && (
+        <div style={{ padding: '0 16px', display: 'flex', flexDirection: 'column', gap: '8px', marginBottom: '8px' }}>
+          {alerts.filter(a => a.popup_type === 'Banner' && !dismissedAlertIds.includes(a.id)).map((alert) => {
+            const timeDiffMins = Math.max(1, Math.round((Date.now() - new Date(alert.created_at).getTime()) / 60000));
+            const timeText = timeDiffMins < 60 ? `${timeDiffMins} mins ago` : `${Math.round(timeDiffMins / 60)} hrs ago`;
+            
+            return (
+              <motion.div
+                key={alert.id}
+                initial={{ opacity: 0, y: -8 }}
+                animate={{ opacity: 1, y: 0 }}
+                style={{
+                  background: alert.category === 'Emergency' ? '#FEE2E2' : alert.category === 'High Priority' ? '#FFEDD5' : alert.category === 'Advisory' ? '#FEF9C3' : '#D1FAE5',
+                  border: alert.category === 'Emergency' ? '1.5px solid #DC2626' : alert.category === 'High Priority' ? '1.5px solid #EA580C' : alert.category === 'Advisory' ? '1.5px solid #F59E0B' : '1.5px solid #10B981',
+                  borderRadius: '16px',
+                  padding: '14px 16px',
+                  boxShadow: '0 4px 12px rgba(0,0,0,0.03)',
+                  position: 'relative'
+                }}
+              >
+                {/* Dismiss Close Icon */}
+                <button
+                  onClick={() => {
+                    logTelemetry('alert_banner_dismiss', 'alert', alert.id);
+                    const nextDismissed = [...dismissedAlertIds, alert.id];
+                    setDismissedAlertIds(nextDismissed);
+                    localStorage.setItem('saarthi_dismissed_alerts', JSON.stringify(nextDismissed));
+                  }}
+                  style={{
+                    position: 'absolute',
+                    top: '12px',
+                    right: '12px',
+                    background: 'transparent',
+                    border: 'none',
+                    color: '#64748B',
+                    cursor: 'pointer',
+                    padding: '4px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    borderRadius: '50%',
+                    transition: 'background-color 0.2s'
+                  }}
+                  title="Dismiss alert"
+                >
+                  <X size={14} />
+                </button>
 
-      {/* ─── DAILY EXPLORER TRACKER (GIVES MEANING FOR DAILY OPEN) ─── */}
-      <section style={{ margin: '12px 16px', background: 'linear-gradient(135deg, #FFF5EC 0%, #FFFDFB 100%)', border: '1px solid #FFE4CC', borderRadius: '16px', padding: '14px 16px', boxShadow: '0 4px 10px rgba(233, 128, 29, 0.03)' }}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
-          <div>
-            <span style={{ fontSize: '10px', fontWeight: 800, color: '#E9801D', textTransform: 'uppercase', letterSpacing: '0.5px', display: 'block' }}>
-              🗺️ Daily Explorer Tracker
-            </span>
-            <strong style={{ fontSize: '13px', color: '#1E293B' }}>
-              {progressPercent === 100 ? "🎉 Completed Today's Journey!" : "Journey Progress"}
-            </strong>
-          </div>
-          <div style={{ position: 'relative', width: '38px', height: '38px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-            <svg style={{ transform: 'rotate(-90deg)', width: '38px', height: '38px' }}>
-              <circle cx="19" cy="19" r="16" stroke="#FFE4CC" strokeWidth="3" fill="transparent" />
-              <circle 
-                cx="19" 
-                cy="19" 
-                r="16" 
-                stroke="#E9801D" 
-                strokeWidth="3" 
-                fill="transparent" 
-                strokeDasharray={`${2 * Math.PI * 16}`}
-                strokeDashoffset={`${2 * Math.PI * 16 * (1 - progressPercent / 100)}`}
-                style={{ transition: 'stroke-dashoffset 0.3s ease' }}
-              />
-            </svg>
-            <span style={{ position: 'absolute', fontSize: '10px', fontWeight: 800, color: '#E9801D' }}>
-              {progressPercent}%
-            </span>
-          </div>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '6px', paddingRight: '20px' }}>
+                  <span style={{ fontSize: '12px' }}>
+                    {alert.category === 'Emergency' ? '🔴' : alert.category === 'High Priority' ? '🟠' : alert.category === 'Advisory' ? '🟡' : '🟢'}
+                  </span>
+                  <span style={{ fontSize: '11px', fontWeight: 800, textTransform: 'uppercase', color: '#0F172A', letterSpacing: '0.5px' }}>
+                    LIVE ALERT — {alert.category}
+                  </span>
+                </div>
+                <h3 style={{ fontSize: '14px', fontWeight: 800, color: '#0F172A', margin: '0 0 4px 0', paddingRight: '20px' }}>{alert.title}</h3>
+                <p style={{ fontSize: '12px', color: '#334155', margin: '0 0 10px 0', lineHeight: 1.45, paddingRight: '20px' }}>{alert.description}</p>
+                
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                  <span style={{ fontSize: '10px', color: '#64748B', fontWeight: 600 }}>Updated {timeText}</span>
+                  {alert.cta !== 'None' && (
+                    <button 
+                      onClick={() => {
+                        logTelemetry('alert_cta_click', 'alert', alert.id);
+                        if (alert.cta === 'Open Queue') router.push('/essentials');
+                        else if (alert.cta === 'Open Essentials') router.push('/essentials');
+                        else if (alert.cta === 'Open Maps') router.push('/explore');
+                        else if (alert.cta === 'Open Parking') router.push('/explore?q=Parking');
+                      }}
+                      style={{
+                        background: '#0F172A',
+                        color: '#FFFFFF',
+                        border: 'none',
+                        borderRadius: '8px',
+                        padding: '6px 12px',
+                        fontSize: '11px',
+                        fontWeight: 700,
+                        cursor: 'pointer'
+                      }}
+                    >
+                      {alert.cta}
+                    </button>
+                  )}
+                </div>
+              </motion.div>
+            );
+          })}
         </div>
+      )}
 
-        {/* Steps */}
-        <div style={{ display: 'flex', gap: '8px', marginTop: '6px' }}>
-          <div 
-            onClick={() => {
-              localStorage.setItem('story_read_today', 'true');
-              setCompletedSteps(prev => ({ ...prev, story: true }));
-              router.push('/learn/story-of-the-day');
-            }}
+      {/* ─── NEXT BEST ACTION HERO ─── */}
+      {liveStatus && (
+        <motion.section
+          initial={{ opacity: 0, y: 8 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.35 }}
+          style={{
+            margin: '12px 16px 8px 16px',
+            borderRadius: '18px',
+            overflow: 'hidden',
+            background: tirumalaVerdict.theme === 'green'
+              ? 'linear-gradient(135deg, #052e16 0%, #14532d 100%)'
+              : tirumalaVerdict.theme === 'yellow'
+              ? 'linear-gradient(135deg, #78350f 0%, #92400e 100%)'
+              : 'linear-gradient(135deg, #450a0a 0%, #7f1d1d 100%)',
+            boxShadow: tirumalaVerdict.theme === 'green'
+              ? '0 8px 24px rgba(16, 185, 129, 0.18)'
+              : tirumalaVerdict.theme === 'yellow'
+              ? '0 8px 24px rgba(217, 119, 6, 0.18)'
+              : '0 8px 24px rgba(220, 38, 38, 0.18)',
+            padding: '18px 18px 16px',
+          }}
+        >
+          {/* Status row */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '10px' }}>
+            <motion.span
+              animate={{ scale: [1, 1.25, 1] }}
+              transition={{ duration: 1.6, repeat: Infinity }}
+              style={{
+                width: '10px',
+                height: '10px',
+                borderRadius: '50%',
+                backgroundColor: tirumalaVerdict.theme === 'green' ? '#34d399' : tirumalaVerdict.theme === 'yellow' ? '#fbbf24' : '#f87171',
+                display: 'inline-block',
+                flexShrink: 0,
+              }}
+            />
+            <span style={{ fontSize: '10px', fontWeight: 800, color: tirumalaVerdict.theme === 'green' ? '#86efac' : tirumalaVerdict.theme === 'yellow' ? '#fde047' : '#fca5a5', letterSpacing: '0.8px', textTransform: 'uppercase' }}>
+              {tirumalaVerdict.theme === 'green' ? 'Good Conditions Now' : tirumalaVerdict.theme === 'yellow' ? 'Moderate Wait Alert' : 'Heavy Crowd Alert'}
+            </span>
+          </div>
+
+          {/* Main recommendation */}
+          <p style={{ fontSize: '15px', fontWeight: 700, color: '#FFFFFF', margin: '0 0 6px', lineHeight: 1.35 }}>
+            {tirumalaVerdict.theme === 'green'
+              ? `Queue is ${tirumalaVerdict.currentWait}. Now is a good time to go.`
+              : tirumalaVerdict.theme === 'yellow'
+              ? `Queue is ${tirumalaVerdict.currentWait}. Expect moderate crowd.`
+              : `Very heavy crowd. ${tirumalaVerdict.reason}`}
+          </p>
+
+          {/* Sub-recommendation */}
+          <p style={{ fontSize: '12px', color: tirumalaVerdict.theme === 'green' ? '#86efac' : tirumalaVerdict.theme === 'yellow' ? '#fde047' : '#fca5a5', margin: '0 0 14px', lineHeight: 1.4 }}>
+            {tirumalaVerdict.theme === 'green'
+              ? `Recommended: Proceed to Darshan. Best arrival — ${tirumalaVerdict.recommendedArrival}.`
+              : tirumalaVerdict.theme === 'yellow'
+              ? `Recommended: Visit ISKCON or Kapila Teertham first. Return after ${tirumalaVerdict.recommendedArrival}.`
+              : `Recommended: Postpone darshan. Best arrival — ${tirumalaVerdict.recommendedArrival}.`}
+          </p>
+
+          {/* Stats row */}
+          <div style={{ display: 'flex', gap: '8px', marginBottom: '14px' }}>
+            <div style={{ flex: 1, background: 'rgba(255,255,255,0.1)', borderRadius: '10px', padding: '8px 10px', textAlign: 'center' }}>
+              <div style={{ fontSize: '9px', color: 'rgba(255,255,255,0.6)', fontWeight: 700, letterSpacing: '0.4px', marginBottom: '2px' }}>WAIT TIME</div>
+              <div style={{ fontSize: '14px', fontWeight: 800, color: '#FFFFFF' }}>{formattedWaitTime}</div>
+            </div>
+            <div style={{ flex: 1, background: 'rgba(255,255,255,0.1)', borderRadius: '10px', padding: '8px 10px', textAlign: 'center' }}>
+              <div style={{ fontSize: '9px', color: 'rgba(255,255,255,0.6)', fontWeight: 700, letterSpacing: '0.4px', marginBottom: '2px' }}>WEATHER</div>
+              <div style={{ fontSize: '13px', fontWeight: 800, color: '#FFFFFF' }}>{liveStatus.weather.split(',')[1]?.trim() || liveStatus.weather}</div>
+            </div>
+            <div style={{ flex: 1, background: 'rgba(255,255,255,0.1)', borderRadius: '10px', padding: '8px 10px', textAlign: 'center' }}>
+              <div style={{ fontSize: '9px', color: 'rgba(255,255,255,0.6)', fontWeight: 700, letterSpacing: '0.4px', marginBottom: '2px' }}>BEST TIME</div>
+              <div style={{ fontSize: '13px', fontWeight: 800, color: '#FFFFFF' }}>{tirumalaVerdict.recommendedArrival}</div>
+            </div>
+          </div>
+
+          {/* CTA */}
+          <motion.button
+            whileTap={{ scale: 0.97 }}
+            whileHover={{ scale: 1.01 }}
+            onClick={() => router.push('/essentials')}
             style={{
-              flex: 1,
-              background: '#FFFFFF',
-              border: `1px solid ${completedSteps.story ? '#A7F3D0' : '#E2E8F0'}`,
-              borderRadius: '8px',
-              padding: '8px',
-              display: 'flex',
-              flexDirection: 'column',
+              width: '100%',
+              padding: '12px',
+              background: tirumalaVerdict.theme === 'green'
+                ? '#10b981'
+                : tirumalaVerdict.theme === 'yellow'
+                ? '#d97706'
+                : '#ef4444',
+              color: '#FFFFFF',
+              border: 'none',
+              borderRadius: '12px',
+              fontSize: '13px',
+              fontWeight: 800,
               cursor: 'pointer',
-              alignItems: 'center',
-              textAlign: 'center',
-              gap: '4px'
+              letterSpacing: '0.2px',
             }}
           >
-            <span style={{ fontSize: '16px' }}>📖</span>
-            <span style={{ fontSize: '9px', fontWeight: 800, color: completedSteps.story ? '#15803D' : '#64748B' }}>
-              {completedSteps.story ? 'Read ✓' : '1. Read Story'}
-            </span>
-          </div>
-
-          <div 
-            onClick={() => {
-              if (dailyContent?.quiz?.id) {
-                const quizSection = document.getElementById('quiz-section');
-                if (quizSection) quizSection.scrollIntoView({ behavior: 'smooth' });
-              }
-            }}
-            style={{
-              flex: 1,
-              background: '#FFFFFF',
-              border: `1px solid ${completedSteps.quiz ? '#A7F3D0' : '#E2E8F0'}`,
-              borderRadius: '8px',
-              padding: '8px',
-              display: 'flex',
-              flexDirection: 'column',
-              cursor: 'pointer',
-              alignItems: 'center',
-              textAlign: 'center',
-              gap: '4px'
-            }}
-          >
-            <span style={{ fontSize: '16px' }}>✏️</span>
-            <span style={{ fontSize: '9px', fontWeight: 800, color: completedSteps.quiz ? '#15803D' : '#64748B' }}>
-              {completedSteps.quiz ? 'Quiz ✓' : '2. Take Quiz'}
-            </span>
-          </div>
-
-          <div 
-            onClick={() => {
-              localStorage.setItem('temple_visited_today', 'true');
-              setCompletedSteps(prev => ({ ...prev, visit: true }));
-              const bestSection = document.getElementById('best-for-today-section');
-              if (bestSection) bestSection.scrollIntoView({ behavior: 'smooth' });
-            }}
-            style={{
-              flex: 1,
-              background: '#FFFFFF',
-              border: `1px solid ${completedSteps.visit ? '#A7F3D0' : '#E2E8F0'}`,
-              borderRadius: '8px',
-              padding: '8px',
-              display: 'flex',
-              flexDirection: 'column',
-              cursor: 'pointer',
-              alignItems: 'center',
-              textAlign: 'center',
-              gap: '4px'
-            }}
-          >
-            <span style={{ fontSize: '16px' }}>🗺️</span>
-            <span style={{ fontSize: '9px', fontWeight: 800, color: completedSteps.visit ? '#15803D' : '#64748B' }}>
-              {completedSteps.visit ? 'Discovered ✓' : '3. Discover Pick'}
-            </span>
-          </div>
-        </div>
-      </section>
+            🛕 Start Journey →
+          </motion.button>
+        </motion.section>
+      )}
 
       {/* ─── LIVE SITUATION HERO ─── */}
       {liveStatus && (
@@ -758,7 +1045,7 @@ export default function Home() {
               </div>
               <div className={styles.liveStatInfo}>
                 <span className={styles.liveStatLabel}>Wait Time</span>
-                <span className={styles.liveStatValue}>{liveStatus.waitTime}</span>
+                <span className={styles.liveStatValue}>{formattedWaitTime}</span>
               </div>
             </div>
 
@@ -785,26 +1072,48 @@ export default function Home() {
         </section>
       )}
 
-      {/* ─── LATEST UPDATES (SITUATION FEED) ─── */}
-      {liveStatus && (
-        <section className={styles.situationFeedSection}>
-          <div className={styles.situationFeedCard}>
-            <div className={styles.situationFeedHeader}>
-              <Bell size={16} color="#E9801D" />
-              <span className={styles.situationFeedTitle}>🔔 LATEST UPDATES</span>
-            </div>
-            <div style={{ display: 'flex', flexDirection: 'column' }}>
-              {getSituationFeedItems().map((item, idx) => (
-                <div key={idx} className={styles.feedItem}>
-                  <span className={styles.feedDot} style={{ backgroundColor: item.color }} />
-                  <span className={styles.feedText}>{item.text}</span>
-                  <span className={styles.feedTime}>{item.time}</span>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-      )}
+      {/* ─── SEARCH BAR (compact, smart) ─── */}
+      <section style={{ margin: '4px 16px 8px 16px' }}>
+        <div style={{
+          display: 'flex',
+          alignItems: 'center',
+          gap: '10px',
+          background: '#FFFFFF',
+          border: '1px solid #E2E8F0',
+          borderRadius: '12px',
+          padding: '0 14px',
+          height: '48px',
+          boxShadow: '0 2px 8px rgba(30,27,24,0.04)',
+        }}>
+          <Search size={17} color="#94A3B8" style={{ flexShrink: 0 }} />
+          <input
+            type="text"
+            placeholder="Search temples, facilities, stories..."
+            style={{
+              flex: 1,
+              border: 'none',
+              outline: 'none',
+              fontSize: '13px',
+              color: '#1E293B',
+              background: 'transparent',
+              fontFamily: 'inherit',
+            }}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter') smartSearch(e.currentTarget.value);
+            }}
+          />
+          <button
+            style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 0, display: 'flex', alignItems: 'center' }}
+            onClick={(e) => {
+              const input = (e.currentTarget.previousElementSibling as HTMLInputElement);
+              if (input) smartSearch(input.value);
+            }}
+          >
+            <ChevronRight size={18} color="#E9801D" />
+          </button>
+        </div>
+      </section>
+
       {/* ─── 🛕 DARSHAN CENTER (FLAGSHIP COMMAND STATION) ─── */}
       {liveStatus && (
         <section className={styles.darshanCenterSection}>
@@ -832,7 +1141,7 @@ export default function Home() {
               <div className={styles.darshanQuickItem}>
                 <span className={styles.darshanQuickLabel}>⏳ Wait Time</span>
                 <span className={styles.darshanQuickValue} style={{ color: '#E9801D' }}>
-                  {liveStatus.waitTime}
+                  {formattedWaitTime}
                 </span>
               </div>
               <div className={styles.darshanQuickItem}>
@@ -1178,13 +1487,67 @@ export default function Home() {
         </section>
       )}
 
+      {/* ─── BEFORE DARSHAN CHECKLIST ─── */}
+      <section style={{ 
+        margin: '12px 16px 8px 16px', 
+        padding: '16px 18px', 
+        background: '#FFFFFF', 
+        border: '1px solid rgba(233, 128, 29, 0.08)', 
+        borderRadius: '16px', 
+        boxShadow: '0 4px 14px rgba(30, 27, 24, 0.03)' 
+      }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <span style={{ fontSize: '18px' }}>📋</span>
+            <strong style={{ fontSize: '13px', color: '#0F172A' }}>Before Darshan Checklist</strong>
+          </div>
+          <span style={{ fontSize: '11px', fontWeight: 800, color: '#F59E0B' }}>
+            {homeChecklistStats.checked} / {homeChecklistStats.total} Done
+          </span>
+        </div>
+
+        <div style={{ width: '100%', height: '5px', backgroundColor: '#F1F5F9', borderRadius: '3px', overflow: 'hidden', marginBottom: '14px' }}>
+          <div style={{ width: `${homeChecklistStats.pct}%`, height: '100%', backgroundColor: '#10B981', borderRadius: '3px', transition: 'width 0.3s' }} />
+        </div>
+
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+          {CHECKLIST_ITEMS.slice(0, 5).map((item) => {
+            const isChecked = !!homeChecklist[item.id];
+            return (
+              <div key={item.id} style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: '10px' }}>
+                <div style={{ display: 'flex', alignItems: 'flex-start', gap: '8px', cursor: 'pointer', flex: 1 }}
+                  onClick={() => handleToggleHomeCheck(item.id, item.localStorageKey)}>
+                  <div style={{ width: '16px', height: '16px', borderRadius: '4px', border: `2px solid ${isChecked ? '#10B981' : '#CBD5E1'}`, backgroundColor: isChecked ? '#10B981' : 'transparent', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, marginTop: '2px' }}>
+                    {isChecked && <Check size={10} color="#FFF" strokeWidth={3} />}
+                  </div>
+                  <span style={{ fontSize: '12px', color: isChecked ? '#94A3B8' : '#475569', textDecoration: isChecked ? 'line-through' : 'none', lineHeight: 1.4 }}>
+                    {item.text}
+                  </span>
+                </div>
+                <Link href={`/essentials/${item.id.replace('check-', '')}`} style={{ fontSize: '11px', color: '#D97706', fontWeight: 700, textDecoration: 'none', whiteSpace: 'nowrap', marginLeft: '8px', display: 'flex', alignItems: 'center', gap: '1px' }}>
+                  <span>Guide</span><ChevronRight size={12} />
+                </Link>
+              </div>
+            );
+          })}
+        </div>
+
+        <div style={{ marginTop: '14px', borderTop: '1px solid rgba(233,128,29,0.04)', paddingTop: '10px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          {homeChecklistStats.pct === 100 ? (
+            <span style={{ fontSize: '11px', fontWeight: 800, color: '#10B981' }}>🎉 100% Ready for Darshan</span>
+          ) : (
+            <span style={{ fontSize: '10px', color: '#64748B' }}>Finish these tasks for a smooth darshan.</span>
+          )}
+          <Link href="/essentials" style={{ fontSize: '11px', color: '#D97706', fontWeight: 800, textDecoration: 'none' }}>All Essentials →</Link>
+        </div>
+      </section>
 
 
       {/* ─── BEST FOR TODAY'S CONDITIONS ─── */}
       {bestForToday && (
         <section className={styles.bestForTodaySection} id="best-for-today-section">
           <div className={styles.sectionHeader}>
-            <h2 className={styles.sectionTitle}>🌤 Best for Today's Conditions</h2>
+            <h2 className={styles.sectionTitle}>🌤 Best for Today&apos;s Conditions</h2>
           </div>
           <div 
             className={styles.bestForTodayCard}
@@ -1216,6 +1579,28 @@ export default function Home() {
                 <span className={styles.bestForTodayRating}>⭐ {bestForToday.place.rating} Rating</span>
                 <button className={styles.bestForTodayBtn}>Explore Pick →</button>
               </div>
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* ─── LATEST UPDATES (SITUATION FEED) ─── */}
+      {liveStatus && (
+        <section className={styles.situationFeedSection}>
+          <div className={styles.situationFeedCard}>
+            <div className={styles.situationFeedHeader}>
+              <Bell size={16} color="#E9801D" />
+              <span className={styles.situationFeedTitle}>Today&apos;s Situation</span>
+            </div>
+            <div style={{ display: 'flex', flexDirection: 'column' }}>
+              {getSituationFeedItems().map((item, idx) => (
+                <div key={idx} className={styles.feedItem}>
+                  <div className={styles.feedIconWrapper} style={{ backgroundColor: `${item.color}18` }}>
+                    {item.icon}
+                  </div>
+                  <span className={styles.feedText}>{item.text}</span>
+                </div>
+              ))}
             </div>
           </div>
         </section>
@@ -1309,7 +1694,7 @@ export default function Home() {
             {!startQuiz && !quizAnswered ? (
               // Quiz Initial State
               <div className={styles.quizStateBox}>
-                <span className={styles.quizTag}>TODAY'S TRIVIA</span>
+                <span className={styles.quizTag}>TODAY&apos;S TRIVIA</span>
                 <h3>Test your knowledge of sacred temples and local heritage.</h3>
                 <div className={styles.quizMetadataRow}>
                   <span>📋 5 Questions</span>
@@ -1355,7 +1740,7 @@ export default function Home() {
                   <strong>Explanation:</strong> {dailyContent.quiz.explanation}
                 </div>
                 <button className={styles.quizActionBtnSecondary} onClick={() => setStartQuiz(true)}>
-                  Review Today's Learning
+                  Review Today&apos;s Learning
                 </button>
               </div>
             )}
@@ -1466,7 +1851,7 @@ export default function Home() {
           <h2 className={styles.sectionTitle}>🗺️ Explore Beyond Temples</h2>
         </div>
         <p className={styles.interestsSubtitle}>
-          Discover Tirupati's hidden waterfalls, wildlife sanctuaries, historical forts, and local food.
+          Discover Tirupati&apos;s hidden waterfalls, wildlife sanctuaries, historical forts, and local food.
         </p>
         <div className={styles.interestsGrid}>
           {[
@@ -1492,6 +1877,368 @@ export default function Home() {
           ))}
         </div>
       </section>
+
+      {showWelcomeOverlay && (
+        <div className={styles.onboardingOverlay}>
+          <div className={styles.onboardingCard}>
+            <span className={styles.onboardingEmoji}>✨</span>
+            <h2 className={styles.onboardingTitle}>Welcome to Saarthi</h2>
+            <p className={styles.onboardingSub}>
+              Your intelligent Tirupati travel guide &amp; itinerary planner.
+            </p>
+            <p className={styles.onboardingPrompt}>What should we call you?</p>
+            <input
+              type="text"
+              className={styles.onboardingInput}
+              placeholder="Enter your name"
+              value={tempName}
+              onChange={(e) => setTempName(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' && tempName.trim()) {
+                  handleWelcomeSubmit();
+                }
+              }}
+              autoFocus
+            />
+            <button
+              className={styles.onboardingBtn}
+              onClick={handleWelcomeSubmit}
+              disabled={!tempName.trim()}
+            >
+              Get Started
+            </button>
+          </div>
+        </div>
+      )}
+      {/* ─── LIVE ALERTS SYSTEM POPUPS ─── */}
+      <AnimatePresence>
+        {activePopupAlert && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            style={{
+              position: 'fixed',
+              inset: 0,
+              backgroundColor: 'rgba(15, 23, 42, 0.65)',
+              backdropFilter: 'blur(4px)',
+              zIndex: 9999,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              padding: '24px'
+            }}
+          >
+            {activePopupAlert.popup_type === 'Fullscreen' ? (
+              // Fullscreen Overlay (Emergency)
+              <motion.div
+                initial={{ scale: 0.9, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                exit={{ scale: 0.9, opacity: 0 }}
+                transition={{ type: 'spring', damping: 25, stiffness: 350 }}
+                style={{
+                  width: '100%',
+                  height: '100%',
+                  backgroundColor: '#0F172A',
+                  color: '#FFFFFF',
+                  borderRadius: '24px',
+                  padding: '36px 24px',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  textAlign: 'center',
+                  boxShadow: '0 20px 50px rgba(0,0,0,0.3)',
+                  border: '2px solid #EF4444',
+                  boxSizing: 'border-box'
+                }}
+              >
+                <div style={{ width: '64px', height: '64px', borderRadius: '50%', backgroundColor: 'rgba(239, 68, 68, 0.15)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#EF4444', marginBottom: '24px', fontSize: '32px' }}>
+                  🚨
+                </div>
+                <span style={{ fontSize: '12px', fontWeight: 800, color: '#EF4444', letterSpacing: '1.5px', textTransform: 'uppercase', marginBottom: '12px' }}>
+                  CRITICAL EMERGENCY ALERT
+                </span>
+                <h2 style={{ fontSize: '22px', fontWeight: 800, margin: '0 0 12px 0', fontFamily: 'Georgia, serif', lineHeight: 1.3 }}>
+                  {activePopupAlert.title}
+                </h2>
+                <p style={{ fontSize: '14px', color: '#94A3B8', margin: '0 0 32px 0', lineHeight: 1.6, maxWidth: '400px' }}>
+                  {activePopupAlert.description}
+                </p>
+
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', width: '100%', maxWidth: '320px' }}>
+                  {activePopupAlert.cta !== 'None' && (
+                    <button
+                      onClick={() => {
+                        logTelemetry('alert_popup_cta_click', 'alert', activePopupAlert.id);
+                        const dismissed = JSON.parse(localStorage.getItem('saarthi_dismissed_alerts') || '[]');
+                        const updated = [...dismissed, activePopupAlert.id];
+                        localStorage.setItem('saarthi_dismissed_alerts', JSON.stringify(updated));
+                        setDismissedAlertIds(updated);
+                        
+                        if (activePopupAlert.cta === 'Open Queue') router.push('/essentials');
+                        else if (activePopupAlert.cta === 'Open Essentials') router.push('/essentials');
+                        else if (activePopupAlert.cta === 'Open Maps') router.push('/explore');
+                        else if (activePopupAlert.cta === 'Open Parking') router.push('/explore?q=Parking');
+                        
+                        setActivePopupAlert(null);
+                      }}
+                      style={{
+                        background: '#EF4444',
+                        color: '#FFFFFF',
+                        border: 'none',
+                        borderRadius: '12px',
+                        padding: '14px',
+                        fontSize: '14px',
+                        fontWeight: 800,
+                        cursor: 'pointer',
+                        boxShadow: '0 4px 12px rgba(239, 68, 68, 0.25)'
+                      }}
+                    >
+                      {activePopupAlert.cta}
+                    </button>
+                  )}
+                  <button
+                    onClick={() => {
+                      logTelemetry('alert_popup_dismiss', 'alert', activePopupAlert.id);
+                      const dismissed = JSON.parse(localStorage.getItem('saarthi_dismissed_alerts') || '[]');
+                      const updated = [...dismissed, activePopupAlert.id];
+                      localStorage.setItem('saarthi_dismissed_alerts', JSON.stringify(updated));
+                      setDismissedAlertIds(updated);
+                      setActivePopupAlert(null);
+                    }}
+                    style={{
+                      background: 'rgba(255, 255, 255, 0.08)',
+                      color: '#FFFFFF',
+                      border: '1.5px solid rgba(255, 255, 255, 0.15)',
+                      borderRadius: '12px',
+                      padding: '14px',
+                      fontSize: '13px',
+                      fontWeight: 700,
+                      cursor: 'pointer'
+                    }}
+                  >
+                    Acknowledge &amp; Close
+                  </button>
+                </div>
+              </motion.div>
+            ) : (
+              // Centered Popup (Advisory / High Priority)
+              <motion.div
+                initial={{ scale: 0.95, y: 15, opacity: 0 }}
+                animate={{ scale: 1, y: 0, opacity: 1 }}
+                exit={{ scale: 0.95, y: 15, opacity: 0 }}
+                transition={{ type: 'spring', damping: 25, stiffness: 350 }}
+                style={{
+                  width: '100%',
+                  maxWidth: '360px',
+                  backgroundColor: '#FFFFFF',
+                  color: '#0F172A',
+                  borderRadius: '24px',
+                  padding: '24px',
+                  boxShadow: '0 20px 40px rgba(0,0,0,0.15)',
+                  border: activePopupAlert.category === 'High Priority' ? '2.5px solid #EA580C' : '2.5px solid #F59E0B',
+                  boxSizing: 'border-box',
+                  textAlign: 'left'
+                }}
+              >
+                <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '8px' }}>
+                  <span>{activePopupAlert.category === 'High Priority' ? '🟠' : '🟡'}</span>
+                  <span style={{ fontSize: '11px', fontWeight: 800, color: activePopupAlert.category === 'High Priority' ? '#EA580C' : '#D97706', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+                    Live Pilgrim Alert
+                  </span>
+                </div>
+                <h3 style={{ fontSize: '16px', fontWeight: 800, color: '#0F172A', margin: '0 0 6px 0', fontFamily: 'Georgia, serif' }}>
+                  {activePopupAlert.title}
+                </h3>
+                <p style={{ fontSize: '13px', color: '#4B5563', margin: '0 0 20px 0', lineHeight: 1.45 }}>
+                  {activePopupAlert.description}
+                </p>
+
+                <div style={{ display: 'flex', gap: '10px' }}>
+                  {activePopupAlert.cta !== 'None' && (
+                    <button
+                      onClick={() => {
+                        logTelemetry('alert_popup_cta_click', 'alert', activePopupAlert.id);
+                        const dismissed = JSON.parse(localStorage.getItem('saarthi_dismissed_alerts') || '[]');
+                        const updated = [...dismissed, activePopupAlert.id];
+                        localStorage.setItem('saarthi_dismissed_alerts', JSON.stringify(updated));
+                        setDismissedAlertIds(updated);
+                        
+                        if (activePopupAlert.cta === 'Open Queue') router.push('/essentials');
+                        else if (activePopupAlert.cta === 'Open Essentials') router.push('/essentials');
+                        else if (activePopupAlert.cta === 'Open Maps') router.push('/explore');
+                        else if (activePopupAlert.cta === 'Open Parking') router.push('/explore?q=Parking');
+                        
+                        setActivePopupAlert(null);
+                      }}
+                      style={{
+                        flex: 1,
+                        background: '#E9801D',
+                        color: '#FFFFFF',
+                        border: 'none',
+                        borderRadius: '12px',
+                        padding: '10px',
+                        fontSize: '12px',
+                        fontWeight: 800,
+                        cursor: 'pointer'
+                      }}
+                    >
+                      {activePopupAlert.cta}
+                    </button>
+                  )}
+                  <button
+                    onClick={() => {
+                      logTelemetry('alert_popup_dismiss', 'alert', activePopupAlert.id);
+                      const dismissed = JSON.parse(localStorage.getItem('saarthi_dismissed_alerts') || '[]');
+                      const updated = [...dismissed, activePopupAlert.id];
+                      localStorage.setItem('saarthi_dismissed_alerts', JSON.stringify(updated));
+                      setDismissedAlertIds(updated);
+                      setActivePopupAlert(null);
+                    }}
+                    style={{
+                      flex: 1,
+                      background: '#F1F5F9',
+                      color: '#475569',
+                      border: '1px solid #CBD5E1',
+                      borderRadius: '12px',
+                      padding: '10px',
+                      fontSize: '12px',
+                      fontWeight: 700,
+                      cursor: 'pointer'
+                    }}
+                  >
+                    Dismiss
+                  </button>
+                </div>
+              </motion.div>
+            )}
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Flipkart-style Flash Notification toast */}
+      <AnimatePresence>
+        {showFlashNotification && (
+          <motion.div
+            initial={{ opacity: 0, y: 100, scale: 0.95 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 40, scale: 0.95 }}
+            transition={{ type: 'spring', damping: 20, stiffness: 200 }}
+            onClick={() => router.push('/live')}
+            style={{
+              position: 'fixed',
+              bottom: '24px',
+              left: '24px',
+              right: '24px',
+              maxWidth: '420px',
+              margin: '0 auto',
+              background: 'rgba(15, 23, 42, 0.92)',
+              backdropFilter: 'blur(12px)',
+              WebkitBackdropFilter: 'blur(12px)',
+              border: '1px solid rgba(255, 255, 255, 0.1)',
+              borderRadius: '20px',
+              padding: '16px 20px',
+              boxShadow: '0 10px 30px rgba(0, 0, 0, 0.25)',
+              zIndex: 9999,
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '10px',
+              cursor: 'pointer',
+              overflow: 'hidden'
+            }}
+          >
+            {/* Top border colored bar */}
+            <div style={{
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              right: 0,
+              height: '4px',
+              background: 'linear-gradient(90deg, #E9801D 0%, #F59E0B 100%)'
+            }} />
+
+            <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: '12px' }}>
+              <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
+                <div style={{
+                  width: '36px',
+                  height: '36px',
+                  borderRadius: '50%',
+                  background: 'rgba(233, 128, 29, 0.15)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  color: '#E9801D',
+                  flexShrink: 0
+                }}>
+                  <motion.div
+                    animate={{ rotate: [0, -10, 10, -10, 10, 0] }}
+                    transition={{ repeat: Infinity, duration: 1.5, repeatDelay: 3 }}
+                  >
+                    <Bell size={18} />
+                  </motion.div>
+                </div>
+                <div style={{ display: 'flex', flexDirection: 'column' }}>
+                  <span style={{ fontSize: '11px', fontWeight: 800, color: '#E9801D', letterSpacing: '1px', textTransform: 'uppercase' }}>
+                    Saarthi Flash ⚡
+                  </span>
+                  <span style={{ fontSize: '13px', fontWeight: 700, color: '#FFFFFF', marginTop: '2px' }}>
+                    Welcome back, {userName}!
+                  </span>
+                </div>
+              </div>
+
+              {/* Close Button */}
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setShowFlashNotification(false);
+                }}
+                style={{
+                  background: 'rgba(255,255,255,0.08)',
+                  border: 'none',
+                  color: '#94A3B8',
+                  width: '24px',
+                  height: '24px',
+                  borderRadius: '50%',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  cursor: 'pointer',
+                  transition: 'all 0.2s'
+                }}
+              >
+                <X size={14} />
+              </button>
+            </div>
+
+            <p style={{ fontSize: '12.5px', color: '#E2E8F0', lineHeight: '1.5', margin: 0, fontWeight: 500 }}>
+              Today&apos;s temple crowd is <strong style={{ color: '#F59E0B' }}>Moderate</strong>. SSD token wait time is <strong style={{ color: '#F59E0B' }}>~45 mins</strong>. Weather is clear at <strong style={{ color: '#F59E0B' }}>31°C</strong>.
+            </p>
+
+            {/* Tap to View CTA indicator */}
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: '4px' }}>
+              <span style={{ fontSize: '10.5px', color: '#94A3B8', fontWeight: 600 }}>Tap to view live dashboard</span>
+              <ChevronRight size={12} color="#E9801D" />
+            </div>
+
+            {/* Auto-dismiss progress bar */}
+            <motion.div
+              initial={{ width: '100%' }}
+              animate={{ width: '0%' }}
+              transition={{ duration: 7, ease: 'linear' }}
+              style={{
+                position: 'absolute',
+                bottom: 0,
+                left: 0,
+                height: '3px',
+                background: '#E9801D',
+                opacity: 0.8
+              }}
+            />
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }

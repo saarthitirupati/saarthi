@@ -31,6 +31,7 @@ export default function PlaceDetails({ params }: { params: Promise<{ id: string 
     }
   };
 
+  // eslint-disable-next-line react-hooks/preserve-manual-memoization
   const isCurrentlyInBreak = useMemo(() => {
     if (!place?.breakTimings || place.breakTimings.length === 0) return false;
     const now = new Date();
@@ -49,7 +50,7 @@ export default function PlaceDetails({ params }: { params: Promise<{ id: string 
       }
       return currentTimeVal >= fromTimeVal && currentTimeVal <= toTimeVal;
     });
-  }, [place?.breakTimings]);
+  }, [place]);
 
   const [copied, setCopied] = useState(false);
   const [copiedLink, setCopiedLink] = useState(false);
@@ -61,6 +62,47 @@ export default function PlaceDetails({ params }: { params: Promise<{ id: string 
   const [fuelRates, setFuelRates] = useState<{ petrol: number; diesel: number }>({ petrol: 118.00, diesel: 105.00 });
   const [isLegendExpanded, setIsLegendExpanded] = useState(false);
   const [isTuesday, setIsTuesday] = useState(false);
+
+  // Offline maps state hooks
+  const [isOffline, setIsOffline] = useState(false);
+  const [offlineMapsEnabled, setOfflineMapsEnabled] = useState(false);
+  const [isSavingOffline, setIsSavingOffline] = useState(false);
+  const [isSavedOffline, setIsSavedOffline] = useState(false);
+  const [showOfflineMapOnly, setShowOfflineMapOnly] = useState(false);
+
+  useEffect(() => {
+    setIsOffline(!window.navigator.onLine);
+    const handleOnline = () => setIsOffline(false);
+    const handleOffline = () => setIsOffline(true);
+    window.addEventListener('online', handleOnline);
+    window.addEventListener('offline', handleOffline);
+
+    const savedVal = localStorage.getItem('saarthi_offline_maps_enabled') === 'true';
+    setOfflineMapsEnabled(savedVal);
+
+    const cachedPlaces = JSON.parse(localStorage.getItem('saarthi_offline_cached_places') || '[]');
+    if (cachedPlaces.includes(id)) {
+      setIsSavedOffline(true);
+    }
+
+    return () => {
+      window.removeEventListener('online', handleOnline);
+      window.removeEventListener('offline', handleOffline);
+    };
+  }, [id]);
+
+  const savePlaceOffline = () => {
+    setIsSavingOffline(true);
+    setTimeout(() => {
+      setIsSavingOffline(false);
+      setIsSavedOffline(true);
+      const cached = JSON.parse(localStorage.getItem('saarthi_offline_cached_places') || '[]');
+      if (!cached.includes(id)) {
+        cached.push(id);
+        localStorage.setItem('saarthi_offline_cached_places', JSON.stringify(cached));
+      }
+    }, 1500);
+  };
 
   // Tabbed layout state
   const [activeTab, setActiveTab] = useState<'overview' | 'timings' | 'gallery' | 'transport' | 'guide'>('overview');
@@ -105,22 +147,24 @@ export default function PlaceDetails({ params }: { params: Promise<{ id: string 
     );
   }
 
+  const effectiveLocation = userLocation || { lat: 13.6288, lng: 79.4192 };
+
   const getRelDistance = (rel: Place) => {
-    if (!userLocation || !rel.coordinates) return `${rel.distanceKms} km`;
-    const isRelTirumala = rel.location.toLowerCase().includes('tirumala') || 
-                          rel.location.toLowerCase().includes('narayanagiri') || 
-                          rel.category.toLowerCase().includes('tirumala');
-    const dist = calculateDrivingDistance(userLocation.lat, userLocation.lng, rel.coordinates.lat, rel.coordinates.lng, isRelTirumala);
+    if (!rel.coordinates) return `${rel.distanceKms} km`;
+    const isRelTirumala = rel.location?.toLowerCase().includes('tirumala') || 
+                          rel.location?.toLowerCase().includes('narayanagiri') || 
+                          rel.category?.toLowerCase().includes('tirumala');
+    const dist = calculateDrivingDistance(effectiveLocation.lat, effectiveLocation.lng, rel.coordinates.lat, rel.coordinates.lng, isRelTirumala);
     return `${dist.toFixed(1)} km`;
   };
 
-  const isTirumalaSpot = place.location.toLowerCase().includes('tirumala') || 
-                         place.location.toLowerCase().includes('narayanagiri') || 
-                         place.category.toLowerCase().includes('tirumala');
+  const isTirumalaSpot = place.location?.toLowerCase().includes('tirumala') || 
+                         place.location?.toLowerCase().includes('narayanagiri') || 
+                         place.category?.toLowerCase().includes('tirumala');
   
-  const drivingDistance = userLocation && place.coordinates
-    ? calculateDrivingDistance(userLocation.lat, userLocation.lng, place.coordinates.lat, place.coordinates.lng, isTirumalaSpot)
-    : null;
+  const drivingDistance = place.coordinates
+    ? calculateDrivingDistance(effectiveLocation.lat, effectiveLocation.lng, place.coordinates.lat, place.coordinates.lng, isTirumalaSpot)
+    : place.distanceKms;
 
   const getNearbyPlaces = () => {
     if (!place.coordinates) return [];
@@ -319,9 +363,9 @@ export default function PlaceDetails({ params }: { params: Promise<{ id: string 
           <div className={styles.heroLocation}>
             <MapPin size={16} />
             <span>
-              {guide.location} • {drivingDistance !== null
+              {guide.location} • {userLocation
                 ? `${drivingDistance.toFixed(1)} km from you`
-                : `${guide.distanceKms} km from Tirupati`}
+                : `${drivingDistance.toFixed(1)} km from Tirupati Center`}
             </span>
           </div>
           <p className={styles.heroReason}>{guide.whyVisit}</p>
@@ -954,29 +998,92 @@ export default function PlaceDetails({ params }: { params: Promise<{ id: string 
             {/* 5d. INTERACTIVE LOCATION MAP */}
             {place.coordinates && (
               <section className={styles.section} id="map-section">
-                <h2 className={styles.sectionTitle}>🗺️ Mini Route Map</h2>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px', flexWrap: 'wrap', gap: '8px' }}>
+                  <h2 className={styles.sectionTitle} style={{ margin: 0 }}>🗺️ Mini Route Map</h2>
+                  
+                  {/* Mode Buttons */}
+                  <div style={{ display: 'flex', gap: '8px' }}>
+                    <button
+                      onClick={() => setShowOfflineMapOnly(!showOfflineMapOnly)}
+                      className={styles.mapToggleButton}
+                      style={{
+                        padding: '6px 12px',
+                        borderRadius: '20px',
+                        fontSize: '11px',
+                        fontWeight: 700,
+                        border: '1px solid #E7E3DD',
+                        background: (isOffline || showOfflineMapOnly) ? '#FFE8D1' : '#FFFFFF',
+                        borderColor: (isOffline || showOfflineMapOnly) ? '#E9801D' : '#E7E3DD',
+                        color: (isOffline || showOfflineMapOnly) ? '#B0550C' : '#44403C',
+                        cursor: 'pointer',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '4px',
+                        transition: 'all 0.2s'
+                      }}
+                    >
+                      {(isOffline || showOfflineMapOnly) ? '🛰️ View Online Map' : '💾 View Offline Vector'}
+                    </button>
+
+                    <button
+                      onClick={savePlaceOffline}
+                      disabled={isSavingOffline || isSavedOffline}
+                      className={styles.mapDownloadButton}
+                      style={{
+                        padding: '6px 12px',
+                        borderRadius: '20px',
+                        fontSize: '11px',
+                        fontWeight: 700,
+                        border: 'none',
+                        background: isSavedOffline ? '#E2E8F0' : '#0F172A',
+                        color: isSavedOffline ? '#2E7D32' : '#FFFFFF',
+                        cursor: isSavedOffline ? 'default' : 'pointer',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '4px',
+                        transition: 'all 0.2s'
+                      }}
+                    >
+                      {isSavingOffline ? (
+                        <>⏳ Saving...</>
+                      ) : isSavedOffline ? (
+                        <>✓ Saved Offline</>
+                      ) : (
+                        <>📥 Download Map</>
+                      )}
+                    </button>
+                  </div>
+                </div>
+
                 <div className={styles.mapIframeContainer}>
-                  <iframe
-                    title="OpenStreetMap Location"
-                    width="100%"
-                    height="100%"
-                    style={{ border: 0 }}
-                    src={`https://www.openstreetmap.org/export/embed.html?bbox=${place.coordinates.lng - 0.015},${place.coordinates.lat - 0.012},${place.coordinates.lng + 0.015},${place.coordinates.lat + 0.012}&layer=mapnik&marker=${place.coordinates.lat},${place.coordinates.lng}`}
-                  />
+                  {(isOffline || showOfflineMapOnly) ? (
+                    <OfflineVectorMap name={place.name} lat={place.coordinates.lat} lng={place.coordinates.lng} />
+                  ) : (
+                    <iframe
+                      title="OpenStreetMap Location"
+                      width="100%"
+                      height="100%"
+                      style={{ border: 0 }}
+                      src={`https://www.openstreetmap.org/export/embed.html?bbox=${place.coordinates.lng - 0.015},${place.coordinates.lat - 0.012},${place.coordinates.lng + 0.015},${place.coordinates.lat + 0.012}&layer=mapnik&marker=${place.coordinates.lat},${place.coordinates.lng}`}
+                    />
+                  )}
                 </div>
-                <div className={styles.mapCredits}>
-                  <span>
-                    Map data © <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener noreferrer">OpenStreetMap</a> contributors
-                  </span>
-                  <a 
-                    href={`https://www.openstreetmap.org/?mlat=${place.coordinates.lat}&mlon=${place.coordinates.lng}#map=15/${place.coordinates.lat}/${place.coordinates.lng}`}
-                    target="_blank" 
-                    rel="noopener noreferrer"
-                    className={styles.mapLargerLink}
-                  >
-                    View Larger Map ↗
-                  </a>
-                </div>
+                
+                {!(isOffline || showOfflineMapOnly) && (
+                  <div className={styles.mapCredits}>
+                    <span>
+                      Map data © <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener noreferrer">OpenStreetMap</a> contributors
+                    </span>
+                    <a 
+                      href={`https://www.openstreetmap.org/?mlat=${place.coordinates.lat}&mlon=${place.coordinates.lng}#map=15/${place.coordinates.lat}/${place.coordinates.lng}`}
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className={styles.mapLargerLink}
+                    >
+                      View Larger Map ↗
+                    </a>
+                  </div>
+                )}
               </section>
             )}
 
@@ -1419,5 +1526,133 @@ export default function PlaceDetails({ params }: { params: Promise<{ id: string 
         </div>
       </div>
     </main>
+  );
+}
+
+function OfflineVectorMap({ name, lat, lng }: { name: string; lat: number; lng: number }) {
+  return (
+    <div style={{ width: '100%', height: '100%', position: 'relative', background: '#FAF8F5', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+      {/* Grid Pattern Background */}
+      <div style={{
+        position: 'absolute',
+        inset: 0,
+        opacity: 0.08,
+        backgroundImage: 'radial-gradient(#1E1B18 1px, transparent 1px)',
+        backgroundSize: '16px 16px'
+      }} />
+
+      <svg width="100%" height="100%" viewBox="0 0 300 220" style={{ zIndex: 2 }}>
+        {/* Radar Rings */}
+        <circle cx="150" cy="110" r="80" stroke="rgba(233, 128, 29, 0.1)" strokeWidth="1" strokeDasharray="3 3" fill="none" />
+        <circle cx="150" cy="110" r="50" stroke="rgba(233, 128, 29, 0.15)" strokeWidth="1" strokeDasharray="3 3" fill="none" />
+        <circle cx="150" cy="110" r="20" stroke="rgba(233, 128, 29, 0.2)" strokeWidth="1" fill="none" />
+
+        {/* Axis Lines */}
+        <line x1="150" y1="20" x2="150" y2="200" stroke="rgba(0,0,0,0.05)" strokeWidth="1" strokeDasharray="2 2" />
+        <line x1="30" y1="110" x2="270" y2="110" stroke="rgba(0,0,0,0.05)" strokeWidth="1" strokeDasharray="2 2" />
+
+        {/* Dotted Walking Paths */}
+        <path d="M 60 160 Q 110 160 150 110" stroke="rgba(14, 107, 114, 0.4)" strokeWidth="1.5" strokeDasharray="2 2" fill="none" />
+        <path d="M 90 70 Q 120 80 150 110" stroke="rgba(14, 107, 114, 0.4)" strokeWidth="1.5" strokeDasharray="2 2" fill="none" />
+        <path d="M 210 80 Q 180 90 150 110" stroke="rgba(14, 107, 114, 0.4)" strokeWidth="1.5" strokeDasharray="2 2" fill="none" />
+        <path d="M 230 150 Q 190 140 150 110" stroke="rgba(14, 107, 114, 0.4)" strokeWidth="1.5" strokeDasharray="2 2" fill="none" />
+
+        {/* POI Labels and Circles */}
+        {/* Parking */}
+        <g style={{ cursor: 'pointer' }}>
+          <circle cx="60" cy="160" r="10" fill="#E2E8F0" stroke="#94A3B8" strokeWidth="1" />
+          <text x="60" y="164" fontSize="8" fontWeight="bold" textAnchor="middle" fill="#475569">🅿️</text>
+          <text x="60" y="176" fontSize="7" textAnchor="middle" fill="#64748B" fontWeight="600">Parking</text>
+        </g>
+
+        {/* Lockers */}
+        <g style={{ cursor: 'pointer' }}>
+          <circle cx="90" cy="70" r="10" fill="#E2E8F0" stroke="#94A3B8" strokeWidth="1" />
+          <text x="90" y="74" fontSize="8" fontWeight="bold" textAnchor="middle" fill="#475569">🛅</text>
+          <text x="90" y="60" fontSize="7" textAnchor="middle" fill="#64748B" fontWeight="600">Lockers</text>
+        </g>
+
+        {/* Footwear */}
+        <g style={{ cursor: 'pointer' }}>
+          <circle cx="210" cy="80" r="10" fill="#E2E8F0" stroke="#94A3B8" strokeWidth="1" />
+          <text x="210" y="84" fontSize="8" fontWeight="bold" textAnchor="middle" fill="#475569">👟</text>
+          <text x="210" y="70" fontSize="7" textAnchor="middle" fill="#64748B" fontWeight="600">Footwear</text>
+        </g>
+
+        {/* Water */}
+        <g style={{ cursor: 'pointer' }}>
+          <circle cx="230" cy="150" r="10" fill="#E2E8F0" stroke="#94A3B8" strokeWidth="1" />
+          <text x="230" y="154" fontSize="8" fontWeight="bold" textAnchor="middle" fill="#475569">🚰</text>
+          <text x="230" y="166" fontSize="7" textAnchor="middle" fill="#64748B" fontWeight="600">Water</text>
+        </g>
+
+        {/* Compass Rose */}
+        <g transform="translate(45, 45) scale(0.6)">
+          <circle cx="0" cy="0" r="22" stroke="rgba(0,0,0,0.1)" strokeWidth="1" fill="none" />
+          <line x1="0" y1="-26" x2="0" y2="26" stroke="#94A3B8" strokeWidth="1.2" />
+          <line x1="-26" y1="0" x2="26" y2="0" stroke="#94A3B8" strokeWidth="1.2" />
+          <polygon points="0,-22 4,0 0,2 0,-22" fill="#E9801D" />
+          <polygon points="0,-22 -4,0 0,2 0,-22" fill="#B0550C" />
+          <polygon points="0,22 4,0 0,-2 0,22" fill="#94A3B8" />
+          <polygon points="0,22 -4,0 0,-2 0,22" fill="#CBD5E1" />
+          <text x="0" y="-29" fontSize="8" fontWeight="bold" textAnchor="middle" fill="#475569">N</text>
+        </g>
+
+        {/* Center Main Attraction Marker */}
+        <g>
+          {/* Pulse wave */}
+          <circle cx="150" cy="110" r="15" fill="rgba(233, 128, 29, 0.15)">
+            <animate attributeName="r" values="8;18;8" dur="3s" repeatCount="indefinite" />
+            <animate attributeName="opacity" values="0.8;0.2;0.8" dur="3s" repeatCount="indefinite" />
+          </circle>
+          <circle cx="150" cy="110" r="8" fill="#E9801D" stroke="#FFFFFF" strokeWidth="1.5" />
+          <circle cx="150" cy="110" r="3" fill="#FFFFFF" />
+          {/* Main Label */}
+          <rect x="100" y="122" width="100" height="15" rx="3" fill="rgba(30, 27, 24, 0.85)" />
+          <text x="150" y="132" fontSize="7.5" fontWeight="bold" fill="#FFFFFF" textAnchor="middle">
+            {name.length > 20 ? name.slice(0, 18) + '...' : name}
+          </text>
+        </g>
+      </svg>
+
+      {/* Compass Coordinates HUD Footer */}
+      <div style={{
+        position: 'absolute',
+        bottom: '8px',
+        left: '12px',
+        zIndex: 3,
+        fontSize: '9px',
+        fontFamily: 'monospace',
+        color: '#4A5568',
+        background: 'rgba(255,255,255,0.85)',
+        padding: '3px 6px',
+        borderRadius: '4px',
+        border: '1px solid rgba(0,0,0,0.06)'
+      }}>
+        📍 GPS: {lat.toFixed(5)}° N, {lng.toFixed(5)}° E
+      </div>
+
+      {/* Offline Mode Active Badge */}
+      <div style={{
+        position: 'absolute',
+        top: '12px',
+        right: '12px',
+        zIndex: 3,
+        fontSize: '9px',
+        fontWeight: 'bold',
+        color: '#B0550C',
+        background: '#FFE8D1',
+        border: '1px solid rgba(233, 128, 29, 0.25)',
+        padding: '4px 8px',
+        borderRadius: '20px',
+        display: 'flex',
+        alignItems: 'center',
+        gap: '4px',
+        boxShadow: '0 2px 8px rgba(233,128,29,0.08)'
+      }}>
+        <span style={{ display: 'inline-block', width: '6px', height: '6px', borderRadius: '50%', backgroundColor: '#E9801D' }} />
+        OFFLINE ACTIVE
+      </div>
+    </div>
   );
 }

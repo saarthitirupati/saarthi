@@ -4,7 +4,7 @@ import { usePathname, useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { 
   LayoutDashboard, MapPin, PlusCircle, BarChart3, LogOut, Map, Database, Activity,
-  Menu, X, BookOpen, HelpCircle, Calendar, Bookmark, Zap, Coins
+  Menu, X, BookOpen, HelpCircle, Calendar, Bookmark, Zap, Coins, Send, Cpu, AlertCircle
 } from 'lucide-react';
 import styles from './admin.module.css';
 
@@ -19,6 +19,10 @@ const NAV = [
   { href: '/admin/fuel',        icon: Coins,        label: 'Fuel Rates' },
   { href: '/admin/traffic', icon: BarChart3,        label: 'Traffic' },
   { href: '/admin/telemetry', icon: Zap,            label: 'Telemetry' },
+  { href: '/admin/playbook',    icon: Send,         label: 'Investor Playbook' },
+  { href: '/admin/stack',       icon: Cpu,          label: 'Startup Stack' },
+  { href: '/admin/live-alerts', icon: AlertCircle,  label: 'Live Alerts' },
+  { href: '/admin/onboarding-presentation', icon: Map, label: 'Onboarding Design' },
   { href: '/studio',        icon: Database,         label: 'Sanity Studio' },
 ];
 
@@ -26,6 +30,14 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   const pathname = usePathname();
   const router   = useRouter();
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [activeRole, setActiveRole] = useState('CEO');
+
+  useEffect(() => {
+    const saved = localStorage.getItem('saarthi_admin_role');
+    if (saved) {
+      setActiveRole(saved);
+    }
+  }, []);
 
   useEffect(() => {
     setSidebarOpen(false);
@@ -89,11 +101,13 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
               Select Active Role
             </label>
             <select
-              value={localStorage.getItem('saarthi_admin_role') || 'CEO'}
+              value={activeRole}
               onChange={(e) => {
-                localStorage.setItem('saarthi_admin_role', e.target.value);
-                // Trigger a page reload or state sync
-                window.location.reload();
+                const val = e.target.value;
+                setActiveRole(val);
+                if (typeof window !== 'undefined') {
+                  localStorage.setItem('saarthi_admin_role', val);
+                }
               }}
               style={{
                 width: '100%',
@@ -119,7 +133,6 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
           {/* Dynamic Profile Badge */}
           {(() => {
-            const activeKey = (typeof window !== 'undefined' ? localStorage.getItem('saarthi_admin_role') : 'CEO') || 'CEO';
             const rolesMap: Record<string, { name: string; title: string; email: string; avatar: string }> = {
               CEO: { name: 'Sunil Thatra', title: 'CEO & Founder', email: 'sunil@jeevapath.in', avatar: 'ST' },
               Chairman: { name: 'Dr. R. Prasad', title: 'Chairman', email: 'prasad@jeevapath.in', avatar: 'RP' },
@@ -128,7 +141,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
               Founder: { name: 'K. R. Murthy', title: 'Co-Founder & MD', email: 'murthy@jeevapath.in', avatar: 'KM' },
               HRAdmin: { name: 'V. S. Latha', title: 'HR & Admin Head', email: 'latha@jeevapath.in', avatar: 'VL' }
             };
-            const activeProfile = rolesMap[activeKey] || rolesMap.CEO;
+            const activeProfile = rolesMap[activeRole] || rolesMap.CEO;
             return (
               <div className={styles.adminBadge}>
                 <div className={styles.adminAvatar}>{activeProfile.avatar}</div>

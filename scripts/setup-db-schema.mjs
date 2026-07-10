@@ -146,6 +146,20 @@ async function main() {
       )
     `);
 
+    // 6. Enable RLS and public policies on all tables managed by this script
+    const managedTables = ['places', 'stories', 'quizzes', 'encyclopedia', 'user_events'];
+    for (const table of managedTables) {
+      console.log(`Securing table: "${table}" via RLS...`);
+      await db.query(`ALTER TABLE "${table}" ENABLE ROW LEVEL SECURITY;`);
+      await db.query(`DROP POLICY IF EXISTS "Allow public read/write" ON "${table}";`);
+      await db.query(`
+        CREATE POLICY "Allow public read/write" ON "${table}" 
+        FOR ALL TO anon 
+        USING (true) 
+        WITH CHECK (true);
+      `);
+    }
+
     console.log("Database schema setup complete!");
   } catch (err) {
     console.error("Database schema setup failed:", err);

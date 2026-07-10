@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { Zap, RefreshCw, Eye, Bookmark, HelpCircle, Compass, ShieldAlert, Award } from 'lucide-react';
 import styles from '../admin.module.css';
+import { supabase } from '@/lib/supabase';
 
 interface UserEvent {
   id: string;
@@ -41,8 +42,30 @@ export default function TelemetryPage() {
 
   useEffect(() => {
     if (!autoRefresh) return;
-    const interval = setInterval(fetchEvents, 8000);
-    return () => clearInterval(interval);
+
+    // Subscribe to realtime database changes for user_events in public schema
+    const channel = supabase
+      .channel('live-telemetry')
+      .on(
+        'postgres_changes',
+        {
+          event: 'INSERT',
+          schema: 'public',
+          table: 'user_events',
+        },
+        (payload) => {
+          const newEvent = payload.new as UserEvent;
+          setEvents((prev) => {
+            if (prev.some(e => e.id === newEvent.id)) return prev;
+            return [newEvent, ...prev].slice(0, 30);
+          });
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
   }, [autoRefresh]);
 
   const eventTypes = ['all', ...Array.from(new Set(events.map(e => e.eventType)))];
@@ -108,7 +131,7 @@ export default function TelemetryPage() {
               onChange={(e) => setAutoRefresh(e.target.checked)} 
               style={{ accentColor: '#2DD4BF' }}
             />
-            Auto-refresh (8s)
+            Real-time stream ⚡
           </label>
           <button onClick={fetchEvents} className={styles.btnSecondary} style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
             <RefreshCw size={14} className={loading ? styles.pulse : ''} /> Refresh
@@ -172,7 +195,7 @@ export default function TelemetryPage() {
                     <span style={{ fontSize: '11px', color: '#64748B' }}>{fmtTime(log.createdAt)}</span>
                   </div>
                   <p style={{ fontSize: '12px', color: '#E2E8F0', margin: 0, lineHeight: 1.4, fontStyle: 'italic' }}>
-                    "{log.metadata?.text || '—'}"
+                    &quot;{log.metadata?.text || '—'}&quot;
                   </p>
                 </div>
               ))}

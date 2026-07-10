@@ -46,7 +46,7 @@ export default function AdminTraffic() {
       <div className={styles.topRow}>
         <div className={styles.pageHeader}>
           <h1 className={styles.pageTitle}>Traffic Analytics</h1>
-          <p className={styles.pageSubtitle}>Real-time insights and visitor trends across JeevaPath</p>
+          <p className={styles.pageSubtitle}>Real-time insights and visitor trends across Saarthi</p>
         </div>
       </div>
 

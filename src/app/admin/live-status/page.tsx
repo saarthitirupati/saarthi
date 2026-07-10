@@ -59,13 +59,32 @@ export default function LiveStatusEditor() {
 
   if (!mounted) return null;
 
+  const formatWaitTimeValue = (val: string) => {
+    if (!val) return '';
+    const clean = val.trim();
+    if (/^\d+$/.test(clean)) {
+      const num = parseInt(clean, 10);
+      return `${num} ${num === 1 ? 'hour' : 'hours'}`;
+    }
+    return clean;
+  };
+
   const saveStatus = async () => {
     setStatusSaving(true);
+    const formattedStatus = {
+      ...status,
+      waitTime: formatWaitTimeValue(status.waitTime),
+      darshans: (status.darshans || []).map(d => ({
+        ...d,
+        waitTime: formatWaitTimeValue(d.waitTime)
+      }))
+    };
+
     try {
       const res = await fetch('/api/admin/status', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(status),
+        body: JSON.stringify(formattedStatus),
       });
       const updated = await res.json();
       setStatus(updated);

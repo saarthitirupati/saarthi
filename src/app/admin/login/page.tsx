@@ -37,7 +37,7 @@ export default function AdminLogin() {
           <Map size={28} color="#0E6B72" />
         </div>
         <h1 className={styles.title}>Admin Login</h1>
-        <p className={styles.sub}>JeevaPath Control Panel</p>
+        <p className={styles.sub}>Saarthi Control Panel</p>
 
         <form onSubmit={submit} className={styles.form}>
           <div className={styles.field}>
@@ -53,6 +53,7 @@ export default function AdminLogin() {
                 onChange={e => setEmail(e.target.value)}
                 required
                 autoComplete="email"
+                suppressHydrationWarning
               />
             </div>
           </div>
@@ -84,7 +85,7 @@ export default function AdminLogin() {
           </button>
         </form>
 
-        <p className={styles.hint}>admin@jeevapath.in · Admin@2024</p>
+        <p className={styles.hint} suppressHydrationWarning>admin@jeevapath.in · Admin@2024</p>
       </div>
     </div>
   );

@@ -1,18 +1,25 @@
 'use client';
 
+import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Home, Compass, Bookmark, User } from 'lucide-react';
+import { Home, Compass, ClipboardCheck, Map, User } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import styles from './BottomNav.module.css';
 
 export default function BottomNav() {
   const pathname = usePathname();
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
   
   const navItems = [
     { name: 'Home', icon: Home, href: '/' },
     { name: 'Explore', icon: Compass, href: '/explore' },
-    { name: 'Saved', icon: Bookmark, href: '/saved' },
+    { name: 'Essentials', icon: ClipboardCheck, href: '/essentials' },
+    { name: 'Journey', icon: Map, href: '/saved' },
     { name: 'Profile', icon: User, href: '/profile' },
   ];
 
@@ -20,7 +27,7 @@ export default function BottomNav() {
     <nav className={styles.nav}>
       <div className={styles.container}>
         {navItems.map((item) => {
-          const isActive = pathname === item.href;
+          const isActive = mounted && pathname === item.href;
           return (
             <Link key={item.name} href={item.href} className={styles.navLink}>
               <div className={styles.iconWrapper}>

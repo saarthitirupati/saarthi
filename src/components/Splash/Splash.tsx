@@ -138,11 +138,38 @@ export default function SplashScreen({ onFinish }: { onFinish: () => void }) {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 1.8, duration: 1.2, ease: [0.25, 1, 0.5, 1] }}
+              style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}
             >
-              <h1 className={styles.title}>SAARTHI</h1>
-              <p className={styles.tagline}>Your Spiritual Companion</p>
+              <h1 className={styles.title} style={{ textTransform: 'none', letterSpacing: '0.15em', fontWeight: 600 }}>Saarthi</h1>
+              <p className={styles.tagline} style={{ textTransform: 'none', letterSpacing: '0.08em', color: '#E2E8F0', marginTop: '6px', fontSize: '13px' }}>
+                From Free Time to Meaningful Memories
+              </p>
             </motion.div>
           </div>
+
+          {/* Sanskrit text for divine feeling */}
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 2.2, duration: 1.5, ease: "easeOut" }}
+            style={{
+              position: 'absolute',
+              bottom: '48px',
+              left: '50%',
+              transform: 'translateX(-50%)',
+              color: '#D4AF37',
+              fontSize: '16px',
+              fontWeight: 600,
+              letterSpacing: '5px',
+              textAlign: 'center',
+              width: '100%',
+              zIndex: 30,
+              textShadow: '0 2px 12px rgba(212,175,55,0.4)',
+              fontFamily: 'Devanagari, Georgia, serif'
+            }}
+          >
+            || ॐ नमो वेंकटेशाय ||
+          </motion.div>
         </motion.div>
       )}
     </AnimatePresence>

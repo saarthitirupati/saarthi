@@ -4,11 +4,28 @@ import Link from 'next/link';
 import { PlusCircle, Search, Pencil, Trash2, MapPin, ExternalLink, Filter } from 'lucide-react';
 import styles from '../admin.module.css';
 import { motion, AnimatePresence } from 'framer-motion';
+import { calculateDrivingDistance } from '@/utils/location';
 
 export default function AdminPlaces() {
   const [places, setPlaces] = useState<any[]>([]);
   const [q, setQ]           = useState('');
   const [loading, setLoading] = useState(true);
+  const [userLocation, setUserLocation] = useState<{ lat: number; lng: number } | null>(null);
+
+  useEffect(() => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (pos) => {
+          setUserLocation({ lat: pos.coords.latitude, lng: pos.coords.longitude });
+        },
+        () => {
+          setUserLocation({ lat: 13.6288, lng: 79.4192 });
+        }
+      );
+    } else {
+      setUserLocation({ lat: 13.6288, lng: 79.4192 });
+    }
+  }, []);
 
   const load = () => {
     setLoading(true);
@@ -115,7 +132,16 @@ export default function AdminPlaces() {
                         </div>
                       </td>
                       <td><span className={`${styles.badge} ${styles.badgeBlue}`}>{p.placeType}</span></td>
-                      <td>{p.distanceKms} km</td>
+                      <td>
+                        {(() => {
+                          if (userLocation && p.coordinates?.lat && p.coordinates?.lng) {
+                            const isTirumala = p.location?.toLowerCase().includes('tirumala') || p.name?.toLowerCase().includes('tirumala');
+                            const dist = calculateDrivingDistance(userLocation.lat, userLocation.lng, p.coordinates.lat, p.coordinates.lng, isTirumala);
+                            return `${dist.toFixed(1)} km`;
+                          }
+                          return p.distanceKms ? `${p.distanceKms} km` : '—';
+                        })()}
+                      </td>
                       <td>
                         <span className={`${styles.badge} ${p.budgetLevel === 'budget' ? styles.badgeGreen : p.budgetLevel === 'premium' ? styles.badgePurple : styles.badgeOrange}`}>
                           {p.budgetLevel}

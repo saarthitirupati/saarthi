@@ -22,11 +22,24 @@ function LayoutContent({
   setIsMenuOpen: (val: boolean) => void;
 }) {
   const pathname = usePathname();
+  const router = useRouter();
   const isAdmin = pathname?.startsWith('/admin');
+  const isStudio = pathname?.startsWith('/studio');
   const { locationPermission, isInitialized } = useTrip();
 
+  useEffect(() => {
+    const isExcluded = pathname === '/onboarding' || pathname === '/splash' || isAdmin || isStudio;
+    if (isInitialized && !showSplash && !isExcluded) {
+      const hasSeenOnboarding = localStorage.getItem('hasSeenOnboarding');
+      const hasName = localStorage.getItem('saarthi_user_name');
+      if (!hasSeenOnboarding || !hasName) {
+        router.push('/onboarding');
+      }
+    }
+  }, [isInitialized, showSplash, pathname, router]);
+
   const showLocationPrompt = isInitialized && !showSplash && !isAdmin && pathname === '/' && locationPermission === 'default';
-  const showBottomNav = !showSplash && !showLocationPrompt && !isAdmin && ['/', '/explore', '/saved', '/profile'].includes(pathname);
+  const showBottomNav = !showSplash && !showLocationPrompt && !isAdmin && (['/', '/explore', '/saved', '/profile', '/essentials'].includes(pathname) || pathname?.startsWith('/essentials/'));
 
   return (
     <>

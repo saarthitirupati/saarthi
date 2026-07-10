@@ -46,6 +46,17 @@ async function setup() {
     `);
     console.log("Ensured 'live_metrics' table exists.");
 
+    // Enable RLS and public policies
+    console.log("Enabling RLS on 'live_metrics'...");
+    await db.query(`ALTER TABLE live_metrics ENABLE ROW LEVEL SECURITY;`);
+    await db.query(`DROP POLICY IF EXISTS "Allow public read/write" ON live_metrics;`);
+    await db.query(`
+      CREATE POLICY "Allow public read/write" ON live_metrics 
+      FOR ALL TO anon 
+      USING (true) 
+      WITH CHECK (true);
+    `);
+
     // Insert default row (id = 1)
     await db.query(`
       INSERT INTO live_metrics (id, crowd_wait_minutes, parking_status, parking_location, next_bus_minutes)
