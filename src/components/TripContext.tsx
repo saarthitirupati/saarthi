@@ -17,6 +17,7 @@ interface TripContextType extends TripState {
   resetTrip: () => void;
   setUserLocation: (loc: { lat: number; lng: number } | null) => void;
   setLocationPermission: (status: 'default' | 'granted' | 'denied') => void;
+  setLocationName: (name: string) => void;
 }
 
 const TripContext = createContext<TripContextType | undefined>(undefined);

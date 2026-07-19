@@ -8,7 +8,7 @@ export default function DailyQuiz() {
   const [isCorrect, setIsCorrect] = useState<boolean | null>(null);
 
   useEffect(() => {
-    fetch('/api/content/daily')
+    fetch('/api/v1/content/daily')
       .then(res => res.json())
       .then(data => setQuizData(data.learn.quiz))
       .catch(err => console.error(err));

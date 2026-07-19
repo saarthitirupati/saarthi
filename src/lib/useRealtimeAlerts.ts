@@ -25,7 +25,7 @@ export function useRealtimeAlerts() {
 
   const fetchAlerts = async () => {
     try {
-      const res = await fetch('/api/alerts');
+      const res = await fetch('/api/v1/alerts');
       if (res.ok) {
         const data = await res.json();
         setAlerts(data);

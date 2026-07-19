@@ -4,7 +4,7 @@ import { use } from 'react';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
-import { ChevronLeft, MapPin, Clock, Users, Shirt, Car, Sparkles, CalendarDays, Info } from 'lucide-react';
+import { ChevronLeft, MapPin, Clock, Users, Shirt, Car, Sparkles, CalendarDays, Info, Flame, AlertTriangle } from 'lucide-react';
 
 const CROWD_COLORS: Record<string, { bg: string; text: string }> = {
   'very high': { bg: '#FEE2E2', text: '#991B1B' },
@@ -14,16 +14,10 @@ const CROWD_COLORS: Record<string, { bg: string; text: string }> = {
   'extreme':   { bg: '#FEE2E2', text: '#991B1B' },
 };
 
-const IMPORTANCE_ICONS: Record<string, string> = {
-  brahmotsavam: '🪔', vaikuntha: '🙏', garuda: '🦅', janmashtami: '🎉', default: '🛕'
-};
-
 function getImportanceIcon(name: string) {
   const lower = name.toLowerCase();
-  for (const [key, icon] of Object.entries(IMPORTANCE_ICONS)) {
-    if (lower.includes(key)) return icon;
-  }
-  return IMPORTANCE_ICONS.default;
+  if (lower.includes('brahmotsavam')) return <Flame size={48} color="#FFFFFF" />;
+  return <Sparkles size={48} color="#FFFFFF" />;
 }
 
 function fmt(d: string) {
@@ -193,10 +187,11 @@ export default function FestivalDetail({ params }: { params: Promise<{ slug: str
 
   useEffect(() => {
     // Fetch all festivals (no date filter) so detail page works for any slug
-    fetch('/api/festivals?all=1')
+    fetch('/api/v1/festivals?all=1')
       .then(r => r.json())
-      .then(({ festivals }) => {
-        const match = (festivals || []).find(
+      .then((d) => {
+        const list = d.data || [];
+        const match = list.find(
           (f: any) => f.slug === slug || f.id === slug
         );
         setFest(match || null);
@@ -218,7 +213,7 @@ export default function FestivalDetail({ params }: { params: Promise<{ slug: str
   if (!fest) {
     return (
       <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', background: '#FDF8F5', gap: 16 }}>
-        <span style={{ fontSize: 48 }}>🛕</span>
+        <Sparkles size={48} color="#FF9933" />
         <h2 style={{ margin: 0, color: '#1F2937' }}>Festival not found</h2>
         <button onClick={() => router.back()} style={{ padding: '10px 24px', borderRadius: 12, background: '#FF9933', color: 'white', border: 'none', fontWeight: 700, cursor: 'pointer' }}>Go Back</button>
       </div>
@@ -260,7 +255,7 @@ export default function FestivalDetail({ params }: { params: Promise<{ slug: str
         </button>
 
         <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }}>
-          <div style={{ fontSize: 48, marginBottom: 12 }}>{icon}</div>
+          <div style={{ marginBottom: 12 }}>{icon}</div>
           <h1 style={{ margin: '0 0 8px', fontSize: 26, fontWeight: 800, color: 'white', lineHeight: 1.2 }}>{fest.name}</h1>
           {dateStr && (
             <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
@@ -332,7 +327,7 @@ export default function FestivalDetail({ params }: { params: Promise<{ slug: str
             </h2>
             {highlights.map((h: string, i: number) => (
               <div key={i} style={{ display: 'flex', alignItems: 'flex-start', gap: 10, marginBottom: 10 }}>
-                <span style={{ fontSize: 18, flexShrink: 0 }}>🪔</span>
+                <Flame size={14} color="#FF9933" style={{ marginTop: 4, flexShrink: 0 }} />
                 <p style={{ margin: 0, fontSize: 14, color: '#374151', lineHeight: 1.5 }}>{h}</p>
               </div>
             ))}
@@ -352,7 +347,7 @@ export default function FestivalDetail({ params }: { params: Promise<{ slug: str
             </h2>
             {travelTips.map((tip: string, i: number) => (
               <div key={i} style={{ display: 'flex', alignItems: 'flex-start', gap: 10, marginBottom: 10 }}>
-                <span style={{ fontSize: 18, flexShrink: 0 }}>⚠️</span>
+                <AlertTriangle size={14} color="#D97706" style={{ marginTop: 4, flexShrink: 0 }} />
                 <p style={{ margin: 0, fontSize: 14, color: '#78350F', lineHeight: 1.5 }}>{tip}</p>
               </div>
             ))}

@@ -1,75 +1,148 @@
 .nav {
   position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  background: rgba(255, 255, 255, 0.85);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border-top: 1px solid rgba(0,0,0,0.05);
-  padding: 10px 0 calc(10px + env(safe-area-inset-bottom, 0px));
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: calc(100% - 48px);
+  max-width: 400px;
+  background: rgba(255, 253, 249, 0.95);
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
+  border: 1px solid rgba(208, 167, 61, 0.2);
+  border-radius: 36px;
+  padding: 8px 24px;
   z-index: 1000;
-  box-shadow: 0 -4px 20px rgba(0,0,0,0.03);
+  box-shadow:
+    0 16px 32px rgba(15, 81, 50, 0.1),
+    0 4px 12px rgba(0, 0, 0, 0.05);
 }
 
 .container {
-  max-width: 600px;
-  margin: 0 auto;
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
   align-items: center;
+  position: relative;
+  height: 48px;
 }
+
+/* ── Regular nav item ──────────────────────────────────────── */
 
 .navLink {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 4px;
-  text-decoration: none;
-  min-width: 64px;
-}
-
-.navLink span {
-  font-size: 0.65rem;
-  font-weight: 600;
-  transition: color 0.3s;
-}
-
-.activeLabel {
-  color: #E9801D !important;
-  font-weight: 700;
-}
-
-.inactiveLabel {
-  color: #94A3B8;
-}
-
-.iconWrapper {
   position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 58px;
-  height: 32px;
-  border-radius: 16px;
-  overflow: hidden;
-  transition: all 0.25s ease;
+  text-decoration: none;
+  min-width: 48px;
+  height: 48px;
+  border-radius: 24px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  -webkit-tap-highlight-color: transparent;
+  z-index: 2;
+}
+
+.navLinkActive {
+  padding: 0 20px;
+  min-width: auto;
+}
+
+.navLink:active {
+  transform: scale(0.95);
+}
+
+/* ── Active Background Pill (Framer Motion) ────────────────── */
+
+.activeBg {
+  position: absolute;
+  inset: 0;
+  background: #0F5132;
+  border-radius: 24px;
+  z-index: -1;
+  box-shadow: 0 4px 12px rgba(15, 81, 50, 0.25);
+}
+
+/* ── Icon & Label ──────────────────────────────────────────── */
+
+.navContent {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  position: relative;
+  z-index: 2;
 }
 
 .activeIcon {
-  color: #E9801D !important;
-  transition: color 0.25s ease;
+  color: #FFFFFF;
+  transition: color 0.3s ease;
 }
 
 .inactiveIcon {
   color: #94A3B8;
-  transition: color 0.25s ease;
+  transition: color 0.3s ease;
 }
 
-.activePill {
+.activeLabel {
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  color: #FFFFFF;
+  white-space: nowrap;
+}
+
+/* ── FAB (Essentials) ──────────────────────────────────────── */
+
+.fabWrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
   position: absolute;
-  inset: 0;
-  background: rgba(233, 128, 29, 0.08);
-  border-radius: 16px;
+  left: 50%;
+  top: -24px;
+  transform: translateX(-50%);
+  width: 64px;
+  height: 64px;
+  -webkit-tap-highlight-color: transparent;
+  transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 3;
+}
+
+.fabWrapper:active {
+  transform: translateX(-50%) scale(0.92);
+}
+
+.fabRing {
+  position: absolute;
+  top: -4px;
+  left: -4px;
+  right: -4px;
+  bottom: -4px;
+  border-radius: 50%;
+  border: 1px solid rgba(234, 88, 12, 0.3);
+  box-shadow: 0 0 0 1px rgba(234, 88, 12, 0.1);
+  pointer-events: none;
   z-index: 1;
+}
+
+.fabBtn {
+  position: relative;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #F59E0B 0%, #EA580C 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #FFFFFF;
+  box-shadow:
+    0 12px 24px rgba(234, 88, 12, 0.4),
+    0 4px 8px rgba(234, 88, 12, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3);
+  z-index: 2;
+}
+
+.fabIcon {
+  color: #FFFFFF;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
 }

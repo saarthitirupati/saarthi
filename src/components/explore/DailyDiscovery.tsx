@@ -6,7 +6,7 @@ export default function DailyDiscovery() {
   const [discoverData, setDiscoverData] = useState<any>(null);
 
   useEffect(() => {
-    fetch('/api/content/daily')
+    fetch('/api/v1/content/daily')
       .then(res => res.json())
       .then(data => setDiscoverData(data.discover))
       .catch(err => console.error(err));

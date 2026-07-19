@@ -2,8 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
-import {} from 'lucide-react';
-import { motion } from 'framer-motion';
+import { Activity, Clock, Bell, Ticket, Footprints, Sparkles, Coins } from 'lucide-react';
 
 export default function DarshanTimingsCard() {
   const [status, setStatus] = useState<any>(null);
@@ -11,7 +10,7 @@ export default function DarshanTimingsCard() {
 
   useEffect(() => {
     const fetchStatus = () => {
-      fetch('/api/admin/status')
+      fetch('/api/v1/status')
         .then(res => res.json())
         .then(data => {
           setStatus(data);
@@ -21,148 +20,170 @@ export default function DarshanTimingsCard() {
     };
 
     fetchStatus();
-    
+    const pollTimer = setInterval(fetchStatus, 15000);
     const timer = setInterval(() => {
       setLastUpdated(prev => {
         if (prev === 'Just now') return '1 min ago';
         const match = prev.match(/(\d+)/);
-        if (match) {
-          const mins = parseInt(match[1], 10);
-          return `${mins + 1} mins ago`;
-        }
+        if (match) return `${parseInt(match[1], 10) + 1} mins ago`;
         return prev;
       });
     }, 60000);
 
-    import('@/lib/supabase').then(({ supabase }) => {
-      const channelName = `public:tirumala_status_${Math.random().toString(36).substring(7)}`;
-      const channel = supabase
-        .channel(channelName)
-        .on(
-          'postgres_changes',
-          { event: 'UPDATE', schema: 'public', table: 'tirumala_status', filter: 'id=eq.1' },
-          () => {
-            fetchStatus();
-          }
-        )
-        .subscribe();
-
-      return () => {
-        supabase.removeChannel(channel);
-        clearInterval(timer);
-      };
-    });
+    return () => { clearInterval(pollTimer); clearInterval(timer); };
   }, []);
 
   if (!status) return (
-    <div className="bg-white rounded-3xl shadow-sm p-6 space-y-4 animate-pulse border border-gray-100">
-      <div className="h-6 bg-gray-200 rounded w-1/2 mb-4"></div>
-      <div className="h-16 bg-gray-100 rounded-2xl"></div>
-      <div className="space-y-4">
-        {[1,2,3,4].map(i => <div key={i} className="h-24 bg-gray-50 rounded-2xl border border-gray-100"></div>)}
-      </div>
+    <div style={{
+      background: '#fff', borderRadius: '20px', padding: '24px',
+      border: '1px solid #e7e5e4', display: 'flex', flexDirection: 'column', gap: '16px'
+    }}>
+      {[1,2,3].map(i => (
+        <div key={i} style={{
+          height: '72px', background: '#f5f5f4', borderRadius: '16px',
+          animation: 'pulse 1.5s infinite ease-in-out'
+        }} />
+      ))}
     </div>
   );
 
   const parseWaitHours = (timeStr: string) => {
     if (!timeStr) return 99;
     const match = timeStr.match(/(\d+)/);
-    if (match) return parseInt(match[1], 10);
-    return 99;
+    return match ? parseInt(match[1], 10) : 99;
   };
 
-  const getStatusStyle = (hours: number, isAvailability: boolean = false) => {
-    if (isAvailability) return { color: 'text-emerald-600', dot: 'bg-emerald-500' };
-    if (hours <= 2) return { color: 'text-emerald-600', dot: 'bg-emerald-500' };
-    if (hours <= 5) return { color: 'text-amber-500', dot: 'bg-amber-400' };
-    if (hours <= 10) return { color: 'text-orange-500', dot: 'bg-orange-400' };
-    return { color: 'text-rose-600', dot: 'bg-rose-500' };
+  const getStatusColor = (hours: number) => {
+    if (hours <= 2) return { text: '#059669', dot: '#10b981', bg: '#ecfdf5' };
+    if (hours <= 5) return { text: '#d97706', dot: '#f59e0b', bg: '#fffbeb' };
+    if (hours <= 10) return { text: '#ea580c', dot: '#f97316', bg: '#fff7ed' };
+    return { text: '#dc2626', dot: '#ef4444', bg: '#fef2f2' };
   };
 
   const darshans = status?.darshans || [];
 
+  const mapNameToId = (name: string): string => {
+    const lower = name.toLowerCase();
+    if (lower.includes('sarva')) return 'sarva-darshan';
+    if (lower.includes('300') || lower.includes('special')) return 'special-entry';
+    if (lower.includes('footpath') || lower.includes('divya')) return 'divya-darshan';
+    if (lower.includes('vip') || lower.includes('srivani')) return 'vip-break';
+    return 'sarva-darshan';
+  };
+
+  const getIcon = (name: string) => {
+    const lower = name.toLowerCase();
+    if (lower.includes('300') || lower.includes('special')) return Ticket;
+    if (lower.includes('footpath') || lower.includes('divya')) return Footprints;
+    if (lower.includes('vip') || lower.includes('srivani')) return Sparkles;
+    return Coins;
+  };
+
   return (
-    <div className="flex flex-col gap-4">
-      {/* SECTION HEADER */}
-      <div className="flex justify-between items-end px-1">
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+      {/* Header */}
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end' }}>
         <div>
-          <h2 className="text-2xl font-black text-gray-900 tracking-tight flex items-center gap-2">
-            <span>🛕</span> Darshan Timings
+          <h2 style={{
+            fontSize: '18px', fontWeight: 800, color: '#1c1917',
+            letterSpacing: '-0.02em', display: 'flex', alignItems: 'center', gap: '8px', margin: 0
+          }}>
+            <Clock size={20} style={{ color: '#14532D' }} /> Darshan Timings
           </h2>
-          <p className="text-gray-500 text-[13px] font-medium mt-1">
+          <p style={{ color: '#78716c', fontSize: '12px', fontWeight: 600, marginTop: '2px' }}>
             Today&apos;s estimated waiting times
           </p>
         </div>
-        <Link href="/live" className="text-indigo-600 text-[13px] font-bold tracking-tight hover:text-indigo-700 transition-colors">
-          View All &rarr;
-        </Link>
       </div>
 
+      {/* Notice */}
       {status.notice && (
-        <div className="bg-orange-50 border border-orange-200 text-orange-800 p-3 rounded-2xl text-sm font-semibold flex gap-2">
-          <span>🔔</span> {status.notice}
+        <div style={{
+          background: '#fff7ed', border: '1px solid #fed7aa',
+          color: '#9a3412', padding: '12px 14px', borderRadius: '14px',
+          fontSize: '13px', fontWeight: 700, display: 'flex', gap: '8px', alignItems: 'center'
+        }}>
+          <Bell size={16} style={{ color: '#ea580c', flexShrink: 0 }} /> {status.notice}
         </div>
       )}
 
-      {/* CARDS LIST */}
-      <div className="space-y-4 relative">
+      {/* Darshan Cards */}
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
         {darshans.map((d: any, idx: number) => {
-          let emoji = '💰';
-          if (d.name.includes('300') || d.name.toLowerCase().includes('special')) emoji = '🎫';
-          else if (d.name.toLowerCase().includes('footpath') || d.name.toLowerCase().includes('divya')) emoji = '🥾';
-          else if (d.name.toLowerCase().includes('vip') || d.name.toLowerCase().includes('srivani')) emoji = '✨';
-
           const hours = parseWaitHours(d.waitTime);
-          const isAvailability = d.name.toLowerCase().includes('slot') || d.name.toLowerCase().includes('token');
-          const style = getStatusStyle(hours, isAvailability);
-
-          const mapNameToId = (name: string): string => {
-            const lower = name.toLowerCase();
-            if (lower.includes('sarva')) return 'sarva-darshan';
-            if (lower.includes('300') || lower.includes('special')) return 'special-entry';
-            if (lower.includes('footpath') || lower.includes('divya')) return 'divya-darshan';
-            if (lower.includes('vip') || lower.includes('srivani')) return 'vip-break';
-            return 'sarva-darshan';
-          };
+          const color = getStatusColor(hours);
+          const IconComponent = getIcon(d.name);
           const darshanId = mapNameToId(d.name);
 
           return (
-            <Link key={idx} href={`/darshan/${darshanId}`} className="block">
-              <motion.div 
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: idx * 0.1 }}
-                className="relative p-4 rounded-[20px] border border-gray-100 bg-gradient-to-br from-white to-gray-50/50 shadow-sm hover:shadow-md hover:border-gray-200 transition-all group cursor-pointer"
-              >
-              <div className="flex justify-between items-center gap-3">
-                <div className="flex-1">
-                  <div className="flex items-center gap-2 mb-1">
-                    <span className="text-xl drop-shadow-sm group-hover:scale-110 transition-transform">{emoji}</span>
-                    <h3 className="font-extrabold text-gray-900 text-[15px] leading-tight tracking-tight">{d.name.split(' (')[0]}</h3>
+            <Link key={idx} href={`/darshan/${darshanId}`} style={{ textDecoration: 'none', color: 'inherit' }}>
+              <div style={{
+                padding: '16px', borderRadius: '18px',
+                border: '1px solid #e7e5e4', background: '#ffffff',
+                boxShadow: '0 2px 8px rgba(0,0,0,0.03)',
+                display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '12px',
+                cursor: 'pointer', transition: 'all 0.2s ease'
+              }}>
+                {/* Left */}
+                <div style={{ flex: 1, minWidth: 0 }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
+                    <IconComponent size={18} style={{ color: '#6b7280', flexShrink: 0 }} />
+                    <h3 style={{
+                      fontWeight: 800, color: '#1c1917', fontSize: '14px',
+                      lineHeight: 1.2, margin: 0, letterSpacing: '-0.01em'
+                    }}>
+                      {d.name.split(' (')[0]}
+                    </h3>
                   </div>
-                  <p className="text-gray-500 text-xs font-semibold tracking-wide ml-[32px]">
-                    {d.name.includes('(') ? d.name.substring(d.name.indexOf('(') + 1, d.name.indexOf(')')) : d.peakHours || 'Estimated Wait'}
+                  <p style={{
+                    color: '#78716c', fontSize: '11px', fontWeight: 600,
+                    marginLeft: '30px', margin: '0 0 0 30px'
+                  }}>
+                    {d.name.includes('(')
+                      ? d.name.substring(d.name.indexOf('(') + 1, d.name.indexOf(')'))
+                      : d.peakHours || 'Estimated Wait'}
                   </p>
                 </div>
-                
-                <div className="text-right flex-shrink-0">
-                  <div className="flex items-center justify-end gap-1.5 mb-1">
-                    <span className={`w-2 h-2 rounded-full ${style.dot} shadow-sm`} />
-                    <span className={`text-xl font-black tracking-tight ${style.color}`}>{d.waitTime}</span>
+
+                {/* Right — wait time badge */}
+                <div style={{ textAlign: 'right', flexShrink: 0 }}>
+                  <div style={{
+                    display: 'inline-flex', alignItems: 'center', gap: '6px',
+                    padding: '6px 12px', borderRadius: '12px',
+                    background: color.bg, marginBottom: '2px'
+                  }}>
+                    <span style={{
+                      width: '7px', height: '7px', borderRadius: '50%',
+                      background: color.dot, boxShadow: `0 0 6px ${color.dot}`
+                    }} />
+                    <span style={{
+                      fontSize: '16px', fontWeight: 900, color: color.text,
+                      letterSpacing: '-0.02em'
+                    }}>
+                      {d.waitTime}
+                    </span>
                   </div>
-                  <p className="text-[9px] font-black text-gray-400 uppercase tracking-widest">{isAvailability ? 'Booking Status' : 'Estimated Wait'}</p>
+                  <p style={{
+                    fontSize: '9px', fontWeight: 800, color: '#a8a29e',
+                    textTransform: 'uppercase', letterSpacing: '0.5px', margin: '2px 0 0 0'
+                  }}>
+                    Estimated Wait
+                  </p>
                 </div>
               </div>
-              </motion.div>
             </Link>
           );
         })}
       </div>
 
-      <div className="px-2 text-[11px] font-bold text-gray-400 uppercase tracking-wider text-right">
-        Updated {lastUpdated}
+      {/* Updated timestamp */}
+      <div style={{
+        fontSize: '10px', fontWeight: 800, color: '#a8a29e',
+        textTransform: 'uppercase', letterSpacing: '0.5px', textAlign: 'right',
+        display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: '4px'
+      }}>
+        <Activity size={10} /> Updated {lastUpdated}
       </div>
-
     </div>
   );
 }

@@ -1,70 +1,90 @@
-import { supabase } from './supabase';
-import { Place } from '@/types/place';
-import { Story } from '@/types/story';
-import { Quiz } from '@/types/quiz';
-import { Festival } from '@/types/festival';
-import { EncyclopediaArticle } from '@/types/encyclopedia';
-import { UserEvent } from '@/types/event';
+import { supabase } from '@/lib/supabase';
 
-// --- Places (Temples) ---
-export async function getPlaces(): Promise<Place[]> {
-  const { data, error } = await supabase.from('places').select('*');
+// Places
+export async function getPlaces(citySlug: string = 'tirupati') {
+  const { data: city } = await supabase.from('cities').select('id').eq('slug', citySlug).single();
+  if (!city) return [];
+  const { data, error } = await supabase.from('places').select('*, category:categories(name, slug, icon)').eq('city_id', city.id).eq('status', 'Published').order('priority', { ascending: false });
   if (error) throw error;
-  return data as Place[];
+  return data;
 }
 
-export async function getPlaceById(id: string): Promise<Place | null> {
-  const { data, error } = await supabase.from('places').select('*').eq('id', id).single();
-  if (error) return null;
-  return data as Place;
+export async function getPlaceBySlug(slug: string) {
+  const { data: place, error } = await supabase.from('places').select('*, category:categories(name, slug, icon)').eq('slug', slug).single();
+  if (error || !place) return null;
+  
+  const { data: nearby } = await supabase.from('place_nearby')
+    .select('nearby_place:nearby_place_id(*)')
+    .eq('place_id', place.id)
+    .order('priority', { ascending: true });
+    
+  return { ...place, nearby_places: nearby?.map(n => n.nearby_place) || [] };
 }
 
-// --- Stories ---
-export async function getStories(): Promise<Story[]> {
-  const { data, error } = await supabase.from('stories').select('*').eq('isActive', true);
+export async function getPlacesByCategory(categorySlug: string) {
+  const { data: category } = await supabase.from('categories').select('id').eq('slug', categorySlug).single();
+  if (!category) return [];
+  const { data, error } = await supabase.from('places').select('*, category:categories(name, slug, icon)').eq('category_id', category.id).eq('status', 'Published').order('priority', { ascending: false });
   if (error) throw error;
-  return data as Story[];
+  return data;
 }
 
-export async function getStoryBySlug(slug: string): Promise<Story | null> {
-  const { data, error } = await supabase.from('stories').select('*').eq('slug', slug).eq('isActive', true).single();
-  if (error) return null;
-  return data as Story;
-}
-
-// --- Quizzes ---
-export async function getQuizzes(): Promise<Quiz[]> {
-  const { data, error } = await supabase.from('quizzes').select('*').eq('isActive', true);
+// Categories
+export async function getCategories(citySlug: string = 'tirupati') {
+  const { data: city } = await supabase.from('cities').select('id').eq('slug', citySlug).single();
+  if (!city) return [];
+  const { data, error } = await supabase.from('categories').select('*').eq('city_id', city.id).order('priority', { ascending: true });
   if (error) throw error;
-  return data as Quiz[];
+  return data;
 }
 
-// --- Encyclopedia ---
-export async function searchEncyclopedia(query: string): Promise<EncyclopediaArticle[]> {
-  const { data, error } = await supabase
-    .from('encyclopedia')
-    .select('*')
-    .eq('isActive', true)
-    .or(`title.ilike.%${query}%,content.ilike.%${query}%,keywords.cs.{${query}}`);
+// Live
+export async function getLiveUpdates(citySlug: string = 'tirupati') {
+  const { data: city } = await supabase.from('cities').select('id').eq('slug', citySlug).single();
+  if (!city) return [];
+  const { data, error } = await supabase.from('live_updates').select('*').eq('city_id', city.id).eq('is_active', true).order('updated_at', { ascending: false });
   if (error) throw error;
-  return data as EncyclopediaArticle[];
+  return data;
 }
 
-// --- Festivals ---
-export async function getUpcomingFestivals(): Promise<Festival[]> {
-  const today = new Date().toISOString().split('T')[0];
-  const { data, error } = await supabase
-    .from('festivals')
-    .select('*')
-    .eq('isActive', true)
-    .gte('date', today)
-    .order('date', { ascending: true });
+export async function getDarshanTypes(citySlug: string = 'tirupati') {
+  const { data: city } = await supabase.from('cities').select('id').eq('slug', citySlug).single();
+  if (!city) return [];
+  const { data, error } = await supabase.from('darshan_types').select('*').eq('city_id', city.id).order('priority', { ascending: true });
   if (error) throw error;
-  return data as Festival[];
+  return data;
 }
 
-// --- User Events ---
-export async function trackEvent(event: Omit<UserEvent, 'id' | 'createdAt'>): Promise<void> {
-  const { error } = await supabase.from('user_events').insert([event]);
-  if (error) console.error("Failed to track event:", error);
+// Festivals
+export async function getFestivals(citySlug: string = 'tirupati', all: boolean = false) {
+  const { data: city } = await supabase.from('cities').select('id').eq('slug', citySlug).single();
+  if (!city) return [];
+  let query = supabase.from('festivals').select('*').eq('city_id', city.id).eq('is_active', true);
+  if (!all) {
+    const today = new Date().toISOString().split('T')[0];
+    query = query.gte('date_start', today);
+  }
+  const { data, error } = await query.order('date_start', { ascending: true });
+  if (error) throw error;
+  return data;
+}
+// Alerts
+export async function getAlerts(citySlug: string = 'tirupati') {
+  const { data: city } = await supabase.from('cities').select('id').eq('slug', citySlug).single();
+  if (!city) return [];
+  const { data, error } = await supabase.from('alerts').select('*').eq('city_id', city.id).eq('is_active', true).or(`expires_at.is.null,expires_at.gt.${new Date().toISOString()}`).order('created_at', { ascending: false });
+  if (error) throw error;
+  return data;
+}
+
+// Feedback
+export async function submitFeedback(placeId: string, isPositive: boolean, comment?: string) {
+  const { error } = await supabase.from('feedback').insert([{ place_id: placeId, is_positive: isPositive, comment }]);
+  if (error) throw error;
+}
+
+// Analytics
+export async function logEvent(action: string, placeId?: string, metadata?: any) {
+  const { error } = await supabase.from('analytics_events').insert([{ action, place_id: placeId, metadata }]);
+  if (error) console.error("Failed to log event:", error);
 }

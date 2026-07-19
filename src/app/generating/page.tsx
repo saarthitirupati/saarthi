@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation';
 import styles from './Generating.module.css';
 import { useTrip } from '@/components/TripContext';
 import { generatePlans } from '@/lib/recommendation-engine';
-import { PLACES } from '@/data/places';
+import { PLACES } from '@/legacy/places';
 
 const STATUS_MESSAGES = [
   '📍 Detecting your location...',

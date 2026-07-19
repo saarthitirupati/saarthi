@@ -28,6 +28,7 @@ export function useTripStore() {
     recommendations: null,
     userLocation: null,
     locationPermission: 'default',
+    locationName: 'Tirupati',
     savedPlans: []
   });
 
@@ -48,6 +49,7 @@ export function useTripStore() {
           recommendations: parsed.recommendations || null,
           userLocation: parsed.userLocation || null,
           locationPermission: parsed.locationPermission || 'default',
+          locationName: parsed.locationName || 'Tirupati',
           savedPlans: parsed.savedPlans || [],
           isInitialized: true 
         };
@@ -59,41 +61,30 @@ export function useTripStore() {
       setState(prev => ({ ...prev, isInitialized: true }));
     }
 
-    // Refresh coordinates dynamically on mount if permission was previously granted or browser has geolocation
+    // Refresh coordinates dynamically on mount — always resolve to SOME location
     if (typeof window !== 'undefined') {
-      if (navigator.geolocation) {
-        const permission = saved ? loadedState.locationPermission : 'default';
-        if (permission === 'granted' || permission === 'default') {
-          navigator.geolocation.getCurrentPosition(
-            (position) => {
-              const loc = { lat: position.coords.latitude, lng: position.coords.longitude };
-              setState(prev => ({ ...prev, userLocation: loc, locationPermission: 'granted' }));
+      const permission = saved ? loadedState.locationPermission : 'default';
+      if (permission !== 'denied') {
+        import('@/lib/location').then(({ detectCoordinates, TIRUPATI_CENTER }) => {
+          detectCoordinates(
+            (coords, source) => {
+              setState(prev => ({ ...prev, userLocation: coords, locationPermission: 'granted' }));
             },
             () => {
-              // Fallback silently to IP geolocation on load error
-              fetch('https://ipapi.co/json/')
-                .then(res => res.json())
-                .then(ipData => {
-                  if (ipData && typeof ipData.latitude === 'number' && typeof ipData.longitude === 'number') {
-                    const loc = { lat: ipData.latitude, lng: ipData.longitude };
-                    setState(prev => ({ ...prev, userLocation: loc, locationPermission: 'granted' }));
-                  }
-                })
-                .catch(() => {});
+              // All detection failed — default to Tirupati Center so the app always has a location
+              setState(prev => ({
+                ...prev,
+                userLocation: prev.userLocation || TIRUPATI_CENTER,
+                locationPermission: 'denied'
+              }));
             }
           );
-        }
-      } else {
-        // Fallback silently if unsupported
-        fetch('https://ipapi.co/json/')
-          .then(res => res.json())
-          .then(ipData => {
-            if (ipData && typeof ipData.latitude === 'number' && typeof ipData.longitude === 'number') {
-              const loc = { lat: ipData.latitude, lng: ipData.longitude };
-              setState(prev => ({ ...prev, userLocation: loc, locationPermission: 'granted' }));
-            }
-          })
-          .catch(() => {});
+        }).catch(() => {});
+      } else if (!loadedState.userLocation) {
+        // Permission was denied before and no cached location — set Tirupati Center
+        import('@/lib/location').then(({ TIRUPATI_CENTER }) => {
+          setState(prev => ({ ...prev, userLocation: TIRUPATI_CENTER }));
+        }).catch(() => {});
       }
     }
   }, []);
@@ -244,6 +235,10 @@ export function useTripStore() {
     setState(prev => ({ ...prev, locationPermission }));
   };
 
+  const setLocationName = (locationName: string) => {
+    setState(prev => ({ ...prev, locationName }));
+  };
+
   return {
     ...state,
     setDays,
@@ -258,6 +253,7 @@ export function useTripStore() {
     removePlan,
     resetTrip,
     setUserLocation,
-    setLocationPermission
+    setLocationPermission,
+    setLocationName
   };
 }

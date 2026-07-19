@@ -559,7 +559,7 @@ export const PLACES: Place[] = [
     rating: 4.6,
     reviewCount: 18000,
     image: '/assets/temples/kapila-theertham.png',
-    coordinates: { lat: 13.6291, lng: 79.4244 },
+    coordinates: { lat: 13.656125, lng: 79.421 },
     shortIntro: "Located at the foot of the sacred Tirumala Hills, Kapila Theertham is a unique Shiva temple featuring a breathtaking holy waterfall that plunges into a sacred pond.",
     whyVisit: "It is the only Shiva temple in the Tirupati region. Taking a dip in the holy Kapila waterfall is believed to wash away sins and prepare the pilgrim for the Tirumala journey.",
     openingTime: "5:00 AM",

@@ -1,7 +1,8 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { PLACES, Place } from '@/data/places';
+import { Place } from '@/types/place';
+import { useRealtimePlaces } from '@/lib/useRealtimePlaces';
 import { useTrip } from '@/components/TripContext';
 import { Heart, Clock, Star, MapPin, Trash2, ArrowLeft, Bookmark } from 'lucide-react';
 import Link from 'next/link';
@@ -11,29 +12,15 @@ import styles from './Saved.module.css';
 import { calculateDistance, calculateDrivingDistance } from '@/utils/location';
 
 export default function SavedPage() {
-  const [places, setPlaces] = useState<Place[]>([]);
-  const [loading, setLoading] = useState(true);
+  const { places, loading } = useRealtimePlaces();
 
   const { savedPlaces, viewedPlaces, togglePlace, clearViewedHistory, userLocation } = useTrip();
 
-  useEffect(() => {
-    fetch('/api/admin/places')
-      .then(r => r.json())
-      .then(d => {
-        setPlaces(d.places || PLACES);
-        setLoading(false);
-      })
-      .catch(() => {
-        setPlaces(PLACES);
-        setLoading(false);
-      });
-  }, []);
-
-  const savedList = (places.length > 0 ? places : PLACES).filter(p => savedPlaces.includes(p.id));
+  const savedList = places.filter(p => savedPlaces.includes(p.id));
   
   // For history, we want to maintain the order in viewedPlaces array
   const historyList = (viewedPlaces || [])
-    .map(id => (places.length > 0 ? places : PLACES).find(p => p.id === id))
+    .map(id => places.find(p => p.id === id))
     .filter((p): p is Place => !!p);
 
   return (

@@ -4,7 +4,6 @@ import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { AlertTriangle, MapPin, CloudSun, Calendar, Sparkles, BookOpen, ChevronRight } from 'lucide-react';
 import { useTrip } from '@/components/TripContext';
-import { motion } from 'framer-motion';
 
 export default function SpotlightCard() {
   const [spotlight, setSpotlight] = useState<any>(null);
@@ -13,19 +12,15 @@ export default function SpotlightCard() {
   const router = useRouter();
 
   useEffect(() => {
-    const url = '/api/spotlight';
     const fetchSpotlight = async () => {
       let url = '/api/spotlight';
       if (userLocation) {
         url += `?lat=${userLocation.lat}&lng=${userLocation.lng}`;
       }
-      
       try {
         const res = await fetch(url);
         const data = await res.json();
-        if (data.spotlight) {
-          setSpotlight(data.spotlight);
-        }
+        if (data.spotlight) setSpotlight(data.spotlight);
       } catch (err) {
         console.error('Failed to fetch Spotlight:', err);
       } finally {
@@ -35,104 +30,124 @@ export default function SpotlightCard() {
 
     fetchSpotlight();
     const interval = setInterval(fetchSpotlight, 10000);
-
     return () => clearInterval(interval);
   }, [userLocation]);
 
   if (loading || !spotlight) {
     return (
-      <div className="bg-gray-100 rounded-2xl h-40 animate-pulse flex items-center justify-center border border-gray-200">
-        <div className="w-8 h-8 rounded-full bg-gray-200"></div>
+      <div style={{
+        background: '#f5f5f4', borderRadius: '20px', height: '160px',
+        display: 'flex', alignItems: 'center', justifyContent: 'center',
+        border: '1px solid #e7e5e4', animation: 'pulse 1.5s infinite ease-in-out'
+      }}>
+        <div style={{ width: '32px', height: '32px', borderRadius: '50%', background: '#e7e5e4' }} />
       </div>
     );
   }
 
-  // Theme configuration based on color returned by API
-  const themes: Record<string, any> = {
+  const themes: Record<string, {
+    gradient: string; iconBg: string; btnBg: string; btnColor: string;
+    subText: string; icon: React.ReactNode;
+  }> = {
     red: {
-      bg: 'bg-red-500',
-      gradient: 'from-red-600 to-red-500',
-      text: 'text-white',
-      subText: 'text-red-100',
-      icon: <AlertTriangle className="w-6 h-6 text-white" />,
-      btn: 'bg-white text-red-600 hover:bg-red-50'
+      gradient: 'linear-gradient(135deg, #dc2626 0%, #ef4444 100%)',
+      iconBg: 'rgba(255,255,255,0.15)', btnBg: '#ffffff', btnColor: '#dc2626',
+      subText: 'rgba(255,255,255,0.85)',
+      icon: <AlertTriangle size={22} color="#fff" />
     },
     orange: {
-      bg: 'bg-orange-500',
-      gradient: 'from-orange-500 to-amber-500',
-      text: 'text-white',
-      subText: 'text-orange-50',
-      icon: <Calendar className="w-6 h-6 text-white" />,
-      btn: 'bg-white text-orange-600 hover:bg-orange-50'
+      gradient: 'linear-gradient(135deg, #ea580c 0%, #f59e0b 100%)',
+      iconBg: 'rgba(255,255,255,0.15)', btnBg: '#ffffff', btnColor: '#ea580c',
+      subText: 'rgba(255,255,255,0.85)',
+      icon: <Calendar size={22} color="#fff" />
     },
     sky: {
-      bg: 'bg-sky-500',
-      gradient: 'from-sky-500 to-blue-500',
-      text: 'text-white',
-      subText: 'text-sky-100',
-      icon: <CloudSun className="w-6 h-6 text-white" />,
-      btn: 'bg-white text-sky-600 hover:bg-sky-50'
+      gradient: 'linear-gradient(135deg, #0284c7 0%, #3b82f6 100%)',
+      iconBg: 'rgba(255,255,255,0.15)', btnBg: '#ffffff', btnColor: '#0284c7',
+      subText: 'rgba(255,255,255,0.85)',
+      icon: <CloudSun size={22} color="#fff" />
     },
     emerald: {
-      bg: 'bg-emerald-500',
-      gradient: 'from-emerald-600 to-emerald-500',
-      text: 'text-white',
-      subText: 'text-emerald-100',
-      icon: <MapPin className="w-6 h-6 text-white" />,
-      btn: 'bg-white text-emerald-600 hover:bg-emerald-50'
+      gradient: 'linear-gradient(135deg, #059669 0%, #10b981 100%)',
+      iconBg: 'rgba(255,255,255,0.15)', btnBg: '#ffffff', btnColor: '#059669',
+      subText: 'rgba(255,255,255,0.85)',
+      icon: <MapPin size={22} color="#fff" />
     },
     indigo: {
-      bg: 'bg-indigo-600',
-      gradient: 'from-indigo-600 to-violet-600',
-      text: 'text-white',
-      subText: 'text-indigo-100',
-      icon: <BookOpen className="w-6 h-6 text-white" />,
-      btn: 'bg-white text-indigo-600 hover:bg-indigo-50'
+      gradient: 'linear-gradient(135deg, #4338ca 0%, #6366f1 100%)',
+      iconBg: 'rgba(255,255,255,0.15)', btnBg: '#ffffff', btnColor: '#4338ca',
+      subText: 'rgba(255,255,255,0.85)',
+      icon: <BookOpen size={22} color="#fff" />
     },
     purple: {
-      bg: 'bg-purple-600',
-      gradient: 'from-purple-600 to-fuchsia-600',
-      text: 'text-white',
-      subText: 'text-purple-100',
-      icon: <Sparkles className="w-6 h-6 text-white" />,
-      btn: 'bg-white text-purple-600 hover:bg-purple-50'
+      gradient: 'linear-gradient(135deg, #7c3aed 0%, #c026d3 100%)',
+      iconBg: 'rgba(255,255,255,0.15)', btnBg: '#ffffff', btnColor: '#7c3aed',
+      subText: 'rgba(255,255,255,0.85)',
+      icon: <Sparkles size={22} color="#fff" />
     }
   };
 
   const theme = themes[spotlight.color] || themes.indigo;
 
   return (
-    <motion.div 
-      initial={{ opacity: 0, y: 10 }}
-      animate={{ opacity: 1, y: 0 }}
-      className={`relative overflow-hidden rounded-2xl shadow-lg bg-gradient-to-br ${theme.gradient} text-white p-6 cursor-pointer transform transition-transform hover:scale-[1.01]`}
+    <div
       onClick={() => router.push(spotlight.actionLink)}
+      style={{
+        position: 'relative', overflow: 'hidden', borderRadius: '20px',
+        background: theme.gradient, color: '#ffffff', padding: '24px',
+        cursor: 'pointer', boxShadow: '0 8px 24px rgba(0,0,0,0.12)',
+        transition: 'transform 0.2s ease'
+      }}
     >
-      <div className="absolute top-0 right-0 p-4 opacity-20">
+      {/* Background icon */}
+      <div style={{
+        position: 'absolute', top: '16px', right: '16px', opacity: 0.15,
+        transform: 'scale(3)'
+      }}>
         {theme.icon}
       </div>
 
-      <div className="relative z-10">
-        <div className="inline-block px-3 py-1 bg-white/20 backdrop-blur-md rounded-full text-[10px] font-bold uppercase tracking-widest mb-3 shadow-sm border border-white/10">
+      {/* Content */}
+      <div style={{ position: 'relative', zIndex: 1 }}>
+        <div style={{
+          display: 'inline-block', padding: '4px 10px',
+          background: 'rgba(255,255,255,0.2)', backdropFilter: 'blur(8px)',
+          borderRadius: '8px', fontSize: '10px', fontWeight: 800,
+          textTransform: 'uppercase', letterSpacing: '1px', marginBottom: '12px'
+        }}>
           {spotlight.type.replace('_', ' ')}
         </div>
-        
-        <h3 className="text-2xl font-black tracking-tight leading-tight mb-1">
+
+        <h3 style={{
+          fontSize: '22px', fontWeight: 900, letterSpacing: '-0.03em',
+          lineHeight: 1.15, marginBottom: '4px'
+        }}>
           {spotlight.title}
         </h3>
-        
-        <p className={`text-lg font-semibold ${theme.subText} mb-2`}>
+
+        <p style={{
+          fontSize: '15px', fontWeight: 600, color: theme.subText, marginBottom: '6px'
+        }}>
           {spotlight.subtitle}
         </p>
-        
-        <p className={`text-sm ${theme.subText} opacity-90 mb-5 max-w-[85%]`}>
+
+        <p style={{
+          fontSize: '13px', color: theme.subText, opacity: 0.9,
+          marginBottom: '20px', maxWidth: '85%', lineHeight: 1.45
+        }}>
           {spotlight.description}
         </p>
 
-        <button className={`inline-flex items-center gap-1 px-4 py-2 rounded-xl text-sm font-bold shadow-sm transition-colors ${theme.btn}`}>
-          {spotlight.actionText} <ChevronRight className="w-4 h-4" />
+        <button style={{
+          display: 'inline-flex', alignItems: 'center', gap: '4px',
+          padding: '10px 16px', borderRadius: '12px', fontSize: '13px',
+          fontWeight: 800, background: theme.btnBg, color: theme.btnColor,
+          border: 'none', cursor: 'pointer', boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
+          transition: 'all 0.2s ease'
+        }}>
+          {spotlight.actionText} <ChevronRight size={14} />
         </button>
       </div>
-    </motion.div>
+    </div>
   );
 }

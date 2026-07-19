@@ -9,21 +9,11 @@ import {
 import styles from './admin.module.css';
 
 const NAV = [
-  { href: '/admin',         icon: LayoutDashboard, label: 'Dashboard' },
-  { href: '/admin/places',  icon: MapPin,           label: 'All Places' },
-  { href: '/admin/stories', icon: BookOpen,         label: 'Stories' },
-  { href: '/admin/quizzes', icon: HelpCircle,       label: 'Quizzes' },
-  { href: '/admin/festivals', icon: Calendar,       label: 'Festivals' },
-  { href: '/admin/encyclopedia', icon: Bookmark,    label: 'Encyclopedia' },
-  { href: '/admin/live-status', icon: Activity,     label: 'Live Status' },
-  { href: '/admin/fuel',        icon: Coins,        label: 'Fuel Rates' },
-  { href: '/admin/traffic', icon: BarChart3,        label: 'Traffic' },
-  { href: '/admin/telemetry', icon: Zap,            label: 'Telemetry' },
-  { href: '/admin/playbook',    icon: Send,         label: 'Investor Playbook' },
-  { href: '/admin/stack',       icon: Cpu,          label: 'Startup Stack' },
-  { href: '/admin/live-alerts', icon: AlertCircle,  label: 'Live Alerts' },
-  { href: '/admin/onboarding-presentation', icon: Map, label: 'Onboarding Design' },
-  { href: '/studio',        icon: Database,         label: 'Sanity Studio' },
+  { href: '/admin',             icon: LayoutDashboard, label: 'Dashboard' },
+  { href: '/admin/places',      icon: MapPin,          label: 'Places' },
+  { href: '/admin/live-status', icon: Activity,        label: 'Live Status' },
+  { href: '/admin/live-alerts', icon: AlertCircle,     label: 'Alerts' },
+  { href: '/admin/festivals',   icon: Calendar,        label: 'Festivals' },
 ];
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {

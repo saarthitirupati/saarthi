@@ -8,6 +8,8 @@ interface DarshanTypeStatus {
   name: string;
   waitTime: string;
   peakHours: string;
+  trend?: 'up' | 'down';
+  statusLabel?: 'Low' | 'Moderate' | 'Busy' | 'High';
 }
 
 interface TirumalaStatus {
@@ -40,7 +42,14 @@ export default function LiveStatusEditor() {
     accommodationStatus: 'available',
     ladduAvailability: 'available',
     weather: 'Pleasant, 24°C',
-    darshans: [],
+    darshans: [
+      { name: 'Sarvadarshan (Free)', waitTime: '2 - 3 Hrs', peakHours: 'Daily 10 AM - 6 PM', trend: 'up', statusLabel: 'Moderate' },
+      { name: 'Special Entry (₹300)', waitTime: '1 - 1.5 Hrs', peakHours: 'Daily 9 AM - 3 PM', trend: 'up', statusLabel: 'Busy' },
+      { name: 'Divya Darshan (₹500)', waitTime: '30 - 45 Min', peakHours: 'Daily 8 AM - 4 PM', trend: 'down', statusLabel: 'Low' },
+      { name: 'Senior Citizens', waitTime: '5 - 15 Min', peakHours: 'Daily 10 AM - 3 PM', trend: 'down', statusLabel: 'Low' },
+      { name: 'Infant (Below 1 Yr)', waitTime: '5 - 15 Min', peakHours: 'Daily 12 PM - 6 PM', trend: 'down', statusLabel: 'Low' },
+      { name: 'Angapradakshinam', waitTime: '3 - 4 Hrs', peakHours: 'Daily 2 AM - 4 AM', trend: 'up', statusLabel: 'High' }
+    ],
     ssdTokenStatus: 'issuing',
     ssdNextTokenTime: '',
     ssdTokenSlots: [],
@@ -87,6 +96,11 @@ export default function LiveStatusEditor() {
         body: JSON.stringify(formattedStatus),
       });
       const updated = await res.json();
+      if (!res.ok) {
+        console.error('Save failed:', updated);
+        alert('Failed to save: ' + (updated.error || 'Unknown error'));
+        return;
+      }
       setStatus(updated);
       setStatusSaved(true);
       setTimeout(() => setStatusSaved(false), 2500);
@@ -141,7 +155,7 @@ export default function LiveStatusEditor() {
             </label>
             <input
               type="text"
-              value={status.waitTime}
+              value={status.waitTime || ''}
               onChange={e => setStatus(s => ({ ...s, waitTime: e.target.value }))}
               placeholder="e.g. 2-3 hours"
               style={{ width: '100%', padding: '8px 10px', borderRadius: 8, border: '1px solid #334155', background: '#1E293B', color: '#E2E8F0', fontSize: 13, boxSizing: 'border-box' }}
@@ -201,6 +215,43 @@ export default function LiveStatusEditor() {
                           style={{ width: '100%', padding: '8px 10px', borderRadius: '8px', border: '1px solid #475569', background: '#0F172A', color: '#E2E8F0', fontSize: '12px', boxSizing: 'border-box' }}
                         />
                       </div>
+                      <div>
+                        <label style={{ fontSize: '10px', color: '#94A3B8', fontWeight: 700, display: 'block', marginBottom: '4px', textTransform: 'uppercase', letterSpacing: '0.3px' }}>
+                          Status
+                        </label>
+                        <select
+                          value={d.statusLabel || 'Low'}
+                          onChange={e => {
+                            const list = [...status.darshans];
+                            list[index] = { ...list[index], statusLabel: e.target.value as any };
+                            setStatus(s => ({ ...s, darshans: list }));
+                          }}
+                          style={{ width: '100%', padding: '8px 10px', borderRadius: '8px', border: '1px solid #475569', background: '#0F172A', color: '#E2E8F0', fontSize: '12px', boxSizing: 'border-box' }}
+                        >
+                          <option value="Low">Low</option>
+                          <option value="Moderate">Moderate</option>
+                          <option value="Busy">Busy</option>
+                          <option value="High">High</option>
+                        </select>
+                      </div>
+
+                      <div>
+                        <label style={{ fontSize: '10px', color: '#94A3B8', fontWeight: 700, display: 'block', marginBottom: '4px', textTransform: 'uppercase', letterSpacing: '0.3px' }}>
+                          Trend
+                        </label>
+                        <select
+                          value={d.trend || 'down'}
+                          onChange={e => {
+                            const list = [...status.darshans];
+                            list[index] = { ...list[index], trend: e.target.value as any };
+                            setStatus(s => ({ ...s, darshans: list }));
+                          }}
+                          style={{ width: '100%', padding: '8px 10px', borderRadius: '8px', border: '1px solid #475569', background: '#0F172A', color: '#E2E8F0', fontSize: '12px', boxSizing: 'border-box' }}
+                        >
+                          <option value="down">Decreasing 📉</option>
+                          <option value="up">Increasing 📈</option>
+                        </select>
+                      </div>
                     </div>
                   </div>
                 );
@@ -236,7 +287,7 @@ export default function LiveStatusEditor() {
                 </label>
                 <input
                   type="text"
-                  value={status.ssdNextTokenTime}
+                  value={status.ssdNextTokenTime || ''}
                   onChange={e => setStatus(s => ({ ...s, ssdNextTokenTime: e.target.value }))}
                   placeholder="e.g. 2:00 PM"
                   style={{ width: '100%', padding: '8px 10px', borderRadius: 8, border: '1px solid #475569', background: '#0F172A', color: '#E2E8F0', fontSize: 12, boxSizing: 'border-box' }}
@@ -249,7 +300,7 @@ export default function LiveStatusEditor() {
                 SSD Notice
               </label>
               <textarea
-                value={status.ssdNotice}
+                value={status.ssdNotice || ''}
                 onChange={e => setStatus(s => ({ ...s, ssdNotice: e.target.value }))}
                 placeholder="e.g. Morning tokens exhausted, next batch at 2 PM"
                 rows={2}
@@ -363,7 +414,7 @@ export default function LiveStatusEditor() {
               <Bell size={12} style={{ display: 'inline', marginRight: 4 }} />Special Notice (optional)
             </label>
             <textarea
-              value={status.notice}
+              value={status.notice || ''}
               onChange={e => setStatus(s => ({ ...s, notice: e.target.value }))}
               placeholder="e.g. Brahmotsavam starts tomorrow — expect heavy crowds"
               rows={2}

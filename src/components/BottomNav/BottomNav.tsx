@@ -1,46 +1,80 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
-import { Home, Compass, ClipboardCheck, Map, User } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Home, Compass, Sparkles } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import styles from './BottomNav.module.css';
 
+const navItems = [
+  { name: 'Home',       icon: Home,     href: '/' },
+  { name: 'Essentials', icon: Sparkles, href: '/essentials', isFab: true },
+  { name: 'Explore',    icon: Compass,  href: '/explore' },
+];
+
 export default function BottomNav() {
-  const pathname = usePathname();
+  const pathname  = usePathname();
   const [mounted, setMounted] = useState(false);
 
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-  
-  const navItems = [
-    { name: 'Home', icon: Home, href: '/' },
-    { name: 'Explore', icon: Compass, href: '/explore' },
-    { name: 'Essentials', icon: ClipboardCheck, href: '/essentials' },
-    { name: 'Journey', icon: Map, href: '/saved' },
-    { name: 'Profile', icon: User, href: '/profile' },
-  ];
+  useEffect(() => { setMounted(true); }, []);
 
   return (
-    <nav className={styles.nav}>
+    <nav className={styles.nav} suppressHydrationWarning>
       <div className={styles.container}>
         {navItems.map((item) => {
-          const isActive = mounted && pathname === item.href;
+          const isActive = mounted && (
+            pathname === item.href ||
+            (item.href !== '/' && pathname.startsWith(item.href))
+          );
+
+          if (item.isFab) {
+            return (
+              <Link key={item.name} href={item.href} className={styles.fabWrapper}>
+                <div className={styles.fabRing} />
+                <motion.div
+                  className={styles.fabBtn}
+                  whileTap={{ scale: 0.92 }}
+                  transition={{ type: 'spring', stiffness: 400, damping: 20 }}
+                >
+                  <item.icon size={26} className={styles.fabIcon} />
+                </motion.div>
+              </Link>
+            );
+          }
+
           return (
-            <Link key={item.name} href={item.href} className={styles.navLink}>
-              <div className={styles.iconWrapper}>
-                {isActive && (
-                  <motion.div 
-                    layoutId="activePill"
-                    className={styles.activePill}
-                    transition={{ type: 'spring', bounce: 0.18, duration: 0.45 }}
-                  />
-                )}
-                <item.icon size={22} className={isActive ? styles.activeIcon : styles.inactiveIcon} style={{ zIndex: 2 }} />
+            <Link 
+              key={item.name} 
+              href={item.href} 
+              className={`${styles.navLink} ${isActive ? styles.navLinkActive : ''}`}
+            >
+              {isActive && (
+                <motion.div
+                  layoutId="navPill"
+                  className={styles.activeBg}
+                  transition={{ type: 'spring', bounce: 0.2, duration: 0.5 }}
+                />
+              )}
+              <div className={styles.navContent}>
+                <item.icon
+                  size={22}
+                  className={isActive ? styles.activeIcon : styles.inactiveIcon}
+                />
+                <AnimatePresence mode="popLayout">
+                  {isActive && (
+                    <motion.span
+                      initial={{ opacity: 0, width: 0, scale: 0.8 }}
+                      animate={{ opacity: 1, width: 'auto', scale: 1 }}
+                      exit={{ opacity: 0, width: 0, scale: 0.8 }}
+                      transition={{ type: 'spring', bounce: 0, duration: 0.4 }}
+                      className={styles.activeLabel}
+                    >
+                      {item.name}
+                    </motion.span>
+                  )}
+                </AnimatePresence>
               </div>
-              <span className={isActive ? styles.activeLabel : styles.inactiveLabel}>{item.name}</span>
             </Link>
           );
         })}

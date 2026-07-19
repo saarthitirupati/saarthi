@@ -1,15 +1,21 @@
 import type { Metadata, Viewport } from "next";
-import { Fraunces, Plus_Jakarta_Sans } from "next/font/google";
+import { DM_Serif_Display, Plus_Jakarta_Sans, Inter } from "next/font/google";
 import Script from "next/script";
 import "./globals.css";
 import ClientLayout from "@/components/ClientLayout";
 
-const fraunces = Fraunces({
+const dmSerifDisplay = DM_Serif_Display({
   subsets: ["latin"],
-  variable: "--font-display",
+  weight: ["400"],
+  variable: "--font-hero",
 });
 
 const plusJakartaSans = Plus_Jakarta_Sans({
+  subsets: ["latin"],
+  variable: "--font-heading",
+});
+
+const inter = Inter({
   subsets: ["latin"],
   variable: "--font-body",
 });
@@ -38,7 +44,7 @@ export default function RootLayout({
   const gtmId = process.env.NEXT_PUBLIC_GTM_ID;
 
   return (
-    <html lang="en" className={`${fraunces.variable} ${plusJakartaSans.variable}`}>
+    <html lang="en" className={`${dmSerifDisplay.variable} ${plusJakartaSans.variable} ${inter.variable}`}>
       <head>
         {gtmId && (
           <Script

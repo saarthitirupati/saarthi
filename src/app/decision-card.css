@@ -1,0 +1,159 @@
+
+/* ─── NEW UNIFIED DECISION DASHBOARD ─── */
+.decisionCardSection {
+  background: #FFFFFF;
+  margin: 16px;
+  border-radius: 20px;
+  padding: 24px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.04);
+  border: 1px solid rgba(0,0,0,0.05);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.heroHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.heroHeader h1 {
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: #64748B;
+  font-weight: 700;
+  margin: 0;
+}
+
+.liveIndicator {
+  display: inline-flex;
+  align-items: center;
+  background: rgba(22, 163, 74, 0.1);
+  color: #16A34A;
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  position: relative;
+}
+
+.liveIndicator::before {
+  content: '';
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #16A34A;
+  margin-right: 6px;
+  box-shadow: 0 0 0 rgba(22, 163, 74, 0.4);
+  animation: pulse-green 2s infinite;
+}
+
+@keyframes pulse-green {
+  0% { box-shadow: 0 0 0 0 rgba(22, 163, 74, 0.4); }
+  70% { box-shadow: 0 0 0 6px rgba(22, 163, 74, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(22, 163, 74, 0); }
+}
+
+.heroMainDecision {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.heroDecisionQuestion {
+  font-size: 28px;
+  font-weight: 900;
+  color: #0F172A;
+  margin: 0;
+  line-height: 1.1;
+  letter-spacing: -0.5px;
+}
+
+.decisionVerdict {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  border-radius: 100px;
+  font-weight: 800;
+  font-size: 15px;
+  width: fit-content;
+}
+
+.decisionReason {
+  font-size: 15px;
+  color: #475569;
+  line-height: 1.5;
+  margin: 0;
+}
+.decisionReason strong {
+  color: #0F172A;
+  font-weight: 700;
+}
+
+/* ─── COMPACT METRICS GRID ─── */
+.compactMetricsSection {
+  padding: 0 16px;
+  margin-bottom: 24px;
+}
+
+.compactMetricsGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+
+.metricItem {
+  background: #FFFFFF;
+  border: 1px solid rgba(0,0,0,0.04);
+  border-radius: 16px;
+  padding: 16px 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 12px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.02);
+}
+
+.metricIconBox {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #F8FAFC;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #64748B;
+}
+
+.metricInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.metricInfo span {
+  font-size: 12px;
+  color: #64748B;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.metricInfo strong {
+  font-size: 15px;
+  color: #0F172A;
+  font-weight: 800;
+}
+
+.metricInfo small {
+  font-size: 11px;
+  color: #94A3B8;
+  font-weight: 500;
+}

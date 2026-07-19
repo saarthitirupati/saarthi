@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { supabase } from '@/lib/supabase';
-import { getTrafficSummary, readTraffic } from '@/lib/adminDb';
+import { getTrafficSummary, readTraffic } from '@/lib/statusDb';
 
 export async function GET() {
   try {

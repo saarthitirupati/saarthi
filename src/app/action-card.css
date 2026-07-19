@@ -1,0 +1,37 @@
+
+/* ─── MISSING CSS FOR HERO ACTION CARD ─── */
+.heroActionCard {
+  background: #FFFFFF;
+  margin: 16px;
+  border-radius: 20px;
+  padding: 24px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.04);
+  border: 1px solid rgba(0,0,0,0.05);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.heroActionHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.heroActionTag {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: #16A34A;
+  background: rgba(22, 163, 74, 0.1);
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-weight: 800;
+}
+
+.heroActionTime {
+  font-size: 11px;
+  color: #94A3B8;
+  font-weight: 600;
+}

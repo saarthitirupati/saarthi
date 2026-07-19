@@ -1,0 +1,188 @@
+
+/* ─── PREMIUM UI UPGRADE ─── */
+.page {
+  background-image: 
+    radial-gradient(at 0% 0%, hsla(33, 100%, 94%, 1) 0px, transparent 50%),
+    radial-gradient(at 100% 0%, hsla(20, 100%, 95%, 1) 0px, transparent 50%);
+}
+
+/* ─── PREMIUM UNIFIED DECISION DASHBOARD ─── */
+.heroActionCard {
+  background: linear-gradient(145deg, #ffffff 0%, #fdfbf7 100%);
+  margin: 16px 16px 0 16px;
+  border-radius: 24px;
+  padding: 24px;
+  box-shadow: 
+    0 20px 40px -10px rgba(0, 0, 0, 0.05), 
+    0 1px 3px rgba(0, 0, 0, 0.02),
+    inset 0 1px 0 rgba(255, 255, 255, 1);
+  border: 1px solid rgba(230, 222, 208, 0.5);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  position: relative;
+  overflow: hidden;
+}
+
+.heroActionCard::before {
+  content: '';
+  position: absolute;
+  top: -50px;
+  right: -50px;
+  width: 150px;
+  height: 150px;
+  background: radial-gradient(circle, rgba(234,88,12,0.04) 0%, rgba(255,255,255,0) 70%);
+  border-radius: 50%;
+  z-index: 0;
+}
+
+.heroActionHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+  z-index: 1;
+}
+
+.heroActionTag {
+  font-size: 10.5px;
+  text-transform: uppercase;
+  letter-spacing: 1.2px;
+  color: #047857;
+  background: rgba(16, 185, 129, 0.12);
+  padding: 5px 12px;
+  border-radius: 100px;
+  font-weight: 800;
+  display: inline-flex;
+  align-items: center;
+}
+
+.heroActionTag::before {
+  content: '';
+  display: inline-block;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #10B981;
+  margin-right: 6px;
+  box-shadow: 0 0 0 rgba(16, 185, 129, 0.4);
+  animation: pulse-green 2s infinite;
+}
+
+@keyframes pulse-green {
+  0% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.4); }
+  70% { box-shadow: 0 0 0 5px rgba(16, 185, 129, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+}
+
+.heroActionTime {
+  font-size: 11px;
+  color: #94A3B8;
+  font-weight: 600;
+}
+
+.heroMainDecision {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  position: relative;
+  z-index: 1;
+}
+
+.heroDecisionQuestion {
+  font-size: 32px;
+  font-weight: 900;
+  color: #0F172A;
+  margin: 0;
+  line-height: 1.05;
+  letter-spacing: -0.8px;
+}
+
+.decisionVerdict {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 18px;
+  border-radius: 100px;
+  font-weight: 800;
+  font-size: 15px;
+  width: fit-content;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+}
+
+.decisionReason {
+  font-size: 15.5px;
+  color: #475569;
+  line-height: 1.6;
+  margin: 0;
+  letter-spacing: -0.2px;
+}
+.decisionReason strong {
+  color: #0F172A;
+  font-weight: 800;
+}
+
+/* ─── PREMIUM METRICS DOCK ─── */
+.compactMetricsSection {
+  padding: 0 16px;
+  margin-top: -8px;
+  margin-bottom: 28px;
+}
+
+.compactMetricsGrid {
+  display: flex;
+  background: #FFFFFF;
+  border-radius: 20px;
+  padding: 16px 12px;
+  box-shadow: 
+    0 10px 25px -5px rgba(0, 0, 0, 0.03), 
+    0 1px 2px rgba(0, 0, 0, 0.01);
+  border: 1px solid rgba(230, 222, 208, 0.5);
+  justify-content: space-between;
+}
+
+.metricSquare {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 6px;
+  flex: 1;
+  position: relative;
+}
+
+.metricSquare:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  right: 0;
+  top: 10%;
+  height: 80%;
+  width: 1px;
+  background: linear-gradient(to bottom, rgba(0,0,0,0), rgba(0,0,0,0.06), rgba(0,0,0,0));
+}
+
+.metricIconBox {
+  width: 44px;
+  height: 44px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 4px;
+  box-shadow: inset 0 2px 4px rgba(255,255,255,0.5), 0 4px 10px rgba(0,0,0,0.03);
+}
+
+.metricSquareLabel {
+  font-size: 11px;
+  color: #64748B;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+}
+
+.metricSquareValue {
+  font-size: 15px;
+  color: #0F172A;
+  font-weight: 800;
+  letter-spacing: -0.3px;
+}

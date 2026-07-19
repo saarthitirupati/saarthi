@@ -7,7 +7,7 @@ export default function StoryOfTheDay() {
   const [story, setStory] = useState<any>(null);
 
   useEffect(() => {
-    fetch('/api/content/daily')
+    fetch('/api/v1/content/daily')
       .then(res => res.json())
       .then(data => setStory(data.learn.storyOfTheDay))
       .catch(err => console.error(err));

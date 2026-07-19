@@ -13,18 +13,12 @@ export default function AdminPlaces() {
   const [userLocation, setUserLocation] = useState<{ lat: number; lng: number } | null>(null);
 
   useEffect(() => {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        (pos) => {
-          setUserLocation({ lat: pos.coords.latitude, lng: pos.coords.longitude });
-        },
-        () => {
-          setUserLocation({ lat: 13.6288, lng: 79.4192 });
-        }
+    import('@/lib/location').then(({ detectCoordinates }) => {
+      detectCoordinates(
+        (coords) => setUserLocation(coords),
+        () => setUserLocation({ lat: 13.6288, lng: 79.4192 })
       );
-    } else {
-      setUserLocation({ lat: 13.6288, lng: 79.4192 });
-    }
+    }).catch(() => {});
   }, []);
 
   const load = () => {

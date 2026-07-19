@@ -9,7 +9,7 @@ import {
 } from 'lucide-react';
 import styles from '../Essentials.module.css';
 
-import { KNOWLEDGE_ITEMS } from '@/data/knowledge';
+import { KNOWLEDGE_ITEMS } from '@/content/knowledge';
 import { useTrip } from '@/components/TripContext';
 import { calculateDistance } from '@/utils/location';
 
@@ -93,17 +93,32 @@ export default function EssentialDetailPage({ params }: { params: Promise<{ id: 
     }
   };
 
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: { 
+      opacity: 1, 
+      transition: { staggerChildren: 0.08 } 
+    }
+  } as const;
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 15 },
+    visible: { 
+      opacity: 1, 
+      y: 0,
+      transition: { type: "spring", stiffness: 300, damping: 25 }
+    }
+  } as const;
+
   return (
-    <motion.div 
-      className={styles.detailMain}
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 0.3 }}
-    >
+    <div className={styles.detailMain}>
       {/* Photo Header */}
-      <div 
+      <motion.div 
         className={styles.detailImageHeader}
         style={{ backgroundImage: `url(${item.image})` }}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.4 }}
       >
         <div className={styles.detailHeaderOverlay} />
         <button 
@@ -113,12 +128,17 @@ export default function EssentialDetailPage({ params }: { params: Promise<{ id: 
         >
           <ArrowLeft size={20} />
         </button>
-      </div>
+      </motion.div>
 
       {/* Main Details Panel */}
-      <div className={styles.detailContent}>
+      <motion.div 
+        className={styles.detailContent}
+        variants={containerVariants}
+        initial="hidden"
+        animate="visible"
+      >
         {/* Title metadata card */}
-        <section className={styles.detailMetaCard}>
+        <motion.section className={styles.detailMetaCard} variants={itemVariants}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '8px' }}>
             <span className={`${styles.badge} ${styles.badgeVerified}`} style={{ fontSize: '11px', padding: '3px 10px' }}>
               {item.category}
@@ -146,42 +166,51 @@ export default function EssentialDetailPage({ params }: { params: Promise<{ id: 
             <Clock size={16} color="#0E6B72" />
             <span style={{ fontWeight: 700, color: '#0E6B72' }}>Status: {item.status}</span>
           </div>
-        </section>
+        </motion.section>
 
         {/* Why it Matters (Product High Light Card) */}
-        <section className={styles.detailSection}>
+        <motion.section className={styles.detailSection} variants={itemVariants}>
           <div className={styles.detailWhyBox}>
-            <h5 className={styles.detailWhyTitle}>💡 Why This Matters</h5>
+            <h5 className={styles.detailWhyTitle}>
+              <Info size={16} style={{ display: 'inline', marginRight: '6px', verticalAlign: 'middle' }} />
+              Why This Matters
+            </h5>
             <p className={styles.detailWhyText}>{item.whyItMatters}</p>
           </div>
-        </section>
+        </motion.section>
 
         {/* About / Description */}
-        <section className={styles.detailSection}>
+        <motion.section className={styles.detailSection} variants={itemVariants}>
           <h3 className={styles.detailSectionTitle}>About This Facility</h3>
           <div className={styles.detailCard}>
             <p className={styles.detailDescriptionText}>{item.description}</p>
           </div>
-        </section>
+        </motion.section>
 
         {/* Map Routing CTA */}
         {item.coordinates && (
-          <section className={styles.detailSection}>
+          <motion.section className={styles.detailSection} variants={itemVariants}>
             <button className={styles.mapCtaButton} onClick={handleOpenMap}>
               <Navigation size={18} />
               Open in Google Maps
             </button>
-            <div style={{ display: 'flex', justifyContent: 'center', gap: '12px', fontSize: '12px', color: '#64748B', marginTop: '4px' }}>
-              <span>📍 Distance: {liveDistance ? liveDistance.label : item.distance}</span>
+            <div style={{ display: 'flex', justifyContent: 'center', gap: '12px', fontSize: '12px', color: '#64748B', marginTop: '8px', alignItems: 'center' }}>
+              <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                <MapPin size={14} />
+                Distance: {liveDistance ? liveDistance.label : item.distance}
+              </span>
               <span>•</span>
-              <span>⏱️ Transit: {liveDistance ? `${liveDistance.walkMins} min walk` : item.walkingTime}</span>
+              <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                <Clock size={14} />
+                Transit: {liveDistance ? `${liveDistance.walkMins} min walk` : item.walkingTime}
+              </span>
             </div>
-          </section>
+          </motion.section>
         )}
 
         {/* Related Guidelines & Tips */}
         {item.tips && item.tips.length > 0 && (
-          <section className={styles.detailSection}>
+          <motion.section className={styles.detailSection} variants={itemVariants}>
             <h3 className={styles.detailSectionTitle}>Visitor Guidelines & Tips</h3>
             <div className={styles.detailCard} style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
               <div className={styles.tipsList}>
@@ -193,9 +222,9 @@ export default function EssentialDetailPage({ params }: { params: Promise<{ id: 
                 ))}
               </div>
             </div>
-          </section>
+          </motion.section>
         )}
-      </div>
-    </motion.div>
+      </motion.div>
+    </div>
   );
 }

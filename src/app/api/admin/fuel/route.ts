@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { readFuelRates, updateFuelRates } from '@/lib/adminDb';
+import { readFuelRates, updateFuelRates } from '@/lib/statusDb';
 
 export async function GET() {
   const rates = readFuelRates();

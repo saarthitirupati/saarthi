@@ -1,0 +1,104 @@
+/* ─── SSD TOKEN GUIDE (PREMIUM UPGRADE) ─── */
+.ssdGuideSection {
+  padding: 0 16px;
+  margin-bottom: 32px;
+}
+
+.ssdGuideCard {
+  background: #FFFFFF;
+  border-radius: 20px;
+  padding: 20px;
+  box-shadow: 
+    0 10px 25px -5px rgba(0, 0, 0, 0.03), 
+    0 1px 3px rgba(0, 0, 0, 0.02);
+  border: 1px solid rgba(230, 222, 208, 0.5);
+  position: relative;
+  overflow: hidden;
+}
+
+.ssdStatusBanner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #F8FAFC;
+  padding: 14px 16px;
+  border-radius: 14px;
+  margin-bottom: 20px;
+  border: 1px solid rgba(0,0,0,0.03);
+}
+
+.ssdStatusLeft {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.ssdStatusText {
+  font-weight: 800;
+  color: #0F172A;
+  font-size: 14px;
+  letter-spacing: -0.2px;
+}
+
+.ssdNoticeText {
+  font-size: 14.5px;
+  color: #475569;
+  margin-bottom: 20px;
+  line-height: 1.6;
+  font-weight: 400;
+  letter-spacing: -0.2px;
+}
+
+.ssdCountersList {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.ssdCounterItem {
+  background: #FFFFFF;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  padding: 14px 16px;
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.01);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.ssdCounterItem:active {
+  transform: scale(0.98);
+}
+
+.ssdCounterItem .lucide {
+  color: #3B82F6;
+  background: #EFF6FF;
+  padding: 8px;
+  border-radius: 10px;
+  width: 36px;
+  height: 36px;
+}
+
+.ssdCounterName {
+  font-size: 15px;
+  font-weight: 700;
+  color: #1E293B;
+  letter-spacing: -0.2px;
+}
+
+.ssdCounterDesc {
+  font-size: 13px;
+  color: #64748B;
+  margin-top: 2px;
+}
+
+.updateTimestamp {
+  font-size: 10.5px;
+  color: #94A3B8;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}

@@ -12,27 +12,22 @@ export default function LocationPrompt() {
 
   const handleAllowLocation = () => {
     setIsRequesting(true);
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          setUserLocation({
-            lat: position.coords.latitude,
-            lng: position.coords.longitude
-          });
+    import('@/lib/location').then(({ detectCoordinates, TIRUPATI_CENTER }) => {
+      detectCoordinates(
+        (coords) => {
+          setUserLocation(coords);
           setLocationPermission('granted');
           setIsRequesting(false);
         },
-        (error) => {
-          console.warn("User denied location or error occurred:", error);
-          setLocationPermission('denied');
+        () => {
+          setUserLocation(TIRUPATI_CENTER);
+          setLocationPermission('granted'); // Fallback granted so they can see relative distance
           setIsRequesting(false);
-        },
-        { enableHighAccuracy: true, timeout: 8000 }
+        }
       );
-    } else {
-      setLocationPermission('denied');
+    }).catch(() => {
       setIsRequesting(false);
-    }
+    });
   };
 
   const handleNotNow = () => {

@@ -1,7 +1,7 @@
 'use client';
 
 import { PLACES, Place } from '@/data/places';
-import { Search, Star, Filter, ArrowLeft, BookOpen, GraduationCap } from 'lucide-react';
+import { Search, Star, Filter, ArrowLeft, BookOpen, GraduationCap, MapPin, Sparkles, AlertTriangle, Compass } from 'lucide-react';
 import { useState, useMemo, Suspense, useEffect, useCallback, useRef } from 'react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
@@ -18,6 +18,7 @@ function ExploreContent() {
   const { places, loading: _loading } = useRealtimePlaces(PLACES);
   const [searchQuery, setSearchQuery] = useState(initialQuery);
   const [activeFilter, setActiveFilter] = useState('All');
+  const [locationError, setLocationError] = useState(false);
   const { userLocation, setUserLocation, setLocationPermission } = useTrip();
 
   // Cross-collection search results from Supabase
@@ -39,7 +40,7 @@ function ExploreContent() {
     }
     debounceRef.current = setTimeout(async () => {
       try {
-        const res = await fetch(`/api/search?q=${encodeURIComponent(q)}`);
+        const res = await fetch(`/api/v1/search?q=${encodeURIComponent(q)}`);
         if (res.ok) {
           const data = await res.json();
           setCrossResults({ stories: data.stories || [], encyclopedia: data.encyclopedia || [] });
@@ -57,29 +58,22 @@ function ExploreContent() {
   const handleFilterClick = (filter: string) => {
     if (filter === 'Nearby') {
       if (!userLocation) {
-        if (navigator.geolocation) {
-          navigator.geolocation.getCurrentPosition(
-            (position) => {
-              setUserLocation({
-                lat: position.coords.latitude,
-                lng: position.coords.longitude
-              });
+        import('@/lib/location').then(({ detectCoordinates, TIRUPATI_CENTER }) => {
+          detectCoordinates(
+            (coords) => {
+              setUserLocation(coords);
               setLocationPermission('granted');
               setActiveFilter('Nearby');
+              setLocationError(false);
             },
-            (error) => {
-              alert("Unable to retrieve location. Defaulting to Tirupati center.");
+            () => {
+              setLocationError(true);
               setUserLocation(TIRUPATI_CENTER);
               setLocationPermission('denied');
               setActiveFilter('Nearby');
             }
           );
-        } else {
-          alert("Geolocation is not supported by your browser. Defaulting to Tirupati center.");
-          setUserLocation(TIRUPATI_CENTER);
-          setLocationPermission('denied');
-          setActiveFilter('Nearby');
-        }
+        }).catch(() => {});
       } else {
         setActiveFilter('Nearby');
       }
@@ -88,9 +82,36 @@ function ExploreContent() {
     }
   };
 
+  const isAlternativeQuery = searchQuery.toLowerCase().includes('alternative');
+  const isTirupatiQuery = searchQuery.toLowerCase() === 'tirupati' || searchQuery.toLowerCase() === 'nearby';
+
   const filteredPlaces = useMemo(() => {
     const source = places.length > 0 ? places : PLACES;
     let result = source.filter((place: Place) => {
+      if (isAlternativeQuery) {
+        // Exclude the main Srivari Venkateswara temple
+        if (place.id === 'venkateswara') return false;
+        
+        // Prioritize alternative spiritual temples, nature sights, and hidden gems
+        return place.placeType === 'spiritual' || place.placeType === 'nature' || place.placeType === 'historical' || place.isHiddenGem || place.isMustVisit;
+      }
+
+      if (isTirupatiQuery) {
+        // Exclude all Tirumala hilltop spots
+        const locationLower = (place.location || '').toLowerCase();
+        const isTirumala = locationLower.includes('tirumala') || 
+                           place.id === 'venkateswara' || 
+                           place.id === 'silathoranam' || 
+                           place.id === 'japali-hanuman' || 
+                           place.id === 'swami-pushkarini' || 
+                           place.id === 'papavinasam' || 
+                           place.id === 'akasaganga' || 
+                           place.id === 'tumburu-theertham' || 
+                           place.id === 'chakra-theertham' || 
+                           place.id === 'bhu-varaha';
+        return !isTirumala;
+      }
+
       const q = searchQuery.toLowerCase();
       const nameMatch = (place.name || '').toLowerCase().includes(q);
       const typeMatch = (place.placeType || '').toLowerCase().includes(q);
@@ -122,7 +143,7 @@ function ExploreContent() {
     }
 
     return result;
-  }, [searchQuery, activeFilter, places, userLocation]);
+  }, [searchQuery, activeFilter, places, userLocation, isAlternativeQuery, isTirupatiQuery]);
 
   return (
     <main className={styles.main}>
@@ -161,6 +182,18 @@ function ExploreContent() {
       </div>
 
       <section className={styles.content}>
+        {locationError && (
+          <div style={{
+            background: '#FFFBEB', border: '1px solid #FCD34D', borderRadius: '12px',
+            padding: '10px 14px', marginBottom: '12px',
+            display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '10px'
+          }}>
+            <span style={{ fontSize: '12.5px', color: '#92400E', fontWeight: 600 }}>
+              📍 Location unavailable — showing distances from Tirupati centre
+            </span>
+            <button onClick={() => setLocationError(false)} style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#92400E', flexShrink: 0 }}>✕</button>
+          </div>
+        )}
         {!searchQuery && activeFilter === 'All' && (() => {
           const source = places.length > 0 ? places : PLACES;
           const mustVisit = source.filter(p => p.rating >= 4.8).slice(0, 6);
@@ -195,7 +228,9 @@ function ExploreContent() {
             <>
               {/* Nearby Places Section */}
               <div className={styles.curatedSection}>
-                <h2 className={styles.curatedTitle}>Nearby Places 📍</h2>
+                <h2 className={styles.curatedTitle} style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                  Nearby Places <MapPin size={18} style={{ color: '#2F6144' }} />
+                </h2>
                 <div className={styles.horizontalScroll}>
                   {nearbyPlaces.map((place) => (
                     <Link href={`/place/${place.id}`} key={place.id} className={styles.curatedCard}>
@@ -212,14 +247,18 @@ function ExploreContent() {
               </div>
 
               <div className={styles.curatedSection}>
-                <h2 className={styles.curatedTitle}>Must-Visit ✨</h2>
+                <h2 className={styles.curatedTitle} style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                  Must-Visit <Sparkles size={18} style={{ color: '#FF9933' }} />
+                </h2>
                 <div className={styles.horizontalScroll}>
                   {mustVisit.map((place) => (
                     <Link href={`/place/${place.id}`} key={place.id} className={styles.curatedCard}>
                       <div className={styles.curatedImage} style={{ backgroundImage: `url(${place.image})` }} />
                       <div className={styles.curatedInfo}>
                         <h4>{place.name}</h4>
-                        <span>⭐ {place.rating}</span>
+                        <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                          <Star size={12} fill="#FF9933" color="#FF9933" /> {place.rating}
+                        </span>
                       </div>
                     </Link>
                   ))}
@@ -227,7 +266,9 @@ function ExploreContent() {
               </div>
 
               <div className={styles.curatedSection}>
-                <h2 className={styles.curatedTitle}>Hidden Gems 💎</h2>
+                <h2 className={styles.curatedTitle} style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                  Hidden Gems <Sparkles size={18} style={{ color: '#6C63FF' }} />
+                </h2>
                 <div className={styles.horizontalScroll}>
                   {hiddenGems.map((place) => (
                     <Link href={`/place/${place.id}`} key={place.id} className={styles.curatedCard}>
@@ -244,11 +285,85 @@ function ExploreContent() {
           );
         })()}
 
+        {isAlternativeQuery && (
+          <div style={{
+            background: '#FEF2F2',
+            border: '1px solid #FCA5A5',
+            borderRadius: '16px',
+            padding: '16px',
+            marginBottom: '20px',
+            display: 'flex',
+            alignItems: 'flex-start',
+            gap: '12px',
+            boxShadow: '0 2px 10px rgba(220,38,38,0.05)'
+          }}>
+            <div style={{ 
+              width: '32px', 
+              height: '32px', 
+              borderRadius: '50%', 
+              background: 'rgba(220, 38, 38, 0.1)', 
+              color: '#DC2626', 
+              display: 'flex', 
+              alignItems: 'center', 
+              justifyContent: 'center',
+              flexShrink: 0
+            }}>
+              <AlertTriangle size={16} />
+            </div>
+            <div>
+              <h4 style={{ fontSize: '13.5px', fontWeight: 900, color: '#991B1B', margin: '0 0 2px 0' }}>
+                Heavy Crowds at Srivari Temple
+              </h4>
+              <p style={{ fontSize: '12.5px', color: '#7F1D1D', margin: 0, lineHeight: 1.45 }}>
+                Srivari Venkateswara Swamy Temple is currently experiencing extremely heavy wait times. We highly recommend exploring these alternative temples and scenic destinations in Tirupati and Tirumala first to optimize your journey.
+              </p>
+            </div>
+          </div>
+        )}
+
+        {isTirupatiQuery && (
+          <div style={{
+            background: '#FFFBEB',
+            border: '1px solid #FCD34D',
+            borderRadius: '16px',
+            padding: '16px',
+            marginBottom: '20px',
+            display: 'flex',
+            alignItems: 'flex-start',
+            gap: '12px',
+            boxShadow: '0 2px 10px rgba(245,158,11,0.05)'
+          }}>
+            <div style={{ 
+              width: '32px', 
+              height: '32px', 
+              borderRadius: '50%', 
+              background: 'rgba(245, 158, 11, 0.1)', 
+              color: '#D97706', 
+              display: 'flex', 
+              alignItems: 'center', 
+              justifyContent: 'center',
+              flexShrink: 0
+            }}>
+              <Compass size={16} />
+            </div>
+            <div>
+              <h4 style={{ fontSize: '13.5px', fontWeight: 900, color: '#92400E', margin: '0 0 2px 0' }}>
+                Heavy Crowds at Tirumala
+              </h4>
+              <p style={{ fontSize: '12.5px', color: '#78350F', margin: 0, lineHeight: 1.45 }}>
+                Tirumala temple is currently experiencing heavy wait times. We recommend exploring these foothill attractions in Tirupati city first and heading up to the hills later in the evening when wait times decrease.
+              </p>
+            </div>
+          </div>
+        )}
+
         <div className={styles.sectionHeader}>
           <h2 className={styles.sectionTitle}>
-            {searchQuery ? `Results for "${searchQuery}"` : activeFilter === 'All' ? 'All Experiences' : `${activeFilter} Places`}
+            {isAlternativeQuery ? 'Recommended Alternatives' : isTirupatiQuery ? 'Attractions in Tirupati City' : searchQuery ? `Results for "${searchQuery}"` : activeFilter === 'All' ? 'All Experiences' : `${activeFilter} Places`}
           </h2>
-          <span className={styles.count}>{filteredPlaces.length} results</span>
+          <span className={styles.count}>
+            {filteredPlaces.length} {filteredPlaces.length === 1 ? 'result' : 'results'}
+          </span>
         </div>
 
         <div className={styles.templeList}>
@@ -277,8 +392,8 @@ function ExploreContent() {
                     <p className={styles.description}>{place.description}</p>
                     <div className={styles.tags}>
                       {(place as any).computedDistance !== undefined ? (
-                        <span className={styles.tag} style={{ backgroundColor: '#E5F3EB', color: '#2F6144', fontWeight: 700 }}>
-                          📍 {Number((place as any).computedDistance).toFixed(1)} km away
+                        <span className={styles.tag} style={{ backgroundColor: '#E5F3EB', color: '#2F6144', fontWeight: 700, display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
+                          <MapPin size={12} style={{ flexShrink: 0 }} /> {Number((place as any).computedDistance).toFixed(1)} km away
                         </span>
                       ) : (
                         <span className={styles.tag}>{place.distanceKms} km from Tirupati</span>

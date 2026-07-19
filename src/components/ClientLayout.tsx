@@ -26,27 +26,33 @@ function LayoutContent({
   const isAdmin = pathname?.startsWith('/admin');
   const isStudio = pathname?.startsWith('/studio');
   const { locationPermission, isInitialized } = useTrip();
+  const [needsOnboarding, setNeedsOnboarding] = useState<boolean | null>(null);
+
+  useEffect(() => {
+    const hasSeenOnboarding = localStorage.getItem('hasSeenOnboarding');
+    const hasName = localStorage.getItem('saarthi_user_name');
+    setNeedsOnboarding(!hasSeenOnboarding || !hasName);
+  }, [pathname]);
 
   useEffect(() => {
     const isExcluded = pathname === '/onboarding' || pathname === '/splash' || isAdmin || isStudio;
-    if (isInitialized && !showSplash && !isExcluded) {
-      const hasSeenOnboarding = localStorage.getItem('hasSeenOnboarding');
-      const hasName = localStorage.getItem('saarthi_user_name');
-      if (!hasSeenOnboarding || !hasName) {
-        router.push('/onboarding');
-      }
+    if (isInitialized && !showSplash && !isExcluded && needsOnboarding === true) {
+      router.push('/onboarding');
     }
-  }, [isInitialized, showSplash, pathname, router]);
+  }, [isInitialized, showSplash, pathname, router, needsOnboarding]);
 
+  const isExcluded = pathname === '/onboarding' || pathname === '/splash' || isAdmin || isStudio;
+  const isCheckingOrNeedsOnboarding = !isExcluded && (needsOnboarding === null || needsOnboarding === true);
   const showLocationPrompt = isInitialized && !showSplash && !isAdmin && pathname === '/' && locationPermission === 'default';
   const showBottomNav = !showSplash && !showLocationPrompt && !isAdmin && (['/', '/explore', '/saved', '/profile', '/essentials'].includes(pathname) || pathname?.startsWith('/essentials/'));
+  const hideContent = !isAdmin && (showSplash || showLocationPrompt || isCheckingOrNeedsOnboarding);
 
   return (
     <>
       {showSplash && !isAdmin && <SplashScreen onFinish={handleSplashFinish} />}
       {showLocationPrompt && <LocationPrompt />}
       <div style={{ 
-        visibility: (showSplash || showLocationPrompt) && !isAdmin ? 'hidden' : 'visible', 
+        visibility: hideContent ? 'hidden' : 'visible', 
         height: '100%', 
         position: 'relative',
         maxWidth: isAdmin ? '100%' : '480px',
@@ -88,6 +94,26 @@ export default function ClientLayout({
     }
   }, [pathname]);
 
+  // Unregister any stale service workers to prevent cached Next.js chunks errors
+  useEffect(() => {
+    if (typeof window !== 'undefined' && 'serviceWorker' in navigator) {
+      navigator.serviceWorker.getRegistrations().then((registrations) => {
+        let unregisteredAny = false;
+        const promises = registrations.map((registration) =>
+          registration.unregister().then((success) => {
+            if (success) unregisteredAny = true;
+          })
+        );
+        Promise.all(promises).then(() => {
+          if (unregisteredAny) {
+            console.log('Unregistered stale service workers to fix cache issues.');
+            window.location.reload();
+          }
+        });
+      });
+    }
+  }, []);
+
 
 
   const handleSplashFinish = () => {
@@ -98,10 +124,10 @@ export default function ClientLayout({
   // Track page views (skip admin routes)
   useEffect(() => {
     if (!isAdmin && pathname) {
-      fetch('/api/track', {
+      fetch('/api/v1/analytics', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ path: pathname }),
+        body: JSON.stringify({ action: 'page_view', metadata: { path: pathname } }),
       }).catch(() => {});
     }
   }, [pathname, isAdmin]);

@@ -39,5 +39,6 @@ export interface TripState {
   recommendations: any[] | null;
   userLocation: { lat: number; lng: number } | null;
   locationPermission: 'default' | 'granted' | 'denied';
+  locationName?: string;
   savedPlans: (Plan & { id: string; savedAt: string })[];
 }

@@ -75,42 +75,66 @@
 
 /* Welcome Banner */
 .welcomeBanner {
-  background: linear-gradient(135deg, #F59E0B, #D97706); /* Saffron/Amber gradient */
+  background: linear-gradient(135deg, #E9801D, #B0550C); /* Deep Saffron Gradient */
   color: #FFFFFF;
-  border-radius: 20px;
-  padding: 20px;
-  box-shadow: 0 4px 20px rgba(217, 119, 6, 0.15);
+  border-radius: 24px;
+  padding: 24px;
+  box-shadow: 0 12px 30px rgba(233, 128, 29, 0.25);
   position: relative;
   overflow: hidden;
 }
 
+.welcomeBanner::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 150px;
+  height: 150px;
+  background: radial-gradient(circle, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0) 70%);
+  border-radius: 50%;
+  transform: translate(30%, -30%);
+  pointer-events: none;
+}
+
 .welcomeTitle {
-  font-size: 18px;
+  font-family: var(--font-display), Georgia, serif;
+  font-size: 20px;
   font-weight: 800;
-  margin: 0 0 6px 0;
+  margin: 0 0 8px 0;
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 8px;
+  color: #FFFFFF;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
 .welcomeText {
-  font-size: 13px;
-  line-height: 1.4;
-  margin: 0 0 16px 0;
-  opacity: 0.95;
+  font-size: 14px;
+  line-height: 1.5;
+  margin: 0 0 20px 0;
+  color: rgba(255, 255, 255, 0.95);
 }
 
 .bannerBtn {
   background-color: #FFFFFF;
-  color: #D97706;
+  color: #B0550C;
   border: none;
-  border-radius: 12px;
-  padding: 10px 18px;
-  font-size: 13px;
-  font-weight: 700;
+  border-radius: 14px;
+  padding: 12px 24px;
+  font-size: 14px;
+  font-weight: 800;
   cursor: pointer;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-  transition: transform 0.2s, background-color 0.2s;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s, box-shadow 0.2s;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.bannerBtn:active {
+  transform: scale(0.96);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
 }
 
 .bannerBtn:active {
@@ -185,83 +209,103 @@
 .checklistCard {
   background: #FFFFFF;
   border-radius: 20px;
-  padding: 20px;
-  border: 1px solid rgba(233, 128, 29, 0.08);
-  box-shadow: 0 4px 16px rgba(30, 27, 24, 0.04);
+  padding: 24px;
+  border: 1px solid rgba(233, 128, 29, 0.1);
+  box-shadow: 0 12px 30px rgba(15, 23, 42, 0.04);
 }
 
 .checklistHeader {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 16px;
+  margin-bottom: 20px;
 }
 
 .checklistTitle {
-  font-size: 15px;
-  font-weight: 700;
+  font-family: var(--font-display), Georgia, serif;
+  font-size: 16px;
+  font-weight: 800;
   color: #0F172A;
   margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
 .checklistProgress {
-  font-size: 12px;
-  font-weight: 700;
-  color: #F59E0B;
+  font-size: 13px;
+  font-weight: 800;
+  color: #D97706;
 }
 
 .progressBarBg {
   width: 100%;
-  height: 6px;
+  height: 8px;
   background-color: #F1F5F9;
-  border-radius: 3px;
+  border-radius: 4px;
   overflow: hidden;
-  margin-bottom: 16px;
+  margin-bottom: 20px;
 }
 
 .progressBarFill {
   height: 100%;
-  background-color: #10B981;
-  border-radius: 3px;
-  transition: width 0.3s ease-out;
+  background: linear-gradient(90deg, #D97706, #F59E0B);
+  border-radius: 4px;
+  transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .checklistItems {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 8px;
 }
 
 .checkItem {
   display: flex;
   align-items: flex-start;
-  gap: 10px;
+  gap: 14px;
   cursor: pointer;
+  padding: 12px;
+  border-radius: 12px;
+  transition: background-color 0.2s, transform 0.2s;
+  border: 1px solid transparent;
+}
+
+.checkItem:hover {
+  background-color: #FAFAFA;
+  border-color: rgba(0,0,0,0.02);
+}
+
+.checkItem:active {
+  transform: scale(0.98);
 }
 
 .checkbox {
-  width: 18px;
-  height: 18px;
-  border-radius: 4px;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
   border: 2px solid #CBD5E1;
-  margin-top: 1px;
+  margin-top: 2px;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  transition: background-color 0.2s, border-color 0.2s;
+  transition: background-color 0.2s, border-color 0.2s, transform 0.2s;
 }
 
 .checkboxChecked {
-  background-color: #10B981;
-  border-color: #10B981;
+  background-color: #0F5132;
+  border-color: #0F5132;
+  transform: scale(1.05);
 }
 
 .checkItemText {
-  font-size: 13px;
-  line-height: 1.4;
-  color: #475569;
+  font-size: 14px;
+  line-height: 1.5;
+  color: #334155;
   user-select: none;
+  font-weight: 500;
+  transition: color 0.2s;
 }
 
 .checkItemChecked {
@@ -280,6 +324,26 @@
   padding: 4px 10px;
   border-radius: 8px;
   margin-top: 12px;
+}
+
+.minimizeBtn {
+  margin-top: 24px;
+  width: 100%;
+  background: #F8FAFC;
+  color: #64748B;
+  border: 1px solid #E2E8F0;
+  border-radius: 12px;
+  padding: 12px;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.minimizeBtn:hover {
+  background: #F1F5F9;
+  color: #334155;
+  border-color: #CBD5E1;
 }
 
 /* Search Bar */
@@ -348,20 +412,24 @@
 
 .itemCard {
   background: #FFFFFF;
-  border-radius: 20px;
-  border: 1px solid rgba(233, 128, 29, 0.08);
-  padding: 18px;
-  box-shadow: 0 4px 14px rgba(30, 27, 24, 0.03);
+  border-radius: 24px;
+  border: 1px solid rgba(233, 128, 29, 0.1);
+  padding: 24px;
+  box-shadow: 0 12px 30px rgba(15, 23, 42, 0.04);
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 14px;
   cursor: pointer;
-  transition: transform 0.2s, box-shadow 0.2s;
+  transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+}
+
+.itemCard:hover {
+  border-color: rgba(233, 128, 29, 0.2);
 }
 
 .itemCard:active {
   transform: scale(0.99);
-  box-shadow: 0 2px 6px rgba(30, 27, 24, 0.02);
+  box-shadow: 0 4px 10px rgba(15, 23, 42, 0.02);
 }
 
 .cardHeader {
@@ -377,15 +445,16 @@
 }
 
 .cardIconBox {
-  width: 44px;
-  height: 44px;
-  border-radius: 12px;
-  background-color: #FFF8EB;
+  width: 48px;
+  height: 48px;
+  border-radius: 16px;
+  background: linear-gradient(135deg, #FFF8EB, #FFECC4);
   color: #D97706;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
+  box-shadow: inset 0 2px 4px rgba(255,255,255,0.5);
 }
 
 .cardMeta {
@@ -395,7 +464,8 @@
 }
 
 .cardTitle {
-  font-size: 15px;
+  font-family: var(--font-display), Georgia, serif;
+  font-size: 17px;
   font-weight: 800;
   color: #0F172A;
   margin: 0;
@@ -441,44 +511,47 @@
 }
 
 .cardDescription {
-  font-size: 13px;
-  color: #475569;
-  line-height: 1.4;
+  font-size: 14px;
+  color: #334155;
+  line-height: 1.5;
   margin: 0;
 }
 
 .whyItMattersBox {
-  background-color: #FFFDF9;
-  border-left: 3px solid #F59E0B;
-  border-radius: 0 8px 8px 0;
-  padding: 8px 12px;
+  background: linear-gradient(90deg, #FFFDF9, #FFFFFF);
+  border-left: 4px solid #D97706;
+  border-radius: 0 12px 12px 0;
+  padding: 12px 16px;
+  margin-top: 4px;
 }
 
 .whyTitle {
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 800;
-  color: #B45309;
+  color: #D97706;
   text-transform: uppercase;
-  letter-spacing: 0.5px;
-  margin-bottom: 2px;
+  letter-spacing: 0.8px;
+  margin-bottom: 4px;
 }
 
 .whyContent {
-  font-size: 12px;
-  color: #6B7280;
-  line-height: 1.3;
+  font-size: 13px;
+  color: #475569;
+  line-height: 1.4;
   margin: 0;
   font-style: italic;
 }
 
 .cardFooter {
-  border-top: 1px solid rgba(233, 128, 29, 0.05);
-  padding-top: 8px;
+  border-top: 1px solid rgba(233, 128, 29, 0.08);
+  padding-top: 14px;
+  margin-top: 4px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  font-size: 12px;
-  color: #64748B;
+  font-size: 13px;
+  color: #475569;
+  font-weight: 500;
 }
 
 .footerMetrics {
@@ -543,7 +616,7 @@
 /* Sticky Bottom Context Card */
 .stickyBottomWrapper {
   position: fixed;
-  bottom: 0;
+  bottom: 90px;
   left: 50%;
   transform: translateX(-50%);
   width: 100%;
@@ -675,18 +748,18 @@
 
 .detailMetaCard {
   background: #FFFFFF;
-  border-radius: 20px;
-  padding: 20px;
-  border: 1px solid rgba(233, 128, 29, 0.08);
-  box-shadow: 0 4px 16px rgba(30, 27, 24, 0.04);
+  border-radius: 24px;
+  padding: 24px;
+  border: 1px solid rgba(233, 128, 29, 0.1);
+  box-shadow: 0 12px 30px rgba(15, 23, 42, 0.04);
 }
 
 .detailTitle {
   font-family: var(--font-display), Georgia, serif;
-  font-size: 22px;
+  font-size: 24px;
   font-weight: 800;
   color: #0F172A;
-  margin: 0 0 8px 0;
+  margin: 0 0 12px 0;
 }
 
 .detailRow {
@@ -705,39 +778,40 @@
 }
 
 .detailSectionTitle {
-  font-size: 15px;
-  font-weight: 700;
+  font-family: var(--font-display), Georgia, serif;
+  font-size: 18px;
+  font-weight: 800;
   color: #0F172A;
   margin: 0;
 }
 
 .detailCard {
   background: #FFFFFF;
-  border-radius: 16px;
-  padding: 16px;
-  border: 1px solid rgba(233, 128, 29, 0.08);
+  border-radius: 20px;
+  padding: 20px;
+  border: 1px solid rgba(233, 128, 29, 0.1);
 }
 
 .detailWhyBox {
-  background-color: #FFFDF5;
-  border-left: 4px solid #F59E0B;
+  background: linear-gradient(90deg, #FFFDF9, #FFFFFF);
+  border-left: 4px solid #D97706;
   border-radius: 0 12px 12px 0;
-  padding: 12px 16px;
+  padding: 16px 20px;
 }
 
 .detailWhyTitle {
   font-size: 11px;
   font-weight: 800;
-  color: #B45309;
+  color: #D97706;
   text-transform: uppercase;
-  letter-spacing: 0.5px;
-  margin-bottom: 4px;
+  letter-spacing: 0.8px;
+  margin-bottom: 6px;
 }
 
 .detailWhyText {
-  font-size: 13px;
-  color: #4B5563;
-  line-height: 1.45;
+  font-size: 14px;
+  color: #475569;
+  line-height: 1.5;
   margin: 0;
   font-style: italic;
 }
@@ -753,18 +827,18 @@
   background-color: #0E6B72; /* Srivari Teal / Success style */
   color: #FFFFFF;
   border: none;
-  border-radius: 12px;
+  border-radius: 16px;
   width: 100%;
-  padding: 14px;
-  font-size: 14px;
+  padding: 16px;
+  font-size: 15px;
   font-weight: 800;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 8px;
-  box-shadow: 0 4px 12px rgba(14, 107, 114, 0.2);
-  transition: transform 0.2s, background-color 0.2s;
+  box-shadow: 0 6px 16px rgba(14, 107, 114, 0.2);
+  transition: transform 0.2s, box-shadow 0.2s, background-color 0.2s;
 }
 
 .mapCtaButton:active {

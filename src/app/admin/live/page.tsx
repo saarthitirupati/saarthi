@@ -19,7 +19,7 @@ export default function AdminLivePage() {
   const [message, setMessage] = useState('');
 
   useEffect(() => {
-    fetch('/api/live-status')
+    fetch('/api/v1/live-status')
       .then(res => res.json())
       .then(data => {
         setMetrics({

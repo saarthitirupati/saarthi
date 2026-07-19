@@ -6,7 +6,7 @@ export default function MoodJourneyPrompt() {
   const [selectedMood, setSelectedMood] = useState<string | null>(null);
 
   useEffect(() => {
-    fetch('/api/content/daily')
+    fetch('/api/v1/content/daily')
       .then(res => res.json())
       .then(data => setMoods(data.moodJourney.options))
       .catch(err => console.error(err));

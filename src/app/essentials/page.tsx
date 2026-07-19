@@ -5,17 +5,18 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
-  ArrowLeft, Search, Bell, ClipboardCheck, Sparkles, Check, CheckSquare, 
-  MapPin, Clock, ChevronRight, HelpCircle, ChevronDown, ChevronUp, X, Navigation, Info
+  ArrowLeft, Search, ClipboardCheck, Sparkles, Check, CheckSquare, 
+  MapPin, Clock, ChevronRight, HelpCircle, ChevronDown, ChevronUp, X, Navigation, Info,
+  Landmark, AlertTriangle
 } from 'lucide-react';
 import styles from './Essentials.module.css';
 
-import { KNOWLEDGE_ITEMS, FAQ_ITEMS, CHECKLIST_ITEMS, KnowledgeItem } from '@/data/knowledge';
+import { KNOWLEDGE_ITEMS, FAQ_ITEMS, CHECKLIST_ITEMS, KnowledgeItem } from '@/content/knowledge';
 
 // Map iconName strings to Lucide React components
 import { 
   Briefcase, Smartphone, Footprints, Utensils, 
-  Droplets, Users, Hospital, Bus, Shirt, Camera
+  Droplets, Users, Hospital, Bus, Shirt, Camera, FileText
 } from 'lucide-react';
 
 const ICON_MAP: Record<string, React.ComponentType<any>> = {
@@ -31,6 +32,19 @@ const ICON_MAP: Record<string, React.ComponentType<any>> = {
   camera: Camera
 };
 
+const getFaqCategoryIcon = (cat: string) => {
+  switch (cat) {
+    case 'Temple Rules':
+      return <Landmark size={14} style={{ display: 'inline', marginRight: '6px', verticalAlign: 'middle', color: '#B0550C' }} />;
+    case 'Travel Help':
+      return <Navigation size={14} style={{ display: 'inline', marginRight: '6px', verticalAlign: 'middle', color: '#B0550C' }} />;
+    case 'Facilities':
+      return <Briefcase size={14} style={{ display: 'inline', marginRight: '6px', verticalAlign: 'middle', color: '#B0550C' }} />;
+    default:
+      return <AlertTriangle size={14} style={{ display: 'inline', marginRight: '6px', verticalAlign: 'middle', color: '#B0550C' }} />;
+  }
+};
+
 export default function PilgrimEssentialsPage() {
   const router = useRouter();
   const [searchQuery, setSearchQuery] = useState('');
@@ -41,6 +55,20 @@ export default function PilgrimEssentialsPage() {
   const [isMounted, setIsMounted] = useState(false);
   const [cabRef, setCabRef] = useState<string | null>(null);
   const [dismissedTip, setDismissedTip] = useState(false);
+
+  // Stagger animation variants
+  const listVariants = {
+    hidden: { opacity: 0 },
+    show: {
+      opacity: 1,
+      transition: { staggerChildren: 0.08 }
+    }
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 15 },
+    show: { opacity: 1, y: 0, transition: { type: "spring" as const, stiffness: 300, damping: 24 } }
+  };
 
   // Initialize client states
   useEffect(() => {
@@ -179,9 +207,6 @@ export default function PilgrimEssentialsPage() {
           <button className={styles.iconButton} onClick={() => setShowChecklist(p => !p)} aria-label="Checklist">
             <ClipboardCheck size={20} color={showChecklist ? '#D97706' : '#0F172A'} />
           </button>
-          <button className={styles.iconButton} aria-label="Notifications">
-            <Bell size={20} />
-          </button>
         </div>
       </header>
 
@@ -196,12 +221,16 @@ export default function PilgrimEssentialsPage() {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -10 }}
             >
-              <h3 className={styles.welcomeTitle}>🙏 Welcome to Tirumala</h3>
+              <h3 className={styles.welcomeTitle}>
+                <Sparkles size={18} style={{ color: '#D97706', verticalAlign: 'middle', marginRight: '6px', display: 'inline' }} />
+                Welcome to Tirumala
+              </h3>
               <p className={styles.welcomeText}>
                 First time visiting? We will guide you through the most important things every pilgrim should do and know before darshan.
               </p>
               <button className={styles.bannerBtn} onClick={() => setShowChecklist(true)}>
                 Start Checklist
+                <ChevronRight size={16} />
               </button>
             </motion.section>
           )}
@@ -218,7 +247,10 @@ export default function PilgrimEssentialsPage() {
               transition={{ duration: 0.3 }}
             >
               <div className={styles.checklistHeader}>
-                <h3 className={styles.checklistTitle}>📋 Before Darshan Checklist</h3>
+                <h3 className={styles.checklistTitle}>
+                  <ClipboardCheck size={20} color="#D97706" />
+                  Before Darshan Checklist
+                </h3>
                 <span className={styles.checklistProgress}>
                   {checklistStats.checked} / {checklistStats.total} Done
                 </span>
@@ -252,13 +284,13 @@ export default function PilgrimEssentialsPage() {
 
               {checklistStats.pct === 100 && (
                 <div className={styles.readyBadge}>
-                  🎉 100% Ready for Darshan!
+                  <CheckSquare size={16} style={{ color: '#D97706', verticalAlign: 'middle', marginRight: '6px', display: 'inline' }} />
+                  100% Ready for Darshan!
                 </div>
               )}
               
               <button 
-                className={styles.bannerBtn} 
-                style={{ marginTop: '16px', backgroundColor: '#F1F5F9', color: '#475569', width: '100%' }}
+                className={styles.minimizeBtn} 
                 onClick={() => setShowChecklist(false)}
               >
                 Minimize Checklist
@@ -269,41 +301,44 @@ export default function PilgrimEssentialsPage() {
 
         {/* Quick Actions Grid */}
         <section className={styles.quickActionsSection}>
-          <h2 className={styles.sectionTitle}>⚡ Quick Actions</h2>
-          <div className={styles.quickActionsGrid}>
-            <button className={styles.actionButton} onClick={() => handleQuickAction('free-lockers')}>
+          <h2 className={styles.sectionTitle}>
+            <Sparkles size={18} style={{ color: '#D97706', verticalAlign: 'middle', marginRight: '6px', display: 'inline' }} />
+            Quick Actions
+          </h2>
+          <motion.div className={styles.quickActionsGrid} variants={listVariants} initial="hidden" animate="show">
+            <motion.button variants={itemVariants} className={styles.actionButton} onClick={() => handleQuickAction('free-lockers')}>
               <div className={styles.actionIconWrapper}><Briefcase size={18} /></div>
               <span className={styles.actionLabel}>Lockers</span>
-            </button>
-            <button className={styles.actionButton} onClick={() => handleQuickAction('mobile-deposit')}>
+            </motion.button>
+            <motion.button variants={itemVariants} className={styles.actionButton} onClick={() => handleQuickAction('mobile-deposit')}>
               <div className={styles.actionIconWrapper}><Smartphone size={18} /></div>
               <span className={styles.actionLabel}>Mobile</span>
-            </button>
-            <button className={styles.actionButton} onClick={() => handleQuickAction('footwear-counters')}>
+            </motion.button>
+            <motion.button variants={itemVariants} className={styles.actionButton} onClick={() => handleQuickAction('footwear-counters')}>
               <div className={styles.actionIconWrapper}><Footprints size={18} /></div>
               <span className={styles.actionLabel}>Footwear</span>
-            </button>
-            <button className={styles.actionButton} onClick={() => handleQuickAction('toilets')}>
+            </motion.button>
+            <motion.button variants={itemVariants} className={styles.actionButton} onClick={() => handleQuickAction('toilets')}>
               <div className={styles.actionIconWrapper}><Users size={18} /></div>
               <span className={styles.actionLabel}>Toilets</span>
-            </button>
-            <button className={styles.actionButton} onClick={() => handleQuickAction('annaprasadam')}>
+            </motion.button>
+            <motion.button variants={itemVariants} className={styles.actionButton} onClick={() => handleQuickAction('annaprasadam')}>
               <div className={styles.actionIconWrapper}><Utensils size={18} /></div>
               <span className={styles.actionLabel}>Meals</span>
-            </button>
-            <button className={styles.actionButton} onClick={() => handleQuickAction('medical-center')}>
+            </motion.button>
+            <motion.button variants={itemVariants} className={styles.actionButton} onClick={() => handleQuickAction('medical-center')}>
               <div className={styles.actionIconWrapper}><Hospital size={18} /></div>
               <span className={styles.actionLabel}>Medical</span>
-            </button>
-            <button className={styles.actionButton} onClick={() => handleQuickAction('free-bus')}>
+            </motion.button>
+            <motion.button variants={itemVariants} className={styles.actionButton} onClick={() => handleQuickAction('free-bus')}>
               <div className={styles.actionIconWrapper}><Bus size={18} /></div>
               <span className={styles.actionLabel}>Free Bus</span>
-            </button>
-            <button className={styles.actionButton} onClick={() => handleQuickAction('dress-code')}>
-              <div className={styles.actionIconWrapper}><Shirt size={18} /></div>
+            </motion.button>
+            <motion.button variants={itemVariants} className={styles.actionButton} onClick={() => handleQuickAction('dress-code')}>
+              <div className={styles.actionIconWrapper}><FileText size={18} /></div>
               <span className={styles.actionLabel}>Rules</span>
-            </button>
-          </div>
+            </motion.button>
+          </motion.div>
         </section>
 
         {/* Search & Category Pills */}
@@ -341,62 +376,72 @@ export default function PilgrimEssentialsPage() {
         </section>
 
         {/* Main List of Cards */}
-        <section className={styles.cardsList}>
-          <div className={styles.sectionTitle} style={{ marginBottom: '-4px' }}>
-            {searchQuery ? `Search Results (${filteredItems.length})` : activeCategory === 'All' ? 'All Essentials' : activeCategory}
-          </div>
+        <section className={styles.essentialsDirectory}>
+          <h2 className={styles.sectionTitle}>
+            {searchQuery ? `Search Results (${filteredItems.length})` : activeCategory === 'All' ? 'All Essentials' : `${activeCategory} Essentials`}
+          </h2>
 
           {filteredItems.length > 0 ? (
-            filteredItems.map((item) => {
-              const IconComp = ICON_MAP[item.iconName] || Info;
-              const isImportant = item.importance === 'must-know';
-              const isRecommended = item.importance === 'highly-recommended';
-              
-              return (
-                <Link key={item.id} href={`/essentials/${item.id}`} className={styles.itemCard} style={{ textDecoration: 'none' }}>
-                  <div className={styles.cardHeader}>
-                    <div className={styles.cardTitleSection}>
-                      <div className={styles.cardIconBox}>
-                        <IconComp size={20} />
+            <motion.div className={styles.essentialsList} variants={listVariants} initial="hidden" animate="show">
+              {filteredItems.map((item) => {
+                const IconComp = ICON_MAP[item.iconName] || Info;
+                const isImportant = item.importance === 'must-know';
+                const isRecommended = item.importance === 'highly-recommended';
+                
+                return (
+                  <motion.div key={item.id} variants={itemVariants}>
+                    <Link href={`/essentials/${item.id}`} className={styles.itemCard} style={{ textDecoration: 'none' }}>
+                      <div className={styles.cardHeader}>
+                        <div className={styles.cardTitleSection}>
+                          <div className={styles.cardIconBox}>
+                            <IconComp size={20} />
+                          </div>
+                          <div className={styles.cardMeta}>
+                            <h4 className={styles.cardTitle}>{item.name}</h4>
+                            <span className={styles.cardSub}>{item.location}</span>
+                          </div>
+                        </div>
+                        <div className={styles.cardBadges}>
+                          <span className={`${styles.badge} ${
+                            isImportant ? styles.badgeAlert : isRecommended ? styles.badgeRule : styles.badgeFree
+                          }`}>
+                            {item.importance.replace('-', ' ')}
+                          </span>
+                          <span className={`${styles.badge} ${styles.badgeVerified}`}>
+                            {item.tag}
+                          </span>
+                        </div>
                       </div>
-                      <div className={styles.cardMeta}>
-                        <h4 className={styles.cardTitle}>{item.name}</h4>
-                        <span className={styles.cardSub}>{item.location}</span>
+
+                      <p className={styles.cardDescription}>{item.shortDescription}</p>
+
+                      <div className={styles.whyItMattersBox}>
+                        <h5 className={styles.whyTitle}>Why it Matters</h5>
+                        <p className={styles.whyContent}>{item.whyItMatters}</p>
                       </div>
-                    </div>
-                    <div className={styles.cardBadges}>
-                      <span className={`${styles.badge} ${
-                        isImportant ? styles.badgeAlert : isRecommended ? styles.badgeRule : styles.badgeFree
-                      }`}>
-                        {item.importance.replace('-', ' ')}
-                      </span>
-                      <span className={`${styles.badge} ${styles.badgeVerified}`}>
-                        {item.tag}
-                      </span>
-                    </div>
-                  </div>
 
-                  <p className={styles.cardDescription}>{item.shortDescription}</p>
-
-                  <div className={styles.whyItMattersBox}>
-                    <h5 className={styles.whyTitle}>Why it Matters</h5>
-                    <p className={styles.whyContent}>{item.whyItMatters}</p>
-                  </div>
-
-                  <div className={styles.cardFooter}>
-                    <div className={styles.footerMetrics}>
-                      <span>📍 {item.distance}</span>
-                      <span>•</span>
-                      <span>⏱️ {item.walkingTime}</span>
-                    </div>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '2px', color: '#D97706', fontWeight: 700 }}>
-                      <span>Details</span>
-                      <ChevronRight size={14} />
-                    </div>
-                  </div>
-                </Link>
-              );
-            })
+                      <div className={styles.cardFooter}>
+                        <div className={styles.footerMetrics} style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                          <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                            <MapPin size={14} />
+                            {item.distance}
+                          </span>
+                          <span>•</span>
+                          <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                            <Clock size={14} />
+                            {item.walkingTime}
+                          </span>
+                        </div>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '2px', color: '#D97706', fontWeight: 700 }}>
+                          <span>Details</span>
+                          <ChevronRight size={14} />
+                        </div>
+                      </div>
+                    </Link>
+                  </motion.div>
+                );
+              })}
+            </motion.div>
           ) : (
             <div style={{ textAlign: 'center', padding: '40px 20px', background: '#FFF', borderRadius: '16px', border: '1px solid rgba(233,128,29,0.05)', color: '#64748B', fontSize: '13px' }}>
               No essentials match your filter. Try changing category or search terms.
@@ -410,31 +455,85 @@ export default function PilgrimEssentialsPage() {
             <HelpCircle size={18} color="#D97706" />
             <h3 className={styles.sectionTitle}>Frequently Asked Questions</h3>
           </div>
-          <div className={styles.faqList}>
-            {filteredFAQs.map((faq) => {
-              const isExpanded = expandedFaqId === faq.id;
-              return (
-                <div key={faq.id} className={styles.faqItem}>
-                  <h4 
-                    className={styles.faqQuestion}
-                    onClick={() => setExpandedFaqId(isExpanded ? null : faq.id)}
-                  >
-                    <span>{faq.question}</span>
-                    {isExpanded ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
-                  </h4>
-                  {isExpanded && (
-                    <motion.p 
-                      className={styles.faqAnswer}
-                      initial={{ opacity: 0, y: -4 }}
-                      animate={{ opacity: 1, y: 0 }}
+
+          {searchQuery.trim().length > 0 ? (
+            <div className={styles.faqList}>
+              {filteredFAQs.map((faq) => {
+                const isExpanded = expandedFaqId === faq.id;
+                return (
+                  <div key={faq.id} className={styles.faqItem}>
+                    <h4 
+                      className={styles.faqQuestion}
+                      onClick={() => setExpandedFaqId(isExpanded ? null : faq.id)}
                     >
-                      {faq.answer}
-                    </motion.p>
-                  )}
+                      <span>{faq.question}</span>
+                      {isExpanded ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
+                    </h4>
+                    {isExpanded && (
+                      <motion.p 
+                        className={styles.faqAnswer}
+                        initial={{ opacity: 0, y: -4 }}
+                        animate={{ opacity: 1, y: 0 }}
+                      >
+                        {faq.answer}
+                      </motion.p>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+          ) : (
+            (['Temple Rules', 'Travel Help', 'Facilities', 'Emergency'] as const).map(category => {
+              const categoryFaqs = FAQ_ITEMS.filter(faq => faq.category === category);
+              if (categoryFaqs.length === 0) return null;
+              return (
+                <div key={category} style={{ marginBottom: '20px' }}>
+                  <h4 style={{ 
+                    fontSize: '12px', 
+                    fontWeight: 800, 
+                    color: '#B0550C', 
+                    textTransform: 'uppercase', 
+                    letterSpacing: '0.05em',
+                    marginBottom: '10px',
+                    marginTop: '10px',
+                    borderBottom: '1px solid #F1F5F9',
+                    paddingBottom: '6px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '4px'
+                  }}>
+                    {getFaqCategoryIcon(category)}
+                    {category}
+                  </h4>
+                  <div className={styles.faqList}>
+                    {categoryFaqs.map((faq) => {
+                      const isExpanded = expandedFaqId === faq.id;
+                      return (
+                        <div key={faq.id} className={styles.faqItem}>
+                          <h4 
+                            className={styles.faqQuestion}
+                            onClick={() => setExpandedFaqId(isExpanded ? null : faq.id)}
+                          >
+                            <span>{faq.question}</span>
+                            {isExpanded ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
+                          </h4>
+                          {isExpanded && (
+                            <motion.p 
+                              className={styles.faqAnswer}
+                              initial={{ opacity: 0, y: -4 }}
+                              animate={{ opacity: 1, y: 0 }}
+                            >
+                              {faq.answer}
+                            </motion.p>
+                          )}
+                        </div>
+                      );
+                    })}
+                  </div>
                 </div>
               );
-            })}
-          </div>
+            })
+          )}
         </section>
       </div>
 

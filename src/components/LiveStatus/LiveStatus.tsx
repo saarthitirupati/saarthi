@@ -58,10 +58,10 @@ export default function LiveStatus() {
 
   if (!status) return null;
 
-  const meta = CROWD_META[status.crowdLevel] ?? CROWD_META.moderate;
-  const _roomMeta = ACCOMMODATION_META[status.accommodationStatus] ?? ACCOMMODATION_META.available;
-  const _ladduMeta = LADDU_META[status.ladduAvailability] ?? LADDU_META.available;
-  const _flowMeta = DARSHAN_FLOW_META[status.darshanSpeed] ?? DARSHAN_FLOW_META.normal;
+  const meta = CROWD_META[status.crowdLevel as keyof typeof CROWD_META] ?? CROWD_META.moderate;
+  const _roomMeta = ACCOMMODATION_META[status.accommodationStatus as keyof typeof ACCOMMODATION_META] ?? ACCOMMODATION_META.available;
+  const _ladduMeta = LADDU_META[status.ladduAvailability as keyof typeof LADDU_META] ?? LADDU_META.available;
+  const _flowMeta = DARSHAN_FLOW_META[status.darshanSpeed as keyof typeof DARSHAN_FLOW_META] ?? DARSHAN_FLOW_META.normal;
 
   const formatHeaderWait = (timeStr: string) => {
     const clean = timeStr.toLowerCase().replace('wait', '').replace('time', '').trim();
@@ -175,7 +175,7 @@ export default function LiveStatus() {
                   <span style={{ textAlign: 'center' }}>Wait Time</span>
                   <span style={{ textAlign: 'right' }}>Peak Hours</span>
                 </div>
-                {status.darshans.map((d, i) => (
+                {status.darshans.map((d: any, i: number) => (
                   <div key={i} className={styles.darshanRow}>
                     <div className={styles.darshanNameCol}>
                       {getDarshanIcon(d.name)}

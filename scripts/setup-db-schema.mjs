@@ -65,6 +65,27 @@ async function main() {
       }
     }
 
+    // Ensure 'stories' table exists
+    console.log("Ensuring 'stories' table exists...");
+    await db.query(`
+      CREATE TABLE IF NOT EXISTS stories (
+        id TEXT PRIMARY KEY,
+        title TEXT NOT NULL,
+        subtitle TEXT,
+        snippet TEXT,
+        "fullText" TEXT,
+        image TEXT,
+        "readTime" TEXT,
+        category TEXT,
+        "keyTakeaway" TEXT,
+        "audioUrl" TEXT,
+        "relatedTemple" TEXT,
+        tags TEXT[],
+        "isActive" BOOLEAN DEFAULT true,
+        "createdAt" TIMESTAMPTZ DEFAULT now()
+      )
+    `);
+
     // 2. Alter 'stories' table to add missing fields
     console.log("Updating 'stories' table columns...");
     const storiesColumns = [
@@ -105,7 +126,7 @@ async function main() {
         "correctAnswer" TEXT NOT NULL,
         explanation TEXT,
         "relatedStory" TEXT,
-        "relatedTemple" TEXT REFERENCES places(id) ON DELETE SET NULL,
+        "relatedTemple" UUID REFERENCES places(id) ON DELETE SET NULL,
         "xpReward" INTEGER DEFAULT 10,
         "isActive" BOOLEAN DEFAULT true,
         "createdAt" TIMESTAMPTZ DEFAULT now()
@@ -149,7 +170,7 @@ async function main() {
     // 6. Enable RLS and public policies on all tables managed by this script
     const managedTables = ['places', 'stories', 'quizzes', 'encyclopedia', 'user_events'];
     for (const table of managedTables) {
-      console.log(`Securing table: "${table}" via RLS...`);
+      console.log(`Securing table: "${table}" via RLS and granting permissions...`);
       await db.query(`ALTER TABLE "${table}" ENABLE ROW LEVEL SECURITY;`);
       await db.query(`DROP POLICY IF EXISTS "Allow public read/write" ON "${table}";`);
       await db.query(`
@@ -158,6 +179,22 @@ async function main() {
         USING (true) 
         WITH CHECK (true);
       `);
+      await db.query(`GRANT ALL ON TABLE "${table}" TO anon, authenticated, service_role;`);
+    }
+
+    // Also grant permission on analytics_events table
+    try {
+      console.log("Granting permissions on analytics_events...");
+      await db.query(`GRANT ALL ON TABLE "analytics_events" TO anon, authenticated, service_role;`);
+    } catch (e) {
+      console.log("Could not grant permissions on analytics_events (skipping):", e.message);
+    }
+
+    // Grant usage on all sequences
+    try {
+      await db.query(`GRANT USAGE, SELECT ON ALL SEQUENCES IN SCHEMA public TO anon, authenticated, service_role;`);
+    } catch (e) {
+      console.log("Could not grant permissions on sequences (skipping):", e.message);
     }
 
     console.log("Database schema setup complete!");

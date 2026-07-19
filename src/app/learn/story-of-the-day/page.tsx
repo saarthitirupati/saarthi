@@ -4,20 +4,31 @@ import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { ArrowLeft, BookOpen, Share2 } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { STORIES } from '@/data/stories';
 
 export default function StoryOfTheDay() {
   const [story, setStory] = useState<any>(null);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    fetch('/api/content/daily')
+    fetch('/api/v1/content/daily')
       .then(res => res.json())
       .then(data => {
-        setStory(data.learn?.storyOfTheDay);
+        let storyData = data.learn?.storyOfTheDay || data.story;
+        if (!storyData && STORIES.length > 0) {
+          // Fallback to static stories based on day of month
+          const day = new Date().getDate();
+          storyData = STORIES[day % STORIES.length];
+        }
+        setStory(storyData);
         setIsLoading(false);
       })
       .catch(err => {
         console.error(err);
+        if (STORIES.length > 0) {
+          const day = new Date().getDate();
+          setStory(STORIES[day % STORIES.length]);
+        }
         setIsLoading(false);
       });
   }, []);

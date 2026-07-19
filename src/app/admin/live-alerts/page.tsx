@@ -41,7 +41,7 @@ export default function AdminAlertsPage() {
   const fetchAlerts = async () => {
     setLoading(true);
     try {
-      const res = await fetch('/api/alerts');
+      const res = await fetch('/api/v1/alerts');
       if (res.ok) {
         const data = await res.json();
         setAlerts(data);
@@ -81,7 +81,7 @@ export default function AdminAlertsPage() {
     };
 
     try {
-      const res = await fetch('/api/alerts', {
+      const res = await fetch('/api/v1/alerts', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(body)
@@ -111,7 +111,7 @@ export default function AdminAlertsPage() {
   const handleExpireAlert = async (id: string) => {
     if (!confirm('Are you sure you want to expire this alert immediately?')) return;
     try {
-      const res = await fetch(`/api/alerts/${id}`, {
+      const res = await fetch(`/api/v1/alerts/${id}`, {
         method: 'DELETE'
       });
       if (res.ok) {

@@ -1,7 +1,7 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { ChevronLeft, CalendarHeart, Info, Loader2 } from 'lucide-react';
+import { ChevronLeft, CalendarHeart, Info, Loader2, Users, MapPin, Shirt } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
@@ -15,11 +15,11 @@ export default function FestivalsPage() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch('/api/festivals')
+    fetch('/api/v1/festivals')
       .then(r => r.json())
       .then(d => {
         console.log('Festivals fetched:', d);
-        setFestivals(d.festivals || []);
+        setFestivals(d.data || []);
       })
       .catch((err) => {
         console.error('Fetch error:', err);
@@ -104,18 +104,18 @@ export default function FestivalsPage() {
                     )}
                     <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
                       {crowdLevel && (
-                        <span style={{ fontSize: 11, padding: '4px 12px', borderRadius: 12, background: '#FEF3C7', color: '#92400E', fontWeight: 600 }}>
-                          👥 {crowdLevel}
+                        <span style={{ fontSize: 11, padding: '4px 12px', borderRadius: 12, background: '#FEF3C7', color: '#92400E', fontWeight: 600, display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
+                          <Users size={12} /> {crowdLevel}
                         </span>
                       )}
                       {fest.location && (
-                        <span style={{ fontSize: 11, padding: '4px 12px', borderRadius: 12, background: '#EFF6FF', color: '#1E40AF', fontWeight: 600 }}>
-                          📍 {fest.location}
+                        <span style={{ fontSize: 11, padding: '4px 12px', borderRadius: 12, background: '#EFF6FF', color: '#1E40AF', fontWeight: 600, display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
+                          <MapPin size={12} /> {fest.location}
                         </span>
                       )}
                       {(fest.dressCode || fest.dress_code) && (
-                        <span style={{ fontSize: 11, padding: '4px 12px', borderRadius: 12, background: '#F3F0FF', color: '#6C63FF', fontWeight: 600 }}>
-                          👕 {fest.dressCode || fest.dress_code}
+                        <span style={{ fontSize: 11, padding: '4px 12px', borderRadius: 12, background: '#F3F0FF', color: '#6C63FF', fontWeight: 600, display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
+                          <Shirt size={12} /> {fest.dressCode || fest.dress_code}
                         </span>
                       )}
                     </div>

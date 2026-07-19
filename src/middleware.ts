@@ -10,6 +10,11 @@ export function middleware(request: NextRequest) {
     (pathname.startsWith('/admin') && !pathname.startsWith('/admin/login')) ||
     (pathname.startsWith('/api/admin') && !pathname.startsWith('/api/admin/login'))
   ) {
+    // Allow public GET access to places for client-side pages (Saved, Generating)
+    if (request.method === 'GET' && pathname === '/api/admin/places') {
+      return NextResponse.next();
+    }
+
     const token = request.cookies.get('admin_token')?.value;
     if (token !== ADMIN_TOKEN) {
       if (pathname.startsWith('/api/')) {

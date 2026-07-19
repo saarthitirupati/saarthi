@@ -13,9 +13,10 @@ interface SideMenuProps {
 export default function SideMenu({ isOpen, onClose }: SideMenuProps) {
   const menuItems = [
     { name: 'Home', icon: Home, href: '/' },
-    { name: 'Explore Temples', icon: Compass, href: '/explore' },
-    { name: '1-Day Itinerary', icon: Calendar, href: '/itinerary' },
-    { name: 'Verified Reviews', icon: Award, href: '/reviews' },
+    { name: 'Explore Places', icon: Compass, href: '/explore' },
+    { name: 'Live Updates', icon: Award, href: '/live' },
+    { name: 'Festivals', icon: Calendar, href: '/festivals' },
+    { name: 'Alerts', icon: Info, href: '/alerts' },
   ];
 
   return (

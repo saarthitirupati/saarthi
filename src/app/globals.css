@@ -25,7 +25,7 @@
   --color-saffron-200: #FFD4A8;
   --color-saffron-300: #FFB870;
   --color-saffron-400: #FF9B3D;
-  --color-saffron-500: #E9801D;  /* CTA Accent */
+  --color-saffron-500: #F59E0B;  /* Heritage Saffron */
   --color-saffron-600: #D06A10;
   --color-saffron-700: #B0550C;
   --color-saffron-800: #8A4008;
@@ -86,18 +86,18 @@
   --color-category-shopping:  #7B5EA7;   /* Plum */
 
   /* --- Semantic Colors --- */
-  --color-success: #2F6144;
-  --color-warning: #E9801D;
+  --color-success: #16A34A;
+  --color-warning: #F59E0B;
   --color-error:   #D64545;
   --color-info:    #0E6B72;
 
-  --color-background:        #FAFAF7;
+  --color-background:        #FAF7F2;
   --color-surface:           #FFFFFF;
   --color-surface-elevated:  #FFFFFF;
-  --color-border:            #E7E3DD;
-  --color-border-strong:     #D1CCC5;
+  --color-border:            #E8E5DE;
+  --color-border-strong:     #E8E5DE;
 
-  --color-text-primary:   #1E1B18;
+  --color-text-primary:   #1B1F2A;
   --color-text-secondary: #57534E;
   --color-text-tertiary:  #A8A29E;
   --color-text-inverse:   #FFFFFF;
@@ -199,7 +199,7 @@
 body {
   background-color: var(--color-background);
   color: var(--color-text-primary);
-  font-family: var(--font-body);
+  font-family: var(--font-body), system-ui, sans-serif;
   margin: 0;
   padding: 0;
   overflow-x: hidden;
@@ -208,11 +208,11 @@ body {
 }
 
 h1, h2, h3, h4, h5, h6 {
-  font-family: var(--font-display);
+  font-family: var(--font-heading), system-ui, sans-serif;
   margin: 0;
   font-weight: var(--font-weight-bold);
   letter-spacing: var(--letter-spacing-tight);
-  color: var(--color-earth-900);
+  color: var(--color-text-primary);
 }
 
 p {
@@ -264,7 +264,7 @@ input[type="submit"],
 
 /* Typography Utility Classes */
 .hero-title {
-  font-family: var(--font-display);
+  font-family: var(--font-hero);
   font-size: var(--text-display-lg);
   font-weight: var(--font-weight-bold);
   line-height: var(--line-height-tight);
@@ -273,7 +273,7 @@ input[type="submit"],
 }
 
 .section-header {
-  font-family: var(--font-display);
+  font-family: var(--font-heading);
   font-size: var(--text-h2);
   font-weight: var(--font-weight-semibold);
   line-height: var(--line-height-snug);

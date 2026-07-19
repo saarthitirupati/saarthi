@@ -8,7 +8,7 @@ export default function LiveDashboard() {
 
   useEffect(() => {
     const fetchStatus = () => {
-      fetch('/api/live-status')
+      fetch('/api/v1/live-status')
         .then(res => res.json())
         .then(data => setStatus(data))
         .catch(err => console.error(err));
