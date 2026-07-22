@@ -61,11 +61,11 @@ export function useTripStore() {
       setState(prev => ({ ...prev, isInitialized: true }));
     }
 
-    // Refresh coordinates dynamically on mount — always resolve to SOME location
+    // Refresh coordinates dynamically on mount — always resolve to EXACT location
     if (typeof window !== 'undefined') {
       const permission = saved ? loadedState.locationPermission : 'default';
       if (permission !== 'denied') {
-        import('@/lib/location').then(({ detectCoordinates, TIRUPATI_CENTER }) => {
+        import('@/lib/location').then(({ detectCoordinates, watchCoordinates, TIRUPATI_CENTER }) => {
           detectCoordinates(
             (coords, source) => {
               setState(prev => ({ ...prev, userLocation: coords, locationPermission: 'granted' }));
@@ -79,6 +79,11 @@ export function useTripStore() {
               }));
             }
           );
+
+          // Watch real-time GPS hardware updates
+          watchCoordinates((coords) => {
+            setState(prev => ({ ...prev, userLocation: coords, locationPermission: 'granted' }));
+          });
         }).catch(() => {});
       } else if (!loadedState.userLocation) {
         // Permission was denied before and no cached location — set Tirupati Center

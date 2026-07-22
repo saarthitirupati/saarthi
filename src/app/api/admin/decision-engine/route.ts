@@ -1,76 +1,52 @@
 import { NextResponse } from 'next/server';
+import { supabase } from '@/lib/supabase';
 
-// Temporary in-memory mock store
-let mockDecisionCards = [
-  { id: '1', title: 'I only have 2 hours', icon: 'Clock', query_params: { duration: '<120' }, priority: 10, enabled: true },
-  { id: '2', title: "I'm with family", icon: 'Users', query_params: { tags: ['Family'] }, priority: 20, enabled: true },
-  { id: '3', title: "It's raining", icon: 'CloudRain', query_params: { indoor: true }, priority: 30, enabled: true },
+// Mock in-memory rules and weights fallback
+let mockWeights = [
+  { id: 'distance', category: 'distance', weights: { under2km: 35, under5km: 25, under10km: 15 }, description: 'Distance scoring tiers' },
+  { id: 'crowd', category: 'crowd', weights: { low: 30, moderate: 15, high: -15, extreme: -40 }, description: 'Crowd level modifiers' },
+  { id: 'weather', category: 'weather', weights: { rain_indoor_bonus: 35, rain_outdoor_penalty: -80 }, description: 'Weather modifiers' }
 ];
 
-let mockExperiences = [
-  { id: '1', title: 'Spiritual', icon: 'Heart', priority: 10, enabled: true },
-  { id: '2', title: 'Nature', icon: 'TreePine', priority: 20, enabled: true },
-  { id: '3', title: 'History', icon: 'Landmark', priority: 30, enabled: true },
+let mockRules = [
+  { id: 'rule_1', condition_type: 'weather', condition_value: 'rain', target_filter: { placeType: 'indoor' }, score_modifier: 35, reason_template: 'Indoor facility safe from rain', source_attribution: 'IMD', enabled: true },
+  { id: 'rule_2', condition_type: 'crowd', condition_value: 'extreme_crowd', target_filter: { category: 'Core Temple' }, score_modifier: 40, reason_template: 'Foothill escape from hilltop crowds', source_attribution: 'Live Update', enabled: true }
 ];
 
 export async function GET() {
+  try {
+    if (supabase) {
+      const { data: weights } = await supabase.from('recommendation_weights').select('*');
+      const { data: rules } = await supabase.from('recommendation_rules').select('*');
+      if (weights && weights.length > 0) mockWeights = weights;
+      if (rules && rules.length > 0) mockRules = rules;
+    }
+  } catch {}
+
   return NextResponse.json({
-    decisionCards: mockDecisionCards,
-    experiences: mockExperiences,
+    success: true,
+    weights: mockWeights,
+    rules: mockRules
   });
 }
 
-export async function POST(req: Request) {
+export async function POST(request: Request) {
   try {
-    const data = await req.json();
-    const type = data.type; // 'decision_card' or 'experience'
-    const payload = data.payload;
-    payload.id = Date.now().toString();
+    const body = await request.json();
+    if (body.weights) mockWeights = body.weights;
+    if (body.rules) mockRules = body.rules;
 
-    if (type === 'decision_card') {
-      mockDecisionCards.push(payload);
-    } else if (type === 'experience') {
-      mockExperiences.push(payload);
+    if (supabase && body.weights) {
+      for (const w of body.weights) {
+        await supabase.from('recommendation_weights').upsert(w);
+      }
     }
 
-    return NextResponse.json({ success: true, item: payload });
-  } catch (error: any) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
-  }
-}
-
-export async function PUT(req: Request) {
-  try {
-    const data = await req.json();
-    const type = data.type;
-    const payload = data.payload;
-
-    if (type === 'decision_card') {
-      mockDecisionCards = mockDecisionCards.map(c => c.id === payload.id ? { ...c, ...payload } : c);
-    } else if (type === 'experience') {
-      mockExperiences = mockExperiences.map(e => e.id === payload.id ? { ...e, ...payload } : e);
-    }
-
-    return NextResponse.json({ success: true });
-  } catch (error: any) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
-  }
-}
-
-export async function DELETE(req: Request) {
-  try {
-    const { searchParams } = new URL(req.url);
-    const id = searchParams.get('id');
-    const type = searchParams.get('type');
-
-    if (type === 'decision_card') {
-      mockDecisionCards = mockDecisionCards.filter(c => c.id !== id);
-    } else if (type === 'experience') {
-      mockExperiences = mockExperiences.filter(e => e.id !== id);
-    }
-
-    return NextResponse.json({ success: true });
-  } catch (error: any) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    return NextResponse.json({
+      success: true,
+      message: 'Decision Engine rules and weights saved successfully'
+    });
+  } catch (err: any) {
+    return NextResponse.json({ success: false, error: err.message }, { status: 500 });
   }
 }

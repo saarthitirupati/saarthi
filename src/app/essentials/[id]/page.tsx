@@ -10,9 +10,9 @@ import {
 } from 'lucide-react';
 import styles from '../Essentials.module.css';
 
-import { KNOWLEDGE_ITEMS, FAQ_ITEMS } from '@/content/knowledge';
+import { KNOWLEDGE_ITEMS, FAQ_ITEMS, SubLocation } from '@/content/knowledge';
 import { useTrip } from '@/components/TripContext';
-import { calculateDistance } from '@/utils/location';
+import { calculateDistance, calculateDrivingDistance, TIRUPATI_CENTER } from '@/utils/location';
 
 // Map iconName strings to Lucide React components
 import { 
@@ -49,16 +49,27 @@ export default function EssentialDetailPage({ params }: { params: Promise<{ id: 
   const { userLocation } = useTrip();
   const item = KNOWLEDGE_ITEMS.find(t => t.id === id || t.intentId === id);
 
-  // Real-time distance from user to this facility
+  const effectiveLocation = userLocation || TIRUPATI_CENTER;
+  const isTirumalaSpot = item?.location?.toLowerCase().includes('tirumala') || 
+                         item?.location?.toLowerCase().includes('vqc') || 
+                         (item?.coordinates?.lat ? item.coordinates.lat > 13.66 : false);
+
+  // Real-time dynamic driving distance from user to this facility
   const liveDistance = useMemo(() => {
-    if (!userLocation || !item?.coordinates) return null;
-    const distKm = calculateDistance(userLocation.lat, userLocation.lng, item.coordinates.lat, item.coordinates.lng);
+    if (!item?.coordinates) return null;
+    const distKm = calculateDrivingDistance(
+      effectiveLocation.lat,
+      effectiveLocation.lng,
+      item.coordinates.lat,
+      item.coordinates.lng,
+      Boolean(isTirumalaSpot)
+    );
     const distM = Math.round(distKm * 1000);
     return {
-      label: distM < 1000 ? `${distM} m` : `${distKm.toFixed(1)} km`,
-      walkMins: Math.max(1, Math.round(distM / 80)), // ~80m/min walking pace
+      label: distKm < 1 ? `${distM} m` : `${distKm.toFixed(1)} km`,
+      walkMins: Math.max(1, Math.round(distKm * 12)),
     };
-  }, [userLocation, item]);
+  }, [effectiveLocation, item, isTirumalaSpot]);
 
   if (!isMounted) {
     return (
@@ -88,11 +99,14 @@ export default function EssentialDetailPage({ params }: { params: Promise<{ id: 
 
   const IconComp = ICON_MAP[item.iconName] || Info;
 
-  // Handle Google Maps navigation
+  // Handle Google Maps navigation with dynamic turn-by-turn routing
   const handleOpenMap = (customQuery?: string) => {
     if (item.coordinates) {
-      const q = customQuery ? encodeURIComponent(customQuery) : `${item.coordinates.lat},${item.coordinates.lng}`;
-      const url = `https://www.google.com/maps/search/?api=1&query=${q}`;
+      const dest = customQuery 
+        ? encodeURIComponent(`${customQuery} Tirupati`) 
+        : `${item.coordinates.lat},${item.coordinates.lng}`;
+      const origin = effectiveLocation ? `&origin=${effectiveLocation.lat},${effectiveLocation.lng}` : '';
+      const url = `https://www.google.com/maps/dir/?api=1&destination=${dest}${origin}`;
       window.open(url, '_blank', 'noopener,noreferrer');
     }
   };
@@ -113,7 +127,7 @@ export default function EssentialDetailPage({ params }: { params: Promise<{ id: 
         <button className={styles.backButton} onClick={() => router.push('/essentials')} aria-label="Back">
           <ArrowLeft size={20} />
         </button>
-        <div>
+        <div style={{ textOverflow: 'ellipsis', overflow: 'hidden', whiteSpace: 'nowrap', padding: '0 8px' }}>
           <h1 className={styles.headerTitle}>{item.name}</h1>
           <p className={styles.headerSubtitle}>{item.shortDescription}</p>
         </div>
@@ -156,7 +170,7 @@ export default function EssentialDetailPage({ params }: { params: Promise<{ id: 
                     <h4 className={styles.subLocationName}>{loc.name}</h4>
                     <div className={styles.subLocationMeta}>
                       <span className={styles.subLocationWalk}>Walk • {loc.walkTime}</span>
-                      <span>{loc.distance}</span>
+                      <span>{userLocation ? `${calculateDrivingDistance(userLocation.lat, userLocation.lng, item.coordinates.lat, item.coordinates.lng, Boolean(isTirumalaSpot))} km` : loc.distance}</span>
                       <span style={{ color: '#16A34A', fontWeight: 600 }}>• {loc.status}</span>
                     </div>
                   </div>

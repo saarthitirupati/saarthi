@@ -116,8 +116,8 @@ export async function DELETE(_: Request, { params }: { params: Promise<{ id: str
   const { id } = await params;
 
   try {
-    const { error } = await supabase.from('places').delete().eq('id', id);
-    if (error) throw error;
+    // 1. Mark status as deleted in Supabase places table so static fallbacks never resurrect it
+    await supabase.from('places').upsert({ id, status: 'deleted', _dynamic: true });
     return NextResponse.json({ ok: true });
   } catch (e: any) {
     return NextResponse.json({ error: e.message }, { status: 400 });

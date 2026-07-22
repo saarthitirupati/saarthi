@@ -66,7 +66,7 @@ function LayoutContent({
         <SideMenu isOpen={isMenuOpen} onClose={() => setIsMenuOpen(false)} />
         <div style={{ 
           minHeight: '100vh',
-          paddingBottom: showBottomNav ? '80px' : '0'
+          paddingBottom: showBottomNav ? '96px' : '0'
         }}>
           {children}
         </div>

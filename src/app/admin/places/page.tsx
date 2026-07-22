@@ -49,6 +49,20 @@ export default function AdminPlacesList() {
     });
   }, [places, searchQuery, selectedCategory, selectedStatus]);
 
+  const handleDelete = async (id: string, name: string) => {
+    if (!confirm(`Are you sure you want to delete "${name}"?`)) return;
+    try {
+      const res = await fetch(`/api/admin/places/${id}`, { method: 'DELETE' });
+      if (res.ok) {
+        setPlaces(prev => prev.filter(p => p.id !== id));
+      } else {
+        alert('Failed to delete place');
+      }
+    } catch (e: any) {
+      alert(`Error deleting place: ${e.message}`);
+    }
+  };
+
   return (
     <div className={styles.container}>
       <div className={styles.header}>
@@ -104,7 +118,7 @@ export default function AdminPlacesList() {
         <table className={styles.table}>
           <thead>
             <tr>
-              <th>Place Name</th>
+              <th>Place Name & Coordinates</th>
               <th>Category</th>
               <th>Importance</th>
               <th>Status</th>
@@ -116,12 +130,16 @@ export default function AdminPlacesList() {
             {filteredPlaces.map(place => {
               const pubStatus = place.status || 'Published';
               const isVerified = place.verification?.status === 'Verified' || place.rating >= 4.6;
+              const lat = place.coordinates?.lat || 13.6288;
+              const lng = place.coordinates?.lng || 79.4192;
               
               return (
                 <tr key={place.id}>
                   <td className={styles.nameCell}>
                     <strong>{place.name}</strong>
-                    <div style={{ fontSize: '12px', color: '#64748B' }}>📍 {place.location} • {place.distanceKms} km</div>
+                    <div style={{ fontSize: '12px', color: '#64748B' }}>
+                      📍 {place.location} • {lat.toFixed(4)}, {lng.toFixed(4)}
+                    </div>
                   </td>
                   <td>
                     <span style={{ fontSize: '12px', fontWeight: 600, padding: '3px 8px', borderRadius: '6px', background: '#F1F5F9', color: '#334155' }}>
@@ -151,9 +169,15 @@ export default function AdminPlacesList() {
                     <Link href={`/place/${place.id}`} target="_blank" className={styles.editLink} style={{ marginRight: '8px', color: '#0284C7' }}>
                       <Eye size={14} style={{ display: 'inline', marginRight: '4px' }} /> View
                     </Link>
-                    <Link href={`/admin/places/${place.id}`} className={styles.editLink}>
+                    <Link href={`/admin/places/${place.id}`} className={styles.editLink} style={{ marginRight: '8px' }}>
                       Edit
                     </Link>
+                    <button 
+                      onClick={() => handleDelete(place.id, place.name)}
+                      style={{ background: 'none', border: 'none', color: '#DC2626', cursor: 'pointer', fontSize: '13px', fontWeight: 600 }}
+                    >
+                      Delete
+                    </button>
                   </td>
                 </tr>
               );

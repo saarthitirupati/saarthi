@@ -210,32 +210,41 @@ function ExploreContent() {
         )}
         {!searchQuery && activeFilter === 'All' && (() => {
           const source = places.length > 0 ? places : PLACES;
-          const mustVisit = source.filter(p => p.rating >= 4.8).slice(0, 6);
-          const hiddenGems = source.filter(p => {
-            const toStr = (v: any) => typeof v === 'string' ? v : (v?.name || v?.slug || String(v || ''));
-            const tagsLower = (p.tags || []).map(t => toStr(t).toLowerCase());
-            const categoryLower = toStr(p.category).toLowerCase();
-            const placeTypeLower = toStr(p.placeType).toLowerCase();
-            const interestsLower = (p.interests || []).map(i => toStr(i).toLowerCase());
-            return (
-              placeTypeLower === 'hidden' ||
-              categoryLower.includes('hidden') ||
-              tagsLower.some(t => ['hidden', 'hidden gem', 'peaceful', 'serene', 'off-beat', 'offbeat', 'untouched', 'quiet'].includes(t)) ||
-              interestsLower.includes('hidden')
-            );
-          }).slice(0, 6);
-
           const effectiveLocation = userLocation || TIRUPATI_CENTER;
-          const nearbyPlaces = source
-            .map(p => {
-              const lat = p.coordinates?.lat || TIRUPATI_CENTER.lat;
-              const lng = p.coordinates?.lng || TIRUPATI_CENTER.lng;
-              const isTirumala = p.location?.toLowerCase().includes('tirumala') || 
-                                 p.location?.toLowerCase().includes('narayanagiri') || 
-                                 !!(p.category && p.category.toLowerCase().includes('tirumala'));
-              const dist = calculateDrivingDistance(effectiveLocation.lat, effectiveLocation.lng, lat, lng, isTirumala);
-              return { ...p, computedDistance: dist };
+
+          const calculatePlaceDist = (p: Place) => {
+            const lat = p.coordinates?.lat || TIRUPATI_CENTER.lat;
+            const lng = p.coordinates?.lng || TIRUPATI_CENTER.lng;
+            const isTirumala = p.location?.toLowerCase().includes('tirumala') || 
+                               p.location?.toLowerCase().includes('narayanagiri') || 
+                               !!(p.category && p.category.toLowerCase().includes('tirumala'));
+            return calculateDrivingDistance(effectiveLocation.lat, effectiveLocation.lng, lat, lng, isTirumala);
+          };
+
+          const mustVisit = source
+            .filter(p => p.rating >= 4.8)
+            .map(p => ({ ...p, computedDistance: calculatePlaceDist(p) }))
+            .slice(0, 6);
+
+          const hiddenGems = source
+            .filter(p => {
+              const toStr = (v: any) => typeof v === 'string' ? v : (v?.name || v?.slug || String(v || ''));
+              const tagsLower = (p.tags || []).map(t => toStr(t).toLowerCase());
+              const categoryLower = toStr(p.category).toLowerCase();
+              const placeTypeLower = toStr(p.placeType).toLowerCase();
+              const interestsLower = (p.interests || []).map(i => toStr(i).toLowerCase());
+              return (
+                placeTypeLower === 'hidden' ||
+                categoryLower.includes('hidden') ||
+                tagsLower.some(t => ['hidden', 'hidden gem', 'peaceful', 'serene', 'off-beat', 'offbeat', 'untouched', 'quiet'].includes(t)) ||
+                interestsLower.includes('hidden')
+              );
             })
+            .map(p => ({ ...p, computedDistance: calculatePlaceDist(p) }))
+            .slice(0, 6);
+
+          const nearbyPlaces = source
+            .map(p => ({ ...p, computedDistance: calculatePlaceDist(p) }))
             .sort((a: any, b: any) => a.computedDistance - b.computedDistance)
             .slice(0, 6);
 
@@ -271,9 +280,14 @@ function ExploreContent() {
                       <div className={styles.curatedImage} style={{ backgroundImage: `url(${place.image || '/assets/ai/hero_spiritual_sunset.png'})` }} />
                       <div className={styles.curatedInfo}>
                         <h4>{place.name}</h4>
-                        <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-                          <Star size={12} fill="#FF9933" color="#FF9933" /> {place.rating}
-                        </span>
+                        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%', fontSize: '11px', marginTop: '2px' }}>
+                          <span style={{ display: 'flex', alignItems: 'center', gap: '3px', color: '#B0550C', fontWeight: 700 }}>
+                            <Star size={12} fill="#F59E0B" color="#F59E0B" /> {place.rating}
+                          </span>
+                          <span style={{ color: '#0E6B72', fontWeight: 700 }}>
+                            {Number((place as any).computedDistance).toFixed(1)} km away
+                          </span>
+                        </div>
                       </div>
                     </Link>
                   ))}
@@ -290,7 +304,12 @@ function ExploreContent() {
                       <div className={styles.curatedImage} style={{ backgroundImage: `url(${place.image || '/assets/ai/hero_spiritual_sunset.png'})` }} />
                       <div className={styles.curatedInfo}>
                         <h4>{place.name}</h4>
-                        <span>{place.placeType}</span>
+                        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%', fontSize: '11px', marginTop: '2px' }}>
+                          <span style={{ color: '#78716C', fontWeight: 600 }}>{place.placeType}</span>
+                          <span style={{ color: '#0E6B72', fontWeight: 700 }}>
+                            {Number((place as any).computedDistance).toFixed(1)} km away
+                          </span>
+                        </div>
                       </div>
                     </Link>
                   ))}

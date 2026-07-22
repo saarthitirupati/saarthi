@@ -1,6 +1,10 @@
 export async function safeFetchJson<T = any>(input: RequestInfo | URL, init?: RequestInit): Promise<T | null> {
   try {
-    const res = await fetch(input, init);
+    const mergedHeaders = {
+      'ngrok-skip-browser-warning': 'true',
+      ...(init?.headers || {})
+    };
+    const res = await fetch(input, { ...init, headers: mergedHeaders });
     if (!res.ok) {
       console.warn(`safeFetchJson: Request to ${input} returned status ${res.status}`);
       return null;

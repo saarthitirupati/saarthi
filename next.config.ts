@@ -1,11 +1,9 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* Allow HMR to work better with tunnels */
   images: {
     remotePatterns: [
       { protocol: 'https', hostname: '**' },
-      { protocol: 'https', hostname: 'cdn.sanity.io' },
     ],
   },
   async headers() {
@@ -14,12 +12,12 @@ const nextConfig: NextConfig = {
         source: '/:path*',
         headers: [
           { key: 'ngrok-skip-browser-warning', value: 'true' },
+          { key: 'Access-Control-Allow-Origin', value: '*' },
         ],
       },
     ];
   },
-  allowedDevOrigins: ['unsubtle-imprint-strudel.ngrok-free.dev'],
-  reactStrictMode: true,
+  allowedDevOrigins: ['localhost:3000', '*.ngrok-free.dev', 'unsubtle-imprint-strudel.ngrok-free.dev'],
 };
 
 export default nextConfig;

@@ -7,6 +7,7 @@ import { motion } from 'framer-motion';
 import { ChevronLeft, MapPin, Clock, Users, Shirt, Car, Sparkles, CalendarDays, Info, Flame, AlertTriangle } from 'lucide-react';
 import Link from 'next/link';
 import { safeFetchJson } from '@/lib/safeFetch';
+import { FESTIVALS_2026 } from '@/data/festivals';
 
 const CROWD_COLORS: Record<string, { bg: string; text: string }> = {
   'very high': { bg: '#FEE2E2', text: '#991B1B' },
@@ -188,16 +189,31 @@ export default function FestivalDetail({ params }: { params: Promise<{ slug: str
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Fetch all festivals (no date filter) so detail page works for any slug
     safeFetchJson<any>('/api/v1/festivals?all=1')
       .then((d) => {
-        if (d) {
-          const list = d.data || [];
-          const match = list.find(
-            (f: any) => f.slug === slug || f.id === slug
-          );
-          setFest(match || null);
+        const list = (d?.data && Array.isArray(d.data) && d.data.length > 0) ? d.data : FESTIVALS_2026;
+        let match = list.find(
+          (f: any) => f.slug === slug || f.id === slug
+        );
+        if (!match) {
+          match = FESTIVALS_2026.find((f: any) => f.slug === slug || f.id === slug) || list[0];
         }
+        if (match) {
+          setFest({
+            ...match,
+            name: match.name || match.title || 'Festival',
+            date: (match.date || match.date_start || '').split('T')[0],
+            location: match.location || match.place_name || 'Sri Kapileswara Swamy Temple',
+            recommendedTime: match.recommendedTime || match.recommended_time || '5:30 PM - 9:00 PM',
+            dressCode: match.dressCode || match.dress_code || 'Traditional',
+            placeId: match.placeId || match.place_id || 'kapila-theertham',
+            specialTips: match.specialTips || match.special_tips || match.description || ''
+          });
+        }
+      })
+      .catch(() => {
+        const fallback = FESTIVALS_2026.find((f: any) => f.slug === slug || f.id === slug) || FESTIVALS_2026[0];
+        setFest(fallback);
       })
       .finally(() => setLoading(false));
   }, [slug]);
@@ -325,6 +341,7 @@ export default function FestivalDetail({ params }: { params: Promise<{ slug: str
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'space-between',
+                  gap: '12px',
                   padding: '14px 16px',
                   borderRadius: '16px',
                   background: 'linear-gradient(135deg, #ECFDF5 0%, #D1FAE5 100%)',
@@ -333,7 +350,7 @@ export default function FestivalDetail({ params }: { params: Promise<{ slug: str
                   boxShadow: '0 2px 6px rgba(5, 150, 105, 0.08)'
                 }}
               >
-                <div>
+                <div style={{ minWidth: 0, flex: 1 }}>
                   <span style={{ fontSize: '11px', fontWeight: 800, color: '#047857', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
                     Recommended Shrine Visit
                   </span>
@@ -341,7 +358,20 @@ export default function FestivalDetail({ params }: { params: Promise<{ slug: str
                     {fest.location || 'Sri Kapileswara Swamy Temple'}
                   </h4>
                 </div>
-                <span style={{ fontSize: '13px', fontWeight: 800, color: '#059669', background: 'white', padding: '6px 12px', borderRadius: '10px', border: '1px solid #A7F3D0' }}>
+                <span style={{ 
+                  fontSize: '12.5px', 
+                  fontWeight: 800, 
+                  color: '#059669', 
+                  background: 'white', 
+                  padding: '8px 14px', 
+                  borderRadius: '10px', 
+                  border: '1px solid #A7F3D0',
+                  whiteSpace: 'nowrap',
+                  flexShrink: 0,
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '4px'
+                }}>
                   View Temple &rarr;
                 </span>
               </Link>

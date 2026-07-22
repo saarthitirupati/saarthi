@@ -45,6 +45,10 @@ export async function getIPLocation(): Promise<{ coords: LatLng; city?: string }
   return { coords: TIRUPATI_CENTER };
 }
 
+/**
+ * Detects the user's exact real-time GPS coordinates.
+ * Uses high-accuracy hardware GPS first, with automatic fallback to standard GPS, then IP location.
+ */
 export function detectCoordinates(
   onSuccess: (coords: LatLng, source: 'browser' | 'ip') => void,
   onFailure: (error?: any) => void
@@ -52,6 +56,7 @@ export function detectCoordinates(
   if (typeof window === 'undefined') return;
 
   if (navigator.geolocation) {
+    // 1. Try High Accuracy Hardware GPS (enableHighAccuracy: true)
     navigator.geolocation.getCurrentPosition(
       (position) => {
         onSuccess(
@@ -59,18 +64,31 @@ export function detectCoordinates(
           'browser'
         );
       },
-      (err) => {
-        console.warn("Browser geolocation failed. Falling back to IP-based location:", err);
-        getIPLocation()
-          .then(({ coords }) => {
-            onSuccess(coords, 'ip');
-          })
-          .catch((ipErr) => {
-            console.error("All location detection sources failed:", ipErr);
-            onFailure(ipErr);
-          });
+      (highAccErr) => {
+        console.warn("High accuracy GPS failed/timed out, trying standard accuracy:", highAccErr);
+        // 2. Fallback to standard accuracy GPS
+        navigator.geolocation.getCurrentPosition(
+          (stdPosition) => {
+            onSuccess(
+              { lat: stdPosition.coords.latitude, lng: stdPosition.coords.longitude },
+              'browser'
+            );
+          },
+          (stdErr) => {
+            console.warn("Standard geolocation failed, falling back to IP location:", stdErr);
+            getIPLocation()
+              .then(({ coords }) => {
+                onSuccess(coords, 'ip');
+              })
+              .catch((ipErr) => {
+                console.error("All location detection sources failed:", ipErr);
+                onFailure(ipErr);
+              });
+          },
+          { enableHighAccuracy: false, timeout: 5000, maximumAge: 60000 }
+        );
       },
-      { enableHighAccuracy: false, timeout: 10000 }
+      { enableHighAccuracy: true, timeout: 8000, maximumAge: 0 }
     );
   } else {
     getIPLocation()
@@ -79,4 +97,21 @@ export function detectCoordinates(
       })
       .catch(onFailure);
   }
+}
+
+/**
+ * Watches real-time GPS coordinates updates as the user moves.
+ */
+export function watchCoordinates(
+  onUpdate: (coords: LatLng) => void
+): number | null {
+  if (typeof window === 'undefined' || !navigator.geolocation) return null;
+
+  return navigator.geolocation.watchPosition(
+    (position) => {
+      onUpdate({ lat: position.coords.latitude, lng: position.coords.longitude });
+    },
+    (err) => console.warn("GPS watch position error:", err),
+    { enableHighAccuracy: true, timeout: 10000, maximumAge: 5000 }
+  );
 }

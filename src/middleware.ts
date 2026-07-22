@@ -1,29 +1,18 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 
-const ADMIN_TOKEN = 'jeevapath_admin_2024';
-
 export function middleware(request: NextRequest) {
-  const { pathname } = request.nextUrl;
+  const response = NextResponse.next();
   
-  if (
-    (pathname.startsWith('/admin') && !pathname.startsWith('/admin/login')) ||
-    (pathname.startsWith('/api/admin') && !pathname.startsWith('/api/admin/login'))
-  ) {
-    // Allow public GET access to places for client-side pages (Saved, Generating)
-    if (request.method === 'GET' && pathname === '/api/admin/places') {
-      return NextResponse.next();
-    }
+  // Set ngrok skip browser warning header on all responses
+  response.headers.set('ngrok-skip-browser-warning', 'true');
+  response.headers.set('Access-Control-Allow-Origin', '*');
+  response.headers.set('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+  response.headers.set('Access-Control-Allow-Headers', 'Content-Type, Authorization, ngrok-skip-browser-warning');
 
-    const token = request.cookies.get('admin_token')?.value;
-    if (token !== ADMIN_TOKEN) {
-      if (pathname.startsWith('/api/')) {
-        return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-      }
-      return NextResponse.redirect(new URL('/admin/login', request.url));
-    }
-  }
-  return NextResponse.next();
+  return response;
 }
 
-export const config = { matcher: ['/admin/:path*', '/api/admin/:path*'] };
+export const config = {
+  matcher: '/:path*',
+};

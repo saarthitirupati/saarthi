@@ -1832,11 +1832,20 @@ function OfflineVectorMap({ name, lat, lng }: { name: string; lat: number; lng: 
           </circle>
           <circle cx="150" cy="110" r="8" fill="#E9801D" stroke="#FFFFFF" strokeWidth="1.5" />
           <circle cx="150" cy="110" r="3" fill="#FFFFFF" />
-          {/* Main Label */}
-          <rect x="100" y="122" width="100" height="15" rx="3" fill="rgba(30, 27, 24, 0.85)" />
-          <text x="150" y="132" fontSize="7.5" fontWeight="bold" fill="#FFFFFF" textAnchor="middle">
-            {name.length > 20 ? name.slice(0, 18) + '...' : name}
-          </text>
+          {/* Dynamic Main Label */}
+          {(() => {
+            const displayTitle = name.length > 30 ? name.slice(0, 28) + '…' : name;
+            const labelWidth = Math.min(210, Math.max(96, displayTitle.length * 5.5 + 16));
+            const labelX = 150 - labelWidth / 2;
+            return (
+              <g>
+                <rect x={labelX} y="123" width={labelWidth} height="16" rx="4" fill="rgba(26, 27, 28, 0.9)" stroke="rgba(255,255,255,0.15)" strokeWidth="0.5" />
+                <text x="150" y="134" fontSize="8" fontWeight="700" fill="#FFFFFF" textAnchor="middle">
+                  {displayTitle}
+                </text>
+              </g>
+            );
+          })()}
         </g>
       </svg>
 

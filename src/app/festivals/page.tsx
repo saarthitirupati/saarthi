@@ -316,6 +316,8 @@ export default function FestivalsPage() {
                             display: 'inline-flex',
                             alignItems: 'center',
                             gap: '4px',
+                            whiteSpace: 'nowrap',
+                            flexShrink: 0,
                             boxShadow: '0 1px 2px rgba(5, 150, 105, 0.05)'
                           }}
                         >

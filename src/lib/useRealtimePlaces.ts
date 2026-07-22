@@ -43,36 +43,39 @@ export function useRealtimePlaces(initialPlaces: Place[] = []) {
         const apiRes = await safeFetchJson<any>('/api/v1/places');
         if (apiRes && apiRes.data) {
           const data = apiRes.data;
-          if (data && data.length > 0) {
-            // Merge: static data as base, Supabase overrides only defined fields
-            const staticMap = new Map(initialPlaces.map(p => [p.id, p]));
-            const merged: Place[] = data.map((row: any) => {
-              const base = staticMap.get(row.id);
-              const cleaned: Record<string, any> = {};
-              for (const [k, v] of Object.entries(row)) {
-                if (v !== null && v !== undefined && v !== '') cleaned[k] = v;
-              }
-              const result = { ...(base || {}), ...cleaned } as Place;
-              if (base?.coordinates) result.coordinates = base.coordinates;
-              result.category = toSafeStr(result.category);
-              result.location = toSafeStr(result.location);
-              result.placeType = toSafeStr(result.placeType) as any;
-              result.tags = Array.isArray(result.tags) ? result.tags : [];
-              result.interests = Array.isArray(result.interests) ? result.interests : [];
-              result.image = result.image || (result as any).hero_image || (base as any)?.image || '/assets/ai/hero_spiritual_sunset.png';
-              return result;
-            });
-            // Add any static places not in Supabase
-            for (const sp of initialPlaces) {
-              const spName = (sp.name || '').toLowerCase().trim();
-              if (!data.some((d: any) => d.id === sp.id || (d.name || '').toLowerCase().trim() === spName)) {
-                merged.push(sp);
-              }
+          const deletedIds = new Set(
+            data.filter((r: any) => r.status === 'deleted' || r.is_deleted === true).map((r: any) => r.id)
+          );
+          const activeData = data.filter((r: any) => r.status !== 'deleted' && !r.is_deleted);
+
+          // Merge: static data as base, Supabase overrides only defined fields
+          const staticMap = new Map(initialPlaces.map(p => [p.id, p]));
+          const merged: Place[] = activeData.map((row: any) => {
+            const base = staticMap.get(row.id);
+            const cleaned: Record<string, any> = {};
+            for (const [k, v] of Object.entries(row)) {
+              if (v !== null && v !== undefined && v !== '') cleaned[k] = v;
             }
-            // Filter out food places and deduplicate
-            const finalPlaces = dedupePlaces(merged).filter(p => p.placeType !== 'food' && p.category !== 'Food');
-            setPlaces(finalPlaces);
+            const result = { ...(base || {}), ...cleaned } as Place;
+            if (base?.coordinates) result.coordinates = base.coordinates;
+            result.category = toSafeStr(result.category);
+            result.location = toSafeStr(result.location);
+            result.placeType = toSafeStr(result.placeType) as any;
+            result.tags = Array.isArray(result.tags) ? result.tags : [];
+            result.interests = Array.isArray(result.interests) ? result.interests : [];
+            result.image = result.image || (result as any).hero_image || (base as any)?.image || '/assets/ai/hero_spiritual_sunset.png';
+            return result;
+          });
+          // Add any static places not in Supabase and NOT marked deleted
+          for (const sp of initialPlaces) {
+            const spName = (sp.name || '').toLowerCase().trim();
+            if (!deletedIds.has(sp.id) && !activeData.some((d: any) => d.id === sp.id || (d.name || '').toLowerCase().trim() === spName)) {
+              merged.push(sp);
+            }
           }
+          // Filter out food & deleted places and deduplicate
+          const finalPlaces = dedupePlaces(merged).filter(p => p.placeType !== 'food' && p.category !== 'Food' && (p as any).status !== 'deleted');
+          setPlaces(finalPlaces);
         }
       } catch (e) {
         console.error("Failed to fetch places, using static config", e);

@@ -694,7 +694,7 @@ export default function Home() {
     }
   };
 
-  const getParkingStatus = (status: string) => {
+  const getAvailabilityColor = (status: string) => {
     switch(status) {
       case 'available': return { label: '🟢 Available', color: '#16A34A' };
       case 'limited': return { label: '🟡 Filling Fast', color: '#D97706' };
@@ -777,16 +777,9 @@ export default function Home() {
     
     const ladduLabel = liveStatus.ladduAvailability === 'available' ? 'Laddu prasadam available' : liveStatus.ladduAvailability === 'limited' ? 'Laddu prasadam running low' : 'Laddu prasadam sold out';
     items.push({ 
-      icon: <Sparkles size={13} style={{ color: getParkingStatus(liveStatus.ladduAvailability).color }} />, 
+      icon: <Sparkles size={13} style={{ color: getAvailabilityColor(liveStatus.ladduAvailability).color }} />, 
       text: ladduLabel, 
-      color: getParkingStatus(liveStatus.ladduAvailability).color 
-    });
-    
-    const parkingLabel = liveStatus.accommodationStatus === 'available' ? 'Parking available on Tirumala road' : liveStatus.accommodationStatus === 'limited' ? 'Parking filling up fast' : 'Parking full — consider early departure';
-    items.push({ 
-      icon: <Car size={13} style={{ color: getParkingStatus(liveStatus.accommodationStatus).color }} />, 
-      text: parkingLabel, 
-      color: getParkingStatus(liveStatus.accommodationStatus).color 
+      color: getAvailabilityColor(liveStatus.ladduAvailability).color 
     });
     
     return items;
@@ -841,6 +834,20 @@ export default function Home() {
     const fallback = list.find(f => f.id === 'guru-purnima') || list[0];
     return fallback ? { ...fallback, isToday: false } : null;
   }, [liveFestivals]);
+
+  const [decisionContext, setDecisionContext] = useState<any>(null);
+
+  useEffect(() => {
+    const lat = userLocation ? userLocation.lat : '';
+    const lng = userLocation ? userLocation.lng : '';
+    safeFetchJson<any>(`/api/context/home?lat=${lat}&lng=${lng}`)
+      .then((data) => {
+        if (data && data.success) {
+          setDecisionContext(data);
+        }
+      })
+      .catch(() => {});
+  }, [userLocation]);
 
   const formattedBadgeDate = useMemo(() => {
     if (!todayFestival) return 'UPCOMING';
@@ -1140,7 +1147,7 @@ export default function Home() {
               {[
                 { label: 'Darshan Wait', val: tirumalaVerdict.currentWait },
                 { label: 'SSD Tokens', val: liveStatus.ssdTokenStatus === 'issuing' ? 'Available' : 'Closed' },
-                { label: 'Parking', val: liveStatus.accommodationStatus === 'available' ? 'Available' : 'Limited' },
+                { label: 'Laddu Prasadam', val: liveStatus.ladduAvailability === 'available' ? 'Available' : 'Limited' },
                 { label: 'Alerts', val: activeAlertsCount > 0 ? `${activeAlertsCount} Active` : 'None' }
               ].map((item, idx) => (
                 <div key={idx} style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
@@ -1284,13 +1291,6 @@ export default function Home() {
               badgeTextColor: liveStatus.ssdTokenStatus === 'issuing' ? '#166534' : '#DC2626'
             },
             { 
-              label: 'Parking', 
-              val: liveStatus.accommodationStatus === 'available' ? 'Available' : 'Limited', 
-              icon: Car, 
-              iconColor: '#16A34A',
-              badge: false
-            },
-            { 
               label: 'Weather', 
               val: weatherTemp, 
               icon: Sun, 
@@ -1405,43 +1405,45 @@ export default function Home() {
           }}
         >
           {/* Header row */}
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '12px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '14px' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-              <Ticket size={16} color="#7c3aed" />
-              <span style={{ fontSize: '13px', fontWeight: 800, color: '#111827' }}>SSD Token</span>
+              <Ticket size={18} color="#7C3AED" />
+              <span style={{ fontSize: '14px', fontWeight: 800, color: '#0F172A' }}>SSD Token Status</span>
             </div>
             <span style={{
               fontSize: '11px',
               fontWeight: 800,
-              padding: '3px 10px',
+              padding: '4px 12px',
               borderRadius: '20px',
               background: liveStatus.ssdTokenStatus === 'issuing' ? '#DCFCE7' : liveStatus.ssdTokenStatus === 'paused' ? '#FEF3C7' : '#FEE2E2',
               color: liveStatus.ssdTokenStatus === 'issuing' ? '#166534' : liveStatus.ssdTokenStatus === 'paused' ? '#B45309' : '#DC2626',
+              border: `1px solid ${liveStatus.ssdTokenStatus === 'issuing' ? '#86EFAC' : liveStatus.ssdTokenStatus === 'paused' ? '#FDE68A' : '#FECACA'}`
             }}>
               {liveStatus.ssdTokenStatus === 'issuing' ? 'Issuing Now' : liveStatus.ssdTokenStatus === 'paused' ? 'Paused' : 'Closed for Day'}
             </span>
           </div>
 
-          {/* DYNAMIC ADMIN ISSUING TIME BOX */}
+          {/* DYNAMIC ISSUING TIME BOX */}
           <div style={{
             background: liveStatus.ssdTokenStatus === 'issuing' ? '#F0FDF4' : liveStatus.ssdTokenStatus === 'paused' ? '#FFFBEB' : '#FEF2F2',
             border: `1px solid ${liveStatus.ssdTokenStatus === 'issuing' ? '#BBF7D0' : liveStatus.ssdTokenStatus === 'paused' ? '#FDE68A' : '#FECACA'}`,
-            borderRadius: '12px',
-            padding: '10px 14px',
+            borderRadius: '14px',
+            padding: '12px 16px',
             marginBottom: '12px',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
-            gap: '10px'
+            gap: '12px',
+            boxShadow: '0 1px 3px rgba(0,0,0,0.02)'
           }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-              <Clock size={16} color={liveStatus.ssdTokenStatus === 'issuing' ? '#16A34A' : liveStatus.ssdTokenStatus === 'paused' ? '#D97706' : '#DC2626'} />
+            <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+              <Clock size={20} color={liveStatus.ssdTokenStatus === 'issuing' ? '#16A34A' : liveStatus.ssdTokenStatus === 'paused' ? '#D97706' : '#DC2626'} style={{ flexShrink: 0 }} />
               <div>
-                <span style={{ fontSize: '10px', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.5px', color: '#64748B', display: 'block' }}>
+                <span style={{ fontSize: '10px', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.6px', color: '#64748B', display: 'block' }}>
                   Next Release / Issuing Time
                 </span>
-                <span style={{ fontSize: '13px', fontWeight: 800, color: liveStatus.ssdTokenStatus === 'issuing' ? '#166534' : liveStatus.ssdTokenStatus === 'paused' ? '#B45309' : '#991B1B' }}>
-                  {liveStatus.ssdNextTokenTime ? liveStatus.ssdNextTokenTime : (liveStatus.ssdTokenStatus === 'issuing' ? 'Tokens Being Issued Now' : 'Closed for Today')}
+                <span style={{ fontSize: '15px', fontWeight: 900, color: liveStatus.ssdTokenStatus === 'issuing' ? '#15803D' : liveStatus.ssdTokenStatus === 'paused' ? '#B45309' : '#991B1B', marginTop: '2px', display: 'block' }}>
+                  {liveStatus.ssdNextTokenTime ? liveStatus.ssdNextTokenTime : (liveStatus.ssdTokenStatus === 'issuing' ? 'Tokens Being Issued Now' : '4:00 AM')}
                 </span>
               </div>
             </div>
@@ -1449,44 +1451,45 @@ export default function Home() {
               <span style={{
                 fontSize: '11px',
                 fontWeight: 700,
-                color: '#1E293B',
+                color: '#334155',
                 background: '#FFFFFF',
                 border: '1px solid #CBD5E1',
-                padding: '3px 8px',
-                borderRadius: '6px',
-                maxWidth: '130px',
+                padding: '4px 10px',
+                borderRadius: '8px',
+                maxWidth: '140px',
                 overflow: 'hidden',
                 textOverflow: 'ellipsis',
-                whiteSpace: 'nowrap'
+                whiteSpace: 'nowrap',
+                boxShadow: '0 1px 2px rgba(0,0,0,0.03)'
               }}>
                 {liveStatus.ssdNotice}
               </span>
             )}
           </div>
 
-          {/* Timing subtitle */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '12px' }}>
-            <span style={{ fontSize: '12px', color: '#57534e', fontWeight: 500 }}>
+          {/* Non-redundant status helper text */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '14px' }}>
+            <span style={{ fontSize: '12px', color: '#64748B', fontWeight: 500, lineHeight: 1.4 }}>
               {liveStatus.ssdTokenStatus === 'issuing'
-                ? 'Tokens being issued — collect at counters below'
-                : liveStatus.ssdNextTokenTime
-                ? `Next batch: ${liveStatus.ssdNextTokenTime}`
-                : 'No more tokens today — come back tomorrow at 3 AM'}
+                ? 'Tokens actively issuing — collect at counters listed below'
+                : liveStatus.ssdTokenStatus === 'paused'
+                ? 'Issuing temporarily paused — next batch resume time above'
+                : 'Daily quota completed — next token release time indicated above'}
             </span>
           </div>
 
           {/* Counter locations */}
           {liveStatus.ssdCounters && liveStatus.ssdCounters.length > 0 && (
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', borderTop: '1px solid #f5f5f4', paddingTop: '10px' }}>
-              <span style={{ fontSize: '10px', fontWeight: 700, color: '#a8a29e', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', borderTop: '1px solid #F1F5F9', paddingTop: '12px' }}>
+              <span style={{ fontSize: '10.5px', fontWeight: 800, color: '#94A3B8', textTransform: 'uppercase', letterSpacing: '0.6px' }}>
                 Collection Centres
               </span>
               {liveStatus.ssdCounters.map((c: any, i: number) => (
-                <div key={i} style={{ display: 'flex', alignItems: 'flex-start', gap: '6px' }}>
-                  <MapPin size={11} color="#7c3aed" style={{ marginTop: '2px', flexShrink: 0 }} />
+                <div key={i} style={{ display: 'flex', alignItems: 'flex-start', gap: '8px' }}>
+                  <MapPin size={14} color="#7C3AED" style={{ marginTop: '2px', flexShrink: 0 }} />
                   <div>
-                    <span style={{ fontSize: '12px', fontWeight: 700, color: '#1c1917', display: 'block' }}>{c.name}</span>
-                    <span style={{ fontSize: '11px', color: '#78716c', lineHeight: 1.4 }}>{c.description}</span>
+                    <span style={{ fontSize: '13px', fontWeight: 700, color: '#0F172A', display: 'block', lineHeight: 1.3 }}>{c.name}</span>
+                    <span style={{ fontSize: '11.5px', color: '#64748B', lineHeight: 1.4, marginTop: '1px', display: 'block' }}>{c.description}</span>
                   </div>
                 </div>
               ))}
@@ -1862,11 +1865,18 @@ export default function Home() {
       </div>
 
       {/* ═══════════════════════════════════════════════════
-          9. NEARBY PLACES
+          9. QUICK TO REACH (SERVER-DRIVEN DECISION ENGINE)
          ═══════════════════════════════════════════════════ */}
       <div style={{ margin: '8px 0 24px 0' }}>
         <div style={{ padding: '0 16px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
-          <h3 style={{ fontSize: '13px', fontWeight: 700, color: '#111827', margin: 0 }}>Places to explore</h3>
+          <div>
+            <h3 style={{ fontSize: '13px', fontWeight: 800, color: '#111827', margin: 0 }}>
+              {decisionContext?.sections?.find((s: any) => s.id === 'quick_to_reach')?.title || 'Quick to Reach'}
+            </h3>
+            <span style={{ fontSize: '11px', color: '#64748B', fontWeight: 500 }}>
+              {decisionContext?.sections?.find((s: any) => s.id === 'quick_to_reach')?.subtitle || 'Optimal travel time & live status'}
+            </span>
+          </div>
           <Link href="/explore" style={{ fontSize: '12px', fontWeight: 800, color: '#14532D', textDecoration: 'none' }}>
             View All
           </Link>
@@ -1881,57 +1891,57 @@ export default function Home() {
           }}
           className="no-scrollbar"
         >
-          {[
-            { name: 'Kapila Theertham', img: '/assets/temples/kapila-theertham.png', dist: '1.2 km' },
-            { name: 'Regional Science Center', img: '/assets/temples/science-center.png', dist: '2.5 km' },
-            { name: 'Sri Venkateswara Museum', img: '/assets/temples/museum.png', dist: '3.1 km' },
-            { name: 'Tirupati Zoo', img: '/assets/temples/zoo.png', dist: '4.8 km' },
-            { name: 'ISKCON Temple', img: '/assets/temples/iskcon.png', dist: '1.5 km' }
-          ].map((place, idx) => {
-            const matched = places.find(p => p.name.toLowerCase().includes(place.name.split(' ')[0].toLowerCase()));
-            const finalImg = matched?.image || place.img;
-            const finalId = matched?.id || 'kapila-theertham';
+          {(() => {
+            const quickSec = decisionContext?.sections?.find((s: any) => s.id === 'quick_to_reach');
+            const itemsList = quickSec?.items && quickSec.items.length > 0 ? quickSec.items : [
+              { id: 'kapila-theertham', name: 'Kapila Theertham', image: '/assets/temples/kapila-theertham.png', distance: '1.2 km', reasons: [{ label: 'Open Now', source: 'TTD' }] },
+              { id: 'regional-science-centre', name: 'Regional Science Centre', image: '/assets/leisure/science-centre.png', distance: '2.5 km', reasons: [{ label: 'Low Crowd', source: 'Live' }] },
+              { id: 'sv-museum', name: 'SV Museum', image: '/assets/temples/sv_museum_facade.png', distance: '3.1 km', reasons: [{ label: 'Indoor Facility', source: 'IMD' }] },
+              { id: 'sv-zoo-park', name: 'Tirupati Zoo', image: '/assets/leisure/sv-zoo.png', distance: '4.8 km', reasons: [{ label: 'Pleasant Weather', source: 'IMD' }] },
+              { id: 'iskcon-tirupati', name: 'ISKCON Temple', image: '/assets/temples/iskcon.png', distance: '1.5 km', reasons: [{ label: 'Open Now', source: 'TTD' }] }
+            ];
 
-            let displayDist = place.dist;
-            if (matched && matched.coordinates) {
-              const baseLoc = userLocation || TIRUPATI_CENTER;
-              const isTirumala = finalId.includes('tirumala') || finalId === 'srivari-museum' || finalId === 'swami-pushkarini' || finalId === 'srivari-paadaalu' || finalId === 'papavinasam' || finalId === 'akasaganga' || finalId === 'silathoranam';
-              const distNum = calculateDrivingDistance(baseLoc.lat, baseLoc.lng, matched.coordinates.lat, matched.coordinates.lng, isTirumala);
-              displayDist = `${distNum.toFixed(1)} km`;
-            }
-
-            return (
+            return itemsList.map((item: any, idx: number) => (
               <div 
                 key={idx}
-                onClick={() => handlePlaceClick(finalId)}
+                onClick={() => handlePlaceClick(item.id)}
                 style={{
-                  flex: '0 0 140px',
+                  flex: '0 0 150px',
                   background: '#FFFFFF',
                   border: '1px solid #ECE9E3',
                   borderRadius: '16px',
                   overflow: 'hidden',
                   cursor: 'pointer',
-                  boxShadow: '0 2px 8px rgba(0,0,0,0.01)'
+                  boxShadow: '0 2px 8px rgba(0,0,0,0.01)',
+                  display: 'flex',
+                  flexDirection: 'column'
                 }}
               >
                 <div style={{
                   height: '90px',
-                  backgroundImage: `url(${finalImg})`,
+                  backgroundImage: `url(${item.image || '/assets/temples/kapila-theertham.png'})`,
                   backgroundSize: 'cover',
                   backgroundPosition: 'center',
                   backgroundColor: '#E2E8F0'
                 }} />
-                <div style={{ padding: '8px 10px' }}>
-                  <h4 style={{ fontSize: '12px', fontWeight: 800, color: '#111827', margin: '0 0 2px 0', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-                    {place.name}
-                  </h4>
-                  <span style={{ fontSize: '11px', fontWeight: 700, color: '#64748B' }}>
-                    {displayDist} away
-                  </span>
+                <div style={{ padding: '8px 10px', display: 'flex', flexDirection: 'column', flex: 1, justifyContent: 'space-between' }}>
+                  <div>
+                    <h4 style={{ fontSize: '12px', fontWeight: 800, color: '#111827', margin: '0 0 2px 0', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                      {item.name}
+                    </h4>
+                    <span style={{ fontSize: '11px', fontWeight: 700, color: '#2F6144', display: 'block' }}>
+                      {item.distance} away
+                    </span>
+                  </div>
+                  {item.reasons && item.reasons[0] && (
+                    <div style={{ marginTop: '6px', fontSize: '9.5px', background: '#F1F5F9', color: '#475569', padding: '2px 6px', borderRadius: '4px', fontWeight: 700, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                      ✓ {item.reasons[0].label}
+                    </div>
+                  )}
                 </div>
               </div>
-            );
-          })}
+            ));
+          })()}
         </div>
       </div>
 

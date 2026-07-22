@@ -1,164 +1,266 @@
 .container {
   padding: 24px;
-  background-color: #F8FAFC;
-  min-height: 100vh;
+  max-width: 1200px;
+  margin: 0 auto;
+  font-family: system-ui, -apple-system, sans-serif;
   color: #0F172A;
 }
 
 .header {
-  margin-bottom: 32px;
   display: flex;
+  align-items: center;
   justify-content: space-between;
-  align-items: flex-start;
+  margin-bottom: 24px;
 }
 
 .title {
-  font-size: 24px;
+  font-size: 22px;
   font-weight: 800;
-  margin: 0 0 8px 0;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
 .subtitle {
-  font-size: 14px;
+  font-size: 13px;
   color: #64748B;
-  margin: 0;
+  margin: 4px 0 0 0;
 }
 
-.section {
-  background: #FFFFFF;
-  border-radius: 12px;
-  border: 1px solid #E2E8F0;
-  padding: 24px;
-  margin-bottom: 32px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.02);
-}
-
-.sectionHeader {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 20px;
-}
-
-.sectionTitle {
-  font-size: 18px;
-  font-weight: 700;
-  margin: 0;
-}
-
-.addButton {
-  background: #0F172A;
-  color: #FFFFFF;
-  border: none;
-  border-radius: 8px;
-  padding: 8px 16px;
-  font-size: 14px;
-  font-weight: 600;
-  cursor: pointer;
+.saveBtn {
   display: flex;
   align-items: center;
   gap: 8px;
-  transition: background 0.2s;
+  background: #7C3AED;
+  color: #FFFFFF;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 12px;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(124, 58, 237, 0.25);
+  transition: all 0.2s;
 }
 
-.addButton:hover {
-  background: #1E293B;
+.saveBtn:hover {
+  background: #6D28D9;
 }
 
 .grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 16px;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
 }
 
 .card {
-  background: #F8FAFC;
+  background: #FFFFFF;
   border: 1px solid #E2E8F0;
-  border-radius: 8px;
-  padding: 16px;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
+  border-radius: 20px;
+  padding: 20px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.03);
 }
 
 .cardHeader {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  gap: 8px;
 }
 
 .cardTitle {
-  font-size: 15px;
-  font-weight: 700;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.iconWrapper {
-  color: #3B82F6;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.statusToggle {
-  font-size: 12px;
-  font-weight: 600;
-  padding: 4px 8px;
-  border-radius: 12px;
-  background: #ECFDF5;
-  color: #059669;
-}
-
-.statusToggle.disabled {
-  background: #FEF2F2;
-  color: #DC2626;
-}
-
-.cardDetails {
-  font-size: 13px;
-  color: #475569;
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-
-.cardDetails pre {
-  background: #E2E8F0;
-  padding: 6px;
-  border-radius: 4px;
-  overflow-x: auto;
+  font-size: 16px;
+  font-weight: 800;
   margin: 0;
+}
+
+.cardDesc {
+  font-size: 12.5px;
+  color: #64748B;
+  margin: 6px 0 18px 0;
+  line-height: 1.45;
+}
+
+.formGroup {
+  margin-bottom: 14px;
+}
+
+.formRow {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.label {
+  display: block;
   font-size: 12px;
+  font-weight: 700;
+  color: #334155;
+  margin-bottom: 6px;
 }
 
-.actions {
-  display: flex;
-  gap: 8px;
-  margin-top: auto;
-}
-
-.editButton, .deleteButton {
-  flex: 1;
-  padding: 6px;
-  border-radius: 6px;
+.select, .range {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #CBD5E1;
+  border-radius: 10px;
   font-size: 13px;
-  font-weight: 600;
-  cursor: pointer;
-  border: 1px solid #E2E8F0;
   background: #FFFFFF;
 }
 
-.deleteButton {
-  color: #DC2626;
-  border-color: #FECACA;
+.simBtn {
+  width: 100%;
+  padding: 12px;
+  background: #E9801D;
+  color: #FFFFFF;
+  border: none;
+  border-radius: 12px;
+  font-size: 13.5px;
+  font-weight: 800;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 10px;
 }
 
-.editButton:hover {
+.simOutputBox {
+  margin-top: 20px;
+  padding: 16px;
+  background: #F8FAFC;
+  border: 1px solid #E2E8F0;
+  border-radius: 16px;
+}
+
+.simHeader {
+  font-size: 13px;
+  font-weight: 800;
+  margin: 0 0 12px 0;
+  color: #0F172A;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.simSection {
+  margin-bottom: 14px;
+}
+
+.simSecTitle {
+  font-size: 12px;
+  font-weight: 800;
+  color: #475569;
+  text-transform: uppercase;
+  margin: 0 0 6px 0;
+}
+
+.simList {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.simItem {
+  background: #FFFFFF;
+  border: 1px solid #E2E8F0;
+  border-radius: 10px;
+  padding: 10px;
+}
+
+.simItemMain {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 4px;
+}
+
+.simRank {
+  font-size: 11px;
+  font-weight: 800;
+  color: #7C3AED;
+  background: #F5F3FF;
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+.simName {
+  font-size: 13px;
+  font-weight: 700;
+  color: #0F172A;
+}
+
+.simConf {
+  font-size: 11px;
+  fontWeight: 800;
+  color: #16A34A;
+}
+
+.simReasons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.reasonTag {
+  font-size: 10.5px;
   background: #F1F5F9;
+  color: #475569;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-weight: 600;
 }
 
-.deleteButton:hover {
-  background: #FEF2F2;
+.rulesList {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.ruleCard {
+  background: #F8FAFC;
+  border: 1px solid #E2E8F0;
+  border-radius: 12px;
+  padding: 12px 14px;
+}
+
+.ruleTop {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 4px;
+}
+
+.ruleTag {
+  font-size: 11px;
+  font-weight: 800;
+  color: #2563EB;
+  background: #EFF6FF;
+  padding: 2px 8px;
+  border-radius: 6px;
+}
+
+.ruleModifier {
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.ruleTemplate {
+  font-size: 12.5px;
+  color: #334155;
+  margin: 0;
+}
+
+.spin {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  100% { transform: rotate(360deg); }
+}
+
+@media (max-width: 768px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
 }
