@@ -1,203 +1,192 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import {} from 'next/navigation';
+import styles from './LiveUpdates.module.css';
+import { Activity, Clock, Zap, AlertTriangle } from 'lucide-react';
+import { notifyRealtimeUpdate } from '@/lib/useRealtimeStatus';
 
-export default function AdminLivePage() {
-  const [metrics, setMetrics] = useState({
-    crowd_wait_minutes: 45,
-    crowd_level: 'Moderate',
-    sarva_darshan_wait: '16-20 hours',
-    special_entry_wait: '3-5 hours',
-    divya_darshan_wait: '1-1.5 hours',
-    srivani_darshan_wait: 'Depends on slot',
-    parking_status: 'Available',
-    parking_location: 'Near Alipiri',
-    next_bus_minutes: 12});
-  const [loading, setLoading] = useState(true);
-  const [saving, setSaving] = useState(false);
-  const [message, setMessage] = useState('');
+import { safeFetchJson } from '@/lib/safeFetch';
+
+export default function AdminLiveUpdates() {
+  const [ssdStatus, setSsdStatus] = useState({ ssdTokenStatus: 'issuing', ssdNextTokenTime: '', ssdNotice: '' });
 
   useEffect(() => {
-    fetch('/api/v1/live-status')
-      .then(res => res.json())
-      .then(data => {
-        setMetrics({
-          crowd_wait_minutes: data.crowd.waitMinutes,
-          crowd_level: data.crowd.status,
-          sarva_darshan_wait: data.crowd.sarvaDarshan,
-          special_entry_wait: data.crowd.specialEntry,
-          divya_darshan_wait: data.crowd.divyaDarshan,
-          srivani_darshan_wait: data.crowd.srivaniTrust,
-          parking_status: data.parking.status,
-          parking_location: data.parking.location,
-          next_bus_minutes: data.transit.nextRtcBusMinutes});
-        setLoading(false);
-      });
+    safeFetchJson<any>('/api/admin/status').then(data => {
+      if (data) {
+        setSsdStatus({
+          ssdTokenStatus: data.ssdTokenStatus || 'issuing',
+          ssdNextTokenTime: data.ssdNextTokenTime || '',
+          ssdNotice: data.ssdNotice || ''
+        });
+      }
+    });
   }, []);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-    const { name, value } = e.target;
-    setMetrics(prev => ({
-      ...prev,
-      [name]: name.includes('minutes') ? parseInt(value) || 0 : value
-    }));
+  const handleBroadcast = async () => {
+    await fetch('/api/admin/status', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(ssdStatus)
+    });
+    notifyRealtimeUpdate();
+    alert('SSD Status Broadcasted!');
   };
 
-  const handleSave = async () => {
-    setSaving(true);
-    setMessage('');
-    try {
-      const res = await fetch('/api/admin/live', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(metrics)
-      });
-      if (res.ok) {
-        setMessage('Successfully updated live metrics!');
-      } else {
-        setMessage('Failed to update.');
+  const [livePlaces, setLivePlaces] = useState<any[]>([]);
+
+  useEffect(() => {
+    safeFetchJson<any>('/api/admin/live-places').then(data => {
+      if (data) {
+        setLivePlaces(data.places || []);
       }
-    } catch {
-      setMessage('Error updating metrics.');
-    }
-    setSaving(false);
-  };
+    });
+  }, []);
 
-  if (loading) return <div className="p-10 text-center">Loading Admin Panel...</div>;
+  const handlePlaceUpdate = async (id: string, updates: any) => {
+    // 1. Update live places API
+    const data = await safeFetchJson<any>('/api/admin/live-places', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ id, updates })
+    });
+    if (data && data.places) {
+      setLivePlaces(data.places);
+      
+      // 2. If it's Tirumala (uuid-1), also sync to the global status!
+      if (id === 'uuid-1') {
+        const globalStatusUpdates: any = {};
+        if (updates.time) globalStatusUpdates.waitTime = updates.time;
+        if (updates.crowd) globalStatusUpdates.crowdLevel = updates.crowd.toLowerCase();
+        if (updates.parking) globalStatusUpdates.accommodationStatus = updates.parking === 'FULL' ? 'full' : 'available';
+        
+        await fetch('/api/admin/status', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(globalStatusUpdates)
+        });
+      }
+      
+      notifyRealtimeUpdate();
+      alert('Live status updated!');
+    }
+  };
 
   return (
-    <div className="max-w-2xl mx-auto p-6 bg-gray-50 min-h-screen">
-      <h1 className="text-2xl font-bold text-gray-800 mb-6">Saarthi Admin: Live Metrics</h1>
-      
-      <div className="bg-white p-6 rounded-2xl shadow-sm space-y-6">
+    <div className={styles.container}>
+      <div className={styles.header}>
         <div>
-          <label className="block text-sm font-semibold text-gray-700 mb-2">Tirumala Crowd Wait (Primary Score - Minutes)</label>
-          <input 
-            type="number" 
-            name="crowd_wait_minutes"
-            value={metrics.crowd_wait_minutes}
-            onChange={handleChange}
-            className="w-full border border-gray-300 rounded-lg p-3"
-          />
+          <h1 className={styles.title}>Live Operations</h1>
+          <p className={styles.subtitle}>Manage real-time crowd, parking, and transit status for Layer 3</p>
         </div>
-
-        <div>
-          <label className="block text-sm font-semibold text-gray-700 mb-2">Overall Crowd Level</label>
-          <select 
-            name="crowd_level"
-            value={metrics.crowd_level}
-            onChange={handleChange}
-            className="w-full border border-gray-300 rounded-lg p-3 bg-white"
-          >
-            <option value="Low">Low</option>
-            <option value="Moderate">Moderate</option>
-            <option value="High">High</option>
-            <option value="Extreme">Extreme</option>
-          </select>
+        <div className={styles.quickActions}>
+          <button className={styles.dangerButton}>
+            <AlertTriangle size={16} /> Broadcast Emergency Alert
+          </button>
         </div>
+      </div>
 
-        <div className="bg-orange-50 p-4 rounded-lg border border-orange-100 space-y-4">
-          <h2 className="font-bold text-orange-800">Detailed Darshan Timings</h2>
-          
-          <div>
-            <label className="block text-sm font-semibold text-gray-700 mb-2">Sarva Darshan (Free)</label>
-            <input 
-              type="text" 
-              name="sarva_darshan_wait"
-              value={metrics.sarva_darshan_wait}
-              onChange={handleChange}
-              placeholder="e.g. 16-20 hours"
-              className="w-full border border-gray-300 rounded-lg p-3"
-            />
+      <div className={styles.globalOverride}>
+        <div className={styles.overrideHeader}>
+          <Zap size={18} color="#d97706" />
+          <h3>Global Weather Override</h3>
+        </div>
+        <p className={styles.overrideDesc}>Forces the recommendation engine to use this weather state instead of the API for all calculations.</p>
+        <div className={styles.weatherToggles}>
+          <button className={`${styles.weatherBtn} ${styles.active}`}>Auto (API)</button>
+          <button className={styles.weatherBtn}>Clear</button>
+          <button className={styles.weatherBtn}>Heavy Rain</button>
+          <button className={styles.weatherBtn}>Extreme Heat</button>
+        </div>
+      </div>
+
+      <div className={styles.ssdSection}>
+        <div className={styles.overrideHeader}>
+          <h3>🎟️ Slotted Sarva Darshan (SSD) Token Operations</h3>
+        </div>
+        <p className={styles.overrideDesc}>Manage offline free darshan token counters in Tirupati (Srinivasam, Vishnu Nivasam, Bhudevi Complex).</p>
+        
+        <div className={styles.ssdControls}>
+          <div className={styles.controlGroup}>
+            <label>Token Status</label>
+            <select className={styles.select} value={ssdStatus.ssdTokenStatus} onChange={e => setSsdStatus(s => ({ ...s, ssdTokenStatus: e.target.value }))}>
+              <option value="ISSUING">Issuing Tokens</option>
+              <option value="PAUSED">Paused Temporarily</option>
+              <option value="CLOSED">Closed for the Day</option>
+            </select>
           </div>
 
-          <div>
-            <label className="block text-sm font-semibold text-gray-700 mb-2">Special Entry (Rs. 300)</label>
-            <input 
-              type="text" 
-              name="special_entry_wait"
-              value={metrics.special_entry_wait}
-              onChange={handleChange}
-              placeholder="e.g. 3-5 hours"
-              className="w-full border border-gray-300 rounded-lg p-3"
-            />
+          <div className={styles.controlGroup}>
+            <label>Issue Time / Quota Updates</label>
+            <input type="text" className={styles.input} value={ssdStatus.ssdNextTokenTime} onChange={e => setSsdStatus(s => ({ ...s, ssdNextTokenTime: e.target.value }))} placeholder="e.g., Tomorrow 4:00 AM" style={{ width: '100%' }} />
           </div>
 
-          <div>
-            <label className="block text-sm font-semibold text-gray-700 mb-2">Divya Darshan (Footpath)</label>
-            <input 
-              type="text" 
-              name="divya_darshan_wait"
-              value={metrics.divya_darshan_wait}
-              onChange={handleChange}
-              placeholder="e.g. 1-1.5 hours"
-              className="w-full border border-gray-300 rounded-lg p-3"
-            />
-          </div>
-
-          <div>
-            <label className="block text-sm font-semibold text-gray-700 mb-2">Time Slot Sarva Darshan (SSD Tokens)</label>
-            <input 
-              type="text" 
-              name="srivani_darshan_wait"
-              value={metrics.srivani_darshan_wait}
-              onChange={handleChange}
-              placeholder="e.g. Depends on slot"
-              className="w-full border border-gray-300 rounded-lg p-3"
-            />
+          <div className={styles.controlGroup}>
+            <label>Pro Tip (When to go faster)</label>
+            <input type="text" className={styles.input} value={ssdStatus.ssdNotice} onChange={e => setSsdStatus(s => ({ ...s, ssdNotice: e.target.value }))} placeholder="e.g., Visit Bhudevi Complex after 4 PM for faster queues" style={{ width: '100%' }} />
           </div>
         </div>
-
-        <div>
-          <label className="block text-sm font-semibold text-gray-700 mb-2">Next RTC Bus (Minutes)</label>
-          <input 
-            type="number" 
-            name="next_bus_minutes"
-            value={metrics.next_bus_minutes}
-            onChange={handleChange}
-            className="w-full border border-gray-300 rounded-lg p-3"
-          />
+        <div style={{ marginTop: '16px', display: 'flex', justifyContent: 'flex-end' }}>
+          <button className={styles.updateButton} onClick={handleBroadcast} style={{ width: 'auto', padding: '8px 24px' }}>
+            Broadcast SSD Update
+          </button>
         </div>
+      </div>
 
-        <div>
-          <label className="block text-sm font-semibold text-gray-700 mb-2">Parking Status</label>
-          <select 
-            name="parking_status"
-            value={metrics.parking_status}
-            onChange={handleChange}
-            className="w-full border border-gray-300 rounded-lg p-3 bg-white"
-          >
-            <option value="Available">Available</option>
-            <option value="Limited">Limited</option>
-            <option value="Full">Full</option>
-          </select>
-        </div>
+      <div className={styles.grid}>
+        {livePlaces.map(place => (
+          <div key={place.id} className={styles.liveCard}>
+            <div className={styles.cardHeader}>
+              <h3 className={styles.placeName}>{place.name}</h3>
+              <span className={styles.lastUpdated}><Clock size={12}/> {place.updated}</span>
+            </div>
+            
+            <div className={styles.controls} id={`controls-${place.id}`}>
+              <div className={styles.controlGroup}>
+                <label>Wait Time (Hrs)</label>
+                <input name="time" type="text" className={styles.input} defaultValue={place.time} placeholder="e.g. 2-3" />
+              </div>
 
-        <div>
-          <label className="block text-sm font-semibold text-gray-700 mb-2">Parking Location Info</label>
-          <input 
-            type="text" 
-            name="parking_location"
-            value={metrics.parking_location}
-            onChange={handleChange}
-            className="w-full border border-gray-300 rounded-lg p-3"
-          />
-        </div>
+              <div className={styles.controlGroup}>
+                <label>Crowd Level</label>
+                <select name="crowd" className={styles.select} defaultValue={place.crowd}>
+                  <option value="LOW">Low</option>
+                  <option value="MEDIUM">Medium</option>
+                  <option value="HIGH">High</option>
+                  <option value="EXTREME">Extreme</option>
+                </select>
+              </div>
 
-        <button 
-          onClick={handleSave}
-          disabled={saving}
-          className="w-full bg-indigo-600 text-white font-bold py-3 rounded-lg hover:bg-indigo-700 transition"
-        >
-          {saving ? 'Saving...' : 'Push Live Updates'}
-        </button>
+              <div className={styles.controlGroup}>
+                <label>Parking Status</label>
+                <select name="parking" className={styles.select} defaultValue={place.parking}>
+                  <option value="AVAILABLE">Available</option>
+                  <option value="FULL">Full</option>
+                </select>
+              </div>
+              
+              <div className={styles.controlGroup}>
+                <label>RTC Status</label>
+                <select name="rtc" className={styles.select} defaultValue={place.rtc || 'NORMAL'}>
+                  <option value="NORMAL">Normal</option>
+                  <option value="DELAYED">Delayed</option>
+                  <option value="SUSPENDED">Suspended</option>
+                </select>
+              </div>
+            </div>
 
-        {message && (
-          <div className={`p-4 rounded-lg text-sm font-semibold ${message.includes('Success') ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`}>
-            {message}
+            <button className={styles.updateButton} onClick={() => {
+              const controls = document.getElementById(`controls-${place.id}`);
+              if (!controls) return;
+              const time = (controls.querySelector('[name="time"]') as HTMLInputElement).value;
+              const crowd = (controls.querySelector('[name="crowd"]') as HTMLSelectElement).value;
+              const parking = (controls.querySelector('[name="parking"]') as HTMLSelectElement).value;
+              const rtc = (controls.querySelector('[name="rtc"]') as HTMLSelectElement).value;
+              handlePlaceUpdate(place.id, { time, crowd, parking, rtc });
+            }}>
+              Update Live Status
+            </button>
           </div>
-        )}
+        ))}
       </div>
     </div>
   );

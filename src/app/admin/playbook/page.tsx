@@ -2,6 +2,7 @@
 import { useEffect, useState } from 'react';
 import { Send, Mail, Copy, Check, ExternalLink, Bookmark, HelpCircle, TrendingUp, Info } from 'lucide-react';
 import styles from '../admin.module.css';
+import { safeFetchJson } from '@/lib/safeFetch';
 
 interface PlaybookMetrics {
   totalPlaces: number;
@@ -33,10 +34,10 @@ export default function PlaybookPage() {
   useEffect(() => {
     // Load live telemetry and dashboard numbers to inject into template
     Promise.all([
-      fetch('/api/admin/traffic').then(r => r.json()).catch(() => null),
-      fetch('/api/admin/places').then(r => r.json()).catch(() => null),
-      fetch('/api/admin/stories').then(r => r.json()).catch(() => null),
-      fetch('/api/admin/quizzes').then(r => r.json()).catch(() => null),
+      safeFetchJson('/api/admin/traffic'),
+      safeFetchJson('/api/admin/places'),
+      safeFetchJson('/api/admin/stories'),
+      safeFetchJson('/api/admin/quizzes'),
     ]).then(([trafficData, placesData, storiesData, quizzesData]) => {
       const placesCount = placesData?.places?.length || 68;
       const visitors = trafficData?.todayTotal || 45;

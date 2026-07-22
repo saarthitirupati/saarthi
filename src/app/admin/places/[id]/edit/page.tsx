@@ -133,8 +133,7 @@ export default function EditPlace({ params }: { params: Promise<{ id: string }> 
               <input className={styles.input} value={form.image} onChange={e => set('image', e.target.value)} />
             </div>
             <div className={`${styles.field} ${styles.fieldFull}`}>
-              <label className={styles.label}>YouTube Explainer/History Link</label>
-              <input className={styles.input} value={form.youtubeLink || form.videoUrl || ''} onChange={e => set('youtubeLink', e.target.value)} placeholder="e.g. https://www.youtube.com/watch?v=..." />
+
             </div>
             <div className={`${styles.field} ${styles.fieldFull}`}>
               <label className={styles.label}>Gallery Image URLs (comma-separated)</label>

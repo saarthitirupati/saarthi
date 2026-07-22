@@ -5,6 +5,8 @@ import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { ChevronLeft, MapPin, Clock, Users, Shirt, Car, Sparkles, CalendarDays, Info, Flame, AlertTriangle } from 'lucide-react';
+import Link from 'next/link';
+import { safeFetchJson } from '@/lib/safeFetch';
 
 const CROWD_COLORS: Record<string, { bg: string; text: string }> = {
   'very high': { bg: '#FEE2E2', text: '#991B1B' },
@@ -187,14 +189,15 @@ export default function FestivalDetail({ params }: { params: Promise<{ slug: str
 
   useEffect(() => {
     // Fetch all festivals (no date filter) so detail page works for any slug
-    fetch('/api/v1/festivals?all=1')
-      .then(r => r.json())
+    safeFetchJson<any>('/api/v1/festivals?all=1')
       .then((d) => {
-        const list = d.data || [];
-        const match = list.find(
-          (f: any) => f.slug === slug || f.id === slug
-        );
-        setFest(match || null);
+        if (d) {
+          const list = d.data || [];
+          const match = list.find(
+            (f: any) => f.slug === slug || f.id === slug
+          );
+          setFest(match || null);
+        }
       })
       .finally(() => setLoading(false));
   }, [slug]);
@@ -311,6 +314,38 @@ export default function FestivalDetail({ params }: { params: Promise<{ slug: str
                 <p key={i} style={{ margin: '0 0 12px', fontSize: 14, color: '#4B5563', lineHeight: 1.7 }}>{para.trim()}</p>
               ))}
             </>
+          )}
+
+          {/* Recommended Temple Link Box */}
+          {(fest.placeId || fest.place_id) && (
+            <div style={{ marginTop: 16, paddingTop: 16, borderTop: '1px solid #F1F5F9' }}>
+              <Link
+                href={`/place/${fest.placeId || fest.place_id}`}
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  padding: '14px 16px',
+                  borderRadius: '16px',
+                  background: 'linear-gradient(135deg, #ECFDF5 0%, #D1FAE5 100%)',
+                  border: '1px solid #A7F3D0',
+                  textDecoration: 'none',
+                  boxShadow: '0 2px 6px rgba(5, 150, 105, 0.08)'
+                }}
+              >
+                <div>
+                  <span style={{ fontSize: '11px', fontWeight: 800, color: '#047857', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+                    Recommended Shrine Visit
+                  </span>
+                  <h4 style={{ margin: '2px 0 0', fontSize: '15px', fontWeight: 800, color: '#064E3B' }}>
+                    {fest.location || 'Sri Kapileswara Swamy Temple'}
+                  </h4>
+                </div>
+                <span style={{ fontSize: '13px', fontWeight: 800, color: '#059669', background: 'white', padding: '6px 12px', borderRadius: '10px', border: '1px solid #A7F3D0' }}>
+                  View Temple &rarr;
+                </span>
+              </Link>
+            </div>
           )}
         </motion.div>
 

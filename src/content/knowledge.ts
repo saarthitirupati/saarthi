@@ -1,7 +1,28 @@
+export interface SubLocation {
+  name: string;
+  walkTime: string;
+  distance: string;
+  status: 'Open Now' | 'Serving' | 'Crowded' | 'Closing Soon' | 'Closed';
+  mapsUrl?: string;
+}
+
+export interface ProcedureStep {
+  stepNumber: number;
+  title: string;
+  description?: string;
+}
+
+export interface RequirementsSpec {
+  carry: string[];
+  prohibited: string[];
+  mandatoryDoc?: string;
+}
+
 export interface KnowledgeItem {
   id: string;
+  intentId?: 'secure-belongings' | 'free-meals' | 'hair-offering' | 'accommodation' | 'shopping' | 'emergency';
   name: string;
-  category: 'Free Facilities' | 'Temple Rules' | 'Emergency' | 'Accessibility' | 'Transport';
+  category: 'Free Facilities' | 'Temple Rules' | 'Emergency' | 'Accessibility' | 'Transport' | 'Accommodation' | 'Shopping' | 'Hair Offering';
   importance: 'must-know' | 'highly-recommended' | 'good-to-know';
   tag: string;
   status: string;
@@ -16,6 +37,9 @@ export interface KnowledgeItem {
   tips: string[];
   iconName: string;
   searchAliases: string[];
+  subLocations?: SubLocation[];
+  procedureTimeline?: ProcedureStep[];
+  requirements?: RequirementsSpec;
 }
 
 export interface FAQItem {
@@ -34,6 +58,267 @@ export interface ChecklistItem {
 }
 
 export const KNOWLEDGE_ITEMS: KnowledgeItem[] = [
+  {
+    id: 'secure-belongings',
+    intentId: 'secure-belongings',
+    name: 'Secure My Belongings',
+    category: 'Free Facilities',
+    importance: 'must-know',
+    tag: 'FREE',
+    status: 'Open Now',
+    shortDescription: 'Free luggage lockers, mobile phone deposit, and electronics storage.',
+    description: 'Store your heavy bags, mobile phones, cameras, and leather items safely before entering the Vaikuntam Queue Complex. Free TTD counters are available at 6 major transit points.',
+    whyItMatters: 'Mobiles and heavy bags are strictly prohibited inside the main temple. Depositing them at authorized counters before queue entry avoids being turned back by security.',
+    distance: '120 m',
+    walkingTime: '4 min walk',
+    image: '/assets/nature/udyanavanam.png',
+    location: '6 Nearby Counters (Madhava Nilayam, PAC-1 to PAC-5, VQC Entrance)',
+    coordinates: { lat: 13.6823, lng: 79.3514 },
+    iconName: 'lock',
+    searchAliases: [
+      'phone', 'mobile', 'cellphone', 'deposit', 'gadget', 'electronic', 'watch',
+      'locker', 'lockers', 'luggage', 'bags', 'baggage', 'store', 'secure', 'belongings',
+      'aadhaar', 'camera', 'laptop', 'belt', 'footwear', 'shoes'
+    ],
+    subLocations: [
+      { name: 'Madhava Nilayam (PAC-2 Locker Hub)', walkTime: '4 mins', distance: '120 m', status: 'Open Now' },
+      { name: 'Padmanabha Nilayam Deposit Counter', walkTime: '6 mins', distance: '220 m', status: 'Open Now' },
+      { name: 'Yatri Sadan (PAC-1 Free Counter)', walkTime: '7 mins', distance: '300 m', status: 'Open Now' },
+      { name: 'Yatri Sadan 3 (PAC-3 Lockers)', walkTime: '8 mins', distance: '350 m', status: 'Open Now' },
+      { name: 'Venkatadri Nilayam (PAC-5 Counter)', walkTime: '9 mins', distance: '400 m', status: 'Open Now' },
+      { name: 'VQC-I & VQC-II Mobile Deposit', walkTime: '3 mins', distance: '90 m', status: 'Open Now' }
+    ],
+    procedureTimeline: [
+      { stepNumber: 1, title: 'Carry Aadhaar & Original Photo ID', description: 'Mandatory for receipt issuance and bag scanning.' },
+      { stepNumber: 2, title: 'Visit Nearest PAC Counter', description: 'Follow green signs to the locker or mobile deposit hall.' },
+      { stepNumber: 3, title: 'Submit Luggage / Mobile', description: 'Electronics are sealed in barcode pouches. Bags pass X-ray.' },
+      { stepNumber: 4, title: 'Receive Locker Token / Receipt', description: 'Keep barcode token safe in your wallet or pocket.' },
+      { stepNumber: 5, title: 'Collect Within 24 Hours', description: 'Present barcode token at retrieval counter post-Darshan.' }
+    ],
+    requirements: {
+      carry: ['Aadhaar Card', 'Luggage Bags', 'Mobile Phones'],
+      prohibited: ['Cash & Gold in Lockers', 'Inflammable items'],
+      mandatoryDoc: 'Aadhaar Card Required'
+    },
+    tips: [
+      'Take a photo of your locker token or receipt on your companion’s phone as backup.',
+      'Mobile deposit counters near VQC-I provide instant barcode pouch sealing.',
+      'Lockers are 100% free of charge under TTD management.'
+    ]
+  },
+  {
+    id: 'free-meals',
+    intentId: 'free-meals',
+    name: 'Eat Free (Annaprasadam)',
+    category: 'Free Facilities',
+    importance: 'must-know',
+    tag: 'FREE',
+    status: 'Open (11 AM Onwards)',
+    shortDescription: 'Free, hygienic, hot sanctified vegetarian meals for all pilgrims.',
+    description: 'The Matrusri Tarigonda Vengamamba Annaprasadam complex serves continuous, hot, sanctified vegetarian meals (rice, dal, sambar, chutney, buttermilk, roti) to tens of thousands of devotees daily.',
+    whyItMatters: 'Finding pure, sanitary food is effortless and free. No ticket or registration is required — walk in anytime.',
+    distance: '350 m',
+    walkingTime: '5 min walk',
+    image: '/assets/temples/bhu_varaha_front.png',
+    location: 'Vengamamba Complex & Venkatadri Nilayam Halls',
+    coordinates: { lat: 13.6841, lng: 79.3498 },
+    iconName: 'utensils',
+    searchAliases: [
+      'food', 'meals', 'lunch', 'dinner', 'eating', 'veg', 'annaprasadam', 'rice',
+      'eat', 'hungry', 'breakfast', 'canteen', 'milk', 'free meals'
+    ],
+    subLocations: [
+      { name: 'Matrusri Tarigonda Vengamamba Complex', walkTime: '5 mins', distance: '350 m', status: 'Open Now' },
+      { name: 'Venkatadri Nilayam Dining Hall', walkTime: '8 mins', distance: '500 m', status: 'Open Now' },
+      { name: 'Panchajanyam Milk Distribution Post', walkTime: '3 mins', distance: '150 m', status: 'Open Now' }
+    ],
+    procedureTimeline: [
+      { stepNumber: 1, title: 'Walk Into Dining Hall', description: 'No registration, token, or ticket required.' },
+      { stepNumber: 2, title: 'Join Queue Line', description: 'Orderly seating compartments with clean banana leaf / steel thali.' },
+      { stepNumber: 3, title: 'Receive Hot Meal', description: 'Unlimited hot rice, sambar, rasam, curries & buttermilk served.' },
+      { stepNumber: 4, title: 'Milk / Tea Distribution', description: 'Free hot milk available for kids and elderly near queue halls.' }
+    ],
+    requirements: {
+      carry: ['Pure Intent', 'Clean hands'],
+      prohibited: ['Wastage of food', 'Footwear inside dining halls'],
+      mandatoryDoc: 'No ID or Ticket Needed'
+    },
+    tips: [
+      'Continuous service from 11:00 AM to 11:00 PM daily.',
+      'Special milk distribution points operate inside queue halls for infants.',
+      'Maintain quiet decorum in dining halls out of respect for sacred food.'
+    ]
+  },
+  {
+    id: 'hair-offering',
+    intentId: 'hair-offering',
+    name: 'Hair Offering (Tonsure)',
+    category: 'Hair Offering',
+    importance: 'highly-recommended',
+    tag: 'FREE',
+    status: 'Open 24/7',
+    shortDescription: 'Sacred hair tonsure facility (Kalyana Katta).',
+    description: 'Offering hair is a sacred tradition in Tirumala representing surrender of ego. TTD runs the massive 4-story Kalyana Katta complex with 500+ trained barbers working around the clock under hygienic conditions.',
+    whyItMatters: 'Tonsure is performed prior to Darshan. Free sanitized blades and warm water baths are provided.',
+    distance: '250 m',
+    walkingTime: '3 min walk',
+    image: '/assets/temples/pushkarini_ghats.png',
+    location: 'Main Kalyana Katta Complex & PAC Mini Counters',
+    coordinates: { lat: 13.6825, lng: 79.3501 },
+    iconName: 'scissors',
+    searchAliases: [
+      'hair', 'tonsure', 'shaving', 'kalyana katta', 'barber', 'head shave', 'head', 'blade', 'bath'
+    ],
+    subLocations: [
+      { name: 'Main Kalyana Katta Complex (4 Floors)', walkTime: '3 mins', distance: '250 m', status: 'Open Now' },
+      { name: 'PAC-1 Mini Kalyana Katta', walkTime: '6 mins', distance: '380 m', status: 'Open Now' },
+      { name: 'PAC-2 Mini Kalyana Katta', walkTime: '4 mins', distance: '200 m', status: 'Open Now' }
+    ],
+    procedureTimeline: [
+      { stepNumber: 1, title: 'Visit Counter', description: 'Collect your free token and single-use antiseptic blade.' },
+      { stepNumber: 2, title: 'Receive Blade', description: 'Each barber opens a new sealed blade in front of you.' },
+      { stepNumber: 3, title: 'Hair Offering (Tonsure)', description: 'Quick, painless shaving by experienced TTD barbers.' },
+      { stepNumber: 4, title: 'Shower & Bathroom', description: 'Proceed to hot water bathrooms in the same building.' },
+      { stepNumber: 5, title: 'Wear Fresh Traditional Clothes', description: 'Change into clean dhoti/saree before Darshan.' }
+    ],
+    requirements: {
+      carry: ['Towel', 'Fresh Traditional Clothes', 'Soap'],
+      prohibited: ['Tipping barbers (Strictly prohibited by TTD)'],
+      mandatoryDoc: 'Free Entry (Token at Counter)'
+    },
+    tips: [
+      'No fees or tips should be paid to barbers. It is completely free.',
+      'Sealed single-use blades are mandatory for hygiene.',
+      'Mini Kalyana Katta counters at PAC-1 & PAC-2 have shorter wait times during peak morning hours.'
+    ]
+  },
+  {
+    id: 'accommodation',
+    intentId: 'accommodation',
+    name: 'Accommodation',
+    category: 'Accommodation',
+    importance: 'must-know',
+    tag: 'CRO HUB',
+    status: 'Check Availability',
+    shortDescription: 'Spot allotment offices, dormitories, and PAC free halls.',
+    description: 'TTD provides rooms, cottages, shared dormitories, and free hall accommodation across Tirumala hilltop town. Central Reception Office (CRO) handles all spot allotments.',
+    whyItMatters: 'Whether you booked online or need a room on arrival, knowing where to report saves hours of wandering with family.',
+    distance: '300 m',
+    walkingTime: '4 min walk',
+    image: '/assets/nature/udyanavanam.png',
+    location: 'CRO Office (opposite Bus Stand) & PAC Halls',
+    coordinates: { lat: 13.6819, lng: 79.3512 },
+    iconName: 'bed',
+    searchAliases: [
+      'room', 'rooms', 'sleep', 'stay', 'cro', 'hotel', 'dormitory', 'pac', 'hall',
+      'cottage', 'booking', 'accommodation', 'bed', 'rest', 'aadhaar'
+    ],
+    subLocations: [
+      { name: 'Central Reception Office (CRO) - Spot Allotment', walkTime: '4 mins', distance: '300 m', status: 'Open Now' },
+      { name: 'Already Booked Counters (ARP Hub)', walkTime: '5 mins', distance: '350 m', status: 'Open Now' },
+      { name: 'PAC-1 Free Dormitory Hall', walkTime: '6 mins', distance: '400 m', status: 'Open Now' },
+      { name: 'PAC-3 & PAC-4 Free Pilgrim Halls', walkTime: '7 mins', distance: '450 m', status: 'Open Now' }
+    ],
+    procedureTimeline: [
+      { stepNumber: 1, title: 'Carry Aadhaar Card of All Pilgrims', description: 'Original Aadhaar verification is compulsory.' },
+      { stepNumber: 2, title: 'Visit CRO Office / Online Counter', description: 'Join spot counter queue or scan online QR voucher.' },
+      { stepNumber: 3, title: 'Check Availability & Pay Caution Deposit', description: 'Cautious refund processed upon room checkout.' },
+      { stepNumber: 4, title: 'Receive Sub-office Allotment Slip', description: 'Proceed directly to designated cottage cluster.' },
+      { stepNumber: 5, title: 'No Rooms Available? Head to PAC Halls', description: 'Free carpeted PAC halls with lockers and hot baths available 24/7.' }
+    ],
+    requirements: {
+      carry: ['Original Aadhaar Cards', 'Online Booking Slip (if booked)'],
+      prohibited: ['Unregistered third-party brokers'],
+      mandatoryDoc: 'Aadhaar Card Mandatory'
+    },
+    tips: [
+      'Spot allotment opens daily at CRO. Arrive early morning for best availability.',
+      'If rooms are full, PAC-1, PAC-3, and PAC-4 offer free, secure hall stay with clean restrooms.',
+      'Do not pay money to private agents. All official TTD allotments are handled at CRO.'
+    ]
+  },
+  {
+    id: 'shopping',
+    intentId: 'shopping',
+    name: 'Official Shopping',
+    category: 'Shopping',
+    importance: 'good-to-know',
+    tag: 'OFFICIAL TTD',
+    status: 'Open 8 AM - 9 PM',
+    shortDescription: 'Official TTD publication, photo, souvenir, and Puja item stores.',
+    description: 'Purchase authentic Srivari Laddu Prasadam, devotional books, framed deity photos, copper puja items, and Panchagavya products from authorized TTD sales counters.',
+    whyItMatters: 'Guarantees official TTD pricing, authentic blessed items, and high quality without price gouging.',
+    distance: '200 m',
+    walkingTime: '3 min walk',
+    image: '/assets/temples/bedi-anjaneya.png',
+    location: 'Main Temple Surroundings, PAC Outlets & Cottage Counters',
+    coordinates: { lat: 13.6830, lng: 79.3495 },
+    iconName: 'shopping-bag',
+    searchAliases: [
+      'shop', 'shopping', 'books', 'photo', 'photos', 'prasadam', 'laddu', 'puja',
+      'souvenir', 'calender', 'picture', 'incense', 'camphor'
+    ],
+    subLocations: [
+      { name: 'TTD Sales Emporium (Near Temple)', walkTime: '3 mins', distance: '200 m', status: 'Open Now' },
+      { name: 'Additional Laddu Counters (VQC Exit)', walkTime: '2 mins', distance: '120 m', status: 'Open Now' },
+      { name: 'PAC-1 Book & Photo Store', walkTime: '5 mins', distance: '320 m', status: 'Open Now' }
+    ],
+    procedureTimeline: [
+      { stepNumber: 1, title: 'Select Official Counter', description: 'Look for green TTD Official Emblem signboards.' },
+      { stepNumber: 2, title: 'Choose Products', description: 'Srivari Laddus, books, copper dollars, photo frames.' },
+      { stepNumber: 3, title: 'Digital / Cash Payment', description: 'UPI & card payments accepted at all official stores.' }
+    ],
+    requirements: {
+      carry: ['UPI / Cash / Card', 'Cloth carry bag'],
+      prohibited: ['Plastic bags (Tirumala is plastic-free zone)'],
+      mandatoryDoc: 'No ID Required'
+    },
+    tips: [
+      'Tirumala is a strict plastic-free zone; carry reusable cloth bags.',
+      'Extra Srivari Laddus can be bought at additional counters near the exit gates.'
+    ]
+  },
+  {
+    id: 'emergency',
+    intentId: 'emergency',
+    name: 'Emergency Help',
+    category: 'Emergency',
+    importance: 'must-know',
+    tag: '24/7 HELP',
+    status: 'Active 24/7',
+    shortDescription: 'Police helpdesk, Ashwini Hospital, Lost & Found, and Fire support.',
+    description: 'Instant 24/7 emergency response across Tirumala. Fully equipped Ashwini Hospital, police stations, lost child assistance, and medical triage.',
+    whyItMatters: 'Immediate assistance for sudden illnesses, lost family members, or security concerns.',
+    distance: '300 m',
+    walkingTime: '4 min walk',
+    image: '/assets/temples/museum-alipiri.png',
+    location: 'Ashwini Hospital, Tirumala Police Station & VQC Posts',
+    coordinates: { lat: 13.6811, lng: 79.3525 },
+    iconName: 'shield-alert',
+    searchAliases: [
+      'emergency', 'help', 'police', 'doctor', 'hospital', 'medical', 'ambulance',
+      'lost', 'found', 'child', 'stolen', 'accident', '108', 'sos', 'pain', 'sick'
+    ],
+    subLocations: [
+      { name: 'Ashwini Hospital (24/7 Free Emergency)', walkTime: '5 mins', distance: '400 m', status: 'Open Now' },
+      { name: 'Tirumala Police Station & Helpdesk', walkTime: '4 mins', distance: '300 m', status: 'Open Now' },
+      { name: 'Lost & Found / Child Wristband Booth', walkTime: '2 mins', distance: '150 m', status: 'Open Now' }
+    ],
+    procedureTimeline: [
+      { stepNumber: 1, title: 'Press Direct Call CTA or Dial 108', description: 'Direct emergency helpline dispatch.' },
+      { stepNumber: 2, title: 'Locate Nearest Vigilance / Police Post', description: 'Uniformed TTD vigilance staff present every 100 meters.' },
+      { stepNumber: 3, title: 'Free Medical Ambulance Transport', description: 'Rapid ambulance transport to Ashwini Hospital.' }
+    ],
+    requirements: {
+      carry: ['Location / Landmark reference'],
+      prohibited: ['False alarms'],
+      mandatoryDoc: 'Immediate Service - No Papers Needed'
+    },
+    tips: [
+      'Call 108 for Medical Emergencies or 0877-2277777 for TTD Vigilance.',
+      'Get child identification bands at entry counters to prevent lost children in crowds.'
+    ]
+  },
   {
     id: 'free-lockers',
     name: 'Free Luggage Lockers',
@@ -272,28 +557,42 @@ export const FAQ_ITEMS: FAQItem[] = [
     question: 'Can I carry a mobile phone inside the Tirumala temple?',
     answer: 'No, mobile phones and electronic devices are strictly prohibited. You must deposit them at the free TTD mobile deposit counters at the VQC entrance before entering the queue line.',
     category: 'Temple Rules',
-    searchAliases: ['phone', 'mobile', 'electronic', 'gadget']
+    searchAliases: ['phone', 'mobile', 'electronic', 'gadget', 'cellphone']
   },
   {
     id: 'faq-dress',
     question: 'What is the mandatory dress code for Darshan?',
     answer: 'Traditional wear is compulsory. Men must wear a Dhoti/Lungi with a shirt/kurta or Kurta-Pyjama. Women must wear a Saree, Half-saree, or Churidar with a Dupatta. Jeans, t-shirts, and shorts are not allowed.',
     category: 'Temple Rules',
-    searchAliases: ['dress', 'clothes', 'attire', 'jeans']
+    searchAliases: ['dress', 'clothes', 'attire', 'jeans', 'dhoti', 'shirt']
   },
   {
     id: 'faq-lockers',
     question: 'Are luggage lockers in Tirumala free to use?',
-    answer: 'Yes, TTD provides luggage lockers entirely free of charge. You can find them near the Tirumala RTC Bus Stand and GNC toll gate. Bags are scanned and registered with a receipt.',
+    answer: 'Yes, TTD provides luggage lockers entirely free of charge. You can find them near the Tirumala RTC Bus Stand, Madhava Nilayam, and GNC toll gate. Bags are scanned and registered with a receipt.',
     category: 'Facilities',
-    searchAliases: ['locker', 'lockers', 'luggage', 'bags', 'cost']
+    searchAliases: ['locker', 'lockers', 'luggage', 'bags', 'cost', 'store', 'free']
   },
   {
     id: 'faq-food',
     question: 'Where can I get free meals in Tirumala?',
-    answer: 'Free, unlimited vegetarian meals are served throughout the day at the Matrusri Tarigonda Vengamamba Annaprasadam complex located near the temple. No entry ticket is required.',
+    answer: 'Free, unlimited vegetarian meals are served throughout the day at the Matrusri Tarigonda Vengamamba Annaprasadam complex located near the temple. No entry ticket or registration is required.',
     category: 'Facilities',
-    searchAliases: ['food', 'meals', 'lunch', 'dinner', 'free']
+    searchAliases: ['food', 'meals', 'lunch', 'dinner', 'free', 'annaprasadam', 'eat']
+  },
+  {
+    id: 'faq-hair',
+    question: 'Where is hair offering (Kalyana Katta) done and is it free?',
+    answer: 'Hair offering is done at the main 4-story Kalyana Katta complex and mini PAC counters. It is 100% free; TTD provides free single-use blades and barbers. No tips should be paid.',
+    category: 'Facilities',
+    searchAliases: ['hair', 'tonsure', 'kalyana katta', 'barber', 'shaving', 'blade']
+  },
+  {
+    id: 'faq-room',
+    question: 'How do I get a room or dormitory on arrival in Tirumala?',
+    answer: 'Visit the Central Reception Office (CRO) near the bus stand for spot room allotments with original Aadhaar cards. If rooms are sold out, free carpeted dormitories and halls with hot baths are available at PAC-1, PAC-3, and PAC-4.',
+    category: 'Facilities',
+    searchAliases: ['room', 'rooms', 'cro', 'accommodation', 'dormitory', 'sleep', 'stay', 'aadhaar']
   },
   {
     id: 'faq-wheelchair',
@@ -303,25 +602,11 @@ export const FAQ_ITEMS: FAQItem[] = [
     searchAliases: ['wheelchair', 'elderly', 'senior citizen', 'handicapped']
   },
   {
-    id: 'faq-ghat-road',
-    question: 'What are the timings and rules for two-wheelers on the Ghat roads?',
-    answer: 'Two-wheelers (bikes/scooters) are strictly prohibited on both ascending and descending ghat roads between 10:00 PM and 6:00 AM. Cars/cabs can travel 24/7. Speed limit intervals (min 28 mins ascending, min 40 mins descending) are enforced via automated tolls.',
-    category: 'Travel Help',
-    searchAliases: ['ghat', 'bike', 'motorcycle', 'scooter', 'speed', 'timings', 'night']
-  },
-  {
-    id: 'faq-pathways',
-    question: 'Can I walk up to Tirumala? What are the walking paths?',
-    answer: 'Yes, via two pedestrian pathways: Alipiri Mettu (11 km, ~3,550 steps, open 24/7) and Srivari Mettu (2.1 km, ~2,388 steps, open 6:00 AM to 6:00 PM). Free luggage transfer from bottom to top is provided by TTD.',
-    category: 'Travel Help',
-    searchAliases: ['walk', 'steps', 'footpath', 'alipiri', 'srivari mettu', 'hiking']
-  },
-  {
     id: 'faq-emergency-medical',
     question: 'Where can I get medical assistance in Tirumala?',
     answer: 'Free 24/7 medical aid centers are located near the Vaikuntam Queue Complex, Rambagicha Guest House, and Main Temple. For urgent help, call the Tirumala Ambulance at 108 or TTD Helpline at 1800-425-111111.',
     category: 'Emergency',
-    searchAliases: ['medical', 'hospital', 'doctor', 'emergency', 'ambulance', 'health']
+    searchAliases: ['medical', 'hospital', 'doctor', 'emergency', 'ambulance', 'health', 'police']
   }
 ];
 

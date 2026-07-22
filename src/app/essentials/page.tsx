@@ -5,9 +5,9 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
-  ArrowLeft, Search, ClipboardCheck, Sparkles, Check, CheckSquare, 
+  ArrowLeft, Search, ClipboardCheck, Sparkles, Check, 
   MapPin, Clock, ChevronRight, HelpCircle, ChevronDown, ChevronUp, X, Navigation, Info,
-  Landmark, AlertTriangle
+  Lock, Utensils, Scissors, Bed, ShoppingBag, ShieldAlert, Phone, AlertTriangle, FileText, Footprints
 } from 'lucide-react';
 import styles from './Essentials.module.css';
 
@@ -15,15 +15,19 @@ import { KNOWLEDGE_ITEMS, FAQ_ITEMS, CHECKLIST_ITEMS, KnowledgeItem } from '@/co
 
 // Map iconName strings to Lucide React components
 import { 
-  Briefcase, Smartphone, Footprints, Utensils, 
-  Droplets, Users, Hospital, Bus, Shirt, Camera, FileText
+  Briefcase, Smartphone, Droplets, Users, Hospital, Bus, Shirt, Camera
 } from 'lucide-react';
 
 const ICON_MAP: Record<string, React.ComponentType<any>> = {
+  lock: Lock,
+  utensils: Utensils,
+  scissors: Scissors,
+  bed: Bed,
+  'shopping-bag': ShoppingBag,
+  'shield-alert': ShieldAlert,
   briefcase: Briefcase,
   smartphone: Smartphone,
   footprints: Footprints,
-  utensils: Utensils,
   droplets: Droplets,
   users: Users,
   hospital: Hospital,
@@ -32,43 +36,14 @@ const ICON_MAP: Record<string, React.ComponentType<any>> = {
   camera: Camera
 };
 
-const getFaqCategoryIcon = (cat: string) => {
-  switch (cat) {
-    case 'Temple Rules':
-      return <Landmark size={14} style={{ display: 'inline', marginRight: '6px', verticalAlign: 'middle', color: '#B0550C' }} />;
-    case 'Travel Help':
-      return <Navigation size={14} style={{ display: 'inline', marginRight: '6px', verticalAlign: 'middle', color: '#B0550C' }} />;
-    case 'Facilities':
-      return <Briefcase size={14} style={{ display: 'inline', marginRight: '6px', verticalAlign: 'middle', color: '#B0550C' }} />;
-    default:
-      return <AlertTriangle size={14} style={{ display: 'inline', marginRight: '6px', verticalAlign: 'middle', color: '#B0550C' }} />;
-  }
-};
-
 export default function PilgrimEssentialsPage() {
   const router = useRouter();
   const [searchQuery, setSearchQuery] = useState('');
-  const [activeCategory, setActiveCategory] = useState('All');
   const [showChecklist, setShowChecklist] = useState(false);
   const [checklistState, setChecklistState] = useState<Record<string, boolean>>({});
   const [expandedFaqId, setExpandedFaqId] = useState<string | null>(null);
   const [isMounted, setIsMounted] = useState(false);
-  const [cabRef, setCabRef] = useState<string | null>(null);
-  const [dismissedTip, setDismissedTip] = useState(false);
-
-  // Stagger animation variants
-  const listVariants = {
-    hidden: { opacity: 0 },
-    show: {
-      opacity: 1,
-      transition: { staggerChildren: 0.08 }
-    }
-  };
-
-  const itemVariants = {
-    hidden: { opacity: 0, y: 15 },
-    show: { opacity: 1, y: 0, transition: { type: "spring" as const, stiffness: 300, damping: 24 } }
-  };
+  const [dismissedNotice, setDismissedNotice] = useState(false);
 
   // Initialize client states
   useEffect(() => {
@@ -81,16 +56,6 @@ export default function PilgrimEssentialsPage() {
       savedState[item.id] = val === 'true';
     });
     setChecklistState(savedState);
-
-    // Check for cab referral code
-    const ref = localStorage.getItem('saarthi_cab_ref');
-    if (ref) setCabRef(ref);
-
-    // Read query params natively to avoid Next.js Suspense requirements
-    const params = new URLSearchParams(window.location.search);
-    if (params.get('showChecklist') === 'true') {
-      setShowChecklist(true);
-    }
   }, []);
 
   // Update checklist item
@@ -108,80 +73,96 @@ export default function PilgrimEssentialsPage() {
     return { total, checked, pct };
   }, [checklistState]);
 
-  // Quick Action triggers
-  const handleQuickAction = (id: string) => {
-    setActiveCategory('All');
-    setSearchQuery('');
+  // Primary 6 Intent Cards
+  const primaryIntents = useMemo(() => {
+    return [
+      {
+        id: 'secure-belongings',
+        title: 'Secure Belongings',
+        subtitle: 'Free Lockers & Mobile Deposit',
+        status: '6 Locations • Open',
+        statusType: 'green',
+        icon: Lock,
+        hint: 'Phone • Luggage • Electronics'
+      },
+      {
+        id: 'free-meals',
+        title: 'Free Meals',
+        subtitle: 'Annaprasadam Complex',
+        status: 'Serving • 11 AM Onwards',
+        statusType: 'green',
+        icon: Utensils,
+        hint: 'Food • Lunch • Dinner'
+      },
+      {
+        id: 'hair-offering',
+        title: 'Hair Offering',
+        subtitle: 'Kalyana Katta Complex',
+        status: 'Main Complex • 24/7',
+        statusType: 'green',
+        icon: Scissors,
+        hint: 'Tonsure • Shaving'
+      },
+      {
+        id: 'accommodation',
+        title: 'Accommodation',
+        subtitle: 'CRO Office & PAC Halls',
+        status: 'Check Availability',
+        statusType: 'amber',
+        icon: Bed,
+        hint: 'Rooms • Dormitory • Hall'
+      },
+      {
+        id: 'shopping',
+        title: 'Official Shopping',
+        subtitle: 'TTD Books & Prasadam Shops',
+        status: 'Open 8 AM - 9 PM',
+        statusType: 'green',
+        icon: ShoppingBag,
+        hint: 'Laddus • Photos • Puja'
+      },
+      {
+        id: 'emergency',
+        title: 'Emergency Help',
+        subtitle: 'Police, Medical & Lost & Found',
+        status: 'Active 24/7',
+        statusType: 'red',
+        icon: ShieldAlert,
+        hint: 'Hospital • Police • 108'
+      }
+    ];
+  }, []);
+
+  // Filter items by search query & natural language aliases
+  const searchResults = useMemo(() => {
+    if (!searchQuery.trim()) return null;
+    const query = searchQuery.toLowerCase().trim();
     
-    // Navigate directly to the detail page
-    router.push(`/essentials/${id}`);
-  };
+    return KNOWLEDGE_ITEMS.filter(item => {
+      const nameMatch = item.name.toLowerCase().includes(query);
+      const descMatch = item.description.toLowerCase().includes(query);
+      const aliasMatch = item.searchAliases?.some(alias => alias.includes(query) || query.includes(alias));
+      return nameMatch || descMatch || aliasMatch;
+    });
+  }, [searchQuery]);
 
-  // Search filter + aliases logic
-  const filteredItems = useMemo(() => {
-    let source = KNOWLEDGE_ITEMS;
-
-    // 1. Filter by category
-    if (activeCategory !== 'All') {
-      source = source.filter(item => item.category === activeCategory);
-    }
-
-    // 2. Filter by search query (including natural language aliases)
-    if (searchQuery.trim().length > 0) {
-      const query = searchQuery.toLowerCase().trim();
-      source = source.filter(item => {
-        const nameMatch = item.name.toLowerCase().includes(query);
-        const descMatch = item.description.toLowerCase().includes(query);
-        const aliasMatch = item.searchAliases.some(alias => alias.includes(query) || query.includes(alias));
-        return nameMatch || descMatch || aliasMatch;
-      });
-    }
-
-    // Sort by importance (must-know -> highly-recommended -> good-to-know)
-    const importanceOrder = { 'must-know': 0, 'highly-recommended': 1, 'good-to-know': 2 };
-    return [...source].sort((a, b) => importanceOrder[a.importance] - importanceOrder[b.importance]);
-  }, [activeCategory, searchQuery]);
-
-  // Filter FAQs based on search
+  // Filter FAQs based on search query
   const filteredFAQs = useMemo(() => {
-    if (!searchQuery.trim()) return FAQ_ITEMS.slice(0, 3);
+    if (!searchQuery.trim()) return FAQ_ITEMS.slice(0, 4);
     const query = searchQuery.toLowerCase().trim();
     return FAQ_ITEMS.filter(faq => {
       const qMatch = faq.question.toLowerCase().includes(query);
       const aMatch = faq.answer.toLowerCase().includes(query);
-      const aliasMatch = faq.searchAliases.some(alias => alias.includes(query));
+      const aliasMatch = faq.searchAliases?.some(alias => alias.includes(query));
       return qMatch || aMatch || aliasMatch;
     });
   }, [searchQuery]);
-
-  // Sticky bottom context tip recommendation
-  const contextTip = useMemo(() => {
-    if (dismissedTip) return null;
-
-    // Context A: Scanned cab QR code
-    if (cabRef) {
-      return {
-        id: 'free-lockers',
-        title: '💡 Pilgrim Tip (Cab Passenger)',
-        desc: `Carrying heavy bags in Cab ${cabRef}? Store your luggage at the FREE lockers near Tirumala Bus Stand before walking to the queue.`,
-        cta: 'View Lockers Nearby'
-      };
-    }
-
-    // Context B: Time/Darshan check defaults
-    return {
-      id: 'mobile-deposit',
-      title: '📱 Mobile Reminder',
-      desc: 'Mobile phones are strictly banned inside the temple. Remember to deposit them at the free counter before joining the queue line.',
-      cta: 'View Mobile Counters'
-    };
-  }, [cabRef, dismissedTip]);
 
   if (!isMounted) {
     return (
       <div className={styles.container} style={{ justifyContent: 'center', alignItems: 'center' }}>
         <div style={{
-          width: '36px', height: '36px', border: '3px solid #F59E0B',
+          width: '36px', height: '36px', border: '3px solid #D97706',
           borderTopColor: 'transparent', borderRadius: '50%',
           animation: 'spin 1s linear infinite'
         }} />
@@ -190,21 +171,31 @@ export default function PilgrimEssentialsPage() {
     );
   }
 
-  const categories = ['All', 'Free Facilities', 'Temple Rules', 'Emergency', 'Accessibility', 'Transport'] as const;
+  const handleCardClick = (id: string) => {
+    router.push(`/essentials/${id}`);
+  };
+
+  const handleCallEmergency = () => {
+    window.location.href = 'tel:108';
+  };
 
   return (
     <div className={styles.container}>
       {/* Sticky Header */}
       <header className={styles.header}>
         <button className={styles.backButton} onClick={() => router.push('/')} aria-label="Back">
-          <ArrowLeft size={22} />
+          <ArrowLeft size={20} />
         </button>
         <div>
           <h1 className={styles.headerTitle}>Pilgrim Essentials</h1>
-          <p className={styles.headerSubtitle}>Everything you need before darshan</p>
+          <p className={styles.headerSubtitle}>Everything you need before your visit</p>
         </div>
         <div className={styles.headerActions}>
-          <button className={styles.iconButton} onClick={() => setShowChecklist(p => !p)} aria-label="Checklist">
+          <button 
+            className={styles.iconButton} 
+            onClick={() => setShowChecklist(p => !p)} 
+            aria-label="Checklist"
+          >
             <ClipboardCheck size={20} color={showChecklist ? '#D97706' : '#0F172A'} />
           </button>
         </div>
@@ -212,31 +203,86 @@ export default function PilgrimEssentialsPage() {
 
       {/* Main Scroll Content */}
       <div className={styles.scrollArea}>
-        {/* Welcome & First-Time Pilgrim Banner */}
-        <AnimatePresence>
-          {!showChecklist && (
-            <motion.section 
-              className={styles.welcomeBanner}
-              initial={{ opacity: 0, y: -10 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -10 }}
-            >
-              <h3 className={styles.welcomeTitle}>
-                <Sparkles size={18} style={{ color: '#D97706', verticalAlign: 'middle', marginRight: '6px', display: 'inline' }} />
-                Welcome to Tirumala
-              </h3>
-              <p className={styles.welcomeText}>
-                First time visiting? We will guide you through the most important things every pilgrim should do and know before darshan.
-              </p>
-              <button className={styles.bannerBtn} onClick={() => setShowChecklist(true)}>
-                Start Checklist
-                <ChevronRight size={16} />
+        
+        {/* Search Bar (56px Height) */}
+        <div className={styles.searchContainer}>
+          <div className={styles.searchBar}>
+            <Search size={20} color="#64748B" />
+            <input 
+              type="text"
+              className={styles.searchInput}
+              placeholder="Need something? Phone • Locker • Food • Room • Hair"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+            />
+            {searchQuery && (
+              <button 
+                onClick={() => setSearchQuery('')}
+                style={{ background: 'none', border: 'none', cursor: 'pointer', padding: '4px' }}
+              >
+                <X size={18} color="#64748B" />
               </button>
-            </motion.section>
+            )}
+          </div>
+          
+          {/* Natural Language Alias Hint Chips (Lucide Icons, No Emojis) */}
+          {!searchQuery && (
+            <div className={styles.searchHints}>
+              <span className={styles.searchHintChip} onClick={() => setSearchQuery('Phone')}>
+                <Smartphone size={12} style={{ display: 'inline', marginRight: '4px' }} />
+                Phone
+              </span>
+              <span className={styles.searchHintChip} onClick={() => setSearchQuery('Locker')}>
+                <Lock size={12} style={{ display: 'inline', marginRight: '4px' }} />
+                Lockers
+              </span>
+              <span className={styles.searchHintChip} onClick={() => setSearchQuery('Food')}>
+                <Utensils size={12} style={{ display: 'inline', marginRight: '4px' }} />
+                Free Meals
+              </span>
+              <span className={styles.searchHintChip} onClick={() => setSearchQuery('Room')}>
+                <Bed size={12} style={{ display: 'inline', marginRight: '4px' }} />
+                Room / CRO
+              </span>
+              <span className={styles.searchHintChip} onClick={() => setSearchQuery('Hair')}>
+                <Scissors size={12} style={{ display: 'inline', marginRight: '4px' }} />
+                Kalyana Katta
+              </span>
+              <span className={styles.searchHintChip} onClick={() => setSearchQuery('Aadhaar')}>
+                <FileText size={12} style={{ display: 'inline', marginRight: '4px' }} />
+                Aadhaar
+              </span>
+            </div>
           )}
-        </AnimatePresence>
+        </div>
 
-        {/* Stateful Darshan Checklist */}
+        {/* Today's Notice Card (Conditional) */}
+        {!dismissedNotice && !searchQuery && (
+          <motion.div 
+            className={styles.noticeBanner}
+            initial={{ opacity: 0, y: -6 }}
+            animate={{ opacity: 1, y: 0 }}
+          >
+            <div style={{ flex: 1 }}>
+              <div className={styles.noticeHeader}>
+                <AlertTriangle size={14} color="#D97706" />
+                <span>Today's Notice</span>
+              </div>
+              <p className={styles.noticeContent}>
+                Free Luggage Locker Counters open 24/7 at PAC-1, PAC-2 & PAC-5. Mobile deposit counters operating at VQC entrance.
+              </p>
+              <div className={styles.noticeTime}>Updated 6 mins ago</div>
+            </div>
+            <button 
+              onClick={() => setDismissedNotice(true)}
+              style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#92400E', padding: '2px' }}
+            >
+              <X size={16} />
+            </button>
+          </motion.div>
+        )}
+
+        {/* Stateful Darshan Checklist Drawer */}
         <AnimatePresence>
           {showChecklist && (
             <motion.section 
@@ -244,22 +290,17 @@ export default function PilgrimEssentialsPage() {
               initial={{ opacity: 0, height: 0 }}
               animate={{ opacity: 1, height: 'auto' }}
               exit={{ opacity: 0, height: 0 }}
-              transition={{ duration: 0.3 }}
             >
               <div className={styles.checklistHeader}>
                 <h3 className={styles.checklistTitle}>
-                  <ClipboardCheck size={20} color="#D97706" />
-                  Before Darshan Checklist
+                  <ClipboardCheck size={18} color="#D97706" />
+                  Pre-Darshan Readiness
                 </h3>
-                <span className={styles.checklistProgress}>
-                  {checklistStats.checked} / {checklistStats.total} Done
-                </span>
+                <span className={styles.checklistProgress}>{checklistStats.checked} / {checklistStats.total} ({checklistStats.pct}%)</span>
               </div>
+              
               <div className={styles.progressBarBg}>
-                <div 
-                  className={styles.progressBarFill} 
-                  style={{ width: `${checklistStats.pct}%` }}
-                />
+                <div className={styles.progressBarFill} style={{ width: `${checklistStats.pct}%` }} />
               </div>
 
               <div className={styles.checklistItems}>
@@ -272,7 +313,7 @@ export default function PilgrimEssentialsPage() {
                       onClick={() => handleToggleCheck(item.id, item.localStorageKey)}
                     >
                       <div className={`${styles.checkbox} ${isChecked ? styles.checkboxChecked : ''}`}>
-                        {isChecked && <Check size={12} color="#FFF" />}
+                        {isChecked && <Check size={14} color="#FFFFFF" />}
                       </div>
                       <span className={`${styles.checkItemText} ${isChecked ? styles.checkItemChecked : ''}`}>
                         {item.text}
@@ -282,293 +323,139 @@ export default function PilgrimEssentialsPage() {
                 })}
               </div>
 
-              {checklistStats.pct === 100 && (
-                <div className={styles.readyBadge}>
-                  <CheckSquare size={16} style={{ color: '#D97706', verticalAlign: 'middle', marginRight: '6px', display: 'inline' }} />
-                  100% Ready for Darshan!
-                </div>
-              )}
-              
-              <button 
-                className={styles.minimizeBtn} 
-                onClick={() => setShowChecklist(false)}
-              >
-                Minimize Checklist
+              <button className={styles.minimizeBtn} onClick={() => setShowChecklist(false)}>
+                Hide Checklist
               </button>
             </motion.section>
           )}
         </AnimatePresence>
 
-        {/* Quick Actions Grid */}
-        <section className={styles.quickActionsSection}>
-          <h2 className={styles.sectionTitle}>
-            <Sparkles size={18} style={{ color: '#D97706', verticalAlign: 'middle', marginRight: '6px', display: 'inline' }} />
-            Quick Actions
-          </h2>
-          <motion.div className={styles.quickActionsGrid} variants={listVariants} initial="hidden" animate="show">
-            <motion.button variants={itemVariants} className={styles.actionButton} onClick={() => handleQuickAction('free-lockers')}>
-              <div className={styles.actionIconWrapper}><Briefcase size={18} /></div>
-              <span className={styles.actionLabel}>Lockers</span>
-            </motion.button>
-            <motion.button variants={itemVariants} className={styles.actionButton} onClick={() => handleQuickAction('mobile-deposit')}>
-              <div className={styles.actionIconWrapper}><Smartphone size={18} /></div>
-              <span className={styles.actionLabel}>Mobile</span>
-            </motion.button>
-            <motion.button variants={itemVariants} className={styles.actionButton} onClick={() => handleQuickAction('footwear-counters')}>
-              <div className={styles.actionIconWrapper}><Footprints size={18} /></div>
-              <span className={styles.actionLabel}>Footwear</span>
-            </motion.button>
-            <motion.button variants={itemVariants} className={styles.actionButton} onClick={() => handleQuickAction('toilets')}>
-              <div className={styles.actionIconWrapper}><Users size={18} /></div>
-              <span className={styles.actionLabel}>Toilets</span>
-            </motion.button>
-            <motion.button variants={itemVariants} className={styles.actionButton} onClick={() => handleQuickAction('annaprasadam')}>
-              <div className={styles.actionIconWrapper}><Utensils size={18} /></div>
-              <span className={styles.actionLabel}>Meals</span>
-            </motion.button>
-            <motion.button variants={itemVariants} className={styles.actionButton} onClick={() => handleQuickAction('medical-center')}>
-              <div className={styles.actionIconWrapper}><Hospital size={18} /></div>
-              <span className={styles.actionLabel}>Medical</span>
-            </motion.button>
-            <motion.button variants={itemVariants} className={styles.actionButton} onClick={() => handleQuickAction('free-bus')}>
-              <div className={styles.actionIconWrapper}><Bus size={18} /></div>
-              <span className={styles.actionLabel}>Free Bus</span>
-            </motion.button>
-            <motion.button variants={itemVariants} className={styles.actionButton} onClick={() => handleQuickAction('dress-code')}>
-              <div className={styles.actionIconWrapper}><FileText size={18} /></div>
-              <span className={styles.actionLabel}>Rules</span>
-            </motion.button>
-          </motion.div>
-        </section>
-
-        {/* Search & Category Pills */}
-        <section style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
-          <div className={styles.searchBar}>
-            <Search size={18} color="#94A3B8" />
-            <input 
-              type="text"
-              placeholder="Search lockers, dress code, tickets..."
-              className={styles.searchInput}
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-            />
-            {searchQuery && (
-              <button onClick={() => setSearchQuery('')} style={{ background: 'none', border: 'none', color: '#94A3B8', cursor: 'pointer' }}>
-                <X size={16} />
-              </button>
-            )}
-          </div>
-
-          <div className={styles.pillsContainer}>
-            {categories.map(cat => (
-              <button
-                key={cat}
-                className={`${styles.pill} ${activeCategory === cat ? styles.activePill : ''}`}
-                onClick={() => {
-                  setActiveCategory(cat);
-                  setSearchQuery('');
-                }}
-              >
-                {cat}
-              </button>
-            ))}
-          </div>
-        </section>
-
-        {/* Main List of Cards */}
-        <section className={styles.essentialsDirectory}>
-          <h2 className={styles.sectionTitle}>
-            {searchQuery ? `Search Results (${filteredItems.length})` : activeCategory === 'All' ? 'All Essentials' : `${activeCategory} Essentials`}
-          </h2>
-
-          {filteredItems.length > 0 ? (
-            <motion.div className={styles.essentialsList} variants={listVariants} initial="hidden" animate="show">
-              {filteredItems.map((item) => {
-                const IconComp = ICON_MAP[item.iconName] || Info;
-                const isImportant = item.importance === 'must-know';
-                const isRecommended = item.importance === 'highly-recommended';
-                
-                return (
-                  <motion.div key={item.id} variants={itemVariants}>
-                    <Link href={`/essentials/${item.id}`} className={styles.itemCard} style={{ textDecoration: 'none' }}>
-                      <div className={styles.cardHeader}>
-                        <div className={styles.cardTitleSection}>
-                          <div className={styles.cardIconBox}>
-                            <IconComp size={20} />
-                          </div>
-                          <div className={styles.cardMeta}>
-                            <h4 className={styles.cardTitle}>{item.name}</h4>
-                            <span className={styles.cardSub}>{item.location}</span>
-                          </div>
-                        </div>
-                        <div className={styles.cardBadges}>
-                          <span className={`${styles.badge} ${
-                            isImportant ? styles.badgeAlert : isRecommended ? styles.badgeRule : styles.badgeFree
-                          }`}>
-                            {item.importance.replace('-', ' ')}
-                          </span>
-                          <span className={`${styles.badge} ${styles.badgeVerified}`}>
-                            {item.tag}
-                          </span>
-                        </div>
-                      </div>
-
-                      <p className={styles.cardDescription}>{item.shortDescription}</p>
-
-                      <div className={styles.whyItMattersBox}>
-                        <h5 className={styles.whyTitle}>Why it Matters</h5>
-                        <p className={styles.whyContent}>{item.whyItMatters}</p>
-                      </div>
-
-                      <div className={styles.cardFooter}>
-                        <div className={styles.footerMetrics} style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                          <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-                            <MapPin size={14} />
-                            {item.distance}
-                          </span>
-                          <span>•</span>
-                          <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-                            <Clock size={14} />
-                            {item.walkingTime}
-                          </span>
-                        </div>
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '2px', color: '#D97706', fontWeight: 700 }}>
-                          <span>Details</span>
-                          <ChevronRight size={14} />
-                        </div>
-                      </div>
-                    </Link>
-                  </motion.div>
-                );
-              })}
-            </motion.div>
-          ) : (
-            <div style={{ textAlign: 'center', padding: '40px 20px', background: '#FFF', borderRadius: '16px', border: '1px solid rgba(233,128,29,0.05)', color: '#64748B', fontSize: '13px' }}>
-              No essentials match your filter. Try changing category or search terms.
+        {/* SEARCH RESULTS VIEW */}
+        {searchResults ? (
+          <section className={styles.primaryGridSection}>
+            <div className={styles.sectionHeaderRow}>
+              <h2 className={styles.sectionTitle}>
+                Search Results ({searchResults.length})
+              </h2>
             </div>
-          )}
-        </section>
-
-        {/* FAQs Section */}
-        <section className={styles.faqSection}>
-          <div className={styles.faqTitleRow}>
-            <HelpCircle size={18} color="#D97706" />
-            <h3 className={styles.sectionTitle}>Frequently Asked Questions</h3>
-          </div>
-
-          {searchQuery.trim().length > 0 ? (
-            <div className={styles.faqList}>
-              {filteredFAQs.map((faq) => {
-                const isExpanded = expandedFaqId === faq.id;
-                return (
-                  <div key={faq.id} className={styles.faqItem}>
-                    <h4 
-                      className={styles.faqQuestion}
-                      onClick={() => setExpandedFaqId(isExpanded ? null : faq.id)}
+            {searchResults.length === 0 ? (
+              <div style={{ padding: '30px', textAlign: 'center', color: '#64748B' }}>
+                <HelpCircle size={36} color="#94A3B8" style={{ marginBottom: '8px' }} />
+                <p style={{ margin: 0, fontWeight: 600 }}>No facilities found matching "{searchQuery}"</p>
+                <p style={{ fontSize: '13px', marginTop: '4px' }}>Try searching for "Phone", "Locker", "Food", "Room", or "Hair"</p>
+              </div>
+            ) : (
+              <div className={styles.primaryGrid}>
+                {searchResults.map((item) => {
+                  const IconComponent = ICON_MAP[item.iconName] || Info;
+                  return (
+                    <div 
+                      key={item.id} 
+                      className={styles.primaryCard}
+                      onClick={() => handleCardClick(item.id)}
                     >
-                      <span>{faq.question}</span>
-                      {isExpanded ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
-                    </h4>
-                    {isExpanded && (
-                      <motion.p 
-                        className={styles.faqAnswer}
-                        initial={{ opacity: 0, y: -4 }}
-                        animate={{ opacity: 1, y: 0 }}
-                      >
-                        {faq.answer}
-                      </motion.p>
-                    )}
+                      <div className={styles.primaryCardIconBox}>
+                        <IconComponent size={24} />
+                      </div>
+                      <div>
+                        <h3 className={styles.primaryCardTitle}>{item.name}</h3>
+                        <p className={styles.primaryCardSub}>{item.shortDescription}</p>
+                      </div>
+                      <div className={styles.primaryCardFooter}>
+                        <span className={styles.statusGreen}>{item.status}</span>
+                        <ChevronRight size={16} color="#64748B" />
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            )}
+          </section>
+        ) : (
+          /* PRIMARY 2-COLUMN INTENT CARDS GRID */
+          <section className={styles.primaryGridSection}>
+            <div className={styles.sectionHeaderRow}>
+              <h2 className={styles.sectionTitle}>Need Something?</h2>
+              <span style={{ fontSize: '13px', color: '#64748B', fontWeight: 500 }}>Select intent</span>
+            </div>
+
+            <div className={styles.primaryGrid}>
+              {primaryIntents.map((intent) => {
+                const IconComp = intent.icon;
+                return (
+                  <div 
+                    key={intent.id}
+                    className={styles.primaryCard}
+                    onClick={() => handleCardClick(intent.id)}
+                  >
+                    <div className={styles.primaryCardIconBox}>
+                      <IconComp size={24} />
+                    </div>
+                    <div>
+                      <h3 className={styles.primaryCardTitle}>{intent.title}</h3>
+                      <p className={styles.primaryCardSub}>{intent.subtitle}</p>
+                    </div>
+                    <div className={styles.primaryCardFooter}>
+                      <span className={
+                        intent.statusType === 'green' ? styles.statusGreen :
+                        intent.statusType === 'amber' ? styles.statusAmber : styles.statusRed
+                      }>
+                        {intent.status}
+                      </span>
+                      <ChevronRight size={16} color="#64748B" />
+                    </div>
                   </div>
                 );
               })}
             </div>
-          ) : (
-            (['Temple Rules', 'Travel Help', 'Facilities', 'Emergency'] as const).map(category => {
-              const categoryFaqs = FAQ_ITEMS.filter(faq => faq.category === category);
-              if (categoryFaqs.length === 0) return null;
+          </section>
+        )}
+
+        {/* FAQs SECTION */}
+        <section className={styles.faqSection}>
+          <div className={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '16px' } as any}>
+            <HelpCircle size={18} color="#D97706" />
+            <h2 className={styles.sectionTitle}>Frequently Asked Questions</h2>
+          </div>
+          
+          <div className={styles.faqList}>
+            {filteredFAQs.map((faq) => {
+              const isExpanded = expandedFaqId === faq.id;
               return (
-                <div key={category} style={{ marginBottom: '20px' }}>
-                  <h4 style={{ 
-                    fontSize: '12px', 
-                    fontWeight: 800, 
-                    color: '#B0550C', 
-                    textTransform: 'uppercase', 
-                    letterSpacing: '0.05em',
-                    marginBottom: '10px',
-                    marginTop: '10px',
-                    borderBottom: '1px solid #F1F5F9',
-                    paddingBottom: '6px',
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '4px'
-                  }}>
-                    {getFaqCategoryIcon(category)}
-                    {category}
-                  </h4>
-                  <div className={styles.faqList}>
-                    {categoryFaqs.map((faq) => {
-                      const isExpanded = expandedFaqId === faq.id;
-                      return (
-                        <div key={faq.id} className={styles.faqItem}>
-                          <h4 
-                            className={styles.faqQuestion}
-                            onClick={() => setExpandedFaqId(isExpanded ? null : faq.id)}
-                          >
-                            <span>{faq.question}</span>
-                            {isExpanded ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
-                          </h4>
-                          {isExpanded && (
-                            <motion.p 
-                              className={styles.faqAnswer}
-                              initial={{ opacity: 0, y: -4 }}
-                              animate={{ opacity: 1, y: 0 }}
-                            >
-                              {faq.answer}
-                            </motion.p>
-                          )}
-                        </div>
-                      );
-                    })}
+                <div key={faq.id} className={styles.faqItem}>
+                  <div 
+                    className={styles.faqQuestion}
+                    onClick={() => setExpandedFaqId(isExpanded ? null : faq.id)}
+                  >
+                    <span>{faq.question}</span>
+                    {isExpanded ? <ChevronUp size={18} color="#D97706" /> : <ChevronDown size={18} color="#64748B" />}
                   </div>
+                  {isExpanded && (
+                    <div className={styles.faqAnswer}>
+                      {faq.answer}
+                    </div>
+                  )}
                 </div>
               );
-            })
-          )}
+            })}
+          </div>
         </section>
       </div>
 
-      {/* Sticky Bottom Context Card */}
-      {contextTip && (
-        <div className={styles.stickyBottomWrapper}>
-          <motion.div 
-            className={styles.bottomContextCard}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ type: 'spring', damping: 15 }}
-          >
-            <div className={styles.contextIconBox}>
-              <Info size={16} />
-            </div>
-            <div className={styles.contextInfo}>
-              <div className={styles.contextTitle}>{contextTip.title}</div>
-              <p className={styles.contextDescription}>{contextTip.desc}</p>
-              <button 
-                className={styles.contextCta}
-                onClick={() => router.push(`/essentials/${contextTip.id}`)}
-              >
-                {contextTip.cta} <ChevronRight size={12} />
-              </button>
-            </div>
-            <button 
-              className={styles.closeContextBtn}
-              onClick={() => setDismissedTip(true)}
-              aria-label="Close"
-            >
-              <X size={16} />
-            </button>
-          </motion.div>
+      {/* STICKY EMERGENCY HELP BAR */}
+      <div className={styles.stickyEmergencyBar}>
+        <div className={styles.emergencyLeft}>
+          <ShieldAlert size={22} color="#FFFFFF" />
+          <div>
+            <h4 className={styles.emergencyTitle}>Emergency Help</h4>
+            <p className={styles.emergencySub}>Police • Medical • Lost & Found</p>
+          </div>
         </div>
-      )}
+        <button className={styles.emergencyCallBtn} onClick={handleCallEmergency}>
+          <Phone size={14} />
+          Call 108
+        </button>
+      </div>
     </div>
   );
 }

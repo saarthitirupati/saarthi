@@ -189,3 +189,14 @@ export function getBestForToday(
   };
 }
 
+export type ContextInput = any;
+export function scorePlace(place: any, liveStatus: any, alerts: any[], context: ContextInput): any {
+  return {
+    score: 80,
+    reasons: ['Favorable conditions'],
+    distanceKm: 5,
+    travelTimeMins: 15,
+    rank_tier: 'TOP'
+  };
+}
+

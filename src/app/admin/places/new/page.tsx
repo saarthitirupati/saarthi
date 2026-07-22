@@ -17,7 +17,7 @@ const EMPTY = {
   lat:13.6288, lng:79.4192,
   shortIntro: '', whyVisit: '', openingTime: '6:00 AM', closingTime: '9:00 PM',
   duration: '1-2 hours', travelByRTC: '', travelByCar: '', travelByBike: '',
-  approxRTCFare: '', approxCarCost: '', approxBikeCost: '', youtubeLink: '', images: '',
+  approxRTCFare: '', approxCarCost: '', approxBikeCost: '', images: '',
   tipDressCode: '', tipCrowdNote: '', tipFootwearRule: '', tipPhotoRule: '', tipEntryRule: ''
 };
 
@@ -168,8 +168,7 @@ export default function AddPlace() {
               <input className={styles.input} value={form.image} onChange={e => set('image', e.target.value)} placeholder="https://... or /assets/places/..." required />
             </div>
             <div className={`${styles.field} ${styles.fieldFull}`}>
-              <label className={styles.label}>YouTube Explainer/History Link</label>
-              <input className={styles.input} value={form.youtubeLink} onChange={e => set('youtubeLink', e.target.value)} placeholder="e.g. https://www.youtube.com/watch?v=..." />
+
             </div>
             <div className={`${styles.field} ${styles.fieldFull}`}>
               <label className={styles.label}>Gallery Image URLs (comma-separated)</label>

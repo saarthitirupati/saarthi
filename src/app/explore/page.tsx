@@ -86,7 +86,17 @@ function ExploreContent() {
   const isTirupatiQuery = searchQuery.toLowerCase() === 'tirupati' || searchQuery.toLowerCase() === 'nearby';
 
   const filteredPlaces = useMemo(() => {
-    const source = places.length > 0 ? places : PLACES;
+    const rawSource = places.length > 0 ? places : PLACES;
+    const seenKeys = new Set<string>();
+    const source = rawSource.filter(p => {
+      const nameKey = (p.name || '').toLowerCase().trim();
+      const idKey = (p.id || (p as any).slug || '').toLowerCase().trim();
+      if (nameKey && seenKeys.has(nameKey)) return false;
+      if (idKey && seenKeys.has(idKey)) return false;
+      if (nameKey) seenKeys.add(nameKey);
+      if (idKey) seenKeys.add(idKey);
+      return true;
+    });
     let result = source.filter((place: Place) => {
       if (isAlternativeQuery) {
         // Exclude the main Srivari Venkateswara temple
@@ -112,28 +122,32 @@ function ExploreContent() {
         return !isTirumala;
       }
 
+      const toStr = (v: any) => typeof v === 'string' ? v : (v?.name || v?.slug || String(v || ''));
       const q = searchQuery.toLowerCase();
-      const nameMatch = (place.name || '').toLowerCase().includes(q);
-      const typeMatch = (place.placeType || '').toLowerCase().includes(q);
+      const nameMatch = toStr(place.name).toLowerCase().includes(q);
+      const typeMatch = toStr(place.placeType).toLowerCase().includes(q);
       const heritageMatch = q === 'heritage' && place.placeType === 'historical';
-      const categoryMatch = (place.category || '').toLowerCase().includes(q);
-      const godMatch = !!(place.spiritualInfo?.god && place.spiritualInfo.god.toLowerCase().includes(q));
-      const tagsMatch = !!(place.tags && place.tags.some((tag: string) => tag.toLowerCase().includes(q)));
-      const interestsMatch = !!(place.interests && place.interests.some((interest: string) => interest.toLowerCase().includes(q)));
+      const categoryMatch = toStr(place.category).toLowerCase().includes(q);
+      const godMatch = !!(place.spiritualInfo?.god && toStr(place.spiritualInfo.god).toLowerCase().includes(q));
+      const tagsMatch = !!(place.tags && Array.isArray(place.tags) && place.tags.some((tag: any) => toStr(tag).toLowerCase().includes(q)));
+      const interestsMatch = !!(place.interests && Array.isArray(place.interests) && place.interests.some((interest: any) => toStr(interest).toLowerCase().includes(q)));
 
       const matchesSearch = nameMatch || typeMatch || heritageMatch || categoryMatch || godMatch || tagsMatch || interestsMatch;
         
-      const matchesFilter = activeFilter === 'All' || activeFilter === 'Nearby' || (place.placeType || '').toLowerCase() === activeFilter.toLowerCase();
+      const matchesFilter = activeFilter === 'All' || activeFilter === 'Nearby' || toStr(place.placeType).toLowerCase() === activeFilter.toLowerCase();
       return matchesSearch && matchesFilter;
     });
 
     const effectiveLocation = userLocation || TIRUPATI_CENTER;
     result = result.map(p => {
+      const toStr = (v: any) => typeof v === 'string' ? v : (v?.name || v?.slug || String(v || ''));
       const lat = p.coordinates?.lat || TIRUPATI_CENTER.lat;
       const lng = p.coordinates?.lng || TIRUPATI_CENTER.lng;
-      const isTirumala = p.location?.toLowerCase().includes('tirumala') || 
-                         p.location?.toLowerCase().includes('narayanagiri') || 
-                         !!(p.category && p.category.toLowerCase().includes('tirumala'));
+      const locStr = toStr(p.location).toLowerCase();
+      const catStr = toStr(p.category).toLowerCase();
+      const isTirumala = locStr.includes('tirumala') || 
+                         locStr.includes('narayanagiri') || 
+                         catStr.includes('tirumala');
       const dist = calculateDrivingDistance(effectiveLocation.lat, effectiveLocation.lng, lat, lng, isTirumala);
       return { ...p, computedDistance: dist } as any;
     });
@@ -198,10 +212,11 @@ function ExploreContent() {
           const source = places.length > 0 ? places : PLACES;
           const mustVisit = source.filter(p => p.rating >= 4.8).slice(0, 6);
           const hiddenGems = source.filter(p => {
-            const tagsLower = p.tags.map(t => t.toLowerCase());
-            const categoryLower = (p.category || '').toLowerCase();
-            const placeTypeLower = (p.placeType || '').toLowerCase();
-            const interestsLower = (p.interests || []).map(i => i.toLowerCase());
+            const toStr = (v: any) => typeof v === 'string' ? v : (v?.name || v?.slug || String(v || ''));
+            const tagsLower = (p.tags || []).map(t => toStr(t).toLowerCase());
+            const categoryLower = toStr(p.category).toLowerCase();
+            const placeTypeLower = toStr(p.placeType).toLowerCase();
+            const interestsLower = (p.interests || []).map(i => toStr(i).toLowerCase());
             return (
               placeTypeLower === 'hidden' ||
               categoryLower.includes('hidden') ||
@@ -234,7 +249,7 @@ function ExploreContent() {
                 <div className={styles.horizontalScroll}>
                   {nearbyPlaces.map((place) => (
                     <Link href={`/place/${place.id}`} key={place.id} className={styles.curatedCard}>
-                      <div className={styles.curatedImage} style={{ backgroundImage: `url(${place.image})` }} />
+                      <div className={styles.curatedImage} style={{ backgroundImage: `url(${place.image || '/assets/ai/hero_spiritual_sunset.png'})` }} />
                       <div className={styles.curatedInfo}>
                         <h4>{place.name}</h4>
                         <span style={{ color: '#2F6144', fontWeight: 700 }}>
@@ -253,7 +268,7 @@ function ExploreContent() {
                 <div className={styles.horizontalScroll}>
                   {mustVisit.map((place) => (
                     <Link href={`/place/${place.id}`} key={place.id} className={styles.curatedCard}>
-                      <div className={styles.curatedImage} style={{ backgroundImage: `url(${place.image})` }} />
+                      <div className={styles.curatedImage} style={{ backgroundImage: `url(${place.image || '/assets/ai/hero_spiritual_sunset.png'})` }} />
                       <div className={styles.curatedInfo}>
                         <h4>{place.name}</h4>
                         <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
@@ -272,7 +287,7 @@ function ExploreContent() {
                 <div className={styles.horizontalScroll}>
                   {hiddenGems.map((place) => (
                     <Link href={`/place/${place.id}`} key={place.id} className={styles.curatedCard}>
-                      <div className={styles.curatedImage} style={{ backgroundImage: `url(${place.image})` }} />
+                      <div className={styles.curatedImage} style={{ backgroundImage: `url(${place.image || '/assets/ai/hero_spiritual_sunset.png'})` }} />
                       <div className={styles.curatedInfo}>
                         <h4>{place.name}</h4>
                         <span>{place.placeType}</span>
@@ -379,7 +394,7 @@ function ExploreContent() {
                 <Link href={`/place/${place.id}`} className={styles.templeLink}>
                   <div 
                     className={styles.itemImage}
-                    style={{ backgroundImage: `url(${place.image})` }}
+                    style={{ backgroundImage: `url(${place.image || '/assets/ai/hero_spiritual_sunset.png'})` }}
                   />
                   <div className={styles.itemInfo}>
                     <div className={styles.itemHeader}>
@@ -398,7 +413,7 @@ function ExploreContent() {
                       ) : (
                         <span className={styles.tag}>{place.distanceKms} km from Tirupati</span>
                       )}
-                      {place.tags.map((tag: string) => (
+                      {(place.tags || []).map((tag: string) => (
                         <span key={tag} className={styles.tag}>{tag}</span>
                       ))}
                     </div>

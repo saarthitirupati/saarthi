@@ -1,5 +1,110 @@
-export type PlaceType = 'spiritual' | 'nature' | 'water' | 'food' | 'historical' | 'hidden' | 'leisure' | 'culture';
+export type PlaceType = 'spiritual' | 'nature' | 'water' | 'food' | 'historical' | 'hidden' | 'leisure' | 'culture' | 'facility';
 export type BudgetLevel = 'budget' | 'medium' | 'premium';
+
+export type VisitorType = 'Families' | 'Kids' | 'Senior Citizens' | 'Couples' | 'Photographers' | 'Pilgrims' | 'Solo Travelers';
+
+export type OperationalStatus = 'Draft' | 'Review' | 'Published' | 'Archived' | 'Hidden';
+export type VisitDifficulty = 'Easy' | 'Moderate' | 'Hard';
+export type TypicalCrowdLevel = 'Very Low' | 'Low' | 'Medium' | 'High' | 'Extreme';
+export type VisitDurationType = 'Quick Stop' | 'Half Day' | 'Full Day' | 'Must Visit' | 'Optional';
+export type ImportanceTier = 'Iconic' | 'Recommended' | 'Optional' | 'Hidden Gem';
+export type IdealSeasonType = 'Summer' | 'Monsoon' | 'Winter' | 'Festival Season' | 'All Seasons';
+
+export interface PlaceVerification {
+  status: 'Verified' | 'Unverified' | 'Pending';
+  verifiedBy?: string;
+  verifiedDate?: string;
+  source?: 'TTD' | 'Government' | 'Local Volunteers' | 'Temple Officials' | 'Ground Visit';
+  confidenceScore?: number;
+  lastUpdated?: string;
+}
+
+export interface PlaceRecommendationContext {
+  bestTimeOfDay?: ('Morning' | 'Afternoon' | 'Evening' | 'Night')[];
+  idealWeather?: ('Sunny' | 'Cloudy' | 'Rain' | 'Winter' | 'Summer')[];
+  idealSeason?: IdealSeasonType[];
+  crowdEscape?: boolean;
+  typicalCrowd?: TypicalCrowdLevel;
+  indoorOutdoor?: 'Indoor' | 'Outdoor' | 'Both';
+  familyFriendly?: boolean;
+  seniorFriendly?: boolean;
+  wheelchairAccessible?: boolean;
+  kidsFriendly?: boolean;
+  photographyFriendly?: boolean;
+  basePriority?: number;
+  recommendationPriority?: number;
+  recommendationReasons?: string[];
+}
+
+export interface PlaceSearchIntelligence {
+  aliases: string[];
+  tags: string[];
+  intentQueries: string[];
+  misspellings?: string[];
+}
+
+export interface PlaceRelationships {
+  nearby?: string[];
+  alternatives?: string[];
+  nextVisit?: string[];
+  sameCategory?: string[];
+  recommendedTogether?: string[];
+  childPlaces?: string[];
+  parentPlace?: string;
+}
+
+export interface PlaceFacilityDetail {
+  available: boolean;
+  distance?: string;
+  cost?: 'Free' | 'Paid' | string;
+  timing?: string;
+}
+
+export interface PlaceTravelOptions {
+  landmark?: string;
+  distRailway?: number;
+  distBusStand?: number;
+  distAirport?: number;
+  distTirumala?: number;
+  distAlipiri?: number;
+  distKapilaTheertham?: number;
+  car?: {
+    available: boolean;
+    time?: string;
+    fuelCost?: string;
+    parking?: string;
+    parkingCost?: string;
+    roadCondition?: string;
+    trafficLevel?: string;
+  };
+  bike?: {
+    available: boolean;
+    time?: string;
+    fuelCost?: string;
+    parking?: string;
+  };
+  rtc?: {
+    available: boolean;
+    busNumbers?: string[];
+    frequency?: string;
+    ticketCost?: string;
+    busStop?: string;
+    walkDist?: string;
+  };
+  walk?: {
+    dist?: string;
+    time?: string;
+    difficulty?: string;
+  };
+}
+
+export interface PlaceEmergencyInfo {
+  hospital?: string;
+  police?: string;
+  contact?: string;
+  office?: string;
+  lostFound?: string;
+}
 
 export interface Place {
   id: string;
@@ -31,6 +136,42 @@ export interface Place {
   };
   tags: string[];
   bestTime: string;
+  idealFor?: VisitorType[];
+
+  // Master Template v1.1 Operational & Classification Fields
+  status?: OperationalStatus;
+  importanceLevel?: ImportanceTier;
+  visitDifficulty?: VisitDifficulty;
+  visitType?: VisitDurationType;
+  oneReasonToVisit?: string;
+
+  // Master Template v1.1 Section Structures
+  verification?: PlaceVerification;
+  recommendationContext?: PlaceRecommendationContext;
+  searchIntelligence?: PlaceSearchIntelligence;
+  relationships?: PlaceRelationships;
+  detailedFacilities?: Record<string, PlaceFacilityDetail>;
+  travelOptions?: PlaceTravelOptions;
+  emergencyInfo?: PlaceEmergencyInfo;
+
+  saarthiIntelligence?: {
+    enabled: boolean;
+    crowdLevel?: "Low" | "Moderate" | "High";
+    waitingTime?: string;
+    recommendedTransport?: string;
+    parkingDifficulty?: "Easy" | "Moderate" | "Difficult";
+    travelScore?: number; // Saarthi Score
+    confidence?: number;
+    source?: string;
+    lastUpdated?: string;
+  };
+  contentCreator?: {
+    summary30?: string;
+    summary100?: string;
+    hook?: string;
+    scriptNotes?: string;
+    thumbnailText?: string;
+  };
   darshanInfo?: {
     timings: string;
   };
@@ -65,7 +206,7 @@ export interface Place {
   approxRTCFare?: string;
   approxCarCost?: string;
   approxBikeCost?: string;
-  youtubeLink?: string;
+
   images?: string[];
   visitorTips?: {
     dressCode?: string;

@@ -13,11 +13,15 @@ interface TrafficSummary {
   entries: { date: string; path: string; count: number }[];
 }
 
+import { safeFetchJson } from '@/lib/safeFetch';
+
 export default function AdminTraffic() {
   const [traffic, setTraffic] = useState<TrafficSummary | null>(null);
 
   useEffect(() => {
-    fetch('/api/admin/traffic').then(r => r.json()).then(setTraffic);
+    safeFetchJson<TrafficSummary>('/api/admin/traffic').then(data => {
+      if (data) setTraffic(data);
+    });
   }, []);
 
   const maxBar = traffic ? Math.max(...traffic.last7.map(d => d.total), 1) : 1;

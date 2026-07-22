@@ -5,7 +5,7 @@ import { ArrowLeft, BellRing, Users, Clock, AlertTriangle, ShieldCheck, Ticket }
 import { useRouter } from 'next/navigation';
 import { useRealtimeStatus } from '@/lib/useRealtimeStatus';
 import { useRealtimeAlerts } from '@/lib/useRealtimeAlerts';
-import DarshanTimingsCard from '@/components/dashboard/DarshanTimingsCard';
+
 import styles from './Live.module.css';
 
 function timeAgo(iso: string): string {
@@ -86,37 +86,70 @@ export default function LivePage() {
               <span className={styles.ssdStatus}>
                 {statusLoading ? '—' : (SSD_LABEL[status?.ssdTokenStatus ?? ''] ?? '—')}
               </span>
-              {status?.ssdNextTokenTime && (
-                <span className={styles.ssdNext}>Next: {status.ssdNextTokenTime}</span>
+            </div>
+
+            {/* DYNAMIC ADMIN ISSUING TIME HIGHLIGHT BOX */}
+            <div style={{
+              background: status?.ssdTokenStatus === 'issuing' ? '#F0FDF4' : status?.ssdTokenStatus === 'paused' ? '#FFFBEB' : '#FEF2F2',
+              border: `1px solid ${status?.ssdTokenStatus === 'issuing' ? '#BBF7D0' : status?.ssdTokenStatus === 'paused' ? '#FDE68A' : '#FECACA'}`,
+              borderRadius: '12px',
+              padding: '10px 14px',
+              marginTop: '10px',
+              marginBottom: '12px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              gap: '10px'
+            }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                <Clock size={16} color={status?.ssdTokenStatus === 'issuing' ? '#16A34A' : status?.ssdTokenStatus === 'paused' ? '#D97706' : '#DC2626'} />
+                <div>
+                  <span style={{ fontSize: '10px', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.5px', color: '#64748B', display: 'block' }}>
+                    Next Release / Issuing Time
+                  </span>
+                  <span style={{ fontSize: '13px', fontWeight: 800, color: status?.ssdTokenStatus === 'issuing' ? '#166534' : status?.ssdTokenStatus === 'paused' ? '#B45309' : '#991B1B' }}>
+                    {status?.ssdNextTokenTime ? status.ssdNextTokenTime : (status?.ssdTokenStatus === 'issuing' ? 'Tokens Being Issued Now' : 'Closed for Today')}
+                  </span>
+                </div>
+              </div>
+              {status?.ssdNotice && (
+                <span style={{
+                  fontSize: '11px',
+                  fontWeight: 700,
+                  color: '#1E293B',
+                  background: '#FFFFFF',
+                  border: '1px solid #CBD5E1',
+                  padding: '3px 8px',
+                  borderRadius: '6px'
+                }}>
+                  {status.ssdNotice}
+                </span>
               )}
             </div>
-            {status?.ssdTokenSlots?.map((slot) => (
-              <div key={slot.slotTime} className={styles.ssdSlot}>
-                <span className={styles.ssdSlotTime}>{slot.slotTime}</span>
-                <span className={`${styles.ssdSlotBadge} ${
-                  slot.status === 'available' ? styles.ssd_available
-                  : slot.status === 'filling' ? styles.ssd_filling
-                  : styles.ssd_closed
-                }`}>
-                  {slot.status === 'closed'
-                    ? 'Full'
-                    : slot.status === 'filling'
-                    ? `Filling · ${slot.tokensLeft}`
-                    : 'Available'}
-                </span>
-              </div>
-            ))}
-            {status?.ssdTimingsGuide && (
-              <p className={styles.ssdGuide}>{status.ssdTimingsGuide}</p>
-            )}
+          </div>
+          
+          <div className={styles.ssdInfo}>
+            <p>
+              <strong>SSD (Slotted Sarva Darshan)</strong> is a free time-slotted pass issued by the TTD to reduce waiting times for free darshan at the Tirumala Temple from 12–24+ hours down to 3–6 hours.
+            </p>
+            
+            <h3>How to Get Your Token</h3>
+            <ul>
+              <li><strong>Where:</strong> Offline counters in Tirupati at Srinivasam Complex, Vishnu Nivasam (railway station), and Bhudevi Complex (Alipiri tollgate).</li>
+              <li><strong>When:</strong> Counters typically open around midnight (3:00 AM / 4:00 AM) for same-day darshan. Queues form very early due to high demand.</li>
+              <li><strong>Requirements:</strong> All pilgrims must be physically present and carry their original Aadhaar cards.</li>
+            </ul>
+
+            <h3>Key Rules</h3>
+            <ul className={styles.rulesList}>
+              <li>Children under 12 do not require a token (free entry with parents).</li>
+              <li>Tokens are non-transferable.</li>
+              <li>Every token includes one free laddu prasadam.</li>
+            </ul>
           </div>
         </section>
 
-        {/* Darshan Timings */}
-        <section className={styles.section}>
-          <span className={styles.sectionTitle}>Darshan Timings</span>
-          <DarshanTimingsCard />
-        </section>
+
 
         {/* Active Alerts */}
         <section className={styles.section}>

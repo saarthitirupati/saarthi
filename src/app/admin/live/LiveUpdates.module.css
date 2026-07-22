@@ -1,0 +1,204 @@
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 32px;
+}
+
+.title {
+  font-size: 24px;
+  font-weight: 700;
+  color: #1a1b1c;
+  margin: 0 0 4px 0;
+}
+
+.subtitle {
+  font-size: 14px;
+  color: #888d92;
+  margin: 0;
+}
+
+.dangerButton {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background-color: #ef4444;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.dangerButton:hover {
+  background-color: #dc2626;
+}
+
+.globalOverride {
+  background: #fffbeb;
+  border: 1px solid #fef3c7;
+  border-radius: 12px;
+  padding: 24px;
+  margin-bottom: 32px;
+}
+
+.overrideHeader {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.overrideHeader h3 {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 600;
+  color: #92400e;
+}
+
+.overrideDesc {
+  font-size: 14px;
+  color: #b45309;
+  margin: 0 0 16px 0;
+}
+
+.weatherToggles {
+  display: flex;
+  gap: 12px;
+}
+
+.weatherBtn {
+  background: white;
+  border: 1px solid #fcd34d;
+  color: #92400e;
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.weatherBtn:hover {
+  background: #fef3c7;
+}
+
+.weatherBtn.active {
+  background: #d97706;
+  color: white;
+  border-color: #d97706;
+}
+
+.ssdSection {
+  background: white;
+  border: 1px solid #eef0f2;
+  border-radius: 12px;
+  padding: 24px;
+  margin-bottom: 32px;
+}
+
+.ssdControls {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-top: 20px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  gap: 24px;
+}
+
+.liveCard {
+  background: white;
+  border: 1px solid #eef0f2;
+  border-radius: 12px;
+  padding: 24px;
+}
+
+.cardHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 24px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid #eef0f2;
+}
+
+.placeName {
+  font-size: 16px;
+  font-weight: 600;
+  color: #1a1b1c;
+  margin: 0;
+  line-height: 1.4;
+}
+
+.lastUpdated {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 12px;
+  color: #888d92;
+  white-space: nowrap;
+}
+
+.controls {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.controlGroup {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.controlGroup label {
+  font-size: 14px;
+  font-weight: 600;
+  color: #4a4d50;
+}
+
+.select,
+.input {
+  border: 1px solid #eef0f2;
+  border-radius: 6px;
+  padding: 8px 12px;
+  font-size: 14px;
+  color: #1a1b1c;
+  outline: none;
+  min-width: 140px;
+}
+
+.select:focus,
+.input:focus {
+  border-color: #2563eb;
+}
+
+.updateButton {
+  width: 100%;
+  background-color: #f5f6f8;
+  color: #1a1b1c;
+  border: 1px solid #eef0f2;
+  padding: 10px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.updateButton:hover {
+  background-color: #eef0f2;
+}

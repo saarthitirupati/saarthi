@@ -6,6 +6,7 @@ import {
   Send, Users, Eye, HelpCircle, X, CheckCircle 
 } from 'lucide-react';
 import styles from './alerts.module.css';
+import { notifyRealtimeUpdate } from '@/lib/useRealtimeStatus';
 
 interface LiveAlert {
   id: string;
@@ -41,7 +42,7 @@ export default function AdminAlertsPage() {
   const fetchAlerts = async () => {
     setLoading(true);
     try {
-      const res = await fetch('/api/v1/alerts');
+      const res = await fetch('/api/v1/alerts?all=true');
       if (res.ok) {
         const data = await res.json();
         setAlerts(data);
@@ -88,6 +89,7 @@ export default function AdminAlertsPage() {
       });
 
       if (res.ok) {
+        notifyRealtimeUpdate();
         // Reset form
         setTitle('');
         setDescription('');

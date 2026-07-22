@@ -1,12 +1,40 @@
 import { supabase } from '@/lib/supabase';
 
+export function formatPlaceRow(row: any) {
+  if (!row) return row;
+  let categoryStr = row.category;
+  if (typeof row.category === 'object' && row.category !== null) {
+    categoryStr = Array.isArray(row.category)
+      ? (row.category[0]?.name || row.category[0]?.slug || '')
+      : (row.category.name || row.category.slug || '');
+  }
+  let locationStr = row.location;
+  if (typeof row.location === 'object' && row.location !== null) {
+    locationStr = Array.isArray(row.location)
+      ? (row.location[0]?.name || '')
+      : (row.location.name || row.location.address || '');
+  }
+  let placeTypeStr = row.placeType;
+  if (typeof row.placeType === 'object' && row.placeType !== null) {
+    placeTypeStr = Array.isArray(row.placeType)
+      ? (row.placeType[0]?.name || '')
+      : (row.placeType.name || row.placeType.slug || '');
+  }
+  return {
+    ...row,
+    category: typeof categoryStr === 'string' ? categoryStr : String(categoryStr || ''),
+    location: typeof locationStr === 'string' ? locationStr : String(locationStr || ''),
+    placeType: typeof placeTypeStr === 'string' ? placeTypeStr : String(placeTypeStr || ''),
+  };
+}
+
 // Places
 export async function getPlaces(citySlug: string = 'tirupati') {
   const { data: city } = await supabase.from('cities').select('id').eq('slug', citySlug).single();
   if (!city) return [];
   const { data, error } = await supabase.from('places').select('*, category:categories(name, slug, icon)').eq('city_id', city.id).eq('status', 'Published').order('priority', { ascending: false });
   if (error) throw error;
-  return data;
+  return (data || []).map(formatPlaceRow);
 }
 
 export async function getPlaceBySlug(slug: string) {
@@ -18,7 +46,7 @@ export async function getPlaceBySlug(slug: string) {
     .eq('place_id', place.id)
     .order('priority', { ascending: true });
     
-  return { ...place, nearby_places: nearby?.map(n => n.nearby_place) || [] };
+  return formatPlaceRow({ ...place, nearby_places: (nearby?.map(n => n.nearby_place) || []).map(formatPlaceRow) });
 }
 
 export async function getPlacesByCategory(categorySlug: string) {
@@ -26,7 +54,7 @@ export async function getPlacesByCategory(categorySlug: string) {
   if (!category) return [];
   const { data, error } = await supabase.from('places').select('*, category:categories(name, slug, icon)').eq('category_id', category.id).eq('status', 'Published').order('priority', { ascending: false });
   if (error) throw error;
-  return data;
+  return (data || []).map(formatPlaceRow);
 }
 
 // Categories

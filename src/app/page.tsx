@@ -20,7 +20,8 @@ import { getBestForToday } from '@/lib/contextEngine';
 import Link from 'next/link';
 import { CHECKLIST_ITEMS } from '@/data/knowledge';
 import { useRealtimeAlerts } from '@/lib/useRealtimeAlerts';
-import { FESTIVALS_2026 } from '@/data/festivals';
+import { Festival, FESTIVALS_2026 } from '@/data/festivals';
+import { safeFetchJson } from '@/lib/safeFetch';
 import { STORIES } from '@/data/stories';
 
 export default function Home() {
@@ -611,7 +612,7 @@ export default function Home() {
     return places
       .filter(p => p.id !== excludeId && p.coordinates)
       .map(p => {
-        const isTirumala = p.location.toLowerCase().includes('tirumala') || p.category.toLowerCase().includes('tirumala');
+        const isTirumala = String(p.location || '').toLowerCase().includes('tirumala') || String(p.category || '').toLowerCase().includes('tirumala');
         const dist = calculateDrivingDistance(effLoc.lat, effLoc.lng, p.coordinates!.lat, p.coordinates!.lng, isTirumala);
         return { place: p, dist };
       })
@@ -804,35 +805,69 @@ export default function Home() {
     return `Today • ${day} ${month}`;
   }, []);
 
-  const todayFestival = useMemo(() => {
-    const todayStr = new Date().toISOString().split('T')[0];
-    const found = FESTIVALS_2026.find(f => f.date === todayStr);
-    if (found) return found;
-    
-    // Fallback/mock for design validation when date matches 15 Jul (as in prompt)
-    if (todayStr.includes('07-15') || new Date().getMonth() === 6) {
-      return {
-        id: 'guru-purnima',
-        name: 'Guru Purnima',
-        date: todayStr,
-        location: 'Sri Kapileswara Swamy Temple',
-        recommendedTime: '5:30 PM - 9:00 PM',
-        specialTips: 'Guru Purnima celebrations and special rituals begin in the evening.',
-        expectedCrowd: 'Moderate' as const,
-        gravityScore: 7,
-        dressCode: 'Traditional',
-        coverImage: '/assets/temples/kapila-theertham.png'
-      };
-    }
-    return null;
+  const [liveFestivals, setLiveFestivals] = useState<Festival[]>([]);
+
+  useEffect(() => {
+    safeFetchJson<any>('/api/v1/festivals?all=1').then((d: any) => {
+      if (d && Array.isArray(d.data) && d.data.length > 0) {
+        setLiveFestivals(d.data);
+      }
+    });
   }, []);
+
+  const todayFestival = useMemo(() => {
+    const rawList = liveFestivals.length > 0 ? liveFestivals : FESTIVALS_2026;
+    const list = rawList.map((f: any) => ({
+      ...f,
+      name: f.name || f.title || 'Guru Purnima',
+      date: (f.date || f.date_start || '').split('T')[0],
+      location: f.location || f.place_name || 'Sri Kapileswara Swamy Temple',
+      recommendedTime: f.recommendedTime || f.recommended_time || '5:30 PM - 9:00 PM',
+      placeId: f.placeId || f.place_id,
+      coverImage: f.coverImage || f.cover_image
+    }));
+
+    const todayStr = new Date().toISOString().split('T')[0];
+    
+    // 1. Exact match for today
+    const exactMatch = list.find(f => f.date === todayStr);
+    if (exactMatch) return { ...exactMatch, isToday: true };
+
+    // 2. Next upcoming festival
+    const upcoming = list.filter(f => f.date >= todayStr).sort((a: any, b: any) => a.date.localeCompare(b.date))[0];
+    if (upcoming) return { ...upcoming, isToday: upcoming.date === todayStr };
+
+    // 3. Fallback to Guru Purnima or first in list
+    const fallback = list.find(f => f.id === 'guru-purnima') || list[0];
+    return fallback ? { ...fallback, isToday: false } : null;
+  }, [liveFestivals]);
+
+  const formattedBadgeDate = useMemo(() => {
+    if (!todayFestival) return 'UPCOMING';
+    if ((todayFestival as any).isToday) return 'TODAY';
+    if (!todayFestival.date) return 'UPCOMING';
+    try {
+      const parts = todayFestival.date.split('-');
+      if (parts.length === 3) {
+        const d = new Date(parseInt(parts[0]), parseInt(parts[1]) - 1, parseInt(parts[2]));
+        return d.toLocaleDateString('en-IN', { day: 'numeric', month: 'short' }).toUpperCase();
+      }
+    } catch {}
+    return todayFestival.date;
+  }, [todayFestival]);
 
   const festivalImage = useMemo(() => {
     if (!todayFestival) return '/assets/temples/govindaraja.png';
+    
+    if (todayFestival.placeId) {
+      const match = places.find((p: any) => p.id === todayFestival.placeId);
+      if (match?.image) return match.image;
+    }
+
     if (todayFestival.coverImage) return todayFestival.coverImage;
     
-    const loc = todayFestival.location.toLowerCase();
-    const name = todayFestival.name.toLowerCase();
+    const loc = (todayFestival.location || '').toLowerCase();
+    const name = (todayFestival.name || '').toLowerCase();
     
     if (loc.includes('kapileswara') || loc.includes('kapila') || name.includes('kapila')) {
       return '/assets/temples/kapila-theertham.png';
@@ -1387,9 +1422,50 @@ export default function Home() {
             </span>
           </div>
 
-          {/* Timing row */}
+          {/* DYNAMIC ADMIN ISSUING TIME BOX */}
+          <div style={{
+            background: liveStatus.ssdTokenStatus === 'issuing' ? '#F0FDF4' : liveStatus.ssdTokenStatus === 'paused' ? '#FFFBEB' : '#FEF2F2',
+            border: `1px solid ${liveStatus.ssdTokenStatus === 'issuing' ? '#BBF7D0' : liveStatus.ssdTokenStatus === 'paused' ? '#FDE68A' : '#FECACA'}`,
+            borderRadius: '12px',
+            padding: '10px 14px',
+            marginBottom: '12px',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            gap: '10px'
+          }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+              <Clock size={16} color={liveStatus.ssdTokenStatus === 'issuing' ? '#16A34A' : liveStatus.ssdTokenStatus === 'paused' ? '#D97706' : '#DC2626'} />
+              <div>
+                <span style={{ fontSize: '10px', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.5px', color: '#64748B', display: 'block' }}>
+                  Next Release / Issuing Time
+                </span>
+                <span style={{ fontSize: '13px', fontWeight: 800, color: liveStatus.ssdTokenStatus === 'issuing' ? '#166534' : liveStatus.ssdTokenStatus === 'paused' ? '#B45309' : '#991B1B' }}>
+                  {liveStatus.ssdNextTokenTime ? liveStatus.ssdNextTokenTime : (liveStatus.ssdTokenStatus === 'issuing' ? 'Tokens Being Issued Now' : 'Closed for Today')}
+                </span>
+              </div>
+            </div>
+            {liveStatus.ssdNotice && (
+              <span style={{
+                fontSize: '11px',
+                fontWeight: 700,
+                color: '#1E293B',
+                background: '#FFFFFF',
+                border: '1px solid #CBD5E1',
+                padding: '3px 8px',
+                borderRadius: '6px',
+                maxWidth: '130px',
+                overflow: 'hidden',
+                textOverflow: 'ellipsis',
+                whiteSpace: 'nowrap'
+              }}>
+                {liveStatus.ssdNotice}
+              </span>
+            )}
+          </div>
+
+          {/* Timing subtitle */}
           <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '12px' }}>
-            <Clock size={12} color="#78716c" />
             <span style={{ fontSize: '12px', color: '#57534e', fontWeight: 500 }}>
               {liveStatus.ssdTokenStatus === 'issuing'
                 ? 'Tokens being issued — collect at counters below'
@@ -1658,67 +1734,78 @@ export default function Home() {
          ═══════════════════════════════════════════════════ */}
       {todayFestival && (
         <div style={{ margin: '14px 16px 20px 16px' }}>
-          <div style={{ marginBottom: '10px' }}>
+          <div style={{ marginBottom: '10px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
             <h3 style={{ fontSize: '13px', fontWeight: 700, color: '#0F172A', margin: 0 }}>
-              Today&apos;s festival
+              {(todayFestival as any).isToday ? "Today's festival" : "Upcoming festival"}
             </h3>
+            <Link href="/festivals" style={{ fontSize: '11px', fontWeight: 700, color: '#D97706', textDecoration: 'none' }}>
+              View All Festivals &rarr;
+            </Link>
           </div>
 
-          <div style={{
-            background: '#FFF8E7',
-            border: '1px solid #FBBF24',
-            borderRadius: '24px',
-            padding: '16px',
-            boxShadow: '0 2px 10px rgba(0,0,0,0.01)',
-            display: 'flex',
-            gap: '16px',
-            alignItems: 'center'
-          }}>
+          <Link 
+            href={todayFestival.placeId ? `/place/${todayFestival.placeId}` : `/festivals/${todayFestival.slug || todayFestival.id}`}
+            style={{ textDecoration: 'none', color: 'inherit' }}
+          >
             <div style={{
-              width: '80px',
-              height: '80px',
-              borderRadius: '16px',
-              flexShrink: 0,
-              backgroundImage: `url(${festivalImage})`,
-              backgroundSize: 'cover',
-              backgroundPosition: 'center',
-              backgroundColor: '#FDEBB5'
-            }} />
-            
-            <div style={{ flex: 1, minWidth: 0 }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                <h4 style={{ fontSize: '15px', fontWeight: 900, color: '#78350F', margin: 0 }}>
-                  {todayFestival.name}
-                </h4>
-                <span style={{ 
-                  fontSize: '9px', 
-                  fontWeight: 900, 
-                  color: '#FFFFFF', 
-                  background: '#D97706',
-                  borderRadius: '6px',
-                  padding: '2px 6px',
-                  textTransform: 'uppercase'
-                }}>Today</span>
-              </div>
-
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '4px', marginTop: '6px', fontSize: '12px', color: '#78350F', opacity: 0.85 }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-                  <Clock size={12} color="#78350F" />
-                  <span>Starts at {todayFestival.recommendedTime.split(' - ')[0] || '5:30 PM'}</span>
+              background: '#FFF8E7',
+              border: '1px solid #FBBF24',
+              borderRadius: '24px',
+              padding: '16px',
+              boxShadow: '0 2px 10px rgba(0,0,0,0.01)',
+              display: 'flex',
+              gap: '16px',
+              alignItems: 'center',
+              cursor: 'pointer'
+            }}>
+              <div style={{
+                width: '80px',
+                height: '80px',
+                borderRadius: '16px',
+                flexShrink: 0,
+                backgroundImage: `url(${festivalImage})`,
+                backgroundSize: 'cover',
+                backgroundPosition: 'center',
+                backgroundColor: '#FDEBB5'
+              }} />
+              
+              <div style={{ flex: 1, minWidth: 0 }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
+                  <h4 style={{ fontSize: '15px', fontWeight: 900, color: '#78350F', margin: 0 }}>
+                    {todayFestival.name}
+                  </h4>
+                  <span style={{ 
+                    fontSize: '9px', 
+                    fontWeight: 900, 
+                    color: '#FFFFFF', 
+                    background: (todayFestival as any).isToday ? '#D97706' : '#2563EB',
+                    borderRadius: '6px',
+                    padding: '2px 6px',
+                    textTransform: 'uppercase'
+                  }}>
+                    {formattedBadgeDate}
+                  </span>
                 </div>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-                  <MapPin size={12} color="#78350F" />
-                  <span>{todayFestival.location || 'Vishnu Nivasam'}</span>
-                </div>
-              </div>
 
-              <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '8px' }}>
-                <Link href="/festivals" style={{ fontSize: '11.5px', fontWeight: 800, color: '#D97706', textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '2px' }}>
-                  View Details &gt;
-                </Link>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '4px', marginTop: '6px', fontSize: '12px', color: '#78350F', opacity: 0.85 }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                    <Clock size={12} color="#78350F" />
+                    <span>Starts at {(todayFestival.recommendedTime || (todayFestival as any).recommended_time || '5:30 PM').split(' - ')[0]}</span>
+                  </div>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                    <MapPin size={12} color="#78350F" />
+                    <span>{todayFestival.location || 'Sri Kapileswara Swamy Temple'}</span>
+                  </div>
+                </div>
+
+                <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '8px' }}>
+                  <span style={{ fontSize: '11.5px', fontWeight: 800, color: '#D97706', textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '2px' }}>
+                    View Recommended Temple &gt;
+                  </span>
+                </div>
               </div>
             </div>
-          </div>
+          </Link>
         </div>
       )}
 

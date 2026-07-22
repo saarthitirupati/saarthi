@@ -190,9 +190,12 @@ export default function LiveStatusEditor() {
                           type="text"
                           value={d.waitTime}
                           onChange={e => {
-                            const list = [...status.darshans];
-                            list[index] = { ...list[index], waitTime: e.target.value };
-                            setStatus(s => ({ ...s, darshans: list }));
+                            const val = e.target.value;
+                            setStatus(s => {
+                              const list = [...(s.darshans || [])];
+                              list[index] = { ...list[index], waitTime: val };
+                              return { ...s, darshans: list };
+                            });
                           }}
                           placeholder="e.g. 12-14 hours"
                           style={{ width: '100%', padding: '8px 10px', borderRadius: '8px', border: '1px solid #475569', background: '#0F172A', color: '#E2E8F0', fontSize: '12px', boxSizing: 'border-box' }}
@@ -207,9 +210,12 @@ export default function LiveStatusEditor() {
                           type="text"
                           value={d.peakHours}
                           onChange={e => {
-                            const list = [...status.darshans];
-                            list[index] = { ...list[index], peakHours: e.target.value };
-                            setStatus(s => ({ ...s, darshans: list }));
+                            const val = e.target.value;
+                            setStatus(s => {
+                              const list = [...(s.darshans || [])];
+                              list[index] = { ...list[index], peakHours: val };
+                              return { ...s, darshans: list };
+                            });
                           }}
                           placeholder="e.g. Sat-Sun 6 AM"
                           style={{ width: '100%', padding: '8px 10px', borderRadius: '8px', border: '1px solid #475569', background: '#0F172A', color: '#E2E8F0', fontSize: '12px', boxSizing: 'border-box' }}
@@ -222,9 +228,12 @@ export default function LiveStatusEditor() {
                         <select
                           value={d.statusLabel || 'Low'}
                           onChange={e => {
-                            const list = [...status.darshans];
-                            list[index] = { ...list[index], statusLabel: e.target.value as any };
-                            setStatus(s => ({ ...s, darshans: list }));
+                            const val = e.target.value as any;
+                            setStatus(s => {
+                              const list = [...(s.darshans || [])];
+                              list[index] = { ...list[index], statusLabel: val };
+                              return { ...s, darshans: list };
+                            });
                           }}
                           style={{ width: '100%', padding: '8px 10px', borderRadius: '8px', border: '1px solid #475569', background: '#0F172A', color: '#E2E8F0', fontSize: '12px', boxSizing: 'border-box' }}
                         >
@@ -242,9 +251,12 @@ export default function LiveStatusEditor() {
                         <select
                           value={d.trend || 'down'}
                           onChange={e => {
-                            const list = [...status.darshans];
-                            list[index] = { ...list[index], trend: e.target.value as any };
-                            setStatus(s => ({ ...s, darshans: list }));
+                            const val = e.target.value as any;
+                            setStatus(s => {
+                              const list = [...(s.darshans || [])];
+                              list[index] = { ...list[index], trend: val };
+                              return { ...s, darshans: list };
+                            });
                           }}
                           style={{ width: '100%', padding: '8px 10px', borderRadius: '8px', border: '1px solid #475569', background: '#0F172A', color: '#E2E8F0', fontSize: '12px', boxSizing: 'border-box' }}
                         >
@@ -323,12 +335,33 @@ export default function LiveStatusEditor() {
 
             {/* Counters Locations (Where to get tokens) */}
             <div style={{ marginBottom: 16, borderTop: '1px dashed #334155', paddingTop: 12 }}>
-              <label style={{ fontSize: 11, color: '#94A3B8', fontWeight: 700, display: 'block', marginBottom: 10, textTransform: 'uppercase', letterSpacing: '0.5px' }}>
-                📍 SSD Counter Location Settings
-              </label>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 10 }}>
+                <label style={{ fontSize: 11, color: '#94A3B8', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+                  📍 SSD Counter Location Settings
+                </label>
+                <button
+                  onClick={() => setStatus(s => ({ ...s, ssdCounters: [...(s.ssdCounters || []), { name: '', description: '' }] }))}
+                  style={{ background: '#334155', color: '#F1F5F9', border: 'none', borderRadius: '6px', padding: '4px 8px', fontSize: '10px', fontWeight: 700, cursor: 'pointer' }}
+                >
+                  + Add Counter
+                </button>
+              </div>
               {(status.ssdCounters || []).map((counter, idx) => (
-                <div key={idx} style={{ background: '#1E293B', padding: '10px', borderRadius: '8px', border: '1px solid #334155', marginBottom: '8px', display: 'flex', flexDirection: 'column', gap: '6px' }}>
-                  <div>
+                <div key={idx} style={{ background: '#1E293B', padding: '10px', borderRadius: '8px', border: '1px solid #334155', marginBottom: '8px', display: 'flex', flexDirection: 'column', gap: '6px', position: 'relative' }}>
+                  <button
+                    onClick={() => {
+                      setStatus(s => {
+                        const list = [...(s.ssdCounters || [])];
+                        list.splice(idx, 1);
+                        return { ...s, ssdCounters: list };
+                      });
+                    }}
+                    style={{ position: 'absolute', top: '8px', right: '8px', background: 'rgba(239, 68, 68, 0.1)', color: '#EF4444', border: 'none', borderRadius: '4px', width: '20px', height: '20px', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', fontSize: '12px' }}
+                    title="Remove Counter"
+                  >
+                    ×
+                  </button>
+                  <div style={{ paddingRight: '24px' }}>
                     <label style={{ fontSize: '9px', color: '#94A3B8', fontWeight: 700, display: 'block', marginBottom: '2px', textTransform: 'uppercase' }}>
                       Counter Name
                     </label>
@@ -336,9 +369,12 @@ export default function LiveStatusEditor() {
                       type="text"
                       value={counter.name}
                       onChange={e => {
-                        const list = [...status.ssdCounters];
-                        list[idx] = { ...list[idx], name: e.target.value };
-                        setStatus(s => ({ ...s, ssdCounters: list }));
+                        const val = e.target.value;
+                        setStatus(s => {
+                          const list = [...(s.ssdCounters || [])];
+                          list[idx] = { ...list[idx], name: val };
+                          return { ...s, ssdCounters: list };
+                        });
                       }}
                       style={{ width: '100%', padding: '6px 8px', borderRadius: '6px', border: '1px solid #475569', background: '#0F172A', color: '#E2E8F0', fontSize: '11px', boxSizing: 'border-box' }}
                     />
@@ -351,9 +387,12 @@ export default function LiveStatusEditor() {
                       type="text"
                       value={counter.description}
                       onChange={e => {
-                        const list = [...status.ssdCounters];
-                        list[idx] = { ...list[idx], description: e.target.value };
-                        setStatus(s => ({ ...s, ssdCounters: list }));
+                        const val = e.target.value;
+                        setStatus(s => {
+                          const list = [...(s.ssdCounters || [])];
+                          list[idx] = { ...list[idx], description: val };
+                          return { ...s, ssdCounters: list };
+                        });
                       }}
                       style={{ width: '100%', padding: '6px 8px', borderRadius: '6px', border: '1px solid #475569', background: '#0F172A', color: '#E2E8F0', fontSize: '11px', boxSizing: 'border-box' }}
                     />
@@ -362,13 +401,38 @@ export default function LiveStatusEditor() {
               ))}
             </div>
 
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 10 }}>
+              <label style={{ fontSize: 11, color: '#94A3B8', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+                🕒 SSD Token Slots
+              </label>
+              <button
+                onClick={() => setStatus(s => ({ ...s, ssdTokenSlots: [...(s.ssdTokenSlots || []), { slotTime: '', status: 'available', tokensLeft: '' }] }))}
+                style={{ background: '#334155', color: '#F1F5F9', border: 'none', borderRadius: '6px', padding: '4px 8px', fontSize: '10px', fontWeight: 700, cursor: 'pointer' }}
+              >
+                + Add Slot
+              </button>
+            </div>
+            
             {(status.ssdTokenSlots || []).map((slot, idx) => (
-              <div key={idx} style={{ background: '#1E293B', padding: 14, borderRadius: 12, border: '1px solid #334155', display: 'grid', gridTemplateColumns: 'auto 1fr 1fr', gap: 10, alignItems: 'end', marginBottom: 10 }}>
+              <div key={idx} style={{ background: '#1E293B', padding: 14, borderRadius: 12, border: '1px solid #334155', display: 'grid', gridTemplateColumns: 'auto 1fr 1fr auto', gap: 10, alignItems: 'end', marginBottom: 10 }}>
                 <div>
                   <label style={{ fontSize: 10, color: '#94A3B8', fontWeight: 700, display: 'block', marginBottom: 4, textTransform: 'uppercase', letterSpacing: '0.3px' }}>
                     Slot Time
                   </label>
-                  <span style={{ fontSize: 13, fontWeight: 700, color: '#F1F5F9', padding: '8px 0', display: 'block' }}>{slot.slotTime}</span>
+                  <input
+                    type="text"
+                    value={slot.slotTime}
+                    onChange={e => {
+                      const val = e.target.value;
+                      setStatus(s => {
+                        const list = [...(s.ssdTokenSlots || [])];
+                        list[idx] = { ...list[idx], slotTime: val };
+                        return { ...s, ssdTokenSlots: list };
+                      });
+                    }}
+                    placeholder="e.g. 2:00 PM"
+                    style={{ width: '100%', padding: '8px 10px', borderRadius: 8, border: '1px solid #475569', background: '#0F172A', color: '#E2E8F0', fontSize: 12, boxSizing: 'border-box' }}
+                  />
                 </div>
                 <div>
                   <label style={{ fontSize: 10, color: '#94A3B8', fontWeight: 700, display: 'block', marginBottom: 4, textTransform: 'uppercase', letterSpacing: '0.3px' }}>
@@ -377,9 +441,12 @@ export default function LiveStatusEditor() {
                   <select
                     value={slot.status}
                     onChange={e => {
-                      const list = [...status.ssdTokenSlots];
-                      list[idx] = { ...list[idx], status: e.target.value as any };
-                      setStatus(s => ({ ...s, ssdTokenSlots: list }));
+                      const val = e.target.value as any;
+                      setStatus(s => {
+                        const list = [...(s.ssdTokenSlots || [])];
+                        list[idx] = { ...list[idx], status: val };
+                        return { ...s, ssdTokenSlots: list };
+                      });
                     }}
                     style={{ width: '100%', padding: '8px 10px', borderRadius: 8, border: '1px solid #475569', background: '#0F172A', color: '#E2E8F0', fontSize: 12 }}
                   >
@@ -396,14 +463,30 @@ export default function LiveStatusEditor() {
                     type="text"
                     value={slot.tokensLeft || ''}
                     onChange={e => {
-                      const list = [...status.ssdTokenSlots];
-                      list[idx] = { ...list[idx], tokensLeft: e.target.value };
-                      setStatus(s => ({ ...s, ssdTokenSlots: list }));
+                      const val = e.target.value;
+                      setStatus(s => {
+                        const list = [...(s.ssdTokenSlots || [])];
+                        list[idx] = { ...list[idx], tokensLeft: val };
+                        return { ...s, ssdTokenSlots: list };
+                      });
                     }}
                     placeholder="e.g. 500"
                     style={{ width: '100%', padding: '8px 10px', borderRadius: 8, border: '1px solid #475569', background: '#0F172A', color: '#E2E8F0', fontSize: 12, boxSizing: 'border-box' }}
                   />
                 </div>
+                <button
+                  onClick={() => {
+                    setStatus(s => {
+                      const list = [...(s.ssdTokenSlots || [])];
+                      list.splice(idx, 1);
+                      return { ...s, ssdTokenSlots: list };
+                    });
+                  }}
+                  style={{ background: 'rgba(239, 68, 68, 0.1)', color: '#EF4444', border: 'none', borderRadius: '8px', width: '32px', height: '32px', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', marginBottom: '2px' }}
+                  title="Remove Slot"
+                >
+                  ×
+                </button>
               </div>
             ))}
           </div>

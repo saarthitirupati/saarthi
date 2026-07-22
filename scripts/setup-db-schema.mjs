@@ -34,143 +34,204 @@ async function main() {
     // Enable pgcrypto for UUID generation if needed
     await db.query(`CREATE EXTENSION IF NOT EXISTS "pgcrypto"`);
 
-    // 1. Alter 'places' table to add Sprint 1 columns
-    console.log("Updating 'places' table columns...");
-    const placesColumns = [
-      { name: 'architecture', type: 'TEXT' },
-      { name: 'importance', type: 'TEXT' },
-      { name: 'deity', type: 'TEXT' },
-      { name: 'deityType', type: 'TEXT' },
-      { name: 'builtBy', type: 'TEXT' },
-      { name: 'keyPoojas', type: 'TEXT[]' },
-      { name: 'breakTimings', type: 'JSONB' },
-      { name: 'isHiddenGem', type: 'BOOLEAN DEFAULT false' },
-      { name: 'rituals', type: 'JSONB' },
-      { name: 'facilities', type: 'JSONB' },
-      { name: 'difficulty', type: 'TEXT' },
-      { name: 'bestSeason', type: 'TEXT' },
-      { name: 'relatedPlaces', type: 'TEXT[]' },
-      { name: 'nearbyTemples', type: 'TEXT[]' }
+    const tablesToManage = [
+      'cities', 'categories', 'places', 'place_details', 
+      'recommendation_rules', 'search_aliases', 'essentials', 
+      'recommendation_logs', 'feature_flags', 'live_updates', 
+      'alerts', 'festivals'
     ];
 
-    for (const col of placesColumns) {
-      const checkQuery = `
-        SELECT 1 FROM information_schema.columns 
-        WHERE table_name = 'places' AND column_name = $1
-      `;
-      const res = await db.query(checkQuery, [col.name]);
+    // 1. Cities
+    console.log("Setting up 'cities' table...");
+    await db.query(`
+      CREATE TABLE IF NOT EXISTS cities (
+        id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+        name TEXT NOT NULL,
+        slug TEXT UNIQUE NOT NULL,
+        state TEXT,
+        country TEXT DEFAULT 'India',
+        "isActive" BOOLEAN DEFAULT true,
+        "createdAt" TIMESTAMPTZ DEFAULT now()
+      )
+    `);
+
+    // 2. Categories
+    console.log("Setting up 'categories' table...");
+    await db.query(`
+      CREATE TABLE IF NOT EXISTS categories (
+        id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+        name TEXT NOT NULL,
+        slug TEXT UNIQUE NOT NULL,
+        icon TEXT,
+        "displayOrder" INTEGER DEFAULT 0,
+        "isActive" BOOLEAN DEFAULT true,
+        "createdAt" TIMESTAMPTZ DEFAULT now()
+      )
+    `);
+
+    // 3. Places (Basic Information Only)
+    console.log("Setting up 'places' table (Basic Info)...");
+    await db.query(`
+      CREATE TABLE IF NOT EXISTS places (
+        id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+        name TEXT NOT NULL,
+        slug TEXT UNIQUE NOT NULL,
+        description TEXT,
+        coordinates JSONB,
+        images TEXT[],
+        tags TEXT[],
+        "cityId" UUID REFERENCES cities(id),
+        "categoryId" UUID REFERENCES categories(id),
+        "isActive" BOOLEAN DEFAULT true,
+        "createdAt" TIMESTAMPTZ DEFAULT now()
+      )
+    `);
+
+    // Add columns if they don't exist in 'places'
+    const basicPlaceColumns = [
+      { name: 'cityId', type: 'UUID' },
+      { name: 'categoryId', type: 'UUID' },
+      { name: 'description', type: 'TEXT' },
+      { name: 'coordinates', type: 'JSONB' },
+      { name: 'images', type: 'TEXT[]' },
+      { name: 'tags', type: 'TEXT[]' },
+      { name: 'isActive', type: 'BOOLEAN DEFAULT true' }
+    ];
+
+    for (const col of basicPlaceColumns) {
+      const res = await db.query(`SELECT 1 FROM information_schema.columns WHERE table_name = 'places' AND column_name = $1`, [col.name]);
       if (res.rows.length === 0) {
-        console.log(`Adding column "${col.name}" to 'places'...`);
         await db.query(`ALTER TABLE places ADD COLUMN "${col.name}" ${col.type}`);
       }
     }
 
-    // Ensure 'stories' table exists
-    console.log("Ensuring 'stories' table exists...");
+    // 4. Place Details (Everything users read)
+    console.log("Setting up 'place_details' table...");
     await db.query(`
-      CREATE TABLE IF NOT EXISTS stories (
-        id TEXT PRIMARY KEY,
-        title TEXT NOT NULL,
-        subtitle TEXT,
-        snippet TEXT,
-        "fullText" TEXT,
-        image TEXT,
-        "readTime" TEXT,
-        category TEXT,
-        "keyTakeaway" TEXT,
-        "audioUrl" TEXT,
-        "relatedTemple" TEXT,
+      CREATE TABLE IF NOT EXISTS place_details (
+        "placeId" UUID PRIMARY KEY REFERENCES places(id) ON DELETE CASCADE,
+        history TEXT,
+        "interestingFacts" TEXT[],
+        mythology TEXT,
+        architecture TEXT,
+        "travelTips" TEXT[],
+        "dressCode" TEXT,
+        faqs JSONB,
+        "bestTime" TEXT,
+        "nearbyPlaces" UUID[],
+        "createdAt" TIMESTAMPTZ DEFAULT now(),
+        "updatedAt" TIMESTAMPTZ DEFAULT now()
+      )
+    `);
+
+    // 5. Recommendation Rules
+    console.log("Setting up 'recommendation_rules' table...");
+    await db.query(`
+      CREATE TABLE IF NOT EXISTS recommendation_rules (
+        id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+        context TEXT NOT NULL,
+        weight INTEGER NOT NULL DEFAULT 0,
+        priority INTEGER NOT NULL DEFAULT 0,
+        "isEnabled" BOOLEAN DEFAULT true,
+        "createdAt" TIMESTAMPTZ DEFAULT now()
+      )
+    `);
+
+    // 6. Search Aliases
+    console.log("Setting up 'search_aliases' table...");
+    await db.query(`
+      CREATE TABLE IF NOT EXISTS search_aliases (
+        id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+        alias TEXT NOT NULL,
+        target TEXT NOT NULL,
+        "createdAt" TIMESTAMPTZ DEFAULT now()
+      )
+    `);
+
+    // 7. Essentials
+    console.log("Setting up 'essentials' table...");
+    await db.query(`
+      CREATE TABLE IF NOT EXISTS essentials (
+        id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+        "cityId" UUID REFERENCES cities(id) ON DELETE CASCADE,
+        section TEXT NOT NULL,
+        "cardTitle" TEXT NOT NULL,
+        items JSONB NOT NULL,
         tags TEXT[],
+        priority INTEGER DEFAULT 0,
         "isActive" BOOLEAN DEFAULT true,
         "createdAt" TIMESTAMPTZ DEFAULT now()
       )
     `);
 
-    // 2. Alter 'stories' table to add missing fields
-    console.log("Updating 'stories' table columns...");
-    const storiesColumns = [
-      { name: 'slug', type: 'TEXT' },
-      { name: 'category', type: 'TEXT' },
-      { name: 'keyTakeaway', type: 'TEXT' },
-      { name: 'audioUrl', type: 'TEXT' },
-      { name: 'relatedTemple', type: 'TEXT' },
-      { name: 'tags', type: 'TEXT[]' },
-      { name: 'isActive', type: 'BOOLEAN DEFAULT true' },
-      { name: 'publishDate', type: 'DATE' },
-      { name: 'createdAt', type: 'TIMESTAMPTZ DEFAULT now()' }
-    ];
-
-    for (const col of storiesColumns) {
-      const checkQuery = `
-        SELECT 1 FROM information_schema.columns 
-        WHERE table_name = 'stories' AND column_name = $1
-      `;
-      const res = await db.query(checkQuery, [col.name]);
-      if (res.rows.length === 0) {
-        console.log(`Adding column "${col.name}" to 'stories'...`);
-        await db.query(`ALTER TABLE stories ADD COLUMN "${col.name}" ${col.type}`);
-      }
-    }
-
-    // 3. Create 'quizzes' table
-    console.log("Ensuring 'quizzes' table exists...");
-    await db.query(`DROP TABLE IF EXISTS quizzes`);
+    // 8. Recommendation Logs
+    console.log("Setting up 'recommendation_logs' table...");
     await db.query(`
-      CREATE TABLE IF NOT EXISTS quizzes (
+      CREATE TABLE IF NOT EXISTS recommendation_logs (
         id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-        question TEXT NOT NULL,
-        difficulty TEXT DEFAULT 'beginner',
-        category TEXT,
-        image TEXT,
-        options JSONB NOT NULL,
-        "correctAnswer" TEXT NOT NULL,
-        explanation TEXT,
-        "relatedStory" TEXT,
-        "relatedTemple" UUID REFERENCES places(id) ON DELETE SET NULL,
-        "xpReward" INTEGER DEFAULT 10,
+        context JSONB NOT NULL,
+        "top3" UUID[],
+        "clicked" UUID,
+        "ignored" UUID[],
+        time TEXT,
+        weather TEXT,
+        "createdAt" TIMESTAMPTZ DEFAULT now()
+      )
+    `);
+
+    // 9. Feature Flags
+    console.log("Setting up 'feature_flags' table...");
+    await db.query(`
+      CREATE TABLE IF NOT EXISTS feature_flags (
+        name TEXT PRIMARY KEY,
+        "isEnabled" BOOLEAN DEFAULT false,
+        "updatedAt" TIMESTAMPTZ DEFAULT now()
+      )
+    `);
+
+    // 10. Live Updates, Alerts, Festivals
+    console.log("Setting up operational tables (live_updates, alerts, festivals)...");
+    await db.query(`
+      CREATE TABLE IF NOT EXISTS live_updates (
+        id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+        "cityId" UUID REFERENCES cities(id) ON DELETE CASCADE,
+        "placeId" UUID REFERENCES places(id) ON DELETE CASCADE,
+        type TEXT NOT NULL,
+        message TEXT NOT NULL,
+        severity TEXT DEFAULT 'info',
+        "expiresAt" TIMESTAMPTZ,
+        "createdAt" TIMESTAMPTZ DEFAULT now()
+      )
+    `);
+
+    await db.query(`
+      CREATE TABLE IF NOT EXISTS alerts (
+        id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+        "cityId" UUID REFERENCES cities(id) ON DELETE CASCADE,
+        message TEXT NOT NULL,
+        type TEXT DEFAULT 'info',
         "isActive" BOOLEAN DEFAULT true,
         "createdAt" TIMESTAMPTZ DEFAULT now()
       )
     `);
 
-    // 4. Create 'encyclopedia' table
-    console.log("Ensuring 'encyclopedia' table exists...");
     await db.query(`
-      CREATE TABLE IF NOT EXISTS encyclopedia (
+      CREATE TABLE IF NOT EXISTS festivals (
         id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-        title TEXT NOT NULL,
-        slug TEXT UNIQUE NOT NULL,
-        category TEXT,
-        keywords TEXT[],
-        content TEXT NOT NULL,
-        summary TEXT,
-        "coverImage" TEXT,
-        "references" JSONB,
-        "relatedTemples" TEXT[],
-        "relatedArticles" UUID[],
+        "cityId" UUID REFERENCES cities(id) ON DELETE CASCADE,
+        name TEXT NOT NULL,
+        "startDate" TIMESTAMPTZ NOT NULL,
+        "endDate" TIMESTAMPTZ NOT NULL,
+        impact JSONB,
+        description TEXT,
         "isActive" BOOLEAN DEFAULT true,
         "createdAt" TIMESTAMPTZ DEFAULT now()
       )
     `);
 
-    // 5. Create 'user_events' table
-    console.log("Ensuring 'user_events' table exists...");
-    await db.query(`
-      CREATE TABLE IF NOT EXISTS user_events (
-        id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-        "sessionId" TEXT NOT NULL,
-        "eventType" TEXT NOT NULL,
-        "entityType" TEXT,
-        "entityId" TEXT,
-        metadata JSONB,
-        "createdAt" TIMESTAMPTZ DEFAULT now()
-      )
-    `);
-
-    // 6. Enable RLS and public policies on all tables managed by this script
-    const managedTables = ['places', 'stories', 'quizzes', 'encyclopedia', 'user_events'];
-    for (const table of managedTables) {
-      console.log(`Securing table: "${table}" via RLS and granting permissions...`);
+    // Enable RLS
+    for (const table of tablesToManage) {
+      console.log(`Securing table: "${table}" via RLS...`);
       await db.query(`ALTER TABLE "${table}" ENABLE ROW LEVEL SECURITY;`);
       await db.query(`DROP POLICY IF EXISTS "Allow public read/write" ON "${table}";`);
       await db.query(`
@@ -182,22 +243,7 @@ async function main() {
       await db.query(`GRANT ALL ON TABLE "${table}" TO anon, authenticated, service_role;`);
     }
 
-    // Also grant permission on analytics_events table
-    try {
-      console.log("Granting permissions on analytics_events...");
-      await db.query(`GRANT ALL ON TABLE "analytics_events" TO anon, authenticated, service_role;`);
-    } catch (e) {
-      console.log("Could not grant permissions on analytics_events (skipping):", e.message);
-    }
-
-    // Grant usage on all sequences
-    try {
-      await db.query(`GRANT USAGE, SELECT ON ALL SEQUENCES IN SCHEMA public TO anon, authenticated, service_role;`);
-    } catch (e) {
-      console.log("Could not grant permissions on sequences (skipping):", e.message);
-    }
-
-    console.log("Database schema setup complete!");
+    console.log("Database schema setup complete! Sprint 1 Master Data and Operations schemas are ready.");
   } catch (err) {
     console.error("Database schema setup failed:", err);
     process.exit(1);

@@ -1,0 +1,167 @@
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 32px;
+}
+
+.title {
+  font-size: 24px;
+  font-weight: 700;
+  color: #1a1b1c;
+  margin: 0 0 4px 0;
+}
+
+.subtitle {
+  font-size: 14px;
+  color: #888d92;
+  margin: 0;
+}
+
+.primaryButton {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background-color: #2e7d32;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.primaryButton:hover {
+  background-color: #1b5e20;
+}
+
+.toolbar {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.searchBox {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: white;
+  border: 1px solid #eef0f2;
+  padding: 0 16px;
+  border-radius: 8px;
+  flex: 1;
+  max-width: 400px;
+}
+
+.searchIcon {
+  color: #888d92;
+}
+
+.searchInput {
+  border: none;
+  outline: none;
+  padding: 12px 0;
+  width: 100%;
+  font-size: 14px;
+}
+
+.filters {
+  display: flex;
+  gap: 12px;
+}
+
+.select {
+  border: 1px solid #eef0f2;
+  border-radius: 8px;
+  padding: 0 16px;
+  background: white;
+  font-size: 14px;
+  color: #4a4d50;
+  outline: none;
+}
+
+.tableContainer {
+  background: white;
+  border: 1px solid #eef0f2;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.table th {
+  text-align: left;
+  padding: 16px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #888d92;
+  border-bottom: 1px solid #eef0f2;
+  background-color: #f9f9fa;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.table td {
+  padding: 16px;
+  border-bottom: 1px solid #eef0f2;
+  font-size: 14px;
+  color: #1a1b1c;
+}
+
+.table tr:last-child td {
+  border-bottom: none;
+}
+
+.nameCell strong {
+  font-weight: 600;
+}
+
+.actions {
+  text-align: right;
+}
+
+.actionsCell {
+  text-align: right;
+}
+
+.editLink {
+  color: #2563eb;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 13px;
+}
+
+.editLink:hover {
+  text-decoration: underline;
+}
+
+.badgeSuccess, .badgeWarning {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: 9999px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.badgeSuccess {
+  background-color: #f0fdf4;
+  color: #16a34a;
+}
+
+.badgeWarning {
+  background-color: #fffbeb;
+  color: #d97706;
+}

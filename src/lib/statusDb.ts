@@ -1,4 +1,8 @@
 import { supabase } from '@/lib/supabase';
+import fs from 'fs/promises';
+import path from 'path';
+
+const LOCAL_STATUS_FILE = path.join(process.cwd(), 'data', 'status.json');
 
 // --- Tirumala Live Status types -----------------------------------------------
 
@@ -73,11 +77,29 @@ const DEFAULT_STATUS: TirumalaStatus = {
   ],
 };
 
-// Global in-memory cache to support Vercel execution without filesystem writes
 let memoryStatus: TirumalaStatus = { ...DEFAULT_STATUS };
 let lastFetchTime = 0;
+let fileLoaded = false;
+
+async function ensureFileLoaded() {
+  if (fileLoaded) return;
+  try {
+    const data = await fs.readFile(LOCAL_STATUS_FILE, 'utf-8');
+    memoryStatus = JSON.parse(data);
+    fileLoaded = true;
+  } catch (e) {
+    fileLoaded = true;
+  }
+}
+
+async function writeLocalStatus(status: TirumalaStatus) {
+  try {
+    await fs.writeFile(LOCAL_STATUS_FILE, JSON.stringify(status, null, 2));
+  } catch (e) {}
+}
 
 export async function readStatus(): Promise<TirumalaStatus> {
+  await ensureFileLoaded();
   const now = Date.now();
   // Cache for 5 seconds to reduce Supabase queries
   if (now - lastFetchTime < 5000) {
@@ -118,6 +140,7 @@ export async function readStatus(): Promise<TirumalaStatus> {
     };
     
     lastFetchTime = now;
+    await writeLocalStatus(memoryStatus);
     return memoryStatus;
   } catch {
     return memoryStatus;
@@ -125,10 +148,13 @@ export async function readStatus(): Promise<TirumalaStatus> {
 }
 
 export async function updateStatus(updates: Partial<TirumalaStatus>): Promise<TirumalaStatus> {
+  await ensureFileLoaded();
   const current = memoryStatus;
   const next = { ...current, ...updates, lastUpdated: new Date().toISOString() };
   memoryStatus = next;
   lastFetchTime = 0; // bust cache so next read picks up fresh
+  
+  await writeLocalStatus(next);
 
   try {
     const payload: any = { updated_at: new Date().toISOString() };

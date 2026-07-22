@@ -19,6 +19,7 @@ export interface Festival {
   expectedCrowd?: 'Low' | 'Moderate' | 'High' | 'Very High';
   coverImage?: string;
   relatedTemples?: string[]; // IDs
+  placeId?: string; // Target temple/destination ID in places.ts
   isActive?: boolean;
   createdAt?: string;
 }

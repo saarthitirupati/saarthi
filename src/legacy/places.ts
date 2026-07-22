@@ -48,7 +48,6 @@ export function getPlaceGuideData(place: Place) {
       approxBikeCost: place.approxBikeCost || `₹${calcBikeFuel} for petrol (approx)`,
       entryFee: place.entryFee || (place.entryFeeNum === 0 ? "Free Entry" : `₹${place.entryFeeNum} per person`),
       history: defaultHistory,
-      youtubeLink: place.youtubeLink || place.videoUrl || "https://www.youtube.com/watch?v=Z8Jb4b7p7uM",
       images: place.images && place.images.length > 0 ? place.images : [place.image, place.image, place.image].filter(Boolean),
       visitorTips: {
         dressCode: place.visitorTips?.dressCode || place.practicalInfo?.dressCode || (isSpiritual ? "Strict traditional wear (Dhoti/Kurta for men, Saree/Chudidar for women)." : "Comfortable casual clothing suited for walking."),
@@ -97,7 +96,6 @@ export const PLACES: Place[] = [
     approxRTCFare: "₹90 (Ordinary) / ₹110 (Electric bus) one-way from Tirupati",
     approxCarCost: "₹250 Alipiri toll fee + ₹300-₹500 petrol, or ₹1,500-₹2,000 for local taxi rental.",
     approxBikeCost: "₹100-₹150 for petrol round trip.",
-    youtubeLink: "https://www.youtube.com/watch?v=Z8Jb4b7p7uM",
     images: ["/assets/temples/venkateswara.png"],
     visitorTips: {
       dressCode: "Strict Traditional wear. Men: Dhoti with Uttareeyam or Kurta-Pyjama. Women: Saree, Half-Saree, or Chudidar with Dupatta.",
@@ -495,7 +493,6 @@ export const PLACES: Place[] = [
     approxRTCFare: "₹15 per person city bus fare",
     approxCarCost: "₹50-₹100 fuel estimate or ₹200-₹300 auto-rickshaw/cab fare",
     approxBikeCost: "₹30 petrol estimate",
-    youtubeLink: "https://www.youtube.com/watch?v=Z8Jb4b7p7uM",
     images: ["/assets/temples/padmavathi.png"],
     visitorTips: {
       dressCode: "Decent traditional or semi-traditional wear required. Dhoti/Kurta for men and Saree/Chudidar for women.",
@@ -571,7 +568,6 @@ export const PLACES: Place[] = [
     approxRTCFare: "₹10 per person city bus / ₹60 for shared auto",
     approxCarCost: "₹50 fuel or ₹150 auto/cab ride",
     approxBikeCost: "₹20 petrol",
-    youtubeLink: "https://www.youtube.com/watch?v=O8W5UepL86g",
     images: ["/assets/temples/kapila-theertham.png"],
     visitorTips: {
       dressCode: "Devotional traditional wear is appreciated. Casual wear is permitted but should be modest.",
@@ -607,7 +603,7 @@ export const PLACES: Place[] = [
     rating: 4.7,
     reviewCount: 12000,
     image: '/assets/temples/srinivasa-mangapuram.png',
-    coordinates: { lat: 13.6291, lng: 79.4244 },
+    coordinates: { lat: 13.610778, lng: 79.327722 },
     tags: ['Marriage', 'Alternative'],
     bestTime: 'Morning',
     practicalInfo: { dressCode: 'Traditional', food: 'Limited', parking: 'Available' },
@@ -708,7 +704,6 @@ export const PLACES: Place[] = [
     approxRTCFare: "₹25 city bus fare one-way",
     approxCarCost: "₹200 fuel or ₹600 auto/taxi fare",
     approxBikeCost: "₹70 petrol round trip",
-    youtubeLink: "https://www.youtube.com/watch?v=J95QpS9xNfM",
     images: ["/assets/history/chandragiri.png"],
     visitorTips: {
       dressCode: "Casual clothing. Wear comfortable walking shoes as there is significant walking across the gardens.",
@@ -797,7 +792,6 @@ export const PLACES: Place[] = [
     approxRTCFare: "₹80 bus fare to Bakarapeta + ₹150 shared auto",
     approxCarCost: "₹800 fuel or ₹2,500 taxi rental. Forest entry fee is ₹50 per vehicle.",
     approxBikeCost: "₹250 petrol round trip.",
-    youtubeLink: "https://www.youtube.com/watch?v=Z8Jb4b7p7uM",
     images: ["/assets/nature/talakona.png"],
     visitorTips: {
       dressCode: "Casual comfortable clothing. Wear sports shoes with good grip for trekking. Bring a change of clothes if you plan to bathe.",
@@ -935,7 +929,6 @@ export const PLACES: Place[] = [
     approxRTCFare: "₹50 per person one-way on RTC bus",
     approxCarCost: "₹400 fuel, ₹30 toll or ₹1,500 cab rental.",
     approxBikeCost: "₹150 petrol round trip.",
-    youtubeLink: "https://www.youtube.com/watch?v=FstRyl7v3fQ",
     images: ["/assets/temples/sri-kalahasti.png"],
     visitorTips: {
       dressCode: "Traditional attire is mandatory, especially for those performing Rahu-Ketu Puja. Men: Dhoti or Kurta-Pyjama. Women: Saree or Chudidar with Dupatta.",

@@ -1,16 +1,16 @@
 {
-  "waitTime": "1 hours",
-  "crowdLevel": "low",
+  "waitTime": "10 hours",
+  "crowdLevel": "high",
   "sevaStatus": "All sevas open",
   "notice": "bharmmothsavam",
-  "lastUpdated": "2026-07-14T16:42:55.060Z",
+  "lastUpdated": "2026-07-21T17:01:06.288Z",
   "darshanSpeed": "normal",
   "accommodationStatus": "available",
   "ladduAvailability": "available",
   "weather": "Pleasant, 24°C",
   "darshans": [],
-  "ssdTokenStatus": "issuing",
-  "ssdNextTokenTime": "2:00 PM",
+  "ssdTokenStatus": "closed-for-day",
+  "ssdNextTokenTime": "4:00 AM",
   "ssdTokenSlots": [
     {
       "slotTime": "5:00 AM - 7:00 AM",

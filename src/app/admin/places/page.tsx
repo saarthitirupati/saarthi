@@ -1,177 +1,166 @@
 'use client';
-import { useEffect, useState } from 'react';
-import Link from 'next/link';
-import { PlusCircle, Search, Pencil, Trash2, MapPin, ExternalLink, Filter } from 'lucide-react';
-import styles from '../admin.module.css';
-import { motion, AnimatePresence } from 'framer-motion';
-import { calculateDrivingDistance } from '@/utils/location';
 
-export default function AdminPlaces() {
-  const [places, setPlaces] = useState<any[]>([]);
-  const [q, setQ]           = useState('');
+import { useState, useEffect, useMemo } from 'react';
+import Link from 'next/link';
+import styles from './PlacesList.module.css';
+import { Search, Plus, CheckCircle, Clock, Eye, Sparkles, Filter } from 'lucide-react';
+import { PLACES } from '@/data/places';
+import { Place } from '@/types/place';
+
+export default function AdminPlacesList() {
+  const [places, setPlaces] = useState<Place[]>(PLACES);
   const [loading, setLoading] = useState(true);
-  const [userLocation, setUserLocation] = useState<{ lat: number; lng: number } | null>(null);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState('All');
+  const [selectedStatus, setSelectedStatus] = useState('All');
 
   useEffect(() => {
-    import('@/lib/location').then(({ detectCoordinates }) => {
-      detectCoordinates(
-        (coords) => setUserLocation(coords),
-        () => setUserLocation({ lat: 13.6288, lng: 79.4192 })
-      );
-    }).catch(() => {});
+    const fetchPlaces = async () => {
+      try {
+        const res = await fetch('/api/admin/places');
+        if (res.ok) {
+          const data = await res.json();
+          if (data.places && data.places.length > 0) {
+            setPlaces(data.places);
+          }
+        }
+      } catch (e) {
+        console.error('Failed to fetch admin places:', e);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchPlaces();
   }, []);
 
-  const load = () => {
-    setLoading(true);
-    fetch('/api/admin/places').then(r => r.json()).then(d => {
-      setPlaces(d.places ?? []);
-      setLoading(false);
+  const categories = useMemo(() => {
+    const set = new Set(places.map(p => p.category));
+    return ['All', ...Array.from(set)];
+  }, [places]);
+
+  const filteredPlaces = useMemo(() => {
+    return places.filter(place => {
+      const query = searchQuery.toLowerCase().trim();
+      const nameMatch = !query || place.name.toLowerCase().includes(query) || place.category.toLowerCase().includes(query) || place.location.toLowerCase().includes(query);
+      const catMatch = selectedCategory === 'All' || place.category === selectedCategory;
+      const pubStatus = place.status || 'Published';
+      const statusMatch = selectedStatus === 'All' || pubStatus === selectedStatus || (selectedStatus === 'Verified' && place.verification?.status === 'Verified');
+      return nameMatch && catMatch && statusMatch;
     });
-  };
-
-  useEffect(load, []);
-
-  const del = async (id: string, isDynamic: boolean) => {
-    if (!isDynamic) return alert('Static places are part of the core build and cannot be deleted here.');
-    if (!confirm('Are you sure you want to delete this place? This action is permanent.')) return;
-    await fetch(`/api/admin/places/${id}`, { method: 'DELETE' });
-    load();
-  };
-
-  const filtered = places.filter(p =>
-    p.name.toLowerCase().includes(q.toLowerCase()) ||
-    p.location?.toLowerCase().includes(q.toLowerCase()) ||
-    p.placeType?.toLowerCase().includes(q.toLowerCase())
-  );
+  }, [places, searchQuery, selectedCategory, selectedStatus]);
 
   return (
-    <motion.div 
-      initial={{ opacity: 0 }} 
-      animate={{ opacity: 1 }}
-      transition={{ duration: 0.5 }}
-    >
-      <div className={styles.topRow}>
-        <div className={styles.pageHeader}>
-          <h1 className={styles.pageTitle}>Explore Directory</h1>
-          <p className={styles.pageSubtitle}>
-            {places.length} experiences listed · {places.filter(p => p._dynamic).length} dynamic assets
-          </p>
+    <div className={styles.container}>
+      <div className={styles.header}>
+        <div>
+          <h1 className={styles.title}>Master Places Directory (v1.1)</h1>
+          <p className={styles.subtitle}>Managing {places.length} Master Template Destinations & Decision Support Data</p>
         </div>
-        <Link href="/admin/places/new" className={styles.btnPrimary}>
-          <PlusCircle size={16} /> New Experience
+        <Link 
+          href="/admin/places/new" 
+          style={{ textDecoration: 'none' }}
+          className={styles.primaryButton}
+        >
+          <Plus size={18} /> Add New Place
         </Link>
       </div>
 
-      <div className={styles.tableCard}>
-        <div className={styles.filterRow}>
-          <div className={styles.searchBar}>
-            <Search size={16} color="#4A5568" />
-            <input
-              placeholder="Search experiences, types, tags..."
-              value={q}
-              onChange={e => setQ(e.target.value)}
-            />
-          </div>
-          <button className={styles.btnSecondary} style={{ padding: '8px 12px' }}>
-            <Filter size={14} />
-          </button>
+      <div className={styles.toolbar}>
+        <div className={styles.searchBox}>
+          <Search size={18} className={styles.searchIcon} />
+          <input 
+            type="text" 
+            placeholder="Search places by name, category, or location..." 
+            className={styles.searchInput}
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+          />
         </div>
-
-        {loading ? (
-          <div style={{ padding: 100, textAlign: 'center', color: '#64748B' }}>
-            <motion.div 
-              animate={{ rotate: 360 }} 
-              transition={{ repeat: Infinity, duration: 2, ease: "linear" }}
-              style={{ display: 'inline-block', marginBottom: 12 }}
-            >
-              <PlusCircle size={24} />
-            </motion.div>
-            <p>Scanning directory...</p>
-          </div>
-        ) : (
-          <div style={{ overflowX: 'auto' }}>
-            <table className={styles.table}>
-              <thead>
-                <tr>
-                  <th>Experience</th>
-                  <th>Type</th>
-                  <th>Dist.</th>
-                  <th>Budget</th>
-                  <th>Source</th>
-                  <th>Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                <AnimatePresence mode="popLayout">
-                  {filtered.map((p, idx) => (
-                    <motion.tr 
-                      key={p.id}
-                      initial={{ opacity: 0, x: -10 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      exit={{ opacity: 0, scale: 0.95 }}
-                      transition={{ delay: idx * 0.03 }}
-                    >
-                      <td>
-                        <div className={styles.placeThumbCell}>
-                          <div
-                            className={styles.placeImg}
-                            style={{ backgroundImage: `url(${p.image})`, backgroundSize: 'cover', backgroundPosition: 'center' }}
-                          >
-                            {p.video && <div style={{ position: 'absolute', top: 4, right: 4, background: 'rgba(0,0,0,0.6)', padding: 2, borderRadius: 4 }}><ExternalLink size={10} color="#fff" /></div>}
-                          </div>
-                          <div>
-                            <p className={styles.placeCellName}>{p.name}</p>
-                            <p className={styles.placeCellSub}><MapPin size={10} style={{ display: 'inline', marginRight: 4 }} />{p.location}</p>
-                          </div>
-                        </div>
-                      </td>
-                      <td><span className={`${styles.badge} ${styles.badgeBlue}`}>{p.placeType}</span></td>
-                      <td>
-                        {(() => {
-                          if (userLocation && p.coordinates?.lat && p.coordinates?.lng) {
-                            const isTirumala = p.location?.toLowerCase().includes('tirumala') || p.name?.toLowerCase().includes('tirumala');
-                            const dist = calculateDrivingDistance(userLocation.lat, userLocation.lng, p.coordinates.lat, p.coordinates.lng, isTirumala);
-                            return `${dist.toFixed(1)} km`;
-                          }
-                          return p.distanceKms ? `${p.distanceKms} km` : '—';
-                        })()}
-                      </td>
-                      <td>
-                        <span className={`${styles.badge} ${p.budgetLevel === 'budget' ? styles.badgeGreen : p.budgetLevel === 'premium' ? styles.badgePurple : styles.badgeOrange}`}>
-                          {p.budgetLevel}
-                        </span>
-                      </td>
-                      <td>
-                        {p._dynamic
-                          ? <span className={`${styles.badge} ${styles.badgeNew}`}>Dynamic</span>
-                          : <span className={`${styles.badge} ${styles.badgeOrange}`}>Core</span>
-                        }
-                      </td>
-                      <td>
-                        <div className={styles.actionRow}>
-                          <Link href={`/admin/places/${p.id}/edit`} className={styles.btnSecondary} style={{ padding: '6px 10px' }}>
-                            <Pencil size={14} />
-                          </Link>
-                          <button
-                            onClick={() => del(p.id, !!p._dynamic)}
-                            className={styles.btnDanger}
-                            title={p._dynamic ? 'Delete asset' : 'Core asset — deletion disabled'}
-                          >
-                            <Trash2 size={14} />
-                          </button>
-                        </div>
-                      </td>
-                    </motion.tr>
-                  ))}
-                </AnimatePresence>
-                {filtered.length === 0 && (
-                  <tr><td colSpan={6} className={styles.emptyState}>No experiences found for &quot;{q}&quot;</td></tr>
-                )}
-              </tbody>
-            </table>
-          </div>
-        )}
+        <div className={styles.filters}>
+          <select 
+            className={styles.select}
+            value={selectedCategory}
+            onChange={(e) => setSelectedCategory(e.target.value)}
+          >
+            {categories.map((cat, idx) => (
+              <option key={idx} value={cat}>{cat === 'All' ? 'All Categories' : cat}</option>
+            ))}
+          </select>
+          <select 
+            className={styles.select}
+            value={selectedStatus}
+            onChange={(e) => setSelectedStatus(e.target.value)}
+          >
+            <option value="All">All Status</option>
+            <option value="Published">Published</option>
+            <option value="Review">Review</option>
+            <option value="Draft">Draft</option>
+            <option value="Verified">TTD/Ground Verified</option>
+          </select>
+        </div>
       </div>
-    </motion.div>
+
+      <div className={styles.tableContainer}>
+        <table className={styles.table}>
+          <thead>
+            <tr>
+              <th>Place Name</th>
+              <th>Category</th>
+              <th>Importance</th>
+              <th>Status</th>
+              <th>One Reason to Visit</th>
+              <th className={styles.actions}>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {filteredPlaces.map(place => {
+              const pubStatus = place.status || 'Published';
+              const isVerified = place.verification?.status === 'Verified' || place.rating >= 4.6;
+              
+              return (
+                <tr key={place.id}>
+                  <td className={styles.nameCell}>
+                    <strong>{place.name}</strong>
+                    <div style={{ fontSize: '12px', color: '#64748B' }}>📍 {place.location} • {place.distanceKms} km</div>
+                  </td>
+                  <td>
+                    <span style={{ fontSize: '12px', fontWeight: 600, padding: '3px 8px', borderRadius: '6px', background: '#F1F5F9', color: '#334155' }}>
+                      {place.category}
+                    </span>
+                  </td>
+                  <td>
+                    <span style={{ 
+                      fontSize: '11px', fontWeight: 700, padding: '2px 8px', borderRadius: '6px',
+                      background: place.importanceLevel === 'Iconic' ? '#FEF3C7' : '#E0F2FE',
+                      color: place.importanceLevel === 'Iconic' ? '#B45309' : '#0284C7'
+                    }}>
+                      {place.importanceLevel || (place.isMustVisit ? 'Iconic' : 'Recommended')}
+                    </span>
+                  </td>
+                  <td>
+                    {isVerified ? (
+                      <span className={styles.badgeSuccess}><CheckCircle size={14}/> {pubStatus}</span>
+                    ) : (
+                      <span className={styles.badgeWarning}><Clock size={14}/> {pubStatus}</span>
+                    )}
+                  </td>
+                  <td style={{ fontSize: '12px', color: '#475569', maxWidth: '280px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                    {place.oneReasonToVisit || place.description}
+                  </td>
+                  <td className={styles.actionsCell}>
+                    <Link href={`/place/${place.id}`} target="_blank" className={styles.editLink} style={{ marginRight: '8px', color: '#0284C7' }}>
+                      <Eye size={14} style={{ display: 'inline', marginRight: '4px' }} /> View
+                    </Link>
+                    <Link href={`/admin/places/${place.id}`} className={styles.editLink}>
+                      Edit
+                    </Link>
+                  </td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      </div>
+    </div>
   );
 }

@@ -1,7 +1,7 @@
 'use client';
 
 import { PLACES, getPlaceGuideData, Place } from '@/data/places';
-import { ArrowLeft, Heart, Share2, Star, MapPin, Clock, Compass, Coins, PlayCircle, Camera, Check, Copy, Volume2, VolumeX, ShieldAlert, X, ChevronLeft, ChevronRight, Shirt, Footprints, Users, Ban, Navigation, Info } from 'lucide-react';
+import { ArrowLeft, Heart, Share2, Star, MapPin, Clock, Compass, Coins, PlayCircle, Camera, Check, Copy, Volume2, VolumeX, ShieldAlert, X, ChevronLeft, ChevronRight, Shirt, Footprints, Users, Ban, Navigation, Info, CheckCircle2, ShieldCheck, Sparkles, Car, Lightbulb, AlertTriangle, Droplets, Utensils, Coffee, Map, Lock, ThumbsUp, ThumbsDown } from 'lucide-react';
 import { use, useState, useEffect } from 'react';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -173,83 +173,125 @@ export default function PlaceDetails({ params }: { params: Promise<{ id: string 
   const getNearbyPlaces = () => {
     if (!place.coordinates) return [];
     const relatedIds = place.relatedPlaces || [];
+    const currentHour = new Date().getHours();
+    
     return (places.length > 0 ? places : PLACES)
       .filter(p => p.id !== place.id && !relatedIds.includes(p.id))
       .map(p => {
-        if (!p.coordinates) return { place: p, dist: 999 };
-        const dLat = place.coordinates.lat - p.coordinates.lat;
-        const dLng = place.coordinates.lng - p.coordinates.lng;
-        let dist = Math.sqrt(dLat * dLat + dLng * dLng) * 111;
-        const isSelfTirumala = place.location.toLowerCase().includes('tirumala') || place.location.toLowerCase().includes('narayanagiri');
-        const isTargetTirumala = p.location.toLowerCase().includes('tirumala') || p.location.toLowerCase().includes('narayanagiri');
-        if (isSelfTirumala !== isTargetTirumala) {
-          dist = Math.max(22, dist * 1.5);
+        if (!p.coordinates) return { place: p, dist: 999, score: 999, reason: '' };
+        
+        const isSelfTirumala = place.location?.toLowerCase().includes('tirumala') || place.location?.toLowerCase().includes('narayanagiri');
+        const isTargetTirumala = p.location?.toLowerCase().includes('tirumala') || p.location?.toLowerCase().includes('narayanagiri');
+        
+        let dist = calculateDrivingDistance(
+          place.coordinates.lat, 
+          place.coordinates.lng, 
+          p.coordinates.lat, 
+          p.coordinates.lng, 
+          isSelfTirumala !== isTargetTirumala
+        );
+        
+        let score = dist;
+        let reason = '';
+        
+        // Time Awareness
+        if (currentHour >= 16) {
+          if (p.bestTime?.toLowerCase().includes('morning') && !p.bestTime?.toLowerCase().includes('evening')) {
+             score += 5; // Penalty
+          }
+          if (p.bestTime?.toLowerCase().includes('evening') || p.bestTime?.toLowerCase().includes('night')) {
+             score -= 2;
+             reason = 'Great for evening';
+          }
         }
-        return { place: p, dist };
+        
+        // Category Affinity
+        if (place.category === p.category) {
+          score -= 3;
+          if (!reason) reason = 'Similar vibe';
+        }
+        
+        // Walkability
+        if (dist < 1.0) {
+           score -= 1;
+           if (!reason) reason = 'Walking distance';
+        }
+
+        // Default fallback
+        if (!reason) {
+          reason = dist < 3 ? 'Short drive' : 'Worth exploring';
+        }
+        
+        return { place: p, dist, score, reason };
       })
-      .sort((a, b) => a.dist - b.dist)
+      .sort((a, b) => a.score - b.score)
       .slice(0, 6);
   };
 
   const nearbyPlacesList = getNearbyPlaces();
 
   const getCalculatorResults = () => {
-    const isTirumala = place.location.toLowerCase().includes('tirumala') || 
-                       place.location.toLowerCase().includes('narayanagiri') || 
-                       place.category.toLowerCase().includes('tirumala');
+    const isTirumala = (place.location || '').toLowerCase().includes('tirumala') || 
+                       (place.location || '').toLowerCase().includes('narayanagiri') || 
+                       (place.category || '').toLowerCase().includes('tirumala');
     
-    const effDist = drivingDistance !== null ? drivingDistance : place.distanceKms;
-    const estTime = Math.round(effDist * 2.2);
+    const safeEffDist = Number(drivingDistance) || Number(place.distanceKms) || 5;
+    const estTime = Math.max(5, Math.round(safeEffDist * 2.2));
+
+    const safePassengers = Number(passengers) || 1;
+    const safeEntryFeeNum = Number(place.entryFeeNum) || 0;
+    const safePetrolRate = Number(fuelRates?.petrol) || 118.00;
 
     let fare = 0;
     let fuel = 0;
     let liters = 0;
     let tolls = 0;
     let parking = 0;
-    const entryFee = passengers * place.entryFeeNum;
+    const entryFee = safePassengers * safeEntryFeeNum;
 
     if (vehicleType === 'bus') {
       const ticketPrice = isTirumala
         ? 110
-        : Math.max(30, Math.round(effDist * 1.8));
-      fare = passengers * ticketPrice * (isRoundTrip ? 2 : 1);
+        : Math.max(30, Math.round(safeEffDist * 1.8));
+      fare = safePassengers * ticketPrice * (isRoundTrip ? 2 : 1);
     } else if (vehicleType === 'car') {
       const economy = isTirumala ? 8 : 14;
-      liters = (effDist / economy) * (isRoundTrip ? 2 : 1);
-      fuel = liters * fuelRates.petrol;
-      tolls = isTirumala ? 250 : effDist > 60 ? 80 : 0;
+      liters = (safeEffDist / economy) * (isRoundTrip ? 2 : 1);
+      fuel = liters * safePetrolRate;
+      tolls = isTirumala ? 250 : safeEffDist > 60 ? 80 : 0;
       parking = 50;
     } else if (vehicleType === 'bike') {
       const economy = isTirumala ? 25 : 40;
-      liters = (effDist / economy) * (isRoundTrip ? 2 : 1);
-      fuel = liters * fuelRates.petrol;
+      liters = (safeEffDist / economy) * (isRoundTrip ? 2 : 1);
+      fuel = liters * safePetrolRate;
       parking = 15;
     } else if (vehicleType === 'cab') {
       if (isTirumala) {
         fare = isRoundTrip ? 2100 : 1100;
       } else {
-        fare = isRoundTrip ? 350 + effDist * 30 : 200 + effDist * 15;
+        fare = isRoundTrip ? 350 + safeEffDist * 30 : 200 + safeEffDist * 15;
       }
     } else if (vehicleType === 'suv') {
       if (isTirumala) {
         fare = isRoundTrip ? 3700 : 2000;
       } else {
-        fare = isRoundTrip ? 500 + effDist * 44 : 300 + effDist * 22;
+        fare = isRoundTrip ? 500 + safeEffDist * 44 : 300 + safeEffDist * 22;
       }
     }
 
-    const total = fare + fuel + tolls + parking + entryFee;
+    const rawTotal = (fare || 0) + (fuel || 0) + (tolls || 0) + (parking || 0) + (entryFee || 0);
+    const total = isNaN(rawTotal) || rawTotal < 0 ? 0 : Math.round(rawTotal);
 
     return {
-      effDist,
-      estTime,
-      fare,
-      fuel,
-      liters,
-      tolls,
-      parking,
-      entryFee,
-      total: Math.round(total)
+      effDist: isNaN(safeEffDist) ? 5 : safeEffDist,
+      estTime: isNaN(estTime) ? 15 : estTime,
+      fare: isNaN(fare) ? 0 : Math.round(fare),
+      fuel: isNaN(fuel) ? 0 : Math.round(fuel),
+      liters: isNaN(liters) ? 0 : liters,
+      tolls: isNaN(tolls) ? 0 : tolls,
+      parking: isNaN(parking) ? 0 : parking,
+      entryFee: isNaN(entryFee) ? 0 : entryFee,
+      total
     };
   };
 
@@ -288,19 +330,6 @@ export default function PlaceDetails({ params }: { params: Promise<{ id: string 
       setTimeout(() => setCopied(false), 2000);
     }
   };
-
-  const getYoutubeThumb = (url: string) => {
-    try {
-      const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
-      const match = url.match(regExp);
-      if (match && match[2].length === 11) {
-        return `https://img.youtube.com/vi/${match[2]}/hqdefault.jpg`;
-      }
-    } catch {}
-    return '/assets/ai/hero_heritage.png';
-  };
-
-
 
   const handlePlaceFeedbackSubmit = async () => {
     if (!feedbackRating) return;
@@ -406,7 +435,7 @@ export default function PlaceDetails({ params }: { params: Promise<{ id: string 
         gap: '8px'
       }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-          <span style={{ fontSize: '18px' }}>🛡️</span>
+          <ShieldCheck size={20} color="#059669" />
           <div>
             <div style={{ fontSize: '12px', fontWeight: 800, color: '#065F46' }}>Verified by Saarthi</div>
             <div style={{ fontSize: '11px', color: '#047857' }}>Source: TTD Official & Ground Volunteers</div>
@@ -417,6 +446,73 @@ export default function PlaceDetails({ params }: { params: Promise<{ id: string 
             Level 5 Verified
           </div>
           <div style={{ fontSize: '9px', color: '#065F46', marginTop: '2px' }}>Updated Today</div>
+        </div>
+      </div>
+
+      {/* ─── 2.5 SAARTHI RECOMMENDS (QUICK DECISION) ─── */}
+      <div style={{
+        margin: '12px 16px',
+        padding: '16px',
+        background: 'linear-gradient(135deg, #10B981 0%, #059669 100%)',
+        borderRadius: '20px',
+        color: '#FFFFFF',
+        boxShadow: '0 4px 12px rgba(5, 150, 105, 0.2)'
+      }}>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '12px' }}>
+          <div style={{ background: 'rgba(255,255,255,0.2)', padding: '4px 8px', borderRadius: '12px', fontSize: '11px', fontWeight: 800, display: 'flex', alignItems: 'center', gap: 4 }}>
+            <Sparkles size={13} color="#FFFFFF" /> Saarthi Recommends
+          </div>
+          {place.saarthiIntelligence?.travelScore && (
+            <div style={{ background: '#FFFFFF', color: '#059669', padding: '4px 8px', borderRadius: '12px', fontSize: '11px', fontWeight: 900 }}>
+              {place.saarthiIntelligence.travelScore}/100 Saarthi Score
+            </div>
+          )}
+        </div>
+        
+        <div style={{ fontSize: '24px', fontWeight: 900, marginBottom: '12px' }}>
+          {new Date().getHours() >= place.openFrom && new Date().getHours() < place.openTo 
+            ? 'YES, Visit Today' 
+            : 'NO, Currently Closed'}
+        </div>
+        
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', fontSize: '13px', fontWeight: 600 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <CheckCircle2 size={16} color="#A7F3D0" /> 
+            {new Date().getHours() >= place.openFrom && new Date().getHours() < place.openTo ? 'Temple Open' : 'Temple Closed'}
+          </div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <CheckCircle2 size={16} color="#A7F3D0" /> 
+            {place.saarthiIntelligence?.crowdLevel ? `${place.saarthiIntelligence.crowdLevel} Crowd` : 'Moderate Crowd'}
+          </div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <CheckCircle2 size={16} color="#A7F3D0" /> 
+            Pleasant Weather
+          </div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <CheckCircle2 size={16} color="#A7F3D0" /> 
+            {place.saarthiIntelligence?.parkingDifficulty === 'Easy' ? 'Parking Available' : 
+             place.saarthiIntelligence?.parkingDifficulty === 'Moderate' ? 'Limited Parking' : 
+             place.practicalInfo?.parking || 'Parking Available'}
+          </div>
+        </div>
+
+        <div style={{ marginTop: '16px', paddingTop: '12px', borderTop: '1px solid rgba(255,255,255,0.2)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <div>
+            <div style={{ fontSize: '10px', opacity: 0.9 }}>Estimated Visit</div>
+            <div style={{ fontSize: '14px', fontWeight: 800 }}>{guide.duration || `${place.durationMins} mins`}</div>
+          </div>
+          <button style={{ 
+            background: '#FFFFFF', 
+            color: '#059669', 
+            border: 'none', 
+            padding: '8px 16px', 
+            borderRadius: '12px', 
+            fontWeight: 800,
+            fontSize: '13px',
+            cursor: 'pointer'
+          }}>
+            Start Journey
+          </button>
         </div>
       </div>
 
@@ -511,7 +607,9 @@ export default function PlaceDetails({ params }: { params: Promise<{ id: string 
 
         {/* ─── 4. TRAVEL & TRANSIT ─── */}
         <section className={styles.section} id="travel">
-          <h2 className={styles.sectionTitle}>🚗 Best Way to Reach</h2>
+          <h2 className={styles.sectionTitle}>
+            <Car size={20} style={{ display: 'inline', marginRight: 6, verticalAlign: 'middle' }} /> Best Way to Reach
+          </h2>
           
           <div className={styles.routeLiveHeader}>
             <div className={styles.liveIndicatorContainer}>
@@ -530,7 +628,9 @@ export default function PlaceDetails({ params }: { params: Promise<{ id: string 
             {/* 1. CAR/CAB CARD */}
             <div className={styles.journeyModeCardFeatured}>
               <div className={styles.modeCardHeader}>
-                <span className={styles.modeFeaturedBadge}>⭐ BEST CHOICE TODAY</span>
+                <span className={styles.modeFeaturedBadge}>
+                  <Star size={12} fill="#B45309" color="#B45309" style={{ display: 'inline', marginRight: 4 }} /> BEST CHOICE TODAY
+                </span>
                 <h3 className={styles.modeTitle}>Car / Private Cab</h3>
               </div>
               
@@ -579,7 +679,7 @@ export default function PlaceDetails({ params }: { params: Promise<{ id: string 
             {/* 2. PUBLIC BUS CARD */}
             <div className={styles.journeyModeCard}>
               <div className={styles.modeCardHeader}>
-                <span className={styles.modeBudgetBadge}>🚌 BUDGET FRIENDLY</span>
+                <span className={styles.modeBudgetBadge}>BUDGET FRIENDLY</span>
                 <h3 className={styles.modeTitle}>APSRTC Public Bus</h3>
               </div>
 
@@ -668,7 +768,9 @@ export default function PlaceDetails({ params }: { params: Promise<{ id: string 
 
         {/* ─── TRAVEL TIPS & ADVISORY ─── */}
         <section className={styles.section} id="travel-insights">
-          <h2 className={styles.sectionTitle}>💡 Travel Tips</h2>
+          <h2 className={styles.sectionTitle}>
+            <Lightbulb size={20} style={{ display: 'inline', marginRight: 6, verticalAlign: 'middle' }} /> Travel Tips
+          </h2>
           <div className={styles.travelInsightsList}>
             <div className={styles.insightDetailCard}>
               <strong>Visit before 9:00 AM</strong>
@@ -676,7 +778,9 @@ export default function PlaceDetails({ params }: { params: Promise<{ id: string 
             </div>
             {isTirumalaSpot && (
               <div className={styles.insightDetailCard} style={{ background: '#FFFDF0', borderColor: '#E9E3C5' }}>
-                <strong style={{ color: '#A37000' }}>⚠️ Ghat Road Access Limits</strong>
+                <strong style={{ color: '#A37000', display: 'flex', alignItems: 'center', gap: 4 }}>
+                  <AlertTriangle size={14} color="#A37000" /> Ghat Road Access Limits
+                </strong>
                 <p>Two-wheelers (bikes/scooters) are strictly prohibited on the Tirumala ascending/descending ghat roads between 10:00 PM and 6:00 AM daily.</p>
               </div>
             )}
@@ -688,28 +792,28 @@ export default function PlaceDetails({ params }: { params: Promise<{ id: string 
           <h2 className={styles.sectionTitle}>Nearby Services</h2>
           <div className={styles.nearbyServicesGrid}>
             <div className={styles.serviceMiniItem}>
-              <span className={styles.serviceMiniEmoji}>🅿️</span>
+              <Car size={18} color="#0E6B72" />
               <div>
                 <strong>Parking Area</strong>
                 <span>100 m away</span>
               </div>
             </div>
             <div className={styles.serviceMiniItem}>
-              <span className={styles.serviceMiniEmoji}>🚻</span>
+              <Droplets size={18} color="#0E6B72" />
               <div>
                 <strong>Washrooms</strong>
                 <span>200 m away</span>
               </div>
             </div>
             <div className={styles.serviceMiniItem}>
-              <span className={styles.serviceMiniEmoji}>🍴</span>
+              <Utensils size={18} color="#0E6B72" />
               <div>
                 <strong>Food & Prasadam</strong>
                 <span>500 m away</span>
               </div>
             </div>
             <div className={styles.serviceMiniItem}>
-              <span className={styles.serviceMiniEmoji}>☕</span>
+              <Coffee size={18} color="#0E6B72" />
               <div>
                 <strong>Coffee & Tea</strong>
                 <span>300 m away</span>
@@ -718,15 +822,15 @@ export default function PlaceDetails({ params }: { params: Promise<{ id: string 
           </div>
         </section>
 
-        {/* ─── PLACES NEAR THIS TEMPLE ─── */}
+        {/* ─── RECOMMENDED JOURNEY ─── */}
         {nearbyPlacesList.length > 0 && (
           <section className={styles.section} id="nearby-attractions">
-            <h2 className={styles.sectionTitle}>Places near this temple</h2>
+            <h2 className={styles.sectionTitle}>Recommended Journey</h2>
             <div style={{ display: 'flex', overflowX: 'auto', gap: '12px', paddingBottom: '8px', scrollbarWidth: 'none', msOverflowStyle: 'none' }} className={styles.hideScrollbar}>
-              {nearbyPlacesList.map(({ place: p, dist }) => (
+              {nearbyPlacesList.map(({ place: p, dist, reason }) => (
                 <Link href={`/place/${p.id}`} key={p.id} style={{ textDecoration: 'none' }}>
                   <div style={{
-                    width: '140px',
+                    width: '150px',
                     flexShrink: 0,
                     borderRadius: '16px',
                     background: '#FFFFFF',
@@ -744,6 +848,24 @@ export default function PlaceDetails({ params }: { params: Promise<{ id: string 
                       backgroundPosition: 'center',
                       position: 'relative'
                     }}>
+                      {/* Reason Badge at top */}
+                      {reason && (
+                        <div style={{
+                          position: 'absolute',
+                          top: '8px',
+                          left: '8px',
+                          background: 'rgba(255,255,255,0.95)',
+                          padding: '3px 6px',
+                          borderRadius: '6px',
+                          color: '#0F172A',
+                          fontSize: '9px',
+                          fontWeight: 700,
+                          boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
+                        }}>
+                          {reason}
+                        </div>
+                      )}
+                      
                       <div style={{
                         position: 'absolute',
                         bottom: '8px',
@@ -782,7 +904,9 @@ export default function PlaceDetails({ params }: { params: Promise<{ id: string 
         {place.coordinates && (
           <section className={styles.section} id="map-section">
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px', flexWrap: 'wrap', gap: '8px' }}>
-              <h2 className={styles.sectionTitle} style={{ margin: 0 }}>🗺️ Mini Route Map</h2>
+              <h2 className={styles.sectionTitle} style={{ margin: 0 }}>
+                <Map size={20} style={{ display: 'inline', marginRight: 6, verticalAlign: 'middle' }} /> Mini Route Map
+              </h2>
               
               {/* Mode Buttons */}
               <div style={{ display: 'flex', gap: '8px' }}>
@@ -805,7 +929,7 @@ export default function PlaceDetails({ params }: { params: Promise<{ id: string 
                     transition: 'all 0.2s'
                   }}
                 >
-                  {(isOffline || showOfflineMapOnly) ? '🛰️ View Online Map' : '💾 View Offline Vector'}
+                  {(isOffline || showOfflineMapOnly) ? 'View Online Map' : 'View Offline Vector'}
                 </button>
 
                 <button
@@ -828,11 +952,11 @@ export default function PlaceDetails({ params }: { params: Promise<{ id: string 
                   }}
                 >
                   {isSavingOffline ? (
-                    <>⏳ Saving...</>
+                    <>Saving...</>
                   ) : isSavedOffline ? (
-                    <>✓ Saved Offline</>
+                    <><Check size={12} color="#2E7D32" /> Saved Offline</>
                   ) : (
-                    <>📥 Download Map</>
+                    <>Download Map</>
                   )}
                 </button>
               </div>
@@ -845,8 +969,8 @@ export default function PlaceDetails({ params }: { params: Promise<{ id: string 
                 <iframe
                   title="OpenStreetMap Location"
                   width="100%"
-                  height="100%"
-                  style={{ border: 0 }}
+                  height="calc(100% + 50px)"
+                  style={{ border: 0, marginBottom: '-50px' }}
                   src={`https://www.openstreetmap.org/export/embed.html?bbox=${place.coordinates.lng - 0.015},${place.coordinates.lat - 0.012},${place.coordinates.lng + 0.015},${place.coordinates.lat + 0.012}&layer=mapnik&marker=${place.coordinates.lat},${place.coordinates.lng}`}
                 />
               )}
@@ -897,8 +1021,8 @@ export default function PlaceDetails({ params }: { params: Promise<{ id: string 
                 )}
               </div>
               {isTirumalaSpot && (
-                <div className={styles.ghatRoadWarning}>
-                  ⚠️ Includes Mountain Ghat Road Winding Route
+                <div className={styles.ghatRoadWarning} style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
+                  <AlertTriangle size={12} color="#D97706" /> Includes Mountain Ghat Road Winding Route
                 </div>
               )}
             </div>
@@ -990,7 +1114,7 @@ export default function PlaceDetails({ params }: { params: Promise<{ id: string 
                   <div className={styles.taxesMessage}>Taxes, toll & entry included</div>
                 </div>
                 <div className={styles.costTotalText}>
-                  ₹{calc.total}
+                  ₹{(Number(calc.total) || 0).toLocaleString()}
                 </div>
               </div>
             </div>
@@ -1117,12 +1241,16 @@ export default function PlaceDetails({ params }: { params: Promise<{ id: string 
               {isCurrentlyInBreak ? (
                 <div className={`${styles.breakStatusBanner} ${styles.breakStatusClosed}`}>
                   <div className={styles.pulseDot} />
-                  <span>🔒 Currently Closed for Break</span>
+                  <span style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
+                    <Lock size={14} /> Currently Closed for Break
+                  </span>
                 </div>
               ) : (
                 <div className={`${styles.breakStatusBanner} ${styles.breakStatusOpen}`}>
                   <div className={styles.pulseDot} style={{ background: '#16A34A' }} />
-                  <span>🟢 Open for Darshan</span>
+                  <span style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
+                    <CheckCircle2 size={14} color="#16A34A" /> Open for Darshan
+                  </span>
                 </div>
               )}
 
@@ -1204,12 +1332,11 @@ export default function PlaceDetails({ params }: { params: Promise<{ id: string 
                   </h4>
                   <div className={styles.festivalsGrid}>
                     {place.rituals.annual.map((r, i) => {
-                      const festivalIcon = r.toLowerCase().includes('ratha') ? '🛕' : 
-                                           r.toLowerCase().includes('janmashtami') ? '🪶' : 
-                                           r.toLowerCase().includes('brahmotsavam') ? '✨' : '🌸';
                       return (
                         <div key={i} className={styles.festivalCard}>
-                          <span className={styles.festivalIcon}>{festivalIcon}</span>
+                          <span className={styles.festivalIcon}>
+                            <Sparkles size={16} color="var(--color-saffron-600)" />
+                          </span>
                           <span>{r}</span>
                         </div>
                       );
@@ -1252,64 +1379,44 @@ export default function PlaceDetails({ params }: { params: Promise<{ id: string 
           </div>
         </section>
 
-        {/* ─── BEFORE YOU VISIT / TIPS ─── */}
+        {/* ─── KNOW BEFORE YOU GO / TIPS ─── */}
         <section className={styles.section} id="tips">
-          <h2 className={styles.sectionTitle}>Before You Visit</h2>
+          <h2 className={styles.sectionTitle}>Know Before You Go</h2>
           
           <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-            {/* Rule 1: Dress Code */}
-            <div className={styles.tipCard} style={{ background: 'linear-gradient(135deg, #FFF9F2, #FFF3E6)', borderColor: 'rgba(255, 153, 51, 0.15)' }}>
-              <div className={styles.tipIconCircle} style={{ background: '#FF9933' }}>
-                <Shirt size={18} />
-              </div>
-              <div>
-                <h4 className={styles.tipTitle} style={{ color: '#994D00' }}>Dress Code Required</h4>
-                <p className={styles.tipDescription} style={{ color: '#5C3A21' }}>{guide.visitorTips.dressCode}</p>
-              </div>
-            </div>
-
-            {/* Rule 2: Photography */}
-            <div className={styles.tipCard} style={{ background: 'linear-gradient(135deg, #FEF2F2, #FEE2E2)', borderColor: '#FCA5A5' }}>
-              <div className={styles.tipIconCircle} style={{ background: '#EF4444' }}>
-                <Ban size={18} />
-              </div>
-              <div>
-                <h4 className={styles.tipTitle} style={{ color: '#991B1B' }}>Photography Policy</h4>
-                <p className={styles.tipDescription} style={{ color: '#7F1D1D' }}>{guide.visitorTips.photoRule}</p>
-              </div>
-            </div>
-
-            {/* Rule 3: Footwear */}
-            <div className={styles.tipCard} style={{ background: 'linear-gradient(135deg, #FFFDF5, #FFF9E6)', borderColor: 'rgba(255, 153, 51, 0.1)' }}>
-              <div className={styles.tipIconCircle} style={{ background: '#F59E0B' }}>
-                <Footprints size={18} />
-              </div>
-              <div>
-                <h4 className={styles.tipTitle} style={{ color: '#92400E' }}>Footwear Custody</h4>
-                <p className={styles.tipDescription} style={{ color: '#78350F' }}>{guide.visitorTips.footwearRule}</p>
-              </div>
-            </div>
-
-            {/* Rule 4: Access & Entry */}
-            <div className={styles.tipCard} style={{ background: 'linear-gradient(135deg, #F0FDF4, #DCFCE7)', borderColor: '#BBF7D0' }}>
-              <div className={styles.tipIconCircle} style={{ background: '#10B981' }}>
-                <Coins size={18} />
-              </div>
-              <div>
-                <h4 className={styles.tipTitle} style={{ color: '#166534' }}>Entry & Access Fee</h4>
-                <p className={styles.tipDescription} style={{ color: '#14532D' }}>{guide.visitorTips.entryRule}</p>
-              </div>
-            </div>
-
-            {/* Rule 5: Crowd Note */}
-            <div className={styles.tipCard} style={{ background: 'linear-gradient(135deg, #F8FAFC, #F1F5F9)', borderColor: '#E2E8F0' }}>
-              <div className={styles.tipIconCircle} style={{ background: '#64748B' }}>
-                <Users size={18} />
-              </div>
-              <div>
-                <h4 className={styles.tipTitle} style={{ color: '#334155' }}>Crowd Expectation</h4>
-                <p className={styles.tipDescription} style={{ color: '#475569' }}>{guide.visitorTips.crowdNote}</p>
-              </div>
+            <div className={styles.tipCard} style={{ background: '#F8FAFC', border: '1px solid #E2E8F0', padding: '16px', borderRadius: '16px' }}>
+              <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                <li style={{ display: 'flex', gap: '12px', alignItems: 'flex-start' }}>
+                  <CheckCircle2 size={18} color="#10B981" style={{ flexShrink: 0, marginTop: '2px' }} />
+                  <div>
+                    <span style={{ fontWeight: 700, color: '#334155' }}>Dress Code:</span> <span style={{ color: '#475569' }}>{guide.visitorTips.dressCode}</span>
+                  </div>
+                </li>
+                <li style={{ display: 'flex', gap: '12px', alignItems: 'flex-start' }}>
+                  <CheckCircle2 size={18} color="#10B981" style={{ flexShrink: 0, marginTop: '2px' }} />
+                  <div>
+                    <span style={{ fontWeight: 700, color: '#334155' }}>Phones & Cameras:</span> <span style={{ color: '#475569' }}>{guide.visitorTips.photoRule}</span>
+                  </div>
+                </li>
+                <li style={{ display: 'flex', gap: '12px', alignItems: 'flex-start' }}>
+                  <CheckCircle2 size={18} color="#10B981" style={{ flexShrink: 0, marginTop: '2px' }} />
+                  <div>
+                    <span style={{ fontWeight: 700, color: '#334155' }}>Footwear:</span> <span style={{ color: '#475569' }}>{guide.visitorTips.footwearRule}</span>
+                  </div>
+                </li>
+                <li style={{ display: 'flex', gap: '12px', alignItems: 'flex-start' }}>
+                  <CheckCircle2 size={18} color="#10B981" style={{ flexShrink: 0, marginTop: '2px' }} />
+                  <div>
+                    <span style={{ fontWeight: 700, color: '#334155' }}>Entry & Fees:</span> <span style={{ color: '#475569' }}>{guide.visitorTips.entryRule}</span>
+                  </div>
+                </li>
+                <li style={{ display: 'flex', gap: '12px', alignItems: 'flex-start' }}>
+                  <CheckCircle2 size={18} color="#10B981" style={{ flexShrink: 0, marginTop: '2px' }} />
+                  <div>
+                    <span style={{ fontWeight: 700, color: '#334155' }}>Crowds:</span> <span style={{ color: '#475569' }}>{guide.visitorTips.crowdNote}</span>
+                  </div>
+                </li>
+              </ul>
             </div>
           </div>
         </section>
@@ -1451,32 +1558,6 @@ export default function PlaceDetails({ params }: { params: Promise<{ id: string 
           </section>
         )}
 
-        {/* ─── 9. YOUTUBE ─── */}
-        {guide.youtubeLink && (
-          <section className={styles.section} id="youtube">
-            <h2 className={styles.sectionTitle}>Video Guide</h2>
-            <a 
-              href={guide.youtubeLink} 
-              target="_blank" 
-              rel="noopener noreferrer" 
-              className={styles.videoCard}
-            >
-              <div 
-                className={styles.videoThumbnail}
-                style={{ backgroundImage: `url(${getYoutubeThumb(guide.youtubeLink)})` }}
-              >
-                <div className={styles.playOverlay}>
-                  <PlayCircle size={60} color="#fff" />
-                </div>
-              </div>
-              <div className={styles.videoText}>
-                <h3>Watch Explainer & History</h3>
-                <p>Understand the origins, mythology, and visitor experience in this documentary guide.</p>
-                <span className={styles.videoLink}>Watch on YouTube →</span>
-              </div>
-            </a>
-          </section>
-        )}
 
         {/* ─── 10. FEEDBACK ─── */}
         <section className={styles.section} id="feedback" style={{ marginBottom: '80px' }}>
@@ -1517,7 +1598,7 @@ export default function PlaceDetails({ params }: { params: Promise<{ id: string 
                       transition: 'all 0.2s'
                     }}
                   >
-                    👍 Helpful
+                    <ThumbsUp size={14} /> Helpful
                   </button>
                   <button
                     onClick={() => setFeedbackRating('Needs Work')}
@@ -1538,7 +1619,7 @@ export default function PlaceDetails({ params }: { params: Promise<{ id: string 
                       transition: 'all 0.2s'
                     }}
                   >
-                    👎 Needs Work
+                    <ThumbsDown size={14} /> Needs Work
                   </button>
                 </div>
                 
@@ -1705,28 +1786,28 @@ function OfflineVectorMap({ name, lat, lng }: { name: string; lat: number; lng: 
         {/* Parking */}
         <g style={{ cursor: 'pointer' }}>
           <circle cx="60" cy="160" r="10" fill="#E2E8F0" stroke="#94A3B8" strokeWidth="1" />
-          <text x="60" y="164" fontSize="8" fontWeight="bold" textAnchor="middle" fill="#475569">🅿️</text>
+          <text x="60" y="164" fontSize="9" fontWeight="bold" textAnchor="middle" fill="#475569">P</text>
           <text x="60" y="176" fontSize="7" textAnchor="middle" fill="#64748B" fontWeight="600">Parking</text>
         </g>
 
         {/* Lockers */}
         <g style={{ cursor: 'pointer' }}>
           <circle cx="90" cy="70" r="10" fill="#E2E8F0" stroke="#94A3B8" strokeWidth="1" />
-          <text x="90" y="74" fontSize="8" fontWeight="bold" textAnchor="middle" fill="#475569">🛅</text>
+          <text x="90" y="74" fontSize="9" fontWeight="bold" textAnchor="middle" fill="#475569">L</text>
           <text x="90" y="60" fontSize="7" textAnchor="middle" fill="#64748B" fontWeight="600">Lockers</text>
         </g>
 
         {/* Footwear */}
         <g style={{ cursor: 'pointer' }}>
           <circle cx="210" cy="80" r="10" fill="#E2E8F0" stroke="#94A3B8" strokeWidth="1" />
-          <text x="210" y="84" fontSize="8" fontWeight="bold" textAnchor="middle" fill="#475569">👟</text>
+          <text x="210" y="84" fontSize="9" fontWeight="bold" textAnchor="middle" fill="#475569">F</text>
           <text x="210" y="70" fontSize="7" textAnchor="middle" fill="#64748B" fontWeight="600">Footwear</text>
         </g>
 
         {/* Water */}
         <g style={{ cursor: 'pointer' }}>
           <circle cx="230" cy="150" r="10" fill="#E2E8F0" stroke="#94A3B8" strokeWidth="1" />
-          <text x="230" y="154" fontSize="8" fontWeight="bold" textAnchor="middle" fill="#475569">🚰</text>
+          <text x="230" y="154" fontSize="9" fontWeight="bold" textAnchor="middle" fill="#475569">W</text>
           <text x="230" y="166" fontSize="7" textAnchor="middle" fill="#64748B" fontWeight="600">Water</text>
         </g>
 
@@ -1773,7 +1854,7 @@ function OfflineVectorMap({ name, lat, lng }: { name: string; lat: number; lng: 
         borderRadius: '4px',
         border: '1px solid rgba(0,0,0,0.06)'
       }}>
-        📍 GPS: {lat.toFixed(5)}° N, {lng.toFixed(5)}° E
+        GPS: {lat.toFixed(5)}° N, {lng.toFixed(5)}° E
       </div>
 
       {/* Offline Mode Active Badge */}

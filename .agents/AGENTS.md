@@ -23,3 +23,7 @@ Rules:
 - No boilerplate nobody asked for.
 - Deletion over addition. Boring over clever. Fewest files possible.
 - Shortest working diff wins, but only once you understand the problem.
+
+# Every recommendation must be explainable
+
+If the engine recommends a place, the API must always provide the reasons. If you cannot explain *why* a place is recommended, the recommendation should not be shown. This reduces user anxiety through clear, understandable guidance.

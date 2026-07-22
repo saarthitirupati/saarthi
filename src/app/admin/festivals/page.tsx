@@ -1,406 +1,261 @@
 'use client';
-import { useEffect, useState } from 'react';
-import { PlusCircle, Search, Pencil, Trash2, ArrowLeft, Save } from 'lucide-react';
-import styles from '../admin.module.css';
-import { motion } from 'framer-motion';
 
-export default function AdminFestivals() {
+import { useState, useEffect, useMemo } from 'react';
+import { Calendar, Plus, Search, CheckCircle, Clock, Trash2, Edit3, X, Save, RefreshCw } from 'lucide-react';
+import styles from '../Dashboard.module.css';
+import { notifyRealtimeUpdate } from '@/lib/useRealtimeStatus';
+import { safeFetchJson } from '@/lib/safeFetch';
+
+export default function AdminFestivalsPage() {
   const [festivals, setFestivals] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
-  const [q, setQ] = useState('');
+  const [searchQuery, setSearchQuery] = useState('');
+  const [showModal, setShowModal] = useState(false);
+  const [saving, setSaving] = useState(false);
 
-  // Form State
-  const [editMode, setEditMode] = useState<'create' | 'edit' | null>(null);
-  const [selectedFestival, setSelectedFestival] = useState<any>(null);
-  const [form, setForm] = useState({
-    id: '',
-    slug: '',
-    name: '',
-    description: '',
-    festival_type: 'Spiritual',
-    date: '',
-    gravity_score: 5,
-    crowd_level: 'Moderate',
-    recommended_time: '',
-    dress_code: '',
-    parking_status: 'Available',
-    visitor_notes: '',
-    is_major: true,
-    image_url: '',
-    status: 'Upcoming'
-  });
+  // Form states
+  const [name, setName] = useState('');
+  const [festivalType, setFestivalType] = useState('Spiritual');
+  const [date, setDate] = useState(new Date().toISOString().split('T')[0]);
+  const [crowdLevel, setCrowdLevel] = useState('High');
+  const [description, setDescription] = useState('');
+  const [dressCode, setDressCode] = useState('Traditional');
+  const [parkingStatus, setParkingStatus] = useState('Available');
 
-  const load = async () => {
-    setLoading(true);
+  const fetchFestivals = async () => {
     try {
-      const res = await fetch('/api/admin/festivals');
-      const data = await res.json();
-      setFestivals(data.festivals || []);
+      setLoading(true);
+      const data = await safeFetchJson<any>('/api/admin/festivals');
+      if (data && data.festivals) {
+        setFestivals(data.festivals);
+      }
     } catch (e) {
-      console.error(e);
+      console.error('Failed to load festivals:', e);
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
   };
 
   useEffect(() => {
-    load();
+    fetchFestivals();
   }, []);
 
-  const handleEdit = (festival: any) => {
-    setSelectedFestival(festival);
-    // Format date YYYY-MM-DD from database date
-    let rawDate = festival.date || '';
-    if (rawDate && rawDate.includes('T')) {
-      rawDate = rawDate.split('T')[0];
-    }
-    setForm({
-      id: festival.id,
-      slug: festival.slug || '',
-      name: festival.name,
-      description: festival.description || '',
-      festival_type: festival.festival_type || 'Spiritual',
-      date: rawDate,
-      gravity_score: festival.gravity_score || 5,
-      crowd_level: festival.crowd_level || 'Moderate',
-      recommended_time: festival.recommended_time || '',
-      dress_code: festival.dress_code || '',
-      parking_status: festival.parking_status || 'Available',
-      visitor_notes: festival.visitor_notes || '',
-      is_major: festival.is_major !== false,
-      image_url: festival.image_url || '',
-      status: festival.status || 'Upcoming'
-    });
-    setEditMode('edit');
-  };
-
-  const handleCreate = () => {
-    setSelectedFestival(null);
-    setForm({
-      id: '',
-      slug: '',
-      name: '',
-      description: '',
-      festival_type: 'Spiritual',
-      date: new Date().toISOString().split('T')[0],
-      gravity_score: 5,
-      crowd_level: 'Moderate',
-      recommended_time: '',
-      dress_code: '',
-      parking_status: 'Available',
-      visitor_notes: '',
-      is_major: true,
-      image_url: '',
-      status: 'Upcoming'
-    });
-    setEditMode('create');
-  };
-
-  const handleDelete = async (id: string) => {
-    if (!confirm('Are you sure you want to delete this festival?')) return;
-    await fetch(`/api/admin/festivals/${id}`, { method: 'DELETE' });
-    load();
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleCreate = async (e: React.FormEvent) => {
     e.preventDefault();
-    const payload = {
-      ...form,
-      gravity_score: Number(form.gravity_score)
-    };
+    if (!name.trim()) return;
 
-    const url = editMode === 'edit' ? `/api/admin/festivals/${selectedFestival.id}` : '/api/admin/festivals';
-    const method = editMode === 'edit' ? 'PUT' : 'POST';
+    setSaving(true);
+    try {
+      const res = await fetch('/api/admin/festivals', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name,
+          festival_type: festivalType,
+          date,
+          crowd_level: crowdLevel,
+          description,
+          dress_code: dressCode,
+          parking_status: parkingStatus,
+          status: 'Upcoming'
+        })
+      });
 
-    const res = await fetch(url, {
-      method,
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload)
-    });
-
-    if (res.ok) {
-      setEditMode(null);
-      load();
-    } else {
-      const err = await res.json();
-      alert(`Error: ${err.error}`);
+      if (res.ok) {
+        notifyRealtimeUpdate();
+        setShowModal(false);
+        setName('');
+        setDescription('');
+        fetchFestivals();
+      }
+    } catch (e) {
+      console.error('Failed to create festival:', e);
+    } finally {
+      setSaving(false);
     }
   };
 
-  const filtered = festivals.filter(f =>
-    f.name.toLowerCase().includes(q.toLowerCase()) ||
-    f.festival_type?.toLowerCase().includes(q.toLowerCase())
-  );
+  const filteredFestivals = useMemo(() => {
+    return festivals.filter(f => {
+      const query = searchQuery.toLowerCase().trim();
+      return !query || f.name.toLowerCase().includes(query) || (f.festival_type && f.festival_type.toLowerCase().includes(query));
+    });
+  }, [festivals, searchQuery]);
 
   return (
-    <div style={{ paddingBottom: 40 }}>
-      {editMode ? (
-        <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}>
-          <div className={styles.topRow}>
-            <div className={styles.pageHeader}>
-              <h1 className={styles.pageTitle}>{editMode === 'edit' ? 'Edit Festival' : 'New Festival'}</h1>
-              <p className={styles.pageSubtitle}>Calendar events and crowd projections CMS</p>
+    <div className={styles.dashboard}>
+      <div className={styles.header} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <div>
+          <h1 className={styles.title}>Festivals Center CMS</h1>
+          <p className={styles.subtitle}>Managing {festivals.length} Major TTD & Regional Festivals</p>
+        </div>
+        <div style={{ display: 'flex', gap: '10px' }}>
+          <button 
+            onClick={fetchFestivals}
+            style={{
+              backgroundColor: '#F1F5F9', color: '#334155', border: '1px solid #CBD5E1', borderRadius: '8px',
+              padding: '8px 16px', fontWeight: 600, fontSize: '13px', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '6px'
+            }}
+          >
+            <RefreshCw size={14} className={loading ? styles.spin : ''} />
+            {loading ? 'Loading...' : 'Refresh'}
+          </button>
+
+          <button 
+            onClick={() => setShowModal(true)}
+            style={{
+              backgroundColor: '#0E6B72', color: '#FFF', border: 'none', borderRadius: '8px',
+              padding: '8px 18px', fontWeight: 700, fontSize: '13px', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '6px'
+            }}
+          >
+            <Plus size={16} /> New Festival
+          </button>
+        </div>
+      </div>
+
+      {/* Toolbar */}
+      <div className={styles.dataQualitySection} style={{ marginBottom: '24px', padding: '16px 20px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '12px', background: '#F8FAFC', padding: '8px 14px', borderRadius: '8px', border: '1px solid #E2E8F0' }}>
+          <Search size={16} color="#64748B" />
+          <input 
+            type="text" 
+            placeholder="Search festivals by name or event type..." 
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            style={{ border: 'none', background: 'transparent', outline: 'none', width: '100%', fontSize: '14px', color: '#0F172A' }}
+          />
+        </div>
+      </div>
+
+      {/* Festivals List Table */}
+      <div className={styles.dataQualitySection}>
+        <h3 className={styles.sectionTitle}>
+          <Calendar size={18} style={{ verticalAlign: 'middle', marginRight: '6px' }} />
+          Upcoming & Scheduled Events
+        </h3>
+
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+          {filteredFestivals.length === 0 ? (
+            <div style={{ padding: '24px', textAlign: 'center', color: '#64748B', fontSize: '14px' }}>
+              No festivals found. Click "New Festival" to add one.
             </div>
-            <button onClick={() => setEditMode(null)} className={styles.btnSecondary}>
-              <ArrowLeft size={16} /> Back
-            </button>
-          </div>
+          ) : (
+            filteredFestivals.map((fest) => (
+              <div key={fest.id} style={{
+                display: 'flex', justifyContent: 'space-between', alignItems: 'center',
+                padding: '16px 20px', background: '#FFFFFF', borderRadius: '10px', border: '1px solid #E2E8F0',
+                boxShadow: '0 1px 3px rgba(0,0,0,0.02)'
+              }}>
+                <div>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                    <span style={{ fontSize: '16px', fontWeight: 800, color: '#0F172A' }}>{fest.name}</span>
+                    <span style={{
+                      fontSize: '11px', fontWeight: 700, padding: '2px 8px', borderRadius: '6px',
+                      background: fest.crowd_level === 'Extreme' ? '#FEF2F2' : '#EFF6FF',
+                      color: fest.crowd_level === 'Extreme' ? '#DC2626' : '#2563EB'
+                    }}>
+                      {fest.crowd_level || 'Moderate'} Crowd
+                    </span>
+                  </div>
 
-          <div className={styles.tableCard} style={{ padding: 24 }}>
-            <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 20 }}>
-                <div>
-                  <label className={styles.formLabel}>Festival Name *</label>
-                  <input
-                    className={styles.formInput}
-                    required
-                    value={form.name}
-                    onChange={e => setForm({ ...form, name: e.target.value })}
-                    placeholder="Srivari Salakatla Brahmotsavams"
-                  />
+                  <p style={{ fontSize: '13px', color: '#475569', margin: '4px 0 0 0', lineHeight: 1.4, maxWidth: '600px' }}>
+                    {fest.description}
+                  </p>
+
+                  <div style={{ display: 'flex', gap: '16px', fontSize: '12px', color: '#64748B', marginTop: '6px' }}>
+                    <span>📅 Date: <strong>{fest.date}</strong></span>
+                    <span>👗 Dress: <strong>{fest.dress_code || 'Traditional'}</strong></span>
+                    <span>🚗 Parking: <strong>{fest.parking_status || 'Available'}</strong></span>
+                  </div>
                 </div>
-                <div>
-                  <label className={styles.formLabel}>Type / Category *</label>
-                  <select
-                    className={styles.formInput}
-                    value={form.festival_type}
-                    onChange={e => setForm({ ...form, festival_type: e.target.value })}
-                  >
-                    <option value="Spiritual">Spiritual</option>
-                    <option value="Temple Festival">Temple Festival</option>
-                    <option value="Cultural">Cultural</option>
-                  </select>
-                </div>
+
+                <span style={{
+                  fontSize: '12px', fontWeight: 700, padding: '4px 10px', borderRadius: '20px',
+                  background: '#F0FDF4', color: '#166534', border: '1px solid #BBF7D0'
+                }}>
+                  {fest.status || 'Upcoming'}
+                </span>
               </div>
+            ))
+          )}
+        </div>
+      </div>
 
+      {/* Modal for Creating Festival */}
+      {showModal && (
+        <div style={{
+          position: 'fixed', top: 0, left: 0, right: 0, bottom: 0,
+          background: 'rgba(15, 23, 42, 0.5)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000
+        }}>
+          <div style={{
+            background: '#FFFFFF', borderRadius: '16px', padding: '24px', width: '100%', maxWidth: '500px',
+            boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.1)'
+          }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
+              <h3 style={{ margin: 0, fontSize: '18px', fontWeight: 800, color: '#0F172A' }}>Add New TTD Festival</h3>
+              <button onClick={() => setShowModal(false)} style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#64748B' }}>
+                <X size={20} />
+              </button>
+            </div>
+
+            <form onSubmit={handleCreate} style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
               <div>
-                <label className={styles.formLabel}>Description</label>
-                <textarea
-                  className={styles.formInput}
-                  rows={3}
-                  value={form.description}
-                  onChange={e => setForm({ ...form, description: e.target.value })}
-                  placeholder="The grandest annual celebration of Lord Venkateswara..."
+                <label style={{ fontSize: '12px', fontWeight: 700, color: '#334155', display: 'block', marginBottom: '4px' }}>Festival Name</label>
+                <input 
+                  type="text" required value={name} onChange={e => setName(e.target.value)}
+                  placeholder="e.g. Srivari Brahmotsavam"
+                  style={{ width: '100%', padding: '10px', borderRadius: '8px', border: '1px solid #CBD5E1', fontSize: '14px' }}
                 />
               </div>
 
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 20 }}>
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
                 <div>
-                  <label className={styles.formLabel}>Festival Date *</label>
-                  <input
-                    type="date"
-                    className={styles.formInput}
-                    required
-                    value={form.date}
-                    onChange={e => setForm({ ...form, date: e.target.value })}
+                  <label style={{ fontSize: '12px', fontWeight: 700, color: '#334155', display: 'block', marginBottom: '4px' }}>Event Date</label>
+                  <input 
+                    type="date" required value={date} onChange={e => setDate(e.target.value)}
+                    style={{ width: '100%', padding: '10px', borderRadius: '8px', border: '1px solid #CBD5E1', fontSize: '14px' }}
                   />
                 </div>
-                <div>
-                  <label className={styles.formLabel}>Event Status *</label>
-                  <select
-                    className={styles.formInput}
-                    value={form.status}
-                    onChange={e => setForm({ ...form, status: e.target.value })}
-                  >
-                    <option value="Upcoming">Upcoming</option>
-                    <option value="Live">Live / Ongoing</option>
-                    <option value="Past">Past</option>
-                  </select>
-                </div>
-              </div>
 
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 20 }}>
                 <div>
-                  <label className={styles.formLabel}>Gravity Score (1-10 magnitude) *</label>
-                  <select
-                    className={styles.formInput}
-                    value={form.gravity_score}
-                    onChange={e => setForm({ ...form, gravity_score: Number(e.target.value) })}
+                  <label style={{ fontSize: '12px', fontWeight: 700, color: '#334155', display: 'block', marginBottom: '4px' }}>Expected Crowd</label>
+                  <select 
+                    value={crowdLevel} onChange={e => setCrowdLevel(e.target.value)}
+                    style={{ width: '100%', padding: '10px', borderRadius: '8px', border: '1px solid #CBD5E1', fontSize: '14px' }}
                   >
-                    {[1,2,3,4,5,6,7,8,9,10].map(s => (
-                      <option key={s} value={s}>{s} {s >= 8 ? '(High Crowd Impact)' : s >= 5 ? '(Moderate)' : '(Low)'}</option>
-                    ))}
-                  </select>
-                </div>
-                <div>
-                  <label className={styles.formLabel}>Crowd Level *</label>
-                  <select
-                    className={styles.formInput}
-                    value={form.crowd_level}
-                    onChange={e => setForm({ ...form, crowd_level: e.target.value })}
-                  >
-                    <option value="Low">Low</option>
                     <option value="Moderate">Moderate</option>
                     <option value="High">High</option>
-                    <option value="EXTREME">EXTREME</option>
+                    <option value="Extreme">Extreme</option>
                   </select>
-                </div>
-              </div>
-
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 20 }}>
-                <div>
-                  <label className={styles.formLabel}>Parking Status *</label>
-                  <select
-                    className={styles.formInput}
-                    value={form.parking_status}
-                    onChange={e => setForm({ ...form, parking_status: e.target.value })}
-                  >
-                    <option value="Available">Available</option>
-                    <option value="LIMITED">LIMITED</option>
-                    <option value="VERY LIMITED">VERY LIMITED</option>
-                    <option value="FULL">FULL</option>
-                  </select>
-                </div>
-                <div>
-                  <label className={styles.formLabel}>Recommended Time to Arrive</label>
-                  <input
-                    className={styles.formInput}
-                    value={form.recommended_time}
-                    onChange={e => setForm({ ...form, recommended_time: e.target.value })}
-                    placeholder="3:00 AM - 11:00 PM"
-                  />
-                </div>
-              </div>
-
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 20 }}>
-                <div>
-                  <label className={styles.formLabel}>Dress Code</label>
-                  <input
-                    className={styles.formInput}
-                    value={form.dress_code}
-                    onChange={e => setForm({ ...form, dress_code: e.target.value })}
-                    placeholder="Traditional (Mandatory)"
-                  />
-                </div>
-                <div>
-                  <label className={styles.formLabel}>Cover Image URL</label>
-                  <input
-                    className={styles.formInput}
-                    value={form.image_url}
-                    onChange={e => setForm({ ...form, image_url: e.target.value })}
-                    placeholder="/assets/festivals/brahmotsavam.jpg"
-                  />
                 </div>
               </div>
 
               <div>
-                <label className={styles.formLabel}>Visitor Notes & Special Tips</label>
-                <textarea
-                  className={styles.formInput}
-                  rows={2}
-                  value={form.visitor_notes}
-                  onChange={e => setForm({ ...form, visitor_notes: e.target.value })}
-                  placeholder="Expect severe blockages on Ghat roads. Book SED tickets months in advance..."
+                <label style={{ fontSize: '12px', fontWeight: 700, color: '#334155', display: 'block', marginBottom: '4px' }}>Description & Highlights</label>
+                <textarea 
+                  rows={3} value={description} onChange={e => setDescription(e.target.value)}
+                  placeholder="Details about Vahana Sevas, timings, or darshan impact..."
+                  style={{ width: '100%', padding: '10px', borderRadius: '8px', border: '1px solid #CBD5E1', fontSize: '14px' }}
                 />
               </div>
 
-              <div style={{ display: 'flex', gap: 10, alignItems: 'center' }}>
-                <input
-                  type="checkbox"
-                  id="isMajor"
-                  checked={form.is_major}
-                  onChange={e => setForm({ ...form, is_major: e.target.checked })}
-                />
-                <label htmlFor="isMajor" className={styles.formLabel} style={{ marginBottom: 0 }}>Show as Major / Highlighted Event</label>
+              <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '10px', marginTop: '10px' }}>
+                <button 
+                  type="button" onClick={() => setShowModal(false)}
+                  style={{ padding: '10px 18px', borderRadius: '8px', border: '1px solid #CBD5E1', background: '#F8FAFC', fontWeight: 600 }}
+                >
+                  Cancel
+                </button>
+                <button 
+                  type="submit" disabled={saving}
+                  style={{ padding: '10px 20px', borderRadius: '8px', border: 'none', background: '#0E6B72', color: '#FFF', fontWeight: 700 }}
+                >
+                  {saving ? 'Saving...' : 'Save Festival'}
+                </button>
               </div>
-
-              <button type="submit" className={styles.btnPrimary} style={{ alignSelf: 'flex-start' }}>
-                <Save size={16} /> Save Festival
-              </button>
             </form>
           </div>
-        </motion.div>
-      ) : (
-        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-          <div className={styles.topRow}>
-            <div className={styles.pageHeader}>
-              <h1 className={styles.pageTitle}>Festivals Center CMS</h1>
-              <p className={styles.pageSubtitle}>
-                {festivals.length} events listed · {festivals.filter(f => f.status === 'Upcoming').length} upcoming
-              </p>
-            </div>
-            <button onClick={handleCreate} className={styles.btnPrimary}>
-              <PlusCircle size={16} /> New Festival
-            </button>
-          </div>
-
-          <div className={styles.tableCard}>
-            <div className={styles.filterRow}>
-              <div className={styles.searchBar}>
-                <Search size={16} color="#4A5568" />
-                <input
-                  placeholder="Search events by name, type..."
-                  value={q}
-                  onChange={e => setQ(e.target.value)}
-                />
-              </div>
-            </div>
-
-            {loading ? (
-              <div style={{ padding: 100, textAlign: 'center', color: '#64748B' }}>
-                <p>Loading festivals directory...</p>
-              </div>
-            ) : (
-              <div style={{ overflowX: 'auto' }}>
-                <table className={styles.table}>
-                  <thead>
-                    <tr>
-                      <th>Event</th>
-                      <th>Type</th>
-                      <th>Date</th>
-                      <th>Crowd</th>
-                      <th>Status</th>
-                      <th>Actions</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {filtered.map(fest => {
-                      let dateStr = fest.date || '';
-                      if (dateStr && dateStr.includes('T')) dateStr = dateStr.split('T')[0];
-                      return (
-                        <tr key={fest.id}>
-                          <td>
-                            <div className={styles.placeThumbCell}>
-                              <div
-                                className={styles.placeImg}
-                                style={{ backgroundImage: `url(${fest.image_url || '/assets/ai/hero_spiritual_sunset.png'})`, backgroundSize: 'cover', backgroundPosition: 'center' }}
-                              />
-                              <div>
-                                <p className={styles.placeCellName}>{fest.name}</p>
-                                <p className={styles.placeCellSub}>{fest.location || 'Tirupati'}</p>
-                              </div>
-                            </div>
-                          </td>
-                          <td><span className={`${styles.badge} ${styles.badgeBlue}`}>{fest.festival_type}</span></td>
-                          <td>{dateStr}</td>
-                          <td>
-                            <span className={`${styles.badge} ${fest.crowd_level === 'EXTREME' ? styles.badgeOrange : styles.badgeBlue}`}>
-                              {fest.crowd_level} (G: {fest.gravity_score})
-                            </span>
-                          </td>
-                          <td>
-                            <span className={`${styles.badge} ${fest.status === 'Live' ? styles.badgeGreen : styles.status === 'Upcoming' ? styles.badgeBlue : styles.badgeOrange}`}>
-                              {fest.status}
-                            </span>
-                          </td>
-                          <td>
-                            <div style={{ display: 'flex', gap: 10 }}>
-                              <button onClick={() => handleEdit(fest)} className={styles.recentAction} style={{ background: 'none', border: 'none', cursor: 'pointer' }}>
-                                <Pencil size={14} color="#94A3B8" />
-                              </button>
-                              <button onClick={() => handleDelete(fest.id)} className={styles.recentAction} style={{ background: 'none', border: 'none', cursor: 'pointer' }}>
-                                <Trash2 size={14} color="#EF4444" />
-                              </button>
-                            </div>
-                          </td>
-                        </tr>
-                      );
-                    })}
-                  </tbody>
-                </table>
-              </div>
-            )}
-          </div>
-        </motion.div>
+        </div>
       )}
     </div>
   );
