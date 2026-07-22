@@ -6,6 +6,49 @@ Saarthi is a production-grade **Decision Engine and Destination Operating System
 
 ---
 
+## 📐 System Architecture Diagram
+
+```mermaid
+graph TD
+    User["📱 User Opens Saarthi App"] --> GPS["📡 Hardware GPS / IP Signal"]
+    GPS --> Signals["⚙️ Signals Service (signals.service.ts)"]
+    
+    subgraph Raw Signals Collection
+        Signals --> Weather["🌤️ Weather Signal"]
+        Signals --> Crowd["👥 Live Crowd Signal"]
+        Signals --> Time["⏰ Time / Day Signal"]
+        Signals --> Festival["🎉 Festival Calendar"]
+        Signals --> RTC["🚧 Road Closures"]
+    end
+    
+    Weather & Crowd & Time & Festival & RTC --> ContextBuilder["🧱 Context Builder (context.builder.ts)"]
+    ContextBuilder --> AvailabilityEngine{"🛡️ Availability Engine"}
+    
+    AvailabilityEngine -->|Status == Deleted / Road Closed| FilteredOut["❌ Excluded"]
+    AvailabilityEngine -->|Available & Open| ScoringModules["🧮 Plugin Scoring Modules"]
+    
+    subgraph Plugin Scoring Pipeline
+        ScoringModules --> DistScore["📏 Distance Module"]
+        ScoringModules --> WeatherScore["☀️ Weather Module"]
+        ScoringModules --> CrowdScore["👥 Crowd Module"]
+        ScoringModules --> FestScore["🎊 Festival Module"]
+    end
+    
+    ScoringModules --> DecisionEngine["🎯 Decision Engine (decision.engine.ts)"]
+    DecisionEngine --> Explainability["💡 Explainability Engine"]
+    Explainability --> SectionBuilder["📑 Section Builder (section.builder.ts)"]
+    SectionBuilder --> ResponseBuilder["🚀 API Response Builder (/api/context/home)"]
+    ResponseBuilder --> Frontend["📱 Dynamic Frontend Render"]
+```
+
+### High-Level Architecture Overview
+![Saarthi System Architecture](public/assets/architecture.png)
+
+### Hyperlocal Cab Pilot Mockup
+![Cab QR Pilot Mockup](public/assets/cab_qr_mockup.png)
+
+---
+
 ## ⚡ Key Highlights & Recent Breakthroughs (v1.0.0)
 
 ### 🧠 1. Saarthi Decision Engine Architecture
