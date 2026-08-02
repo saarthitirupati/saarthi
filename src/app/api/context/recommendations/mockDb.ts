@@ -31,7 +31,7 @@ export const mockPlacesDb = [
     slug: 'kapila-theertham',
     base_priority: 85,
     images: ['https://example.com/kapila.jpg'],
-    coordinates: { lat: 13.6524, lng: 79.4215 },
+    coordinates: { lat: 13.6564, lng: 79.4208 },
     context: {
       ideal_weather: ['Rain', 'Cloudy', 'Sunny'],
       ideal_temperature_min: 20,
@@ -55,7 +55,7 @@ export const mockPlacesDb = [
     slug: 'govindaraja-swamy',
     base_priority: 80,
     images: ['https://example.com/govindaraja.jpg'],
-    coordinates: { lat: 13.6276, lng: 79.4213 },
+    coordinates: { lat: 13.6355, lng: 79.4232 },
     context: {
       ideal_weather: ['Sunny', 'Cloudy'],
       ideal_temperature_min: 20,

@@ -105,8 +105,7 @@ export default function EssentialDetailPage({ params }: { params: Promise<{ id: 
       const dest = customQuery 
         ? encodeURIComponent(`${customQuery} Tirupati`) 
         : `${item.coordinates.lat},${item.coordinates.lng}`;
-      const origin = effectiveLocation ? `&origin=${effectiveLocation.lat},${effectiveLocation.lng}` : '';
-      const url = `https://www.google.com/maps/dir/?api=1&destination=${dest}${origin}`;
+      const url = `https://www.google.com/maps/dir/?api=1&destination=${dest}`;
       window.open(url, '_blank', 'noopener,noreferrer');
     }
   };

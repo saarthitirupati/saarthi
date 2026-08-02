@@ -43,33 +43,88 @@ export function useRealtimePlaces(initialPlaces: Place[] = []) {
         const apiRes = await safeFetchJson<any>('/api/v1/places');
         if (apiRes && apiRes.data) {
           const data = apiRes.data;
+          const apiDeletedSlugs: string[] = apiRes.deletedSlugs || [];
+          const FORBIDDEN_SLUGS = new Set(['tumburu-theertham', 'mamandur-village', 'tuda-park', 'museum-alipiri', 'veda-pathasala', 'tarigonda-vengamamba-annaprasadam', 'karvetinagaram-temple']);
+          // All slugs/ids that should never appear — hard-deleted or forbidden
+          const excludedSlugs = new Set([
+            ...apiDeletedSlugs.map(s => s.toLowerCase()),
+            ...Array.from(FORBIDDEN_SLUGS),
+          ]);
           const deletedIds = new Set(
             data.filter((r: any) => r.status === 'deleted' || r.is_deleted === true).map((r: any) => r.id)
           );
-          const activeData = data.filter((r: any) => r.status !== 'deleted' && !r.is_deleted);
+          const activeData = data.filter((r: any) => 
+            r.status !== 'deleted' && 
+            !r.is_deleted && 
+            !excludedSlugs.has((r.id || '').toLowerCase()) && 
+            !excludedSlugs.has((r.slug || '').toLowerCase())
+          );
 
-          // Merge: static data as base, Supabase overrides only defined fields
-          const staticMap = new Map(initialPlaces.map(p => [p.id, p]));
+          // Merge: static verified data as base, Supabase overrides text status fields only
+          const normalize = (str: string) => (str || '').toLowerCase().replace(/[^a-z0-9]/g, '');
+
           const merged: Place[] = activeData.map((row: any) => {
-            const base = staticMap.get(row.id);
+            const rowName = (row.name || '').toLowerCase().trim();
+            const rowSlug = (row.slug || '').toLowerCase().trim();
+            const normRowName = normalize(row.name);
+            const normRowSlug = normalize(row.slug);
+
+            const base = initialPlaces.find(p => {
+              if (p.id === row.id || p.id === rowSlug) return true;
+              const pName = (p.name || '').toLowerCase().trim();
+              if (pName === rowName) return true;
+              const normPName = normalize(p.name);
+              const normPId = normalize(p.id);
+              if (normPName && normPName === normRowName) return true;
+              if (normPId && (normPId === normRowSlug || normPId === normRowName)) return true;
+              return false;
+            });
             const cleaned: Record<string, any> = {};
             for (const [k, v] of Object.entries(row)) {
               if (v !== null && v !== undefined && v !== '') cleaned[k] = v;
             }
             const result = { ...(base || {}), ...cleaned } as Place;
-            if (base?.coordinates) result.coordinates = base.coordinates;
+            // Always preserve canonical static ID (slug) so URLs remain stable (/place/kodandarama-temple)
+            if (base) {
+              result.id = base.id;
+              (result as any).db_id = row.id;
+            }
+            // Always prioritize authoritative verified GPS coordinates from static places data
+            if (base && base.coordinates && base.coordinates.lat && base.coordinates.lng) {
+              result.coordinates = base.coordinates;
+            }
+            if (base && base.history && base.history.length > (row.history || '').length) {
+              result.history = base.history;
+            }
             result.category = toSafeStr(result.category);
             result.location = toSafeStr(result.location);
             result.placeType = toSafeStr(result.placeType) as any;
             result.tags = Array.isArray(result.tags) ? result.tags : [];
             result.interests = Array.isArray(result.interests) ? result.interests : [];
-            result.image = result.image || (result as any).hero_image || (base as any)?.image || '/assets/ai/hero_spiritual_sunset.png';
+            if (base?.image?.startsWith('http')) {
+              result.image = base.image;
+            } else if (row.hero_image?.startsWith('http')) {
+              result.image = row.hero_image;
+            } else if (row.image?.startsWith('http')) {
+              result.image = row.image;
+            } else {
+              result.image = base?.image || row.hero_image || result.image || 'https://images.unsplash.com/photo-1514222134-b57cbf8ce673?auto=format&fit=crop&q=80&w=800';
+            }
+            if (base?.images && base.images.length > 0 && base.images[0]?.startsWith('http')) {
+              result.images = base.images;
+            }
             return result;
           });
-          // Add any static places not in Supabase and NOT marked deleted
+          // Add static places not in Supabase AND not in the excluded/deleted set
           for (const sp of initialPlaces) {
-            const spName = (sp.name || '').toLowerCase().trim();
-            if (!deletedIds.has(sp.id) && !activeData.some((d: any) => d.id === sp.id || (d.name || '').toLowerCase().trim() === spName)) {
+            const normSpName = normalize(sp.name);
+            const normSpId = normalize(sp.id);
+            const isExcluded = excludedSlugs.has(sp.id.toLowerCase()) || excludedSlugs.has(normSpId);
+            if (
+              !isExcluded &&
+              !deletedIds.has(sp.id) &&
+              !activeData.some((d: any) => d.id === sp.id || normalize(d.name) === normSpName || normalize(d.slug) === normSpId)
+            ) {
               merged.push(sp);
             }
           }
@@ -105,7 +160,25 @@ export function useRealtimePlaces(initialPlaces: Place[] = []) {
             result.placeType = toSafeStr(result.placeType) as any;
             result.tags = Array.isArray(result.tags) ? result.tags : [];
             result.interests = Array.isArray(result.interests) ? result.interests : [];
-            result.image = result.image || (result as any).hero_image || (base as any)?.image || '/assets/ai/hero_spiritual_sunset.png';
+            if (base?.image?.startsWith('http')) {
+              result.image = base.image;
+            } else if (row.hero_image?.startsWith('http')) {
+              result.image = row.hero_image;
+            } else if (row.image?.startsWith('http')) {
+              result.image = row.image;
+            } else {
+              result.image = base?.image || row.hero_image || result.image || 'https://images.unsplash.com/photo-1514222134-b57cbf8ce673?auto=format&fit=crop&q=80&w=800';
+            }
+            if (base?.images && base.images.length > 0 && base.images[0]?.startsWith('http')) {
+              result.images = base.images;
+            }
+            // Always prioritize authoritative verified GPS coordinates from static places data
+            if (base?.coordinates?.lat && base?.coordinates?.lng) {
+              result.coordinates = base.coordinates;
+            }
+            if (base && base.history && base.history.length > (row.history || '').length) {
+              result.history = base.history;
+            }
             return result;
           };
 

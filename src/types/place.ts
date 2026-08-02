@@ -10,11 +10,14 @@ export type VisitDurationType = 'Quick Stop' | 'Half Day' | 'Full Day' | 'Must V
 export type ImportanceTier = 'Iconic' | 'Recommended' | 'Optional' | 'Hidden Gem';
 export type IdealSeasonType = 'Summer' | 'Monsoon' | 'Winter' | 'Festival Season' | 'All Seasons';
 
+export type VerificationTier = 'Platinum' | 'Gold' | 'Silver' | 'Bronze';
+
 export interface PlaceVerification {
   status: 'Verified' | 'Unverified' | 'Pending';
+  tier?: VerificationTier;
   verifiedBy?: string;
   verifiedDate?: string;
-  source?: 'TTD' | 'Government' | 'Local Volunteers' | 'Temple Officials' | 'Ground Visit';
+  source?: 'TTD' | 'Government' | 'Local Volunteers' | 'Temple Officials' | 'Ground Visit' | string;
   confidenceScore?: number;
   lastUpdated?: string;
 }
@@ -133,10 +136,15 @@ export interface Place {
   coordinates: {
     lat: number;
     lng: number;
+    primaryEntrance?: { lat: number; lng: number };
+    parkingEntrance?: { lat: number; lng: number };
+    walkingEntrance?: { lat: number; lng: number };
   };
+  navigationPriority?: 'primaryEntrance' | 'parkingEntrance' | 'walkingEntrance';
   tags: string[];
   bestTime: string;
   idealFor?: VisitorType[];
+  mapUrl?: string;
 
   // Master Template v1.1 Operational & Classification Fields
   status?: OperationalStatus;

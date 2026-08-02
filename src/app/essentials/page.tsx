@@ -12,6 +12,7 @@ import {
 import styles from './Essentials.module.css';
 
 import { KNOWLEDGE_ITEMS, FAQ_ITEMS, CHECKLIST_ITEMS, KnowledgeItem } from '@/content/knowledge';
+import { useRealtimeStatus } from '@/lib/useRealtimeStatus';
 
 // Map iconName strings to Lucide React components
 import { 
@@ -38,12 +39,30 @@ const ICON_MAP: Record<string, React.ComponentType<any>> = {
 
 export default function PilgrimEssentialsPage() {
   const router = useRouter();
+  const { status } = useRealtimeStatus();
   const [searchQuery, setSearchQuery] = useState('');
   const [showChecklist, setShowChecklist] = useState(false);
   const [checklistState, setChecklistState] = useState<Record<string, boolean>>({});
   const [expandedFaqId, setExpandedFaqId] = useState<string | null>(null);
   const [isMounted, setIsMounted] = useState(false);
   const [dismissedNotice, setDismissedNotice] = useState(false);
+
+  const noticeText = status?.notice || 'Free Luggage Locker Counters open 24/7 at PAC-1, PAC-2 & PAC-5. Mobile deposit counters operating at VQC entrance.';
+
+  const noticeTimeStr = useMemo(() => {
+    if (!status?.lastUpdated) return 'Updated recently';
+    const diffMins = Math.max(1, Math.round((Date.now() - new Date(status.lastUpdated).getTime()) / 60000));
+    if (diffMins < 60) return `Updated ${diffMins} min${diffMins === 1 ? '' : 's'} ago`;
+    const diffHours = Math.floor(diffMins / 60);
+    if (diffHours < 24) return `Updated ${diffHours} hr${diffHours === 1 ? '' : 's'} ago`;
+    const diffDays = Math.floor(diffHours / 24);
+    return `Updated ${diffDays} day${diffDays === 1 ? '' : 's'} ago`;
+  }, [status?.lastUpdated]);
+
+  const noticeIsStale = useMemo(() => {
+    if (!status?.lastUpdated) return false;
+    return (Date.now() - new Date(status.lastUpdated).getTime()) > 24 * 60 * 60 * 1000;
+  }, [status?.lastUpdated]);
 
   // Initialize client states
   useEffect(() => {
@@ -257,7 +276,7 @@ export default function PilgrimEssentialsPage() {
         </div>
 
         {/* Today's Notice Card (Conditional) */}
-        {!dismissedNotice && !searchQuery && (
+        {!dismissedNotice && !searchQuery && noticeText && (
           <motion.div 
             className={styles.noticeBanner}
             initial={{ opacity: 0, y: -6 }}
@@ -266,12 +285,12 @@ export default function PilgrimEssentialsPage() {
             <div style={{ flex: 1 }}>
               <div className={styles.noticeHeader}>
                 <AlertTriangle size={14} color="#D97706" />
-                <span>Today's Notice</span>
+                <span>{noticeIsStale ? 'Notice' : "Today's Notice"}</span>
               </div>
               <p className={styles.noticeContent}>
-                Free Luggage Locker Counters open 24/7 at PAC-1, PAC-2 & PAC-5. Mobile deposit counters operating at VQC entrance.
+                {noticeText}
               </p>
-              <div className={styles.noticeTime}>Updated 6 mins ago</div>
+              <div className={styles.noticeTime}>{noticeTimeStr}</div>
             </div>
             <button 
               onClick={() => setDismissedNotice(true)}

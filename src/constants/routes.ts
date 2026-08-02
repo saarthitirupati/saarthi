@@ -7,5 +7,6 @@ export const ROUTES = {
   ONBOARDING: '/onboarding',
   PROFILE: '/profile',
   SAVED: '/saved',
-  ADMIN: '/admin',
+  ADMIN: '/saarthiadmin',
 } as const;
+

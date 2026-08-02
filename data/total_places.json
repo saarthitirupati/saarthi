@@ -543,6 +543,57 @@
     }
   },
   {
+    "id": "venugopala-swamy-tirumala",
+    "name": "Sri Venugopala Swamy Temple (Tirumala)",
+    "category": "Tirumala Spot",
+    "placeType": "spiritual",
+    "location": "Tirumala",
+    "distanceKms": 25,
+    "durationMins": 45,
+    "budgetLevel": "budget",
+    "entryFeeNum": 0,
+    "interests": [
+      "spiritual",
+      "nature"
+    ],
+    "openFrom": 6,
+    "openTo": 20,
+    "isMustVisit": false,
+    "description": "Serene shrine dedicated to Lord Krishna as a flute charmer on the Papavanasam road in Tirumala, managed by Hathiramji Mutt.",
+    "shortIntro": "Located 5 km from the main Tirumala temple on Papavanasam Road, Sri Venugopala Swamy Temple is a peaceful woodland shrine surrounded by lush green hills.",
+    "whyVisit": "Unique for its tranquil forest setting, beautiful idol of Lord Krishna playing the flute accompanied by Rukmini and Satyabhama, and quiet atmosphere away from peak temple crowds.",
+    "history": "Managed by Hathiramji Mutt, this ancient shrine is situated along the traditional pilgrimage route to Papavanasam. Lord Krishna is worshipped here playing his divine flute in the serene forests of Tirumala.",
+    "timings": "6:00 AM - 12:05 PM, 4:00 PM - 8:00 PM",
+    "entryFee": "Free",
+    "address": "Papavanasam Road, Tirumala, AP 517504",
+    "rating": 4.7,
+    "reviewCount": 3800,
+    "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTm1Pe1VnNZ9501UXy938cfw3i9LVBCtKaBCIpY-N86Ww&s=10",
+    "images": [
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTm1Pe1VnNZ9501UXy938cfw3i9LVBCtKaBCIpY-N86Ww&s=10"
+    ],
+    "coordinates": {
+      "lat": 13.7030482,
+      "lng": 79.3448467
+    },
+    "tags": [
+      "Krishna",
+      "Tirumala",
+      "Hathiramji Mutt",
+      "Woodland Shrine"
+    ],
+    "bestTime": "Morning and Evening",
+    "practicalInfo": {
+      "dressCode": "Traditional Indian attire",
+      "food": "Local stalls nearby",
+      "parking": "Available along road"
+    },
+    "travelEstimates": {
+      "venkateswara": "10 mins",
+      "papavinasam": "10 mins"
+    }
+  },
+  {
     "id": "govindaraja",
     "name": "Sri Govindaraja Swamy Temple",
     "category": "Core Temple",
@@ -1040,7 +1091,7 @@
     "address": "Tirupati District",
     "rating": 4.8,
     "reviewCount": 15700,
-    "image": "/assets/nature/talakona.png",
+    "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRnkybt1IzeTJuGu2co-uxGJaz6Kle_LlFQQj69o6jIDQ&s",
     "coordinates": {
       "lat": 13.81167,
       "lng": 79.21578
@@ -1824,49 +1875,6 @@
     }
   },
   {
-    "id": "karvetinagaram-temple",
-    "name": "Sri Venugopala Swamy Temple",
-    "category": "Core Temple",
-    "placeType": "spiritual",
-    "location": "Karvetinagaram",
-    "distanceKms": 58,
-    "durationMins": 90,
-    "budgetLevel": "medium",
-    "entryFeeNum": 0,
-    "interests": [
-      "spiritual",
-      "architecture"
-    ],
-    "openFrom": 6,
-    "openTo": 20,
-    "isMustVisit": false,
-    "description": "Historical temple with intricate carvings.",
-    "history": "Managed by TTD, royal legacy.",
-    "timings": "6:00 AM - 8:00 PM",
-    "entryFee": "Free",
-    "address": "Karvetinagaram",
-    "rating": 4.5,
-    "reviewCount": 2500,
-    "image": "/assets/temples/karvetinagaram.png",
-    "coordinates": {
-      "lat": 13.35,
-      "lng": 79.41
-    },
-    "tags": [
-      "Krishna",
-      "Heritage"
-    ],
-    "bestTime": "Morning",
-    "practicalInfo": {
-      "dressCode": "Traditional",
-      "food": "Limited",
-      "parking": "Available"
-    },
-    "travelEstimates": {
-      "tirupati": "1 hour"
-    }
-  },
-  {
     "id": "nagalapuram-temple",
     "name": "Sri Vedanarayana Swamy Temple",
     "category": "Day Trip",
@@ -1890,10 +1898,13 @@
     "address": "Nagalapuram",
     "rating": 4.7,
     "reviewCount": 5400,
-    "image": "/assets/temples/nagalapuram-temple.png",
+    "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRvX2oIbXys6aYldf4d4AyU_GvPobiME1iNNjHDYOJnpA&s=10",
+    "images": [
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRvX2oIbXys6aYldf4d4AyU_GvPobiME1iNNjHDYOJnpA&s=10"
+    ],
     "coordinates": {
-      "lat": 13.4022,
-      "lng": 79.7894
+      "lat": 13.3876691,
+      "lng": 79.7965048
     },
     "tags": [
       "Matsya",
@@ -2019,10 +2030,13 @@
     "address": "Rangampeta Forest",
     "rating": 4.5,
     "reviewCount": 4800,
-    "image": "/assets/nature/kalyani-dam.png",
+    "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmlCryveug2pv09HJ1L6FMyoSSQBKpBljPCG-A9TWtbUKczQkm1ipyOsHrnzmj-OrPkz8hZQQpMjXhNqD9nWM2oxe65FB_SS9ZZB6KVyXrlyrwoTXEDpncEfP48bJYLahD8ZBln-DsCaqM_=w408-h306-k-no",
+    "images": [
+      "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmlCryveug2pv09HJ1L6FMyoSSQBKpBljPCG-A9TWtbUKczQkm1ipyOsHrnzmj-OrPkz8hZQQpMjXhNqD9nWM2oxe65FB_SS9ZZB6KVyXrlyrwoTXEDpncEfP48bJYLahD8ZBln-DsCaqM_=w408-h306-k-no"
+    ],
     "coordinates": {
-      "lat": 13.65764,
-      "lng": 79.26928
+      "lat": 13.6576604,
+      "lng": 79.2692214
     },
     "tags": [
       "Dam",
@@ -2078,6 +2092,109 @@
       "parking": "Available"
     },
     "travelEstimates": {
+      "tirupati": "45 mins"
+    }
+  },
+  {
+    "id": "sorakayala-swamy",
+    "name": "Sri Sorakayala Swamy Temple",
+    "category": "Historical",
+    "placeType": "spiritual",
+    "location": "Narayanavanam",
+    "distanceKms": 36,
+    "durationMins": 45,
+    "budgetLevel": "budget",
+    "entryFeeNum": 0,
+    "interests": [
+      "spiritual",
+      "history"
+    ],
+    "openFrom": 6,
+    "openTo": 20,
+    "isMustVisit": false,
+    "description": "Famous temple dedicated to Sri Sorakayala Swamy, a revered Siddha saint of Narayanavanam known for his divine miracles and healing powers.",
+    "shortIntro": "Sri Sorakayala Swamy Temple in Narayanavanam honors the 19th-century Siddha saint who lived a life of intense penance carrying a dried bottle gourd (Sorakaya).",
+    "whyVisit": "A peaceful spiritual shrine dedicated to Sorakayala Swamy Jeeva Samadhi, known for fulfilling devotees' prayers for health and peace.",
+    "history": "Sri Sorakayala Swamy was an enlightened Siddha purusha who spent his life in Narayanavanam. He was renowned for carrying a bottle gourd and offering healing remedies to villagers.",
+    "timings": "6:00 AM - 8:00 PM",
+    "entryFee": "Free",
+    "address": "Narayanavanam, near Puttur, AP 517581",
+    "rating": 4.7,
+    "reviewCount": 1200,
+    "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRcenXbaMLxy8Jkvli8rKx7o5kRMDPaKBltAXH4SrIhnQ&s=10",
+    "images": [
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRcenXbaMLxy8Jkvli8rKx7o5kRMDPaKBltAXH4SrIhnQ&s=10"
+    ],
+    "coordinates": {
+      "lat": 13.425342,
+      "lng": 79.5903495
+    },
+    "tags": [
+      "Samadhi",
+      "Siddha Saint",
+      "Spiritual",
+      "Narayanavanam"
+    ],
+    "bestTime": "Morning",
+    "practicalInfo": {
+      "dressCode": "Traditional Indian attire",
+      "food": "Local options nearby",
+      "parking": "Available near temple"
+    },
+    "travelEstimates": {
+      "narayanavanam": "5 mins",
+      "tirupati": "45 mins"
+    }
+  },
+  {
+    "id": "narayanavanam-falls",
+    "name": "Narayanavanam Waterfalls",
+    "category": "Nature",
+    "placeType": "water",
+    "location": "Narayanavanam",
+    "distanceKms": 37,
+    "durationMins": 60,
+    "budgetLevel": "budget",
+    "entryFeeNum": 0,
+    "interests": [
+      "nature",
+      "scenic",
+      "waterfalls"
+    ],
+    "openFrom": 6,
+    "openTo": 18,
+    "isMustVisit": false,
+    "description": "Scenic seasonal waterfall and lush green nature spot located in the hills near Narayanavanam.",
+    "shortIntro": "Narayanavanam Waterfalls offers a serene natural retreat near the historical town, cascading through forest rocks after rains.",
+    "whyVisit": "Great nature getaway near Narayanavanam divine wedding site for scenic photography and relaxing in natural stream waters.",
+    "history": "Located in the Seshachalam forest belt near Puttur, this local waterfall has long served as a natural retreat for pilgrims visiting Narayanavanam.",
+    "timings": "6:00 AM - 6:00 PM",
+    "entryFee": "Free",
+    "address": "Narayanavanam Forest Range, AP 517581",
+    "rating": 4.4,
+    "reviewCount": 650,
+    "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTezwPj7Oen6a8Gt13WVXyKcJ2-zo8JzMo7usSkRGtVvw&s=10",
+    "images": [
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTezwPj7Oen6a8Gt13WVXyKcJ2-zo8JzMo7usSkRGtVvw&s=10"
+    ],
+    "coordinates": {
+      "lat": 13.4233744,
+      "lng": 79.5886747
+    },
+    "tags": [
+      "Waterfall",
+      "Nature",
+      "Scenic",
+      "Narayanavanam"
+    ],
+    "bestTime": "Post-Monsoon",
+    "practicalInfo": {
+      "dressCode": "Casual",
+      "food": "None nearby",
+      "parking": "Roadside parking"
+    },
+    "travelEstimates": {
+      "narayanavanam": "5 mins",
       "tirupati": "45 mins"
     }
   },
@@ -2857,12 +2974,12 @@
   },
   {
     "id": "vakula-matha",
-    "name": "Vakula Matha Temple",
+    "name": "Sri Vakulamatha Temple",
     "category": "Core Temple",
     "placeType": "spiritual",
     "location": "Peruru",
-    "distanceKms": 8,
-    "durationMins": 60,
+    "distanceKms": 5.5,
+    "durationMins": 20,
     "budgetLevel": "budget",
     "entryFeeNum": 0,
     "interests": [
@@ -2875,13 +2992,16 @@
     "history": "Legend says Vakula Devi (an avatar of Yashoda) arranged the marriage of Lord Venkateswara to Goddess Padmavathi. Naivedyam is first offered here before Tirumala.",
     "timings": "6:00 AM - 8:00 PM",
     "entryFee": "Free",
-    "address": "Peruru Village, Tirupati",
+    "address": "Peruru Village, Tirupati, Andhra Pradesh 517507",
     "rating": 4.8,
     "reviewCount": 4200,
-    "image": "/assets/temples/vakula-matha.png",
+    "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTzUC73ZO36GqwYBoBjMxUFw0ANNUk-f5Ox3lAGc7dbtA&s=10",
+    "images": [
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTzUC73ZO36GqwYBoBjMxUFw0ANNUk-f5Ox3lAGc7dbtA&s=10"
+    ],
     "coordinates": {
-      "lat": 13.6069,
-      "lng": 79.3736
+      "lat": 13.599483,
+      "lng": 79.36914
     },
     "tags": [
       "Mother",
@@ -2904,7 +3024,8 @@
       "parking": "Available"
     },
     "travelEstimates": {
-      "padmavathi": "10 mins"
+      "padmavathi": "12 mins",
+      "srinivasa-mangapuram": "10 mins"
     }
   },
   {
@@ -2933,10 +3054,13 @@
     "address": "Tondavada, Chandragiri Mandal",
     "rating": 4.6,
     "reviewCount": 1800,
-    "image": "/assets/temples/agastheeshwara.png",
+    "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWl0To2-_-0rdgxYuP1cqAkaxRGYchKXNKs-RilwzZq9r5B7iw4L9VOsvLYYQs0eqxByShXgvmMiqJxFr1yo7TpLWPrO4-Nua3p_V5Vkt9Df0W7uMo1ywahvYlf7oAbbq4UjbaRnplNWZWAW=w408-h306-k-no",
+    "images": [
+      "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWl0To2-_-0rdgxYuP1cqAkaxRGYchKXNKs-RilwzZq9r5B7iw4L9VOsvLYYQs0eqxByShXgvmMiqJxFr1yo7TpLWPrO4-Nua3p_V5Vkt9Df0W7uMo1ywahvYlf7oAbbq4UjbaRnplNWZWAW=w408-h306-k-no"
+    ],
     "coordinates": {
-      "lat": 13.6425,
-      "lng": 79.3708
+      "lat": 13.5968472,
+      "lng": 79.3410868
     },
     "tags": [
       "Shiva",

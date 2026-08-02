@@ -1,16 +1,38 @@
 {
-  "waitTime": "10 hours",
-  "crowdLevel": "high",
+  "waitTime": "11 - 12 hours",
+  "bestTime": "",
+  "crowdLevel": "medium",
   "sevaStatus": "All sevas open",
-  "notice": "bharmmothsavam",
-  "lastUpdated": "2026-07-21T17:01:06.288Z",
+  "notice": "",
+  "lastUpdated": "2026-07-31T17:03:29.363Z",
   "darshanSpeed": "normal",
   "accommodationStatus": "available",
   "ladduAvailability": "available",
-  "weather": "Pleasant, 24°C",
-  "darshans": [],
+  "weather": "Auto (API)",
+  "darshans": [
+    {
+      "name": "Sarva Darshan (Free)",
+      "waitTime": "12-15 hours",
+      "peakHours": "Daily 10 AM - 6 PM"
+    },
+    {
+      "name": "Special Entry (₹300)",
+      "waitTime": "3-4 hours",
+      "peakHours": "Daily 9 AM - 3 PM"
+    },
+    {
+      "name": "Divya Darshan (Footpath)",
+      "waitTime": "8-10 hours",
+      "peakHours": "Daily 8 AM - 4 PM"
+    },
+    {
+      "name": "VIP / Srivani Break",
+      "waitTime": "1.5 hours",
+      "peakHours": "Daily 6 AM - 8 AM"
+    }
+  ],
   "ssdTokenStatus": "closed-for-day",
-  "ssdNextTokenTime": "4:00 AM",
+  "ssdNextTokenTime": "11:00 AM",
   "ssdTokenSlots": [
     {
       "slotTime": "5:00 AM - 7:00 AM",
@@ -44,7 +66,7 @@
     }
   ],
   "ssdNotice": "",
-  "ssdTimingsGuide": "Offline free SSD tokens are released daily starting at 3:00 AM / 4:00 AM. Batches are allocated hourly for that day's Darshan. Counters close as soon as the daily quota runs out (~15,000 - 20,000 tokens).",
+  "ssdTimingsGuide": "Offline free SSD tokens are released daily starting at 11:00 AM. Batches are allocated hourly for that day's Darshan. Counters close as soon as the daily quota runs out (~15,000 - 20,000 tokens).",
   "ssdCounters": [
     {
       "name": "Vishnu Nivasam Counter",
@@ -58,6 +80,5 @@
       "name": "Bhudevi Complex Counter",
       "description": "Located near Alipiri Footpath Link Road (Ideal for pedestrian pilgrims)"
     }
-  ],
-  "error": "Failed"
+  ]
 }

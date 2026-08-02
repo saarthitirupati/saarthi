@@ -72,6 +72,7 @@ export default function ItineraryPage() {
   
   // Calculate dynamic bounding box based on plan stops
   let bbox = `${centerLng-0.15},${centerLat-0.15},${centerLng+0.15},${centerLat+0.15}`;
+  let mapSrc = '';
   if (plan && plan.stops.length > 0) {
     const stopCoords = plan.stops
       .map(stop => (places.length > 0 ? places : PLACES).find(p => p.id === stop.placeId)?.coordinates)
@@ -85,9 +86,12 @@ export default function ItineraryPage() {
       const minLng = Math.min(...lngs);
       const maxLng = Math.max(...lngs);
       
+      const avgLat = (minLat + maxLat) / 2;
+      const avgLng = (minLng + maxLng) / 2;
       const latPadding = Math.max(0.04, (maxLat - minLat) * 0.4);
       const lngPadding = Math.max(0.04, (maxLng - minLng) * 0.4);
       bbox = `${minLng - lngPadding},${minLat - latPadding},${maxLng + lngPadding},${maxLat + latPadding}`;
+      mapSrc = `https://maps.google.com/maps?q=${avgLat},${avgLng}&hl=en&z=13&output=embed`;
     }
   }
 
@@ -96,7 +100,8 @@ export default function ItineraryPage() {
       <div className={styles.mapHeader}>
         <iframe 
           className={styles.mapIframe}
-          src={`https://www.openstreetmap.org/export/embed.html?bbox=${bbox}&layer=mapnik`}
+          title="Itinerary Route Map"
+          src={mapSrc || `https://maps.google.com/maps?q=13.6288,79.4192&hl=en&z=13&output=embed`}
         />
         <button onClick={() => router.back()} className={styles.backBtn}>
           <ChevronLeft size={24} />

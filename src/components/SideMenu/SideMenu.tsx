@@ -14,9 +14,12 @@ export default function SideMenu({ isOpen, onClose }: SideMenuProps) {
   const menuItems = [
     { name: 'Home', icon: Home, href: '/' },
     { name: 'Explore Places', icon: Compass, href: '/explore' },
-    { name: 'Live Updates', icon: Award, href: '/live' },
-    { name: 'Festivals', icon: Calendar, href: '/festivals' },
-    { name: 'Alerts', icon: Info, href: '/alerts' },
+    { name: 'Trip Estimator & Fares', icon: Compass, href: '/trip-estimator' },
+    { name: 'Smart Trip Planner', icon: Compass, href: '/planner' },
+    { name: 'Live Tirumala Updates', icon: Award, href: '/live' },
+    { name: 'Festivals & Events', icon: Calendar, href: '/festivals' },
+    { name: 'Live Alerts & Advisories', icon: Info, href: '/alerts' },
+    { name: 'Admin Dashboard', icon: Award, href: '/saarthiadmin' },
   ];
 
   return (
@@ -81,3 +84,5 @@ export default function SideMenu({ isOpen, onClose }: SideMenuProps) {
     </AnimatePresence>
   );
 }
+
+

@@ -468,7 +468,7 @@ export default function OnboardingPage() {
                   margin: '52px 0 0 0'
                 }}
               >
-                Om Namo Bhagavathe Namah
+                Om Sri Venkateshaya Namaha
               </motion.p>
             </motion.div>
           )}

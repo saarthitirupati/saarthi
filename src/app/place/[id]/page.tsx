@@ -10,14 +10,101 @@ import { useTrip } from '@/components/TripContext';
 import MantraPlayer from '@/components/MantraPlayer/MantraPlayer';
 import { useSpeechSynthesis } from '@/utils/useSpeechSynthesis';
 import { useRealtimePlaces } from '@/lib/useRealtimePlaces';
-import { calculateDrivingDistance } from '@/utils/location';
+import { calculateDrivingDistance, getOsrmRoadRoute } from '@/utils/location';
+import { findNearestPlaceCandidates } from '@/lib/location';
+
+function parseBestSlot(str: string): { title: string; subtitle: string } {
+  if (!str) return { title: 'Anytime', subtitle: 'Recommended time' };
+  
+  if (str.includes('Morning') && str.includes('Evening')) {
+    const times = str.match(/\((.*?)\)/g)?.map(t => t.replace(/[()]/g, ''));
+    if (times && times.length >= 2) {
+      return {
+        title: 'Morning & Evening',
+        subtitle: `${times[0]} • ${times[1]}`
+      };
+    }
+    return { title: 'Morning & Evening', subtitle: 'Best visiting hours' };
+  }
+  
+  if (str.includes('Morning') && str.includes('Afternoon')) {
+    const times = str.match(/\((.*?)\)/g)?.map(t => t.replace(/[()]/g, ''));
+    if (times && times.length >= 2) {
+      return {
+        title: 'Morning & Afternoon',
+        subtitle: `${times[0]} • ${times[1]}`
+      };
+    }
+    return { title: 'Morning & Afternoon', subtitle: 'Best visiting hours' };
+  }
+
+  const singleMatch = str.match(/(.*?)\s*\((.*?)\)/);
+  if (singleMatch) {
+    return {
+      title: singleMatch[1].trim(),
+      subtitle: singleMatch[2].trim()
+    };
+  }
+
+  return { title: str, subtitle: 'Recommended time' };
+}
 
 export default function PlaceDetails({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params);
   
   const { places, loading } = useRealtimePlaces(PLACES);
+  const [dbFetchedPlace, setDbFetchedPlace] = useState<Place | null>(null);
 
-  const place = (places.length > 0 ? places : PLACES).find(t => t.id === id);
+  const targetId = decodeURIComponent(id || '').trim().toLowerCase();
+  const allPlaces = places.length > 0 ? places : PLACES;
+
+  const findPlace = (list: Place[]) => {
+    return list.find(t => {
+      const pId = (t.id || '').toLowerCase();
+      const pSlug = ((t as any).slug || '').toLowerCase();
+      const pDbId = ((t as any).db_id || '').toLowerCase();
+      const pUuid = ((t as any).uuid || '').toLowerCase();
+      const pName = (t.name || '').toLowerCase();
+      return pId === targetId || pSlug === targetId || pDbId === targetId || pUuid === targetId || pName === targetId;
+    });
+  };
+
+  const FORBIDDEN_SLUGS = new Set(['tumburu-theertham', 'mamandur-village', 'tuda-park', 'museum-alipiri', 'veda-pathasala', 'tarigonda-vengamamba-annaprasadam', 'karvetinagaram-temple']);
+  const isRemoved = FORBIDDEN_SLUGS.has(targetId);
+
+  const initialPlace = isRemoved ? undefined : (
+    findPlace(allPlaces) || 
+    findPlace(PLACES)
+  );
+
+  const place = initialPlace || dbFetchedPlace || undefined;
+
+  useEffect(() => {
+    if (!initialPlace && targetId && !isRemoved) {
+      import('@/lib/supabase').then(({ supabase }) => {
+        supabase
+          .from('places')
+          .select('*')
+          .or(`id.eq.${targetId},slug.eq.${targetId}`)
+          .single()
+          .then(({ data, error }) => {
+            if (data && !error && data.status !== 'deleted' && !data.is_deleted) {
+              const matchedStatic = PLACES.find(p => p.id === data.slug || p.id === data.id);
+              const merged = {
+                ...(matchedStatic || {}),
+                ...data,
+                id: matchedStatic?.id || data.slug || data.id,
+                slug: data.slug || matchedStatic?.id || data.id,
+                image: matchedStatic?.image?.startsWith('http')
+                  ? matchedStatic.image
+                  : (data.hero_image || matchedStatic?.image || data.image)
+              } as Place;
+              setDbFetchedPlace(merged);
+            }
+          });
+      }).catch(() => {});
+    }
+  }, [initialPlace, targetId, isRemoved]);
 
   const formatTo12Hour = (timeStr: string) => {
     try {
@@ -55,7 +142,6 @@ export default function PlaceDetails({ params }: { params: Promise<{ id: string 
 
   const [copied, setCopied] = useState(false);
   const [copiedLink, setCopiedLink] = useState(false);
-  const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
   const [isRoundTrip, setIsRoundTrip] = useState(false);
   const [vehicleType, setVehicleType] = useState<'car' | 'bus' | 'bike' | 'cab' | 'suv'>('car');
   const [passengers, setPassengers] = useState<number>(1);
@@ -73,6 +159,7 @@ export default function PlaceDetails({ params }: { params: Promise<{ id: string 
   const [feedbackRating, setFeedbackRating] = useState<'Helpful' | 'Needs Work' | null>(null);
   const [feedbackComment, setFeedbackComment] = useState('');
   const [feedbackSubmitted, setFeedbackSubmitted] = useState(false);
+  const [nearbyPlacesList, setNearbyPlacesList] = useState<{ place: Place; dist: number; reason: string }[]>([]);
 
   useEffect(() => {
     setIsOffline(!window.navigator.onLine);
@@ -141,6 +228,50 @@ export default function PlaceDetails({ params }: { params: Promise<{ id: string 
     }
   }, [vehicleType]);
 
+  useEffect(() => {
+    if (!place?.coordinates) return;
+    const currentHour = new Date().getHours();
+    const allPlacesData = places.length > 0 ? places : PLACES;
+    const relatedIds = (place.relatedPlaces || []) as string[];
+
+    // Step 1: Spatial candidate pre-filter (Euclidean) — top 10 spatially closest
+    const candidates = findNearestPlaceCandidates(
+      { lat: place.coordinates.lat, lng: place.coordinates.lng },
+      allPlacesData.filter(p => p.id !== place.id && !relatedIds.includes(p.id)),
+      40000
+    ).slice(0, 10);
+
+    // Step 2: Heuristic distances for instant render
+    const isSelfTirumala = place.location?.toLowerCase().includes('tirumala') || place.location?.toLowerCase().includes('narayanagiri');
+    const initialList = candidates.map(({ place: p }) => {
+      if (!p.coordinates) return { place: p, dist: 999, reason: '' };
+      const isTargetTirumala = p.location?.toLowerCase().includes('tirumala') || p.location?.toLowerCase().includes('narayanagiri');
+      const dist = calculateDrivingDistance(place.coordinates!.lat, place.coordinates!.lng, p.coordinates.lat, p.coordinates.lng, isSelfTirumala !== isTargetTirumala);
+      let reason = '';
+      if (currentHour >= 16 && (p.bestTime?.toLowerCase().includes('evening') || p.bestTime?.toLowerCase().includes('night'))) reason = 'Great for evening';
+      else if (place.category === p.category) reason = 'Similar vibe';
+      else reason = dist < 1.0 ? 'Walking distance' : dist < 3 ? 'Short drive' : 'Worth exploring';
+      return { place: p, dist, reason };
+    }).sort((a, b) => a.dist - b.dist).slice(0, 6);
+    setNearbyPlacesList(initialList);
+
+    // Step 3: Async OSRM enrichment — real road distances
+    (async () => {
+      const enriched = await Promise.all(
+        initialList.map(async (item) => {
+          if (!item.place.coordinates) return item;
+          const { distanceKm } = await getOsrmRoadRoute(
+            place.coordinates!.lat, place.coordinates!.lng,
+            item.place.coordinates.lat, item.place.coordinates.lng
+          );
+          return { ...item, dist: distanceKm };
+        })
+      );
+      setNearbyPlacesList(enriched.sort((a, b) => a.dist - b.dist));
+    })();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [place?.id, places.length]);
+
   if (loading) return <div className={styles.loadingContainer}>Loading details...</div>;
   if (!place) {
     return (
@@ -170,65 +301,6 @@ export default function PlaceDetails({ params }: { params: Promise<{ id: string 
     ? calculateDrivingDistance(effectiveLocation.lat, effectiveLocation.lng, place.coordinates.lat, place.coordinates.lng, isTirumalaSpot)
     : place.distanceKms;
 
-  const getNearbyPlaces = () => {
-    if (!place.coordinates) return [];
-    const relatedIds = place.relatedPlaces || [];
-    const currentHour = new Date().getHours();
-    
-    return (places.length > 0 ? places : PLACES)
-      .filter(p => p.id !== place.id && !relatedIds.includes(p.id))
-      .map(p => {
-        if (!p.coordinates) return { place: p, dist: 999, score: 999, reason: '' };
-        
-        const isSelfTirumala = place.location?.toLowerCase().includes('tirumala') || place.location?.toLowerCase().includes('narayanagiri');
-        const isTargetTirumala = p.location?.toLowerCase().includes('tirumala') || p.location?.toLowerCase().includes('narayanagiri');
-        
-        let dist = calculateDrivingDistance(
-          place.coordinates.lat, 
-          place.coordinates.lng, 
-          p.coordinates.lat, 
-          p.coordinates.lng, 
-          isSelfTirumala !== isTargetTirumala
-        );
-        
-        let score = dist;
-        let reason = '';
-        
-        // Time Awareness
-        if (currentHour >= 16) {
-          if (p.bestTime?.toLowerCase().includes('morning') && !p.bestTime?.toLowerCase().includes('evening')) {
-             score += 5; // Penalty
-          }
-          if (p.bestTime?.toLowerCase().includes('evening') || p.bestTime?.toLowerCase().includes('night')) {
-             score -= 2;
-             reason = 'Great for evening';
-          }
-        }
-        
-        // Category Affinity
-        if (place.category === p.category) {
-          score -= 3;
-          if (!reason) reason = 'Similar vibe';
-        }
-        
-        // Walkability
-        if (dist < 1.0) {
-           score -= 1;
-           if (!reason) reason = 'Walking distance';
-        }
-
-        // Default fallback
-        if (!reason) {
-          reason = dist < 3 ? 'Short drive' : 'Worth exploring';
-        }
-        
-        return { place: p, dist, score, reason };
-      })
-      .sort((a, b) => a.score - b.score)
-      .slice(0, 6);
-  };
-
-  const nearbyPlacesList = getNearbyPlaces();
 
   const getCalculatorResults = () => {
     const isTirumala = (place.location || '').toLowerCase().includes('tirumala') || 
@@ -418,7 +490,6 @@ export default function PlaceDetails({ params }: { params: Promise<{ id: string 
                 : `${drivingDistance.toFixed(1)} km from Tirupati Center`}
             </span>
           </div>
-          <p className={styles.heroReason}>{guide.whyVisit}</p>
         </div>
       </section>
 
@@ -607,9 +678,29 @@ export default function PlaceDetails({ params }: { params: Promise<{ id: string 
 
         {/* ─── 4. TRAVEL & TRANSIT ─── */}
         <section className={styles.section} id="travel">
-          <h2 className={styles.sectionTitle}>
-            <Car size={20} style={{ display: 'inline', marginRight: 6, verticalAlign: 'middle' }} /> Best Way to Reach
-          </h2>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '10px', marginBottom: '14px' }}>
+            <h2 className={styles.sectionTitle} style={{ margin: 0 }}>
+              <Car size={20} style={{ display: 'inline', marginRight: 6, verticalAlign: 'middle' }} /> Best Way to Reach
+            </h2>
+            <Link
+              href={`/trip-estimator?destId=${place.id}`}
+              style={{
+                background: '#E9801D',
+                color: '#FFFFFF',
+                padding: '6px 14px',
+                borderRadius: '20px',
+                fontSize: '12px',
+                fontWeight: 800,
+                textDecoration: 'none',
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '6px',
+                boxShadow: '0 4px 12px rgba(233, 128, 29, 0.2)'
+              }}
+            >
+              <Sparkles size={14} /> Full Trip Estimator &amp; Fares →
+            </Link>
+          </div>
           
           <div className={styles.routeLiveHeader}>
             <div className={styles.liveIndicatorContainer}>
@@ -825,7 +916,12 @@ export default function PlaceDetails({ params }: { params: Promise<{ id: string 
         {/* ─── RECOMMENDED JOURNEY ─── */}
         {nearbyPlacesList.length > 0 && (
           <section className={styles.section} id="nearby-attractions">
-            <h2 className={styles.sectionTitle}>Recommended Journey</h2>
+            <div style={{ marginBottom: '12px' }}>
+              <h2 className={styles.sectionTitle} style={{ margin: 0 }}>Recommended Journey</h2>
+              <p style={{ fontSize: '11.5px', color: '#64748B', margin: '3px 0 0 0', fontWeight: 500 }}>
+                Next stops near {guide.name} (distance from this location)
+              </p>
+            </div>
             <div style={{ display: 'flex', overflowX: 'auto', gap: '12px', paddingBottom: '8px', scrollbarWidth: 'none', msOverflowStyle: 'none' }} className={styles.hideScrollbar}>
               {nearbyPlacesList.map(({ place: p, dist, reason }) => (
                 <Link href={`/place/${p.id}`} key={p.id} style={{ textDecoration: 'none' }}>
@@ -874,19 +970,32 @@ export default function PlaceDetails({ params }: { params: Promise<{ id: string 
                         padding: '3px 6px',
                         borderRadius: '8px',
                         color: '#0F5132',
-                        fontSize: '10px',
+                        fontSize: '9.5px',
                         fontWeight: 800,
                         display: 'flex',
                         alignItems: 'center',
                         gap: '2px',
                         boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
                       }}>
-                        <MapPin size={10} /> {dist.toFixed(1)} km
+                        <MapPin size={10} /> {dist.toFixed(1)} km from here
                       </div>
                     </div>
                     <div style={{ padding: '10px' }}>
-                      <h4 style={{ fontSize: '13px', fontWeight: 800, color: '#0F172A', margin: '0 0 4px 0', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-                        {p.name}
+                      <h4 style={{ 
+                        fontSize: '12.5px', 
+                        fontWeight: 800, 
+                        color: '#0F172A', 
+                        margin: '0 0 4px 0', 
+                        display: '-webkit-box',
+                        WebkitLineClamp: 2,
+                        WebkitBoxOrient: 'vertical',
+                        overflow: 'hidden',
+                        lineHeight: '1.35',
+                        minHeight: '2.7em'
+                      }}>
+                        {p.name.startsWith('Sri Venkateswara ') && p.name !== 'Sri Venkateswara Swamy Temple'
+                          ? p.name.replace('Sri Venkateswara ', 'S.V. ')
+                          : p.name}
                       </h4>
                       <div style={{ display: 'flex', alignItems: 'center', gap: '4px', fontSize: '11.5px', color: '#64748B' }}>
                         <Star size={11} fill="#F59E0B" color="#F59E0B" />
@@ -967,11 +1076,11 @@ export default function PlaceDetails({ params }: { params: Promise<{ id: string 
                 <OfflineVectorMap name={place.name} lat={place.coordinates.lat} lng={place.coordinates.lng} />
               ) : (
                 <iframe
-                  title="OpenStreetMap Location"
+                  title="Google Maps Location"
                   width="100%"
                   height="calc(100% + 50px)"
                   style={{ border: 0, marginBottom: '-50px' }}
-                  src={`https://www.openstreetmap.org/export/embed.html?bbox=${place.coordinates.lng - 0.015},${place.coordinates.lat - 0.012},${place.coordinates.lng + 0.015},${place.coordinates.lat + 0.012}&layer=mapnik&marker=${place.coordinates.lat},${place.coordinates.lng}`}
+                  src={`https://maps.google.com/maps?q=${place.coordinates.lat},${place.coordinates.lng}&hl=en&z=16&output=embed`}
                 />
               )}
             </div>
@@ -979,15 +1088,15 @@ export default function PlaceDetails({ params }: { params: Promise<{ id: string 
             {!(isOffline || showOfflineMapOnly) && (
               <div className={styles.mapCredits}>
                 <span>
-                  Map data © <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener noreferrer">OpenStreetMap</a> contributors
+                  Map pin location: <strong>{place.coordinates.lat}, {place.coordinates.lng}</strong>
                 </span>
                 <a 
-                  href={`https://www.openstreetmap.org/?mlat=${place.coordinates.lat}&mlon=${place.coordinates.lng}#map=15/${place.coordinates.lat}/${place.coordinates.lng}`}
+                  href={`https://www.google.com/maps/search/?api=1&query=${place.coordinates.lat},${place.coordinates.lng}`}
                   target="_blank" 
                   rel="noopener noreferrer"
                   className={styles.mapLargerLink}
                 >
-                  View Larger Map ↗
+                  Open in Google Maps ↗
                 </a>
               </div>
             )}
@@ -1219,8 +1328,15 @@ export default function PlaceDetails({ params }: { params: Promise<{ id: string 
             <div className={styles.timingCard}>
               <Star size={24} className={styles.timingCardIcon} />
               <h3>Best Slot</h3>
-              <p className={styles.timingValue}>{guide.bestTime}</p>
-              <span className={styles.timingSub}>Recommended time</span>
+              {(() => {
+                const slot = parseBestSlot(guide.bestTime);
+                return (
+                  <>
+                    <p className={styles.timingValue}>{slot.title}</p>
+                    <span className={styles.timingSub}>{slot.subtitle}</span>
+                  </>
+                );
+              })()}
             </div>
             <div className={styles.timingCard}>
               <Clock size={24} className={styles.timingCardIcon} />
@@ -1527,36 +1643,8 @@ export default function PlaceDetails({ params }: { params: Promise<{ id: string 
           </section>
         )}
 
-        {/* ─── 8. GALLERY ─── */}
-        {guide.images && guide.images.length > 0 && (
-          <section className={styles.section} id="gallery">
-            <h2 className={styles.sectionTitle}>
-              <Camera size={20} style={{ marginRight: 8, verticalAlign: 'middle' }} />
-              Photo Gallery{' '}
-              <span className={styles.galleryCount}>{guide.images.length} photos</span>
-            </h2>
-            <div className={styles.photoGrid}>
-              {guide.images.map((imgUrl, idx) => (
-                <motion.div
-                  key={idx}
-                  className={`${styles.gridItem} ${idx === 0 ? styles.gridItemLarge : ''}`}
-                  style={{ background: `url(${imgUrl}) center/cover no-repeat` }}
-                  title={`${guide.name} view ${idx + 1}`}
-                  onClick={() => setLightboxIndex(idx)}
-                  whileTap={{ scale: 0.97 }}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: idx * 0.08, duration: 0.4 }}
-                >
-                  <div className={styles.gridOverlay}>
-                    <Camera size={16} />
-                    <span>{idx + 1}/{guide.images.length}</span>
-                  </div>
-                </motion.div>
-              ))}
-            </div>
-          </section>
-        )}
+
+
 
 
         {/* ─── 10. FEEDBACK ─── */}
@@ -1666,65 +1754,7 @@ export default function PlaceDetails({ params }: { params: Promise<{ id: string 
         </section>
       </div>
 
-      {/* Fullscreen Photo Lightbox */}
-      <AnimatePresence>
-        {lightboxIndex !== null && guide.images && (
-          <motion.div
-            className={styles.lightbox}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.25 }}
-            onClick={() => setLightboxIndex(null)}
-          >
-            <motion.img
-              key={lightboxIndex}
-              src={guide.images[lightboxIndex]}
-              alt={`${guide.name} photo ${lightboxIndex + 1}`}
-              className={styles.lightboxImage}
-              initial={{ scale: 0.85, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.85, opacity: 0 }}
-              transition={{ duration: 0.3, ease: 'easeOut' }}
-              onClick={(e) => e.stopPropagation()}
-            />
 
-            <button
-              className={styles.lightboxClose}
-              onClick={() => setLightboxIndex(null)}
-            >
-              <X size={24} />
-            </button>
-
-            <div className={styles.lightboxCounter}>
-              {lightboxIndex + 1} / {guide.images.length}
-            </div>
-
-            {guide.images.length > 1 && (
-              <>
-                <button
-                  className={`${styles.lightboxNav} ${styles.lightboxPrev}`}
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    setLightboxIndex(lightboxIndex === 0 ? guide.images!.length - 1 : lightboxIndex - 1);
-                  }}
-                >
-                  <ChevronLeft size={28} />
-                </button>
-                <button
-                  className={`${styles.lightboxNav} ${styles.lightboxNext}`}
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    setLightboxIndex(lightboxIndex === guide.images!.length - 1 ? 0 : lightboxIndex + 1);
-                  }}
-                >
-                  <ChevronRight size={28} />
-                </button>
-              </>
-            )}
-          </motion.div>
-        )}
-      </AnimatePresence>
 
       {/* Sticky footer action bar */}
       <div className={styles.stickyFooter}>
@@ -1738,7 +1768,7 @@ export default function PlaceDetails({ params }: { params: Promise<{ id: string 
           </button>
           <a 
             href={place.coordinates 
-              ? `https://www.google.com/maps/dir/?api=1&destination=${place.coordinates.lat},${place.coordinates.lng}${userLocation ? `&origin=${userLocation.lat},${userLocation.lng}` : ''}`
+              ? `https://www.google.com/maps/dir/?api=1&destination=${place.coordinates.lat},${place.coordinates.lng}`
               : `https://www.google.com/maps/dir/?api=1&destination=13.6288,79.4192`
             }
             target="_blank"

@@ -30,7 +30,7 @@ export default function JourneyPage() {
           <div className="bg-white p-4 rounded-2xl border border-gray-200 shadow-sm">
             <h3 className="font-bold text-gray-800 text-sm mb-1 text-orange-600">Weekend Challenge</h3>
             <h4 className="font-bold text-gray-900 text-lg mb-2">Visit 3 Waterfalls</h4>
-            <div className="h-32 rounded-xl bg-gray-100 mb-4 bg-cover bg-center" style={{ backgroundImage: "url('/assets/ai/waterfall.png')" }}></div>
+            <div className="h-32 rounded-xl bg-gray-100 mb-4 bg-cover bg-center" style={{ backgroundImage: "url('https://images.unsplash.com/photo-1433086966358-54859d0ed716?auto=format&fit=crop&q=80&w=800')" }}></div>
             <div className="flex justify-between text-xs text-gray-500 font-medium mb-1">
               <span>0 / 3 Completed</span>
             </div>

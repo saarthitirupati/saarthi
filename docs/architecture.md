@@ -1,9 +1,31 @@
-# Architecture
+# Saarthi Architecture
 
-Saarthi is designed as a Next.js 16 application using the App Router.
+Saarthi leverages a decoupled "Two Brains" approach: Next.js handles the user interface and server-side rendering, while FastAPI manages business logic, data validation, and heavy database operations.
 
-## Principles
+## High-Level Flow
+```text
+Browser
+  ↓
+Next.js (Frontend / App Router)
+  ↓
+Next.js API Routes (Proxy)
+  ↓
+FastAPI (Backend Business Logic)
+  ↓
+Supabase (PostgreSQL + Realtime)
+```
 
-1.  **Server Components First:** Default to React Server Components (RSC) to reduce client bundle size. Use Client Components (`"use client"`) only when interactivity (hooks, state, event listeners) is required.
-2.  **API Routes:** Backend endpoints are located in `src/app/api/` and utilize Next.js Route Handlers.
-3.  **Data Fetching:** Prefer fetching data directly in Server Components where possible, falling back to client-side fetching with SWR/React Query or standard fetch only when necessary.
+## Why this Architecture?
+1. **Centralized Logic**: Business rules (e.g. creating a place, validating alerts) live entirely in FastAPI.
+2. **Decoupled Frontend**: If we migrate away from Supabase in the future, the frontend components (which only talk to Next.js API or FastAPI directly) won't need to change.
+3. **Security**: Sensitive operations are processed on the backend where API keys and secrets are securely managed.
+4. **Performance**: FastAPI provides high concurrency via ASGI, while Next.js handles layout caching and asset optimization.
+
+## Data Flow Layering
+To maintain maintainability, we strictly separate concerns into the following layers:
+
+1. **Components (`src/components/`)**: Pure UI. They receive props and render React elements.
+2. **Hooks (`src/hooks/`)**: Business logic and state management. They call services.
+3. **Services (`src/services/`)**: API communication layer (Axios/fetch wrappers).
+4. **Next.js API / Proxy**: Routes requests to FastAPI.
+5. **FastAPI (`backend/app/routers/`)**: Backend endpoints.

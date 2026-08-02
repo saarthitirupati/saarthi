@@ -129,23 +129,27 @@ export default function LivePage() {
           </div>
           
           <div className={styles.ssdInfo}>
-            <p>
-              <strong>SSD (Slotted Sarva Darshan)</strong> is a free time-slotted pass issued by the TTD to reduce waiting times for free darshan at the Tirumala Temple from 12–24+ hours down to 3–6 hours.
-            </p>
-            
-            <h3>How to Get Your Token</h3>
-            <ul>
-              <li><strong>Where:</strong> Offline counters in Tirupati at Srinivasam Complex, Vishnu Nivasam (railway station), and Bhudevi Complex (Alipiri tollgate).</li>
-              <li><strong>When:</strong> Counters typically open around midnight (3:00 AM / 4:00 AM) for same-day darshan. Queues form very early due to high demand.</li>
-              <li><strong>Requirements:</strong> All pilgrims must be physically present and carry their original Aadhaar cards.</li>
-            </ul>
-
-            <h3>Key Rules</h3>
-            <ul className={styles.rulesList}>
-              <li>Children under 12 do not require a token (free entry with parents).</li>
-              <li>Tokens are non-transferable.</li>
-              <li>Every token includes one free laddu prasadam.</li>
-            </ul>
+            {status?.ssdTimingsGuide ? (
+              <p>{status.ssdTimingsGuide}</p>
+            ) : (
+              <>
+                <p>
+                  <strong>SSD (Slotted Sarva Darshan)</strong> is a free time-slotted pass issued by the TTD to reduce waiting times for free darshan at the Tirumala Temple from 12–24+ hours down to 3–6 hours.
+                </p>
+                <h3>How to Get Your Token</h3>
+                <ul>
+                  <li><strong>Where:</strong> Offline counters in Tirupati at Srinivasam Complex, Vishnu Nivasam (railway station), and Bhudevi Complex (Alipiri tollgate).</li>
+                  <li><strong>When:</strong> Counters typically open around midnight (3:00 AM / 4:00 AM) for same-day darshan. Queues form very early due to high demand.</li>
+                  <li><strong>Requirements:</strong> All pilgrims must be physically present and carry their original Aadhaar cards.</li>
+                </ul>
+                <h3>Key Rules</h3>
+                <ul className={styles.rulesList}>
+                  <li>Children under 12 do not require a token (free entry with parents).</li>
+                  <li>Tokens are non-transferable.</li>
+                  <li>Every token includes one free laddu prasadam.</li>
+                </ul>
+              </>
+            )}
           </div>
         </section>
 

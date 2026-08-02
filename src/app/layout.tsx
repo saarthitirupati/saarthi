@@ -25,7 +25,12 @@ export const metadata: Metadata = {
   description: "Know the place before you go. Stories, timings, and travel guides in one place. Tirupati's trusted place guide.",
   manifest: "/manifest.json",
   icons: {
-    icon: "/favicon.ico",
+    icon: [
+      { url: "/icon.svg", type: "image/svg+xml" },
+      { url: "/favicon.ico" }
+    ],
+    apple: "/icon.svg",
+    shortcut: "/icon.svg"
   },
 };
 

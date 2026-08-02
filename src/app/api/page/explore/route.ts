@@ -1,161 +1,75 @@
 import { NextResponse } from 'next/server';
-import { supabase } from '@/lib/supabase';
+import { fetchLivePlaces } from '@/lib/placesSync';
+import { collectRawSignals } from '@/services/decision/signals.service';
+import { buildDerivedContext } from '@/services/decision/context.builder';
+import { processDecisionEngine } from '@/services/decision/decision.engine';
+import { buildUISections } from '@/services/decision/section.builder';
+import { buildApiResponse } from '@/services/decision/response.builder';
 
-export async function GET() {
+export async function GET(request: Request) {
   try {
-    const { data: flagsData } = await supabase.from('feature_flags').select('name, isEnabled');
-    const featureFlags = flagsData?.reduce((acc: any, flag) => {
-      const key = flag.name.toLowerCase().replace(/ /g, '_');
-      acc[key] = flag.isEnabled;
-      return acc;
-    }, {}) || {};
+    const { searchParams } = new URL(request.url);
+    const lat = searchParams.get('lat') || undefined;
+    const lng = searchParams.get('lng') || undefined;
+    const journeyStage = searchParams.get('journey_stage') || undefined;
 
-    const currentContext = {
-      city: "Tirupati",
-      weather: "Sunny",
-      time: "Morning"
-    };
+    // 1. Collect Signals (Weather, Crowd, GPS, Time, Day)
+    const signals = await collectRawSignals({ lat, lng, journeyStage });
 
-    const sections = [];
+    // 2. Build Context
+    const context = buildDerivedContext(signals);
 
-    // 1. Context Strip
-    sections.push({
-      id: 'explore_context_strip',
-      type: 'context_strip',
-      priority: 1,
-      items: [
-        { id: 'loc', icon: 'pin', text: 'Near Railway Station' },
-        { id: 'weather', icon: 'sun', text: '29°C' },
-        { id: 'time', icon: 'clock', text: 'Morning' }
+    // 3. Fetch Live Places
+    const livePlaces = await fetchLivePlaces();
+
+    // 4. Process MinMax Decision Engine Scoring
+    const scoredPlaces = processDecisionEngine(livePlaces, context);
+
+    // 5. Build UI Sections
+    const decisionSections = buildUISections(scoredPlaces);
+
+    // 6. Response
+    const responseData = buildApiResponse(context, decisionSections);
+
+    return NextResponse.json({
+      ...responseData,
+      sections: [
+        {
+          id: 'explore_search',
+          type: 'search_bar',
+          priority: 1,
+          placeholder: 'Search temples, sacred places, waterfalls...'
+        },
+        {
+          id: 'explore_categories',
+          type: 'category_chips',
+          priority: 2,
+          items: [
+            { id: 'all', name: 'All' },
+            { id: 'temple', name: 'Temples' },
+            { id: 'nature', name: 'Nature & Parks' },
+            { id: 'heritage', name: 'Heritage' },
+            { id: 'viewpoint', name: 'Viewpoints' }
+          ]
+        },
+        {
+          id: 'explore_situations',
+          type: 'situational_chips',
+          priority: 3,
+          items: [
+            { id: 'time-2h', name: 'I have only 2 hours', icon: 'clock' },
+            { id: 'family', name: 'I am with family', icon: 'users' },
+            { id: 'peaceful', name: 'I want peaceful places', icon: 'leaf' },
+            { id: 'free', name: 'Free places', icon: 'wallet' }
+          ]
+        },
+        ...decisionSections
       ]
     });
-
-    // 2. Search Section
-    sections.push({
-      id: 'explore_search',
-      type: 'search_bar',
-      priority: 2,
-      placeholder: 'Search places, aliases...',
-      items: []
-    });
-
-    // 3. Decision Cards
-    sections.push({
-      id: 'explore_decision_cards',
-      type: 'decision_cards',
-      title: 'What are you looking for?',
-      priority: 3,
-      layout: 'horizontal_cards',
-      items: [
-        { id: 'time-2h', name: 'I have only 2 hours', icon: 'clock' },
-        { id: 'family', name: 'I am with family', icon: 'users' },
-        { id: 'peaceful', name: 'I want peaceful places', icon: 'leaf' },
-        { id: 'free', name: 'Free places', icon: 'wallet' }
-      ]
-    });
-
-    // 4. Best Right Now (Mocked recommendation)
-    const { data: bestPlaces } = await supabase
-      .from('places')
-      .select('id, name, slug, hero_image, images, verification_status')
-      .eq('isActive', true)
-      .limit(1);
-
-    sections.push({
-      id: 'explore_best_right_now',
-      type: 'best_right_now',
-      title: 'Best Right Now',
-      priority: 4,
-      layout: 'hero_card',
-      items: bestPlaces?.map(place => ({
-        id: place.id,
-        slug: place.slug,
-        name: place.name,
-        heroImage: place.hero_image || (place.images && place.images[0]) || '',
-        distance: 1.4,
-        travelTime: 8,
-        verified: place.verification_status || 'Yesterday',
-        reasons: ['Pleasant weather', 'Low crowd'],
-        confidence: 94
-      })) || []
-    });
-
-    // 5. Choose Your Experience
-    sections.push({
-      id: 'explore_experiences',
-      type: 'experiences',
-      title: 'Choose Your Experience',
-      priority: 5,
-      layout: 'grid_card',
-      items: [
-        { id: 'temples', name: 'Temples', icon: 'landmark' },
-        { id: 'nature', name: 'Nature', icon: 'leaf' },
-        { id: 'heritage', name: 'Heritage', icon: 'book' },
-        { id: 'waterfalls', name: 'Waterfalls', icon: 'waves' }
-      ]
-    });
-
-    // 6. Quick To Reach
-    const { data: quickPlaces } = await supabase
-      .from('places')
-      .select('id, name, slug, hero_image, images, verification_status')
-      .eq('isActive', true)
-      .limit(3);
-
-    sections.push({
-      id: 'explore_quick_to_reach',
-      type: 'quick_to_reach',
-      title: 'Quick To Reach',
-      subtitle: 'Sorted by distance',
-      priority: 6,
-      layout: 'horizontal_list',
-      items: quickPlaces?.map(place => ({
-        id: place.id,
-        slug: place.slug,
-        name: place.name,
-        heroImage: place.hero_image || (place.images && place.images[0]) || '',
-        distance: 2.1,
-        travelTime: 12
-      })) || []
-    });
-
-    // 7. Hidden Gems
-    const { data: hiddenPlaces } = await supabase
-      .from('places')
-      .select('id, name, slug, hero_image, images, verification_status')
-      .eq('isActive', true)
-      .limit(2);
-
-    sections.push({
-      id: 'explore_hidden_gems',
-      type: 'hidden_gems',
-      title: 'Hidden Gems',
-      priority: 7,
-      layout: 'vertical_list',
-      items: hiddenPlaces?.map(place => ({
-        id: place.id,
-        slug: place.slug,
-        name: place.name,
-        heroImage: place.hero_image || (place.images && place.images[0]) || '',
-        distance: 8.5,
-        reasons: ['Curated by locals']
-      })) || []
-    });
-
-    const response = {
-      version: "1.0",
-      generatedAt: new Date().toISOString(),
-      cache: {
-        ttl: 600
-      },
-      featureFlags,
-      context: currentContext,
-      sections
-    };
-
-    return NextResponse.json(response);
-  } catch (error) {
-    console.error("Error composing explore page:", error);
-    return NextResponse.json({ error: "Failed to compose explore page" }, { status: 500 });
+  } catch (error: any) {
+    return NextResponse.json({
+      success: false,
+      error: error.message || 'Internal Decision Engine Error'
+    }, { status: 500 });
   }
 }

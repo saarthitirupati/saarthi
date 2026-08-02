@@ -1,0 +1,3911 @@
+[
+  {
+    "id": "venkateswara",
+    "name": "Sri Venkateswara Swamy Temple",
+    "category": "Tirumala Spot",
+    "placeType": "spiritual",
+    "location": "Tirumala",
+    "distanceKms": 22,
+    "durationMins": 360,
+    "budgetLevel": "medium",
+    "entryFeeNum": 300,
+    "interests": [
+      "spiritual",
+      "history"
+    ],
+    "openFrom": 0,
+    "openTo": 24,
+    "isMustVisit": true,
+    "description": "The world's richest and most visited temple, dedicated to Lord Venkateswara.",
+    "history": "Dating back to at least 300 BCE, the temple's main deity is self-manifested (Swayambhu). It was historically patronized by major dynasties including the Pallavas, Cholas, Pandyas, and the Vijayanagara Empire, with Emperor Krishnadevaraya donating gold and diamonds for the temple dome (Ananda Nilayam).",
+    "timings": "Open 24/7",
+    "entryFee": "Free General Darshan (Sarvadarsanam). ₹300 for Special Entry Darshan (SED) booked in advance.",
+    "address": "Tirumala, AP",
+    "rating": 4.9,
+    "reviewCount": 125430,
+    "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4e/Tirumala_Anand_nilayam4653.jpg/1280px-Tirumala_Anand_nilayam4653.jpg",
+    "coordinates": {
+      "lat": 13.68323,
+      "lng": 79.34731
+    },
+    "shortIntro": "Sri Venkateswara Swamy Temple in Tirumala, Tirupati is the pre-eminent spiritual center of India, drawing millions of devotees seeking blessings from Lord Venkateswara (Balaji) in Kali Yuga.",
+    "whyVisit": "Known as the 'Temple of Seven Hills', it is the richest and most visited temple globally. Devotees believe Lord Venkateswara manifested here to guide humanity through the trials of Kali Yuga.",
+    "openingTime": "Open 24 Hours",
+    "closingTime": "Open 24 Hours",
+    "duration": "3 to 6 hours",
+    "travelByRTC": "APSRTC operates continuous, high-frequency bus services (Saptagiri Express) from Tirupati Central Bus Station (CBS) to Tirumala every 2 minutes, running round-the-clock.",
+    "travelByCar": "Drive via the scenic, well-monitored Alipiri-Tirumala Ghat Road. A speed limit of 40 km/h is enforced. Personal cars and private cabs are allowed up the hill, subject to security checks at Alipiri toll gate.",
+    "travelByBike": "Two-wheelers are allowed on the Tirumala Ghat roads between 4:00 AM and 10:00 PM. Ride carefully on the hairpin bends; helmets are mandatory for both rider and pillion.",
+    "approxRTCFare": "₹90 (Ordinary) / ₹110 (Electric bus) one-way from Tirupati",
+    "approxCarCost": "₹250 Alipiri toll fee + ₹300-₹500 petrol, or ₹1,500-₹2,000 for local taxi rental.",
+    "approxBikeCost": "₹100-₹150 for petrol round trip.",
+    "images": [
+      "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4e/Tirumala_Anand_nilayam4653.jpg/1280px-Tirumala_Anand_nilayam4653.jpg"
+    ],
+    "visitorTips": {
+      "dressCode": "Strict Traditional wear. Men: Dhoti with Uttareeyam or Kurta-Pyjama. Women: Saree, Half-Saree, or Chudidar with Dupatta.",
+      "crowdNote": "Highly crowded. Weekends and festivals can see wait times of 12-24 hours for free darshan. SED is highly recommended.",
+      "footwearRule": "Footwear must be deposited at the free counters located outside the Alipiri gate or outside the main temple entrance.",
+      "photoRule": "Mobile phones, cameras, and all electronic gadgets are strictly prohibited inside the inner temple complex. Keep them in your locker.",
+      "entryRule": "Carry physical copy of SED ticket along with matching original ID proof used during booking (Aadhaar/PAN/Voter ID)."
+    },
+    "tags": [
+      "Holy",
+      "Main"
+    ],
+    "bestTime": "September to February (Cooler climate) and weekdays (Tues-Thurs) for shorter queues.",
+    "idealFor": [
+      "Families",
+      "Pilgrims",
+      "Senior Citizens"
+    ],
+    "saarthiIntelligence": {
+      "enabled": true,
+      "crowdLevel": "High",
+      "waitingTime": "12-24 hours (Free)",
+      "recommendedTransport": "APSRTC Free Bus from Alipiri",
+      "parkingDifficulty": "Difficult",
+      "travelScore": 92,
+      "confidence": 95,
+      "source": "TTD Official & Ground Team",
+      "lastUpdated": "10:15 AM"
+    },
+    "contentCreator": {
+      "summary30": "The world's richest Hindu temple drawing millions of devotees.",
+      "summary100": "Sri Venkateswara Swamy Temple in Tirumala is the absolute pinnacle of Hindu pilgrimage in Kali Yuga. With complex crowd management systems, gold-plated vimanas, and strict traditions, it is an unparalleled spiritual experience.",
+      "hook": "Did you know the richest temple in the world is right here in Tirupati?",
+      "scriptNotes": "Focus on the Ananda Nilayam dome. Mention that Lord Venkateswara is Swayambhu.",
+      "thumbnailText": "TIRUMALA SECRETS"
+    },
+    "spiritualInfo": {
+      "god": "Lord Venkateswara",
+      "knownFor": "Miracles",
+      "mantra": "Om Namo Venkateshaya",
+      "devoteeTips": []
+    },
+    "practicalInfo": {
+      "dressCode": "Strict Traditional",
+      "food": "Veg",
+      "parking": "Available"
+    },
+    "travelEstimates": {
+      "padmavathi": "60 mins"
+    },
+    "rituals": {
+      "annual": [
+        "Kumaradhara Theertha Mukkoti: March 3, 2026",
+        "Pournami Garuda Seva: May 1, 2026",
+        "Annamacharya Jayanthi: May 2, 2026",
+        "Hanuman Jayanthi: May 12, 2026",
+        "Nammalwar Utsavams Begins: May 21, 2026",
+        "Jyeshtabhishekam: June 26–28, 2026",
+        "Salakatla Brahmotsavam: September 15–23, 2026",
+        "Navaratri Brahmotsavam: October 11–20, 2026",
+        "Kartika Vanabhojana Utsavam: December 3, 2026",
+        "Vaikuntha Ekadasi: December 23, 2026",
+        "Vaikuntha Dwadasi: December 24, 2026"
+      ]
+    }
+  },
+  {
+    "id": "bhu-varaha",
+    "name": "Sri Bhu Varaha Swamy Temple",
+    "category": "Tirumala Spot",
+    "placeType": "spiritual",
+    "location": "Tirumala",
+    "distanceKms": 22.1,
+    "durationMins": 45,
+    "budgetLevel": "budget",
+    "entryFeeNum": 0,
+    "interests": [
+      "spiritual"
+    ],
+    "openFrom": 5,
+    "openTo": 21,
+    "isMustVisit": true,
+    "description": "Situated on the northwestern bank of Swami Pushkarini, Sri Bhu Varaha Swamy Temple is dedicated to Lord Vishnu’s third avatar, Varaha Swamy, carrying Mother Earth (Bhudevi). By age-old custom, pilgrims offer prayers at this temple first before entering the main Srivari Temple compound.",
+    "history": "According to Brahmanda Purana, when Lord Venkateswara descended to Earth, He sought a place to reside on Seshachalam. Lord Varaha granted Him land on the condition that Lord Varaha would be worshipped first by all visiting pilgrims, and that the first offerings (Naivedyam) each day would belong to Him.",
+    "timings": "5:00 AM - 9:00 PM",
+    "entryFee": "Free entry for all devotees",
+    "address": "Northwest Bank of Swami Pushkarini, Tirumala, AP",
+    "rating": 4.7,
+    "reviewCount": 8500,
+    "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQKDEcXKLpgGa-3rq9AGHvPE2eMEbWP5AojVWAI57z_rQ&s=10",
+    "coordinates": {
+      "lat": 13.684889,
+      "lng": 79.34775
+    },
+    "shortIntro": "Sri Bhu Varaha Swamy Temple, located on the northwestern bank of Swami Pushkarini in Tirumala, is the ancient shrine of Lord Varaha — the divine owner of the Seven Hills whose darshan is traditionally sought BEFORE visiting Lord Venkateswara.",
+    "whyVisit": "According to TTD tradition and Agama Sastra, Tirumala is Varaha Kshetram. Devotees must worship Lord Bhu Varaha first to receive the full divine merit of their Tirumala pilgrimage.",
+    "openingTime": "5:00 AM",
+    "closingTime": "9:00 PM",
+    "duration": "30 to 45 minutes",
+    "travelByRTC": "Walk 2 minutes from Tirumala main bus stop or Srivari Temple entrance.",
+    "travelByCar": "Park at Tirumala main car parking areas (MBC / CRO) and walk 3 minutes to the Varahaswamy temple entrance on Pushkarini bank.",
+    "travelByBike": "Park at Tirumala designated two-wheeler parking spaces near the Pushkarini North Gate.",
+    "approxRTCFare": "Included in Tirumala transit",
+    "approxCarCost": "Included in Tirumala toll",
+    "approxBikeCost": "Included in Tirumala toll",
+    "images": [
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQKDEcXKLpgGa-3rq9AGHvPE2eMEbWP5AojVWAI57z_rQ&s=10"
+    ],
+    "tags": [
+      "Varaha Swamy",
+      "Varaha Kshetram",
+      "Mandatory Visit First",
+      "Pushkarini"
+    ],
+    "bestTime": "Morning (5:00 AM - 9:00 AM)",
+    "practicalInfo": {
+      "dressCode": "Strict Traditional wear",
+      "food": "Nearby Prasadam counters",
+      "parking": "Tirumala Main Parking"
+    },
+    "visitorTips": {
+      "dressCode": "Strict traditional attire (Dhoti/Kurta for men, Saree/Chudidar for women).",
+      "crowdNote": "Free queue usually moves very quickly (15-30 mins wait). Visit immediately after taking a dip/prokshenam in Swami Pushkarini."
+    },
+    "travelEstimates": {
+      "venkateswara": "2 mins walk"
+    }
+  },
+  {
+    "id": "swami-pushkarini",
+    "name": "Swami Pushkarini",
+    "category": "Tirumala Spot",
+    "placeType": "water",
+    "location": "Tirumala",
+    "distanceKms": 22,
+    "durationMins": 30,
+    "budgetLevel": "budget",
+    "entryFeeNum": 0,
+    "interests": [
+      "spiritual",
+      "nature"
+    ],
+    "openFrom": 4,
+    "openTo": 22,
+    "isMustVisit": true,
+    "description": "Swami Pushkarini is the sacred freshwater lake adjoining the northern compound of Sri Venkateswara Swamy Temple in Tirumala. Spanning pristine stepped stone ghats, it is traditionally visited by pilgrims for a holy dip or water sprinkling before entering the main temple queue.",
+    "history": "Puranic scriptures relate that Swami Pushkarini originally belonged to Vaikuntam and was brought to Seshachalam Hills by Garuda. It is believed that 30 million holy rivers merge into this tank annually on Mukkoti Dwadasi.",
+    "timings": "4:00 AM - 10:00 PM",
+    "entryFee": "Free entry for all devotees",
+    "address": "Adjacent to Srivari Main Temple & Bhu Varaha Swamy Temple, Tirumala, AP",
+    "rating": 4.8,
+    "reviewCount": 12000,
+    "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcShdRhid2QKsb7qPfY70RI3UMYUZpENGPWU8mMIIuMmBg&s=10",
+    "coordinates": {
+      "lat": 13.6835,
+      "lng": 79.3475
+    },
+    "shortIntro": "Swami Pushkarini is the holy temple tank situated right beside the main Sri Venkateswara Swamy Temple in Tirumala, revered as a celestial lake brought directly from Vaikuntam.",
+    "whyVisit": "Taking a holy dip or sprinkling Pushkarini water (Prokshenam) before Srivari Darshan cleanses sins and grants spiritual purity. It is the site of the famous annual Teerthavari and Float Festival.",
+    "openingTime": "4:00 AM",
+    "closingTime": "10:00 PM",
+    "duration": "30 to 45 minutes",
+    "travelByRTC": "Walk 2 minutes from Tirumala main bus stop or Srivari Temple entrance.",
+    "travelByCar": "Park at Tirumala main car parking areas (MBC / CRO) and walk 3-5 minutes to Swami Pushkarini.",
+    "travelByBike": "Park at Tirumala designated two-wheeler parking lots near the main temple square.",
+    "approxRTCFare": "Included in Tirumala transit",
+    "approxCarCost": "Included in Tirumala toll",
+    "approxBikeCost": "Included in Tirumala toll",
+    "images": [
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcShdRhid2QKsb7qPfY70RI3UMYUZpENGPWU8mMIIuMmBg&s=10"
+    ],
+    "tags": [
+      "Holy Tank",
+      "Pushkarini",
+      "Vaikuntam",
+      "Teerthavari"
+    ],
+    "bestTime": "Dawn (4:00 AM - 7:00 AM)",
+    "practicalInfo": {
+      "dressCode": "Traditional / Change of clothes",
+      "food": "Nearby Prasadam counters",
+      "parking": "Tirumala Main Parking"
+    },
+    "visitorTips": {
+      "dressCode": "Clean traditional clothes or change of attire if taking a full dip.",
+      "crowdNote": "TTD provides separate secure changing rooms for men and women. Anti-slip stone steps lead into the water. Sprinkling water on your head (Prokshenam) is recommended if pressed for time."
+    },
+    "travelEstimates": {
+      "venkateswara": "2 mins walk"
+    }
+  },
+  {
+    "id": "srivari-padalu-spot",
+    "name": "Srivari Paadaalu",
+    "category": "Tirumala Spot",
+    "placeType": "spiritual",
+    "location": "Narayanagiri Hill",
+    "distanceKms": 25,
+    "durationMins": 60,
+    "budgetLevel": "budget",
+    "entryFeeNum": 0,
+    "interests": [
+      "spiritual",
+      "viewpoint"
+    ],
+    "openFrom": 6,
+    "openTo": 18,
+    "isMustVisit": true,
+    "description": "A highly revered hilltop shrine enclosing the sacred rock-cut foot imprints believed to be left by Lord Venkateswara when he first descended to Earth.",
+    "history": "Mentioned across ancient Puranic literature as the divine arrival point of Lord Vishnu in the Kali Yuga. Under the administrative care of the Tirumala Tirupati Devasthanams (TTD) board, the sacred footprints are now permanently protected inside a high-durability glass viewing chamber to safeguard the relic from erosion.",
+    "timings": "6:00 AM - 6:00 PM",
+    "entryFee": "Free",
+    "address": "Narayanagiri Hill Peak, Tirumala, AP",
+    "rating": 4.7,
+    "reviewCount": 5400,
+    "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQq2DPqq04gDz0c87Uvaw44pR20j9YLmzjy4XQCKqineA&s=10",
+    "coordinates": {
+      "lat": 13.679,
+      "lng": 79.3331
+    },
+    "images": [
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQq2DPqq04gDz0c87Uvaw44pR20j9YLmzjy4XQCKqineA&s=10"
+    ],
+    "tags": [
+      "Footprints",
+      "Vantage Point"
+    ],
+    "bestTime": "Morning",
+    "practicalInfo": {
+      "dressCode": "Modest",
+      "food": "Limited",
+      "parking": "Available"
+    },
+    "travelEstimates": {
+      "venkateswara": "15 mins drive"
+    },
+    "shortIntro": "Srivari Paadaalu features the sacred stone footprints of Lord Venkateswara at the highest peak of the seven Tirumala hills.",
+    "whyVisit": "Highly recommended for its profound religious merit, beautiful carved stone canopy canopy architecture built over a massive boulder, and an unmatched 360-degree panoramic view of the entire temple town.",
+    "openingTime": "6:00 AM",
+    "closingTime": "6:00 PM",
+    "duration": "1 to 1.5 hours",
+    "travelByRTC": "Free TTD internal shuttle buses and frequent APSRTC local buses run regularly from the Kalyani Choultry / Central Reception Office (CRO) in Tirumala directly towards the entry base.",
+    "travelByCar": "Accessible via steep, winding roads. A dedicated parking lot accommodating up to 25 cars is available near the base of the steps.",
+    "travelByBike": "Accessible via steep winding roads. Ride with caution due to sharp curves, narrow hairpins, and morning fog. Helmets are mandatory.",
+    "approxRTCFare": "Free TTD shuttle, or ₹90 (Ordinary) / ₹110 (Electric bus) one-way from Tirupati",
+    "approxCarCost": "~₹500 for fuel (or ~₹1000 for taxi fare)",
+    "approxBikeCost": "~₹200 for petrol round trip",
+    "visitorTips": {
+      "dressCode": "Traditional or modest attire is strictly enforced (traditional dhotis/kurtas for men; sarees/salwar kameez for women).",
+      "crowdNote": "Average wait is 15-30 mins on weekdays; spikes to 45-90 mins on weekends and festivals.",
+      "footwearRule": "Footwear must be removed before entering the inner footprint enclosure premises.",
+      "photoRule": "Strictly prohibited directly inside the glass protective frame room. Allowed in the surrounding outer scenic viewpoints.",
+      "entryRule": "Purely free, egalitarian public access. No paid or special VIP tickets exist. Decorum must be maintained."
+    },
+    "spiritualInfo": {
+      "god": "Lord Sri Venkateswara Swamy",
+      "knownFor": "Divine landing footprints pointing exactly towards the Ananda Nilayam main sanctum",
+      "mantra": "Om Namo Venkateshaya",
+      "devoteeTips": [
+        "Remove footwear before entering the footprint sanctum.",
+        "Look closely at the orientation of the cased footprints—they are aligned directly pointing towards the golden dome of the main temple.",
+        "Climbing the 300 steps is moderately challenging for elderly; utilize stone benches placed along the path for rest."
+      ]
+    }
+  },
+  {
+    "id": "silathoranam",
+    "name": "Silathoranam",
+    "category": "Tirumala Spot",
+    "placeType": "nature",
+    "location": "Tirumala",
+    "distanceKms": 24,
+    "durationMins": 45,
+    "budgetLevel": "budget",
+    "entryFeeNum": 0,
+    "interests": [
+      "nature",
+      "geology"
+    ],
+    "openFrom": 6,
+    "openTo": 18,
+    "isMustVisit": true,
+    "description": "Silathoranam is a world-renowned natural rock arch located in the Tirumala Hills near Chakra Theertham. Formed in Precambrian quartzite rock over 1.5 to 2.5 billion years ago (Proterozoic era), it is officially designated as a National Geo-Heritage Monument by the Geological Survey of India (GSI).",
+    "history": "Geologically dating back 1.5 to 2.5 billion years, Silathoranam is a rare Precambrian quartzite natural arch in Asia and a recognized National Geo-Heritage Monument. In temple lore, the arch is spiritually linked to Lord Venkateswara's arrival on Seshachalam Hills. While local popular folklore often calls it 'one of only three in the world', natural arches exist globally; its true rarity lies in its ancient Proterozoic quartzite formation.",
+    "timings": "6:00 AM - 6:00 PM (Daylight Hours)",
+    "entryFee": "Free entry for all visitors",
+    "address": "Near Chakra Theertham & Srivari Udyanavanam, Tirumala, Andhra Pradesh 517504",
+    "rating": 4.6,
+    "reviewCount": 9200,
+    "image": "/assets/temples/silathoranam.png",
+    "coordinates": {
+      "lat": 13.68676,
+      "lng": 79.34066
+    },
+    "shortIntro": "Silathoranam is an ancient natural stone arch in Tirumala formed over 1.5 to 2.5 billion years ago during the Proterozoic era, officially declared a National Geo-Heritage Monument by India's Geological Survey.",
+    "whyVisit": "Marvel at a 1.5+ billion-year-old natural geological wonder set amidst serene rock gardens. Free and open during daylight hours, it is a key stop along the Tirumala nature circuit.",
+    "openingTime": "6:00 AM",
+    "closingTime": "6:00 PM",
+    "duration": "30 to 45 minutes",
+    "travelByRTC": "Take TTD free bus (Free Dharma Rathams) from Tirumala main bus stand directly to Silathoranam stop.",
+    "travelByCar": "Drive 8 minutes from Tirumala main square. Ample car parking available near Chakra Theertham / Silathoranam gate. Note: TTD enforces strict night-time two-wheeler travel restrictions on Tirumala ghat roads for wildlife & terrain safety.",
+    "travelByBike": "Ride 8 minutes from Tirumala center during permitted daytime hours. (Two-wheelers restricted on Tirumala Ghat Roads between 9:00 PM and 6:00 AM for wildlife safety).",
+    "approxRTCFare": "Free (TTD Dharma Ratham)",
+    "approxCarCost": "Included in Tirumala toll",
+    "approxBikeCost": "Included in Tirumala toll",
+    "images": [
+      "/assets/temples/silathoranam.png"
+    ],
+    "tags": [
+      "Silathoranam",
+      "Geo-Heritage Monument",
+      "Proterozoic Arch",
+      "Nature",
+      "Chakra Theertham"
+    ],
+    "bestTime": "Morning (6:00 AM - 10:00 AM) or Late Afternoon (4:00 PM - 5:30 PM)",
+    "practicalInfo": {
+      "dressCode": "Modest casual wear",
+      "food": "Snack & tea stalls outside",
+      "parking": "Available near entrance"
+    },
+    "visitorTips": {
+      "dressCode": "Comfortable walking shoes for stone garden pathways.",
+      "crowdNote": "Access is open during daylight hours (6:00 AM - 6:00 PM). Two-wheelers are subject to TTD night-time ghat road safety curfews (9:00 PM to 6:00 AM)."
+    },
+    "travelEstimates": {
+      "venkateswara": "10 mins drive"
+    }
+  },
+  {
+    "id": "srivari-museum",
+    "name": "Srivari Museum",
+    "category": "Tirumala Spot",
+    "placeType": "historical",
+    "location": "Tirumala",
+    "distanceKms": 22.5,
+    "durationMins": 90,
+    "budgetLevel": "budget",
+    "entryFeeNum": 0,
+    "interests": [
+      "history",
+      "culture"
+    ],
+    "openFrom": 8,
+    "openTo": 20,
+    "isMustVisit": false,
+    "description": "Located near the main Tirumala temple complex opposite CRO, Srivari Museum (Sri Venkateswara Museum) is a multi-gallery heritage museum established by TTD. It features galleries dedicated to ancient Vaishnavite architecture, bronze & stone sculptures, antique coins, historical temple weapons, and photo archives of Tirumala's evolution.",
+    "history": "Established by Tirumala Tirupati Devasthanams (TTD) to preserve the rich heritage of Lord Sri Venkateswara's temple. Houses priceless artifacts donated by royal dynasties over 1,000 years, including Emperor Krishnadevaraya's era inscriptions and rare palm-leaf scriptures.",
+    "timings": "8:00 AM - 8:00 PM",
+    "entryFee": "Free entry for all pilgrims",
+    "address": "Opposite CRO Office, near Main Temple, Tirumala, Andhra Pradesh 517504",
+    "rating": 4.5,
+    "reviewCount": 3100,
+    "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR7RZjFDNdmCH-InM5aoInd7fMahuGGLL7w5S2KiLvpUg&s=10",
+    "coordinates": {
+      "lat": 13.6838,
+      "lng": 79.3482
+    },
+    "shortIntro": "Srivari Museum (Sri Venkateswara Museum) in Tirumala houses a magnificent collection of ancient temple sculptures, coins, musical instruments, weapons, and historical records.",
+    "whyVisit": "Discover centuries of temple heritage, ancient stone & bronze idols, traditional musical instruments, royal inscriptions from Chola & Vijayanagara dynasties, and historical armor.",
+    "openingTime": "8:00 AM",
+    "closingTime": "8:00 PM",
+    "duration": "45 to 60 minutes",
+    "travelByRTC": "Walk 3 minutes from Tirumala main bus station / CRO office.",
+    "travelByCar": "Drive to Tirumala central parking lot. The museum is a short walk from the CRO square.",
+    "travelByBike": "Park at Tirumala main two-wheeler parking lot near CRO.",
+    "approxRTCFare": "Free (Walk from CRO)",
+    "approxCarCost": "Included in Tirumala toll",
+    "approxBikeCost": "Included in Tirumala toll",
+    "images": [
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR7RZjFDNdmCH-InM5aoInd7fMahuGGLL7w5S2KiLvpUg&s=10"
+    ],
+    "tags": [
+      "Srivari Museum",
+      "Heritage",
+      "Ancient Sculptures",
+      "TTD Museum",
+      "History"
+    ],
+    "bestTime": "Afternoon (12:00 PM - 4:00 PM)",
+    "practicalInfo": {
+      "dressCode": "Modest wear",
+      "food": "Food stalls outside",
+      "parking": "Central parking available"
+    },
+    "visitorTips": {
+      "dressCode": "Modest casual or traditional attire required.",
+      "crowdNote": "Free entry for all pilgrims. Air-conditioned galleries offer a peaceful, informative break during your Tirumala visit."
+    },
+    "travelEstimates": {
+      "venkateswara": "5 mins walk"
+    }
+  },
+  {
+    "id": "papavinasam-theertham",
+    "name": "Papavanasam Theertham",
+    "category": "Tirumala Spot",
+    "placeType": "water",
+    "location": "Tirumala Hills",
+    "distanceKms": 27,
+    "durationMins": 120,
+    "budgetLevel": "budget",
+    "entryFeeNum": 0,
+    "interests": [
+      "spiritual",
+      "nature"
+    ],
+    "openFrom": 6,
+    "openTo": 18,
+    "isMustVisit": true,
+    "description": "Located at the northernmost point of the accessible Tirumala hill roads, Papavanasam (literally \"destroyer of sins\") is a sacred stream and reservoir. Water cascades down stone structures into organized bathing channels where thousands of pilgrims take a holy dip to cleanse past karma.",
+    "history": "According to Skanda Purana, taking a bath in Papavanasam on auspicious tithis grants liberation from all sins. In centuries past, devotees bathed under the natural mountain cascades before proceeding to Srivari Ananda Nilayam.",
+    "timings": "6:00 AM - 6:00 PM",
+    "entryFee": "Free entry for all devotees",
+    "address": "End of Papavanasam Road, Tirumala Hills, Andhra Pradesh 517504",
+    "rating": 4.6,
+    "reviewCount": 15600,
+    "image": "/assets/temples/papavinasam.png",
+    "coordinates": {
+      "lat": 13.7081,
+      "lng": 79.3496
+    },
+    "shortIntro": "Papavanasam Theertham is a sacred reservoir and holy waterfall at the northern tip of Tirumala Hills whose divine waters are believed to wash away all sins.",
+    "whyVisit": "Taking a holy bath or prokshenam at Papavanasam is a revered Tirumala pilgrimage ritual. Features TTD-constructed shower enclosures and sacred bathing ghats.",
+    "openingTime": "6:00 AM",
+    "closingTime": "6:00 PM",
+    "duration": "45 to 60 minutes",
+    "travelByRTC": "Take TTD free bus (Dharma Ratham) or local RTC bus to Papavanasam terminal stop.",
+    "travelByCar": "Drive 15 minutes (5 km) from Tirumala main temple square along Papavanasam Road to the parking terminal.",
+    "travelByBike": "Ride 15 minutes along Papavanasam Road to the terminal parking lot.",
+    "approxRTCFare": "Free (TTD Dharma Ratham)",
+    "approxCarCost": "Included in Tirumala toll",
+    "approxBikeCost": "Included in Tirumala toll",
+    "images": [
+      "/assets/temples/papavinasam.png"
+    ],
+    "tags": [
+      "Papavanasam",
+      "Holy Bath",
+      "Sins Destroyer",
+      "Sacred Waterfall",
+      "Theertham"
+    ],
+    "bestTime": "Morning (6:00 AM - 10:00 AM) or Afternoon (2:00 PM - 5:00 PM)",
+    "practicalInfo": {
+      "dressCode": "Modest / Bathing attire",
+      "food": "Stalls & prasadam available",
+      "parking": "Terminal parking available"
+    },
+    "visitorTips": {
+      "dressCode": "Separate secure changing enclosures available for men and women.",
+      "crowdNote": "TTD provides organized shower taps and safety railings. Water supply is maintained year-round via the dam."
+    },
+    "travelEstimates": {
+      "venkateswara": "15 mins drive"
+    }
+  },
+  {
+    "id": "akasaganga-theertham",
+    "name": "Akasa Ganga Theertham",
+    "category": "Tirumala Spot",
+    "placeType": "water",
+    "location": "Tirumala Hills",
+    "distanceKms": 25,
+    "durationMins": 60,
+    "budgetLevel": "budget",
+    "entryFeeNum": 0,
+    "interests": [
+      "spiritual",
+      "nature"
+    ],
+    "openFrom": 6,
+    "openTo": 18,
+    "isMustVisit": true,
+    "description": "Located amidst the Seshachalam hills along Papavanasam Road (Google Plus Code P84R+C3J), Akashaganga (ఆకాశగంగ) is a sacred stream and waterfall rated 4.6★ by over 5,280 pilgrims. Water from this holy perennial spring is collected daily by TTD Archakas for Srivari Abhishekam. Adjacent to the falls lies the scenic Akashaganga Garden.",
+    "history": "Puranic lore tells that River Ganges descended from the heavens (Akasa) directly to Seshachalam Hills for Lord Vishnu's worship. Mata Anjana Devi performed 12 years of severe penance at this spot before giving birth to Lord Hanuman. By century-old tradition, priests from the Tirumalai Nambi family carry silver pots of Akasa Ganga water daily for Srivari Abhishekam.",
+    "timings": "6:00 AM - 6:00 PM",
+    "entryFee": "Free entry for all devotees",
+    "address": "P84R+C3J, Akasaganga, Tirupati, Tirupati Urban, Andhra Pradesh 517504",
+    "rating": 4.6,
+    "reviewCount": 5283,
+    "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS9HOdR7oe75n1yCXJHmJe7KUxOGwAoqu4E-apLX5tMog&s=10",
+    "coordinates": {
+      "lat": 13.7061,
+      "lng": 79.3401
+    },
+    "shortIntro": "Akashaganga (ఆకాశగంగ) is a sacred waterfall in Tirumala located at Plus Code P84R+C3J whose celestial spring water is carried daily for Lord Sri Venkateswara’s holy Abhishekam.",
+    "whyVisit": "Experience a serene sacred waterfall nestled in lush green hills near Akashaganga Garden. Sprinkling holy Akasa Ganga water (Prokshenam) cleanses sins and brings spiritual peace.",
+    "openingTime": "6:00 AM",
+    "closingTime": "6:00 PM",
+    "duration": "30 to 45 minutes",
+    "travelByRTC": "Take TTD free bus (Dharma Ratham) or local RTC bus along Papavanasam Road to Akasa Ganga bus stop.",
+    "travelByCar": "Drive 10 minutes (3 km) from Tirumala main temple square along Papavanasam Road. Ample car parking available near the entrance.",
+    "travelByBike": "Ride 10 minutes along Papavanasam Road with two-wheeler parking available at the gate.",
+    "approxRTCFare": "Free (TTD Dharma Ratham)",
+    "approxCarCost": "Included in Tirumala toll",
+    "approxBikeCost": "Included in Tirumala toll",
+    "images": [
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS9HOdR7oe75n1yCXJHmJe7KUxOGwAoqu4E-apLX5tMog&s=10"
+    ],
+    "tags": [
+      "Akasa Ganga",
+      "ఆకాశగంగ",
+      "Abhishekam Water",
+      "Sacred Waterfall",
+      "Theertham",
+      "P84R+C3J"
+    ],
+    "bestTime": "Morning (6:00 AM - 10:00 AM) or Afternoon (3:00 PM - 5:00 PM)",
+    "practicalInfo": {
+      "dressCode": "Modest / Traditional wear",
+      "food": "Refreshment stalls outside",
+      "parking": "Available near entrance"
+    },
+    "visitorTips": {
+      "dressCode": "Modest casual or traditional attire suitable for walking down steps.",
+      "crowdNote": "Devotees climb down around 150-200 stone steps into the forest ravine to reach the waterfall. Railings and rest benches are provided along the staircase. Devotees drink or sprinkle (Prokshenam) the holy water with deep faith for spiritual wellbeing."
+    },
+    "travelEstimates": {
+      "venkateswara": "10 mins drive"
+    },
+    "relatedPlaces": [
+      "japali-hanuman",
+      "papavinasam-theertham",
+      "gogarbham",
+      "srivari-mettu",
+      "talakona-waterfalls"
+    ]
+  },
+  {
+    "id": "chakra-theertham-spot",
+    "name": "Chakra Theertham",
+    "category": "Tirumala Spot",
+    "placeType": "water",
+    "location": "Tirumala",
+    "distanceKms": 24.5,
+    "durationMins": 45,
+    "budgetLevel": "budget",
+    "entryFeeNum": 0,
+    "interests": [
+      "spiritual",
+      "nature"
+    ],
+    "openFrom": 6,
+    "openTo": 18,
+    "isMustVisit": false,
+    "description": "Scenic waterfall where Lord Vishnu's Chakra manifested.",
+    "history": "The Lord placed his Sudarshana Chakra here to create a spring.",
+    "timings": "6:00 AM - 6:00 PM",
+    "entryFee": "Free",
+    "address": "Near Silathoranam, Tirumala",
+    "rating": 4.5,
+    "reviewCount": 4200,
+    "image": "/assets/temples/chakra-theertham.png",
+    "coordinates": {
+      "lat": 13.6955,
+      "lng": 79.346
+    },
+    "tags": [
+      "Chakra",
+      "Waterfall"
+    ],
+    "bestTime": "Morning",
+    "practicalInfo": {
+      "dressCode": "Modest",
+      "food": "Limited",
+      "parking": "Available"
+    },
+    "travelEstimates": {
+      "silathoranam": "5 mins"
+    }
+  },
+  {
+    "id": "japali-hanuman",
+    "name": "Japali Hanuman Temple",
+    "category": "Tirumala Spot",
+    "placeType": "spiritual",
+    "location": "Tirumala Forest",
+    "distanceKms": 26,
+    "durationMins": 120,
+    "budgetLevel": "budget",
+    "entryFeeNum": 0,
+    "interests": [
+      "spiritual",
+      "nature"
+    ],
+    "openFrom": 6,
+    "openTo": 18,
+    "isMustVisit": true,
+    "description": "Situated ~5 km from main Tirumala Temple along Papavanasam Road, Japali Teertham is a sacred forest shrine housing a self-manifested (Swayambhu) Lord Hanuman idol reached via a serene 1 km forest walk.",
+    "history": "According to ancient Sthalapuranam, Japali Teertham is named after Maharshi Javali, who performed severe penance (Tapasya) here in ancient times. Following victory in Lanka, Lord Rama, Goddess Sita, and Lakshmana rested at this holy forest sanctuary alongside Lord Hanuman. The temple enshrines a self-manifested (Swayambhu) idol of Lord Hanuman adorned with a silver crown and arch, believed to grant immense protection, spiritual strength, and relief from all planetary doshas.",
+    "timings": "6:00 AM - 6:00 PM",
+    "entryFee": "Free entry for all pilgrims",
+    "address": "Papavanasam Road, Tirumala, Andhra Pradesh 517504",
+    "rating": 4.8,
+    "reviewCount": 6500,
+    "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTex3BhUJUEmZefk0wbkZzY_i-f5Ri8p3wT4Y2t-oetEw&s=10",
+    "coordinates": {
+      "lat": 13.69686,
+      "lng": 79.33666
+    },
+    "shortIntro": "Sri Japali Anjaneya Swamy Temple, hidden deep in the lush Seshachalam hills near Papavanasam Road, is an ancient forest shrine famed for its self-manifested (Swayambhu) Hanuman deity and holy Teertham pond.",
+    "whyVisit": "Revered as the holy abode where Maharshi Javali meditated and Lord Rama stayed with Hanuman. The 1 km stone-paved forest walk offers peaceful nature, spiritual vibrations, and relief from doshas.",
+    "openingTime": "6:00 AM",
+    "closingTime": "6:00 PM",
+    "duration": "1 to 2 hours (including 1 km forest walk)",
+    "travelByRTC": "Board any APSRTC or TTD bus heading toward Papavanasam from Tirumala main bus stand and alight at the Japali Teertham Arch.",
+    "travelByCar": "Drive ~5 km along Papavanasam Road from Tirumala main ring circle to the Japali entrance arch parking area. Walk 1 km along the paved forest trail.",
+    "travelByBike": "Two-wheelers can be parked at the Japali entrance arch base along Papavanasam Road.",
+    "approxRTCFare": "₹15-₹20 from Tirumala Bus Station",
+    "approxCarCost": "₹50-₹100 local trip fuel / cab",
+    "approxBikeCost": "₹20-₹30 petrol",
+    "images": [
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTex3BhUJUEmZefk0wbkZzY_i-f5Ri8p3wT4Y2t-oetEw&s=10"
+    ],
+    "tags": [
+      "Hanuman",
+      "Forest Trek",
+      "Swayambhu",
+      "Peaceful"
+    ],
+    "bestTime": "Early Morning (6:00 AM - 9:00 AM)",
+    "practicalInfo": {
+      "dressCode": "Modest / Walking shoes",
+      "food": "Water & Snacks at Arch",
+      "parking": "Available at main road arch"
+    },
+    "visitorTips": {
+      "dressCode": "Comfortable modest attire and walking footwear suitable for a 1 km stone forest path.",
+      "crowdNote": "Peaceful on weekdays. Draws large crowds on Tuesdays, Saturdays, and Hanuman Jayanthi. Keep food items and plastic bags concealed inside backpacks to avoid attracting forest monkeys along the 1 km walkway."
+    },
+    "travelEstimates": {
+      "venkateswara": "15 mins drive to arch + 15 mins forest walk"
+    }
+  },
+  {
+    "id": "venugopala-swamy-tirumala",
+    "name": "Sri Venugopala Swamy Temple (Tirumala)",
+    "category": "Tirumala Spot",
+    "placeType": "spiritual",
+    "location": "Tirumala",
+    "distanceKms": 25,
+    "durationMins": 45,
+    "budgetLevel": "budget",
+    "entryFeeNum": 0,
+    "interests": [
+      "spiritual",
+      "nature"
+    ],
+    "openFrom": 6,
+    "openTo": 20,
+    "isMustVisit": false,
+    "description": "Serene shrine dedicated to Lord Krishna as a flute charmer on the Papavanasam road in Tirumala, managed by Hathiramji Mutt.",
+    "shortIntro": "Located 5 km from the main Tirumala temple on Papavanasam Road, Sri Venugopala Swamy Temple is a peaceful woodland shrine surrounded by lush green hills.",
+    "whyVisit": "Unique for its tranquil forest setting, beautiful idol of Lord Krishna playing the flute accompanied by Rukmini and Satyabhama, and quiet atmosphere away from peak temple crowds.",
+    "history": "Managed by Hathiramji Mutt, this ancient shrine is situated along the traditional pilgrimage route to Papavanasam. Lord Krishna is worshipped here playing his divine flute in the serene forests of Tirumala.",
+    "timings": "6:00 AM - 12:05 PM, 4:00 PM - 8:00 PM",
+    "entryFee": "Free",
+    "address": "Papavanasam Road, Tirumala, AP 517504",
+    "rating": 4.7,
+    "reviewCount": 3800,
+    "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTm1Pe1VnNZ9501UXy938cfw3i9LVBCtKaBCIpY-N86Ww&s=10",
+    "images": [
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTm1Pe1VnNZ9501UXy938cfw3i9LVBCtKaBCIpY-N86Ww&s=10"
+    ],
+    "coordinates": {
+      "lat": 13.7030482,
+      "lng": 79.3448467
+    },
+    "tags": [
+      "Krishna",
+      "Tirumala",
+      "Hathiramji Mutt",
+      "Woodland Shrine"
+    ],
+    "bestTime": "Morning and Evening",
+    "practicalInfo": {
+      "dressCode": "Traditional Indian attire",
+      "food": "Local stalls nearby",
+      "parking": "Available along road"
+    },
+    "travelEstimates": {
+      "venkateswara": "10 mins",
+      "papavinasam": "10 mins"
+    },
+    "relatedPlaces": [
+      "venkateswara",
+      "papavinasam",
+      "japali-theertham",
+      "gogarbham"
+    ]
+  },
+  {
+    "id": "govindaraja",
+    "name": "Sri Govindaraja Swamy Temple",
+    "category": "Core Temple",
+    "placeType": "spiritual",
+    "location": "Tirupati Town",
+    "distanceKms": 1,
+    "durationMins": 120,
+    "budgetLevel": "budget",
+    "entryFeeNum": 0,
+    "interests": [
+      "spiritual",
+      "architecture"
+    ],
+    "openFrom": 5,
+    "openTo": 21,
+    "isMustVisit": true,
+    "description": "The city's main temple with a towering gopuram.",
+    "history": "Consecrated by Sri Ramanujacharya in 1130 AD. The temple was built to house the deity of Lord Govindaraja Swamy brought safely from Chidambaram.",
+    "timings": "5:00 AM - 9:00 PM",
+    "entryFee": "Free",
+    "address": "Railway Station Road, Tirupati",
+    "rating": 4.6,
+    "reviewCount": 32000,
+    "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSU5eKvXj8945CaVtKytVG7j6dVXga2iXDgmERI_1YTMw&s=10",
+    "coordinates": {
+      "lat": 13.6299,
+      "lng": 79.4163
+    },
+    "images": [
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSU5eKvXj8945CaVtKytVG7j6dVXga2iXDgmERI_1YTMw&s=10"
+    ],
+    "tags": [
+      "Gopuram",
+      "Ancient",
+      "Ramanuja",
+      "Heritage"
+    ],
+    "bestTime": "Morning and Evening hours",
+    "practicalInfo": {
+      "dressCode": "Traditional",
+      "food": "Many options nearby",
+      "parking": "City parking available"
+    },
+    "travelEstimates": {
+      "padmavathi": "15 mins"
+    },
+    "status": "Published",
+    "importanceLevel": "Iconic",
+    "visitDifficulty": "Easy",
+    "visitType": "Half Day",
+    "oneReasonToVisit": "One of Tirupati's oldest and most architecturally significant temples with a magnificent 7-tier gopuram.",
+    "verification": {
+      "status": "Verified",
+      "verifiedBy": "TTD & Ground Team",
+      "verifiedDate": "2026-07-21",
+      "source": "TTD",
+      "confidenceScore": 98,
+      "lastUpdated": "2026-07-21"
+    },
+    "recommendationContext": {
+      "bestTimeOfDay": [
+        "Morning",
+        "Evening"
+      ],
+      "idealWeather": [
+        "Sunny",
+        "Cloudy",
+        "Winter"
+      ],
+      "idealSeason": [
+        "Winter",
+        "Festival Season",
+        "All Seasons"
+      ],
+      "crowdEscape": false,
+      "typicalCrowd": "Medium",
+      "indoorOutdoor": "Both",
+      "familyFriendly": true,
+      "seniorFriendly": true,
+      "wheelchairAccessible": true,
+      "kidsFriendly": true,
+      "photographyFriendly": true,
+      "basePriority": 90,
+      "recommendationPriority": 95,
+      "recommendationReasons": [
+        "Open Now",
+        "Architectural Marvel",
+        "Historic Heritage",
+        "Senior Friendly",
+        "TTD Verified"
+      ]
+    },
+    "searchIntelligence": {
+      "aliases": [
+        "Govindaraja",
+        "Govinda Temple",
+        "Big Temple",
+        "Ancient Temple",
+        "Ramanuja Temple",
+        "Railway Station Temple"
+      ],
+      "tags": [
+        "Architecture",
+        "History",
+        "Peaceful",
+        "Temple",
+        "Morning",
+        "Family",
+        "Heritage"
+      ],
+      "intentQueries": [
+        "History",
+        "Temple",
+        "Architecture",
+        "Ramanuja",
+        "Photography",
+        "Ancient",
+        "Peace",
+        "Meditation"
+      ],
+      "misspellings": [
+        "Govindraja",
+        "Govindraj",
+        "Govindraj Temple",
+        "Govindaswamy"
+      ]
+    },
+    "relationships": {
+      "nearby": [
+        "padmavathi",
+        "kapila-theertham"
+      ],
+      "alternatives": [
+        "padmavathi"
+      ],
+      "nextVisit": [
+        "kapila-theertham",
+        "alipiri-footpath"
+      ],
+      "recommendedTogether": [
+        "padmavathi",
+        "kapila-theertham"
+      ]
+    },
+    "detailedFacilities": {
+      "parking": {
+        "available": true,
+        "distance": "100m",
+        "cost": "Free"
+      },
+      "washrooms": {
+        "available": true,
+        "distance": "50m",
+        "cost": "Free"
+      },
+      "drinkingWater": {
+        "available": true,
+        "distance": "20m",
+        "cost": "Free"
+      },
+      "footwearCounter": {
+        "available": true,
+        "distance": "10m",
+        "cost": "Free"
+      },
+      "locker": {
+        "available": true,
+        "distance": "30m",
+        "cost": "Free"
+      }
+    }
+  },
+  {
+    "id": "padmavathi",
+    "name": "Sri Padmavathi Ammavari Temple",
+    "category": "Core Temple",
+    "placeType": "spiritual",
+    "location": "Tiruchanur",
+    "distanceKms": 5,
+    "durationMins": 120,
+    "budgetLevel": "budget",
+    "entryFeeNum": 20,
+    "interests": [
+      "spiritual",
+      "family"
+    ],
+    "openFrom": 5,
+    "openTo": 22,
+    "isMustVisit": true,
+    "description": "Dedicated to Goddess Padmavathi, the Lord's consort.",
+    "history": "The temple marks the spot where Goddess Padmavathi manifested in a golden lotus pond (Padma Sarovar). The temple was established and patronized by the Pallava kings and later expanded during the Vijayanagara era.",
+    "timings": "5:00 AM - 9:30 PM",
+    "entryFee": "Free General Queue. ₹20 for Quick Darshan and ₹100 for Special Entry.",
+    "address": "Tiruchanur, AP",
+    "rating": 4.7,
+    "reviewCount": 45000,
+    "image": "/assets/temples/padmavathi.png",
+    "coordinates": {
+      "lat": 13.607974,
+      "lng": 79.450015
+    },
+    "shortIntro": "Dedicated to Goddess Padmavathi, the consort of Lord Venkateswara, this ancient temple in Tiruchanur is an essential pilgrimage stop, traditionally visited after seeking blessings at Tirumala.",
+    "whyVisit": "Goddess Padmavathi is the symbol of wealth, compassion, and prosperity. It is customary to visit this temple to complete the Tirupati pilgrimage, as it represents the union of the divine couple.",
+    "openingTime": "5:00 AM",
+    "closingTime": "9:00 PM",
+    "duration": "1 to 2 hours",
+    "travelByRTC": "City buses run frequently from Tirupati Bus Stand and Railway Station directly to Tiruchanur (Route 20, 21) every 10-15 minutes.",
+    "travelByCar": "Located just 5 km from Tirupati city center. Drive via Tiruchanur Road. Easy accessibility and ample parking space.",
+    "travelByBike": "An easy 10-minute ride from the city center via Tiruchanur road.",
+    "approxRTCFare": "₹15 per person city bus fare",
+    "approxCarCost": "₹50-₹100 fuel estimate or ₹200-₹300 auto-rickshaw/cab fare",
+    "approxBikeCost": "₹30 petrol estimate",
+    "images": [
+      "/assets/temples/padmavathi.png"
+    ],
+    "visitorTips": {
+      "dressCode": "Decent traditional or semi-traditional wear required. Dhoti/Kurta for men and Saree/Chudidar for women.",
+      "crowdNote": "Moderately crowded. Fridays (special for Ammavaru) and Panchami Theertham festival see massive crowds.",
+      "footwearRule": "Must be deposited at the free footwear counters near the temple main entrance.",
+      "photoRule": "Mobile phones and photography are strictly prohibited inside the temple walls.",
+      "entryRule": "Special ticket queues are available at the counter on-site. Standard ID verification may be requested."
+    },
+    "tags": [
+      "Goddess",
+      "Family"
+    ],
+    "bestTime": "Morning (during Abhishekam) or late evening. October to March is the best season.",
+    "practicalInfo": {
+      "dressCode": "Traditional",
+      "food": "Veg available",
+      "parking": "Available"
+    },
+    "travelEstimates": {
+      "govindaraja": "15 mins"
+    }
+  },
+  {
+    "id": "alipiri-mettu",
+    "name": "Garuda Statue, Alipiri (Alipiri Mettu)",
+    "category": "Footsteps",
+    "placeType": "spiritual",
+    "location": "Alipiri Base, Tirupati",
+    "distanceKms": 3.5,
+    "durationMins": 240,
+    "budgetLevel": "budget",
+    "entryFeeNum": 0,
+    "interests": [
+      "spiritual",
+      "nature",
+      "adventure",
+      "trekking"
+    ],
+    "openFrom": 0,
+    "openTo": 24,
+    "isMustVisit": true,
+    "description": "The main traditional pedestrian footpath to Tirumala featuring 3,550 steps across 9 km of lush Seshachalam hills. Starting at the iconic Padala Mandapam and Garuda Statue at Alipiri Circle, this sacred trek passes landmark mandapams including Galigopuram, Mokalla Parvatham, and Deer Park.",
+    "history": "Traversed for centuries by saints like Sri Ramanujacharya, Sri Madhvacharya, and Tallapaka Annamacharya, who climbed on his knees out of reverence for the holy hills. Managed by TTD with covered walkways, free luggage transfer, and divya darshan token counters.",
+    "timings": "Open 24 Hours (Covered Trek Route)",
+    "entryFee": "Free",
+    "address": "Alipiri Circle & Footpath Gateway, Tirupati, Andhra Pradesh 517507",
+    "rating": 4.8,
+    "reviewCount": 85000,
+    "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSlZ9C7EjcGfivrpgHdYY8vkYwq6I_gIGdKDWmzqQvXAw&s=10",
+    "coordinates": {
+      "lat": 13.647051,
+      "lng": 79.405856
+    },
+    "shortIntro": "Alipiri Mettu is the primary 3,550-step traditional walking route to Tirumala, equipped with sheltered pathways, drinking water, and free luggage transport by TTD.",
+    "whyVisit": "Climb the sacred 9 km trail through Seshachalam hills, pass historic Galigopuram, and avail TTD Divya Darshan token benefits.",
+    "openingTime": "Open 24 Hours",
+    "closingTime": "Open 24 Hours",
+    "duration": "3 to 4 hours trek",
+    "travelByRTC": "Take APSRTC local town buses (Routes 111, 222) or auto-rickshaws directly to Alipiri Circle / Garuda Statue.",
+    "travelByCar": "Drive 10 minutes (3.5 km) from Tirupati Railway Station / Central Bus Station. Multi-level car parking available at Alipiri base.",
+    "travelByBike": "Ride 10 minutes to Alipiri entrance gate. Dedicated 2-wheeler parking available at Alipiri base.",
+    "approxRTCFare": "₹15 bus / ₹40 auto fare",
+    "approxCarCost": "₹50 local fuel",
+    "approxBikeCost": "₹20 petrol",
+    "images": [
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSlZ9C7EjcGfivrpgHdYY8vkYwq6I_gIGdKDWmzqQvXAw&s=10"
+    ],
+    "tags": [
+      "Alipiri Mettu",
+      "3550 Steps",
+      "Galigopuram",
+      "Pedestrian Trek",
+      "TTD Footpath"
+    ],
+    "bestTime": "Early Morning (3:00 AM - 6:00 AM) or Night (cool temperatures & lit walkway)",
+    "practicalInfo": {
+      "dressCode": "Modest / Traditional trekking attire",
+      "food": "TTD free water & food stalls along entire route",
+      "parking": "Ample parking at Alipiri base"
+    },
+    "visitorTips": {
+      "dressCode": "Comfortable footwear and modest traditional attire. Carry a light jacket during winter nights.",
+      "crowdNote": "TTD provides free luggage transfer service at Alipiri base — deposit bags at Alipiri and collect them at Tirumala summit."
+    },
+    "spiritualInfo": {
+      "god": "Lord Sri Venkateswara Swamy",
+      "knownFor": "Sacred 3,550-step pilgrimage trail, Padala Mandapam, and Galigopuram hill peak",
+      "mantra": "Govinda Govinda",
+      "devoteeTips": [
+        "Deposit heavy luggage at TTD free counter before starting the climb.",
+        "Take short rest halts at Galigopuram and Deer Park."
+      ]
+    },
+    "travelEstimates": {
+      "tirupati-railway-station": "10 mins",
+      "kapila-theertham": "5 mins"
+    }
+  },
+  {
+    "id": "kapila-theertham",
+    "name": "Kapila Theertham",
+    "category": "Core Temple",
+    "placeType": "spiritual",
+    "location": "Base of Hills",
+    "distanceKms": 3,
+    "durationMins": 90,
+    "budgetLevel": "budget",
+    "entryFeeNum": 0,
+    "interests": [
+      "spiritual",
+      "nature"
+    ],
+    "openFrom": 5,
+    "openTo": 21,
+    "isMustVisit": true,
+    "description": "Shaivite temple at the base with a stunning waterfall.",
+    "history": "Named after Maharishi Kapila, who did severe penance here. Lord Shiva appeared before him from the earth, and the holy spring emerged. The temple was built and patronized by the Pallava kings and later by the Vijayanagara Emperors.",
+    "timings": "5:00 AM - 9:00 PM",
+    "entryFee": "Free entry. Special Darshan ticket available at ₹5 and Special Pooja at ₹25.",
+    "address": "Alipiri Road, Tirupati",
+    "rating": 4.6,
+    "reviewCount": 18000,
+    "image": "/assets/temples/kapila-theertham.png",
+    "coordinates": {
+      "lat": 13.6564,
+      "lng": 79.4208
+    },
+    "shortIntro": "Located at the foot of the sacred Tirumala Hills, Kapila Theertham is a unique Shiva temple featuring a breathtaking holy waterfall that plunges into a sacred pond.",
+    "whyVisit": "It is the only Shiva temple in the Tirupati region. Taking a dip in the holy Kapila waterfall is believed to wash away sins and prepare the pilgrim for the Tirumala journey.",
+    "openingTime": "5:00 AM",
+    "closingTime": "8:00 PM",
+    "duration": "1 hour",
+    "travelByRTC": "Take local city buses or auto-rickshaws from Tirupati Railway Station or Bus Stand. Frequent services are available towards Alipiri.",
+    "travelByCar": "Situated just 3 km from Tirupati city center towards Alipiri. Drive via Kapila Theertham road. Limited parking is available near the entrance.",
+    "travelByBike": "A quick 5-minute ride from any central point in Tirupati.",
+    "approxRTCFare": "₹10 per person city bus / ₹60 for shared auto",
+    "approxCarCost": "₹50 fuel or ₹150 auto/cab ride",
+    "approxBikeCost": "₹20 petrol",
+    "images": [
+      "/assets/temples/kapila-theertham.png"
+    ],
+    "visitorTips": {
+      "dressCode": "Devotional traditional wear is appreciated. Casual wear is permitted but should be modest.",
+      "crowdNote": "Generally peaceful, but sees huge crowds during Karthika Masam and Maha Shivaratri.",
+      "footwearRule": "Deposit counters are available outside the temple gates.",
+      "photoRule": "Photography is permitted around the waterfall pond, but prohibited inside the Shiva shrine.",
+      "entryRule": "Open to all public. Bathing in the pond is permitted; take necessary safety precautions."
+    },
+    "tags": [
+      "Shiva",
+      "Waterfall",
+      "Nature",
+      "Pilgrimage"
+    ],
+    "bestTime": "Monsoon season (August to November) when the waterfall is in full force.",
+    "idealFor": [
+      "Photographers",
+      "Couples",
+      "Solo Travelers",
+      "Families"
+    ],
+    "status": "Published",
+    "importanceLevel": "Recommended",
+    "visitDifficulty": "Moderate",
+    "visitType": "Quick Stop",
+    "oneReasonToVisit": "Best waterfall temple near Tirupati with peaceful natural surroundings and sacred Shiva shrine.",
+    "verification": {
+      "status": "Verified",
+      "verifiedBy": "Ground Visit & TTD Data",
+      "verifiedDate": "2026-07-21",
+      "source": "Ground Visit",
+      "confidenceScore": 96,
+      "lastUpdated": "2026-07-21"
+    },
+    "recommendationContext": {
+      "bestTimeOfDay": [
+        "Morning",
+        "Evening"
+      ],
+      "idealWeather": [
+        "Rain",
+        "Cloudy",
+        "Winter"
+      ],
+      "idealSeason": [
+        "Monsoon",
+        "Winter"
+      ],
+      "crowdEscape": true,
+      "typicalCrowd": "Low",
+      "indoorOutdoor": "Outdoor",
+      "familyFriendly": true,
+      "seniorFriendly": true,
+      "wheelchairAccessible": false,
+      "kidsFriendly": true,
+      "photographyFriendly": true,
+      "basePriority": 85,
+      "recommendationPriority": 90,
+      "recommendationReasons": [
+        "Scenic Waterfall",
+        "Cool Weather",
+        "Peaceful Ambience",
+        "Rain Friendly",
+        "Photography Spot"
+      ]
+    },
+    "searchIntelligence": {
+      "aliases": [
+        "Kapila",
+        "Waterfall Temple",
+        "Shiva Temple Tirupati",
+        "Kapila Teertham",
+        "Kapileswara Swamy"
+      ],
+      "tags": [
+        "Nature",
+        "Waterfall",
+        "Shiva",
+        "Scenic",
+        "Peaceful",
+        "Photography"
+      ],
+      "intentQueries": [
+        "Waterfall",
+        "Shiva",
+        "Nature",
+        "Photography",
+        "Quiet",
+        "Peace",
+        "Monsoon"
+      ],
+      "misspellings": [
+        "Kapilatheertham",
+        "Kapil teertham",
+        "Kapila teertham",
+        "Kapileshwar"
+      ]
+    },
+    "relationships": {
+      "nearby": [
+        "alipiri-footpath",
+        "regional-science-centre"
+      ],
+      "alternatives": [
+        "talakona-waterfalls"
+      ],
+      "nextVisit": [
+        "alipiri-footpath",
+        "govindaraja"
+      ],
+      "recommendedTogether": [
+        "alipiri-footpath",
+        "regional-science-centre"
+      ]
+    },
+    "detailedFacilities": {
+      "parking": {
+        "available": true,
+        "distance": "150m",
+        "cost": "Free"
+      },
+      "washrooms": {
+        "available": true,
+        "distance": "100m",
+        "cost": "Free"
+      },
+      "drinkingWater": {
+        "available": true,
+        "distance": "30m",
+        "cost": "Free"
+      },
+      "footwearCounter": {
+        "available": true,
+        "distance": "20m",
+        "cost": "Free"
+      }
+    },
+    "saarthiIntelligence": {
+      "enabled": true,
+      "crowdLevel": "Moderate",
+      "waitingTime": "20-30 mins",
+      "recommendedTransport": "Auto from Alipiri (₹60)",
+      "parkingDifficulty": "Moderate",
+      "travelScore": 88,
+      "confidence": 85,
+      "source": "Recent Visitor Check-ins",
+      "lastUpdated": "11:30 AM"
+    },
+    "contentCreator": {
+      "summary30": "A peaceful Shiva temple at the base of Tirumala with a massive natural waterfall.",
+      "summary100": "Kapila Theertham is the only Shiva temple in Tirupati, sitting right at the foot of the Tirumala hills. The highlight is the breathtaking waterfall plunging directly into the temple pond, especially magnificent during monsoons.",
+      "hook": "Don't start your Tirumala trek without visiting this hidden waterfall first!",
+      "scriptNotes": "Get B-roll of the waterfall hitting the pond. Mention Kapila Muni.",
+      "thumbnailText": "HIDDEN WATERFALL"
+    },
+    "practicalInfo": {
+      "dressCode": "Modest",
+      "food": "Stalls nearby",
+      "parking": "Limited"
+    },
+    "travelEstimates": {
+      "venkateswara": "40 mins"
+    }
+  },
+  {
+    "id": "srinivasa-mangapuram",
+    "name": "Sri Kalyana Venkateswara Swamy Temple",
+    "category": "Core Temple",
+    "placeType": "spiritual",
+    "location": "Srinivasa Mangapuram",
+    "distanceKms": 12,
+    "durationMins": 90,
+    "budgetLevel": "budget",
+    "entryFeeNum": 0,
+    "interests": [
+      "spiritual",
+      "marriage"
+    ],
+    "openFrom": 5,
+    "openTo": 20,
+    "isMustVisit": true,
+    "description": "Where the Lord stayed after his marriage.",
+    "history": "Considered equal to Tirumala for those who cannot climb.",
+    "timings": "5:00 AM - 8:00 PM",
+    "entryFee": "Free",
+    "address": "Srinivasa Mangapuram, AP",
+    "rating": 4.7,
+    "reviewCount": 12000,
+    "image": "/assets/temples/srinivasa-mangapuram.png",
+    "coordinates": {
+      "lat": 13.6108,
+      "lng": 79.3277
+    },
+    "tags": [
+      "Marriage",
+      "Alternative"
+    ],
+    "bestTime": "Morning",
+    "practicalInfo": {
+      "dressCode": "Traditional",
+      "food": "Limited",
+      "parking": "Available"
+    },
+    "travelEstimates": {
+      "tirupati": "20 mins"
+    }
+  },
+  {
+    "id": "kodandarama-temple",
+    "name": "Sri Kodanda Rama Swamy Temple",
+    "category": "Core Temple",
+    "placeType": "spiritual",
+    "location": "Nehru Nagar, Tirupati",
+    "distanceKms": 1.5,
+    "durationMins": 60,
+    "budgetLevel": "budget",
+    "entryFeeNum": 0,
+    "interests": [
+      "spiritual",
+      "history"
+    ],
+    "openFrom": 5,
+    "openTo": 21,
+    "isMustVisit": true,
+    "description": "Situated at RS Mada Street in Nehru Nagar, Tirupati, Sri Kodandarama Swamy Temple is a magnificent 10th-century Chola heritage temple managed by TTD. According to temple puranas, Lord Rama, Goddess Sita, and Lakshmana spent a night resting here while returning from Lanka. The sanctum features monolithic stone deities of Lord Rama holding his bow (Kodanda), flanked by Sita Devi and Lakshmana.",
+    "history": "Consecrated initially in the 10th century during the Chola reign, the temple was later extensively renovated and expanded by Saluva Narasimha Deva Raya and Krishnadevaraya of the Vijayanagara Empire. The temple complex includes a sacred Pushkarini (Sanjeevani Pushkarini) and dedicated sub-shrines.",
+    "timings": "5:00 AM - 9:00 PM",
+    "entryFee": "Free entry for all devotees",
+    "address": "7/3/102, RS Mada St, Nehru Nagar, Tirupati, Andhra Pradesh 517501",
+    "rating": 4.8,
+    "reviewCount": 9800,
+    "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ6884Lk40i7UBr7eK28XIEW6ry3y3fWEDaRJYca_HFfQ&s=10",
+    "coordinates": {
+      "lat": 13.635037,
+      "lng": 79.416753
+    },
+    "shortIntro": "Sri Kodandarama Swamy Temple in Tirupati is a 10th-century Chola-era temple under TTD management, marking the sacred spot where Lord Rama, Sita, and Lakshmana halted after returning from Lanka.",
+    "whyVisit": "Revered for its ancient Dravidian architecture, 1,000-year history, divine monolithic idols of Lord Rama, Sita Devi & Lakshmana, and grand annual Sri Rama Navami Brahmotsavams.",
+    "openingTime": "5:00 AM",
+    "closingTime": "9:00 PM",
+    "duration": "45 to 60 minutes",
+    "travelByRTC": "Take an auto-rickshaw or walk 10 minutes (1.5 km) from Tirupati Railway Station / Central Bus Station.",
+    "travelByCar": "Drive 5 minutes from Tirupati Railway Station via Gandhi Road and RS Mada Street. Street parking available.",
+    "travelByBike": "Ride 5 minutes from Tirupati town center. Dedicated two-wheeler parking available along Mada Street.",
+    "approxRTCFare": "₹30-₹50 auto fare",
+    "approxCarCost": "₹50 local fuel / auto",
+    "approxBikeCost": "₹20 petrol",
+    "images": [
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ6884Lk40i7UBr7eK28XIEW6ry3y3fWEDaRJYca_HFfQ&s=10"
+    ],
+    "tags": [
+      "Kodandarama",
+      "Lord Rama",
+      "Chola Dynasty",
+      "RS Mada Street",
+      "TTD Temple"
+    ],
+    "bestTime": "Morning (6:00 AM – 10:00 AM) or Evening (5:00 PM – 8:30 PM)",
+    "practicalInfo": {
+      "dressCode": "Traditional / Modest attire",
+      "food": "Eateries nearby in Mada Street",
+      "parking": "Street parking available"
+    },
+    "visitorTips": {
+      "dressCode": "Traditional dhotis/kurtas or modest attire recommended.",
+      "crowdNote": "Free entry with fast-moving darshan line. Draws grand crowds during annual Sri Rama Navami and Teppotsavam (float festival)."
+    },
+    "spiritualInfo": {
+      "god": "Lord Kodandarama Swamy",
+      "knownFor": "Divine resting place of Lord Rama post-Lanka victory; Kodanda bow idol posture",
+      "mantra": "Om Sri Ramaya Namaha",
+      "devoteeTips": [
+        "Participate in the morning Suprabhatam or evening Unjal Seva.",
+        "Visit Sanjeevani Pushkarini located adjacent to the temple premises."
+      ]
+    },
+    "travelEstimates": {
+      "govindaraja": "3 mins",
+      "tirupati-railway-station": "5 mins"
+    }
+  },
+  {
+    "id": "iskcon-tirupati",
+    "name": "ISKCON Tirupati",
+    "category": "Core Temple",
+    "placeType": "spiritual",
+    "location": "Alipiri",
+    "distanceKms": 4,
+    "durationMins": 120,
+    "budgetLevel": "budget",
+    "entryFeeNum": 0,
+    "interests": [
+      "spiritual",
+      "culture"
+    ],
+    "openFrom": 4,
+    "openTo": 21,
+    "isMustVisit": true,
+    "description": "Modern lotus-shaped temple with a vibrant cultural and spiritual centre.",
+    "shortIntro": "The ISKCON Tirupati Temple (Sri Sri Radha Govinda Mandir), located at the foothills of Tirumala in Alipiri, is one of the largest and most vibrant ISKCON centers in Southern India, renowned for its architectural elegance and unique modern lotus-shaped design.",
+    "whyVisit": "Features a unique modern lotus-shaped architecture, a peaceful gate to Tirumala, and offers pure vegetarian dining (Govinda Restaurant), mantra meditation, and spiritual peace.",
+    "history": "In 1974, founder-acharya Srila Prabhupada visited Tirupati, saw the Seshachalam hills as the home of Lord Venkateswara (non-different from Lord Krishna), and envisioned a center to teach the philosophy of the Bhagavad Gita. This led to the consecration of the temple, featuring the main deities Sri Sri Radha Govinda.",
+    "timings": "4:00 AM - 9:00 PM (All days open, Darshan Break: 1:00 PM - 4:15 PM)",
+    "entryFee": "Free",
+    "address": "Hare Krishna Road, Tirupati",
+    "rating": 4.8,
+    "reviewCount": 35000,
+    "image": "/assets/temples/iskcon.png",
+    "coordinates": {
+      "lat": 13.6469,
+      "lng": 79.4138
+    },
+    "tags": [
+      "Krishna",
+      "Modern"
+    ],
+    "bestTime": "Evening Aarti (Sandhya Aarti at 7:00 PM)",
+    "practicalInfo": {
+      "dressCode": "Modest and respectful clothing mandatory (traditional preferred, footwear must be deposited at free counter)",
+      "food": "Govinda Restaurant inside campus",
+      "parking": "Spacious parking, clean restrooms, free cloakroom, wheelchair accessible (ramps and lifts)"
+    },
+    "travelEstimates": {
+      "kapila-theertham": "5 mins"
+    },
+    "relatedPlaces": [
+      "regional-science-centre",
+      "kapila-theertham",
+      "dhyana-vignan-mandiram",
+      "alipiri-footpath"
+    ]
+  },
+  {
+    "id": "chandragiri-fort",
+    "name": "Chandragiri Fort",
+    "category": "Historical",
+    "placeType": "historical",
+    "location": "Chandragiri",
+    "distanceKms": 15,
+    "durationMins": 120,
+    "budgetLevel": "budget",
+    "entryFeeNum": 20,
+    "interests": [
+      "history",
+      "architecture"
+    ],
+    "openFrom": 9,
+    "openTo": 18,
+    "isMustVisit": true,
+    "description": "Major 11th-century fort with Raja and Rani Mahal.",
+    "history": "Built by the Yadava Naidus in 1000 AD and taken over by the Vijayanagara kings. In 1585, it became their main capital after the fall of Hampi. It was here that the treaty was signed in 1639 granting land to the British East India Company to build Fort St. George, starting modern Madras (Chennai).",
+    "timings": "9:00 AM - 6:00 PM",
+    "entryFee": "₹25 per person (ASI Entry ticket). Sound and Light show costs ₹100 per adult.",
+    "address": "Chandragiri, AP",
+    "rating": 4.5,
+    "reviewCount": 12500,
+    "image": "/assets/history/chandragiri.png",
+    "coordinates": {
+      "lat": 13.58303,
+      "lng": 79.30528
+    },
+    "shortIntro": "Chandragiri Fort is a historic 11th-century fort that served as the final capital of the Vijayanagara Empire, showcasing outstanding Indo-Sarcenic architecture.",
+    "whyVisit": "Features the magnificent Raja Mahal (King's Palace) and Rani Mahal (Queen's Palace), a museum of ancient artifacts, and a popular light & sound show in the evenings.",
+    "openingTime": "9:00 AM",
+    "closingTime": "6:00 PM",
+    "duration": "2 hours",
+    "travelByRTC": "Frequent local city buses (Route 100, etc.) and shared auto-rickshaws run from Tirupati railway station and bus stand to Chandragiri (15 km away).",
+    "travelByCar": "Located 15 km from Tirupati city center. Drive via Tirupati-Madanapalle highway. The road is broad and smooth, with ample parking at the fort.",
+    "travelByBike": "A pleasant 20-minute ride from Tirupati via the NH140 highway.",
+    "approxRTCFare": "₹25 city bus fare one-way",
+    "approxCarCost": "₹200 fuel or ₹600 auto/taxi fare",
+    "approxBikeCost": "₹70 petrol round trip",
+    "images": [
+      "/assets/history/chandragiri.png"
+    ],
+    "visitorTips": {
+      "dressCode": "Casual clothing. Wear comfortable walking shoes as there is significant walking across the gardens.",
+      "crowdNote": "Moderately busy. Weekends see a surge in local families and tourists for the laser show.",
+      "footwearRule": "Allowed throughout the fort and palace grounds; must be removed if entering the museum galleries.",
+      "photoRule": "Photography is permitted on the grounds and outside the structures. Camera fees may apply inside the palace museum.",
+      "entryRule": "ASI entry ticket counters close at 5:00 PM. Sound & Light show tickets are sold separately."
+    },
+    "tags": [
+      "Fort",
+      "Vijayanagara"
+    ],
+    "bestTime": "Late afternoon (4:00 PM onwards) so you can explore the fort and stay for the Sound and Light show.",
+    "practicalInfo": {
+      "dressCode": "Casual",
+      "food": "Limited",
+      "parking": "Available"
+    },
+    "travelEstimates": {
+      "tirupati": "20 mins"
+    }
+  },
+  {
+    "id": "gudimallam-temple",
+    "name": "Sri Parasurameswara Swamy Temple (Gudimallam)",
+    "category": "Historical",
+    "placeType": "spiritual",
+    "location": "Gudimallam",
+    "distanceKms": 22,
+    "durationMins": 90,
+    "budgetLevel": "budget",
+    "entryFeeNum": 0,
+    "interests": [
+      "history",
+      "spiritual"
+    ],
+    "openFrom": 7,
+    "openTo": 20,
+    "isMustVisit": true,
+    "whyVisit": "This temple houses the world's oldest surviving naturalistic Shiva Lingam, dating to the 3rd century BCE — over 2,300 years old. It features a unique Trimurti representation with Lord Brahma at the base, Lord Vishnu in the middle, and Lord Shiva at the top.",
+    "shortIntro": "The Parasurameswara Swamy Temple in Gudimallam houses the world's oldest surviving naturalistic Shiva Lingam (3rd century BCE). Located on Papanaidupet-Gudimallam Road in Yerpedu Mandal, it is an ancient archaeological and spiritual marvel.",
+    "description": "Home to the oldest known naturalistic Shiva Lingam in India, dating to 3rd century BCE, featuring a unique Trimurti carving of Brahma, Vishnu, and Shiva.",
+    "history": "The Parasurameswara Swamy Temple is an archaeological treasure of immense historical significance. The main Lingam is carved from a single stone, featuring Lord Shiva standing on a dwarf (Yaksha), flanked by Lord Brahma and Lord Vishnu. Inscriptions link the temple to the Pallava, Chola and Vijayanagara dynasties.",
+    "timings": "7:00 AM - 8:00 PM",
+    "openingTime": "7:00 AM",
+    "closingTime": "8:00 PM",
+    "entryFee": "Free Entry",
+    "address": "PMRM+J6G, Papanaidupet - Gudimallam Rd, Gudimallam, Yerpedu Mandal, AP 517526",
+    "rating": 4.8,
+    "reviewCount": 3856,
+    "image": "/assets/temples/gudimallam.png",
+    "coordinates": {
+      "lat": 13.5694,
+      "lng": 79.5781
+    },
+    "tags": [
+      "Ancient",
+      "Shiva",
+      "Trimurti",
+      "Archaeological",
+      "PMRM+J6G"
+    ],
+    "bestTime": "Morning (7:00 AM – 11:30 AM) or Evening (4:30 PM – 8:00 PM)",
+    "practicalInfo": {
+      "dressCode": "Strict Traditional",
+      "food": "No restaurants or food stalls nearby — carry water & snacks",
+      "parking": "Available"
+    },
+    "travelEstimates": {
+      "tirupati": "45 mins"
+    },
+    "visitorTips": {
+      "dressCode": "Strict traditional wear mandatory (Dhoti/Pajamas for men, Saree/Chudidar for women). Shorts and sleeveless tops are prohibited.",
+      "photoRule": "Photography is strictly forbidden inside the inner sanctum. Permitted only in outer courtyard.",
+      "footwearRule": "Must be deposited at footwear stand outside.",
+      "crowdNote": "Generally peaceful. Moderate crowds on Mondays and festival days.",
+      "entryRule": "Free public entry for general darshan. Note: No office/helpdesk, restrooms, or eateries on site — carry drinking water."
+    }
+  },
+  {
+    "id": "talakona-falls",
+    "name": "Talakona Waterfalls",
+    "category": "Nature",
+    "placeType": "nature",
+    "location": "Nerabailu",
+    "distanceKms": 58,
+    "durationMins": 300,
+    "budgetLevel": "medium",
+    "entryFeeNum": 50,
+    "interests": [
+      "nature",
+      "trekking"
+    ],
+    "openFrom": 6,
+    "openTo": 17,
+    "isMustVisit": true,
+    "description": "Highest waterfall in Andhra Pradesh (270 ft).",
+    "history": "The name 'Talakona' translates to 'head hill' in Telugu, signifying the starting point of the Seshachalam Hills. It was declared an eco-tourism project in the 1990s and houses an ancient temple dedicated to Lord Siddheswara Swamy.",
+    "timings": "6:00 AM - 5:00 PM",
+    "entryFee": "₹10 per person entry fee. Forest checkpoint charges separate vehicle fees.",
+    "address": "Tirupati District",
+    "rating": 4.8,
+    "reviewCount": 15700,
+    "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRnkybt1IzeTJuGu2co-uxGJaz6Kle_LlFQQj69o6jIDQ&s",
+    "coordinates": {
+      "lat": 13.7833,
+      "lng": 79.2167
+    },
+    "shortIntro": "Talakona is the highest waterfall in Andhra Pradesh, cascading from a height of 270 feet into a deep valley, surrounded by the lush Sri Venkateswara National Park.",
+    "whyVisit": "Ideal for nature lovers, trekkers, and eco-tourists. The water is rich in medicinal herbs and minerals, believed to have healing properties.",
+    "openingTime": "6:00 AM",
+    "closingTime": "5:00 PM",
+    "duration": "3 to 4 hours",
+    "travelByRTC": "Limited direct public buses run from Tirupati Bus Stand to Talakona. It is recommended to take a bus to Bakarapeta and then hire a local auto-rickshaw.",
+    "travelByCar": "Distance is 58 km from Tirupati. Hire a private cab or drive via Tirupati-Madanapalle Road. The route goes through beautiful forest ranges. Cab cost is around ₹2,500.",
+    "travelByBike": "A scenic 1.5-hour highway and forest ride. Ensure your bike is in good condition as forest roads are lonely.",
+    "approxRTCFare": "₹80 bus fare to Bakarapeta + ₹150 shared auto",
+    "approxCarCost": "₹800 fuel or ₹2,500 taxi rental. Forest entry fee is ₹50 per vehicle.",
+    "approxBikeCost": "₹250 petrol round trip.",
+    "images": [
+      "/assets/nature/talakona.png"
+    ],
+    "visitorTips": {
+      "dressCode": "Casual comfortable clothing. Wear sports shoes with good grip for trekking. Bring a change of clothes if you plan to bathe.",
+      "crowdNote": "Highly crowded on weekends and national holidays. Visit on weekdays for a peaceful experience.",
+      "footwearRule": "No footwear restrictions outside, but shoes are not allowed inside the Siddheswara temple.",
+      "photoRule": "Photography is permitted everywhere. Watch out for wild monkeys who might grab cameras or food.",
+      "entryRule": "Entering the forest after 5:00 PM is strictly prohibited. Keep plastic waste out of the eco-zone."
+    },
+    "tags": [
+      "Waterfall",
+      "Biosphere"
+    ],
+    "bestTime": "Post-monsoon (September to January) for the best water flow and lush green scenery.",
+    "practicalInfo": {
+      "dressCode": "Sportswear",
+      "food": "Guest House",
+      "parking": "Available"
+    },
+    "travelEstimates": {
+      "tirupati": "90 mins"
+    }
+  },
+  {
+    "id": "deer-park-tirupati",
+    "name": "Deer Park",
+    "category": "Nature",
+    "placeType": "nature",
+    "location": "Sapthagiri Hills Road / Alipiri Route",
+    "distanceKms": 10,
+    "durationMins": 45,
+    "budgetLevel": "budget",
+    "entryFeeNum": 0,
+    "interests": [
+      "nature",
+      "family",
+      "wildlife"
+    ],
+    "openFrom": 6,
+    "openTo": 18,
+    "isMustVisit": true,
+    "description": "Spanning the tranquil forested slopes along the Tirumala foothills, Deer Park (Kandula Obul Reddy Deer Park Reserve) is a nature sanctuary housing hundreds of spotted deer and sambar. Visitors and pilgrims can stop by to feed fresh cucumbers and carrots to the tame deer while enjoying panoramic mountain breeze.",
+    "history": "Established by TTD Forest Department as part of Seshachalam Biosphere Reserve conservation efforts to protect indigenous spotted deer populations and provide pilgrims with a tranquil nature break on their journey up the Seven Hills.",
+    "timings": "6:00 AM - 6:00 PM",
+    "entryFee": "Free Entry for all visitors",
+    "address": "Alipiri - Tirumala Ghat Road / Footpath Environs, Tirupati, Andhra Pradesh 517507",
+    "rating": 4.5,
+    "reviewCount": 5400,
+    "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQQDUnnELadRRzVv_cWfC3jUbI2bU8vPIx2_OdLa4ohXw&s=10",
+    "coordinates": {
+      "lat": 13.6702,
+      "lng": 79.3785
+    },
+    "shortIntro": "Deer Park in Tirupati is a serene, forested sanctuary maintained by TTD along the Seshachalam hill slopes, home to friendly spotted deer that roam freely amidst lush greenery.",
+    "whyVisit": "A favorite pit-stop for families and pilgrims climbing or driving to Tirumala. Kids and adults can safely observe and feed gentle spotted deer in a serene natural forest environment.",
+    "openingTime": "6:00 AM",
+    "closingTime": "6:00 PM",
+    "duration": "30 to 45 minutes",
+    "travelByRTC": "Take any Tirupati-Tirumala RTC bus and request a brief stop near Deer Park along the Ghat road / Alipiri route.",
+    "travelByCar": "Drive 15 minutes from Alipiri Checkpost along the Tirumala Ghat Road. Designated parking space is available beside the park entrance.",
+    "travelByBike": "Ride 15 minutes along the Ghat road with ample two-wheeler parking near the park gates.",
+    "approxRTCFare": "₹20 - ₹30 per head",
+    "approxCarCost": "Included in Ghat toll",
+    "approxBikeCost": "Included in Ghat toll",
+    "images": [
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQQDUnnELadRRzVv_cWfC3jUbI2bU8vPIx2_OdLa4ohXw&s=10"
+    ],
+    "tags": [
+      "Deer Park",
+      "Spotted Deer",
+      "TTD Forest Sanctuary",
+      "Family Friendly",
+      "Seshachalam"
+    ],
+    "bestTime": "Morning (7:00 AM - 10:00 AM) or Late Afternoon (4:00 PM - 5:30 PM)",
+    "practicalInfo": {
+      "dressCode": "Casual / Walking wear",
+      "food": "Fresh cucumber & carrot vendors",
+      "parking": "Ghat Road Parking Area"
+    },
+    "visitorTips": {
+      "dressCode": "Comfortable walking shoes and light cotton attire.",
+      "crowdNote": "Only feed approved fresh vegetables (cucumber/carrots) sold at authorized stalls. Never offer plastic wrappers or junk food to animals."
+    },
+    "travelEstimates": {
+      "tirupati": "15 mins"
+    }
+  },
+  {
+    "id": "anjanadri-jungle-book",
+    "name": "Sri Prasanna Anjaneya Swamy Temple (7th Mile)",
+    "category": "Tirumala Spot",
+    "placeType": "spiritual",
+    "location": "7th Mile Down Ghat Road, Anjanadri",
+    "distanceKms": 11,
+    "durationMins": 30,
+    "budgetLevel": "budget",
+    "entryFeeNum": 0,
+    "interests": [
+      "nature",
+      "spiritual",
+      "viewpoint"
+    ],
+    "openFrom": 0,
+    "openTo": 24,
+    "isMustVisit": true,
+    "description": "Situated at the 7th Mile along the Tirumala downhill Ghat Road (First Ghat Road) in the Anjanadri hill area, Sri Prasanna Anjaneya Swamy Temple features a colossal 30-foot tall Lord Hanuman statue standing with folded hands. It serves as a traditional prayer stop for travelers seeking safe passage down the hill roads.",
+    "history": "Erected by TTD on Anjanadri — the sacred hill named after Hanuman’s mother Anjana Devi — to offer spiritual solace and protection to travelers and pilgrims navigating the winding Tirumala ghat roads.",
+    "timings": "Open 24 Hours",
+    "entryFee": "Free entry for all devotees",
+    "address": "7th Mile Downhill Ghat Road (First Ghat Road), Anjanadri, Tirumala Hills, AP 517504",
+    "rating": 4.8,
+    "reviewCount": 15400,
+    "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQLnm0Tfarks0dDaaY4zOneJeSnKWZFcrVWv_Iut81_KQ&s=10",
+    "coordinates": {
+      "lat": 13.67,
+      "lng": 79.35
+    },
+    "shortIntro": "Sri Prasanna Anjaneya Swamy Temple at 7th Mile is an iconic 30-foot tall Lord Hanuman shrine on the downhill ghat road, standing with folded hands to bless travelers for a safe journey.",
+    "whyVisit": "A traditional roadside prayer stop for all vehicle commuters and foot pilgrims descending from Tirumala. Travelers pause here for Lord Hanuman’s protection for a safe journey on the winding ghat road.",
+    "openingTime": "Open 24 Hours",
+    "closingTime": "Open 24 Hours",
+    "duration": "15 to 30 minutes stopover",
+    "travelByRTC": "RTC buses make a short roadside halt at 7th Mile along the downhill Tirumala route.",
+    "travelByCar": "Drive along 1st Ghat Road (Downhill route). Free roadside short-term parking is available directly adjacent to the temple.",
+    "travelByBike": "Ride along 1st Ghat Road with easy roadside short-term parking right next to the temple.",
+    "approxRTCFare": "Included in Ghat bus transit",
+    "approxCarCost": "Included in Ghat toll",
+    "approxBikeCost": "Included in Ghat toll",
+    "images": [
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQLnm0Tfarks0dDaaY4zOneJeSnKWZFcrVWv_Iut81_KQ&s=10"
+    ],
+    "tags": [
+      "Sri Prasanna Anjaneya",
+      "7th Mile Hanuman",
+      "Downhill Ghat Road",
+      "Anjanadri Hill",
+      "Safe Travel Prayer Stop"
+    ],
+    "bestTime": "Open 24 Hours (Day / Night Travel Stop)",
+    "practicalInfo": {
+      "dressCode": "Modest attire",
+      "food": "Free TTD Refreshments & Stalls",
+      "parking": "Free roadside short-term parking"
+    },
+    "visitorTips": {
+      "dressCode": "Modest casual or traditional attire.",
+      "crowdNote": "Free roadside short-term parking is available. TTD provides free hot milk, herbal tea, and drinking water counters near the 7th Mile temple."
+    },
+    "travelEstimates": {
+      "venkateswara": "20 mins drive"
+    }
+  },
+  {
+    "id": "sv-zoo-park",
+    "name": "Sri Venkateswara Zoological Park",
+    "category": "Nature",
+    "placeType": "leisure",
+    "location": "Tirupati outskirts",
+    "distanceKms": 8,
+    "durationMins": 180,
+    "budgetLevel": "medium",
+    "entryFeeNum": 70,
+    "interests": [
+      "wildlife",
+      "family"
+    ],
+    "openFrom": 8.5,
+    "openTo": 17,
+    "openingTime": "8:30 AM",
+    "closingTime": "5:00 PM",
+    "isMustVisit": false,
+    "description": "One of Asia's largest zoological parks spanning over 1,200 hectares at the foothills of the Seshachalam hills, housing animals in massive open enclosures.",
+    "whyVisit": "Spanning over 1,200 hectares at the foothills of the Seshachalam hills, this is one of Asia's largest zoological parks. It operates on advanced conservation concepts, housing animals in massive, near-natural open enclosures rather than traditional cages. Uniquely designed around a mythological theme, every zone correlates native wildlife species with their significance in ancient Indian scriptures.",
+    "history": "Established in 1987, the zoo is uniquely designed around a mythological theme where every zone correlates native wildlife species with their significance in ancient Indian scriptures.",
+    "timings": "8:30 AM - 5:00 PM (Closed on Tuesdays)",
+    "entryFee": "₹70 (Adults) / ₹30 (Children)",
+    "address": "SV Zoo Road, Tirupati outskirts",
+    "rating": 4.2,
+    "reviewCount": 16500,
+    "image": "/assets/leisure/sv-zoo.png",
+    "coordinates": {
+      "lat": 13.62936,
+      "lng": 79.36217
+    },
+    "tags": [
+      "Zoo",
+      "Safari",
+      "Conservation"
+    ],
+    "bestTime": "Morning (10:00 AM - 12:00 PM) or Late Afternoon (3:00 PM - 4:30 PM)",
+    "practicalInfo": {
+      "dressCode": "Casual & comfortable walking shoes",
+      "food": "Canteens & drinking water stalls available",
+      "parking": "Large parking lot"
+    },
+    "travelEstimates": {
+      "tirupati": "15 mins"
+    }
+  },
+  {
+    "id": "srikalahasti",
+    "name": "Srikalahasti Temple",
+    "category": "Day Trip",
+    "placeType": "spiritual",
+    "location": "Srikalahasti",
+    "distanceKms": 38,
+    "durationMins": 180,
+    "budgetLevel": "medium",
+    "entryFeeNum": 500,
+    "interests": [
+      "spiritual",
+      "dosha-nivarana"
+    ],
+    "openFrom": 5,
+    "openTo": 22,
+    "isMustVisit": true,
+    "description": "Representing Air (Vayu Lingam), famous for Rahu-Ketu Puja.",
+    "history": "The temple boasts a monolithic gopuram carved out of a single hill, built during the Pallava period and expanded in the 11th century by the Chola kings. The great Vijayanagara king Krishnadevaraya constructed the massive 120-feet Rajagopuram in 1516 AD.",
+    "timings": "5:00 AM - 9:30 PM",
+    "entryFee": "Free General Darshan. Special Darshan tickets available at ₹50, ₹100, and ₹200. Rahu-Ketu Puja ticket costs range from ₹500 to ₹2,500.",
+    "address": "Srikalahasti, AP",
+    "rating": 4.8,
+    "reviewCount": 45000,
+    "image": "/assets/temples/sri-kalahasti.png",
+    "coordinates": {
+      "lat": 13.7498,
+      "lng": 79.6984
+    },
+    "shortIntro": "Sri Kalahasteeswara Temple is one of the most famous Shiva temples in South India, celebrated as one of the Pancha Bhoota Stalam representing the element of Air (Vayu).",
+    "whyVisit": "Renowned for its architectural beauty and spiritual significance as the Vayu Lingam, it is globally famous for performing Rahu-Ketu Sarpa Dosha Nivarana Pujas.",
+    "openingTime": "6:00 AM",
+    "closingTime": "9:00 PM",
+    "duration": "2 to 3 hours",
+    "travelByRTC": "Frequent APSRTC buses run from Tirupati Bus Stand to Srikalahasti (38 km away) every 10 minutes. Travel time is around 50 minutes.",
+    "travelByCar": "Drive via Tirupati-Srikalahasti Road (NH 71). Excellent highway conditions. Taxi fares range from ₹1,200 to ₹1,800.",
+    "travelByBike": "A scenic 45-minute ride on the NH 71 highway. Highly recommended for a day trip.",
+    "approxRTCFare": "₹50 per person one-way on RTC bus",
+    "approxCarCost": "₹400 fuel, ₹30 toll or ₹1,500 cab rental.",
+    "approxBikeCost": "₹150 petrol round trip.",
+    "images": [
+      "/assets/temples/sri-kalahasti.png"
+    ],
+    "visitorTips": {
+      "dressCode": "Traditional attire is mandatory, especially for those performing Rahu-Ketu Puja. Men: Dhoti or Kurta-Pyjama. Women: Saree or Chudidar with Dupatta.",
+      "crowdNote": "Crowded on Mondays (Lord Shiva's day) and during Rahu Kalam hours when dosha pujas are performed.",
+      "footwearRule": "Must be deposited at footwear stands outside the temple main gate.",
+      "photoRule": "Photography is strictly prohibited inside the main shrine and puja halls.",
+      "entryRule": "Rahu-Ketu Puja materials are included in the ticket fare and provided inside the temple."
+    },
+    "tags": [
+      "Vayu",
+      "Shiva"
+    ],
+    "bestTime": "Winter months (November to February). Visit during early mornings for peaceful darshan.",
+    "practicalInfo": {
+      "dressCode": "Traditional",
+      "food": "Many options",
+      "parking": "Available"
+    },
+    "travelEstimates": {
+      "tirupati": "45 mins"
+    }
+  },
+  {
+    "id": "kanipakam",
+    "name": "Kanipakam Vinayaka Temple",
+    "category": "Day Trip",
+    "placeType": "spiritual",
+    "location": "Kanipakam",
+    "distanceKms": 67.5,
+    "durationMins": 120,
+    "budgetLevel": "medium",
+    "entryFeeNum": 0,
+    "interests": [
+      "spiritual"
+    ],
+    "openFrom": 4,
+    "openTo": 21,
+    "isMustVisit": true,
+    "description": "Famous Ganesha temple with a self-growing Ganesha idol in a well.",
+    "shortIntro": "The Kanipakam Vinayaka Temple (Sri Varasidhi Vinayaka Swamy Temple) is a historic and highly revered Ganesha temple famous for its Swayambhu Ganesha idol residing in a continuous spring-fed well.",
+    "whyVisit": "Globally famous for its unique ambiance, architectural grandeur, and a living miracle: a self-manifested Ganesha idol that resides inside a natural spring-fed well and is believed to be steadily growing in size over time.",
+    "history": "According to ancient lore, Kanipakam translates to \"flow of water into the wetland.\" Three disabled brothers (one blind, one deaf, one mute) tilled land. When their well dried, they dug deeper and struck a stone with an iron spade. Blood oozed out, turning the water crimson, and the brothers were miraculously cured of their disabilities. Villagers then discovered the self-manifested Ganesha idol emerging from the water.",
+    "timings": "4:00 AM - 9:00 PM (All days open)",
+    "entryFee": "Free (Special queue passes available at counter)",
+    "address": "Kanipakam, Chittoor",
+    "rating": 4.7,
+    "reviewCount": 28000,
+    "image": "/assets/temples/kanipakam.png",
+    "coordinates": {
+      "lat": 13.2181,
+      "lng": 79.0342
+    },
+    "tags": [
+      "Ganesha",
+      "Miracle"
+    ],
+    "bestTime": "Morning (highly recommended to avoid heavy crowds)",
+    "practicalInfo": {
+      "dressCode": "Traditional attire mandatory (footwear must be removed and deposited at stands)",
+      "food": "Veg canteens & local options available",
+      "parking": "Available"
+    },
+    "travelEstimates": {
+      "tirupati": "90 mins"
+    },
+    "relatedPlaces": [
+      "mogili-temple",
+      "talakona-falls",
+      "chandragiri-fort"
+    ]
+  },
+  {
+    "id": "silparamam-tirupati",
+    "name": "Shilparamam Arts & Crafts Village",
+    "category": "Parks & Leisure",
+    "placeType": "culture",
+    "location": "Korramenugunta, Tirupati",
+    "distanceKms": 3.5,
+    "durationMins": 120,
+    "budgetLevel": "budget",
+    "entryFeeNum": 40,
+    "interests": [
+      "arts",
+      "culture",
+      "shopping",
+      "leisure",
+      "family"
+    ],
+    "openFrom": 10,
+    "openTo": 21,
+    "isMustVisit": true,
+    "description": "Located at Korramenugunta in Tirupati, Shilparamam (Silparamam) is a sprawling 20-acre ethnic arts and crafts village created to preserve and promote Indian handicrafts, rural art, and cultural heritage. Designed as a traditional rural village, it features artisan stalls selling authentic handlooms, Kalamkari paintings, Kondapalli wooden toys, brassware, and terracotta pottery. The complex includes an open-air amphitheater hosting evening folk music and classical dance programs, a serene boating lake, rock gardens, children's play parks, and a traditional food court.",
+    "history": "Established by the Andhra Pradesh Crafts Council and Tourism Department to empower rural artisans, preserve traditional South Indian handicrafts, and offer pilgrims and visitors an immersive cultural experience.",
+    "timings": "10:30 AM - 8:30 PM",
+    "entryFee": "₹40 (Adults) | ₹20 (Children)",
+    "address": "Shilparamam Arts & Crafts Village, Korramenugunta, Tirupati, Andhra Pradesh 517503",
+    "rating": 4.5,
+    "reviewCount": 6800,
+    "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQGK7aiy9WsscS-PpgIEk4PceG5dj648HC-ctfhA8gXYg&s=10",
+    "coordinates": {
+      "lat": 13.614049,
+      "lng": 79.439608
+    },
+    "shortIntro": "Shilparamam in Tirupati is a vibrant ethnic arts, crafts, and cultural village showcasing traditional Andhra handicrafts, folk dance amphitheaters, terracotta art, and boathouse leisure.",
+    "whyVisit": "Discover authentic rural artisan stalls (kalamkari, terracotta, wooden toys), enjoy evening cultural performances at the open-air amphitheater, and relax by landscaped gardens & food courts.",
+    "openingTime": "10:30 AM",
+    "closingTime": "8:30 PM",
+    "duration": "2 to 3 hours",
+    "travelByRTC": "Take local town buses or auto-rickshaws (10 mins ride from Tirupati Central Bus Stand / Railway Station) directly to Korramenugunta Shilparamam entrance.",
+    "travelByCar": "Drive 8 minutes (3.5 km) from Tirupati Railway Station via Tiruchanur Road / Korramenugunta.",
+    "travelByBike": "Ride 5-8 minutes from Tirupati city center.",
+    "approxRTCFare": "₹30-₹50 auto fare",
+    "approxCarCost": "₹50 local fuel",
+    "approxBikeCost": "₹20 petrol",
+    "images": [
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQGK7aiy9WsscS-PpgIEk4PceG5dj648HC-ctfhA8gXYg&s=10"
+    ],
+    "tags": [
+      "Shilparamam",
+      "Korramenugunta",
+      "Crafts Village",
+      "Handicrafts",
+      "Amphitheater",
+      "Artisans",
+      "Boating"
+    ],
+    "bestTime": "Late Afternoon to Evening (4:00 PM - 8:00 PM) for cool breeze and live cultural stage shows",
+    "practicalInfo": {
+      "dressCode": "Casual comfortable clothing",
+      "food": "Food court with traditional snacks & South Indian meals",
+      "parking": "Ample parking space at main gate"
+    },
+    "visitorTips": {
+      "dressCode": "Casual comfortable clothing and walking shoes for exploring the 20-acre village.",
+      "crowdNote": "Lively in the evening. Best visited after 4:00 PM when live folk music, dance performances, and food stalls are active."
+    },
+    "travelEstimates": {
+      "tirupati-railway-station": "8 mins",
+      "tiruchanur-temple": "7 mins"
+    }
+  },
+  {
+    "id": "mogili-temple",
+    "name": "Mogili Eswara Temple",
+    "category": "Hidden Gem",
+    "placeType": "spiritual",
+    "location": "Mogili",
+    "distanceKms": 95,
+    "durationMins": 90,
+    "budgetLevel": "medium",
+    "entryFeeNum": 0,
+    "interests": [
+      "spiritual",
+      "nature"
+    ],
+    "openFrom": 6,
+    "openTo": 20,
+    "isMustVisit": false,
+    "description": "Nestled right off the Chennai-Bangalore highway, the Mogili Eswara Temple is an ancient Shaivite shrine famous for its perennially flowing water source.",
+    "shortIntro": "Nestled right off the Chennai-Bangalore highway, the Mogili Eswara Temple is an ancient Shaivite shrine famous for its perennially flowing water source. Fresh, cold water trickles directly from the feet of the sacred Nandi bull idol inside the courtyard. Remarkably, this natural stream flows year-round and has never dried up—even during the harshest summers.",
+    "history": "Century ago, this sacred valley was covered entirely by dense Mogili (Screw-pine) bushes. Local folklore tells of a cowherd named Mogilappa who noticed his prized cow secretly releasing her milk over a hidden stone beneath the roots. Frustrated, he struck the thicket with his axe, only to hear a deep groan as the rock began to bleed profusely. Overcome with remorse, he uncovered a hidden, natural Swayambhu Lingam. Today, the marvel lives on: a continuous, cold perennial stream of fresh water flows mysteriously out from beneath the feet of the temple's sacred Nandi idol, year-round, never drying up even in the peak of summer.",
+    "timings": "6:00 AM - 8:00 PM",
+    "entryFee": "Free",
+    "address": "Mogili, Chittoor (Chennai-Bangalore Highway)",
+    "rating": 4.4,
+    "reviewCount": 1200,
+    "image": "/assets/temples/sri-kalahasti.png",
+    "coordinates": {
+      "lat": 13.05,
+      "lng": 79.2167
+    },
+    "tags": [
+      "Waterfall",
+      "Shiva",
+      "Highway Spot"
+    ],
+    "bestTime": "Morning",
+    "architecture": "Chola Rock-Cut",
+    "importance": "Perennial Nandi Stream",
+    "whyVisit": "Originally constructed during the Chola dynasty, featuring distinct rock-cut architecture. Built specifically over valley fault lines where natural groundwater is continuously pressurized. Positioned as a historical gateway shrine for centuries of travelers moving between empires (modern Chennai-Bangalore route).",
+    "practicalInfo": {
+      "dressCode": "Modest",
+      "food": "Highway dhabas & restaurants",
+      "parking": "Available"
+    },
+    "travelEstimates": {
+      "tirupati": "2.5 hours"
+    }
+  },
+  {
+    "id": "tirupati-main-market",
+    "name": "Tirupati Main Market",
+    "category": "Local Culture",
+    "placeType": "culture",
+    "location": "City Center",
+    "distanceKms": 0.5,
+    "durationMins": 120,
+    "budgetLevel": "budget",
+    "entryFeeNum": 0,
+    "interests": [
+      "shopping",
+      "food"
+    ],
+    "openFrom": 9,
+    "openTo": 22,
+    "isMustVisit": false,
+    "description": "Best for traditional brass idols and religious items.",
+    "history": "Historical trading hub of the pilgrim city.",
+    "timings": "9:00 AM - 10:00 PM",
+    "entryFee": "Free",
+    "address": "Bazaar Street, Tirupati",
+    "rating": 4.5,
+    "reviewCount": 12000,
+    "image": "/assets/leisure/tirupati-market.png",
+    "coordinates": {
+      "lat": 13.65,
+      "lng": 79.4167
+    },
+    "tags": [
+      "Shopping",
+      "Authentic"
+    ],
+    "bestTime": "Evening",
+    "practicalInfo": {
+      "dressCode": "Casual",
+      "food": "Street food",
+      "parking": "Very limited"
+    },
+    "travelEstimates": {
+      "railway-station": "2 mins"
+    }
+  },
+  {
+    "id": "srivari-mettu-path",
+    "name": "Srivari Mettu Path",
+    "category": "Tirumala Spot",
+    "placeType": "spiritual",
+    "location": "Srinivasa Mangapuram",
+    "distanceKms": 20,
+    "durationMins": 120,
+    "budgetLevel": "budget",
+    "entryFeeNum": 0,
+    "interests": [
+      "trekking",
+      "spiritual"
+    ],
+    "openFrom": 6,
+    "openTo": 18,
+    "isMustVisit": true,
+    "description": "Shorter but steeper historic pedestrian route with approximately 2,388 steps.",
+    "shortIntro": "Srivari Mettu Path is an ancient, historic, and highly sacred pedestrian trekking route of approximately 2,388 steps located near Srinivasa Mangapuram.",
+    "whyVisit": "Favored by pilgrims seeking a serene, less commercialized, and more spiritually intimate climb to the main Tirumala Temple. It is the path Lord Venkateswara walked himself to ascend the hills.",
+    "history": "Hindu mythology states that Lord Venkateswara and Goddess Padmavathi rested at Srinivasa Mangapuram after their marriage. The Lord walked this exact path step-by-step to ascend to Tirumala. Later, the 16th-century Vijayanagara emperor Sri Krishnadevaraya frequently used this trail during his historic pilgrimages.",
+    "timings": "6:00 AM - 6:00 PM (Strictly closed at night)",
+    "entryFee": "Free (Free luggage transfer services provided by TTD)",
+    "address": "Srinivasa Mangapuram",
+    "rating": 4.7,
+    "reviewCount": 15400,
+    "image": "/assets/nature/srivari-mettu.png",
+    "coordinates": {
+      "lat": 13.6067,
+      "lng": 79.3308
+    },
+    "tags": [
+      "Trek",
+      "Steps",
+      "Sacred"
+    ],
+    "bestTime": "Early morning (crisp morning air, shade, and birdsong)",
+    "practicalInfo": {
+      "dressCode": "Traditional Indian attire highly recommended",
+      "food": "Limited options (mostly small base stalls)",
+      "parking": "Available at base"
+    },
+    "travelEstimates": {
+      "tirupati": "20 mins"
+    },
+    "relatedPlaces": [
+      "srinivasa-mangapuram",
+      "kalyani-dam",
+      "chandragiri-fort"
+    ]
+  },
+  {
+    "id": "surutapalli",
+    "name": "Surutapalli Temple",
+    "category": "Day Trip",
+    "placeType": "spiritual",
+    "location": "Surutapalli",
+    "distanceKms": 75,
+    "durationMins": 90,
+    "budgetLevel": "medium",
+    "entryFeeNum": 0,
+    "interests": [
+      "spiritual",
+      "rare"
+    ],
+    "openFrom": 6,
+    "openTo": 20,
+    "isMustVisit": false,
+    "description": "Only temple with Lord Shiva in reclining pose.",
+    "history": "Where Shiva rested after drinking the poison.",
+    "timings": "6:00 AM - 8:00 PM",
+    "entryFee": "Free",
+    "address": "Nagari Road",
+    "rating": 4.6,
+    "reviewCount": 3500,
+    "image": "/assets/temples/surutapalli.png",
+    "coordinates": {
+      "lat": 13.3812,
+      "lng": 79.9703
+    },
+    "tags": [
+      "Shiva",
+      "Unique"
+    ],
+    "bestTime": "Morning",
+    "practicalInfo": {
+      "dressCode": "Traditional",
+      "food": "Limited",
+      "parking": "Available"
+    },
+    "travelEstimates": {
+      "tirupati": "2 hours"
+    }
+  },
+  {
+    "id": "nagala-falls",
+    "name": "Nagalapuram Falls",
+    "category": "Nature",
+    "placeType": "water",
+    "location": "Nagalapuram",
+    "distanceKms": 65,
+    "durationMins": 240,
+    "budgetLevel": "medium",
+    "entryFeeNum": 0,
+    "interests": [
+      "trekking",
+      "swimming"
+    ],
+    "openFrom": 6,
+    "openTo": 15,
+    "isMustVisit": false,
+    "description": "Series of waterfalls with natural swimming pools.",
+    "history": "Popular among adventure seekers.",
+    "timings": "6:00 AM - 3:00 PM",
+    "entryFee": "Free",
+    "address": "Nagalapuram Forest",
+    "rating": 4.5,
+    "reviewCount": 5200,
+    "image": "/assets/nature/nagalapuram-falls.png",
+    "coordinates": {
+      "lat": 13.385,
+      "lng": 79.805
+    },
+    "tags": [
+      "Trek",
+      "Adventure"
+    ],
+    "bestTime": "Winter",
+    "practicalInfo": {
+      "dressCode": "Sportswear",
+      "food": "Carry own",
+      "parking": "Base point"
+    },
+    "travelEstimates": {
+      "tirupati": "2 hours"
+    }
+  },
+  {
+    "id": "kailasa-kona",
+    "name": "Kailasa Kona Falls",
+    "category": "Nature",
+    "placeType": "water",
+    "location": "Puttur",
+    "distanceKms": 45,
+    "durationMins": 120,
+    "budgetLevel": "budget",
+    "entryFeeNum": 20,
+    "interests": [
+      "nature",
+      "healing"
+    ],
+    "openFrom": 6,
+    "openTo": 18,
+    "isMustVisit": false,
+    "description": "A beautiful mineral-rich waterfall with healing properties and a small Shiva temple near the base.",
+    "history": "According to legend, Lord Shiva (Kailasanatheswara) came down to Earth to witness the wedding of Lord Venkateswara and Goddess Padmavathi at nearby Narayanavanam. Pleased by the serene beauty of this waterfall, Lord Shiva stayed here to meditate, which is why it is called Kailasakona.",
+    "timings": "6:00 AM - 6:00 PM",
+    "entryFee": "₹20",
+    "address": "Puttur Road",
+    "rating": 4.1,
+    "reviewCount": 6900,
+    "image": "/assets/nature/kailasa-kona.png",
+    "coordinates": {
+      "lat": 13.3486,
+      "lng": 79.645
+    },
+    "tags": [
+      "Waterfall",
+      "Medicinal",
+      "Shiva"
+    ],
+    "bestTime": "Post-Monsoon",
+    "practicalInfo": {
+      "dressCode": "Casual",
+      "food": "Stalls",
+      "parking": "Available"
+    },
+    "travelEstimates": {
+      "tirupati": "1 hour"
+    }
+  },
+  {
+    "id": "horsley-hills",
+    "name": "Horsley Hills",
+    "category": "Day Trip",
+    "placeType": "nature",
+    "location": "Madanapalle",
+    "distanceKms": 140,
+    "durationMins": 360,
+    "budgetLevel": "premium",
+    "entryFeeNum": 50,
+    "interests": [
+      "hill-station",
+      "viewpoint"
+    ],
+    "openFrom": 6,
+    "openTo": 22,
+    "isMustVisit": true,
+    "description": "Famous hill station known as Andhra's Ooty.",
+    "history": "Named after W.D. Horsley, a British collector.",
+    "timings": "6:00 AM - 10:00 PM",
+    "entryFee": "₹50",
+    "address": "Madanapalle, AP",
+    "rating": 4.4,
+    "reviewCount": 25000,
+    "image": "/assets/nature/horsley-hills.png",
+    "coordinates": {
+      "lat": 13.6608,
+      "lng": 78.3975
+    },
+    "tags": [
+      "Hills",
+      "Cool"
+    ],
+    "bestTime": "Year round",
+    "practicalInfo": {
+      "dressCode": "Woolens in winter",
+      "food": "Resorts available",
+      "parking": "Ample"
+    },
+    "travelEstimates": {
+      "tirupati": "3.5 hours"
+    }
+  },
+  {
+    "id": "appalayagunta-temple",
+    "name": "Sri Prasanna Venkateswara Temple",
+    "category": "Core Temple",
+    "placeType": "spiritual",
+    "location": "Appalayagunta",
+    "distanceKms": 20,
+    "durationMins": 45,
+    "budgetLevel": "budget",
+    "entryFeeNum": 0,
+    "interests": [
+      "spiritual",
+      "hanuman",
+      "healing"
+    ],
+    "openFrom": 6,
+    "openTo": 20,
+    "isMustVisit": true,
+    "description": "Famous divine resting place of Lord Venkateswara after his marriage, featuring the Lord in Abhaya Hasta posture and a famous healing Hanuman sub-shrine.",
+    "shortIntro": "Sri Prasanna Venkateswara Swamy Temple in Appalayagunta is a historic TTD temple located 20 km from Tirupati. It is famous for the Lord's unique Abhaya Hasta (blessing) posture and a miraculous Hanuman shrine.",
+    "history": "According to temple puranas, Lord Venkateswara rested at Appalayagunta after marrying Goddess Padmavati at Narayanavanam before proceeding to Tirumala. The deity grants blessings in the Abhaya Hasta posture. The temple includes a prominent sub-shrine for Lord Anjaneya Swamy (Hanuman), where thousands of devotees pray for relief from chronic ailments and health issues.",
+    "whyVisit": "Resting place of Lord Venkateswara post-wedding; features rare Abhaya Hasta posture of the deity and a world-famous Sri Anjaneya Swamy sub-shrine renowned for healing prayers.",
+    "timings": "6:00 AM - 8:00 PM (TTD Administered)",
+    "entryFee": "Free",
+    "address": "Appalayagunta Village, Chittoor District, AP (20 km from Tirupati)",
+    "rating": 4.7,
+    "reviewCount": 6800,
+    "image": "/assets/temples/appalayagunta.png",
+    "coordinates": {
+      "lat": 13.5372,
+      "lng": 79.4774
+    },
+    "tags": [
+      "Abhaya Hasta",
+      "Hanuman Shrine",
+      "TTD Temple",
+      "Post-Wedding Rest"
+    ],
+    "bestTime": "Morning (6:00 AM - 11:00 AM)",
+    "practicalInfo": {
+      "dressCode": "Traditional Indian attire mandatory",
+      "food": "TTD Nitya Annaprasadam & local stalls",
+      "parking": "Ample parking available"
+    },
+    "travelEstimates": {
+      "tirupati": "30 mins"
+    },
+    "relatedPlaces": [
+      "narayanavanam",
+      "srinivasa-mangapuram",
+      "padmavathi"
+    ]
+  },
+  {
+    "id": "nagalapuram-temple",
+    "name": "Sri Vedanarayana Swamy Temple",
+    "category": "Day Trip",
+    "placeType": "spiritual",
+    "location": "Nagalapuram",
+    "distanceKms": 65,
+    "durationMins": 120,
+    "budgetLevel": "medium",
+    "entryFeeNum": 0,
+    "interests": [
+      "spiritual",
+      "miracle"
+    ],
+    "openFrom": 6,
+    "openTo": 20,
+    "isMustVisit": false,
+    "description": "Dedicated to Matsya (fish) avatar.",
+    "history": "Surya Pooja miracle happens here annually.",
+    "timings": "6:00 AM - 8:00 PM",
+    "entryFee": "Free",
+    "address": "Nagalapuram",
+    "rating": 4.7,
+    "reviewCount": 5400,
+    "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRvX2oIbXys6aYldf4d4AyU_GvPobiME1iNNjHDYOJnpA&s=10",
+    "images": [
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRvX2oIbXys6aYldf4d4AyU_GvPobiME1iNNjHDYOJnpA&s=10"
+    ],
+    "coordinates": {
+      "lat": 13.3876691,
+      "lng": 79.7965048
+    },
+    "tags": [
+      "Matsya",
+      "Sun Miracle"
+    ],
+    "bestTime": "March (Surya Puja)",
+    "practicalInfo": {
+      "dressCode": "Traditional",
+      "food": "Limited",
+      "parking": "Available"
+    },
+    "travelEstimates": {
+      "tirupati": "1.5 hours"
+    }
+  },
+  {
+    "id": "tallapaka-temple",
+    "name": "Sri Chennakesava Swamy Temple",
+    "category": "Historical",
+    "placeType": "spiritual",
+    "location": "Tallapaka",
+    "distanceKms": 95,
+    "durationMins": 90,
+    "budgetLevel": "medium",
+    "entryFeeNum": 0,
+    "interests": [
+      "history",
+      "music"
+    ],
+    "openFrom": 6,
+    "openTo": 20,
+    "isMustVisit": false,
+    "description": "Birthplace of poet-saint Annamacharya.",
+    "history": "Dedicated to Chennakesava Swamy.",
+    "timings": "6:00 AM - 8:00 PM",
+    "entryFee": "Free",
+    "address": "Tallapaka, Kadapa",
+    "rating": 4.6,
+    "reviewCount": 1800,
+    "image": "/assets/temples/tallapaka.png",
+    "coordinates": {
+      "lat": 14.2372,
+      "lng": 79.1558
+    },
+    "tags": [
+      "Saint",
+      "Music"
+    ],
+    "bestTime": "Morning",
+    "practicalInfo": {
+      "dressCode": "Modest",
+      "food": "Limited",
+      "parking": "Available"
+    },
+    "travelEstimates": {
+      "tirupati": "2 hours"
+    }
+  },
+  {
+    "id": "regional-science-centre",
+    "name": "Regional Science Centre",
+    "category": "Parks & Leisure",
+    "placeType": "leisure",
+    "location": "Tirupati",
+    "distanceKms": 4,
+    "durationMins": 120,
+    "budgetLevel": "budget",
+    "entryFeeNum": 25,
+    "interests": [
+      "science",
+      "family"
+    ],
+    "openFrom": 10,
+    "openTo": 18,
+    "isMustVisit": false,
+    "description": "Features a prehistoric park and planetarium.",
+    "history": "Educational hub for the region.",
+    "timings": "10:00 AM - 6:00 PM",
+    "entryFee": "₹25",
+    "address": "Planetarium Road, Alipiri, Tirupati, AP 517507",
+    "rating": 4.4,
+    "reviewCount": 3200,
+    "image": "/assets/leisure/science-centre.png",
+    "coordinates": {
+      "lat": 13.643158,
+      "lng": 79.397876
+    },
+    "tags": [
+      "Science",
+      "Kids"
+    ],
+    "bestTime": "Morning",
+    "practicalInfo": {
+      "dressCode": "Casual",
+      "food": "Nearby",
+      "parking": "Available"
+    },
+    "travelEstimates": {
+      "tirupati": "10 mins"
+    }
+  },
+  {
+    "id": "kalyani-dam",
+    "name": "Kalyani Dam",
+    "category": "Nature",
+    "placeType": "water",
+    "location": "Rangampeta",
+    "distanceKms": 18,
+    "durationMins": 90,
+    "budgetLevel": "budget",
+    "entryFeeNum": 0,
+    "interests": [
+      "nature",
+      "scenic"
+    ],
+    "openFrom": 8,
+    "openTo": 18,
+    "isMustVisit": false,
+    "description": "Large reservoir in a scenic valley.",
+    "history": "Main water source for Tirupati.",
+    "timings": "8:00 AM - 6:00 PM",
+    "entryFee": "Free",
+    "address": "Rangampeta Forest",
+    "rating": 4.5,
+    "reviewCount": 4800,
+    "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmlCryveug2pv09HJ1L6FMyoSSQBKpBljPCG-A9TWtbUKczQkm1ipyOsHrnzmj-OrPkz8hZQQpMjXhNqD9nWM2oxe65FB_SS9ZZB6KVyXrlyrwoTXEDpncEfP48bJYLahD8ZBln-DsCaqM_=w408-h306-k-no",
+    "images": [
+      "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmlCryveug2pv09HJ1L6FMyoSSQBKpBljPCG-A9TWtbUKczQkm1ipyOsHrnzmj-OrPkz8hZQQpMjXhNqD9nWM2oxe65FB_SS9ZZB6KVyXrlyrwoTXEDpncEfP48bJYLahD8ZBln-DsCaqM_=w408-h306-k-no"
+    ],
+    "coordinates": {
+      "lat": 13.6576604,
+      "lng": 79.2692214
+    },
+    "tags": [
+      "Dam",
+      "Nature"
+    ],
+    "bestTime": "Evening",
+    "practicalInfo": {
+      "dressCode": "Casual",
+      "food": "None",
+      "parking": "Limited"
+    },
+    "travelEstimates": {
+      "tirupati": "30 mins"
+    }
+  },
+  {
+    "id": "narayanavanam",
+    "name": "Sri Kalyana Venkateswara Swamy Temple",
+    "category": "Historical",
+    "placeType": "spiritual",
+    "location": "Narayanavanam",
+    "distanceKms": 36,
+    "durationMins": 60,
+    "budgetLevel": "medium",
+    "entryFeeNum": 0,
+    "interests": [
+      "spiritual",
+      "history",
+      "wedding"
+    ],
+    "openFrom": 6,
+    "openTo": 20,
+    "isMustVisit": true,
+    "description": "The divine wedding site where Lord Venkateswara married Goddess Padmavati, featuring rich Vijayanagara-style architecture.",
+    "shortIntro": "Narayanavanam is the holy site of the divine wedding of Lord Venkateswara and Goddess Padmavati, located 36 km from Tirupati near Puttur.",
+    "history": "According to Hindu Puranas, Narayanavanam was the capital of King Akasa Raju. Lord Venkateswara married Goddess Padmavati at this exact location. The temple showcases magnificent Vijayanagara architectural grandeur with interconnected shrines for Goddess Padmavati and Lord Agastheeswara.",
+    "whyVisit": "The divine wedding venue of Lord Venkateswara & Goddess Padmavati; renowned for grand Vijayanagara architecture and marital blessings.",
+    "timings": "6:00 AM - 8:00 PM (TTD Administered)",
+    "entryFee": "Free",
+    "address": "Narayanavanam, near Puttur, AP (36 km from Tirupati)",
+    "rating": 4.8,
+    "reviewCount": 9200,
+    "image": "/assets/temples/narayanavanam.png",
+    "coordinates": {
+      "lat": 13.4234,
+      "lng": 79.5887
+    },
+    "tags": [
+      "Divine Wedding Site",
+      "Vijayanagara Architecture",
+      "Kalyana Posture",
+      "TTD Temple"
+    ],
+    "bestTime": "Morning",
+    "practicalInfo": {
+      "dressCode": "Traditional Indian attire mandatory",
+      "food": "Local vegetarian eateries available",
+      "parking": "Available at temple entrance"
+    },
+    "travelEstimates": {
+      "tirupati": "45 mins"
+    },
+    "relatedPlaces": [
+      "appalayagunta-temple",
+      "padmavathi",
+      "kailasa-kona"
+    ]
+  },
+  {
+    "id": "sorakayala-swamy",
+    "name": "Sri Sorakayala Swamy Temple",
+    "category": "Historical",
+    "placeType": "spiritual",
+    "location": "Narayanavanam",
+    "distanceKms": 36,
+    "durationMins": 45,
+    "budgetLevel": "budget",
+    "entryFeeNum": 0,
+    "interests": [
+      "spiritual",
+      "history"
+    ],
+    "openFrom": 6,
+    "openTo": 20,
+    "isMustVisit": false,
+    "description": "Famous temple dedicated to Sri Sorakayala Swamy, a revered Siddha saint of Narayanavanam known for his divine miracles and healing powers.",
+    "shortIntro": "Sri Sorakayala Swamy Temple in Narayanavanam honors the 19th-century Siddha saint who lived a life of intense penance carrying a dried bottle gourd (Sorakaya).",
+    "whyVisit": "A peaceful spiritual shrine dedicated to Sorakayala Swamy Jeeva Samadhi, known for fulfilling devotees' prayers for health and peace.",
+    "history": "Sri Sorakayala Swamy was an enlightened Siddha purusha who spent his life in Narayanavanam. He was renowned for carrying a bottle gourd and offering healing remedies to villagers.",
+    "timings": "6:00 AM - 8:00 PM",
+    "entryFee": "Free",
+    "address": "Narayanavanam, near Puttur, AP 517581",
+    "rating": 4.7,
+    "reviewCount": 1200,
+    "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRcenXbaMLxy8Jkvli8rKx7o5kRMDPaKBltAXH4SrIhnQ&s=10",
+    "images": [
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRcenXbaMLxy8Jkvli8rKx7o5kRMDPaKBltAXH4SrIhnQ&s=10"
+    ],
+    "coordinates": {
+      "lat": 13.425342,
+      "lng": 79.5903495
+    },
+    "tags": [
+      "Samadhi",
+      "Siddha Saint",
+      "Spiritual",
+      "Narayanavanam"
+    ],
+    "bestTime": "Morning",
+    "practicalInfo": {
+      "dressCode": "Traditional Indian attire",
+      "food": "Local options nearby",
+      "parking": "Available near temple"
+    },
+    "travelEstimates": {
+      "narayanavanam": "5 mins",
+      "tirupati": "45 mins"
+    },
+    "relatedPlaces": [
+      "narayanavanam",
+      "kailasa-kona"
+    ]
+  },
+  {
+    "id": "narayanavanam-falls",
+    "name": "Narayanavanam Waterfalls",
+    "category": "Nature",
+    "placeType": "water",
+    "location": "Narayanavanam",
+    "distanceKms": 37,
+    "durationMins": 60,
+    "budgetLevel": "budget",
+    "entryFeeNum": 0,
+    "interests": [
+      "nature",
+      "scenic",
+      "waterfalls"
+    ],
+    "openFrom": 6,
+    "openTo": 18,
+    "isMustVisit": false,
+    "description": "Scenic seasonal waterfall and lush green nature spot located in the hills near Narayanavanam.",
+    "shortIntro": "Narayanavanam Waterfalls offers a serene natural retreat near the historical town, cascading through forest rocks after rains.",
+    "whyVisit": "Great nature getaway near Narayanavanam divine wedding site for scenic photography and relaxing in natural stream waters.",
+    "history": "Located in the Seshachalam forest belt near Puttur, this local waterfall has long served as a natural retreat for pilgrims visiting Narayanavanam.",
+    "timings": "6:00 AM - 6:00 PM",
+    "entryFee": "Free",
+    "address": "Narayanavanam Forest Range, AP 517581",
+    "rating": 4.4,
+    "reviewCount": 650,
+    "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTezwPj7Oen6a8Gt13WVXyKcJ2-zo8JzMo7usSkRGtVvw&s=10",
+    "images": [
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTezwPj7Oen6a8Gt13WVXyKcJ2-zo8JzMo7usSkRGtVvw&s=10"
+    ],
+    "coordinates": {
+      "lat": 13.4233744,
+      "lng": 79.5886747
+    },
+    "tags": [
+      "Waterfall",
+      "Nature",
+      "Scenic",
+      "Narayanavanam"
+    ],
+    "bestTime": "Post-Monsoon",
+    "practicalInfo": {
+      "dressCode": "Casual",
+      "food": "None nearby",
+      "parking": "Roadside parking"
+    },
+    "travelEstimates": {
+      "narayanavanam": "5 mins",
+      "tirupati": "45 mins"
+    },
+    "relatedPlaces": [
+      "narayanavanam",
+      "kailasa-kona"
+    ]
+  },
+  {
+    "id": "gogarbham",
+    "name": "Gogarbham (Pandava Theertham)",
+    "category": "Tirumala Spot",
+    "placeType": "water",
+    "location": "Tirumala",
+    "distanceKms": 25,
+    "durationMins": 45,
+    "budgetLevel": "budget",
+    "entryFeeNum": 0,
+    "interests": [
+      "nature",
+      "spiritual"
+    ],
+    "openFrom": 6,
+    "openTo": 18,
+    "isMustVisit": false,
+    "description": "Tranquil spot with a cave and waterfall.",
+    "history": "Associated with the Pandavas' stay in exile.",
+    "timings": "6:00 AM - 6:00 PM",
+    "entryFee": "Free",
+    "address": "Tirumala Hills",
+    "rating": 4.5,
+    "reviewCount": 2800,
+    "image": "/assets/nature/gogarbham.png",
+    "coordinates": {
+      "lat": 13.6931,
+      "lng": 79.3567
+    },
+    "tags": [
+      "Cave",
+      "Waterfall"
+    ],
+    "bestTime": "Morning",
+    "practicalInfo": {
+      "dressCode": "Casual",
+      "food": "None",
+      "parking": "Available"
+    },
+    "travelEstimates": {
+      "venkateswara": "15 mins"
+    }
+  },
+  {
+    "id": "srivari-udyanavanam",
+    "name": "Srivari Udyanavanam (TTD Gardens)",
+    "category": "Tirumala Spot",
+    "placeType": "nature",
+    "location": "Seva Sadan Road, Tirumala",
+    "distanceKms": 23,
+    "durationMins": 60,
+    "budgetLevel": "budget",
+    "entryFeeNum": 0,
+    "interests": [
+      "nature",
+      "gardens",
+      "spiritual"
+    ],
+    "openFrom": 8,
+    "openTo": 18,
+    "isMustVisit": true,
+    "description": "Situated close to Seva Sadan Road in Tirumala, Srivari Udyanavanam (Lord Balaji Flower Garden) is a sacred botanical reserve managed by TTD’s horticulture wing. Spanning lush acres near Narayanagiri and Silathoranam gardens, it cultivates exclusive floral varieties and sacred Tulasi reserved strictly for decorating Lord Sri Venkateswara during daily rituals, Nitya Sevas, and festive Alankarams.",
+    "history": "Established by 11th-century Vaishnava saint Sri Ananthalwar under the guidance of Bhagavad Ramanujacharya to dedicate his life to flower Seva (Pushpa Kainkaryam). Today, TTD Horticulture Department directly manages the gardens to cultivate millions of flowers annually for the main Srivari Temple.",
+    "timings": "8:00 AM - 6:00 PM",
+    "entryFee": "Free entry for all devotees",
+    "address": "Seva Sadan Road, near Srivari Temple & Narayanagiri Gardens, Tirumala, Chittoor District, AP 517504",
+    "rating": 4.7,
+    "reviewCount": 5200,
+    "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQCTOeYSx9pSM9-CLQvYYD4RzDSi2-8Y4HqRQAVqLrtqA&s=10",
+    "coordinates": {
+      "lat": 13.6844,
+      "lng": 79.3524
+    },
+    "shortIntro": "Srivari Udyanavanam (Lord Balaji Flower Garden) is TTD's sacred botanical reserve near Seva Sadan Road, cultivating exclusive flowers strictly reserved for Lord Sri Venkateswara’s daily rituals.",
+    "whyVisit": "A tranquil paradise of fragrant flowers near Narayanagiri and Silathoranam Gardens. Discover the 1,000-year-old Pushpa Kainkaryam tradition started by saint Ananthalwar and enjoy TTD's annual Brahmotsavam flower shows.",
+    "openingTime": "8:00 AM",
+    "closingTime": "6:00 PM",
+    "duration": "45 to 60 minutes",
+    "travelByRTC": "Walk 5 minutes from Tirumala main bus stop or Srivari Temple entrance via Seva Sadan Road.",
+    "travelByCar": "Park at Tirumala main car parking areas (Rambag / MBC) and walk 3 minutes to Seva Sadan Road garden entrance.",
+    "travelByBike": "Park at designated Tirumala two-wheeler parking near Srivari Temple square.",
+    "approxRTCFare": "Included in Tirumala transit",
+    "approxCarCost": "Included in Tirumala toll",
+    "approxBikeCost": "Included in Tirumala toll",
+    "images": [
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQCTOeYSx9pSM9-CLQvYYD4RzDSi2-8Y4HqRQAVqLrtqA&s=10"
+    ],
+    "tags": [
+      "TTD Gardens",
+      "Pushpa Kainkaryam",
+      "Lord Balaji Flower Garden",
+      "Seva Sadan Road",
+      "Ananthalwar"
+    ],
+    "bestTime": "Morning (8:00 AM - 11:00 AM) or Late Afternoon (4:00 PM - 5:30 PM)",
+    "practicalInfo": {
+      "dressCode": "Modest attire",
+      "food": "Nearby prasadam & eateries",
+      "parking": "Tirumala Main Parking"
+    },
+    "visitorTips": {
+      "dressCode": "Modest casual or traditional attire suitable for walking.",
+      "crowdNote": "General tourist entry to inner floral harvesting zones can be restricted by TTD Horticulture wing during morning flower plucking; public garden pathways, lawns, and annual Brahmotsavam flower exhibitions welcome all pilgrims."
+    },
+    "travelEstimates": {
+      "venkateswara": "5 mins walk"
+    },
+    "relatedPlaces": [
+      "silathoranam",
+      "narayanagiri-gardens",
+      "venkateswara"
+    ]
+  },
+  {
+    "id": "kaigal-falls",
+    "name": "Kaigal Falls (Dumukurallu)",
+    "category": "Day Trip",
+    "placeType": "water",
+    "location": "Kaigal",
+    "distanceKms": 120,
+    "durationMins": 120,
+    "budgetLevel": "medium",
+    "entryFeeNum": 0,
+    "interests": [
+      "nature",
+      "waterfalls"
+    ],
+    "openFrom": 6,
+    "openTo": 17,
+    "isMustVisit": false,
+    "description": "Beautiful perennial waterfall in the Koundinya sanctuary.",
+    "history": "Water falls from a height of 40 ft through rocks.",
+    "timings": "6:00 AM - 5:00 PM",
+    "entryFee": "Free",
+    "address": "Koundinya Wildlife Sanctuary",
+    "rating": 4.5,
+    "reviewCount": 3200,
+    "image": "/assets/nature/kaigal-falls.png",
+    "coordinates": {
+      "lat": 13.05,
+      "lng": 78.6333
+    },
+    "tags": [
+      "Waterfall",
+      "Sanctuary"
+    ],
+    "bestTime": "Monsoon",
+    "practicalInfo": {
+      "dressCode": "Casual",
+      "food": "None",
+      "parking": "Available"
+    },
+    "travelEstimates": {
+      "tirupati": "3 hours"
+    }
+  },
+  {
+    "id": "gandhi-road",
+    "name": "Gandhi Road Shopping",
+    "category": "Local Culture",
+    "placeType": "culture",
+    "location": "Tirupati Center",
+    "distanceKms": 0.1,
+    "durationMins": 120,
+    "budgetLevel": "medium",
+    "entryFeeNum": 0,
+    "interests": [
+      "shopping",
+      "textiles"
+    ],
+    "openFrom": 10,
+    "openTo": 22,
+    "isMustVisit": false,
+    "description": "Hub for clothing and local handloom fabrics.",
+    "history": "Main commercial artery of Tirupati.",
+    "timings": "10:00 AM - 10:00 PM",
+    "entryFee": "Free",
+    "address": "Gandhi Road, Tirupati",
+    "rating": 4.4,
+    "reviewCount": 8500,
+    "image": "/assets/leisure/gandhi-road.png",
+    "coordinates": {
+      "lat": 13.6291,
+      "lng": 79.4175
+    },
+    "tags": [
+      "Shopping",
+      "Clothing"
+    ],
+    "bestTime": "Evening",
+    "practicalInfo": {
+      "dressCode": "Casual",
+      "food": "Street snacks",
+      "parking": "Street only"
+    },
+    "travelEstimates": {
+      "railway-station": "5 mins"
+    }
+  },
+  {
+    "id": "mamanduru-forest",
+    "name": "Mamanduru Eco-Tourism & Forest",
+    "category": "Day Trip",
+    "placeType": "nature",
+    "location": "Seshachalam Biosphere Reserve, Kadapa Highway",
+    "distanceKms": 24,
+    "durationMins": 180,
+    "budgetLevel": "budget",
+    "entryFeeNum": 50,
+    "interests": [
+      "nature",
+      "trekking",
+      "wildlife",
+      "adventure"
+    ],
+    "openFrom": 6,
+    "openTo": 18,
+    "isMustVisit": true,
+    "description": "Situated 24 km northeast of Tirupati along the Tirupati-Kadapa highway, Mamanduru Eco-Tourism project is nestled inside the Seshachalam Biosphere Reserve. Famous for being the home of endangered Red Sanders timber (Pterocarpus santalinus), the reserve features serene jungle trekking routes (such as the Great Peacock Trek & Jungle Night Safari), perennial forest streams, and colonial-era forest rest houses constructed in 1865. Managed by the Andhra Pradesh Forest Department, it offers jungle cottages, canopy walks, and guided eco-tours.",
+    "history": "Mamanduru was established as a premier forestry reserve during British rule in 1865, where historic wooden rest houses were built by the Imperial Forest Department. The region is historically significant as the natural habitat of ancient Red Sanders trees and Seshachalam hill wildlife.",
+    "timings": "6:00 AM - 6:00 PM",
+    "entryFee": "₹50 per person (Forest Department Entry)",
+    "address": "Mamanduru Eco-Tourism Center, Tirupati-Kadapa Highway, YSR Kadapa / Tirupati Border, AP 517504",
+    "rating": 4.6,
+    "reviewCount": 3100,
+    "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSw0DpTPU-7bIAFejV381rlCeAgo13p7VXtoNDYZt4Csw&s=10",
+    "coordinates": {
+      "lat": 13.750691,
+      "lng": 79.466337
+    },
+    "shortIntro": "Mamanduru is a pristine eco-tourism zone inside Seshachalam Biosphere Reserve, famous for dense red sanders forests, jungle trekking trails, and historic British-era forest rest houses.",
+    "whyVisit": "Explore Seshachalam's rich bio-diversity, spot rare flora & endemic birds, walk canopy jungle trails, and stay at AP Forest Department jungle cottages.",
+    "openingTime": "6:00 AM",
+    "closingTime": "6:00 PM",
+    "duration": "2 to 3 hours",
+    "travelByRTC": "Take APSRTC buses heading toward Rayachoti/Kadapa from Tirupati Central Bus Station (30-40 mins ride) and get down at Mamanduru Forest Checkpost.",
+    "travelByCar": "Drive 35 minutes (24 km) from Tirupati town via NH716 / Tirupati-Kadapa Highway.",
+    "travelByBike": "Ride 30-35 minutes along the scenic forest highway.",
+    "approxRTCFare": "₹40-₹60 bus fare",
+    "approxCarCost": "₹250-₹350 fuel",
+    "approxBikeCost": "₹100 petrol",
+    "images": [
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSw0DpTPU-7bIAFejV381rlCeAgo13p7VXtoNDYZt4Csw&s=10"
+    ],
+    "tags": [
+      "Mamanduru",
+      "Seshachalam",
+      "Eco Tourism",
+      "Red Sanders",
+      "Jungle Trekking",
+      "Forest Cottages"
+    ],
+    "bestTime": "Monsoon & Winter (October to March) for lush greenery and stream flow",
+    "practicalInfo": {
+      "dressCode": "Trekking shoes & outdoor wear",
+      "food": "Forest canteen & highway dhabas",
+      "parking": "Ample parking at Eco Center"
+    },
+    "visitorTips": {
+      "dressCode": "Sturdy walking/trekking shoes and light cotton clothes recommended for jungle walks.",
+      "crowdNote": "Peaceful eco-tourism site. Advance booking recommended through AP Forest Department for jungle stay cottages."
+    },
+    "travelEstimates": {
+      "tirupati": "35 mins",
+      "kapila-theertham": "30 mins"
+    }
+  },
+  {
+    "id": "andhra-spice",
+    "name": "Andhra Spice",
+    "category": "Food",
+    "placeType": "food",
+    "location": "Tirupati Center",
+    "distanceKms": 0.5,
+    "durationMins": 60,
+    "budgetLevel": "medium",
+    "entryFeeNum": 0,
+    "interests": [
+      "food",
+      "family"
+    ],
+    "openFrom": 11,
+    "openTo": 23,
+    "isMustVisit": true,
+    "description": "Authentic Andhra meals with a fiery kick. Known for their traditional thalis and home-style cooking.",
+    "history": "A local favorite for decades, serving spicy Rayalaseema cuisine.",
+    "timings": "11:00 AM - 11:00 PM",
+    "entryFee": "Free",
+    "address": "TP Area, Tirupati",
+    "rating": 4.5,
+    "reviewCount": 1200,
+    "image": "/assets/food/andhra-thali.png",
+    "coordinates": {
+      "lat": 13.6318,
+      "lng": 79.4211
+    },
+    "tags": [
+      "Andhra",
+      "Spicy",
+      "Thali"
+    ],
+    "bestTime": "Lunch",
+    "practicalInfo": {
+      "dressCode": "Casual",
+      "food": "Full meals",
+      "parking": "Street"
+    },
+    "travelEstimates": {
+      "railway-station": "5 mins"
+    }
+  },
+  {
+    "id": "govinda-restaurant",
+    "name": "Govinda Restaurant (ISKCON)",
+    "category": "Food",
+    "placeType": "food",
+    "location": "Hare Krishna Road",
+    "distanceKms": 4,
+    "durationMins": 60,
+    "budgetLevel": "budget",
+    "entryFeeNum": 0,
+    "interests": [
+      "food",
+      "spiritual"
+    ],
+    "openFrom": 8,
+    "openTo": 21,
+    "isMustVisit": true,
+    "description": "Pure vegetarian satvik food served in a peaceful environment inside the ISKCON campus.",
+    "history": "Part of the ISKCON temple complex, serves food blessed by the deities.",
+    "timings": "8:00 AM - 9:00 PM",
+    "entryFee": "Free",
+    "address": "Hare Krishna Road, Tirupati",
+    "rating": 4.8,
+    "reviewCount": 3500,
+    "image": "/assets/food/iskcon-govinda.png",
+    "coordinates": {
+      "lat": 13.6515,
+      "lng": 79.4131
+    },
+    "tags": [
+      "Satvik",
+      "Vegetarian",
+      "ISKCON"
+    ],
+    "bestTime": "Lunch",
+    "practicalInfo": {
+      "dressCode": "Modest",
+      "food": "Full meals",
+      "parking": "Ample"
+    },
+    "travelEstimates": {
+      "iskcon-tirupati": "2 mins walk"
+    }
+  },
+  {
+    "id": "minerva-grand",
+    "name": "Minerva Grand",
+    "category": "Food",
+    "placeType": "food",
+    "location": "Renigunta Road",
+    "distanceKms": 3,
+    "durationMins": 90,
+    "budgetLevel": "premium",
+    "entryFeeNum": 0,
+    "interests": [
+      "food",
+      "luxury"
+    ],
+    "openFrom": 7,
+    "openTo": 23,
+    "isMustVisit": false,
+    "description": "Fine dining multi-cuisine restaurant offering a premium experience with North and South Indian options.",
+    "history": "Part of the Minerva Hotel chain, a popular upscale choice in Tirupati.",
+    "timings": "7:00 AM - 11:00 PM",
+    "entryFee": "Free",
+    "address": "Renigunta Road, Tirupati",
+    "rating": 4.4,
+    "reviewCount": 850,
+    "image": "/assets/food/minerva-grand.png",
+    "coordinates": {
+      "lat": 13.635,
+      "lng": 79.405
+    },
+    "tags": [
+      "Fine Dining",
+      "Multi-cuisine"
+    ],
+    "bestTime": "Dinner",
+    "practicalInfo": {
+      "dressCode": "Smart Casual",
+      "food": "Full menu",
+      "parking": "Valet"
+    },
+    "travelEstimates": {
+      "railway-station": "10 mins"
+    }
+  },
+  {
+    "id": "plantain-leaf",
+    "name": "Plantain Leaf",
+    "category": "Food",
+    "placeType": "food",
+    "location": "Tirumala Bypass Road",
+    "distanceKms": 5,
+    "durationMins": 60,
+    "budgetLevel": "medium",
+    "entryFeeNum": 0,
+    "interests": [
+      "food",
+      "culture"
+    ],
+    "openFrom": 11,
+    "openTo": 22,
+    "isMustVisit": true,
+    "description": "Famous for traditional South Indian meals served on banana leaves. Authentic flavors.",
+    "history": "A beloved institution for travelers seeking traditional Andhra hospitality.",
+    "timings": "11:00 AM - 10:00 PM",
+    "entryFee": "Free",
+    "address": "Tirumala Bypass Road, Tirupati",
+    "rating": 4.3,
+    "reviewCount": 2100,
+    "image": "/assets/food/plantain-leaf.png",
+    "coordinates": {
+      "lat": 13.645,
+      "lng": 79.395
+    },
+    "tags": [
+      "Banana Leaf",
+      "Traditional"
+    ],
+    "bestTime": "Lunch",
+    "practicalInfo": {
+      "dressCode": "Casual",
+      "food": "Full meals",
+      "parking": "Available"
+    },
+    "travelEstimates": {
+      "tirupati": "15 mins"
+    }
+  },
+  {
+    "id": "pai-viceroy",
+    "name": "Pai Viceroy",
+    "category": "Food",
+    "placeType": "food",
+    "location": "Near RTC Bus Stand",
+    "distanceKms": 1,
+    "durationMins": 60,
+    "budgetLevel": "medium",
+    "entryFeeNum": 0,
+    "interests": [
+      "food",
+      "family"
+    ],
+    "openFrom": 7,
+    "openTo": 22,
+    "isMustVisit": false,
+    "description": "Excellent South Indian and North Indian vegetarian options. Great for quick meals between temple visits.",
+    "history": "A trusted chain known for consistent quality vegetarian fare.",
+    "timings": "7:00 AM - 10:00 PM",
+    "entryFee": "Free",
+    "address": "Near RTC Bus Stand, Tirupati",
+    "rating": 4.2,
+    "reviewCount": 1150,
+    "image": "/assets/food/pai-viceroy.png",
+    "coordinates": {
+      "lat": 13.629,
+      "lng": 79.421
+    },
+    "tags": [
+      "Vegetarian",
+      "Quick"
+    ],
+    "bestTime": "Breakfast",
+    "practicalInfo": {
+      "dressCode": "Casual",
+      "food": "Full meals",
+      "parking": "Limited"
+    },
+    "travelEstimates": {
+      "railway-station": "3 mins"
+    }
+  },
+  {
+    "id": "hotel-bliss",
+    "name": "Hotel Bliss",
+    "category": "Food",
+    "placeType": "food",
+    "location": "Renigunta Road",
+    "distanceKms": 3,
+    "durationMins": 90,
+    "budgetLevel": "premium",
+    "entryFeeNum": 0,
+    "interests": [
+      "food"
+    ],
+    "openFrom": 7,
+    "openTo": 23,
+    "isMustVisit": false,
+    "description": "A popular choice for both North Indian and South Indian delicacies with a warm ambiance.",
+    "history": "Premium hotel restaurant known for quality and variety.",
+    "timings": "7:00 AM - 11:00 PM",
+    "entryFee": "Free",
+    "address": "Renigunta Road, Tirupati",
+    "rating": 4.5,
+    "reviewCount": 2200,
+    "image": "/assets/food/hotel-bliss.png",
+    "coordinates": {
+      "lat": 13.634,
+      "lng": 79.408
+    },
+    "tags": [
+      "Premium",
+      "Multi-cuisine"
+    ],
+    "bestTime": "Dinner",
+    "practicalInfo": {
+      "dressCode": "Smart Casual",
+      "food": "Full menu",
+      "parking": "Available"
+    },
+    "travelEstimates": {
+      "railway-station": "10 mins"
+    }
+  },
+  {
+    "id": "kalyan-residency-veg",
+    "name": "Kalyan Residency Veg",
+    "category": "Food",
+    "placeType": "food",
+    "location": "Tirupati Town",
+    "distanceKms": 1,
+    "durationMins": 45,
+    "budgetLevel": "budget",
+    "entryFeeNum": 0,
+    "interests": [
+      "food"
+    ],
+    "openFrom": 6,
+    "openTo": 22,
+    "isMustVisit": false,
+    "description": "Comfort food and quick tiffins for travelers. Great for early morning breakfasts before temple visits.",
+    "history": "Budget-friendly option popular with pilgrims.",
+    "timings": "6:00 AM - 10:00 PM",
+    "entryFee": "Free",
+    "address": "Tirupati Town",
+    "rating": 4.1,
+    "reviewCount": 900,
+    "image": "/assets/food/kalyan-residency.png",
+    "coordinates": {
+      "lat": 13.63,
+      "lng": 79.418
+    },
+    "tags": [
+      "Budget",
+      "Tiffin"
+    ],
+    "bestTime": "Breakfast",
+    "practicalInfo": {
+      "dressCode": "Casual",
+      "food": "Tiffin & meals",
+      "parking": "Street"
+    },
+    "travelEstimates": {
+      "railway-station": "5 mins"
+    }
+  },
+  {
+    "id": "srivari-food-court",
+    "name": "Srivari Brahmotsavam Food Court",
+    "category": "Food",
+    "placeType": "food",
+    "location": "Tirumala",
+    "distanceKms": 22,
+    "durationMins": 30,
+    "budgetLevel": "budget",
+    "entryFeeNum": 0,
+    "interests": [
+      "food",
+      "spiritual"
+    ],
+    "openFrom": 6,
+    "openTo": 22,
+    "isMustVisit": true,
+    "description": "Free meals (Annadanam) provided by TTD to thousands of pilgrims daily. A divine experience.",
+    "history": "TTD runs the largest free meal program in the world, serving over 80,000 meals daily.",
+    "timings": "6:00 AM - 10:00 PM",
+    "entryFee": "Free",
+    "address": "Tirumala",
+    "rating": 4.7,
+    "reviewCount": 5000,
+    "image": "/assets/food/srivari-food-court.png",
+    "coordinates": {
+      "lat": 13.6835,
+      "lng": 79.3495
+    },
+    "tags": [
+      "Free Food",
+      "Annadanam",
+      "Prasadam"
+    ],
+    "bestTime": "Anytime",
+    "practicalInfo": {
+      "dressCode": "Modest",
+      "food": "Free meals",
+      "parking": "Tirumala"
+    },
+    "travelEstimates": {
+      "venkateswara": "5 mins walk"
+    }
+  },
+  {
+    "id": "jalpaan",
+    "name": "Jalpaan",
+    "category": "Food",
+    "placeType": "food",
+    "location": "Tirupati Center",
+    "distanceKms": 1,
+    "durationMins": 60,
+    "budgetLevel": "medium",
+    "entryFeeNum": 0,
+    "interests": [
+      "food"
+    ],
+    "openFrom": 11,
+    "openTo": 22,
+    "isMustVisit": false,
+    "description": "Modern vegetarian dining with innovative dishes, mocktails, and a contemporary atmosphere.",
+    "history": "A newer addition to Tirupati dining scene, blending tradition with modernity.",
+    "timings": "11:00 AM - 10:00 PM",
+    "entryFee": "Free",
+    "address": "Tirupati Center",
+    "rating": 4.4,
+    "reviewCount": 650,
+    "image": "/assets/food/jalpaan.png",
+    "coordinates": {
+      "lat": 13.6315,
+      "lng": 79.417
+    },
+    "tags": [
+      "Modern",
+      "Mocktails"
+    ],
+    "bestTime": "Evening",
+    "practicalInfo": {
+      "dressCode": "Casual",
+      "food": "Full menu",
+      "parking": "Street"
+    },
+    "travelEstimates": {
+      "railway-station": "5 mins"
+    }
+  },
+  {
+    "id": "sri-krishna-sweets",
+    "name": "Sri Krishna Sweets",
+    "category": "Food",
+    "placeType": "food",
+    "location": "Prakasam Road",
+    "distanceKms": 0.5,
+    "durationMins": 30,
+    "budgetLevel": "budget",
+    "entryFeeNum": 0,
+    "interests": [
+      "food"
+    ],
+    "openFrom": 8,
+    "openTo": 22,
+    "isMustVisit": false,
+    "description": "Iconic spot for traditional Andhra sweets, savories, and quick snacks. Perfect for buying souvenirs.",
+    "history": "A longstanding institution for authentic South Indian confections.",
+    "timings": "8:00 AM - 10:00 PM",
+    "entryFee": "Free",
+    "address": "Prakasam Road, Tirupati",
+    "rating": 4.6,
+    "reviewCount": 1500,
+    "image": "/assets/food/sweets-shop.png",
+    "coordinates": {
+      "lat": 13.6305,
+      "lng": 79.4195
+    },
+    "tags": [
+      "Sweets",
+      "Snacks",
+      "Souvenirs"
+    ],
+    "bestTime": "Anytime",
+    "practicalInfo": {
+      "dressCode": "Casual",
+      "food": "Sweets & snacks",
+      "parking": "Street"
+    },
+    "travelEstimates": {
+      "railway-station": "3 mins"
+    }
+  },
+  {
+    "id": "vakula-matha",
+    "name": "Sri Vakulamatha Temple",
+    "category": "Core Temple",
+    "placeType": "spiritual",
+    "location": "Peruru",
+    "distanceKms": 5.5,
+    "durationMins": 20,
+    "budgetLevel": "budget",
+    "entryFeeNum": 0,
+    "interests": [
+      "spiritual"
+    ],
+    "openFrom": 6,
+    "openTo": 20,
+    "isMustVisit": true,
+    "description": "Dedicated to Vakula Devi, the foster mother of Lord Venkateswara. A symbol of unconditional maternal love.",
+    "history": "Legend says Vakula Devi (an avatar of Yashoda) arranged the marriage of Lord Venkateswara to Goddess Padmavathi. Naivedyam is first offered here before Tirumala.",
+    "timings": "6:00 AM - 8:00 PM",
+    "entryFee": "Free",
+    "address": "Peruru Village, Tirupati, Andhra Pradesh 517507",
+    "rating": 4.8,
+    "reviewCount": 4200,
+    "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTzUC73ZO36GqwYBoBjMxUFw0ANNUk-f5Ox3lAGc7dbtA&s=10",
+    "images": [
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTzUC73ZO36GqwYBoBjMxUFw0ANNUk-f5Ox3lAGc7dbtA&s=10"
+    ],
+    "coordinates": {
+      "lat": 13.599483,
+      "lng": 79.36914
+    },
+    "tags": [
+      "Mother",
+      "Love",
+      "Tradition"
+    ],
+    "bestTime": "Morning",
+    "spiritualInfo": {
+      "god": "Vakula Devi",
+      "knownFor": "Mother of Venkateswara",
+      "mantra": "Om Vakula Deviyei Namaha",
+      "devoteeTips": [
+        "Visit before Tirumala",
+        "Listen for the bell signaling naivedyam"
+      ]
+    },
+    "practicalInfo": {
+      "dressCode": "Traditional",
+      "food": "Limited",
+      "parking": "Available"
+    },
+    "travelEstimates": {
+      "padmavathi": "12 mins",
+      "srinivasa-mangapuram": "10 mins"
+    }
+  },
+  {
+    "id": "agastheeshwara",
+    "name": "Agastheeshwara Temple",
+    "category": "Core Temple",
+    "placeType": "spiritual",
+    "location": "Tondavada",
+    "distanceKms": 18,
+    "durationMins": 90,
+    "budgetLevel": "budget",
+    "entryFeeNum": 0,
+    "interests": [
+      "spiritual",
+      "history"
+    ],
+    "openFrom": 6,
+    "openTo": 20,
+    "isMustVisit": true,
+    "description": "Ancient Shiva temple at the confluence of three rivers — Swarnamukhi, Bhima, and Kalyani. Also known as Mukkoti Temple.",
+    "shortIntro": "The Agastheeshwara Temple (also widely known as the Mukkoti Temple) is an ancient and spiritually profound Shiva temple located in Tondavada, situated at the confluence of three rivers.",
+    "whyVisit": "Incredibly unique for its breathtaking geographical setting at the Triveni Sangamam river confluence, and its deep connection to Lord Venkateswara, who stayed at this ashram and worshipped Lord Shiva here after his wedding.",
+    "history": "Established by the Vedic seer Sage Agasthya, who installed the Shiva Lingam. After marrying Goddess Padmavathi, Lord Venkateswara and his bride stayed at the sage's ashram. The Lord is said to have walked to the river confluence daily to offer prayers to the Agastheeshwara Shiva Lingam, establishing a beautiful harmony between Shaivism and Vaishnavism.",
+    "timings": "6:00 AM - 8:00 PM (All days open)",
+    "entryFee": "Free",
+    "address": "Tondavada, Chandragiri Mandal",
+    "rating": 4.6,
+    "reviewCount": 1800,
+    "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWl0To2-_-0rdgxYuP1cqAkaxRGYchKXNKs-RilwzZq9r5B7iw4L9VOsvLYYQs0eqxByShXgvmMiqJxFr1yo7TpLWPrO4-Nua3p_V5Vkt9Df0W7uMo1ywahvYlf7oAbbq4UjbaRnplNWZWAW=w408-h306-k-no",
+    "images": [
+      "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWl0To2-_-0rdgxYuP1cqAkaxRGYchKXNKs-RilwzZq9r5B7iw4L9VOsvLYYQs0eqxByShXgvmMiqJxFr1yo7TpLWPrO4-Nua3p_V5Vkt9Df0W7uMo1ywahvYlf7oAbbq4UjbaRnplNWZWAW=w408-h306-k-no"
+    ],
+    "coordinates": {
+      "lat": 13.5968472,
+      "lng": 79.3410868
+    },
+    "tags": [
+      "Shiva",
+      "Confluence",
+      "Ancient"
+    ],
+    "bestTime": "Morning hours (recommended to experience the peaceful mist over the river confluence)",
+    "spiritualInfo": {
+      "god": "Lord Shiva",
+      "knownFor": "Triveni Sangamam",
+      "mantra": "Om Namah Shivaya",
+      "devoteeTips": [
+        "Visit the confluence point",
+        "See the tall Dwarapalakas"
+      ]
+    },
+    "practicalInfo": {
+      "dressCode": "Traditional Indian attire is required to enter",
+      "food": "Limited options (mostly small local tea stalls)",
+      "parking": "Available"
+    },
+    "travelEstimates": {
+      "chandragiri-fort": "10 mins"
+    },
+    "relatedPlaces": [
+      "chandragiri-fort",
+      "kalyani-dam",
+      "srinivasa-mangapuram",
+      "srivari-mettu-path"
+    ]
+  },
+  {
+    "id": "sv-national-park",
+    "name": "Sri Venkateswara National Park",
+    "category": "Nature",
+    "placeType": "nature",
+    "location": "Seshachalam Hills",
+    "distanceKms": 30,
+    "durationMins": 300,
+    "budgetLevel": "budget",
+    "entryFeeNum": 30,
+    "interests": [
+      "nature",
+      "wildlife"
+    ],
+    "openFrom": 6,
+    "openTo": 17,
+    "isMustVisit": true,
+    "description": "A 350+ sq km biosphere reserve in the Eastern Ghats with deep valleys, rolling hills, and rich biodiversity including leopards, sloth bears, and 150+ bird species.",
+    "history": "Home to rare endemic flora like Cycas beddomei (a living fossil), red sanders, and sandalwood. A UNESCO-recognized biosphere reserve.",
+    "timings": "6:00 AM - 5:00 PM",
+    "entryFee": "₹30",
+    "address": "Seshachalam Hills, Tirupati District",
+    "rating": 4.7,
+    "reviewCount": 8500,
+    "image": "/assets/nature/sv-national-park.png",
+    "coordinates": {
+      "lat": 13.7144,
+      "lng": 79.2844
+    },
+    "tags": [
+      "Biosphere",
+      "Wildlife",
+      "Endemic"
+    ],
+    "bestTime": "Oct - Feb",
+    "practicalInfo": {
+      "dressCode": "Trekking gear",
+      "food": "Carry own",
+      "parking": "Available"
+    },
+    "travelEstimates": {
+      "tirupati": "45 mins"
+    }
+  },
+  {
+    "id": "tada-falls",
+    "name": "Tada Falls (Ubbalamadugu)",
+    "category": "Nature",
+    "placeType": "water",
+    "location": "Chittoor District",
+    "distanceKms": 90,
+    "durationMins": 360,
+    "budgetLevel": "medium",
+    "entryFeeNum": 0,
+    "interests": [
+      "nature",
+      "trekking"
+    ],
+    "openFrom": 6,
+    "openTo": 16,
+    "isMustVisit": true,
+    "description": "A stunning multi-cascading waterfall dropping from ~100 meters, accessible via a scenic forest trek through rocky terrain.",
+    "history": "Also known as Ubbalamadugu Falls, located in the Siddulaiah Kona region. Popular among trekkers and adventure seekers.",
+    "timings": "6:00 AM - 4:00 PM",
+    "entryFee": "Free",
+    "address": "Tada Village, Chittoor District",
+    "rating": 4.5,
+    "reviewCount": 6200,
+    "image": "/assets/nature/tada-falls.png",
+    "coordinates": {
+      "lat": 13.5506,
+      "lng": 79.8528
+    },
+    "tags": [
+      "Waterfall",
+      "Trek",
+      "Adventure"
+    ],
+    "bestTime": "Sep - Jan",
+    "practicalInfo": {
+      "dressCode": "Trekking shoes mandatory",
+      "food": "Carry own",
+      "parking": "Base camp"
+    },
+    "travelEstimates": {
+      "tirupati": "2 hours"
+    }
+  },
+  {
+    "id": "dhyana-vignan-mandiram",
+    "name": "Sri Venkateswara Dhyana Vignan Mandiram",
+    "category": "Tirumala Spot",
+    "placeType": "spiritual",
+    "location": "Tirumala Hills",
+    "distanceKms": 22,
+    "durationMins": 90,
+    "budgetLevel": "budget",
+    "entryFeeNum": 0,
+    "interests": [
+      "spiritual",
+      "culture",
+      "history",
+      "meditation"
+    ],
+    "openFrom": 6,
+    "openTo": 18,
+    "isMustVisit": true,
+    "description": "Established by TTD in 1980, Sri Venkateswara Dhyana Vignan Mandiram (Dhyana Jnana Mandiram) is a peaceful spiritual center and museum located in Tirumala. It functions as a quiet sanctuary dedicated to meditation, mindfulness, and self-realization. The complex houses spacious meditation halls surrounded by calm gardens as well as curated museum galleries exhibiting ancient stone sculptures, wooden relief carvings, antique puja vessels, traditional musical instruments, and sacred temple heritage artifacts.",
+    "history": "Founded in 1980 by Tirumala Tirupati Devasthanams (TTD) to blend ancient Vedic wisdom with modern spiritual practice, providing visiting pilgrims with a tranquil haven for meditation amidst their temple pilgrimage.",
+    "timings": "6:00 AM - 6:00 PM",
+    "entryFee": "Free (Voluntary donations accepted)",
+    "address": "Near Srivari Temple & Pushkarini, Tirumala, Andhra Pradesh 517504",
+    "rating": 4.7,
+    "reviewCount": 3800,
+    "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSSpKXysqAZ1BSpfHhRu5pZ_lewQTliNINfPhfTTnRLWA&s=10",
+    "coordinates": {
+      "lat": 13.680238,
+      "lng": 79.346987
+    },
+    "shortIntro": "Sri Venkateswara Dhyana Vignan Mandiram is a tranquil meditation center and museum in Tirumala, established in 1980 by TTD to offer quiet reflection and showcase sacred temple artifacts.",
+    "whyVisit": "Experience serene meditation halls for self-realization alongside rich museum galleries featuring ancient temple wood/stone carvings, antique puja items, and musical instruments.",
+    "openingTime": "6:00 AM",
+    "closingTime": "6:00 PM",
+    "duration": "1 to 2 hours",
+    "travelByRTC": "Take TTD free electric shuttles or APSRTC hill buses from Tirumala Main Bus Stand to Srivari Museum / Dhyana Mandiram stop.",
+    "travelByCar": "Drive 45 minutes (22 km) from Tirupati via Up-Ghat Road to Tirumala Main Square.",
+    "travelByBike": "Ride 40-45 minutes up the scenic Tirumala Ghat Road.",
+    "approxRTCFare": "Free TTD local shuttle / ₹65 Ghat bus",
+    "approxCarCost": "₹250-₹350 fuel & toll",
+    "approxBikeCost": "₹100 petrol",
+    "images": [
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSSpKXysqAZ1BSpfHhRu5pZ_lewQTliNINfPhfTTnRLWA&s=10"
+    ],
+    "tags": [
+      "Dhyana Mandiram",
+      "Meditation Hall",
+      "TTD Museum",
+      "Tirumala Heritage",
+      "Spiritual Center"
+    ],
+    "bestTime": "Early Morning (6:00 AM - 9:00 AM) or Late Afternoon (4:00 PM - 5:30 PM)",
+    "practicalInfo": {
+      "dressCode": "Modest / Traditional attire",
+      "food": "Free TTD Annaprasadam & water kiosks nearby",
+      "parking": "Tirumala Central Parking"
+    },
+    "visitorTips": {
+      "dressCode": "Simple, modest clothing required. Maintain absolute silence inside meditation halls.",
+      "crowdNote": "Peaceful environment. Best visited during early morning hours for quiet, uninterrupted meditation."
+    },
+    "spiritualInfo": {
+      "god": "Lord Sri Venkateswara Swamy",
+      "knownFor": "Quiet meditation halls, ancient temple stone/wood sculptures, and Vedic heritage exhibits",
+      "mantra": "Om Namo Venkatesaya",
+      "devoteeTips": [
+        "Spend 20-30 minutes in silent meditation in the main hall.",
+        "Explore the ancient wooden relief carvings and temple artifact galleries."
+      ]
+    },
+    "travelEstimates": {
+      "venkateswara": "5 mins walk",
+      "srivari-museum": "3 mins walk"
+    }
+  },
+  {
+    "id": "sree-padmagiri-subramanya",
+    "name": "Sree Padmagiri Subramanya Swamy Temple",
+    "category": "Temples",
+    "placeType": "spiritual",
+    "location": "Thanapalli, Tirupati Rural",
+    "distanceKms": 5.4,
+    "durationMins": 90,
+    "budgetLevel": "budget",
+    "entryFeeNum": 0,
+    "interests": [
+      "spiritual",
+      "culture",
+      "history"
+    ],
+    "openFrom": 7,
+    "openTo": 19,
+    "isMustVisit": true,
+    "description": "The only temple in Andhra Pradesh depicting Lord Subramanya Swamy in his celibate Brahmachari avatar, standing atop the lotus-shaped Sri Padmagiri hill.",
+    "whyVisit": "Andhra's only celibate avatar of Lord Subramanya. Consecrated upon a sacred Shatkona Yantra Peetam on a lotus-shaped hill, surrounded by ancient caves used by Siddhars like Sri Digambara Swamy.",
+    "history": "Founded in 1979 by saint Sri La Sri Ganapathi Swamy following a divine vision. The saint performed severe penance in the hill's caves. Esoteric rituals and the Subramanya Yantra custody were passed down in 2006 to his son, Sri La Sri Shanmugha Swamy.",
+    "timings": "Morning: 7:00 AM - 12:00 PM, Evening: 4:30 PM - 7:00 PM (Tuesdays: 5:30 AM - 12:30 PM & 4:00 PM - 8:00 PM)",
+    "entryFee": "Free",
+    "address": "Sri Padmagiri Hill, Thanapalli, Tirupati Rural, Andhra Pradesh",
+    "rating": 4.8,
+    "reviewCount": 250,
+    "image": "/assets/temples/subramanya-thanapalli.png",
+    "coordinates": {
+      "lat": 13.6212,
+      "lng": 79.4447
+    },
+    "tags": [
+      "Subramanya Swamy",
+      "Thanapalli",
+      "Brahmachari Avatar",
+      "Shatkona Yantra",
+      "Hill Temple",
+      "Ascetic"
+    ],
+    "bestTime": "Tuesdays (extended hours) or Guru Pournami",
+    "practicalInfo": {
+      "dressCode": "Strict traditional wear (Dhoti/Kurta for men, Saree/Chudidar for women).",
+      "food": "Foothill stalls",
+      "parking": "Available at base"
+    },
+    "travelEstimates": {
+      "tirupati": "15 mins drive"
+    },
+    "breakTimings": [
+      {
+        "from": "12:00",
+        "to": "16:30"
+      }
+    ],
+    "rituals": {
+      "daily": [
+        "Abhishekam (7:30 AM)",
+        "Kavadi Chelimpu",
+        "Thalaneelalu (Hair tonsuring)",
+        "Vivaham (Marriages)"
+      ],
+      "weekly": [
+        "Special Tuesday Abhishekam (6:00 AM)"
+      ],
+      "annual": [
+        "Guru Pournami Special Alankaram"
+      ]
+    }
+  },
+  {
+    "id": "annaprasadam-complex",
+    "name": "Matrusri Tarigonda Vengamamba Annaprasadam Complex",
+    "category": "Essential Facility",
+    "placeType": "facility",
+    "location": "Tirumala Temple Area",
+    "distanceKms": 22.3,
+    "durationMins": 45,
+    "budgetLevel": "budget",
+    "entryFeeNum": 0,
+    "interests": [
+      "spiritual",
+      "food",
+      "family"
+    ],
+    "openFrom": 11,
+    "openTo": 23,
+    "isMustVisit": true,
+    "description": "World's largest free holy dining hall serving continuous, hot, hygienic vegetarian meals to all pilgrims.",
+    "whyVisit": "Serves unlimited hot rice, dal, sambar, chutney, buttermilk, and rotis to tens of thousands of devotees daily completely free of cost.",
+    "history": "Named in honor of saint poetess Matrusri Tarigonda Vengamamba, who pioneered the tradition of serving free meals (Annadanam) to Tirumala pilgrims in the 18th century.",
+    "timings": "11:00 AM - 11:00 PM",
+    "entryFee": "Free (No ticket or token required)",
+    "address": "North-East of Srivari Temple, near Pushkarini, Tirumala",
+    "rating": 4.9,
+    "reviewCount": 95000,
+    "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTcw1i7JBnPL9NMl-LJO9DKPCntCSlsJd_r_5CFzzDkig&s=10",
+    "coordinates": {
+      "lat": 13.6841,
+      "lng": 79.3498
+    },
+    "shortIntro": "Matrusri Tarigonda Vengamamba Nitya Annaprasadam Complex is TTD's world-famous mega dining hall in Tirumala, serving delicious, unlimited hot Mahaprasadam (rice, sambar, rasam, chutney, & sweet) to 100,000+ devotees daily.",
+    "travelByRTC": "Walk 3 minutes from Tirumala main bus stand or CRO office.",
+    "travelByCar": "Park at Tirumala main car parking areas (CRO / Rambag) and walk 2 minutes to the Annaprasadam Complex.",
+    "travelByBike": "Park at designated Tirumala parking lots near CRO.",
+    "approxRTCFare": "Included in Tirumala transit",
+    "approxCarCost": "Included in Tirumala toll",
+    "approxBikeCost": "Included in Tirumala toll",
+    "images": [
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTcw1i7JBnPL9NMl-LJO9DKPCntCSlsJd_r_5CFzzDkig&s=10"
+    ],
+    "tags": [
+      "Annaprasadam",
+      "Free Meals",
+      "Food",
+      "Tirumala",
+      "Hygienic"
+    ],
+    "bestTime": "11:00 AM to 3:00 PM (Lunch) & 6:00 PM to 10:00 PM (Dinner)",
+    "practicalInfo": {
+      "dressCode": "Clean modest wear",
+      "food": "100% Free Pure Veg",
+      "parking": "Tirumala"
+    },
+    "visitorTips": {
+      "dressCode": "Clean, modest attire. Footwear must be deposited outside at the designated free footwear counter before entering.",
+      "crowdNote": "4 large halls seat 4,000 pilgrims simultaneously. Queue moves very fast. Meals are served continuously from 9:00 AM to 11:00 PM."
+    },
+    "travelEstimates": {
+      "venkateswara": "5 mins walk"
+    },
+    "status": "Published",
+    "importanceLevel": "Iconic",
+    "visitDifficulty": "Easy",
+    "visitType": "Quick Stop",
+    "oneReasonToVisit": "World's largest free holy dining hall serving continuous, hot, hygienic vegetarian meals to all pilgrims.",
+    "verification": {
+      "status": "Verified",
+      "verifiedBy": "TTD Board & Ground Team",
+      "verifiedDate": "2026-07-21",
+      "source": "TTD",
+      "confidenceScore": 100,
+      "lastUpdated": "2026-07-21"
+    },
+    "recommendationContext": {
+      "bestTimeOfDay": [
+        "Morning",
+        "Afternoon",
+        "Evening"
+      ],
+      "idealWeather": [
+        "Sunny",
+        "Cloudy",
+        "Rain",
+        "Winter",
+        "Summer"
+      ],
+      "idealSeason": [
+        "All Seasons"
+      ],
+      "crowdEscape": true,
+      "typicalCrowd": "High",
+      "indoorOutdoor": "Indoor",
+      "familyFriendly": true,
+      "seniorFriendly": true,
+      "wheelchairAccessible": true,
+      "kidsFriendly": true,
+      "photographyFriendly": false,
+      "basePriority": 95,
+      "recommendationPriority": 98,
+      "recommendationReasons": [
+        "Free Meals",
+        "Continuous Service",
+        "Hygienic",
+        "No Ticket Needed",
+        "Wheelchair Accessible"
+      ]
+    },
+    "searchIntelligence": {
+      "aliases": [
+        "Annaprasadam",
+        "Free Meals",
+        "Tarigonda Vengamamba",
+        "Food Hall",
+        "Free Lunch",
+        "Free Dinner",
+        "Tirumala Canteen"
+      ],
+      "tags": [
+        "Food",
+        "Free",
+        "Meals",
+        "Annaprasadam",
+        "Sanctified",
+        "Hygienic"
+      ],
+      "intentQueries": [
+        "Food",
+        "Meals",
+        "Lunch",
+        "Dinner",
+        "Eating",
+        "Free Food",
+        "Hungry",
+        "Annaprasadam"
+      ],
+      "misspellings": [
+        "Annaprasdam",
+        "Annadanam",
+        "Vengamamba",
+        "Tirumala food"
+      ]
+    },
+    "relationships": {
+      "nearby": [
+        "venkateswara",
+        "bhu-varaha",
+        "swami-pushkarini"
+      ],
+      "alternatives": [
+        "venkatadri-nilayam-canteen"
+      ],
+      "nextVisit": [
+        "venkateswara"
+      ],
+      "recommendedTogether": [
+        "venkateswara",
+        "bhu-varaha"
+      ]
+    },
+    "detailedFacilities": {
+      "diningHall": {
+        "available": true,
+        "distance": "0m",
+        "cost": "Free"
+      },
+      "washrooms": {
+        "available": true,
+        "distance": "20m",
+        "cost": "Free"
+      },
+      "drinkingWater": {
+        "available": true,
+        "distance": "10m",
+        "cost": "Free"
+      },
+      "wheelchair": {
+        "available": true,
+        "distance": "0m",
+        "cost": "Free"
+      }
+    }
+  }
+]

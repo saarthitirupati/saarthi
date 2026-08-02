@@ -5,7 +5,7 @@ import { useParams, useRouter } from 'next/navigation';
 import { darshanRegistry } from '@/content/darshans';
 import styles from './page.module.css';
 import { DarshanDetail } from '@/types/darshan';
-import { ArrowLeft, CheckCircle2, XCircle, Activity, Info, Coins, ShieldAlert, Heart } from 'lucide-react';
+import { ArrowLeft, CheckCircle2, XCircle, Activity, Info, Coins, ShieldAlert, Heart, MapPin, Sparkles, Shirt, Lightbulb } from 'lucide-react';
 import { TirumalaStatus } from '@/lib/statusDb';
 
 export default function DarshanDetailsPage() {
@@ -106,7 +106,7 @@ export default function DarshanDetailsPage() {
 
       {/* DESCRIPTION */}
       <section className={styles.section}>
-        <h3>📜 Overview</h3>
+        <h3 style={{ display: 'flex', alignItems: 'center', gap: '8px' }}><Info size={18} /> Overview</h3>
         <p className={styles.description}>{data.description}</p>
       </section>
 
@@ -114,7 +114,7 @@ export default function DarshanDetailsPage() {
       {data.accessibility && data.accessibility.length > 0 && (
         <section className={styles.accessibilityBox}>
           <h3 className={styles.accessibilityTitle}>
-            <Heart size={18} /> Empathy & Accessibility
+            <Heart size={18} /> Empathy &amp; Accessibility
           </h3>
           <ul className={styles.list}>
             {data.accessibility.map((acc, idx) => (
@@ -127,7 +127,7 @@ export default function DarshanDetailsPage() {
       {/* JOURNEY STEPS */}
       {data.journeySteps && data.journeySteps.length > 0 && (
         <section className={styles.section}>
-          <h3>📍 Journey Flow</h3>
+          <h3 style={{ display: 'flex', alignItems: 'center', gap: '8px' }}><MapPin size={18} /> Journey Flow</h3>
           <div className={styles.journeyFlow}>
             {data.journeySteps.map((step, idx) => (
               <div key={idx} className={styles.journeyStep}>
@@ -145,15 +145,15 @@ export default function DarshanDetailsPage() {
       {/* FACILITIES */}
       {data.facilities && data.facilities.length > 0 && (
         <section className={styles.section}>
-          <h3>🏢 Inside the Queue Complex</h3>
+          <h3 style={{ display: 'flex', alignItems: 'center', gap: '8px' }}><Sparkles size={18} /> Inside the Queue Complex</h3>
           <div className={styles.facilityGrid}>
             {data.facilities.map((fac, idx) => (
               <div key={idx} className={styles.facilityCard}>
                 <div className={styles.facilityHeader}>
-                  <div className={styles.facilityIcon}>
-                    {getFacilityEmoji(fac.type)}
+                  <div className={styles.facilityHeaderLeft} style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                    <Sparkles size={16} color="#E9801D" />
+                    <div className={styles.facilityLabel}>{fac.type}</div>
                   </div>
-                  <div className={styles.facilityLabel}>{fac.type}</div>
                 </div>
                 <div className={styles.facilityNotes}>{fac.notes}</div>
               </div>
@@ -165,7 +165,7 @@ export default function DarshanDetailsPage() {
       {/* DRESS CODE */}
       {data.dressCodeRules && (
         <section className={styles.section}>
-          <h3>👔 Dress Code Guide</h3>
+          <h3 style={{ display: 'flex', alignItems: 'center', gap: '8px' }}><Shirt size={18} /> Dress Code Guide</h3>
           <div className={styles.dressCodeGrid}>
             <div className={`${styles.dressCodeCard} ${styles.dressCodeAllowed}`}>
               <h4><CheckCircle2 size={16} /> Accepted Traditional Wear</h4>
@@ -185,7 +185,9 @@ export default function DarshanDetailsPage() {
             </div>
           </div>
           {data.dressCodeRules.exceptions && (
-            <p className={styles.dressCodeExceptions}>💡 Note: {data.dressCodeRules.exceptions}</p>
+            <p className={styles.dressCodeExceptions} style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+              <Lightbulb size={16} /> Note: {data.dressCodeRules.exceptions}
+            </p>
           )}
         </section>
       )}

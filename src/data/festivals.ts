@@ -44,7 +44,7 @@ export const FESTIVALS_2026: Festival[] = [
     dressCode: 'Casual / Traditional',
     parking: 'Available',
     specialTips: 'Pasuvu Puja (decorating cows and bulls), family outings, and traditional feasts.',
-    coverImage: '/assets/ai/hero_nature_waterfall.png'
+    coverImage: 'https://images.unsplash.com/photo-1433086966358-54859d0ed716?auto=format&fit=crop&q=80&w=800'
   },
   {
     id: 'mukkanuma',
@@ -100,7 +100,7 @@ export const FESTIVALS_2026: Festival[] = [
     dressCode: 'Formal / Smart Casual',
     parking: 'Available',
     specialTips: 'Flag hoisting ceremonies and patriotic cultural events across Tirupati.',
-    coverImage: '/assets/ai/hero_spiritual_sunset.png'
+    coverImage: 'https://images.unsplash.com/photo-1514222134-b57cbf8ce673?auto=format&fit=crop&q=80&w=800'
   },
 
   // --- FEBRUARY 2026 ---
@@ -116,7 +116,7 @@ export const FESTIVALS_2026: Festival[] = [
     dressCode: 'Yellow / Traditional',
     parking: 'Campus Parking',
     specialTips: 'Aksharabhyasam ritual for young children seeking blessings of Goddess Saraswati.',
-    coverImage: '/assets/ai/hero_spiritual_sunset.png'
+    coverImage: 'https://images.unsplash.com/photo-1514222134-b57cbf8ce673?auto=format&fit=crop&q=80&w=800'
   },
   {
     id: 'maha-shivaratri',
@@ -160,7 +160,7 @@ export const FESTIVALS_2026: Festival[] = [
     dressCode: 'Casual White Attire',
     parking: 'ISKCON Grounds',
     specialTips: 'Organic herbal color play, Gaura Purnima kirtans, and Kamuni Dahanam bonfire.',
-    coverImage: '/assets/ai/hero_spiritual_sunset.png'
+    coverImage: 'https://images.unsplash.com/photo-1514222134-b57cbf8ce673?auto=format&fit=crop&q=80&w=800'
   },
   {
     id: 'ugadi',
@@ -204,7 +204,7 @@ export const FESTIVALS_2026: Festival[] = [
     dressCode: 'Orange / Traditional',
     parking: 'Japali forest base point',
     specialTips: 'Conclusion of 41-day Hanuman Deeksha. Massive Sindoor Abhishekam and Vadamala pujas.',
-    coverImage: '/assets/ai/hero_spiritual_sunset.png'
+    coverImage: 'https://images.unsplash.com/photo-1514222134-b57cbf8ce673?auto=format&fit=crop&q=80&w=800'
   },
   {
     id: 'akshaya-tritiya',
@@ -324,7 +324,7 @@ export const FESTIVALS_2026: Festival[] = [
     dressCode: 'Casual / Outdoor',
     parking: 'Ample Parking at Zoo Entrance',
     specialTips: '1st Sunday of August. Great day for nature walks and group visits to SV Zoo Park.',
-    coverImage: '/assets/ai/hero_nature_waterfall.png'
+    coverImage: 'https://images.unsplash.com/photo-1433086966358-54859d0ed716?auto=format&fit=crop&q=80&w=800'
   },
   {
     id: 'independence-day',
@@ -338,7 +338,7 @@ export const FESTIVALS_2026: Festival[] = [
     dressCode: 'Smart Casual / Patriotic',
     parking: 'Available',
     specialTips: 'Flag hoisting, science exhibitions, and cultural parades at Science Centre & SVU Grounds.',
-    coverImage: '/assets/ai/hero_spiritual_sunset.png'
+    coverImage: 'https://images.unsplash.com/photo-1514222134-b57cbf8ce673?auto=format&fit=crop&q=80&w=800'
   },
   {
     id: 'tulsidas-jayanti',
@@ -352,7 +352,7 @@ export const FESTIVALS_2026: Festival[] = [
     dressCode: 'Traditional',
     parking: 'Tirumala Parking Slots',
     specialTips: 'Shravana, Shukla Saptami. Special Ramcharitmanas recitation and akhanda bhajan.',
-    coverImage: '/assets/ai/hero_spiritual_sunset.png'
+    coverImage: 'https://images.unsplash.com/photo-1514222134-b57cbf8ce673?auto=format&fit=crop&q=80&w=800'
   },
   {
     id: 'varalakshmi-vratam',
@@ -424,7 +424,7 @@ export const FESTIVALS_2026: Festival[] = [
     dressCode: 'Traditional Festive Attire',
     parking: 'Hare Krishna Road Parking Grounds',
     specialTips: 'Bhadrapada Krishna Ashtami. Grand midnight Abhishekam, Utlotsavam (pot breaking), and kirtans.',
-    coverImage: '/assets/ai/hero_spiritual_sunset.png'
+    coverImage: 'https://images.unsplash.com/photo-1514222134-b57cbf8ce673?auto=format&fit=crop&q=80&w=800'
   },
   {
     id: 'teachers-day',
@@ -438,7 +438,7 @@ export const FESTIVALS_2026: Festival[] = [
     dressCode: 'Formal / Smart Casual',
     parking: 'SVU Auditorium Parking',
     specialTips: 'Honoring Dr. Sarvepalli Radhakrishnan with academic seminars and student tributes.',
-    coverImage: '/assets/ai/hero_spiritual_sunset.png'
+    coverImage: 'https://images.unsplash.com/photo-1514222134-b57cbf8ce673?auto=format&fit=crop&q=80&w=800'
   },
   {
     id: 'ganesh-chaturthi',
@@ -466,7 +466,7 @@ export const FESTIVALS_2026: Festival[] = [
     dressCode: 'Formal',
     parking: 'Campus Parking',
     specialTips: 'Literary symposiums and manuscript exhibitions at SVU ORI auditorium.',
-    coverImage: '/assets/ai/hero_spiritual_sunset.png'
+    coverImage: 'https://images.unsplash.com/photo-1514222134-b57cbf8ce673?auto=format&fit=crop&q=80&w=800'
   },
   {
     id: 'visvesvaraya-jayanti',
@@ -480,7 +480,7 @@ export const FESTIVALS_2026: Festival[] = [
     dressCode: 'Smart Formal',
     parking: 'SVU College of Engineering',
     specialTips: 'Tribute to Sir M. Visvesvaraya with tech expos and engineering innovation showcases.',
-    coverImage: '/assets/ai/hero_spiritual_sunset.png'
+    coverImage: 'https://images.unsplash.com/photo-1514222134-b57cbf8ce673?auto=format&fit=crop&q=80&w=800'
   },
   {
     id: 'salakatla-brahmotsavam',
@@ -508,7 +508,7 @@ export const FESTIVALS_2026: Festival[] = [
     dressCode: 'Outdoor / Comfortable',
     parking: 'Silathoranam Visitor Parking',
     specialTips: 'Equal day and night astronomical alignment over the pre-Cambrian natural arch formation.',
-    coverImage: '/assets/ai/hero_nature_waterfall.png'
+    coverImage: 'https://images.unsplash.com/photo-1433086966358-54859d0ed716?auto=format&fit=crop&q=80&w=800'
   },
 
   // --- OCTOBER 2026 ---
@@ -524,7 +524,7 @@ export const FESTIVALS_2026: Festival[] = [
     dressCode: 'Khadi / Casual',
     parking: 'Available',
     specialTips: 'Cleanliness drives (Swachhata) and devotional prayer assemblies.',
-    coverImage: '/assets/ai/hero_spiritual_sunset.png'
+    coverImage: 'https://images.unsplash.com/photo-1514222134-b57cbf8ce673?auto=format&fit=crop&q=80&w=800'
   },
   {
     id: 'bathukamma-begins',
@@ -622,7 +622,7 @@ export const FESTIVALS_2026: Festival[] = [
     dressCode: 'Traditional',
     parking: 'Available',
     specialTips: 'Ashwina Purnima. Continuous Ramayana chanting and devotional Meera bhajan kirtans.',
-    coverImage: '/assets/ai/hero_spiritual_sunset.png'
+    coverImage: 'https://images.unsplash.com/photo-1514222134-b57cbf8ce673?auto=format&fit=crop&q=80&w=800'
   },
   {
     id: 'atla-tadde',
@@ -708,7 +708,7 @@ export const FESTIVALS_2026: Festival[] = [
     dressCode: 'Traditional',
     parking: 'ISKCON Campus Grounds',
     specialTips: 'Huge Annakuta mountain of prasadam sweets offered to Lord Krishna.',
-    coverImage: '/assets/ai/hero_spiritual_sunset.png'
+    coverImage: 'https://images.unsplash.com/photo-1514222134-b57cbf8ce673?auto=format&fit=crop&q=80&w=800'
   },
   {
     id: 'bhaiya-dooj',
@@ -736,7 +736,7 @@ export const FESTIVALS_2026: Festival[] = [
     dressCode: 'Casual',
     parking: 'Zoo Entrance Multi-Tier Parking',
     specialTips: 'Free battery cart rides and wildlife educational tours for children.',
-    coverImage: '/assets/ai/hero_nature_waterfall.png'
+    coverImage: 'https://images.unsplash.com/photo-1433086966358-54859d0ed716?auto=format&fit=crop&q=80&w=800'
   },
   {
     id: 'chhath-puja',
@@ -808,7 +808,7 @@ export const FESTIVALS_2026: Festival[] = [
     dressCode: 'Formal',
     parking: 'SVIMS Visitor Parking',
     specialTips: 'Awareness rallies and medical health camps hosted by SVIMS medical university.',
-    coverImage: '/assets/ai/hero_spiritual_sunset.png'
+    coverImage: 'https://images.unsplash.com/photo-1514222134-b57cbf8ce673?auto=format&fit=crop&q=80&w=800'
   },
   {
     id: 'kartika-vanabhojana',
@@ -836,7 +836,7 @@ export const FESTIVALS_2026: Festival[] = [
     dressCode: 'Warm / Outdoor',
     parking: 'Silathoranam Parking',
     specialTips: 'Witness the winter sunrise over the ancient 1.5-billion-year-old rock arch.',
-    coverImage: '/assets/ai/hero_nature_waterfall.png'
+    coverImage: 'https://images.unsplash.com/photo-1433086966358-54859d0ed716?auto=format&fit=crop&q=80&w=800'
   },
   {
     id: 'vaikunta-ekadashi-dec',

@@ -7,6 +7,7 @@ import SideMenu from '@/components/SideMenu/SideMenu';
 import BottomNav from '@/components/BottomNav/BottomNav';
 import { TripProvider, useTrip } from '@/components/TripContext';
 import LocationPrompt from '@/components/LocationPrompt/LocationPrompt';
+import { usePageAnalytics } from '@/hooks/usePageAnalytics';
 
 function LayoutContent({
   children,
@@ -21,9 +22,10 @@ function LayoutContent({
   isMenuOpen: boolean;
   setIsMenuOpen: (val: boolean) => void;
 }) {
+  usePageAnalytics();
   const pathname = usePathname();
   const router = useRouter();
-  const isAdmin = pathname?.startsWith('/admin');
+  const isAdmin = pathname?.startsWith('/saarthiadmin');
   const isStudio = pathname?.startsWith('/studio');
   const { locationPermission, isInitialized } = useTrip();
   const [needsOnboarding, setNeedsOnboarding] = useState<boolean | null>(null);
@@ -66,7 +68,7 @@ function LayoutContent({
         <SideMenu isOpen={isMenuOpen} onClose={() => setIsMenuOpen(false)} />
         <div style={{ 
           minHeight: '100vh',
-          paddingBottom: showBottomNav ? '96px' : '0'
+          paddingBottom: showBottomNav ? '125px' : '24px'
         }}>
           {children}
         </div>
@@ -85,7 +87,7 @@ export default function ClientLayout({
   const pathname = usePathname();
   const router = useRouter();
 
-  const isAdmin = pathname?.startsWith('/admin');
+  const isAdmin = pathname?.startsWith('/saarthiadmin');
 
   useEffect(() => {
     const splashShown = sessionStorage.getItem('splashShown');
@@ -145,3 +147,5 @@ export default function ClientLayout({
     </TripProvider>
   );
 }
+
+

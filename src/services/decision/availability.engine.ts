@@ -24,9 +24,12 @@ export function checkPlaceAvailability(place: Place, context: DerivedContext): A
 
   // 2. Opening Hours Check
   const currentHour = new Date().getHours() + (new Date().getMinutes() / 60);
-  if (place.openFrom !== undefined && place.openTo !== undefined) {
-    if (place.openFrom < place.openTo) {
-      if (currentHour < place.openFrom || currentHour >= place.openTo) {
+  const rawOpenFrom = place.openFrom !== undefined ? Number(place.openFrom) : undefined;
+  const rawOpenTo = place.openTo !== undefined ? Number(place.openTo) : undefined;
+
+  if (rawOpenFrom !== undefined && !isNaN(rawOpenFrom) && rawOpenTo !== undefined && !isNaN(rawOpenTo)) {
+    if (rawOpenFrom < rawOpenTo) {
+      if (currentHour < rawOpenFrom || currentHour >= rawOpenTo) {
         return {
           isAvailable: false,
           reason: `Closed for day (Opens at ${place.openingTime || '5:00 AM'})`,
@@ -35,7 +38,7 @@ export function checkPlaceAvailability(place: Place, context: DerivedContext): A
       }
     } else {
       // Overnight hours (e.g. 20 to 5)
-      if (currentHour < place.openFrom && currentHour >= place.openTo) {
+      if (currentHour < rawOpenFrom && currentHour >= rawOpenTo) {
         return {
           isAvailable: false,
           reason: 'Closed at this hour',

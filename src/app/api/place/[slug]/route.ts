@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
-import { supabase } from '@/lib/supabase';
+import { fetchLivePlaces } from '@/lib/placesSync';
+import { calculateDrivingDistance, TIRUPATI_CENTER } from '@/utils/location';
 
 export async function GET(
   request: Request,
@@ -7,64 +8,72 @@ export async function GET(
 ) {
   try {
     const { slug } = await params;
+    const { searchParams } = new URL(request.url);
+
+    const userLat = parseFloat(searchParams.get('lat') || '') || TIRUPATI_CENTER.lat;
+    const userLng = parseFloat(searchParams.get('lng') || '') || TIRUPATI_CENTER.lng;
 
     if (!slug) {
-      return NextResponse.json({ error: "Slug is required" }, { status: 400 });
+      return NextResponse.json({ error: "Slug or Place ID is required" }, { status: 400 });
     }
 
-    // Fetch place and its details using a join
-    const { data: placeData, error } = await supabase
-      .from('places')
-      .select(`
-        id,
-        name,
-        slug,
-        description,
-        coordinates,
-        images,
-        hero_image,
-        tags,
-        verification_status,
-        place_details (
-          history,
-          interestingFacts,
-          mythology,
-          travelTips,
-          dressCode,
-          faqs,
-          bestTime,
-          updatedAt
-        )
-      `)
-      .eq('slug', slug)
-      .eq('isActive', true)
-      .single();
+    const livePlaces = await fetchLivePlaces();
+    const place = livePlaces.find(
+      p => p.id === slug || (p as any).slug === slug || (p as any).db_id === slug || (p as any).uuid === slug || p.name.toLowerCase().replace(/[^a-z0-9]/g, '-') === slug
+    );
 
-    if (error || !placeData) {
+    if (!place) {
       return NextResponse.json({ error: "Place not found" }, { status: 404 });
     }
 
-    // Fetch related active stories/live updates (mocked structure for now)
-    // In production: fetch from 'stories' and 'live_updates' tables filtering by place_id
-    const stories: any[] = [];
-    const liveUpdates: any[] = [];
+    const targetLat = place.coordinates?.lat || (place as any).latitude || TIRUPATI_CENTER.lat;
+    const targetLng = place.coordinates?.lng || (place as any).longitude || TIRUPATI_CENTER.lng;
 
-    const response = {
-      version: "1.0",
-      generatedAt: new Date().toISOString(),
-      cache: {
-        ttl: 600
-      },
+    const locLower = (place.location || '').toLowerCase();
+    const isTirumala = locLower.includes('tirumala') || locLower.includes('narayanagiri') || place.id === 'venkateswara';
+
+    const distKm = calculateDrivingDistance(userLat, userLng, targetLat, targetLng, isTirumala);
+    const bikeMins = Math.max(2, Math.round(distKm * 2.2));
+    const carMins = Math.max(3, Math.round(distKm * 2.5));
+    const walkMins = Math.max(3, Math.round(distKm * 14));
+
+    const googleMapsUrl = `https://www.google.com/maps/dir/?api=1&destination=${targetLat},${targetLng}`;
+
+    return NextResponse.json({
+      success: true,
       data: {
-        ...placeData,
-        stories,
-        liveUpdates
+        id: place.id,
+        name: place.name,
+        slug: (place as any).slug || place.id,
+        category: place.category,
+        placeType: place.placeType,
+        location: place.location,
+        description: place.description,
+        history: place.history,
+        timings: place.timings,
+        entryFee: place.entryFee,
+        rating: place.rating,
+        reviewCount: place.reviewCount,
+        image: place.image,
+        coordinates: {
+          latitude: targetLat,
+          longitude: targetLng
+        },
+        dynamicContext: {
+          distanceKm: distKm,
+          distanceStr: `${distKm.toFixed(1)} km`,
+          travelTimeStr: `${bikeMins} mins`,
+          transit: {
+            bike: `${bikeMins} mins`,
+            car: `${carMins} mins`,
+            walk: distKm <= 1.5 ? `${walkMins} mins` : 'Not recommended'
+          },
+          googleMapsUrl
+        }
       }
-    };
-
-    return NextResponse.json(response);
-  } catch (error) {
+    });
+  } catch (error: any) {
     console.error("Error fetching place:", error);
-    return NextResponse.json({ error: "Failed to fetch place" }, { status: 500 });
+    return NextResponse.json({ error: error.message || "Failed to fetch place" }, { status: 500 });
   }
 }

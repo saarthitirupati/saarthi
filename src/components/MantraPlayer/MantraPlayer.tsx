@@ -83,7 +83,7 @@ export default function MantraPlayer({ mantra, deity }: MantraPlayerProps) {
 
       <div className={styles.info}>
         <h3>Meditative Chant</h3>
-        <p>Seeking blessings of {deity}</p>
+        <p>Seeking blessings of {(deity || '').replace(/\s*\([^)]*\)/g, '').trim() || 'Lord Sri Venkateswara'}</p>
       </div>
 
       <div className={styles.controls}>

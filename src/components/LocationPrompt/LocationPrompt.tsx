@@ -21,7 +21,7 @@ export default function LocationPrompt() {
         },
         () => {
           setUserLocation(TIRUPATI_CENTER);
-          setLocationPermission('granted'); // Fallback granted so they can see relative distance
+          setLocationPermission('granted');
           setIsRequesting(false);
         }
       );

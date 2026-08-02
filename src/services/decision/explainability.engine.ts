@@ -34,7 +34,7 @@ export function formatRecommendation(scored: ScoredPlace, rank: number): Formatt
     confidence,
     distance: `${scored.distanceKm.toFixed(1)} km`,
     travelTime: `${travelMins} mins`,
-    image: scored.place.image || '/assets/temples/kapila-theertham.png',
+    image: scored.place.image || (scored.place as any).hero_image || '/assets/temples/kapila-theertham.png',
     reasons: scored.reasons.slice(0, 4)
   };
 }

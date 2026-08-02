@@ -33,17 +33,19 @@ export interface TirumalaStatus {
   accommodationStatus: 'available' | 'limited' | 'full';
   ladduAvailability: 'available' | 'limited' | 'no-stock';
   weather: string;
+  bestTime: string;            // e.g. "Now", "5:30 PM", "Tomorrow 6 AM"
   darshans: DarshanTypeStatus[];
   ssdTokenStatus: 'issuing' | 'paused' | 'closed-for-day';
-  ssdNextTokenTime: string;    // e.g. "2:00 PM" or "Tomorrow 5 AM"
+  ssdNextTokenTime: string;
   ssdTokenSlots: SsdTokenSlot[];
-  ssdNotice: string;           // e.g. "Tokens exhausted for morning slots"
+  ssdNotice: string;
   ssdTimingsGuide: string;
   ssdCounters: SsdCounter[];
 }
 
 const DEFAULT_STATUS: TirumalaStatus = {
   waitTime: '2-3 hours',
+  bestTime: '',
   crowdLevel: 'moderate',
   sevaStatus: 'All sevas open',
   notice: '',
@@ -85,7 +87,10 @@ async function ensureFileLoaded() {
   if (fileLoaded) return;
   try {
     const data = await fs.readFile(LOCAL_STATUS_FILE, 'utf-8');
-    memoryStatus = JSON.parse(data);
+    const parsed = JSON.parse(data);
+    // Strip any accidentally persisted error fields
+    delete (parsed as any).error;
+    memoryStatus = { ...DEFAULT_STATUS, ...parsed };
     fileLoaded = true;
   } catch (e) {
     fileLoaded = true;
@@ -117,25 +122,60 @@ export async function readStatus(): Promise<TirumalaStatus> {
       return memoryStatus;
     }
 
-    const waitTimeVal = metrics.crowd_wait_minutes >= 60 
-      ? `${Math.floor(metrics.crowd_wait_minutes / 60)}h ${metrics.crowd_wait_minutes % 60}m`
-      : `${metrics.crowd_wait_minutes} mins`;
+    // Format wait time: avoid "10h 0m" — use "10 hours" instead
+    const totalMins: number = metrics.crowd_wait_minutes ?? 0;
+    let waitTimeVal: string;
+    if (totalMins >= 60) {
+      const h = Math.floor(totalMins / 60);
+      const m = totalMins % 60;
+      waitTimeVal = m > 0 ? `${h}h ${m}m` : `${h} ${h === 1 ? 'hour' : 'hours'}`;
+    } else {
+      waitTimeVal = `${totalMins} mins`;
+    }
 
     const crowdLvl = (metrics.crowd_level?.toLowerCase() || 'moderate') as TirumalaStatus['crowdLevel'];
 
-    const updatedDarshans = [
-      { name: 'Sarva Darshan (Free)', waitTime: metrics.sarva_darshan_wait || '12-15 hours', peakHours: 'Daily 10 AM - 6 PM' },
-      { name: 'Special Entry (₹300)', waitTime: metrics.special_entry_wait || '3-4 hours', peakHours: 'Daily 9 AM - 3 PM' },
-      { name: 'Divya Darshan (Footpath)', waitTime: metrics.divya_darshan_wait || '8-10 hours', peakHours: 'Daily 8 AM - 4 PM' },
-      { name: 'VIP / Srivani Break', waitTime: metrics.srivani_darshan_wait || '1.5 hours', peakHours: 'Daily 6 AM - 8 AM' }
-    ];
+    // Parse darshans: prefer JSON blob, fall back to individual columns
+    let updatedDarshans: TirumalaStatus['darshans'] = memoryStatus.darshans;
+    if (metrics.darshans_json) {
+      try { updatedDarshans = JSON.parse(metrics.darshans_json); } catch {}
+    } else {
+      updatedDarshans = [
+        { name: 'Sarva Darshan (Free)', waitTime: metrics.sarva_darshan_wait || '12-15 hours', peakHours: 'Daily 10 AM - 6 PM' },
+        { name: 'Special Entry (₹300)', waitTime: metrics.special_entry_wait || '3-4 hours', peakHours: 'Daily 9 AM - 3 PM' },
+        { name: 'Divya Darshan (Footpath)', waitTime: metrics.divya_darshan_wait || '8-10 hours', peakHours: 'Daily 8 AM - 4 PM' },
+        { name: 'VIP / Srivani Break', waitTime: metrics.srivani_darshan_wait || '1.5 hours', peakHours: 'Daily 6 AM - 8 AM' }
+      ];
+    }
+
+    // Parse SSD slots/counters JSON blobs
+    let ssdSlots = memoryStatus.ssdTokenSlots;
+    if (metrics.ssd_token_slots) {
+      try { ssdSlots = JSON.parse(metrics.ssd_token_slots); } catch {}
+    }
+    let ssdCounters = memoryStatus.ssdCounters;
+    if (metrics.ssd_counters) {
+      try { ssdCounters = JSON.parse(metrics.ssd_counters); } catch {}
+    }
 
     memoryStatus = {
-      ...memoryStatus,
+      ...DEFAULT_STATUS,                          // start clean — no stale/error fields
       waitTime: waitTimeVal,
       crowdLevel: crowdLvl,
+      bestTime: metrics.best_time || '',
       darshans: updatedDarshans,
-      accommodationStatus: (metrics.parking_status?.toLowerCase() === 'full' ? 'full' : 'available') as any,
+      accommodationStatus: (metrics.parking_status?.toLowerCase() === 'full' ? 'full' : 'available') as TirumalaStatus['accommodationStatus'],
+      ladduAvailability: (metrics.laddu_availability || 'available') as TirumalaStatus['ladduAvailability'],
+      weather: metrics.weather || DEFAULT_STATUS.weather,
+      sevaStatus: metrics.seva_status || DEFAULT_STATUS.sevaStatus,
+      notice: metrics.notice || '',
+      darshanSpeed: (metrics.darshan_speed || 'normal') as TirumalaStatus['darshanSpeed'],
+      ssdTokenStatus: (metrics.ssd_token_status || 'issuing') as TirumalaStatus['ssdTokenStatus'],
+      ssdNextTokenTime: metrics.ssd_next_token_time || '',
+      ssdTokenSlots: ssdSlots,
+      ssdNotice: metrics.ssd_notice || '',
+      ssdTimingsGuide: metrics.ssd_timings_guide || DEFAULT_STATUS.ssdTimingsGuide,
+      ssdCounters,
       lastUpdated: metrics.updated_at || new Date().toISOString(),
     };
     
@@ -205,6 +245,7 @@ export async function updateStatus(updates: Partial<TirumalaStatus>): Promise<Ti
     if (updates.ssdTimingsGuide !== undefined) payload.ssd_timings_guide = updates.ssdTimingsGuide;
     if (updates.ssdCounters !== undefined) payload.ssd_counters = JSON.stringify(updates.ssdCounters);
     if (updates.notice !== undefined) payload.notice = updates.notice;
+    if (updates.bestTime !== undefined) payload.best_time = updates.bestTime;
     if (updates.weather !== undefined) payload.weather = updates.weather;
     if (updates.sevaStatus !== undefined) payload.seva_status = updates.sevaStatus;
 

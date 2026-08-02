@@ -14,7 +14,9 @@ import { useRealtimePlaces } from '@/lib/useRealtimePlaces';
 function ExploreContent() {
   const searchParams = useSearchParams();
   const initialQuery = searchParams.get('q') || '';
+  const initialFilter = searchParams.get('category') || searchParams.get('filter') || '';
   
+  const filters = ['All', 'Nearby', 'Spiritual', 'Nature', 'Water', 'Historical', 'Hidden', 'Leisure', 'Culture'];
   const { places, loading: _loading } = useRealtimePlaces(PLACES);
   const [searchQuery, setSearchQuery] = useState(initialQuery);
   const [activeFilter, setActiveFilter] = useState('All');
@@ -29,7 +31,11 @@ function ExploreContent() {
     if (initialQuery) {
       setSearchQuery(initialQuery);
     }
-  }, [initialQuery]);
+    if (initialFilter) {
+      const match = filters.find(f => f.toLowerCase() === initialFilter.toLowerCase());
+      if (match) setActiveFilter(match);
+    }
+  }, [initialQuery, initialFilter]);
 
   // Debounced cross-collection search
   const fetchCrossResults = useCallback((q: string) => {
@@ -52,8 +58,6 @@ function ExploreContent() {
   useEffect(() => {
     fetchCrossResults(searchQuery);
   }, [searchQuery, fetchCrossResults]);
-
-  const filters = ['All', 'Nearby', 'Spiritual', 'Nature', 'Water', 'Historical', 'Hidden', 'Leisure', 'Culture'];
 
   const handleFilterClick = (filter: string) => {
     if (filter === 'Nearby') {
@@ -116,25 +120,69 @@ function ExploreContent() {
                            place.id === 'swami-pushkarini' || 
                            place.id === 'papavinasam' || 
                            place.id === 'akasaganga' || 
-                           place.id === 'tumburu-theertham' || 
                            place.id === 'chakra-theertham' || 
                            place.id === 'bhu-varaha';
         return !isTirumala;
       }
 
       const toStr = (v: any) => typeof v === 'string' ? v : (v?.name || v?.slug || String(v || ''));
-      const q = searchQuery.toLowerCase();
-      const nameMatch = toStr(place.name).toLowerCase().includes(q);
-      const typeMatch = toStr(place.placeType).toLowerCase().includes(q);
-      const heritageMatch = q === 'heritage' && place.placeType === 'historical';
-      const categoryMatch = toStr(place.category).toLowerCase().includes(q);
-      const godMatch = !!(place.spiritualInfo?.god && toStr(place.spiritualInfo.god).toLowerCase().includes(q));
-      const tagsMatch = !!(place.tags && Array.isArray(place.tags) && place.tags.some((tag: any) => toStr(tag).toLowerCase().includes(q)));
-      const interestsMatch = !!(place.interests && Array.isArray(place.interests) && place.interests.some((interest: any) => toStr(interest).toLowerCase().includes(q)));
+      const q = searchQuery.trim().toLowerCase();
 
-      const matchesSearch = nameMatch || typeMatch || heritageMatch || categoryMatch || godMatch || tagsMatch || interestsMatch;
+      // Explicit Alias Map for robust pilgrim search intents
+      let searchTerms = [q];
+      if (q === 'hanuman' || q === 'anjaneya') {
+        searchTerms.push('japali', 'bedi anjaneya', 'prasanna anjaneya');
+      } else if (q === 'waterfall' || q === 'waterfalls' || q === 'falls') {
+        searchTerms.push('talakona', 'nagala', 'kailasa', 'tada', 'kapila');
+      } else if (q === 'appalayagunta' || q === 'appalaya') {
+        searchTerms.push('prasanna venkateswara', 'appalayagunta');
+      }
+
+      const nameMatch = searchTerms.some(term => toStr(place.name).toLowerCase().includes(term));
+      const locationMatch = searchTerms.some(term => toStr(place.location).toLowerCase().includes(term));
+      const addressMatch = searchTerms.some(term => toStr(place.address).toLowerCase().includes(term));
+      const idMatch = searchTerms.some(term => toStr(place.id).toLowerCase().includes(term));
+      const descMatch = searchTerms.some(term => toStr(place.description || place.shortIntro).toLowerCase().includes(term));
+      const typeMatch = searchTerms.some(term => toStr(place.placeType).toLowerCase().includes(term));
+      const heritageMatch = q === 'heritage' && (place.placeType === 'historical' || toStr(place.category).toLowerCase().includes('core temple'));
+      const categoryMatch = searchTerms.some(term => toStr(place.category).toLowerCase().includes(term));
+      const godMatch = !!(place.spiritualInfo?.god && searchTerms.some(term => toStr(place.spiritualInfo?.god).toLowerCase().includes(term)));
+      const tagsMatch = !!(place.tags && Array.isArray(place.tags) && place.tags.some((tag: any) => searchTerms.some(term => toStr(tag).toLowerCase().includes(term))));
+      const interestsMatch = !!(place.interests && Array.isArray(place.interests) && place.interests.some((interest: any) => searchTerms.some(term => toStr(interest).toLowerCase().includes(term))));
+
+      const matchesSearch = !q || nameMatch || locationMatch || addressMatch || idMatch || descMatch || typeMatch || heritageMatch || categoryMatch || godMatch || tagsMatch || interestsMatch;
         
-      const matchesFilter = activeFilter === 'All' || activeFilter === 'Nearby' || toStr(place.placeType).toLowerCase() === activeFilter.toLowerCase();
+      // Multi-attribute Filter Matching logic
+      const f = activeFilter.toLowerCase();
+      let matchesFilter = false;
+      if (f === 'all' || f === 'nearby') {
+        matchesFilter = true;
+      } else {
+        const pType = toStr(place.placeType).toLowerCase();
+        const pCat = toStr(place.category).toLowerCase();
+        const pTags = (place.tags || []).map(t => toStr(t).toLowerCase());
+        const pInterests = (place.interests || []).map(i => toStr(i).toLowerCase());
+
+        const directTypeMatch = pType === f;
+        const directCatMatch = pCat.includes(f);
+        const directTagMatch = pTags.some(t => t.includes(f));
+        const directInterestMatch = pInterests.some(i => i.includes(f));
+
+        if (f === 'temple' || f === 'temples' || f === 'spiritual') {
+          matchesFilter = directTypeMatch || directCatMatch || directTagMatch || directInterestMatch || pType === 'spiritual' || pCat.includes('temple');
+        } else if (f === 'culture') {
+          matchesFilter = directTypeMatch || directCatMatch || directTagMatch || directInterestMatch || pType === 'spiritual' || pType === 'historical' || pCat.includes('heritage') || pCat.includes('culture');
+        } else if (f === 'water' || f === 'nature') {
+          matchesFilter = directTypeMatch || directCatMatch || directTagMatch || pCat.includes('waterfall') || pCat.includes('theertham') || pCat.includes('nature') || pTags.some(t => t.includes('water') || t.includes('theertham') || t.includes('nature'));
+        } else if (f === 'historical' || f === 'history' || f === 'heritage') {
+          matchesFilter = directTypeMatch || pType === 'historical' || pCat.includes('history') || pCat.includes('heritage') || pCat.includes('core temple') || pTags.some(t => t.includes('history') || t.includes('heritage'));
+        } else if (f === 'hidden') {
+          matchesFilter = directTypeMatch || place.isHiddenGem || pCat.includes('hidden') || pTags.some(t => t.includes('hidden'));
+        } else {
+          matchesFilter = directTypeMatch || directCatMatch || directTagMatch || directInterestMatch;
+        }
+      }
+
       return matchesSearch && matchesFilter;
     });
 
@@ -202,14 +250,14 @@ function ExploreContent() {
             padding: '10px 14px', marginBottom: '12px',
             display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '10px'
           }}>
-            <span style={{ fontSize: '12.5px', color: '#92400E', fontWeight: 600 }}>
-              📍 Location unavailable — showing distances from Tirupati centre
+            <span style={{ fontSize: '12.5px', color: '#92400E', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '6px' }}>
+              <MapPin size={14} /> Location unavailable — showing distances from Tirupati centre
             </span>
             <button onClick={() => setLocationError(false)} style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#92400E', flexShrink: 0 }}>✕</button>
           </div>
         )}
-        {!searchQuery && activeFilter === 'All' && (() => {
-          const source = places.length > 0 ? places : PLACES;
+        {(() => {
+          const source = filteredPlaces.length > 0 ? filteredPlaces : (places.length > 0 ? places : PLACES);
           const effectiveLocation = userLocation || TIRUPATI_CENTER;
 
           const calculatePlaceDist = (p: Place) => {
@@ -221,10 +269,15 @@ function ExploreContent() {
             return calculateDrivingDistance(effectiveLocation.lat, effectiveLocation.lng, lat, lng, isTirumala);
           };
 
+          const formatDistStr = (d: number) => {
+            if (d < 0.5) return '< 0.5 km away';
+            return `${d.toFixed(1)} km away`;
+          };
+
           const mustVisit = source
-            .filter(p => p.rating >= 4.8)
-            .map(p => ({ ...p, computedDistance: calculatePlaceDist(p) }))
-            .slice(0, 6);
+            .filter(p => p.isMustVisit || (p.rating && p.rating >= 4.5) || (p as any).importanceLevel === 'iconic')
+            .map(p => ({ ...p, computedDistance: (p as any).computedDistance ?? calculatePlaceDist(p) }))
+            .slice(0, 10);
 
           const hiddenGems = source
             .filter(p => {
@@ -234,87 +287,129 @@ function ExploreContent() {
               const placeTypeLower = toStr(p.placeType).toLowerCase();
               const interestsLower = (p.interests || []).map(i => toStr(i).toLowerCase());
               return (
+                p.isHiddenGem ||
                 placeTypeLower === 'hidden' ||
                 categoryLower.includes('hidden') ||
-                tagsLower.some(t => ['hidden', 'hidden gem', 'peaceful', 'serene', 'off-beat', 'offbeat', 'untouched', 'quiet'].includes(t)) ||
+                tagsLower.some(t => ['hidden', 'hidden gem', 'peaceful', 'serene', 'off-beat', 'offbeat', 'untouched', 'quiet', 'nature'].includes(t)) ||
                 interestsLower.includes('hidden')
               );
             })
-            .map(p => ({ ...p, computedDistance: calculatePlaceDist(p) }))
-            .slice(0, 6);
+            .map(p => ({ ...p, computedDistance: (p as any).computedDistance ?? calculatePlaceDist(p) }))
+            .slice(0, 10);
 
-          const nearbyPlaces = source
-            .map(p => ({ ...p, computedDistance: calculatePlaceDist(p) }))
+          const nearbyPlaces = [...source]
+            .map(p => ({ ...p, computedDistance: (p as any).computedDistance ?? calculatePlaceDist(p) }))
             .sort((a: any, b: any) => a.computedDistance - b.computedDistance)
-            .slice(0, 6);
+            .slice(0, 10);
 
+          // If searching or filtering, show curated rows matching query/filter if any, then main list
           return (
             <>
               {/* Nearby Places Section */}
-              <div className={styles.curatedSection}>
-                <h2 className={styles.curatedTitle} style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                  Nearby Places <MapPin size={18} style={{ color: '#2F6144' }} />
-                </h2>
-                <div className={styles.horizontalScroll}>
-                  {nearbyPlaces.map((place) => (
-                    <Link href={`/place/${place.id}`} key={place.id} className={styles.curatedCard}>
-                      <div className={styles.curatedImage} style={{ backgroundImage: `url(${place.image || '/assets/ai/hero_spiritual_sunset.png'})` }} />
-                      <div className={styles.curatedInfo}>
-                        <h4>{place.name}</h4>
-                        <span style={{ color: '#2F6144', fontWeight: 700 }}>
-                          {Number((place as any).computedDistance).toFixed(1)} km away
-                        </span>
-                      </div>
-                    </Link>
-                  ))}
-                </div>
-              </div>
+              {nearbyPlaces.length > 0 && (
+                <div className={styles.curatedSection}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
+                    <h2 className={styles.curatedTitle} style={{ display: 'flex', alignItems: 'center', gap: '6px', margin: 0 }}>
+                      Nearby <MapPin size={18} style={{ color: '#2F6144' }} />
+                    </h2>
+                    <span style={{ fontSize: '11px', color: '#059669', fontWeight: 800, background: '#DCFCE7', padding: '2px 8px', borderRadius: '12px' }}>
+                      {userLocation ? 'Live GPS Distance' : 'Nearest First'}
+                    </span>
+                  </div>
+                  <div className={styles.horizontalScroll}>
+                    {nearbyPlaces.map((place) => {
+                      const dist = Number((place as any).computedDistance);
+                      let travelStr = '';
+                      if (dist <= 1.5) {
+                        travelStr = `${Math.max(1, Math.round(dist * 12))} mins • Walk`;
+                      } else if (dist <= 8.0) {
+                        travelStr = `${Math.max(2, Math.round(dist * 2.5))} mins • Bike`;
+                      } else {
+                        travelStr = `${Math.max(5, Math.round(dist * 2.0))} mins • Bus/Car`;
+                      }
 
-              <div className={styles.curatedSection}>
-                <h2 className={styles.curatedTitle} style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                  Must-Visit <Sparkles size={18} style={{ color: '#FF9933' }} />
-                </h2>
-                <div className={styles.horizontalScroll}>
-                  {mustVisit.map((place) => (
-                    <Link href={`/place/${place.id}`} key={place.id} className={styles.curatedCard}>
-                      <div className={styles.curatedImage} style={{ backgroundImage: `url(${place.image || '/assets/ai/hero_spiritual_sunset.png'})` }} />
-                      <div className={styles.curatedInfo}>
-                        <h4>{place.name}</h4>
-                        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%', fontSize: '11px', marginTop: '2px' }}>
-                          <span style={{ display: 'flex', alignItems: 'center', gap: '3px', color: '#B0550C', fontWeight: 700 }}>
-                            <Star size={12} fill="#F59E0B" color="#F59E0B" /> {place.rating}
-                          </span>
-                          <span style={{ color: '#0E6B72', fontWeight: 700 }}>
-                            {Number((place as any).computedDistance).toFixed(1)} km away
-                          </span>
-                        </div>
-                      </div>
-                    </Link>
-                  ))}
+                      return (
+                        <Link href={`/place/${place.id}`} key={place.id} className={styles.curatedCard}>
+                          <div className={styles.curatedImage} style={{ backgroundImage: `url(${place.image || 'https://images.unsplash.com/photo-1514222134-b57cbf8ce673?auto=format&fit=crop&q=80&w=800'})` }} />
+                          <div className={styles.curatedInfo}>
+                            <h4>{place.name}</h4>
+                            <div style={{ display: 'flex', flexDirection: 'column', gap: '2px', marginTop: '2px' }}>
+                              <span style={{ color: '#2F6144', fontWeight: 800, fontSize: '11px' }}>
+                                {formatDistStr(dist)} • {travelStr}
+                              </span>
+                            </div>
+                          </div>
+                        </Link>
+                      );
+                    })}
+                  </div>
                 </div>
-              </div>
+              )}
 
-              <div className={styles.curatedSection}>
-                <h2 className={styles.curatedTitle} style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                  Hidden Gems <Sparkles size={18} style={{ color: '#6C63FF' }} />
-                </h2>
-                <div className={styles.horizontalScroll}>
-                  {hiddenGems.map((place) => (
-                    <Link href={`/place/${place.id}`} key={place.id} className={styles.curatedCard}>
-                      <div className={styles.curatedImage} style={{ backgroundImage: `url(${place.image || '/assets/ai/hero_spiritual_sunset.png'})` }} />
-                      <div className={styles.curatedInfo}>
-                        <h4>{place.name}</h4>
-                        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%', fontSize: '11px', marginTop: '2px' }}>
-                          <span style={{ color: '#78716C', fontWeight: 600 }}>{place.placeType}</span>
-                          <span style={{ color: '#0E6B72', fontWeight: 700 }}>
-                            {Number((place as any).computedDistance).toFixed(1)} km away
-                          </span>
+              {/* Must-Visit Section */}
+              {mustVisit.length > 0 && (
+                <div className={styles.curatedSection}>
+                  <h2 className={styles.curatedTitle} style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                    Must-Visit <Sparkles size={18} style={{ color: '#FF9933' }} />
+                  </h2>
+                  <div className={styles.horizontalScroll}>
+                    {mustVisit.map((place) => (
+                      <Link href={`/place/${place.id}`} key={place.id} className={styles.curatedCard}>
+                        <div
+                          className={styles.curatedImage}
+                          style={{ backgroundImage: `url(${place.image || 'https://images.unsplash.com/photo-1514222134-b57cbf8ce673?auto=format&fit=crop&q=80&w=800'})` }}
+                        >
+                          {place.placeType && (
+                            <span className={styles.curatedImageBadge}>{place.placeType}</span>
+                          )}
                         </div>
-                      </div>
-                    </Link>
-                  ))}
+                        <div className={styles.curatedInfo}>
+                          <h4 title={place.name}>{place.name}</h4>
+                          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', fontSize: '11px' }}>
+                            <span style={{ display: 'flex', alignItems: 'center', gap: '3px', color: '#B0550C', fontWeight: 700 }}>
+                              <Star size={11} fill="#F59E0B" color="#F59E0B" /> {place.rating}
+                            </span>
+                            <span className={styles.curatedDistance} style={{ gap: '2px' }}>
+                              <MapPin size={10} strokeWidth={2.5} />
+                              {formatDistStr(Number((place as any).computedDistance))}
+                            </span>
+                          </div>
+                        </div>
+                      </Link>
+                    ))}
+                  </div>
                 </div>
-              </div>
+              )}
+
+              {/* Hidden Gems Section */}
+              {hiddenGems.length > 0 && (
+                <div className={styles.curatedSection}>
+                  <h2 className={styles.curatedTitle} style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                    Hidden Gems <Sparkles size={18} style={{ color: '#6C63FF' }} />
+                  </h2>
+                  <div className={styles.horizontalScroll}>
+                    {hiddenGems.map((place) => (
+                      <Link href={`/place/${place.id}`} key={place.id} className={styles.curatedCard}>
+                        <div
+                          className={styles.curatedImage}
+                          style={{ backgroundImage: `url(${place.image || 'https://images.unsplash.com/photo-1514222134-b57cbf8ce673?auto=format&fit=crop&q=80&w=800'})` }}
+                        >
+                          {place.placeType && (
+                            <span className={styles.curatedImageBadge}>{place.placeType}</span>
+                          )}
+                        </div>
+                        <div className={styles.curatedInfo}>
+                          <h4 title={place.name}>{place.name}</h4>
+                          <div className={styles.curatedDistance}>
+                            <MapPin size={10} strokeWidth={2.5} />
+                            {formatDistStr(Number((place as any).computedDistance))}
+                          </div>
+                        </div>
+                      </Link>
+                    ))}
+                  </div>
+                </div>
+              )}
             </>
           );
         })()}
@@ -413,7 +508,7 @@ function ExploreContent() {
                 <Link href={`/place/${place.id}`} className={styles.templeLink}>
                   <div 
                     className={styles.itemImage}
-                    style={{ backgroundImage: `url(${place.image || '/assets/ai/hero_spiritual_sunset.png'})` }}
+                    style={{ backgroundImage: `url(${place.image || 'https://images.unsplash.com/photo-1514222134-b57cbf8ce673?auto=format&fit=crop&q=80&w=800'})` }}
                   />
                   <div className={styles.itemInfo}>
                     <div className={styles.itemHeader}>

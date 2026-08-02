@@ -423,7 +423,7 @@ export default function SplashScreen({ onFinish }: { onFinish: () => void }) {
                   }
                 }}
               >
-                Your Trusted Companion
+                Know Before You Go
               </motion.p>
 
               {/* Glowing Line Sweep (2.6s - 3.0s) */}

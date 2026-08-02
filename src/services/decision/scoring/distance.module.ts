@@ -12,20 +12,20 @@ export function calculateDistanceScore(place: Place, context: DerivedContext): {
 
   const distanceKm = calculateDrivingDistance(userLoc.lat, userLoc.lng, targetLat, targetLng, isTirumala);
 
-  let score = 5;
-  if (distanceKm < 2) {
-    score = 35;
-  } else if (distanceKm < 5) {
-    score = 25;
-  } else if (distanceKm < 10) {
-    score = 15;
-  }
+  let score = Math.max(5, Math.round(55 - (distanceKm * 3.5)));
 
-  const travelMins = Math.max(2, Math.round(distanceKm * 2.2));
+  let reason: string | undefined = undefined;
+  if (distanceKm < 1.5) {
+    reason = 'Nearest to You';
+  } else if (distanceKm < 4.0) {
+    reason = 'Short Travel';
+  } else if (distanceKm < 8.0) {
+    reason = 'Easy Access';
+  }
 
   return {
     score,
     distanceKm,
-    reason: `${travelMins} mins away (${distanceKm.toFixed(1)} km)`
+    reason
   };
 }

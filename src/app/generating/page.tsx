@@ -9,13 +9,13 @@ import { generatePlans } from '@/lib/recommendation-engine';
 import { PLACES } from '@/legacy/places';
 
 const STATUS_MESSAGES = [
-  '📍 Detecting your location...',
-  '🗺️ Scanning 100+ local experiences...',
-  '⏱️ Fitting stops to your time window...',
-  '💰 Optimising for your budget...',
-  '🚗 Planning the best route...',
-  '🍛 Finding the top food spots...',
-  '✨ Crafting your perfect itinerary...',
+  'Detecting your location...',
+  'Scanning 100+ local experiences...',
+  'Fitting stops to your time window...',
+  'Optimising for your budget...',
+  'Planning the best route...',
+  'Finding the top food spots...',
+  'Crafting your perfect itinerary...',
 ];
 
 const CATEGORY_ICONS = ['🛕', '🌿', '🍛', '🏰', '🌊', '✨', '🎡', '🔭'];

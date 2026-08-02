@@ -1,0 +1,46 @@
+[
+  {
+    "id": "cmp_apsrtc_01",
+    "name": "APSRTC Bus Stickers",
+    "slug": "apsrtc",
+    "category": "apsrtc",
+    "location": "Tirupati Bus Station & Fleet",
+    "destination": "/darshan",
+    "status": "active",
+    "createdAt": "2026-06-30T01:41:39.050Z",
+    "updatedAt": "2026-07-30T01:41:39.050Z"
+  },
+  {
+    "id": "cmp_bhimas_01",
+    "name": "Hotel Bhimas Reception",
+    "slug": "bhimas",
+    "category": "hotel",
+    "location": "Bhimas Grand Entrance",
+    "destination": "/explore",
+    "status": "active",
+    "createdAt": "2026-07-10T01:41:39.050Z",
+    "updatedAt": "2026-07-30T01:41:39.050Z"
+  },
+  {
+    "id": "cmp_alipiri_01",
+    "name": "Alipiri Mettu Kiosk Standee",
+    "slug": "alipiri",
+    "category": "temple",
+    "location": "Alipiri Footstep Entry",
+    "destination": "/places/alipiri-mettu",
+    "status": "active",
+    "createdAt": "2026-07-15T01:41:39.050Z",
+    "updatedAt": "2026-07-30T01:41:39.050Z"
+  },
+  {
+    "id": "cmp_cab_01",
+    "name": "Tirupati Station Cab Decal #104",
+    "slug": "cab-01",
+    "category": "taxi",
+    "location": "Railway Station Taxi Stand",
+    "destination": "/",
+    "status": "active",
+    "createdAt": "2026-07-20T01:41:39.050Z",
+    "updatedAt": "2026-07-30T01:41:39.050Z"
+  }
+]

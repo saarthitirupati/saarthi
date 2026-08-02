@@ -2,6 +2,16 @@ import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 
 export function middleware(request: NextRequest) {
+  const url = request.nextUrl;
+  
+  // Protect admin routes using the custom login page
+  if (url.pathname.startsWith('/saarthiadmin') && !url.pathname.startsWith('/saarthiadmin/login')) {
+    const token = request.cookies.get('admin_token')?.value;
+    if (token !== 'jeevapath_admin_2024') {
+      return NextResponse.redirect(new URL('/saarthiadmin/login', request.url));
+    }
+  }
+
   const response = NextResponse.next();
   
   // Set ngrok skip browser warning header on all responses
@@ -16,3 +26,4 @@ export function middleware(request: NextRequest) {
 export const config = {
   matcher: '/:path*',
 };
+

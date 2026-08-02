@@ -189,14 +189,132 @@ export function getBestForToday(
   };
 }
 
-export type ContextInput = any;
-export function scorePlace(place: any, liveStatus: any, alerts: any[], context: ContextInput): any {
+import { calculateDrivingDistance, TIRUPATI_CENTER } from '@/utils/location';
+import { isValidCoordinates } from '@/lib/location';
+
+export type ContextInput = {
+  lat?: number;
+  lng?: number;
+  time?: string;
+  weather?: string;
+  temp?: number;
+  crowdLevel?: string;
+  dayOfWeek?: string;
+};
+
+export interface ScoredPlaceResult {
+  score: number;
+  reasons: string[];
+  distanceKm: number;
+  travelTimeMins: number;
+  rank_tier: 'BEST_RIGHT_NOW' | 'ALTERNATIVE' | 'HIDDEN_GEM' | 'TOP' | 'RECOMMENDED' | 'FEASIBLE' | 'UNAVAILABLE' | string;
+}
+
+export function scorePlace(place: any, liveStatus: any, alerts: any[], context: ContextInput): ScoredPlaceResult {
+  const userLat = (context?.lat && isValidCoordinates(context.lat, context.lng || 0)) ? context.lat : TIRUPATI_CENTER.lat;
+  const userLng = (context?.lng && isValidCoordinates(context.lat || 0, context.lng)) ? context.lng : TIRUPATI_CENTER.lng;
+
+  const targetLat = place?.coordinates?.lat ?? place?.lat ?? TIRUPATI_CENTER.lat;
+  const targetLng = place?.coordinates?.lng ?? place?.lng ?? TIRUPATI_CENTER.lng;
+
+  const isTirumalaSpot = Boolean(
+    place?.location?.toLowerCase().includes('tirumala') ||
+    place?.category?.toLowerCase().includes('tirumala') ||
+    targetLat >= 13.66
+  );
+
+  // 1. Dynamic driving distance calculation
+  const distanceKm = calculateDrivingDistance(userLat, userLng, targetLat, targetLng, isTirumalaSpot);
+
+  // 2. Realistic travel time estimate
+  const travelTimeMins = Math.max(5, Math.round(isTirumalaSpot ? distanceKm * 3.0 : distanceKm * 2.2));
+
+  const reasons: string[] = [];
+  let score = 50; // baseline
+
+  // --- A. Distance Reason ---
+  if (distanceKm <= 3) {
+    score += 35;
+    reasons.push(`🚗 Only ${distanceKm.toFixed(1)} km away (${travelTimeMins} mins)`);
+  } else if (distanceKm <= 10) {
+    score += 25;
+    reasons.push(`🚗 Nearby — ${distanceKm.toFixed(1)} km away (${travelTimeMins} mins)`);
+  } else if (distanceKm <= 25) {
+    score += 15;
+    reasons.push(`🚗 ${distanceKm.toFixed(1)} km transit (${travelTimeMins} mins)`);
+  } else {
+    score += 5;
+    reasons.push(`📍 Day trip destination (${distanceKm.toFixed(1)} km)`);
+  }
+
+  // --- B. Open Hours & Status ---
+  const hour = new Date().getHours();
+  const openFrom = place?.openFrom ?? 6;
+  const openTo = place?.openTo ?? 21;
+  const isOpen = hour >= openFrom && hour < openTo;
+
+  if (isOpen) {
+    score += 20;
+    reasons.push('🕒 Currently Open');
+  } else {
+    score -= 30; // Closed places heavily penalized
+  }
+
+  // --- C. Live Crowd Status ---
+  const crowd = liveStatus?.crowd_level || context?.crowdLevel || 'LOW';
+  if (crowd === 'LOW') {
+    score += 20;
+    reasons.push('🟢 Low crowd level right now');
+  } else if (crowd === 'MEDIUM' || crowd === 'MODERATE') {
+    score += 10;
+    reasons.push('🟡 Moderate crowd flow');
+  } else if (crowd === 'EXTREME' || crowd === 'VERY_HIGH') {
+    score -= 20;
+    reasons.push('🔴 Heavy crowd reported');
+  }
+
+  // --- D. Weather Suitability ---
+  const weather = (context?.weather || '').toLowerCase();
+  const isRain = weather.includes('rain');
+  const isIndoor = place?.context?.indoor || place?.tags?.includes('Indoor');
+
+  if (isRain) {
+    if (isIndoor) {
+      score += 20;
+      reasons.push('🌧 Indoor facility — protected from rain');
+    } else {
+      score -= 10;
+    }
+  } else {
+    if (!isIndoor) {
+      score += 10;
+      reasons.push('☀ Great outdoor weather today');
+    }
+  }
+
+  // Mandatory AGENTS.md rule: Recommendation must have clear, explainable reasons
+  if (reasons.length === 0) {
+    return {
+      score: -100,
+      reasons: [],
+      distanceKm,
+      travelTimeMins,
+      rank_tier: 'UNAVAILABLE'
+    };
+  }
+
+  let rank_tier: 'TOP' | 'RECOMMENDED' | 'FEASIBLE' | 'UNAVAILABLE' = 'FEASIBLE';
+  if (score >= 80) rank_tier = 'TOP';
+  else if (score >= 50) rank_tier = 'RECOMMENDED';
+  else if (score < 0) rank_tier = 'UNAVAILABLE';
+
   return {
-    score: 80,
-    reasons: ['Favorable conditions'],
-    distanceKm: 5,
-    travelTimeMins: 15,
-    rank_tier: 'TOP'
+    score: Math.round(score),
+    reasons,
+    distanceKm: Number(distanceKm.toFixed(1)),
+    travelTimeMins,
+    rank_tier
   };
 }
+
 

@@ -2,14 +2,14 @@
 
 import { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Home, Compass, Sparkles } from 'lucide-react';
+import { Home, Compass, Layers } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import styles from './BottomNav.module.css';
 
 const navItems = [
   { name: 'Home',       icon: Home,     href: '/' },
-  { name: 'Essentials', icon: Sparkles, href: '/essentials', isFab: true },
+  { name: 'Essentials', icon: Layers,   href: '/essentials', isFab: true },
   { name: 'Explore',    icon: Compass,  href: '/explore' },
 ];
 

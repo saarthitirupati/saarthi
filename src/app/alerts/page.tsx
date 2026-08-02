@@ -1,62 +1,217 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { ChevronLeft, AlertTriangle, ShieldAlert } from 'lucide-react';
+import Link from 'next/link';
+import { ChevronLeft, AlertTriangle, ShieldCheck, MapPin, Clock, ArrowRight, Bell } from 'lucide-react';
 import { useRealtimeStatus } from '@/lib/useRealtimeStatus';
+import { useRealtimeAlerts, LiveAlert } from '@/lib/useRealtimeAlerts';
 
 export default function AlertsPage() {
   const router = useRouter();
-  const { status, loading } = useRealtimeStatus();
+  const { status, loading: statusLoading } = useRealtimeStatus();
+  const { alerts, loading: alertsLoading } = useRealtimeAlerts();
+
+  const isLoading = statusLoading && alertsLoading;
+
+  const hasStatusNotice = !!(status?.notice && status.notice.trim().length > 0);
+  const activeAlerts = alerts || [];
+  const hasAnyAlerts = hasStatusNotice || activeAlerts.length > 0;
+
+  const getCtaHref = (cta?: string) => {
+    switch (cta) {
+      case 'Open Queue': return '/live';
+      case 'Open Essentials': return '/essentials';
+      case 'Open Maps': return '/explore';
+      case 'Open Parking': return '/live';
+      default: return null;
+    }
+  };
 
   return (
-    <div style={{ minHeight: '100vh', backgroundColor: '#FDF8F5', paddingBottom: 40, fontFamily: 'var(--font-sans)' }}>
+    <div style={{ minHeight: '100vh', backgroundColor: '#F8FAFC', paddingBottom: 40, fontFamily: 'system-ui, -apple-system, sans-serif' }}>
       {/* Header */}
-      <div style={{ padding: '20px 24px', display: 'flex', alignItems: 'center', gap: 16 }}>
-        <button onClick={() => router.back()} style={{ border: 'none', background: 'transparent', cursor: 'pointer' }}>
-          <ChevronLeft size={28} color="#1F2937" />
+      <div style={{
+        padding: '16px 20px',
+        display: 'flex',
+        alignItems: 'center',
+        gap: 12,
+        background: '#FFFFFF',
+        borderBottom: '1px solid #E2E8F0',
+        position: 'sticky',
+        top: 0,
+        zIndex: 20
+      }}>
+        <button 
+          onClick={() => router.back()} 
+          style={{ border: 'none', background: 'none', cursor: 'pointer', padding: '4px', display: 'flex', alignItems: 'center' }}
+        >
+          <ChevronLeft size={24} color="#0F172A" />
         </button>
-        <h1 style={{ fontSize: 20, fontWeight: 700, margin: 0, color: '#1F2937' }}>Temple Alerts</h1>
+        <h1 style={{ fontSize: 18, fontWeight: 800, margin: 0, color: '#0F172A', display: 'flex', alignItems: 'center', gap: 8 }}>
+          <Bell size={20} color="#2563EB" /> Temple Alerts & Advisories
+        </h1>
       </div>
 
-      <div style={{ padding: '0 24px', marginTop: 16 }}>
-        {loading ? (
-          <div style={{ textAlign: 'center', padding: 40, color: '#6B7280' }}>Checking for alerts...</div>
-        ) : status?.notice ? (
-          <div style={{ background: '#FEF2F2', border: '1px solid #FECACA', borderRadius: 16, padding: 24, display: 'flex', flexDirection: 'column', gap: 16 }}>
-            <div style={{ width: 48, height: 48, borderRadius: 24, backgroundColor: '#FEE2E2', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-              <AlertTriangle size={24} color="#EF4444" />
-            </div>
-            <div>
-              <h2 style={{ fontSize: 18, fontWeight: 700, color: '#991B1B', margin: '0 0 8px 0' }}>Important Notice</h2>
-              <p style={{ fontSize: 15, color: '#B91C1C', lineHeight: 1.6, margin: 0 }}>
-                {status.notice}
-              </p>
-            </div>
-            <div style={{ fontSize: 12, color: '#EF4444', fontWeight: 500, marginTop: 8 }}>
-              Last updated: {new Date(status.lastUpdated).toLocaleString()}
-            </div>
+      <div style={{ padding: '20px 16px', maxWidth: '500px', margin: '0 auto' }}>
+        {isLoading ? (
+          <div style={{ textAlign: 'center', padding: '40px 0', color: '#64748B', fontWeight: 600, fontSize: '14px' }}>
+            Syncing live temple alerts...
+          </div>
+        ) : hasAnyAlerts ? (
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
+            {/* Live Status Notice Card */}
+            {hasStatusNotice && (
+              <div style={{
+                background: '#FEF2F2',
+                border: '1px solid #FECACA',
+                borderRadius: 16,
+                padding: 16,
+                display: 'flex',
+                flexDirection: 'column',
+                gap: 10,
+                boxShadow: '0 2px 8px rgba(239, 68, 68, 0.08)'
+              }}>
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                  <span style={{
+                    fontSize: '11px',
+                    fontWeight: 800,
+                    color: '#DC2626',
+                    background: '#FEE2E2',
+                    padding: '3px 8px',
+                    borderRadius: 6,
+                    textTransform: 'uppercase',
+                    letterSpacing: '0.5px',
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: 4
+                  }}>
+                    <AlertTriangle size={12} /> Operational Notice
+                  </span>
+                  <span style={{ fontSize: '11px', color: '#991B1B', fontWeight: 600 }}>
+                    Live Broadcast
+                  </span>
+                </div>
+
+                <div>
+                  <h3 style={{ fontSize: 15, fontWeight: 800, color: '#991B1B', margin: '0 0 4px 0' }}>
+                    Important Operational Notice
+                  </h3>
+                  <p style={{ fontSize: 13.5, color: '#7F1D1D', lineHeight: 1.5, margin: 0 }}>
+                    {status.notice}
+                  </p>
+                </div>
+
+                {status.lastUpdated && (
+                  <div style={{ fontSize: '11px', color: '#B91C1C', fontWeight: 600, display: 'flex', alignItems: 'center', gap: 4, marginTop: 2 }}>
+                    <Clock size={12} /> Updated: {new Date(status.lastUpdated).toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit' })}
+                  </div>
+                )}
+              </div>
+            )}
+
+            {/* List of Active Database Alerts */}
+            {activeAlerts.map((alert: LiveAlert) => {
+              const ctaHref = getCtaHref(alert.cta);
+              const isCritical = alert.severity === 'Critical' || alert.severity === 'High';
+
+              return (
+                <div 
+                  key={alert.id} 
+                  style={{
+                    background: isCritical ? '#FFFBEB' : '#FFFFFF',
+                    border: `1px solid ${isCritical ? '#FDE68A' : '#E2E8F0'}`,
+                    borderRadius: 16,
+                    padding: 16,
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: 10,
+                    boxShadow: '0 2px 8px rgba(0,0,0,0.03)'
+                  }}
+                >
+                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                    <span style={{
+                      fontSize: '11px',
+                      fontWeight: 800,
+                      color: isCritical ? '#B45309' : '#2563EB',
+                      background: isCritical ? '#FEF3C7' : '#EFF6FF',
+                      padding: '3px 8px',
+                      borderRadius: 6,
+                      textTransform: 'uppercase',
+                      letterSpacing: '0.5px'
+                    }}>
+                      {alert.severity} • {alert.category}
+                    </span>
+
+                    {alert.target_location && (
+                      <span style={{ fontSize: '11px', color: '#64748B', fontWeight: 600, display: 'flex', alignItems: 'center', gap: 3 }}>
+                        <MapPin size={12} /> {alert.target_location}
+                      </span>
+                    )}
+                  </div>
+
+                  <div>
+                    <h3 style={{ fontSize: 15, fontWeight: 800, color: '#0F172A', margin: '0 0 4px 0' }}>
+                      {alert.title}
+                    </h3>
+                    <p style={{ fontSize: 13.5, color: '#334155', lineHeight: 1.5, margin: 0 }}>
+                      {alert.description}
+                    </p>
+                  </div>
+
+                  {ctaHref && (
+                    <Link 
+                      href={ctaHref}
+                      style={{
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        gap: 6,
+                        color: '#2563EB',
+                        fontSize: '12.5px',
+                        fontWeight: 700,
+                        textDecoration: 'none',
+                        marginTop: 4
+                      }}
+                    >
+                      <span>{alert.cta}</span>
+                      <ArrowRight size={14} />
+                    </Link>
+                  )}
+                </div>
+              );
+            })}
           </div>
         ) : (
-          <div style={{ background: '#F0FDF4', border: '1px solid #BBF7D0', borderRadius: 16, padding: 32, textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 16 }}>
-            <div style={{ width: 56, height: 56, borderRadius: 28, backgroundColor: '#DCFCE7', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-              <ShieldAlert size={28} color="#16A34A" />
+          <div style={{
+            background: '#F0FDF4',
+            border: '1px solid #BBF7D0',
+            borderRadius: 16,
+            padding: '32px 20px',
+            textAlign: 'center',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            gap: 12
+          }}>
+            <div style={{ width: 48, height: 48, borderRadius: '50%', backgroundColor: '#DCFCE7', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              <ShieldCheck size={24} color="#16A34A" />
             </div>
             <div>
-              <h2 style={{ fontSize: 18, fontWeight: 700, color: '#166534', margin: '0 0 8px 0' }}>No Active Alerts</h2>
-              <p style={{ fontSize: 15, color: '#15803D', lineHeight: 1.6, margin: 0 }}>
-                Conditions are normal at Tirumala. There are no travel restrictions or severe weather warnings at this time.
+              <h2 style={{ fontSize: 16, fontWeight: 800, color: '#166534', margin: '0 0 4px 0' }}>No Active Alerts</h2>
+              <p style={{ fontSize: 13.5, color: '#15803D', lineHeight: 1.5, margin: 0 }}>
+                Conditions are normal across Tirumala and Tirupati. There are no travel restrictions or emergency advisories at this time.
               </p>
             </div>
           </div>
         )}
 
-        <h3 style={{ marginTop: 40, marginBottom: 16, fontSize: 16, fontWeight: 600, color: '#4B5563' }}>Standard Guidelines</h3>
-        <ul style={{ background: 'white', padding: '20px 20px 20px 40px', borderRadius: 16, margin: 0, color: '#4B5563', lineHeight: 1.6, boxShadow: '0 2px 8px rgba(0,0,0,0.03)' }}>
-          <li style={{ marginBottom: 12 }}>Traditional dress code is mandatory for Darshan.</li>
-          <li style={{ marginBottom: 12 }}>Electronic gadgets including mobile phones are strictly prohibited inside the temple.</li>
-          <li>Plastic items are banned in Tirumala.</li>
+        <h3 style={{ marginTop: 28, marginBottom: 12, fontSize: 15, fontWeight: 800, color: '#0F172A' }}>Standard Temple Guidelines</h3>
+        <ul style={{ background: '#FFFFFF', padding: '16px 16px 16px 36px', borderRadius: 16, margin: 0, color: '#475569', fontSize: '13px', lineHeight: 1.6, border: '1px solid #E2E8F0' }}>
+          <li style={{ marginBottom: 8 }}>Traditional dress code is mandatory for all Darshan queues.</li>
+          <li style={{ marginBottom: 8 }}>Electronic gadgets including mobile phones are strictly prohibited inside the main temple premises.</li>
+          <li>Single-use plastic items are strictly prohibited across Tirumala hill.</li>
         </ul>
       </div>
     </div>
   );
 }
+

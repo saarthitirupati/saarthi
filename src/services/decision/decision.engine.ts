@@ -45,7 +45,41 @@ export function evaluatePlace(place: Place, context: DerivedContext): ScoredPlac
   const rtcRes = calculateRTCScore(place, context);
 
   // Base priority score
-  const basePriority = place.isMustVisit ? 40 : 20;
+  const basePriority = place.isMustVisit ? 30 : 15;
+
+  // Time-of-day & Open Hours heuristic utility calculation
+  let timeScore = 15;
+  let timeReason: string | undefined = undefined;
+  const currentHour = new Date().getHours();
+
+  if (place.openFrom !== undefined && place.openTo !== undefined) {
+    if (currentHour < place.openFrom || currentHour >= place.openTo) {
+      timeScore = -150;
+    }
+  }
+
+  if (timeScore >= 0) {
+    const pType = (place.placeType || '').toLowerCase();
+    const cat = (place.category || '').toLowerCase();
+    const nameLower = place.name.toLowerCase();
+
+    if (context.timeOfDay === 'morning') {
+      if (pType === 'nature' || pType === 'water' || pType === 'viewpoint' || nameLower.includes('footpath')) {
+        timeScore = 30;
+        timeReason = 'Ideal Morning Visit';
+      }
+    } else if (context.timeOfDay === 'afternoon') {
+      if (pType === 'indoor' || nameLower.includes('museum') || nameLower.includes('science') || nameLower.includes('planetarium')) {
+        timeScore = 30;
+        timeReason = 'Cool Indoor Escape';
+      }
+    } else if (context.timeOfDay === 'evening') {
+      if (cat.includes('culture') || nameLower.includes('shopping') || nameLower.includes('gandhi') || nameLower.includes('park') || cat.includes('temple')) {
+        timeScore = 30;
+        timeReason = 'Evening Recommended';
+      }
+    }
+  }
 
   const totalScore = basePriority +
     distRes.score +
@@ -54,7 +88,8 @@ export function evaluatePlace(place: Place, context: DerivedContext): ScoredPlac
     festRes.score +
     parkRes.score +
     accRes.score +
-    rtcRes.score;
+    rtcRes.score +
+    timeScore;
 
   // 3. Assemble Attributed Reasons
   const reasons: { label: string; source: string; confidence: number }[] = [];
@@ -65,6 +100,9 @@ export function evaluatePlace(place: Place, context: DerivedContext): ScoredPlac
 
   if (distRes.reason) {
     reasons.push({ label: distRes.reason, source: 'Saarthi', confidence: 98 });
+  }
+  if (timeReason) {
+    reasons.push({ label: timeReason, source: 'Schedule', confidence: 96 });
   }
   if (weatherRes.reason) {
     if (weatherRes.score >= 0) {

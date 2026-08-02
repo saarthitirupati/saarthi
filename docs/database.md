@@ -1,10 +1,18 @@
 # Database Architecture
 
-Saarthi relies on Supabase (PostgreSQL) as its primary database for dynamic content, such as live status updates, user profiles, and saved itineraries.
-For highly static content (e.g., standard definitions of places and stories), we use static data objects located in `src/data/`, allowing for fast, zero-latency reads.
+## Supabase PostgreSQL
+We rely on Supabase for robust PostgreSQL hosting, complete with Realtime functionality.
 
-## Key Tables
+### Core Tables
+- `places`: Stores location details, coordinates, and descriptions.
+- `alerts`: Stores emergency or informational broadcasts.
+- `status`: Stores live Darshan wait times and crowd levels.
+- `festivals`: Tracks upcoming events.
 
-*   `places`: Information on destinations, historical spots, etc.
-*   `live_status`: Current crowd or wait-time telemetry for active locations.
-*   *(Additional tables documented as created...)*
+### Realtime Subscriptions
+We use Supabase Realtime for high-velocity data:
+- `alerts`
+- `status`
+- `festivals`
+
+These tables broadcast `INSERT`, `UPDATE`, and `DELETE` events. The frontend subscribes to these events via the `useLiveRefresh` hook to ensure the UI is always up to date without polling.

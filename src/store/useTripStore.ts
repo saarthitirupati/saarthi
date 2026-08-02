@@ -67,8 +67,14 @@ export function useTripStore() {
       if (permission !== 'denied') {
         import('@/lib/location').then(({ detectCoordinates, watchCoordinates, TIRUPATI_CENTER }) => {
           detectCoordinates(
-            (coords, source) => {
-              setState(prev => ({ ...prev, userLocation: coords, locationPermission: 'granted' }));
+            (coords, source, isApproximate, accuracyMeters) => {
+              setState(prev => ({
+                ...prev,
+                userLocation: coords,
+                locationPermission: 'granted',
+                locationSource: source,
+                locationAccuracyMeters: accuracyMeters
+              }));
             },
             () => {
               // All detection failed — default to Tirupati Center so the app always has a location

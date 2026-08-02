@@ -1,14 +1,30 @@
 import { NextResponse } from 'next/server';
 import { scorePlace, ContextInput } from '@/lib/contextEngine';
-import { mockPlacesDb } from '@/app/api/context/recommendations/mockDb'; 
+import { PLACES } from '@/data/places';
+import { findNearestPlaceCandidates, isValidCoordinates, TIRUPATI_CENTER } from '@/lib/location';
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
-  
-  // Reconstruct context from query params
+
+  const rawLat = searchParams.get('lat');
+  const rawLng = searchParams.get('lng');
+
+  const hasLocation = rawLat !== null && rawLng !== null;
+  const lat = parseFloat(rawLat || '13.6288');
+  const lng = parseFloat(rawLng || '79.4192');
+
+  // Root Cause 8: Explicit Location Check
+  if (!hasLocation || !isValidCoordinates(lat, lng)) {
+    return NextResponse.json({
+      error: 'Location coordinates required',
+      location_required: true,
+      message: 'Please provide valid lat and lng parameters to calculate nearby recommendations.'
+    }, { status: 400 });
+  }
+
   const context: ContextInput = {
-    lat: parseFloat(searchParams.get('lat') || '13.6288'),
-    lng: parseFloat(searchParams.get('lng') || '79.4192'),
+    lat,
+    lng,
     time: searchParams.get('time') || '10:00',
     weather: searchParams.get('weather') || 'Sunny',
     temp: parseInt(searchParams.get('temp') || '28', 10),
@@ -16,58 +32,63 @@ export async function GET(request: Request) {
     dayOfWeek: searchParams.get('dayOfWeek') || 'Monday',
   };
 
-  const places = mockPlacesDb; 
+  // Root Cause 1 & 2 & 6: Use single authoritative dataset PLACES & spatial candidate search for top 15 candidates
+  const nearestCandidates = findNearestPlaceCandidates({ lat, lng }, PLACES, 35000).slice(0, 15);
 
-  const scoredPlaces = places.map(p => {
-    const liveStatus = p.live_updates || { crowd_level: 'LOW', parking_status: 'AVAILABLE', rtc_status: 'NORMAL' };
-    const alerts = p.alerts || [];
+  const scoredPlaces = nearestCandidates.map(({ place: p }) => {
+    const liveStatus = (p as any).live_updates || { crowd_level: 'LOW', parking_status: 'AVAILABLE', rtc_status: 'NORMAL' };
+    const alerts = (p as any).alerts || [];
 
     const { score, reasons, distanceKm, travelTimeMins, rank_tier } = scorePlace(
       p, liveStatus, alerts, context
     );
 
-    // Skip closed places entirely (Rule: Priority Open > Safe > Reachable...)
-    // A score of -100 typically means closed or strictly avoid.
     if (score <= -100) return null;
 
+    // Root Cause 7: Real Confidence Score based on verification tier & coordinate accuracy
+    const confidence = p.verification?.confidenceScore ?? (p.coordinates?.primaryEntrance ? 98 : 90);
+
     return {
-      place: p,
+      rank_tier,
       score,
-      reasons,
-      distanceKm,
-      travelTimeMins,
-      rank_tier
+      confidence,
+      place: {
+        id: p.id,
+        name: p.name,
+        category: p.category,
+        image: p.image,
+        coordinates: p.coordinates
+      },
+      distance_km: distanceKm,
+      travel_time_mins: travelTimeMins,
+      reasons
     };
   }).filter(Boolean) as any[];
 
-  // Sort by highest score first
   scoredPlaces.sort((a, b) => b.score - a.score);
 
-  // Group into sections
   const bestRightNow = scoredPlaces.length > 0 ? {
     place: scoredPlaces[0].place,
     reasons: scoredPlaces[0].reasons,
-    distanceKm: scoredPlaces[0].distanceKm,
-    travelTimeMins: scoredPlaces[0].travelTimeMins
+    distanceKm: scoredPlaces[0].distance_km,
+    travelTimeMins: scoredPlaces[0].travel_time_mins
   } : null;
 
-  // Quick to reach: sorted strictly by distance
   const quickToReach = [...scoredPlaces]
-    .sort((a, b) => a.distanceKm - b.distanceKm)
+    .sort((a, b) => a.distance_km - b.distance_km)
     .slice(0, 5)
     .map(p => ({
       place: p.place,
-      distanceKm: p.distanceKm,
-      travelTimeMins: p.travelTimeMins
+      distanceKm: p.distance_km,
+      travelTimeMins: p.travel_time_mins
     }));
 
-  // Hidden Gems: places marked as hidden gem
   const hiddenGems = scoredPlaces
-    .filter(p => p.place.isHiddenGem)
+    .filter(p => p.place.category === 'Hidden Gem' || p.score >= 70)
     .slice(0, 5)
     .map(p => ({
       place: p.place,
-      reason: p.place.description // Simplified "why"
+      reason: p.reasons?.[0] || 'Recommended local spot'
     }));
 
   return NextResponse.json({
@@ -76,3 +97,4 @@ export async function GET(request: Request) {
     hiddenGems
   });
 }
+

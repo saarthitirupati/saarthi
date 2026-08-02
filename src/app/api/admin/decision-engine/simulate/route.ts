@@ -40,9 +40,11 @@ export async function POST(request: Request) {
       simulatedSignals
     });
   } catch (error: any) {
+    console.error('Simulate API Error:', error);
     return NextResponse.json({
       success: false,
-      error: error.message || 'Simulation Failed'
+      error: error.message || 'Simulation Failed',
+      stack: error.stack
     }, { status: 500 });
   }
 }

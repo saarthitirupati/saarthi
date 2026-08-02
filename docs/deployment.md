@@ -1,15 +1,33 @@
-# Deployment
+# Deployment Guide
 
-Saarthi is optimized for deployment on Vercel.
+Saarthi is optimized for deployment on lightweight cloud infrastructure, specifically Oracle Cloud Free Tier.
 
-## Vercel Deployment
+## Deployment Architecture
 
-1.  Connect your GitHub repository to Vercel.
-2.  Configure the build command: `npm run build`
-3.  Configure the output directory: `.next`
-4.  Add the required environment variables:
-    *   `NEXT_PUBLIC_SUPABASE_URL`
-    *   `NEXT_PUBLIC_SUPABASE_ANON_KEY`
-    *   `DATABASE_URL`
+```text
+Oracle VM (Ubuntu/Linux)
+  ↓
+Nginx (Reverse Proxy & SSL Termination)
+  ├── 3000 (Next.js Production Build)
+  └── 8000 (FastAPI Uvicorn Workers)
+```
 
-Ensure that you deploy from the stable main branch and pass all CI checks (`npm run verify`) before merging.
+## Steps for Deployment
+
+1. **Build the Frontend**:
+   ```bash
+   npm run build
+   npm run start # Typically managed via PM2
+   ```
+
+2. **Run the Backend**:
+   Run FastAPI using Gunicorn with Uvicorn workers for production stability:
+   ```bash
+   gunicorn -k uvicorn.workers.UvicornWorker app.main:app -b 127.0.0.1:8000
+   ```
+
+3. **Nginx Configuration**:
+   Configure Nginx to route `/api/v1/*` to `localhost:8000` and all other traffic to `localhost:3000`.
+
+4. **Static Assets**:
+   Ensure images are fetched from remote URLs (like Unsplash) rather than stored locally to preserve VM storage limits.

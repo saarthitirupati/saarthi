@@ -1,12 +1,12 @@
 import { NextResponse } from 'next/server';
 import { supabase } from '@/lib/supabase';
+import { calculateDrivingDistance, TIRUPATI_CENTER } from '@/utils/location';
 
 export async function GET() {
   try {
     // 1. Fetch feature flags
     const { data: flagsData } = await supabase.from('feature_flags').select('name, isEnabled');
     const featureFlags = flagsData?.reduce((acc: any, flag) => {
-      // Convert "Explore V2" to "exploreV2" or "explore_v2". We'll just map by lowercase key.
       const key = flag.name.toLowerCase().replace(/ /g, '_');
       acc[key] = flag.isEnabled;
       return acc;
@@ -19,32 +19,33 @@ export async function GET() {
       .eq('isEnabled', true)
       .order('weight', { ascending: false });
 
-    // Derive context (mocking logic here for demonstration: assuming Morning and Clear weather)
-    // In production, derive from actual server time/weather service
     const currentContext = {
       time: "Morning",
       weather: "Clear"
     };
 
     // 3. Fetch places for recommendations
-    // For "Best Right Now", we'll just fetch a few highly-rated places for demo
     const { data: bestPlaces } = await supabase
       .from('places')
       .select('id, name, slug, hero_image, images, tags, coordinates, verification_status')
       .eq('isActive', true)
       .limit(3);
 
-    // Format items
-    const formattedBestPlaces = bestPlaces?.map(place => ({
-      id: place.id,
-      slug: place.slug,
-      name: place.name,
-      heroImage: place.hero_image || (place.images && place.images[0]) || '',
-      distance: 2.5, // Mocked for now (Frontend/geo logic could calculate it)
-      travelTime: 12,
-      verified: place.verification_status || 'Recently',
-      reasons: ['Pleasant weather', 'Low crowd']
-    })) || [];
+    // Format items with dynamic distance calculation
+    const formattedBestPlaces = bestPlaces?.map(place => {
+      const coords = place.coordinates || TIRUPATI_CENTER;
+      const dist = calculateDrivingDistance(TIRUPATI_CENTER.lat, TIRUPATI_CENTER.lng, coords.lat || TIRUPATI_CENTER.lat, coords.lng || TIRUPATI_CENTER.lng);
+      return {
+        id: place.id,
+        slug: place.slug,
+        name: place.name,
+        heroImage: place.hero_image || (place.images && place.images[0]) || '',
+        distance: dist,
+        travelTime: Math.max(5, Math.round(dist * 2.5)),
+        verified: place.verification_status || 'Recently',
+        reasons: ['Pleasant weather', 'Low crowd']
+      };
+    }) || [];
 
     // 4. Compose Response Sections
     const sections = [];

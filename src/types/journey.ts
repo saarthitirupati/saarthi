@@ -40,5 +40,7 @@ export interface TripState {
   userLocation: { lat: number; lng: number } | null;
   locationPermission: 'default' | 'granted' | 'denied';
   locationName?: string;
+  locationAccuracyMeters?: number;
+  locationSource?: 'gps' | 'ip' | 'fallback';
   savedPlans: (Plan & { id: string; savedAt: string })[];
 }

@@ -293,3 +293,249 @@ export function updateFuelRates(updates: Partial<FuelRates>): FuelRates {
   fs.writeFileSync(FUEL_FILE, JSON.stringify(next, null, 2));
   return next;
 }
+
+// ── Growth Hub & Marketing Campaigns ───────────────────────────────────────────
+
+export type CampaignCategory = 
+  | 'apsrtc' 
+  | 'hotel' 
+  | 'taxi' 
+  | 'auto' 
+  | 'temple' 
+  | 'railway' 
+  | 'airport' 
+  | 'food_court' 
+  | 'festival' 
+  | 'flyer' 
+  | 'business_card' 
+  | 'volunteer' 
+  | 'other';
+
+export interface MarketingCampaign {
+  id: string;
+  name: string;
+  slug: string;
+  category: CampaignCategory;
+  location: string;
+  destination: string;
+  status: 'active' | 'paused';
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface MarketingScan {
+  id: string;
+  campaignId: string;
+  campaignSlug: string;
+  timestamp: string;
+  device: string;
+  browser: string;
+  os: string;
+  language: string;
+  referer: string;
+  ipHash?: string;
+}
+
+const CAMPAIGNS_FILE = path.join(DATA_DIR, 'campaigns.json');
+const SCANS_FILE = path.join(DATA_DIR, 'scans.json');
+
+const DEFAULT_CAMPAIGNS: MarketingCampaign[] = [
+  {
+    id: 'cmp_apsrtc_01',
+    name: 'APSRTC Bus Stickers',
+    slug: 'apsrtc',
+    category: 'apsrtc',
+    location: 'Tirupati Bus Station & Fleet',
+    destination: '/darshan',
+    status: 'active',
+    createdAt: new Date(Date.now() - 30 * 86400000).toISOString(),
+    updatedAt: new Date().toISOString(),
+  },
+  {
+    id: 'cmp_bhimas_01',
+    name: 'Hotel Bhimas Reception',
+    slug: 'bhimas',
+    category: 'hotel',
+    location: 'Bhimas Grand Entrance',
+    destination: '/explore',
+    status: 'active',
+    createdAt: new Date(Date.now() - 20 * 86400000).toISOString(),
+    updatedAt: new Date().toISOString(),
+  },
+  {
+    id: 'cmp_alipiri_01',
+    name: 'Alipiri Mettu Kiosk Standee',
+    slug: 'alipiri',
+    category: 'temple',
+    location: 'Alipiri Footstep Entry',
+    destination: '/places/alipiri-mettu',
+    status: 'active',
+    createdAt: new Date(Date.now() - 15 * 86400000).toISOString(),
+    updatedAt: new Date().toISOString(),
+  },
+  {
+    id: 'cmp_cab_01',
+    name: 'Tirupati Station Cab Decal #104',
+    slug: 'cab-01',
+    category: 'taxi',
+    location: 'Railway Station Taxi Stand',
+    destination: '/',
+    status: 'active',
+    createdAt: new Date(Date.now() - 10 * 86400000).toISOString(),
+    updatedAt: new Date().toISOString(),
+  }
+];
+
+export function readCampaigns(): MarketingCampaign[] {
+  ensureDir();
+  if (!fs.existsSync(CAMPAIGNS_FILE)) {
+    fs.writeFileSync(CAMPAIGNS_FILE, JSON.stringify(DEFAULT_CAMPAIGNS, null, 2));
+    return DEFAULT_CAMPAIGNS;
+  }
+  try {
+    const data = JSON.parse(fs.readFileSync(CAMPAIGNS_FILE, 'utf-8'));
+    return Array.isArray(data) && data.length > 0 ? data : DEFAULT_CAMPAIGNS;
+  } catch {
+    return DEFAULT_CAMPAIGNS;
+  }
+}
+
+export function writeCampaigns(campaigns: MarketingCampaign[]): void {
+  ensureDir();
+  fs.writeFileSync(CAMPAIGNS_FILE, JSON.stringify(campaigns, null, 2));
+}
+
+export function addCampaign(data: Omit<MarketingCampaign, 'id' | 'createdAt' | 'updatedAt'>): MarketingCampaign {
+  const campaigns = readCampaigns();
+  const slug = data.slug.toLowerCase().trim().replace(/[^a-z0-9-_]/g, '-');
+  
+  // Check duplicate slug
+  const existingIdx = campaigns.findIndex(c => c.slug === slug);
+  if (existingIdx !== -1) {
+    throw new Error(`Campaign with slug "${slug}" already exists.`);
+  }
+
+  const campaign: MarketingCampaign = {
+    ...data,
+    id: `cmp_${Date.now().toString(36)}`,
+    slug,
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+  };
+
+  campaigns.unshift(campaign);
+  writeCampaigns(campaigns);
+  return campaign;
+}
+
+export function updateCampaign(id: string, updates: Partial<MarketingCampaign>): MarketingCampaign | null {
+  const campaigns = readCampaigns();
+  const idx = campaigns.findIndex(c => c.id === id || c.slug === id);
+  if (idx === -1) return null;
+
+  const updated: MarketingCampaign = {
+    ...campaigns[idx],
+    ...updates,
+    updatedAt: new Date().toISOString(),
+  };
+  campaigns[idx] = updated;
+  writeCampaigns(campaigns);
+  return updated;
+}
+
+export function readScans(): MarketingScan[] {
+  ensureDir();
+  if (!fs.existsSync(SCANS_FILE)) {
+    // Generate initial dummy scan events for default campaigns
+    const seedScans: MarketingScan[] = [];
+    const campaigns = readCampaigns();
+    const now = Date.now();
+    
+    campaigns.forEach((c, cIdx) => {
+      const count = (4 - cIdx) * 140 + 45;
+      for (let i = 0; i < count; i++) {
+        seedScans.push({
+          id: `scn_${c.id}_${i}`,
+          campaignId: c.id,
+          campaignSlug: c.slug,
+          timestamp: new Date(now - Math.random() * 7 * 86400000).toISOString(),
+          device: i % 3 === 0 ? 'iPhone (iOS)' : i % 2 === 0 ? 'Samsung (Android)' : 'Mobile Browser',
+          browser: i % 4 === 0 ? 'Safari' : 'Chrome Mobile',
+          os: i % 3 === 0 ? 'iOS 17' : 'Android 14',
+          language: 'en-US',
+          referer: 'QR Camera Scan',
+        });
+      }
+    });
+
+    fs.writeFileSync(SCANS_FILE, JSON.stringify(seedScans, null, 2));
+    return seedScans;
+  }
+  try {
+    return JSON.parse(fs.readFileSync(SCANS_FILE, 'utf-8'));
+  } catch {
+    return [];
+  }
+}
+
+export function logMarketingScan(scanData: Omit<MarketingScan, 'id' | 'timestamp'>): MarketingScan {
+  const scans = readScans();
+  const scan: MarketingScan = {
+    ...scanData,
+    id: `scn_${Date.now().toString(36)}_${Math.random().toString(36).slice(2, 6)}`,
+    timestamp: new Date().toISOString(),
+  };
+
+  scans.unshift(scan);
+  ensureDir();
+  fs.writeFileSync(SCANS_FILE, JSON.stringify(scans, null, 2));
+  return scan;
+}
+
+export function getGrowthHubMetrics() {
+  const campaigns = readCampaigns();
+  const scans = readScans();
+  const now = new Date();
+  const todayStr = now.toISOString().split('T')[0];
+
+  const totalScans = scans.length;
+  const todayScans = scans.filter(s => s.timestamp.startsWith(todayStr)).length;
+
+  // Scan count per campaign
+  const campaignScanMap: Record<string, number> = {};
+  const campaignTodayMap: Record<string, number> = {};
+
+  scans.forEach(s => {
+    campaignScanMap[s.campaignId] = (campaignScanMap[s.campaignId] || 0) + 1;
+    if (s.timestamp.startsWith(todayStr)) {
+      campaignTodayMap[s.campaignId] = (campaignTodayMap[s.campaignId] || 0) + 1;
+    }
+  });
+
+  // Top campaign
+  let topCampaign: MarketingCampaign | null = null;
+  let maxScans = -1;
+
+  campaigns.forEach(c => {
+    const cnt = campaignScanMap[c.id] || 0;
+    if (cnt > maxScans) {
+      maxScans = cnt;
+      topCampaign = c;
+    }
+  });
+
+  return {
+    totalScans,
+    todayScans,
+    totalCampaigns: campaigns.length,
+    activeCampaigns: campaigns.filter(c => c.status === 'active').length,
+    topCampaign: topCampaign ? {
+      id: (topCampaign as MarketingCampaign).id,
+      name: (topCampaign as MarketingCampaign).name,
+      scans: maxScans,
+    } : null,
+    campaignScanMap,
+    campaignTodayMap,
+  };
+}
+
