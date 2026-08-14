@@ -71,7 +71,9 @@ export function HomeHero({ userName, locationName, weatherTemp, liveStatus, acti
     const diff = Math.floor((Date.now() - new Date(liveStatus.lastUpdated).getTime()) / 60000);
     if (diff < 1) return 'Just now';
     if (diff < 60) return `${diff} min ago`;
-    return `${Math.floor(diff / 60)}h ago`;
+    const hrs = Math.floor(diff / 60);
+    if (hrs < 24) return `${hrs}h ago`;
+    return 'Today';
   })();
 
   const getGreetingPrefix = () => {
