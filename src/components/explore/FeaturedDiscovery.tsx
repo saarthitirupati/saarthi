@@ -1,5 +1,5 @@
 import React from 'react';
-import { Lock,  Map } from 'lucide-react';
+import { Lock, Map, Leaf } from 'lucide-react';
 
 export default function FeaturedDiscovery({ unlocked = false }) {
   return (
@@ -7,7 +7,7 @@ export default function FeaturedDiscovery({ unlocked = false }) {
       <div className="absolute inset-0 opacity-20 bg-[url('/images/forest-bg.jpg')] bg-cover bg-center"></div>
       
       <div className="relative z-10">
-        <h3 className="text-emerald-300 text-sm font-bold uppercase tracking-wider mb-2">🌿 This Week&apos;s Discovery</h3>
+        <h3 className="text-emerald-300 text-sm font-bold uppercase tracking-wider mb-2 flex items-center gap-1"><Leaf size={14} /> This Week&apos;s Discovery</h3>
         
         {unlocked ? (
           <div>

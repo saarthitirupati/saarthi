@@ -308,7 +308,10 @@
     "address": "Tirumala",
     "rating": 4.4,
     "reviewCount": 3100,
-    "image": "/assets/temples/venkateswara.png",
+    "image": "https://res.cloudinary.com/kniegqlj/image/upload/v1785912589/tirupati-Sri-Vari-Museum_k6h8yz.jpg",
+    "images": [
+      "https://res.cloudinary.com/kniegqlj/image/upload/v1785912589/tirupati-Sri-Vari-Museum_k6h8yz.jpg"
+    ],
     "coordinates": {
       "lat": 13.6853,
       "lng": 79.3468
@@ -1855,7 +1858,10 @@
     "address": "Appalayagunta",
     "rating": 4.6,
     "reviewCount": 4500,
-    "image": "/assets/temples/appalayagunta.png",
+    "image": "https://res.cloudinary.com/kniegqlj/image/upload/v1785913180/appalayagunta2_ybksjq.jpg",
+    "images": [
+      "https://res.cloudinary.com/kniegqlj/image/upload/v1785913180/appalayagunta2_ybksjq.jpg"
+    ],
     "coordinates": {
       "lat": 13.5372,
       "lng": 79.4774
@@ -2030,9 +2036,9 @@
     "address": "Rangampeta Forest",
     "rating": 4.5,
     "reviewCount": 4800,
-    "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmlCryveug2pv09HJ1L6FMyoSSQBKpBljPCG-A9TWtbUKczQkm1ipyOsHrnzmj-OrPkz8hZQQpMjXhNqD9nWM2oxe65FB_SS9ZZB6KVyXrlyrwoTXEDpncEfP48bJYLahD8ZBln-DsCaqM_=w408-h306-k-no",
+    "image": "https://res.cloudinary.com/kniegqlj/image/upload/v1785912451/8605110_orig_gwqben.jpg",
     "images": [
-      "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmlCryveug2pv09HJ1L6FMyoSSQBKpBljPCG-A9TWtbUKczQkm1ipyOsHrnzmj-OrPkz8hZQQpMjXhNqD9nWM2oxe65FB_SS9ZZB6KVyXrlyrwoTXEDpncEfP48bJYLahD8ZBln-DsCaqM_=w408-h306-k-no"
+      "https://res.cloudinary.com/kniegqlj/image/upload/v1785912451/8605110_orig_gwqben.jpg"
     ],
     "coordinates": {
       "lat": 13.6576604,
@@ -2076,7 +2082,7 @@
     "address": "Puttur Road",
     "rating": 4.6,
     "reviewCount": 5200,
-    "image": "/assets/temples/narayanavanam.png",
+    "image": "https://res.cloudinary.com/kniegqlj/image/upload/v1785912384/sri-laxmi-venkataramana_jo1cxb.jpg",
     "coordinates": {
       "lat": 13.4234,
       "lng": 79.5887
@@ -3054,9 +3060,9 @@
     "address": "Tondavada, Chandragiri Mandal",
     "rating": 4.6,
     "reviewCount": 1800,
-    "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWl0To2-_-0rdgxYuP1cqAkaxRGYchKXNKs-RilwzZq9r5B7iw4L9VOsvLYYQs0eqxByShXgvmMiqJxFr1yo7TpLWPrO4-Nua3p_V5Vkt9Df0W7uMo1ywahvYlf7oAbbq4UjbaRnplNWZWAW=w408-h306-k-no",
+    "image": "https://res.cloudinary.com/kniegqlj/image/upload/v1785912680/mukkoti-agastheeshwara-temple_rhtesq.jpg",
     "images": [
-      "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWl0To2-_-0rdgxYuP1cqAkaxRGYchKXNKs-RilwzZq9r5B7iw4L9VOsvLYYQs0eqxByShXgvmMiqJxFr1yo7TpLWPrO4-Nua3p_V5Vkt9Df0W7uMo1ywahvYlf7oAbbq4UjbaRnplNWZWAW=w408-h306-k-no"
+      "https://res.cloudinary.com/kniegqlj/image/upload/v1785912680/mukkoti-agastheeshwara-temple_rhtesq.jpg"
     ],
     "coordinates": {
       "lat": 13.5968472,
@@ -3337,5 +3343,36 @@
         "Guru Pournami Special Alankaram"
       ]
     }
+  },
+  {
+    "id": "parshwanath-jain-temple",
+    "name": "Sri Brahmeshwar Parshwanath Swarna Jain Mandir",
+    "category": "Day Trip",
+    "placeType": "spiritual",
+    "location": "C. Ramapuram",
+    "distanceKms": 8,
+    "durationMins": 60,
+    "budgetLevel": "budget",
+    "entryFeeNum": 0,
+    "interests": ["spiritual", "architecture", "jain"],
+    "openFrom": 5.5,
+    "openTo": 19,
+    "isMustVisit": false,
+    "description": "Serene Jain temple in C. Ramapuram built with pure white Makrana marble and a gold-covered dome.",
+    "shortIntro": "Sri Brahmeshwar Parshwanath Swarna Jain Mandir in C. Ramapuram is a serene white Makrana marble temple with a gold dome.",
+    "history": "Constructed as a major Jain pilgrimage center near Tirupati, featuring white Makrana marble architecture and a golden dome.",
+    "whyVisit": "Peaceful white Makrana marble architecture, golden dome, attached Brahmarshi Ashram meditation hall, and gaushala.",
+    "timings": "5:30 AM - 1:00 PM, 4:00 PM - 7:00 PM (Sat till 8:00 PM)",
+    "entryFee": "Free",
+    "address": "R.C. Road, C. Ramapuram, Tirupati, AP 517561",
+    "rating": 4.7,
+    "reviewCount": 1200,
+    "image": "https://res.cloudinary.com/kniegqlj/image/upload/v1785915198/Sri-Brahmeshwar-Parswanath-Swarna-Jain-Mandir-Tirupati_8309d1699656d0683273b45b1828322b_juq4b1.jpg",
+    "images": ["https://res.cloudinary.com/kniegqlj/image/upload/v1785915198/Sri-Brahmeshwar-Parswanath-Swarna-Jain-Mandir-Tirupati_8309d1699656d0683273b45b1828322b_juq4b1.jpg"],
+    "coordinates": { "lat": 13.5614963, "lng": 79.400321 },
+    "tags": ["Jain Temple", "Makrana Marble", "Gold Dome", "Lord Parshwanath", "Gaushala"],
+    "bestTime": "Morning",
+    "practicalInfo": { "dressCode": "Modest attire", "food": "Sattvic Jain food at ashram", "parking": "Ample" },
+    "travelEstimates": { "tirupati": "15 mins" }
   }
 ]

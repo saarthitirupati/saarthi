@@ -118,7 +118,7 @@ export default function LiveStatus() {
         {/* Live dot + label */}
         <div className={styles.liveChip}>
           <span className={styles.liveDot} style={{ background: meta.pulse }} />
-          <span>🟢 Verified • TTD Official</span>
+          <span>Verified · TTD Official</span>
           {status.lastUpdated && (
             <span style={{ fontSize: '10px', color: '#64748B', marginLeft: '4px', fontWeight: 600 }}>
               • {fmtTime(status.lastUpdated)}

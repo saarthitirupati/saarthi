@@ -793,6 +793,14 @@
     grid-template-columns: 1fr !important;
   }
 
+  .formGrid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .formGrid3 {
+    grid-template-columns: 1fr !important;
+  }
+
   .tableCard {
     overflow-x: auto;
   }

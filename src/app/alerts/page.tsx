@@ -153,9 +153,17 @@ export default function AlertsPage() {
                     <h3 style={{ fontSize: 15, fontWeight: 800, color: '#0F172A', margin: '0 0 4px 0' }}>
                       {alert.title}
                     </h3>
-                    <p style={{ fontSize: 13.5, color: '#334155', lineHeight: 1.5, margin: 0 }}>
+                    <p style={{ fontSize: 13.5, color: '#334155', lineHeight: 1.5, margin: '0 0 8px 0' }}>
                       {alert.description}
                     </p>
+                    {alert.image && (
+                      <img 
+                        src={alert.image} 
+                        alt={alert.title} 
+                        style={{ width: '100%', maxHeight: '200px', objectFit: 'cover', borderRadius: '12px', marginTop: '4px' }}
+                        onError={(e) => { (e.target as HTMLElement).style.display = 'none'; }}
+                      />
+                    )}
                   </div>
 
                   {ctaHref && (

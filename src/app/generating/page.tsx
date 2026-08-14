@@ -3,6 +3,7 @@
 import { useEffect, useState, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useRouter } from 'next/navigation';
+import { Flame, Leaf, UtensilsCrossed, Castle, Waves, Sparkles, FerrisWheel, Compass } from 'lucide-react';
 import styles from './Generating.module.css';
 import { useTrip } from '@/components/TripContext';
 import { generatePlans } from '@/lib/recommendation-engine';
@@ -18,7 +19,7 @@ const STATUS_MESSAGES = [
   'Crafting your perfect itinerary...',
 ];
 
-const CATEGORY_ICONS = ['🛕', '🌿', '🍛', '🏰', '🌊', '✨', '🎡', '🔭'];
+const CATEGORY_ICONS = [Flame, Leaf, UtensilsCrossed, Castle, Waves, Sparkles, FerrisWheel, Compass];
 
 export default function GeneratingPage() {
   const [progress, setProgress] = useState(0);
@@ -98,7 +99,7 @@ export default function GeneratingPage() {
 
       {/* Floating category icons */}
       <div className={styles.floatingIcons}>
-        {CATEGORY_ICONS.map((icon, i) => (
+        {CATEGORY_ICONS.map((IconComponent, i) => (
           <motion.div
             key={i}
             className={styles.floatingIcon}
@@ -118,7 +119,7 @@ export default function GeneratingPage() {
               ease: 'easeInOut',
             }}
           >
-            {icon}
+            <IconComponent size={24} strokeWidth={1.5} />
           </motion.div>
         ))}
       </div>

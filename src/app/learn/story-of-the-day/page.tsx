@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { ArrowLeft, Share2, ThumbsUp, ThumbsDown, ChevronLeft, ChevronRight, Sparkles, Clock, ShieldCheck, BookOpen, MapPin } from 'lucide-react';
+import { ArrowLeft, Share2, ThumbsUp, ThumbsDown, ChevronLeft, ChevronRight, Sparkles, Clock, ShieldCheck, BookOpen, MapPin, Lightbulb } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { STORIES, Story } from '@/data/stories';
 import { PLACES } from '@/data/places';
@@ -328,8 +328,8 @@ export default function StoryOfTheDayPage() {
                         justifyContent: 'space-between'
                       }}
                     >
-                      <p style={{ fontSize: '13px', color: '#1E293B', margin: 0, lineHeight: 1.5, fontWeight: 600 }}>
-                        💡 {fact}
+                      <p style={{ fontSize: '13px', color: '#1E293B', margin: 0, lineHeight: 1.5, fontWeight: 600, display: 'flex', alignItems: 'flex-start', gap: '6px' }}>
+                        <Lightbulb size={14} color="#D97706" style={{ flexShrink: 0, marginTop: '1px' }} /> {fact}
                       </p>
                     </div>
                   ))}

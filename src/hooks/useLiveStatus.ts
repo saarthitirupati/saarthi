@@ -61,7 +61,7 @@ export function useLiveStatus() {
 
   const liveStatus = useMemo(() => {
     const base = rawLiveStatus || FALLBACK_STATUS;
-    if (realtimeWeather) {
+    if (realtimeWeather && (!base.weather || base.weather === 'Auto (API)')) {
       return { ...base, weather: realtimeWeather };
     }
     return base;

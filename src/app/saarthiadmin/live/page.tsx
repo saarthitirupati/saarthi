@@ -10,6 +10,7 @@ export default function AdminLiveUpdates() {
   const [ssdStatus, setSsdStatus] = useState({ ssdTokenStatus: 'issuing', ssdNextTokenTime: '', ssdNotice: '' });
   const [weatherState, setWeatherState] = useState<string>('Auto (API)');
   const [livePlaces, setLivePlaces] = useState<any[]>([]);
+  const [statusData, setStatusData] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [lastUpdated, setLastUpdated] = useState<string>('');
   const [toastMessage, setToastMessage] = useState<string | null>(null);
@@ -22,19 +23,20 @@ export default function AdminLiveUpdates() {
 
   const fetchLiveData = useCallback(async () => {
     try {
-      const [statusData, placesData] = await Promise.all([
+      const [fetchedStatus, placesData] = await Promise.all([
         safeFetchJson<any>('/api/admin/status?t=' + Date.now()),
         safeFetchJson<any>('/api/admin/live-places?t=' + Date.now())
       ]);
 
-      if (statusData) {
+      if (fetchedStatus) {
+        setStatusData(fetchedStatus);
         setSsdStatus({
-          ssdTokenStatus: statusData.ssdTokenStatus || 'issuing',
-          ssdNextTokenTime: statusData.ssdNextTokenTime || '',
-          ssdNotice: statusData.ssdNotice || ''
+          ssdTokenStatus: fetchedStatus.ssdTokenStatus || 'issuing',
+          ssdNextTokenTime: fetchedStatus.ssdNextTokenTime || '',
+          ssdNotice: fetchedStatus.ssdNotice || ''
         });
-        if (statusData.weather) {
-          setWeatherState(statusData.weather);
+        if (fetchedStatus.weather) {
+          setWeatherState(fetchedStatus.weather);
         }
       }
 
@@ -134,11 +136,34 @@ export default function AdminLiveUpdates() {
       if (data && data.places) {
         setLivePlaces(data.places);
         
-        if (id === 'uuid-1') {
+        if (id === 'uuid-1' || id.includes('1')) {
           const globalStatusUpdates: any = {};
           if (updates.time) globalStatusUpdates.waitTime = updates.time;
           if (updates.crowd) globalStatusUpdates.crowdLevel = updates.crowd.toLowerCase();
           if (updates.parking) globalStatusUpdates.accommodationStatus = updates.parking === 'FULL' ? 'full' : 'available';
+
+          // Update individual Darshan Category wait times
+          if (updates.sarva || updates.ssd || updates.special) {
+            const list = statusData?.darshans || [
+              { name: 'Sarva Darshan (Free)', waitTime: '12-15 hours', peakHours: 'Daily 10 AM - 6 PM' },
+              { name: 'Special Entry (₹300)', waitTime: '3-4 hours', peakHours: 'Daily 9 AM - 3 PM' },
+              { name: 'Divya Darshan (Footpath)', waitTime: '8-10 hours', peakHours: 'Daily 8 AM - 4 PM' },
+              { name: 'VIP / Srivani Break', waitTime: '1.5 hours', peakHours: 'Daily 6 AM - 8 AM' }
+            ];
+            globalStatusUpdates.darshans = list.map((d: any) => {
+              const nameLower = (d.name || '').toLowerCase();
+              if (updates.sarva && (nameLower.includes('sarva') || nameLower.includes('free'))) {
+                return { ...d, waitTime: updates.sarva };
+              }
+              if (updates.ssd && (nameLower.includes('divya') || nameLower.includes('footpath') || nameLower.includes('ssd'))) {
+                return { ...d, waitTime: updates.ssd };
+              }
+              if (updates.special && (nameLower.includes('300') || nameLower.includes('special'))) {
+                return { ...d, waitTime: updates.special };
+              }
+              return d;
+            });
+          }
           
           await fetch('/api/admin/status', {
             method: 'POST',
@@ -348,6 +373,47 @@ export default function AdminLiveUpdates() {
                   <option value="SUSPENDED">Suspended</option>
                 </select>
               </div>
+
+              {(place.id === 'uuid-1' || place.name.includes('Tirumala')) && (
+                <>
+                  <div className={styles.controlGroup} style={{ borderTop: '1px solid #E2E8F0', paddingTop: '10px', marginTop: '6px' }}>
+                    <label style={{ color: '#D97706', fontWeight: 800 }}>👥 Sarva Darshan Wait</label>
+                    <input 
+                      name="sarva" 
+                      type="text" 
+                      className={styles.input} 
+                      defaultValue={
+                        statusData?.darshans?.find((d: any) => d.name?.toLowerCase().includes('sarva') || d.name?.toLowerCase().includes('free'))?.waitTime || '12-15 hours'
+                      } 
+                      placeholder="e.g. 10-12 hours" 
+                    />
+                  </div>
+                  <div className={styles.controlGroup}>
+                    <label style={{ color: '#0284C7', fontWeight: 800 }}>🎫 SSD / DD Wait</label>
+                    <input 
+                      name="ssd" 
+                      type="text" 
+                      className={styles.input} 
+                      defaultValue={
+                        statusData?.darshans?.find((d: any) => d.name?.toLowerCase().includes('divya') || d.name?.toLowerCase().includes('footpath') || d.name?.toLowerCase().includes('ssd'))?.waitTime || '8-10 hours'
+                      } 
+                      placeholder="e.g. 4-6 hours" 
+                    />
+                  </div>
+                  <div className={styles.controlGroup}>
+                    <label style={{ color: '#CA8A04', fontWeight: 800 }}>⚡ ₹300 Special Entry Wait</label>
+                    <input 
+                      name="special" 
+                      type="text" 
+                      className={styles.input} 
+                      defaultValue={
+                        statusData?.darshans?.find((d: any) => d.name?.includes('300') || d.name?.toLowerCase().includes('special'))?.waitTime || '3-4 hours'
+                      } 
+                      placeholder="e.g. 3-5 hours" 
+                    />
+                  </div>
+                </>
+              )}
             </div>
 
             <button 
@@ -359,7 +425,16 @@ export default function AdminLiveUpdates() {
                 const crowd = (controls.querySelector('[name="crowd"]') as HTMLSelectElement).value;
                 const parking = (controls.querySelector('[name="parking"]') as HTMLSelectElement).value;
                 const rtc = (controls.querySelector('[name="rtc"]') as HTMLSelectElement).value;
-                handlePlaceUpdate(place.id, { time, crowd, parking, rtc });
+
+                const sarvaEl = controls.querySelector('[name="sarva"]') as HTMLInputElement | null;
+                const ssdEl = controls.querySelector('[name="ssd"]') as HTMLInputElement | null;
+                const specialEl = controls.querySelector('[name="special"]') as HTMLInputElement | null;
+
+                const sarva = sarvaEl?.value;
+                const ssd = ssdEl?.value;
+                const special = specialEl?.value;
+
+                handlePlaceUpdate(place.id, { time, crowd, parking, rtc, sarva, ssd, special });
               }}
             >
               Update Live Status

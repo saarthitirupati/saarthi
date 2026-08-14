@@ -9,15 +9,27 @@ export function RecommendationCard({ liveStatus, todayFestival }: { liveStatus: 
   const dayOfWeek = date.getDay();
   const hr = date.getHours();
   const isNight = hr >= 21 || hr < 5;
-  const crowd = (liveStatus.crowdLevel || 'normal').toLowerCase();
+  const crowd = (liveStatus.crowdLevel || 'moderate').toLowerCase();
   const weatherStr = (liveStatus.weather || '').toLowerCase();
   const isRainy = weatherStr.includes('rain') || weatherStr.includes('shower') || weatherStr.includes('storm');
 
-  // Default Priority 4 Recommendation
+  // Dynamic crowd status derived from live data
+  const getDynamicCrowdStatus = (): string => {
+    if (isNight) return 'Quiet · Night Hours';
+    if (crowd === 'low')       return 'Low Crowd · Quick Entry';
+    if (crowd === 'moderate')  return 'Moderate · ~30 Min Wait';
+    if (crowd === 'high')      return 'High Crowd · Plan Ahead';
+    if (crowd === 'very-high') return 'Peak Crowd · Long Wait';
+    return 'Check Live Status';
+  };
+
+  const dynamicCrowd = getDynamicCrowdStatus();
+
+  // Default (Sunday fallback)
   let rec = {
     title: 'Kapila Theertham',
-    distance: '12 min away',
-    crowdStatus: 'Peaceful Evening',
+    distance: '12 min drive',
+    crowdStatus: dynamicCrowd,
     link: '/place/kapila-theertham',
     image: '/assets/temples/kapila-theertham.png',
     priorityTag: 'Priority 3: Weekday Theme',
@@ -28,82 +40,82 @@ export function RecommendationCard({ liveStatus, todayFestival }: { liveStatus: 
   if (todayFestival && (todayFestival.isToday || todayFestival.isLive)) {
     rec = {
       title: todayFestival.location || 'Sri Venkateswara Swamy Temple',
-      distance: '15 min away',
-      crowdStatus: 'Festive Gathering',
+      distance: '20 min · Ghat Road',
+      crowdStatus: `Festive · ${dynamicCrowd}`,
       link: todayFestival.placeId ? `/place/${todayFestival.placeId}` : '/festivals',
       image: todayFestival.coverImage || '/assets/temples/venkateswara.png',
       priorityTag: 'Priority 1: Festival Calendar',
       reason: `Official venue for ${todayFestival.name || todayFestival.title}`
     };
   }
-  // PRIORITY 2: Important Temple Day (Saturdays & Fridays)
-  else if (dayOfWeek === 6) { // Saturday
+  // PRIORITY 2: Important Temple Day
+  else if (dayOfWeek === 6) { // Saturday — Venkateswara (Tirumala)
     rec = {
       title: 'Sri Venkateswara Swamy Temple',
-      distance: '15 min away',
-      crowdStatus: 'High Devotion (Srivari Saturday)',
+      distance: '20 min · Ghat Road',
+      crowdStatus: dynamicCrowd,
       link: '/place/venkateswara',
       image: '/assets/temples/venkateswara.png',
       priorityTag: 'Priority 2: Important Temple Day',
       reason: 'Holy Saturday · Primary Tirumala Seven Hills sanctum'
     };
-  } else if (dayOfWeek === 5) { // Friday
+  } else if (dayOfWeek === 5) { // Friday — Padmavathi (Tiruchanoor, 5 km)
     rec = {
       title: 'Sri Padmavathi Ammavari Temple',
-      distance: '10 min away',
-      crowdStatus: 'Divine Abhishekam Day',
+      distance: '10 min drive',
+      crowdStatus: dynamicCrowd,
       link: '/place/padmavathi',
       image: '/assets/temples/padmavathi.png',
       priorityTag: 'Priority 2: Important Temple Day',
       reason: 'Goddess Lakshmi Friday · Official Tiruchanoor divine consort shrine'
     };
   }
-  // PRIORITY 3: Weekday Spiritual Calendar (Deity Respect)
-  else if (dayOfWeek === 1) { // Monday - Lord Shiva
+  // PRIORITY 3: Weekday Spiritual Calendar
+  else if (dayOfWeek === 1) { // Monday — Kapila Theertham (6 km from town)
     rec = {
       title: 'Kapila Theertham',
-      distance: '12 min away',
-      crowdStatus: isNight ? 'Peaceful Evening' : 'Moderate Crowd',
+      distance: '12 min drive',
+      crowdStatus: dynamicCrowd,
       link: '/place/kapila-theertham',
       image: '/assets/temples/kapila-theertham.png',
       priorityTag: 'Priority 3: Lord Shiva Monday',
       reason: 'Lord Shiva Monday · Sacred waterfall cave shrine at the foot of Seven Hills'
     };
-  } else if (dayOfWeek === 2) { // Tuesday - Hanuman / Bedi Anjaneya
+  } else if (dayOfWeek === 2) { // Tuesday — Japali Hanuman (Tirumala, 20 km)
     rec = {
       title: 'Japali Hanuman Temple',
-      distance: '14 min away',
-      crowdStatus: 'Low Wait Time',
+      distance: '20 min · Ghat Road',
+      crowdStatus: dynamicCrowd,
       link: '/place/japali-hanuman',
       image: '/assets/temples/bedi-anjaneya.png',
       priorityTag: 'Priority 3: Hanuman Tuesday',
       reason: 'Hanuman Tuesday · Sacred Hanuman shrine on the Seven Hills'
     };
-  } else if (dayOfWeek === 3) { // Wednesday - Lord Rama
+  } else if (dayOfWeek === 3) { // Wednesday — Kodandarama (4 km, town center)
     rec = {
       title: 'Sri Kodandarama Swamy Temple',
-      distance: '8 min away',
-      crowdStatus: 'Serene Atmosphere',
+      distance: '8 min drive',
+      crowdStatus: dynamicCrowd,
       link: '/place/kodandarama-temple',
       image: '/assets/temples/padmavathi.png',
       priorityTag: 'Priority 3: Lord Rama Wednesday',
       reason: 'Lord Rama Wednesday · 1,000-year historic Vijayanagara shrine'
     };
-  } else if (dayOfWeek === 4) { // Thursday - Guru & Annamayya
+  } else if (dayOfWeek === 4) { // Thursday — Govindaraja (3 km, town center)
     rec = {
       title: 'Sri Govindaraja Swamy Temple',
-      distance: '6 min away',
-      crowdStatus: 'Low Crowd',
+      distance: '6 min drive',
+      crowdStatus: dynamicCrowd,
       link: '/place/govindaraja',
       image: '/assets/temples/govindaraja.png',
       priorityTag: 'Priority 3: Guru Thursday',
       reason: 'Guru & Annamayya Thursday · Ancient heritage shrine in Tirupati town'
     };
-  } else if (dayOfWeek === 0) { // Sunday - Surya Narayana
+  } else if (dayOfWeek === 0) { // Sunday — Bhu Varaha (Tirumala)
     rec = {
       title: 'Sri Bhu Varaha Swamy Temple',
-      distance: '14 min away',
-      crowdStatus: 'Traditional Entry',
+      distance: '20 min · Ghat Road',
+      crowdStatus: dynamicCrowd,
       link: '/place/bhu-varaha',
       image: '/assets/temples/venkateswara.png',
       priorityTag: 'Priority 3: Surya Narayana Sunday',
@@ -111,28 +123,29 @@ export function RecommendationCard({ liveStatus, todayFestival }: { liveStatus: 
     };
   }
 
-  // PRIORITY 4: Weather / Live Crowd Context Override
+  // PRIORITY 4: Live condition override
   if (isRainy) {
     rec = {
       title: 'ISKCON Tirupati',
-      distance: '8 min away',
+      distance: '4 min drive',
       crowdStatus: 'Covered & Indoor',
       link: '/place/iskcon-tirupati',
       image: '/assets/temples/iskcon.png',
       priorityTag: 'Weather Context: Rain Friendly',
       reason: 'Rainy Weather · Covered indoor sanctum and comfortable seating'
     };
-  } else if (crowd === 'heavy') {
+  } else if (crowd === 'high' || crowd === 'very-high') {
     rec = {
       title: 'Sri Govindaraja Swamy Temple',
-      distance: '6 min away',
-      crowdStatus: 'Fast-Moving Line',
+      distance: '6 min drive',
+      crowdStatus: dynamicCrowd,
       link: '/place/govindaraja',
       image: '/assets/temples/govindaraja.png',
       priorityTag: 'Queue Context: High Crowd Alternate',
       reason: 'High Crowd in Tirumala · Fast entry alternate shrine in Tirupati town'
     };
   }
+
 
   return (
     <div style={{ padding: '0 16px 16px 16px' }}>

@@ -1,10 +1,10 @@
 {
-  "waitTime": "11 - 12 hours",
+  "waitTime": "15 hours",
   "bestTime": "",
   "crowdLevel": "medium",
   "sevaStatus": "All sevas open",
   "notice": "",
-  "lastUpdated": "2026-07-31T17:03:29.363Z",
+  "lastUpdated": "2026-08-05T06:53:22.272Z",
   "darshanSpeed": "normal",
   "accommodationStatus": "available",
   "ladduAvailability": "available",
@@ -12,17 +12,17 @@
   "darshans": [
     {
       "name": "Sarva Darshan (Free)",
-      "waitTime": "12-15 hours",
+      "waitTime": "1- 10 hours",
       "peakHours": "Daily 10 AM - 6 PM"
     },
     {
       "name": "Special Entry (₹300)",
-      "waitTime": "3-4 hours",
+      "waitTime": "2 hours",
       "peakHours": "Daily 9 AM - 3 PM"
     },
     {
       "name": "Divya Darshan (Footpath)",
-      "waitTime": "8-10 hours",
+      "waitTime": "3 - 7 hours",
       "peakHours": "Daily 8 AM - 4 PM"
     },
     {
@@ -31,8 +31,8 @@
       "peakHours": "Daily 6 AM - 8 AM"
     }
   ],
-  "ssdTokenStatus": "closed-for-day",
-  "ssdNextTokenTime": "11:00 AM",
+  "ssdTokenStatus": "issuing",
+  "ssdNextTokenTime": "10:30 AM",
   "ssdTokenSlots": [
     {
       "slotTime": "5:00 AM - 7:00 AM",
@@ -51,22 +51,22 @@
     },
     {
       "slotTime": "11:00 AM - 1:00 PM",
-      "status": "available",
-      "tokensLeft": "Available"
+      "status": "closed",
+      "tokensLeft": "Full"
     },
     {
       "slotTime": "2:00 PM - 4:00 PM",
-      "status": "available",
-      "tokensLeft": "Available"
+      "status": "filling",
+      "tokensLeft": "~200 remaining"
     },
     {
       "slotTime": "4:00 PM - 6:00 PM",
-      "status": "available",
-      "tokensLeft": "Available"
+      "status": "filling",
+      "tokensLeft": "~200 remaining"
     }
   ],
   "ssdNotice": "",
-  "ssdTimingsGuide": "Offline free SSD tokens are released daily starting at 11:00 AM. Batches are allocated hourly for that day's Darshan. Counters close as soon as the daily quota runs out (~15,000 - 20,000 tokens).",
+  "ssdTimingsGuide": "Offline free SSD tokens are released daily starting at 10:30 AM. Batches are allocated hourly for that day's Darshan. Counters close as soon as the daily quota runs out (~15,000 - 20,000 tokens).",
   "ssdCounters": [
     {
       "name": "Vishnu Nivasam Counter",

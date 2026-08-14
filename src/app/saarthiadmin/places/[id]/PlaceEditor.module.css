@@ -155,3 +155,12 @@
   height: 16px;
   cursor: pointer;
 }
+
+@media (max-width: 768px) {
+  .contentLayout {
+    grid-template-columns: 1fr;
+  }
+  .formRow {
+    grid-template-columns: 1fr;
+  }
+}

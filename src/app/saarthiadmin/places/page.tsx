@@ -186,7 +186,7 @@ export default function AdminPlacesList() {
                     <Link href={`/place/${place.id}`} target="_blank" className={styles.editLink} style={{ marginRight: '8px', color: '#0284C7' }}>
                       <Eye size={14} style={{ display: 'inline', marginRight: '4px' }} /> View
                     </Link>
-                    <Link href={`/admin/places/${place.id}`} className={styles.editLink} style={{ marginRight: '8px' }}>
+                    <Link href={`/saarthiadmin/places/${place.id}`} className={styles.editLink} style={{ marginRight: '8px' }}>
                       Edit
                     </Link>
                     <button 

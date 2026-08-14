@@ -130,17 +130,6 @@ export async function GET() {
       })
       .sort((a, b) => b.totalViews - a.totalViews);
 
-    // Fallback seed data if views are early
-    if (mostViewedPages.length === 0) {
-      mostViewedPages.push(
-        { path: '/', pageTitle: 'Home (Quick to Reach & Decision Verdict)', totalViews: 4250, uniqueVisitors: 1820, sharePercentage: 42 },
-        { path: '/explore', pageTitle: 'Explore Places (Nearby Engine)', totalViews: 2840, uniqueVisitors: 1350, sharePercentage: 28 },
-        { path: '/story/seven-hills', pageTitle: 'Story: Why is Tirumala called Seven Hills?', totalViews: 1210, uniqueVisitors: 890, sharePercentage: 12 },
-        { path: '/place/govindaraja', pageTitle: 'Place: Sri Govindaraja Swamy Temple', totalViews: 980, uniqueVisitors: 640, sharePercentage: 10 },
-        { path: '/trip-estimator', pageTitle: 'Saarthi Trip & Transport Estimator', totalViews: 820, uniqueVisitors: 510, sharePercentage: 8 }
-      );
-    }
-
     // Top Visited Places
     const topVisitedPlaces = Object.entries(placeMap)
       .map(([id, viewsCount]) => {
@@ -154,16 +143,6 @@ export async function GET() {
       })
       .sort((a, b) => b.views - a.views)
       .slice(0, 5);
-
-    if (topVisitedPlaces.length === 0) {
-      topVisitedPlaces.push(
-        { placeId: 'govindaraja', name: 'Sri Govindaraja Swamy Temple', category: 'Core Temple', views: 4250 },
-        { placeId: 'kapila-theertham', name: 'Kapila Theertham', category: 'Nature / Waterfall', views: 2980 },
-        { placeId: 'venkateswara', name: 'Sri Venkateswara Swamy Temple', category: 'Tirumala Spot', views: 2890 },
-        { placeId: 'regional-science-centre', name: 'Regional Science Centre', category: 'Parks & Leisure', views: 1840 },
-        { placeId: 'padmavathi', name: 'Sri Padmavathi Ammavari Temple', category: 'Core Temple', views: 1650 }
-      );
-    }
 
     // Top Read Stories
     const topStoriesRead = Object.entries(storyMap)
@@ -179,37 +158,35 @@ export async function GET() {
       .sort((a, b) => b.reads - a.reads)
       .slice(0, 5);
 
-    if (topStoriesRead.length === 0) {
-      topStoriesRead.push(
-        { storyId: 'seven-hills', title: 'Why is Tirumala Called the Seven Hills?', category: 'Mythology', reads: 1420 },
-        { storyId: 'offering-hair', title: 'Why Do Devotees Offer Their Hair at Tirumala?', category: 'Tradition', reads: 1180 },
-        { storyId: 'tirumala-laddu', title: 'The Secret Behind Tirumala Laddu Prasadam', category: 'Tradition', reads: 950 },
-        { storyId: 'silathoranam-mystery', title: 'The Mystery of Silathoranam — 2.5 Billion Year Arch', category: 'Nature & Science', reads: 820 }
-      );
-    }
+    const totalSessionsCount = allSessions.size;
 
-    const liveActiveCount = Math.max(1, activeSessions.size || (views.length > 0 ? 3 : 14));
-    const todayUniqueVisitors = Math.max(1, todaySessions.size || (views.length > 0 ? 120 : 1850));
+    // Calculate device percentages
+    const totalDevices = (deviceMap.Mobile || 0) + (deviceMap.Desktop || 0) + (deviceMap.Tablet || 0);
+    const mobilePct = totalDevices > 0 ? Math.round(((deviceMap.Mobile || 0) / totalDevices) * 100) : 100;
+    const desktopPct = totalDevices > 0 ? Math.round(((deviceMap.Desktop || 0) / totalDevices) * 100) : 0;
+    const tabletPct = totalDevices > 0 ? Math.max(0, 100 - mobilePct - desktopPct) : 0;
+
+    const avgPages = totalSessionsCount > 0 ? (totalViewsCount / totalSessionsCount).toFixed(1) : '1.0';
 
     return NextResponse.json({
       success: true,
       summary: {
         totalVisitors: {
-          today: todayUniqueVisitors,
-          last7Days: todayUniqueVisitors * 6.5 + 4200,
-          last30Days: todayUniqueVisitors * 24 + 18500,
-          totalAllTime: 48920
+          today: todaySessions.size,
+          last7Days: allSessions.size,
+          last30Days: allSessions.size,
+          totalAllTime: allSessions.size
         },
-        totalPageviews: Math.max(totalViewsCount, 12450),
-        liveActiveNow: liveActiveCount,
-        avgPagesPerSession: '2.8 pages',
+        totalPageviews: totalViewsCount,
+        liveActiveNow: activeSessions.size,
+        avgPagesPerSession: `${avgPages} pages`,
         mostViewedPages,
         topVisitedPlaces,
         topStoriesRead,
         deviceBreakdown: {
-          mobile: deviceMap.Mobile || 85,
-          desktop: deviceMap.Desktop || 12,
-          tablet: deviceMap.Tablet || 3
+          mobile: mobilePct,
+          desktop: desktopPct,
+          tablet: tabletPct
         }
       }
     });

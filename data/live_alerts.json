@@ -1,1 +1,34 @@
-[]
+[
+  {
+    "id": "190w06zo3cxyk2xemhk1ce",
+    "title": "hhhhhhhhhhhhhhh",
+    "description": "hbvkhfl vhfbv fireuhbiue ibjlebljqfbkjqfbvkjfjvebfkbklrbvkj;fvknlnj",
+    "image": "https://res.cloudinary.com/kniegqlj/image/upload/v1785644167/mogili-shiva-hill-temple-chittoor-temples-fcvjtibn5n_iyg4fe.jpg",
+    "category": "Advisory",
+    "severity": "High",
+    "popup_type": "Popup",
+    "cta": "None",
+    "status": "Published",
+    "target_location": "All Users",
+    "start_time": "2026-08-11T05:47:10.667Z",
+    "expiry_time": "2026-08-11T07:47:10.667Z",
+    "created_at": "2026-08-11T05:47:10.747Z",
+    "updated_at": "2026-08-11T05:47:10.747Z"
+  },
+  {
+    "id": "hkh4eqq95n9i5zogo93ri",
+    "title": "hello",
+    "description": "bvhjckdkolk mklndhj nm cfknkjnfm csnhjknmdbvgjfhdksijodv bnkdjldjv nndjkv ",
+    "image": "https://res.cloudinary.com/kniegqlj/image/upload/v1786426765/caption_rp6a9a.jpg",
+    "category": "Advisory",
+    "severity": "High",
+    "popup_type": "Popup",
+    "cta": "None",
+    "status": "Published",
+    "target_location": "All Users",
+    "start_time": "2026-08-11T05:39:53.345Z",
+    "expiry_time": "2026-08-11T06:39:53.345Z",
+    "created_at": "2026-08-11T05:39:53.430Z",
+    "updated_at": "2026-08-11T05:39:53.430Z"
+  }
+]

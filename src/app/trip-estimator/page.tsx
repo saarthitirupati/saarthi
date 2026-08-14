@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { ArrowLeft, Car, Bike, Zap, Bus, Footprints, Flame, Sparkles, CheckCircle2, AlertTriangle, ShieldCheck, RefreshCw } from 'lucide-react';
+import { ArrowLeft, Car, Bike, Zap, Bus, Footprints, Flame, Sparkles, CheckCircle2, AlertTriangle, ShieldCheck, RefreshCw, Mountain, MapPin, Fuel } from 'lucide-react';
 import styles from './TripEstimator.module.css';
 import { PLACES, Place } from '@/data/places';
 import { useRealtimePlaces } from '@/lib/useRealtimePlaces';
@@ -121,7 +121,9 @@ export default function TripEstimatorPage() {
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '10px' }}>
               <div>
                 <span style={{ fontSize: '11px', color: '#C89B3C', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.5px' }}>
-                  {estimateResult.isTirumalaRoute ? '🏔️ Tirumala Hill Route' : '📍 Tirupati Town Route'}
+                  {estimateResult.isTirumalaRoute
+                    ? <><Mountain size={12} style={{ display: 'inline', verticalAlign: 'middle', marginRight: 3 }} /> Tirumala Hill Route</>
+                    : <><MapPin size={12} style={{ display: 'inline', verticalAlign: 'middle', marginRight: 3 }} /> Tirupati Town Route</>}
                 </span>
                 <h2 style={{ fontSize: '18px', fontWeight: 800, margin: '4px 0 0 0', color: '#FFFFFF' }}>
                   {estimateResult.originName} → {estimateResult.destinationName}
@@ -134,9 +136,9 @@ export default function TripEstimatorPage() {
             </div>
 
             <div style={{ marginTop: '14px', paddingTop: '12px', borderTop: '1px solid rgba(255,255,255,0.1)', display: 'flex', gap: '16px', fontSize: '12px', color: 'rgba(255,255,255,0.8)', flexWrap: 'wrap' }}>
-              <span>⛽ Petrol: ₹{estimateResult.fuelRates.petrol}/L</span>
-              <span>⛽ Diesel: ₹{estimateResult.fuelRates.diesel}/L</span>
-              <span>⚡ CNG: ₹{estimateResult.fuelRates.cng}/kg</span>
+              <span style={{ display: 'flex', alignItems: 'center', gap: 3 }}><Fuel size={12} /> Petrol: ₹{estimateResult.fuelRates.petrol}/L</span>
+              <span style={{ display: 'flex', alignItems: 'center', gap: 3 }}><Fuel size={12} /> Diesel: ₹{estimateResult.fuelRates.diesel}/L</span>
+              <span style={{ display: 'flex', alignItems: 'center', gap: 3 }}><Zap size={12} /> CNG: ₹{estimateResult.fuelRates.cng}/kg</span>
             </div>
           </div>
         )}
@@ -206,7 +208,7 @@ export default function TripEstimatorPage() {
 
                   {est.busDetails && (
                     <div style={{ marginTop: '12px', background: '#DCFCE7', padding: '10px 12px', borderRadius: '10px', fontSize: '12px', color: '#15803D', fontWeight: 600 }}>
-                      🚌 {est.busDetails.busNumber} • {est.busDetails.frequency}
+                      <Bus size={14} style={{ display: 'inline', verticalAlign: 'middle', marginRight: 4 }} />{est.busDetails.busNumber} • {est.busDetails.frequency}
                     </div>
                   )}
                 </div>

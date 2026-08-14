@@ -5,7 +5,7 @@ import { useParams, useRouter } from 'next/navigation';
 import { darshanRegistry } from '@/content/darshans';
 import styles from './page.module.css';
 import { DarshanDetail } from '@/types/darshan';
-import { ArrowLeft, CheckCircle2, XCircle, Activity, Info, Coins, ShieldAlert, Heart, MapPin, Sparkles, Shirt, Lightbulb } from 'lucide-react';
+import { ArrowLeft, CheckCircle2, XCircle, Activity, Info, Coins, ShieldAlert, Heart, MapPin, Sparkles, Shirt, Lightbulb, Droplet, UtensilsCrossed, Toilet, Hospital, Accessibility, Baby } from 'lucide-react';
 import { TirumalaStatus } from '@/lib/statusDb';
 
 export default function DarshanDetailsPage() {
@@ -57,15 +57,15 @@ export default function DarshanDetailsPage() {
 
   if (!data) return <div className={styles.container} style={{ padding: '40px', textAlign: 'center' }}>Loading details...</div>;
 
-  const getFacilityEmoji = (type: string) => {
+  const getFacilityIcon = (type: string) => {
     switch(type) {
-      case 'water': return '💧';
-      case 'food': return '🍱';
-      case 'restroom': return '🚻';
-      case 'medical': return '🏥';
-      case 'wheelchair': return '♿';
-      case 'infant': return '🍼';
-      default: return '📍';
+      case 'water':      return <Droplet size={16} color="#3B82F6" />;
+      case 'food':       return <UtensilsCrossed size={16} color="#F59E0B" />;
+      case 'restroom':   return <Toilet size={16} color="#6B7280" />;
+      case 'medical':    return <Hospital size={16} color="#EF4444" />;
+      case 'wheelchair': return <Accessibility size={16} color="#8B5CF6" />;
+      case 'infant':     return <Baby size={16} color="#EC4899" />;
+      default:           return <MapPin size={16} color="#9CA3AF" />;
     }
   };
 

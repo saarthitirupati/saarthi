@@ -263,4 +263,7 @@
   .grid {
     grid-template-columns: 1fr;
   }
+  .formRow {
+    grid-template-columns: 1fr;
+  }
 }

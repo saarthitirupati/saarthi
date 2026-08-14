@@ -118,7 +118,7 @@ export const STORIES: Story[] = [
     subtitle: 'The Divine Celestial Wedding Expense',
     category: 'mythology',
     readTime: '2.5 min read',
-    image: '/assets/temples/narayanavanam.png',
+    image: 'https://res.cloudinary.com/kniegqlj/image/upload/v1785912384/sri-laxmi-venkataramana_jo1cxb.jpg',
     trustBadge: 'Verified by TTD + Temple Priests',
     quickSummary: 'To marry Goddess Padmavathi at Narayanavanam, Lord Srinivasa borrowed wealth from Kubera, the treasurer of the heavens. Devotees contribute to the Hundi to help repay the interest.',
     storyBlocks: [

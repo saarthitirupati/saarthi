@@ -173,6 +173,14 @@ export default function LivePage() {
                   <h3 className={styles.alertTitle}>{alert.title}</h3>
                 </div>
                 <p className={styles.alertDesc}>{alert.description}</p>
+                {alert.image && (
+                  <img 
+                    src={alert.image} 
+                    alt={alert.title} 
+                    style={{ width: '100%', maxHeight: '180px', objectFit: 'cover', borderRadius: '10px', marginTop: '8px' }}
+                    onError={(e) => { (e.target as HTMLElement).style.display = 'none'; }}
+                  />
+                )}
               </div>
             ))
           )}

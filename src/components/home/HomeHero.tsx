@@ -4,6 +4,40 @@ import React, { useState } from 'react';
 import { Menu, Bell, MapPin, Sun, Sparkles, Ticket, Car, Gift, CloudRain, Bus, Clock, Route, Users, Zap, Check } from 'lucide-react';
 import Link from 'next/link';
 
+// ── Darshan wait time cards ───────────────────────────────────────────────────
+const DARSHAN_CARDS = [
+  { 
+    key: 'sarva',    
+    label: 'Sarva Darshan', 
+    icon: <Users size={12} />,
+    accent: '#FFEDD5',
+    iconBg: 'rgba(249, 115, 22, 0.25)',
+    iconColor: '#FB923C',
+    border: 'rgba(251, 146, 60, 0.35)',
+    bg: 'linear-gradient(180deg, rgba(255, 255, 255, 0.16) 0%, rgba(255, 255, 255, 0.08) 100%)'
+  },
+  { 
+    key: 'ssd',     
+    label: 'SSD / DD',       
+    icon: <Ticket size={12} />,
+    accent: '#E0F2FE',
+    iconBg: 'rgba(14, 165, 233, 0.25)',
+    iconColor: '#38BDF8',
+    border: 'rgba(56, 189, 248, 0.35)',
+    bg: 'linear-gradient(180deg, rgba(255, 255, 255, 0.16) 0%, rgba(255, 255, 255, 0.08) 100%)'
+  },
+  { 
+    key: 'special', 
+    label: '₹300 Special',   
+    icon: <Zap size={12} />,
+    accent: '#FEF3C7',
+    iconBg: 'rgba(234, 179, 8, 0.25)',
+    iconColor: '#FACC15',
+    border: 'rgba(250, 204, 21, 0.35)',
+    bg: 'linear-gradient(180deg, rgba(255, 255, 255, 0.16) 0%, rgba(255, 255, 255, 0.08) 100%)'
+  },
+];
+
 const METRIC_ICON: Record<string, React.ReactNode> = {
   SSD:      <Ticket size={11} opacity={0.85} />,
   Traffic:  <Car size={11} opacity={0.85} />,
@@ -88,6 +122,24 @@ export function HomeHero({ userName, locationName, weatherTemp, liveStatus, acti
     return cond || 'Pleasant';
   })();
 
+  // ── Darshan wait times from live data ─────────────────────────────────────
+  const getDarshanWait = (key: 'sarva' | 'ssd' | 'special'): string => {
+    const list = liveStatus?.darshans || [];
+    if (key === 'sarva') {
+      const d = list.find((d: any) => d.name?.toLowerCase().includes('sarva') || d.name?.toLowerCase().includes('free'));
+      return d?.waitTime || '10–12 h';
+    }
+    if (key === 'ssd') {
+      const d = list.find((d: any) => d.name?.toLowerCase().includes('divya') || d.name?.toLowerCase().includes('footpath') || d.name?.toLowerCase().includes('ssd'));
+      return d?.waitTime || '4–6 h';
+    }
+    if (key === 'special') {
+      const d = list.find((d: any) => d.name?.includes('300') || d.name?.toLowerCase().includes('special'));
+      return d?.waitTime || '3–5 h';
+    }
+    return '—';
+  };
+
   // Best time: admin value wins; scenarios provide a sensible fallback
   const adminBestTime = liveStatus?.bestTime?.trim() || '';
 
@@ -116,12 +168,12 @@ export function HomeHero({ userName, locationName, weatherTemp, liveStatus, acti
           boxShadow: '0 14px 32px rgba(15, 106, 75, 0.25)',
           currentWait: liveWaitTime,
           bestTime: adminBestTime || 'Now',
-          metrics: [
-            { label: 'SSD', value: liveSSD },
-            { label: 'Traffic', value: liveTraffic },
-            { label: 'Laddu', value: liveLaddu },
-            { label: 'Weather', value: liveWeather }
-          ],
+          metrics: [],
+          darshanWaits: {
+            sarva: getDarshanWait('sarva'),
+            ssd:   getDarshanWait('ssd'),
+            special: getDarshanWait('special'),
+          },
           recommendation: 'Leave your hotel now.',
           why: "You'll avoid today's afternoon rush.",
           benefit: 'Save 3 hours by acting now',
@@ -140,12 +192,12 @@ export function HomeHero({ userName, locationName, weatherTemp, liveStatus, acti
           boxShadow: '0 14px 32px rgba(120, 53, 15, 0.28)',
           currentWait: liveWaitTime,
           bestTime: adminBestTime || '2:00 PM',
-          metrics: [
-            { label: 'SSD', value: liveSSD },
-            { label: 'Traffic', value: liveTraffic },
-            { label: 'Laddu', value: liveLaddu },
-            { label: 'Weather', value: liveWeather }
-          ],
+          metrics: [],
+          darshanWaits: {
+            sarva: getDarshanWait('sarva'),
+            ssd:   getDarshanWait('ssd'),
+            special: getDarshanWait('special'),
+          },
           recommendation: 'Visit Kapila Theertham first. Return after lunch.',
           why: 'Queue clears significantly during afternoon slot.',
           benefit: 'Save 1 Hour wait time',
@@ -164,12 +216,12 @@ export function HomeHero({ userName, locationName, weatherTemp, liveStatus, acti
           boxShadow: '0 14px 32px rgba(30, 58, 138, 0.3)',
           currentWait: liveWaitTime,
           bestTime: adminBestTime || 'After 4 PM',
-          metrics: [
-            { label: 'SSD', value: liveSSD },
-            { label: 'Rain', value: liveWeather },
-            { label: 'Traffic', value: liveTraffic },
-            { label: 'Laddu', value: liveLaddu }
-          ],
+          metrics: [],
+          darshanWaits: {
+            sarva: getDarshanWait('sarva'),
+            ssd:   getDarshanWait('ssd'),
+            special: getDarshanWait('special'),
+          },
           recommendation: 'Avoid Alipiri Steps. Take RTC Bus.',
           why: 'Footpaths are slippery during heavy rain.',
           benefit: 'Avoid 2 Hours weather delay',
@@ -188,12 +240,12 @@ export function HomeHero({ userName, locationName, weatherTemp, liveStatus, acti
           boxShadow: '0 14px 32px rgba(88, 28, 135, 0.3)',
           currentWait: liveWaitTime,
           bestTime: adminBestTime || 'Tomorrow 6 AM',
-          metrics: [
-            { label: 'SSD', value: liveSSD },
-            { label: 'Traffic', value: liveTraffic },
-            { label: 'Laddu', value: liveLaddu },
-            { label: 'Weather', value: liveWeather }
-          ],
+          metrics: [],
+          darshanWaits: {
+            sarva: getDarshanWait('sarva'),
+            ssd:   getDarshanWait('ssd'),
+            special: getDarshanWait('special'),
+          },
           recommendation: 'Stay in Tirupati tonight. Start tomorrow morning.',
           why: 'Overnight queue wait times are at maximum capacity.',
           benefit: 'Save 12 Hours total wait',
@@ -212,12 +264,12 @@ export function HomeHero({ userName, locationName, weatherTemp, liveStatus, acti
           boxShadow: '0 14px 32px rgba(154, 52, 18, 0.3)',
           currentWait: liveWaitTime,
           bestTime: adminBestTime || 'Right Now',
-          metrics: [
-            { label: 'SSD', value: liveSSD },
-            { label: 'Traffic', value: liveTraffic },
-            { label: 'Laddu', value: liveLaddu },
-            { label: 'Weather', value: liveWeather }
-          ],
+          metrics: [],
+          darshanWaits: {
+            sarva: getDarshanWait('sarva'),
+            ssd:   getDarshanWait('ssd'),
+            special: getDarshanWait('special'),
+          },
           recommendation: 'Head to Alipiri now. Slots may finish soon.',
           why: 'SSD token holders bypass main 10+ hour queue.',
           benefit: 'Lock in short queue before quota ends',
@@ -236,12 +288,12 @@ export function HomeHero({ userName, locationName, weatherTemp, liveStatus, acti
           boxShadow: '0 14px 32px rgba(30, 27, 75, 0.3)',
           currentWait: liveWaitTime,
           bestTime: adminBestTime || '7:30 AM',
-          metrics: [
-            { label: 'SSD', value: liveSSD },
-            { label: 'Weather', value: liveWeather },
-            { label: 'Traffic', value: liveTraffic },
-            { label: 'Laddu', value: liveLaddu }
-          ],
+          metrics: [],
+          darshanWaits: {
+            sarva: getDarshanWait('sarva'),
+            ssd:   getDarshanWait('ssd'),
+            special: getDarshanWait('special'),
+          },
           recommendation: 'Rest well. Leave hotel at 6:30 AM.',
           why: 'Early morning queue entry is 80% faster.',
           benefit: 'Save 4 hours by sleeping in Tirupati',
@@ -266,6 +318,7 @@ export function HomeHero({ userName, locationName, weatherTemp, liveStatus, acti
             { label: 'Traffic', value: 'Diverted' },
             { label: 'Delay', value: '+45 mins' }
           ],
+          darshanWaits: null,
           recommendation: 'Use RTC Bus. Alternative route ready.',
           why: 'Maintenance work active on primary Alipiri entrance.',
           benefit: 'Bypass Alipiri closure without hassle',
@@ -285,12 +338,12 @@ export function HomeHero({ userName, locationName, weatherTemp, liveStatus, acti
           boxShadow: '0 14px 32px rgba(127, 29, 29, 0.28)',
           currentWait: liveWaitTime,
           bestTime: adminBestTime || '5:15 PM',
-          metrics: [
-            { label: 'SSD', value: 'Closed' },
-            { label: 'Traffic', value: 'Heavy' },
-            { label: 'Laddu', value: liveLaddu },
-            { label: 'Weather', value: liveWeather }
-          ],
+          metrics: [],
+          darshanWaits: {
+            sarva: getDarshanWait('sarva'),
+            ssd:   getDarshanWait('ssd'),
+            special: getDarshanWait('special'),
+          },
           recommendation: "Don't join the queue now. Explore Tirupati.",
           why: 'Joining now puts you in the peak 11-hour queue bottleneck.',
           benefit: 'You save 8h 45m',
@@ -500,7 +553,7 @@ export function HomeHero({ userName, locationName, weatherTemp, liveStatus, acti
         <div style={{ height: '1px', backgroundColor: 'rgba(255, 255, 255, 0.18)', marginBottom: '14px' }} />
 
         {/* 2️⃣ 3-COLUMN HERO STAT (CURRENT WAIT vs BEST TIME vs YOU SAVE) */}
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '6px', marginBottom: '14px' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '6px', marginBottom: '14px' }}>
           <div style={{ backgroundColor: 'rgba(0, 0, 0, 0.18)', borderRadius: '12px', padding: '8px 6px', textAlign: 'center' }}>
             <div style={{ fontSize: '9.5px', fontWeight: 800, opacity: 0.85, textTransform: 'uppercase', letterSpacing: '0.3px' }}>
               Current Wait
@@ -518,45 +571,108 @@ export function HomeHero({ userName, locationName, weatherTemp, liveStatus, acti
               {scenario.bestTime}
             </div>
           </div>
-
-          <div style={{ backgroundColor: '#FEF3C7', borderRadius: '12px', padding: '8px 6px', textAlign: 'center', color: '#78350F' }}>
-            <div style={{ fontSize: '9.5px', fontWeight: 900, textTransform: 'uppercase', letterSpacing: '0.3px', color: '#B45309' }}>
-              YOU SAVE
-            </div>
-            <div style={{ fontSize: '16px', fontWeight: 900, marginTop: '2px', color: '#92400E' }}>
-              {scenario.benefit.replace(/[^0-9h m]/g, '').trim() || '4h 30m'}
-            </div>
-          </div>
         </div>
 
         <div style={{ height: '1px', backgroundColor: 'rgba(255, 255, 255, 0.18)', marginBottom: '14px' }} />
 
-        {/* 3️⃣ OPERATIONAL METRIC GRID */}
-        <div style={{
-          display: 'grid',
-          gridTemplateColumns: '1fr 1fr',
-          gap: '8px',
-          marginBottom: '16px',
-          fontSize: '11px',
-          fontWeight: 600
-        }}>
-          {scenario.metrics.filter((m: any) => m.label !== 'Traffic').map((m: any, idx: number) => (
-            <div key={idx} style={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-              backgroundColor: 'rgba(255, 255, 255, 0.12)',
-              borderRadius: '10px',
-              padding: '7px 10px'
-            }}>
-              <span style={{ opacity: 0.9, display: 'flex', alignItems: 'center', gap: '5px' }}>
-                {METRIC_ICON[m.label] ?? null}
-                {m.label}
-              </span>
-              <span style={{ fontWeight: 800, color: '#FFF' }}>{m.value}</span>
-            </div>
-          ))}
-        </div>
+
+        {/* 3️⃣ DARSHAN WAIT TIME CARDS (CREATIVE HIGH-CONTRAST STYLE) */}
+        {scenario.darshanWaits ? (
+          <div style={{
+            display: 'grid',
+            gridTemplateColumns: '1fr 1fr 1fr',
+            gap: '8px',
+            marginBottom: '14px',
+          }}>
+            {DARSHAN_CARDS.map(card => {
+              const waitValue = scenario.darshanWaits[card.key as keyof typeof scenario.darshanWaits];
+              return (
+                <div 
+                  key={card.key} 
+                  style={{
+                    background: card.bg,
+                    border: `1px solid ${card.border}`,
+                    backdropFilter: 'blur(10px)',
+                    borderRadius: '12px',
+                    padding: '9px 6px',
+                    textAlign: 'center',
+                    boxShadow: '0 4px 14px rgba(0, 0, 0, 0.12)',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: '4px',
+                  }}
+                >
+                  <div style={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '4px',
+                    backgroundColor: 'rgba(0, 0, 0, 0.22)',
+                    padding: '3px 8px',
+                    borderRadius: '20px',
+                    border: `1px solid ${card.border}`,
+                  }}>
+                    <span style={{ 
+                      color: card.iconColor, 
+                      display: 'flex', 
+                      alignItems: 'center' 
+                    }}>
+                      {card.icon}
+                    </span>
+                    <span style={{ 
+                      fontSize: '9.5px', 
+                      fontWeight: 700, 
+                      color: card.accent,
+                      letterSpacing: '0.2px',
+                      whiteSpace: 'nowrap'
+                    }}>
+                      {card.label}
+                    </span>
+                  </div>
+
+                  <div style={{ 
+                    fontWeight: 900, 
+                    color: '#FFFFFF', 
+                    fontSize: '13.5px', 
+                    letterSpacing: '-0.2px',
+                    lineHeight: 1.2,
+                    textShadow: '0 1px 3px rgba(0, 0, 0, 0.4)'
+                  }}>
+                    {waitValue}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        ) : (
+          /* Alert scenario: keep original metric chips */
+          <div style={{
+            display: 'grid',
+            gridTemplateColumns: '1fr 1fr',
+            gap: '6px',
+            marginBottom: '14px',
+            fontSize: '11px',
+            fontWeight: 600
+          }}>
+            {scenario.metrics.map((m: any, idx: number) => (
+              <div key={idx} style={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                backgroundColor: 'rgba(255, 255, 255, 0.12)',
+                borderRadius: '10px',
+                padding: '7px 10px'
+              }}>
+                <span style={{ opacity: 0.9, display: 'flex', alignItems: 'center', gap: '5px' }}>
+                  {METRIC_ICON[m.label] ?? null}
+                  {m.label}
+                </span>
+                <span style={{ fontWeight: 800, color: '#FFF' }}>{m.value}</span>
+              </div>
+            ))}
+          </div>
+        )}
 
         {/* 4️⃣ & 5️⃣ ⭐ SAARTHI RECOMMENDS & WHY RATIONALE */}
         {(() => {

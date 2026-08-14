@@ -81,29 +81,14 @@ export default function AdminAnalyticsPage() {
   }, []);
 
   const summary = data || {
-    totalVisitors: { today: 1850, last7Days: 12400, last30Days: 48900, totalAllTime: 124500 },
-    totalPageviews: 18450,
-    liveActiveNow: 14,
-    avgPagesPerSession: '2.8 pages',
-    mostViewedPages: [
-      { path: '/', pageTitle: 'Home (Quick to Reach & Decision Verdict)', totalViews: 4250, uniqueVisitors: 1820, sharePercentage: 42 },
-      { path: '/explore', pageTitle: 'Explore Places (Nearby Engine)', totalViews: 2840, uniqueVisitors: 1350, sharePercentage: 28 },
-      { path: '/story/seven-hills', pageTitle: 'Story: Why is Tirumala called Seven Hills?', totalViews: 1210, uniqueVisitors: 890, sharePercentage: 12 },
-      { path: '/place/govindaraja', pageTitle: 'Place: Sri Govindaraja Swamy Temple', totalViews: 980, uniqueVisitors: 640, sharePercentage: 10 },
-      { path: '/trip-estimator', pageTitle: 'Saarthi Trip & Transport Estimator', totalViews: 820, uniqueVisitors: 510, sharePercentage: 8 }
-    ],
-    topVisitedPlaces: [
-      { placeId: 'govindaraja', name: 'Sri Govindaraja Swamy Temple', category: 'Core Temple', views: 4250 },
-      { placeId: 'kapila-theertham', name: 'Kapila Theertham', category: 'Nature / Waterfall', views: 2980 },
-      { placeId: 'venkateswara', name: 'Sri Venkateswara Swamy Temple', category: 'Tirumala Spot', views: 2890 },
-      { placeId: 'regional-science-centre', name: 'Regional Science Centre', category: 'Parks & Leisure', views: 1840 }
-    ],
-    topStoriesRead: [
-      { storyId: 'seven-hills', title: 'Why is Tirumala Called the Seven Hills?', category: 'Mythology', reads: 1420 },
-      { storyId: 'offering-hair', title: 'Why Do Devotees Offer Their Hair at Tirumala?', category: 'Tradition', reads: 1180 },
-      { storyId: 'tirumala-laddu', title: 'The Secret Behind Tirumala Laddu Prasadam', category: 'Tradition', reads: 950 }
-    ],
-    deviceBreakdown: { mobile: 85, desktop: 12, tablet: 3 }
+    totalVisitors: { today: 0, last7Days: 0, last30Days: 0, totalAllTime: 0 },
+    totalPageviews: 0,
+    liveActiveNow: 0,
+    avgPagesPerSession: '0.0 pages',
+    mostViewedPages: [],
+    topVisitedPlaces: [],
+    topStoriesRead: [],
+    deviceBreakdown: { mobile: 0, desktop: 0, tablet: 0 }
   };
 
   return (

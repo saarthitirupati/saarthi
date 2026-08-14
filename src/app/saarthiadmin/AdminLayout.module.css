@@ -165,6 +165,13 @@
   padding: 32px;
 }
 
+.headerActions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-shrink: 0;
+}
+
 /* Mobile & Tablet Responsive Media Queries */
 @media (max-width: 768px) {
   .menuBtn {
@@ -178,8 +185,10 @@
     top: 0;
     bottom: 0;
     left: 0;
+    width: 280px;
     transform: translateX(-100%);
-    box-shadow: 10px 0 25px rgba(0, 0, 0, 0.15);
+    box-shadow: 10px 0 30px rgba(0, 0, 0, 0.18);
+    z-index: 200;
   }
 
   .sidebarOpen {
@@ -192,11 +201,18 @@
     inset: 0;
     background-color: rgba(0, 0, 0, 0.5);
     backdrop-filter: blur(4px);
-    z-index: 90;
+    z-index: 190;
   }
 
   .topHeader {
-    padding: 0 16px;
+    padding: 0 12px;
+    gap: 8px;
+  }
+
+  .headerActions a,
+  .headerActions button {
+    font-size: 11px !important;
+    padding: 5px 8px !important;
   }
 
   .pageContent {
@@ -206,15 +222,24 @@
 
 @media (max-width: 480px) {
   .topHeader {
-    height: 56px;
+    height: 52px;
   }
 
   .headerTitle h2 {
-    font-size: 14px;
+    font-size: 13px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 160px;
+  }
+
+  /* Hide "View Public App" text link on very small screens */
+  .headerActions a {
+    display: none !important;
   }
 
   .pageContent {
-    padding: 12px;
+    padding: 10px;
   }
 }
 

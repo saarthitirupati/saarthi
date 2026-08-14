@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import { useParams, useRouter, useSearchParams } from 'next/navigation';
-import { Compass, Sparkles, MapPin, ArrowRight } from 'lucide-react';
+import { Compass, Sparkles, MapPin, ArrowRight, HandHeart } from 'lucide-react';
 
 export default function QRScanTransitionPage() {
   const params = useParams();
@@ -150,15 +150,9 @@ export default function QRScanTransitionPage() {
           <span>Saarthi Travel Companion</span>
         </div>
 
-        <h1 style={{
-          fontSize: '22px',
-          fontWeight: 800,
-          color: '#FFFFFF',
-          marginBottom: '8px',
-          lineHeight: '1.3'
-        }}>
-          🙏 Namaste & Welcome!
-        </h1>
+          <h1 style={{ fontSize: '22px', fontWeight: 800, color: '#FFFFFF', marginBottom: '8px', lineHeight: '1.3', display: 'flex', alignItems: 'center', gap: '8px', justifyContent: 'center' }}>
+            <HandHeart size={22} color="#ff9d5c" /> Namaste &amp; Welcome!
+          </h1>
 
         <p style={{
           fontSize: '13px',

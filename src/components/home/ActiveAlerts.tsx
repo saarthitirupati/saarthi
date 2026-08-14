@@ -54,7 +54,10 @@ export function ActiveAlerts({ activePopupAlert, dismissAlert }: any) {
             </div>
             <span style={{ fontSize: '12px', fontWeight: 800, color: '#EF4444', letterSpacing: '1.5px', textTransform: 'uppercase', marginBottom: '12px' }}>CRITICAL EMERGENCY ALERT</span>
             <h2 style={{ fontSize: '22px', fontWeight: 800, margin: '0 0 12px 0', fontFamily: 'var(--font-hero), Georgia, serif', lineHeight: 1.3 }}>{activePopupAlert.title}</h2>
-            <p style={{ fontSize: '14px', color: '#94A3B8', margin: '0 0 32px 0', lineHeight: 1.6, maxWidth: '400px' }}>{activePopupAlert.description}</p>
+            <p style={{ fontSize: '14px', color: '#94A3B8', margin: '0 0 20px 0', lineHeight: 1.6, maxWidth: '400px' }}>{activePopupAlert.description}</p>
+            {activePopupAlert.image && (
+              <img src={activePopupAlert.image} alt={activePopupAlert.title} style={{ width: '100%', maxWidth: '340px', height: '160px', objectFit: 'cover', borderRadius: '12px', marginBottom: '24px' }} onError={(e) => { (e.target as HTMLElement).style.display = 'none'; }} />
+            )}
             <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', width: '100%', maxWidth: '320px' }}>
               {activePopupAlert.cta !== 'None' && (
                 <button
@@ -98,7 +101,10 @@ export function ActiveAlerts({ activePopupAlert, dismissAlert }: any) {
               <span style={{ fontSize: '11px', fontWeight: 800, color: activePopupAlert.category === 'High Priority' ? '#EA580C' : '#D97706', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Live Pilgrim Alert</span>
             </div>
             <h3 style={{ fontSize: '16px', fontWeight: 800, color: '#0F172A', margin: '0 0 6px 0', fontFamily: 'var(--font-hero), Georgia, serif' }}>{activePopupAlert.title}</h3>
-            <p style={{ fontSize: '13px', color: '#4B5563', margin: '0 0 20px 0', lineHeight: 1.45 }}>{activePopupAlert.description}</p>
+            <p style={{ fontSize: '13px', color: '#4B5563', margin: '0 0 12px 0', lineHeight: 1.45 }}>{activePopupAlert.description}</p>
+            {activePopupAlert.image && (
+              <img src={activePopupAlert.image} alt={activePopupAlert.title} style={{ width: '100%', height: '140px', objectFit: 'cover', borderRadius: '10px', marginBottom: '16px' }} onError={(e) => { (e.target as HTMLElement).style.display = 'none'; }} />
+            )}
             <div style={{ display: 'flex', gap: '10px' }}>
               {activePopupAlert.cta !== 'None' && (
                 <button

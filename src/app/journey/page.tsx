@@ -4,7 +4,7 @@ import React from 'react';
 import PersonalStatistics from '@/components/journey/PersonalStatistics';
 import ExplorerPassport from '@/components/journey/ExplorerPassport';
 import JourneyTimeline from '@/components/journey/JourneyTimeline';
-import { ArrowLeft, MapPin, Trophy, Target } from 'lucide-react';
+import { ArrowLeft, MapPin, Trophy, Target, Lock } from 'lucide-react';
 import Link from 'next/link';
 
 export default function JourneyPage() {
@@ -49,7 +49,7 @@ export default function JourneyPage() {
           <div className="grid grid-cols-3 gap-3">
             {[1,2,3].map((i) => (
               <div key={i} className="bg-white aspect-square rounded-2xl border border-gray-200 flex flex-col items-center justify-center p-2 text-center opacity-50">
-                <span className="text-3xl mb-1">🔒</span>
+                <Lock className="text-gray-400" size={22} />
                 <span className="text-[10px] font-semibold text-gray-500">Locked</span>
               </div>
             ))}

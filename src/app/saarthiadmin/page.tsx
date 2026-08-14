@@ -1,8 +1,9 @@
 'use client';
 
 import { useState, useEffect, useMemo } from 'react';
+import Link from 'next/link';
 import styles from './Dashboard.module.css';
-import { ShieldCheck, MapPin, AlertCircle, Activity, Database, CheckCircle2, AlertTriangle, RefreshCw } from 'lucide-react';
+import { ShieldCheck, MapPin, AlertCircle, Activity, Database, CheckCircle2, AlertTriangle, RefreshCw, Ticket, TrendingUp, ArrowRight } from 'lucide-react';
 import { PLACES } from '@/data/places';
 import { Place } from '@/types/place';
 import { safeFetchJson } from '@/lib/safeFetch';
@@ -151,6 +152,66 @@ export default function AdminDashboard() {
         </div>
         <div className={styles.healthLabel} style={{ color: stats.systemHealth >= 90 ? "#15803d" : "#b45309" }}>
           {stats.systemHealth >= 90 ? 'System Health Normal' : 'System Needs Attention'}
+        </div>
+      </div>
+
+      {/* Quick Control Center Grid */}
+      <div style={{ marginBottom: '24px' }}>
+        <h3 style={{ fontSize: '14px', fontWeight: 800, color: '#475569', textTransform: 'uppercase', letterSpacing: '0.5px', marginBottom: '12px' }}>
+          Quick Action Controls
+        </h3>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '12px' }}>
+          <Link href="/saarthiadmin/live" style={{ textDecoration: 'none' }}>
+            <div style={{ backgroundColor: '#FFFFFF', border: '1.5px solid #E2E8F0', borderRadius: '14px', padding: '16px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', boxShadow: '0 2px 6px rgba(0,0,0,0.02)' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                <Activity size={20} color="#059669" />
+                <div>
+                  <span style={{ fontSize: '14px', fontWeight: 800, color: '#0F172A', display: 'block' }}>Live Operations</span>
+                  <span style={{ fontSize: '11px', color: '#64748B', fontWeight: 600 }}>Queue wait &amp; weather</span>
+                </div>
+              </div>
+              <ArrowRight size={16} color="#94A3B8" />
+            </div>
+          </Link>
+
+          <Link href="/saarthiadmin/ssd-tokens" style={{ textDecoration: 'none' }}>
+            <div style={{ backgroundColor: '#FFFFFF', border: '1.5px solid #E2E8F0', borderRadius: '14px', padding: '16px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', boxShadow: '0 2px 6px rgba(0,0,0,0.02)' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                <Ticket size={20} color="#7C3AED" />
+                <div>
+                  <span style={{ fontSize: '14px', fontWeight: 800, color: '#0F172A', display: 'block' }}>SSD Tokens</span>
+                  <span style={{ fontSize: '11px', color: '#64748B', fontWeight: 600 }}>Token quota &amp; counters</span>
+                </div>
+              </div>
+              <ArrowRight size={16} color="#94A3B8" />
+            </div>
+          </Link>
+
+          <Link href="/saarthiadmin/live-alerts" style={{ textDecoration: 'none' }}>
+            <div style={{ backgroundColor: '#FFFFFF', border: '1.5px solid #E2E8F0', borderRadius: '14px', padding: '16px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', boxShadow: '0 2px 6px rgba(0,0,0,0.02)' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                <AlertTriangle size={20} color="#EA580C" />
+                <div>
+                  <span style={{ fontSize: '14px', fontWeight: 800, color: '#0F172A', display: 'block' }}>Live Advisories</span>
+                  <span style={{ fontSize: '11px', color: '#64748B', fontWeight: 600 }}>Pilgrim alerts &amp; popups</span>
+                </div>
+              </div>
+              <ArrowRight size={16} color="#94A3B8" />
+            </div>
+          </Link>
+
+          <Link href="/saarthiadmin/growth" style={{ textDecoration: 'none' }}>
+            <div style={{ backgroundColor: '#FFFFFF', border: '1.5px solid #E2E8F0', borderRadius: '14px', padding: '16px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', boxShadow: '0 2px 6px rgba(0,0,0,0.02)' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                <TrendingUp size={20} color="#2563EB" />
+                <div>
+                  <span style={{ fontSize: '14px', fontWeight: 800, color: '#0F172A', display: 'block' }}>Growth Hub</span>
+                  <span style={{ fontSize: '11px', color: '#64748B', fontWeight: 600 }}>QR codes &amp; campaigns</span>
+                </div>
+              </div>
+              <ArrowRight size={16} color="#94A3B8" />
+            </div>
+          </Link>
         </div>
       </div>
 

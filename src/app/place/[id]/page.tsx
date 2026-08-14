@@ -1,13 +1,12 @@
 'use client';
 
 import { PLACES, getPlaceGuideData, Place } from '@/data/places';
-import { ArrowLeft, Heart, Share2, Star, MapPin, Clock, Compass, Coins, PlayCircle, Camera, Check, Copy, Volume2, VolumeX, ShieldAlert, X, ChevronLeft, ChevronRight, Shirt, Footprints, Users, Ban, Navigation, Info, CheckCircle2, ShieldCheck, Sparkles, Car, Lightbulb, AlertTriangle, Droplets, Utensils, Coffee, Map, Lock, ThumbsUp, ThumbsDown } from 'lucide-react';
+import { ArrowLeft, Heart, Share2, Star, MapPin, Clock, Compass, PlayCircle, Camera, Check, Copy, Volume2, VolumeX, ShieldAlert, X, ChevronLeft, ChevronRight, Shirt, Footprints, Users, Ban, Navigation, Info, CheckCircle2, ShieldCheck, Sparkles, Car, Lightbulb, AlertTriangle, Droplets, Utensils, Coffee, Map, Lock, ThumbsUp, ThumbsDown } from 'lucide-react';
 import { use, useState, useEffect } from 'react';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
 import styles from './PlaceDetails.module.css';
 import { useTrip } from '@/components/TripContext';
-import MantraPlayer from '@/components/MantraPlayer/MantraPlayer';
 import { useSpeechSynthesis } from '@/utils/useSpeechSynthesis';
 import { useRealtimePlaces } from '@/lib/useRealtimePlaces';
 import { calculateDrivingDistance, getOsrmRoadRoute } from '@/utils/location';
@@ -140,13 +139,28 @@ export default function PlaceDetails({ params }: { params: Promise<{ id: string 
     return () => clearInterval(timer);
   }, [place]);
 
-  const [copied, setCopied] = useState(false);
   const [copiedLink, setCopiedLink] = useState(false);
   const [isRoundTrip, setIsRoundTrip] = useState(false);
   const [vehicleType, setVehicleType] = useState<'car' | 'bus' | 'bike' | 'cab' | 'suv'>('car');
   const [passengers, setPassengers] = useState<number>(1);
   const [isBreakdownOpen, setIsBreakdownOpen] = useState(false);
-  const [fuelRates, setFuelRates] = useState<{ petrol: number; diesel: number }>({ petrol: 118.00, diesel: 105.00 });
+  const [fuelRates, setFuelRates] = useState<{ petrol: number; diesel: number }>({ petrol: 108.50, diesel: 96.20 });
+
+  useEffect(() => {
+    fetch('/api/admin/fuel')
+      .then(res => res.ok ? res.json() : null)
+      .then(json => {
+        if (!json) return;
+        const data = json.data || json;
+        if (data.petrol) {
+          setFuelRates({
+            petrol: Number(data.petrol) || 108.50,
+            diesel: Number(data.diesel) || 96.20
+          });
+        }
+      })
+      .catch(() => {});
+  }, []);
   const [isLegendExpanded, setIsLegendExpanded] = useState(false);
   const [isTuesday, setIsTuesday] = useState(false);
 
@@ -312,7 +326,7 @@ export default function PlaceDetails({ params }: { params: Promise<{ id: string 
 
     const safePassengers = Number(passengers) || 1;
     const safeEntryFeeNum = Number(place.entryFeeNum) || 0;
-    const safePetrolRate = Number(fuelRates?.petrol) || 118.00;
+    const safePetrolRate = Number(fuelRates?.petrol) || 108.50;
 
     let fare = 0;
     let fuel = 0;
@@ -392,14 +406,6 @@ export default function PlaceDetails({ params }: { params: Promise<{ id: string 
       navigator.clipboard.writeText(window.location.href);
       setCopiedLink(true);
       setTimeout(() => setCopiedLink(false), 2000);
-    }
-  };
-
-  const handleCopyMantra = () => {
-    if (place.spiritualInfo) {
-      navigator.clipboard.writeText(place.spiritualInfo.mantra);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
     }
   };
 
@@ -647,32 +653,6 @@ export default function PlaceDetails({ params }: { params: Promise<{ id: string 
                 return <p className={styles.plainReasonText}>{guide.whyVisit}</p>;
               })()}
             </div>
-            
-            {isSpiritualPlace && place.spiritualInfo && (
-              <div className={styles.spiritualDetails}>
-                <div className={styles.deityDetail}>
-                  <span className={styles.detailLabel}>Presiding Deity</span>
-                  <span className={styles.detailValue}>{place.spiritualInfo.god}</span>
-                </div>
-                {place.spiritualInfo.mantra && (
-                  <div className={styles.mantraBox}>
-                    <span className={styles.detailLabel}>Sacred Mantra</span>
-                    <div className={styles.mantraContent}>
-                      <span className={styles.mantraText}>&quot;{place.spiritualInfo.mantra}&quot;</span>
-                      <button onClick={handleCopyMantra} className={styles.copyBtn} title="Copy Mantra">
-                        {copied ? <Check size={16} /> : <Copy size={16} />}
-                      </button>
-                    </div>
-                  </div>
-                )}
-                {place.spiritualInfo.mantra && (
-                  <MantraPlayer 
-                    mantra={place.spiritualInfo.mantra} 
-                    deity={place.spiritualInfo.god} 
-                  />
-                )}
-              </div>
-            )}
           </div>
         </section>
 
@@ -730,10 +710,6 @@ export default function PlaceDetails({ params }: { params: Promise<{ id: string 
                   <Clock size={14} />
                   <span>{drivingDistance !== null ? `${Math.round(drivingDistance * 2.2)} mins` : `${Math.round(guide.distanceKms * 2)} mins`}</span>
                 </div>
-                <div className={styles.modeStatMini}>
-                  <Coins size={14} />
-                  <span>Est. Fuel: ₹{Math.round(drivingDistance !== null ? (drivingDistance / (isTirumalaSpot ? 8 : 14)) * fuelRates.petrol : (guide.distanceKms / 14) * fuelRates.petrol)}</span>
-                </div>
               </div>
 
               <p className={styles.modeCardDescription}>
@@ -779,10 +755,6 @@ export default function PlaceDetails({ params }: { params: Promise<{ id: string 
                   <Clock size={14} />
                   <span>{drivingDistance !== null ? `${Math.round(drivingDistance * 2.5)} mins` : `${Math.round(guide.distanceKms * 2.5)} mins`}</span>
                 </div>
-                <div className={styles.modeStatMini}>
-                  <Coins size={14} />
-                  <span>Ticket: ₹{isTirumalaSpot ? 110 : Math.max(30, Math.round((drivingDistance || guide.distanceKms) * 1.8))}</span>
-                </div>
               </div>
 
               <p className={styles.modeCardDescription}>
@@ -821,10 +793,6 @@ export default function PlaceDetails({ params }: { params: Promise<{ id: string 
                 <div className={styles.modeStatMini}>
                   <Clock size={14} />
                   <span>{drivingDistance !== null ? `${Math.round(drivingDistance * 2.0)} mins` : `${Math.round(guide.distanceKms * 1.8)} mins`}</span>
-                </div>
-                <div className={styles.modeStatMini}>
-                  <Coins size={14} />
-                  <span>Est. Fuel: ₹{Math.round(drivingDistance !== null ? (drivingDistance / (isTirumalaSpot ? 25 : 40)) * fuelRates.petrol : (guide.distanceKms / 40) * fuelRates.petrol)}</span>
                 </div>
               </div>
 

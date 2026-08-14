@@ -1,6 +1,6 @@
 'use client';
 import React, { useState, useEffect } from 'react';
-import { CheckCircle, XCircle } from 'lucide-react';
+import { CheckCircle, XCircle, PartyPopper } from 'lucide-react';
 
 export default function DailyQuiz() {
   const [quizData, setQuizData] = useState<any>(null);
@@ -85,7 +85,7 @@ export default function DailyQuiz() {
 
         {selectedAnswer && (
           <div className={`mt-6 p-4 rounded-2xl text-center font-bold text-sm ${isCorrect ? 'bg-emerald-100 text-emerald-800' : 'bg-red-100 text-red-800'}`}>
-            {isCorrect ? `🎉 Awesome! That's correct!` : 'Not quite right. Try again tomorrow!'}
+            {isCorrect ? <><PartyPopper size={14} style={{ display: 'inline', verticalAlign: 'middle', marginRight: 4 }} /> Awesome! That&apos;s correct!</> : "Not quite right. Try again tomorrow!"}
           </div>
         )}
       </div>

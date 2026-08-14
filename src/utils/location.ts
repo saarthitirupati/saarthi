@@ -117,7 +117,7 @@ export async function getOsrmRoadRoute(
         return { distanceKm, durationMins, source: 'osrm' };
       }
     }
-  } catch (e) {
+  } catch (_e) {
     // Fallback if offline or timeout
   }
 

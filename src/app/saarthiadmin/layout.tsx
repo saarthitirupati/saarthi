@@ -19,6 +19,22 @@ export default function AdminLayout({
     setIsMobileOpen(false);
   }, [pathname]);
 
+  const getPageTitle = (path: string) => {
+    if (path === '/saarthiadmin') return 'Operational Dashboard';
+    if (path.startsWith('/saarthiadmin/growth')) return 'Growth Hub & QR Campaigns';
+    if (path.startsWith('/saarthiadmin/places')) return 'Places Directory & Editor';
+    if (path.startsWith('/saarthiadmin/ssd-tokens')) return 'SSD Token Release Control';
+    if (path.startsWith('/saarthiadmin/live-alerts')) return 'Live Pilgrim Advisories';
+    if (path.startsWith('/saarthiadmin/live')) return 'Live Status Operations';
+    if (path.startsWith('/saarthiadmin/decision-engine')) return 'Decision Engine Simulator';
+    if (path.startsWith('/saarthiadmin/fuel')) return 'Fuel & Transport Tariffs';
+    if (path.startsWith('/saarthiadmin/festivals')) return 'Festivals & Sacred Calendar';
+    if (path.startsWith('/saarthiadmin/feedback')) return 'Pilgrim Feedback & Reports';
+    if (path.startsWith('/saarthiadmin/analytics')) return 'Telemetry & Analytics';
+    if (path.startsWith('/saarthiadmin/settings')) return 'System & Database Settings';
+    return 'Admin Control Panel';
+  };
+
   const isActive = (path: string) => {
     if (path === '/saarthiadmin') return pathname === '/saarthiadmin';
     return pathname.startsWith(path);
@@ -29,6 +45,15 @@ export default function AdminLayout({
   if (isLoginPage) {
     return <>{children}</>;
   }
+
+  const handleLogout = async () => {
+    try {
+      await fetch('/api/admin/login', { method: 'DELETE' });
+      window.location.href = '/saarthiadmin/login';
+    } catch (e) {
+      console.error(e);
+    }
+  };
 
   return (
     <div className={styles.adminContainer}>
@@ -158,12 +183,45 @@ export default function AdminLayout({
               <Menu size={22} />
             </button>
             <div className={styles.headerTitle}>
-              <h2>Admin Portal</h2>
+              <h2 style={{ fontSize: '18px', fontWeight: 800, color: '#0F172A', margin: 0 }}>{getPageTitle(pathname)}</h2>
             </div>
           </div>
 
           <div className={styles.headerActions}>
-            <div className={styles.userAvatar}>F</div>
+            <Link 
+              href="/" 
+              target="_blank"
+              style={{
+                fontSize: '12px',
+                fontWeight: 700,
+                color: '#0E6B72',
+                backgroundColor: '#F0FDFA',
+                border: '1px solid #CCFBF1',
+                padding: '6px 12px',
+                borderRadius: '8px',
+                textDecoration: 'none',
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '4px'
+              }}
+            >
+              View Public App ↗
+            </Link>
+            <button
+              onClick={handleLogout}
+              style={{
+                fontSize: '12px',
+                fontWeight: 700,
+                color: '#DC2626',
+                backgroundColor: '#FEF2F2',
+                border: '1px solid #FECACA',
+                padding: '6px 12px',
+                borderRadius: '8px',
+                cursor: 'pointer'
+              }}
+            >
+              Logout
+            </button>
           </div>
         </header>
         <div className={styles.pageContent}>

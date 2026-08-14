@@ -12,6 +12,7 @@ interface LiveAlert {
   id: string;
   title: string;
   description: string;
+  image?: string;
   category: 'Emergency' | 'High Priority' | 'Advisory' | 'Information';
   severity: 'Low' | 'Medium' | 'High' | 'Critical';
   popup_type: 'Banner' | 'Popup' | 'Fullscreen';
@@ -37,6 +38,7 @@ export default function AdminAlertsPage() {
   // Form states
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
+  const [imageUrl, setImageUrl] = useState('');
   const [category, setCategory] = useState<'Emergency' | 'High Priority' | 'Advisory' | 'Information'>('Advisory');
   const [severity, setSeverity] = useState<'Low' | 'Medium' | 'High' | 'Critical'>('Medium');
   const [popupType, setPopupType] = useState<'Banner' | 'Popup' | 'Fullscreen'>('Banner');
@@ -64,7 +66,7 @@ export default function AdminAlertsPage() {
   }, [isConnected]); // Refetch if connection establishes/drops as a safety measure
 
   const handleCreateAlert = async (e: React.FormEvent, isDraft = false) => {
-    e.preventDefault();
+    if (e && e.preventDefault) e.preventDefault();
     if (!title.trim() || !description.trim()) {
       alert('Please fill out Title and Description.');
       return;
@@ -76,6 +78,7 @@ export default function AdminAlertsPage() {
     const body = {
       title,
       description,
+      image: imageUrl.trim(),
       category,
       severity,
       popup_type: popupType,
@@ -98,6 +101,7 @@ export default function AdminAlertsPage() {
         // Reset form
         setTitle('');
         setDescription('');
+        setImageUrl('');
         setCategory('Advisory');
         setSeverity('Medium');
         setPopupType('Banner');
@@ -189,6 +193,35 @@ export default function AdminAlertsPage() {
                     onChange={(e) => setDescription(e.target.value)}
                     required
                   />
+                </div>
+
+                <div className={styles.formGroup}>
+                  <label className={styles.label}>Alert Image (Optional Cloudinary / Photo Link)</label>
+                  <input 
+                    type="url" 
+                    className={styles.input} 
+                    placeholder="e.g. https://res.cloudinary.com/kniegqlj/image/upload/..." 
+                    value={imageUrl} 
+                    onChange={(e) => setImageUrl(e.target.value)}
+                  />
+                  {imageUrl && (
+                    <div style={{ marginTop: '8px', display: 'flex', alignItems: 'center', gap: '10px' }}>
+                      <img 
+                        src={imageUrl} 
+                        alt="Alert Preview" 
+                        style={{ width: '70px', height: '45px', objectFit: 'cover', borderRadius: '8px', border: '1px solid #CBD5E1' }}
+                        onError={(e) => { (e.target as HTMLElement).style.display = 'none'; }}
+                      />
+                      <span style={{ fontSize: '11.5px', color: '#16A34A', fontWeight: 700 }}>✓ Image attached</span>
+                      <button 
+                        type="button" 
+                        onClick={() => setImageUrl('')} 
+                        style={{ background: 'none', border: 'none', color: '#DC2626', fontSize: '11.5px', cursor: 'pointer', fontWeight: 700 }}
+                      >
+                        Remove
+                      </button>
+                    </div>
+                  )}
                 </div>
 
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
@@ -337,8 +370,16 @@ export default function AdminAlertsPage() {
               ) : (
                 <div className={styles.alertList}>
                   {alerts.map((alert) => (
-                    <div key={alert.id} className={styles.alertItem}>
-                      <div className={styles.alertInfo}>
+                    <div key={alert.id} className={styles.alertItem} style={{ display: 'flex', alignItems: 'flex-start', gap: '12px' }}>
+                      {alert.image && (
+                        <img 
+                          src={alert.image} 
+                          alt={alert.title} 
+                          style={{ width: '64px', height: '52px', objectFit: 'cover', borderRadius: '8px', border: '1px solid #CBD5E1', flexShrink: 0, marginTop: '2px' }} 
+                          onError={(e) => { (e.target as HTMLElement).style.display = 'none'; }}
+                        />
+                      )}
+                      <div className={styles.alertInfo} style={{ flex: 1 }}>
                         <div className={styles.alertHeader}>
                           <span className={`${styles.tag} ${getCategoryClass(alert.category)}`}>
                             {alert.category}
@@ -424,6 +465,13 @@ export default function AdminAlertsPage() {
                       </div>
                       <h4 style={{ fontSize: '12px', fontWeight: 800, margin: '0 0 2px 0', color: '#0F172A' }}>{title}</h4>
                       <p style={{ fontSize: '10px', color: '#475569', margin: '0 0 6px 0', lineHeight: 1.3 }}>{description}</p>
+                      {imageUrl && (
+                        <img 
+                          src={imageUrl} 
+                          alt="Alert preview" 
+                          style={{ width: '100%', height: '80px', objectFit: 'cover', borderRadius: '8px', marginBottom: '8px' }} 
+                        />
+                      )}
                       {cta !== 'None' && (
                         <button style={{ background: '#0F172A', color: '#FFFFFF', border: 'none', borderRadius: '6px', padding: '4px 8px', fontSize: '9px', fontWeight: 700 }}>
                           {cta}
@@ -442,7 +490,7 @@ export default function AdminAlertsPage() {
                   {popupType === 'Popup' && (
                     <div style={{
                       position: 'absolute',
-                      top: '120px',
+                      top: '100px',
                       left: '16px',
                       right: '16px',
                       background: '#FFFFFF',
@@ -460,7 +508,14 @@ export default function AdminAlertsPage() {
                         </span>
                       </div>
                       <h4 style={{ fontSize: '13px', fontWeight: 800, color: '#0F172A', margin: '0 0 4px 0' }}>{title}</h4>
-                      <p style={{ fontSize: '10.5px', color: '#4B5563', margin: '0 0 12px 0', lineHeight: 1.4 }}>{description}</p>
+                      <p style={{ fontSize: '10.5px', color: '#4B5563', margin: '0 0 8px 0', lineHeight: 1.4 }}>{description}</p>
+                      {imageUrl && (
+                        <img 
+                          src={imageUrl} 
+                          alt="Alert preview" 
+                          style={{ width: '100%', height: '90px', objectFit: 'cover', borderRadius: '8px', marginBottom: '10px' }} 
+                        />
+                      )}
                       <div style={{ display: 'flex', gap: '8px' }}>
                         {cta !== 'None' && (
                           <button style={{ flex: 1, background: '#E9801D', color: '#fff', border: 'none', borderRadius: '8px', padding: '6px', fontSize: '10px', fontWeight: 700 }}>
@@ -482,21 +537,28 @@ export default function AdminAlertsPage() {
                       background: '#0F172A',
                       zIndex: 200,
                       color: '#FFFFFF',
-                      padding: '30px 20px',
+                      padding: '24px 16px',
                       textAlign: 'center',
                       display: 'flex',
                       flexDirection: 'column',
                       justifyContent: 'center',
                       alignItems: 'center'
                     }}>
-                      <div style={{ width: '48px', height: '48px', borderRadius: '50%', background: 'rgba(239, 68, 68, 0.15)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#EF4444', marginBottom: '16px', fontSize: '24px' }}>
+                      <div style={{ width: '40px', height: '40px', borderRadius: '50%', background: 'rgba(239, 68, 68, 0.15)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#EF4444', marginBottom: '10px', fontSize: '20px' }}>
                         🚨
                       </div>
-                      <span style={{ fontSize: '10px', fontWeight: 800, color: '#EF4444', letterSpacing: '1px', textTransform: 'uppercase', marginBottom: '8px' }}>
+                      <span style={{ fontSize: '10px', fontWeight: 800, color: '#EF4444', letterSpacing: '1px', textTransform: 'uppercase', marginBottom: '6px' }}>
                         CRITICAL EMERGENCY ALERT
                       </span>
-                      <h3 style={{ fontSize: '16px', fontWeight: 800, margin: '0 0 8px 0', fontFamily: 'Georgia, serif' }}>{title}</h3>
-                      <p style={{ fontSize: '12px', color: '#94A3B8', margin: '0 0 24px 0', lineHeight: 1.5 }}>{description}</p>
+                      <h3 style={{ fontSize: '15px', fontWeight: 800, margin: '0 0 6px 0', fontFamily: 'Georgia, serif' }}>{title}</h3>
+                      <p style={{ fontSize: '11px', color: '#94A3B8', margin: '0 0 12px 0', lineHeight: 1.4 }}>{description}</p>
+                      {imageUrl && (
+                        <img 
+                          src={imageUrl} 
+                          alt="Alert preview" 
+                          style={{ width: '100%', height: '100px', objectFit: 'cover', borderRadius: '8px', marginBottom: '16px', border: '1px solid rgba(255,255,255,0.2)' }} 
+                        />
+                      )}
                       
                       <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', width: '100%' }}>
                         {cta !== 'None' && (

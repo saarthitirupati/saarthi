@@ -270,8 +270,8 @@ export interface FuelRates {
 }
 
 let memoryFuel: FuelRates = {
-  petrol: 118.00,
-  diesel: 105.00,
+  petrol: 108.50,
+  diesel: 96.20,
   lastUpdated: new Date().toISOString()
 };
 

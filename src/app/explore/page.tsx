@@ -136,6 +136,8 @@ function ExploreContent() {
         searchTerms.push('talakona', 'nagala', 'kailasa', 'tada', 'kapila');
       } else if (q === 'appalayagunta' || q === 'appalaya') {
         searchTerms.push('prasanna venkateswara', 'appalayagunta');
+      } else if (q === 'jain' || q === 'jainism' || q === 'dharamshala' || q === 'parshwanath') {
+        searchTerms.push('jain', 'parshwanath', 'shwetambar', 'dharamshala');
       }
 
       const nameMatch = searchTerms.some(term => toStr(place.name).toLowerCase().includes(term));

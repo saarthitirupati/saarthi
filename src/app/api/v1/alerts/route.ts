@@ -47,6 +47,7 @@ export async function POST(request: Request) {
       id,
       title: body.title,
       description: body.description,
+      image: body.image || '',
       category: body.category,
       severity: body.severity,
       popup_type: body.popup_type,

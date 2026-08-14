@@ -7,6 +7,7 @@ export interface LiveAlert {
   id: string;
   title: string;
   description: string;
+  image?: string;
   category: 'Emergency' | 'High Priority' | 'Advisory' | 'Information';
   severity: 'Low' | 'Medium' | 'High' | 'Critical';
   popup_type: 'Banner' | 'Popup' | 'Fullscreen';

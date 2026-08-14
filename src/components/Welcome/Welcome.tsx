@@ -1,7 +1,7 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { Sparkles, ChevronRight, MapPin } from 'lucide-react';
+import { Sparkles, ChevronRight, MapPin, HandHeart, Brain, Landmark } from 'lucide-react';
 import styles from './Welcome.module.css';
 
 interface WelcomeProps {
@@ -10,9 +10,9 @@ interface WelcomeProps {
 
 export default function Welcome({ onSelectDays }: WelcomeProps) {
   const options = [
-    { days: 1, label: '1 Day', sub: 'The Essential Circuit', icon: '🙏' },
-    { days: 2, label: '2 Days', sub: 'Deep Spiritual Discovery', icon: '🧘' },
-    { days: 3, label: '3 Days', sub: 'The Complete Journey', icon: '🏛️' },
+    { days: 1, label: '1 Day',  sub: 'The Essential Circuit',       Icon: HandHeart, color: '#B45309' },
+    { days: 2, label: '2 Days', sub: 'Deep Spiritual Discovery',    Icon: Brain,     color: '#0E6B72' },
+    { days: 3, label: '3 Days', sub: 'The Complete Journey',        Icon: Landmark,  color: '#7C3AED' },
   ];
 
   return (
@@ -63,7 +63,7 @@ export default function Welcome({ onSelectDays }: WelcomeProps) {
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
             >
-              <div className={styles.optIcon}>{opt.icon}</div>
+              <div className={styles.optIcon}><opt.Icon size={20} color={opt.color} /></div>
               <div className={styles.optText}>
                 <h3>{opt.label}</h3>
                 <p>{opt.sub}</p>
