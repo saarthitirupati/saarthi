@@ -1,7 +1,7 @@
 'use client';
 
 import { PLACES, getPlaceGuideData, Place } from '@/data/places';
-import { ArrowLeft, Heart, Share2, Star, MapPin, Clock, Compass, PlayCircle, Camera, Check, Copy, Volume2, VolumeX, ShieldAlert, X, ChevronLeft, ChevronRight, Shirt, Footprints, Users, Ban, Navigation, Info, CheckCircle2, ShieldCheck, Sparkles, Car, Lightbulb, AlertTriangle, Droplets, Utensils, Coffee, Map, Lock, ThumbsUp, ThumbsDown } from 'lucide-react';
+import { ArrowLeft, Heart, Share2, Star, MapPin, Clock, Compass, PlayCircle, Camera, Check, Copy, Volume2, VolumeX, ShieldAlert, X, ChevronLeft, ChevronRight, Shirt, Footprints, Users, Ban, Navigation, Info, CheckCircle2, ShieldCheck, Sparkles, Car, Lightbulb, AlertTriangle, Droplets, Utensils, Coffee, Map, Lock, ThumbsUp, ThumbsDown, Landmark, BookOpen } from 'lucide-react';
 import { use, useState, useEffect } from 'react';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -58,16 +58,16 @@ export default function PlaceDetails({ params }: { params: Promise<{ id: string 
       whyItMatters: 'Why Visit This Temple?',
       spiritualEssence: 'Temple Highlights & Significance',
       culturalContext: 'History & Divine Features',
-      overview: '🏛 About the Temple',
-      knowBefore: '👕 Know Before You Visit',
+      overview: 'About the Temple',
+      knowBefore: 'Know Before You Visit',
       dressCode: 'Dress Code:',
       photoRule: 'Phones & Cameras:',
       footwearRule: 'Footwear:',
       entryRule: 'Entry & Fees:',
       crowdNote: 'Darshan Crowd:',
-      facilities: '📍 Facilities Available',
-      related: '📍 Nearby Places to Visit',
-      legend: '📖 Sacred Legend & History',
+      facilities: 'Facilities Available',
+      related: 'Nearby Places to Visit',
+      legend: 'Sacred Legend & History',
       originStory: 'According to Local Tradition',
       mythologicalContext: 'History & Temple Significance',
       feedbackTitle: 'Was this guide helpful?',
@@ -77,26 +77,26 @@ export default function PlaceDetails({ params }: { params: Promise<{ id: string 
       needsWork: 'Needs Work',
       submitFeedback: 'Submit Feedback',
       navigateNow: 'Navigate Now',
-      howToReach: '🚗 How to Reach',
-      autoFare: '🛺 Auto: ~₹80–₹120',
-      carTime: '🚗 Car: ~10 mins',
-      busNote: '🚌 Bus: Available from Central Bus Stand',
+      howToReach: 'How to Reach',
+      autoFare: 'Auto: ~₹80–₹120',
+      carTime: 'Car / Taxi: ~10 mins',
+      busNote: 'Bus: Available from Central Bus Stand',
       localBeliefPrefix: 'According to local tradition: '
     },
     te: {
       whyItMatters: 'ఈ ఆలయాన్ని ఎందుకు సందర్శించాలి?',
       spiritualEssence: 'ఈ ఆలయ ప్రత్యేకత',
       culturalContext: 'చరిత్ర & విశిష్టత',
-      overview: '🏛 ఆలయం గురించి',
-      knowBefore: '👕 సందర్శించే ముందు తెలుసుకోవాల్సిన విషయాలు',
+      overview: 'ఆలయం గురించి',
+      knowBefore: 'సందర్శించే ముందు తెలుసుకోవాల్సిన విషయాలు',
       dressCode: 'సంప్రదాయ దుస్తులు:',
       photoRule: 'ఫోన్లు & కెమెరాలు:',
       footwearRule: 'పాదరక్షలు:',
       entryRule: 'ప్రవేశం & రుసుము:',
       crowdNote: 'దర్శన రద్దీ:',
-      facilities: '📍 అందుబాటులో ఉన్న సౌకర్యాలు',
-      related: '📍 సమీపంలోని ఇతర ప్రదేశాలు',
-      legend: '📖 స్థల పురాణం',
+      facilities: 'అందుబాటులో ఉన్న సౌకర్యాలు',
+      related: 'సమీపంలోని ఇతర ప్రదేశాలు',
+      legend: 'స్థల పురాణం',
       originStory: 'స్థానిక విశ్వాసం ప్రకారం',
       mythologicalContext: 'చరిత్ర & స్థానిక ప్రాశస్త్యం',
       feedbackTitle: 'ఈ మార్గదర్శకం మీకు ఉపయోగపడిందా?',
@@ -106,10 +106,10 @@ export default function PlaceDetails({ params }: { params: Promise<{ id: string 
       needsWork: 'ఇంకా మెరుగుపరచవచ్చు',
       submitFeedback: 'అభిప్రాయాన్ని సమర్పించండి',
       navigateNow: 'ప్రయాణం ప్రారంభించండి',
-      howToReach: '🚗 ఎలా చేరుకోవాలి',
-      autoFare: '🛺 ఆటో: సుమారు ₹80–₹120',
-      carTime: '🚗 కారు: సుమారు 10 నిమిషాలు',
-      busNote: '🚌 బస్సు: సెంట్రల్ బస్ స్టాండ్ నుండి అందుబాటులో ఉంది',
+      howToReach: 'ఎలా చేరుకోవాలి',
+      autoFare: 'ఆటో: సుమారు ₹80–₹120',
+      carTime: 'కారు: సుమారు 10 నిమిషాలు',
+      busNote: 'బస్సు: సెంట్రల్ బస్ స్టాండ్ నుండి అందుబాటులో ఉంది',
       localBeliefPrefix: 'స్థానిక విశ్వాసం ప్రకారం: '
     }
   }[lang];
@@ -723,6 +723,7 @@ export default function PlaceDetails({ params }: { params: Promise<{ id: string 
         <section className={styles.section} id="travel">
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '10px', marginBottom: '14px' }}>
             <h2 className={styles.sectionTitle} style={{ margin: 0 }}>
+              <Car size={19} color="#0E6B72" style={{ display: 'inline', marginRight: 8, verticalAlign: 'text-bottom' }} />
               {t.howToReach}
             </h2>
             <Link
@@ -1511,7 +1512,10 @@ export default function PlaceDetails({ params }: { params: Promise<{ id: string 
 
         {/* ─── 6. ABOUT ─── */}
         <section className={styles.section} id="about">
-          <h2 className={styles.sectionTitle}>{t.overview}</h2>
+          <h2 className={styles.sectionTitle}>
+            <Landmark size={19} color="#0E6B72" style={{ display: 'inline', marginRight: 8, verticalAlign: 'text-bottom' }} />
+            {t.overview}
+          </h2>
           <div className={styles.introCard}>
             <p className={styles.introText}>{guide.shortIntro}</p>
             {isSupported && (
@@ -1528,7 +1532,10 @@ export default function PlaceDetails({ params }: { params: Promise<{ id: string 
 
         {/* ─── KNOW BEFORE YOU GO / TIPS ─── */}
         <section className={styles.section} id="tips">
-          <h2 className={styles.sectionTitle}>{t.knowBefore}</h2>
+          <h2 className={styles.sectionTitle}>
+            <Shirt size={19} color="#0E6B72" style={{ display: 'inline', marginRight: 8, verticalAlign: 'text-bottom' }} />
+            {t.knowBefore}
+          </h2>
           
           <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
             <div className={styles.tipCard} style={{ background: '#F8FAFC', border: '1px solid #E2E8F0', padding: '16px', borderRadius: '16px' }}>
@@ -1571,7 +1578,10 @@ export default function PlaceDetails({ params }: { params: Promise<{ id: string 
         {/* ─── FACILITIES ─── */}
         {place.facilities && (
           <section className={styles.section} id="facilities">
-            <h2 className={styles.sectionTitle}>{t.facilities}</h2>
+            <h2 className={styles.sectionTitle}>
+              <Info size={19} color="#0E6B72" style={{ display: 'inline', marginRight: 8, verticalAlign: 'text-bottom' }} />
+              {t.facilities}
+            </h2>
             <div className={styles.facilitiesGrid}>
               {Object.entries(place.facilities)
                 .filter(([, v]) => v && v !== 'N/A')
@@ -1599,7 +1609,10 @@ export default function PlaceDetails({ params }: { params: Promise<{ id: string 
         {/* ─── RELATED PLACES ─── */}
         {place.relatedPlaces && place.relatedPlaces.length > 0 && (
           <section className={styles.section} id="related">
-            <h2 className={styles.sectionTitle}>{t.related}</h2>
+            <h2 className={styles.sectionTitle}>
+              <MapPin size={19} color="#0E6B72" style={{ display: 'inline', marginRight: 8, verticalAlign: 'text-bottom' }} />
+              {t.related}
+            </h2>
             <div className={styles.relatedPlacesScroll}>
               {place.relatedPlaces.map(relId => {
                 const rel = PLACES.find(p => p.id === relId);
@@ -1630,7 +1643,10 @@ export default function PlaceDetails({ params }: { params: Promise<{ id: string 
         {/* ─── 7. HISTORY ─── */}
         {guide.history && guide.history.length > 30 && (
           <section className={styles.section} id="history">
-            <h2 className={styles.sectionTitle}>{t.legend}</h2>
+            <h2 className={styles.sectionTitle}>
+              <BookOpen size={19} color="#D97706" style={{ display: 'inline', marginRight: 8, verticalAlign: 'text-bottom' }} />
+              {t.legend}
+            </h2>
             <div className={styles.legendCard}>
               <div className={styles.legendHeader}>
                 <div className={styles.legendIconRing}>
