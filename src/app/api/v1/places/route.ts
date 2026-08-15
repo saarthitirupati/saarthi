@@ -5,7 +5,9 @@ import { ApiResponse } from '@/types/api';
 import { Place } from '@/types/place';
 import { PLACES } from '@/data/places';
 
-const BACKEND_URL = process.env.BACKEND_URL || 'http://127.0.0.1:8000';
+import { getApiBaseUrl } from '@/lib/api';
+
+const BACKEND_URL = getApiBaseUrl();
 
 const normalize = (str: string) => (str || '').toLowerCase().replace(/[^a-z0-9]/g, '');
 

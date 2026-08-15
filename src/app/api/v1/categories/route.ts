@@ -3,7 +3,9 @@ import { getCategories } from '@/lib/db';
 import { ApiResponse } from '@/types/api';
 import { CategoryRecord } from '@/types/database';
 
-const BACKEND_URL = process.env.BACKEND_URL || 'http://127.0.0.1:8000';
+import { getApiBaseUrl } from '@/lib/api';
+
+const BACKEND_URL = getApiBaseUrl();
 
 export async function GET(request: Request) {
   try {

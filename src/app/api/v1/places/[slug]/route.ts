@@ -3,7 +3,9 @@ import { getPlaceBySlug } from '@/lib/db';
 import { ApiResponse } from '@/types/api';
 import { Place } from '@/types/place';
 
-const BACKEND_URL = process.env.BACKEND_URL || 'http://127.0.0.1:8000';
+import { getApiBaseUrl } from '@/lib/api';
+
+const BACKEND_URL = getApiBaseUrl();
 
 export async function GET(request: Request, props: { params: Promise<{ slug: string }> }) {
   const params = await props.params;
