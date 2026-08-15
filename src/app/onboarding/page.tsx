@@ -189,8 +189,8 @@ export default function OnboardingPage() {
       )}
 
       {step < 4 && (
-        <header className={styles.header} style={{ justifyContent: step > 1 ? 'space-between' : 'flex-end', zIndex: 10 }}>
-          {step > 1 && (
+        <header className={styles.header} style={{ zIndex: 10 }}>
+          {step > 1 ? (
             <motion.button 
               className={styles.backButton} 
               onClick={prevStep} 
@@ -198,24 +198,28 @@ export default function OnboardingPage() {
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               style={{
-                background: 'rgba(255, 255, 255, 0.9)',
-                backdropFilter: 'blur(8px)',
-                border: '1px solid rgba(0,0,0,0.05)',
-                boxShadow: '0 2px 8px rgba(0,0,0,0.04)'
+                background: '#FFFFFF',
+                border: '1px solid #E2E8F0',
+                borderRadius: '14px',
+                boxShadow: '0 2px 6px rgba(0,0,0,0.04)'
               }}
             >
-              <ArrowLeft size={18} style={{ color: '#1A1A1A' }} />
+              <ArrowLeft size={18} style={{ color: '#0F172A' }} />
             </motion.button>
+          ) : (
+            <div style={{ width: 40 }} />
           )}
-          {step < 3 && (
+          {step < 3 ? (
             <motion.button 
               className={styles.skipButton} 
               onClick={() => setStep(4)}
               whileHover={{ x: 2 }}
-              style={{ color: '#0F5132', fontWeight: 700 }}
+              style={{ color: '#0F5132', fontWeight: 800, fontSize: '14px' }}
             >
               {t.skip}
             </motion.button>
+          ) : (
+            <div style={{ width: 40 }} />
           )}
         </header>
       )}
@@ -323,30 +327,36 @@ export default function OnboardingPage() {
               style={{ width: '100%', boxSizing: 'border-box' }}
             >
               <div style={{
-                width: '100%',
-                height: '160px',
-                borderRadius: '24px',
-                backgroundImage: 'url(/assets/temples/kapila-theertham.png)',
-                backgroundSize: 'cover',
-                backgroundPosition: 'center',
-                marginBottom: '16px',
-                backgroundColor: '#0F5132'
-              }} />
-
-              <div style={{ display: 'flex', justifyContent: 'center', margin: '-12px 0 8px 0' }}>
-                <Logo size={64} />
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                margin: '12px 0 20px 0'
+              }}>
+                <div style={{
+                  width: '88px',
+                  height: '88px',
+                  borderRadius: '26px',
+                  background: 'linear-gradient(135deg, #FFFDF7 0%, #FEF3C7 100%)',
+                  border: '1.5px solid #FDE68A',
+                  boxShadow: '0 10px 24px rgba(200, 155, 60, 0.16)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center'
+                }}>
+                  <Logo size={60} />
+                </div>
               </div>
 
-              <div style={{ textAlign: 'center', marginBottom: '20px' }}>
-                <h1 style={{ fontSize: '23px', fontWeight: 900, color: '#0F172A', margin: '0 0 6px 0', letterSpacing: '-0.02em' }}>
-                  {t.welcomeTitle}
+              <div style={{ textAlign: 'center', marginBottom: '22px' }}>
+                <h1 style={{ fontSize: '24px', fontWeight: 900, color: '#0F172A', margin: '0 0 6px 0', letterSpacing: '-0.02em' }}>
+                  <span className="notranslate">{t.welcomeTitle}</span>
                 </h1>
-                <p style={{ fontSize: '13px', color: '#64748B', lineHeight: 1.5, margin: 0, padding: '0 8px' }}>
+                <p style={{ fontSize: '13.5px', color: '#64748B', lineHeight: 1.5, margin: 0, padding: '0 8px' }}>
                   {t.welcomeSub}
                 </p>
               </div>
 
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', width: '100%' }}>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', width: '100%' }}>
                 {t.cards.map((card, idx) => {
                   const CardIcon = card.icon;
                   return (
@@ -358,26 +368,26 @@ export default function OnboardingPage() {
                         gap: '14px',
                         background: '#FFFFFF',
                         border: '1px solid #E2E8F0',
-                        borderRadius: '16px',
-                        padding: '12px 14px',
-                        boxShadow: '0 2px 8px rgba(0,0,0,0.02)'
+                        borderRadius: '20px',
+                        padding: '14px 16px',
+                        boxShadow: '0 2px 10px rgba(0,0,0,0.025)'
                       }}
                     >
                       <div style={{
-                        width: '38px',
-                        height: '38px',
-                        borderRadius: '50%',
+                        width: '42px',
+                        height: '42px',
+                        borderRadius: '14px',
                         background: card.bg,
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
                         flexShrink: 0
                       }}>
-                        <CardIcon size={19} style={{ color: card.color }} />
+                        <CardIcon size={20} style={{ color: card.color }} />
                       </div>
                       <div>
-                        <h3 style={{ fontSize: '13.5px', fontWeight: 800, color: '#0F172A', margin: '0 0 2px 0' }}>{card.title}</h3>
-                        <p style={{ fontSize: '11.5px', color: '#64748B', margin: 0, lineHeight: 1.4 }}>{card.desc}</p>
+                        <h3 style={{ fontSize: '14px', fontWeight: 800, color: '#0F172A', margin: '0 0 2px 0' }}>{card.title}</h3>
+                        <p style={{ fontSize: '12px', color: '#64748B', margin: 0, lineHeight: 1.45 }}>{card.desc}</p>
                       </div>
                     </div>
                   );
