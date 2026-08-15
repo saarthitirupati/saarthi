@@ -4,21 +4,70 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
-  User, Check, ArrowLeft, Clock, Compass, ShieldCheck, 
-  MapPin, Calendar, Users, Heart, Sparkles, Globe,
-  Bell, Download, BookOpen, ChevronRight, Lock, Landmark,
-  Sun, Activity
+  User, Check, ArrowLeft, Compass, 
+  Sparkles, Globe, ChevronRight, Lock, 
+  BookOpen, Activity 
 } from 'lucide-react';
 import Logo from '@/components/Logo/Logo';
 import styles from './Onboarding.module.css';
 
 interface LanguageOption {
-  code: string;
+  code: 'en' | 'te';
+  flag: string;
   nativeName: string;
-  englishName: string;
+  subText: string;
 }
 
-// Framer Motion Animation Settings
+const LANGUAGES: LanguageOption[] = [
+  { code: 'en', flag: '🇮🇳', nativeName: 'English', subText: 'Continue in English' },
+  { code: 'te', flag: '🇮🇳', nativeName: 'తెలుగు', subText: 'తెలుగులో కొనసాగండి' }
+];
+
+const TRANSLATIONS = {
+  en: {
+    selectLanguage: 'Choose Your Language',
+    selectLanguageSub: 'మీ భాషను ఎంచుకోండి',
+    welcomeTitle: 'Welcome to Saarthi',
+    welcomeSub: 'Your trusted companion for a smooth & meaningful journey in Tirupati.',
+    cards: [
+      { title: 'Live Updates', desc: 'Real-time darshan, crowd levels, and instant alerts.', color: '#059669', bg: '#E5F3EB', icon: Activity },
+      { title: 'Curated Places', desc: 'Detailed guides for temples, nature, and hidden gems.', color: '#D97706', bg: '#FFF7ED', icon: Compass },
+      { title: 'Travel Essentials', desc: 'Official rules, transport options, and helpful checklists.', color: '#2563EB', bg: '#EFF6FF', icon: BookOpen }
+    ],
+    nameTitle: 'What should we call you?',
+    nameDesc: "We'll personalize your dashboard & recommendations.",
+    namePlaceholder: 'Enter your name',
+    nameExamples: 'e.g. Raghav, Sreeja, Mahesh',
+    privacyNote: 'Your privacy is our priority. We never share your details; they are stored strictly on this device.',
+    btnContinue: 'Continue',
+    btnLetsGo: "Let's Go!",
+    loadingTagline: 'Getting your guide ready...',
+    blessing: 'OM SRI VENKATESHAYA NAMAHA',
+    skip: 'Skip'
+  },
+  te: {
+    selectLanguage: 'మీ భాషను ఎంచుకోండి',
+    selectLanguageSub: 'Choose Your Language',
+    welcomeTitle: 'సారథికి స్వాగతం',
+    welcomeSub: 'తిరుపతి యాత్రను సులభంగా, ఆధ్యాత్మికంగా అనుభవించేందుకు మీ విశ్వసనీయ సహచరి.',
+    cards: [
+      { title: 'లైవ్ సమాచారం', desc: 'దర్శనం లైవ్ సమయాలు, రద్దీ వివరాలు, తక్షణ హెచ్చరికలు.', color: '#059669', bg: '#E5F3EB', icon: Activity },
+      { title: 'దర్శనీయ స్థలాలు', desc: 'ఆలయాలు, ప్రకృతి అందాలు, ఆధ్యాత్మిక క్షేత్రాల సమగ్ర మార్గదర్శిని.', color: '#D97706', bg: '#FFF7ED', icon: Compass },
+      { title: 'యాత్రా సదుపాయాలు', desc: 'అధికారిక నిబంధనలు, రవాణా వివరాలు, సులువైన పరిశీలనల జాబితా.', color: '#2563EB', bg: '#EFF6FF', icon: BookOpen }
+    ],
+    nameTitle: 'మిమ్మల్ని ఏమని పిలవాలి?',
+    nameDesc: 'మీ తిరుమల యాత్ర వివరాలను మీ కోసం ప్రత్యేకంగా తీర్చిదిద్దుతాం.',
+    namePlaceholder: 'మీ పేరు నమోదు చేయండి',
+    nameExamples: 'ఉదా: రాఘవ్, శ్రీజ, మహేష్',
+    privacyNote: 'మీ గోప్యత మా బాధ్యత. మీ వివరాలు సురక్షితంగా కేవలం మీ ఫోన్‌లోనే ఉంటాయి.',
+    btnContinue: 'కొనసాగండి',
+    btnLetsGo: 'ప్రారంభిద్దాం',
+    loadingTagline: 'మీ యాత్ర మార్గదర్శిని సిద్ధం అవుతోంది...',
+    blessing: 'ఓం శ్రీ వెంకటేశాయ నమః',
+    skip: 'దాటవేయి'
+  }
+};
+
 const cardVariants = {
   hidden: { opacity: 0, y: 15 },
   visible: { 
@@ -40,52 +89,31 @@ const staggerContainer = {
   }
 };
 
-const popIn = {
-  hidden: { scale: 0.9, opacity: 0 },
-  visible: { 
-    scale: 1, 
-    opacity: 1,
-    transition: { type: 'spring' as const, stiffness: 300, damping: 20 }
-  }
-};
-
-const drawCheck = {
-  hidden: { pathLength: 0, opacity: 0 },
-  visible: {
-    pathLength: 1,
-    opacity: 1,
-    transition: { duration: 0.4, ease: 'easeInOut' as const }
-  }
-};
-
 export default function OnboardingPage() {
   const router = useRouter();
   const [step, setStep] = useState(1);
   const [name, setName] = useState('');
-  const [selectedLanguage, setSelectedLanguage] = useState('en');
+  const [selectedLanguage, setSelectedLanguage] = useState<'en' | 'te'>('en');
   const [isMounted, setIsMounted] = useState(false);
 
-  // Permissions switches
-  const [locationPerm, setLocationPerm] = useState(true);
-  const [notifPerm, setNotifPerm] = useState(true);
+  const [locationPerm] = useState(true);
+  const [notifPerm] = useState(true);
 
-  // Oracle loading simulator ticks
   const [loadingTick, setLoadingTick] = useState(0);
-
-  // Unused state and variables removed
 
   useEffect(() => {
     setIsMounted(true);
     const savedName = localStorage.getItem('saarthi_user_name');
     if (savedName) setName(savedName);
 
-    const savedLanguage = localStorage.getItem('saarthi_user_language');
-    if (savedLanguage) setSelectedLanguage(savedLanguage);
+    const savedLanguage = localStorage.getItem('saarthi_user_language') as 'en' | 'te';
+    if (savedLanguage && (savedLanguage === 'en' || savedLanguage === 'te')) {
+      setSelectedLanguage(savedLanguage);
+    }
   }, []);
 
-  // Step 3 (Oracle Loading) redirect sequence
   useEffect(() => {
-    if (step === 3) {
+    if (step === 4) {
       const interval = setInterval(() => {
         setLoadingTick(t => {
           if (t >= 4) {
@@ -100,13 +128,11 @@ export default function OnboardingPage() {
     }
   }, [step]);
 
-  const LANGUAGES: LanguageOption[] = [
-    { code: 'en', nativeName: 'English', englishName: 'English' }
-  ];
+  const t = TRANSLATIONS[selectedLanguage] || TRANSLATIONS.en;
 
   const nextStep = () => {
-    if (step === 2 && !name.trim()) return;
-    setStep(s => Math.min(s + 1, 3));
+    if (step === 3 && !name.trim()) return;
+    setStep(s => Math.min(s + 1, 4));
   };
 
   const prevStep = () => {
@@ -114,16 +140,15 @@ export default function OnboardingPage() {
   };
 
   const finish = () => {
-    const finalName = name.trim() || 'Traveler';
+    const defaultName = selectedLanguage === 'te' ? 'యాత్రికులు' : 'Traveler';
+    const finalName = name.trim() || defaultName;
     localStorage.setItem('hasSeenOnboarding', 'true');
     localStorage.setItem('saarthi_user_name', finalName);
     localStorage.setItem('saarthi_user_language', selectedLanguage);
     
-    // Save permissions
     localStorage.setItem('saarthi_location_enabled', locationPerm ? 'true' : 'false');
     localStorage.setItem('saarthi_notif_enabled', notifPerm ? 'true' : 'false');
 
-    // Remove any previous plannerInput interests if we are removing Step 3
     const existingStateStr = localStorage.getItem('jeevapath_trip_state');
     let existingState = {};
     if (existingStateStr) {
@@ -154,19 +179,16 @@ export default function OnboardingPage() {
     );
   }
 
-  // 2 active navigation steps before loading screen
-  const progressPct = (step / 2) * 100;
+  const progressPct = (step / 3) * 100;
 
   return (
-    <div className={styles.container} style={{ background: step === 3 ? '#0A2518' : 'radial-gradient(circle at top, #FFFFFF 0%, #FAFAF7 100%)' }}>
+    <div className={styles.container} style={{ background: step === 4 ? '#0A2518' : 'radial-gradient(circle at top, #FFFFFF 0%, #FAFAF7 100%)' }}>
       
-      {/* Decorative Rotating Mandala */}
-      {step < 3 && (
+      {step < 4 && (
         <div className={styles.rotatingMandala} />
       )}
 
-      {/* Header */}
-      {step < 3 && (
+      {step < 4 && (
         <header className={styles.header} style={{ justifyContent: step > 1 ? 'space-between' : 'flex-end', zIndex: 10 }}>
           {step > 1 && (
             <motion.button 
@@ -185,36 +207,33 @@ export default function OnboardingPage() {
               <ArrowLeft size={18} style={{ color: '#1A1A1A' }} />
             </motion.button>
           )}
-          {step === 1 && (
+          {step < 3 && (
             <motion.button 
               className={styles.skipButton} 
-              onClick={() => setStep(3)}
+              onClick={() => setStep(4)}
               whileHover={{ x: 2 }}
               style={{ color: '#0F5132', fontWeight: 700 }}
             >
-              Skip
+              {t.skip}
             </motion.button>
           )}
         </header>
       )}
 
-      {/* Progress Bar Container */}
-      {step < 3 && (
+      {step < 4 && (
         <div style={{ width: '100%', height: '4px', backgroundColor: 'rgba(15, 81, 50, 0.08)', position: 'relative', zIndex: 10 }}>
           <motion.div 
             style={{ height: '100%', background: 'linear-gradient(90deg, #0F5132 0%, #C89B3C 100%)' }}
             initial={{ width: 0 }}
-            animate={{ width: `${progressPct}%` }}
+            animate={{ width: progressPct + '%' }}
             transition={{ type: 'spring', stiffness: 80, damping: 15 }}
           />
         </div>
       )}
 
-      {/* Content Area */}
       <div className={styles.contentArea} style={{ zIndex: 5 }}>
         <AnimatePresence mode="wait">
           
-          {/* Step 1: Welcome Screen (Mockup Design) */}
           {step === 1 && (
             <motion.div
               key="step1"
@@ -225,76 +244,74 @@ export default function OnboardingPage() {
               exit="exit"
               style={{ width: '100%', boxSizing: 'border-box' }}
             >
-              {/* Header Image */}
-              <div style={{
-                width: '100%',
-                height: '180px',
-                borderRadius: '24px',
-                backgroundImage: 'url(/assets/temples/kapila-theertham.png)',
-                backgroundSize: 'cover',
-                backgroundPosition: 'center',
-                marginBottom: '20px',
-                backgroundColor: '#0F5132'
-              }} />
-
-              {/* Brand Logo */}
-              <div style={{ display: 'flex', justifyContent: 'center', margin: '-12px 0 8px 0' }}>
+              <div style={{ display: 'flex', justifyContent: 'center', margin: '12px 0 16px 0' }}>
                 <Logo size={72} />
               </div>
 
-              {/* Text Content */}
-              <div style={{ textAlign: 'center', marginBottom: '24px' }}>
-                <h1 style={{ fontSize: '24px', fontWeight: 900, color: '#0F172A', margin: '0 0 8px 0', letterSpacing: '-0.02em' }}>
-                  Welcome to Saarthi
+              <div style={{ textAlign: 'center', marginBottom: '28px' }}>
+                <h1 style={{ fontSize: '22px', fontWeight: 900, color: '#0F172A', margin: '0 0 6px 0', letterSpacing: '-0.02em', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}>
+                  <Globe size={22} style={{ color: '#0F5132' }} /> {t.selectLanguage}
                 </h1>
-                <p style={{ fontSize: '13.5px', color: '#64748B', lineHeight: 1.5, margin: 0, padding: '0 12px' }}>
-                  Your trusted companion for a smooth &amp; meaningful journey in Tirupati.
+                <p style={{ fontSize: '13.5px', color: '#64748B', lineHeight: 1.5, margin: 0 }}>
+                  {t.selectLanguageSub}
                 </p>
               </div>
 
-              {/* Three Value Cards */}
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', width: '100%' }}>
-                {[
-                  { title: 'Live Updates', desc: 'Real-time darshan, crowd levels, and instant alerts.', color: '#059669', bg: '#E5F3EB', icon: Activity },
-                  { title: 'Curated Places', desc: 'Detailed guides for temples, nature, and hidden gems.', color: '#D97706', bg: '#FFF7ED', icon: Compass },
-                  { title: 'Travel Essentials', desc: 'Official rules, transport options, and helpful checklists.', color: '#2563EB', bg: '#EFF6FF', icon: BookOpen }
-                ].map((card, idx) => (
-                  <div 
-                    key={idx}
-                    style={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: '14px',
-                      background: '#FFFFFF',
-                      border: '1px solid #E2E8F0',
-                      borderRadius: '16px',
-                      padding: '14px 16px',
-                      boxShadow: '0 2px 8px rgba(0,0,0,0.02)'
-                    }}
-                  >
-                    <div style={{
-                      width: '40px',
-                      height: '40px',
-                      borderRadius: '50%',
-                      background: card.bg,
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      flexShrink: 0
-                    }}>
-                      <card.icon size={20} style={{ color: card.color }} />
-                    </div>
-                    <div>
-                      <h3 style={{ fontSize: '14px', fontWeight: 800, color: '#0F172A', margin: '0 0 2px 0' }}>{card.title}</h3>
-                      <p style={{ fontSize: '12px', color: '#64748B', margin: 0, lineHeight: 1.4 }}>{card.desc}</p>
-                    </div>
-                  </div>
-                ))}
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '14px', width: '100%' }}>
+                {LANGUAGES.map((lang) => {
+                  const isSelected = selectedLanguage === lang.code;
+                  return (
+                    <motion.button
+                      key={lang.code}
+                      onClick={() => {
+                        setSelectedLanguage(lang.code);
+                        localStorage.setItem('saarthi_user_language', lang.code);
+                      }}
+                      whileHover={{ scale: 1.01 }}
+                      whileTap={{ scale: 0.98 }}
+                      style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'space-between',
+                        padding: '18px 20px',
+                        borderRadius: '20px',
+                        background: isSelected ? 'rgba(15, 81, 50, 0.04)' : '#FFFFFF',
+                        border: isSelected ? '2px solid #0F5132' : '1px solid #E2E8F0',
+                        boxShadow: isSelected ? '0 4px 16px rgba(15, 81, 50, 0.12)' : '0 2px 8px rgba(0,0,0,0.03)',
+                        cursor: 'pointer',
+                        textAlign: 'left',
+                        transition: 'all 0.2s cubic-bezier(0.4, 0, 0.2, 1)',
+                        width: '100%',
+                        boxSizing: 'border-box'
+                      }}
+                    >
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+                        <span style={{ fontSize: '24px' }}>{lang.flag}</span>
+                        <div>
+                          <div style={{ fontSize: '17px', fontWeight: 800, color: '#0F172A' }}>{lang.nativeName}</div>
+                          <div style={{ fontSize: '12.5px', fontWeight: 600, color: isSelected ? '#0F5132' : '#64748B', marginTop: '2px' }}>{lang.subText}</div>
+                        </div>
+                      </div>
+                      <div style={{
+                        width: '24px',
+                        height: '24px',
+                        borderRadius: '50%',
+                        border: isSelected ? 'none' : '2px solid #CBD5E1',
+                        background: isSelected ? '#0F5132' : 'transparent',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        flexShrink: 0
+                      }}>
+                        {isSelected && <Check size={14} color="#FFFFFF" strokeWidth={3} />}
+                      </div>
+                    </motion.button>
+                  );
+                })}
               </div>
             </motion.div>
           )}
 
-          {/* Step 2: Name Input */}
           {step === 2 && (
             <motion.div
               key="step2"
@@ -303,8 +320,82 @@ export default function OnboardingPage() {
               initial="hidden"
               animate="visible"
               exit="exit"
+              style={{ width: '100%', boxSizing: 'border-box' }}
             >
-              <motion.div className={styles.textContent} variants={cardVariants} style={{ marginTop: '40px', marginBottom: '24px' }}>
+              <div style={{
+                width: '100%',
+                height: '160px',
+                borderRadius: '24px',
+                backgroundImage: 'url(/assets/temples/kapila-theertham.png)',
+                backgroundSize: 'cover',
+                backgroundPosition: 'center',
+                marginBottom: '16px',
+                backgroundColor: '#0F5132'
+              }} />
+
+              <div style={{ display: 'flex', justifyContent: 'center', margin: '-12px 0 8px 0' }}>
+                <Logo size={64} />
+              </div>
+
+              <div style={{ textAlign: 'center', marginBottom: '20px' }}>
+                <h1 style={{ fontSize: '23px', fontWeight: 900, color: '#0F172A', margin: '0 0 6px 0', letterSpacing: '-0.02em' }}>
+                  {t.welcomeTitle}
+                </h1>
+                <p style={{ fontSize: '13px', color: '#64748B', lineHeight: 1.5, margin: 0, padding: '0 8px' }}>
+                  {t.welcomeSub}
+                </p>
+              </div>
+
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', width: '100%' }}>
+                {t.cards.map((card, idx) => {
+                  const CardIcon = card.icon;
+                  return (
+                    <div 
+                      key={idx}
+                      style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '14px',
+                        background: '#FFFFFF',
+                        border: '1px solid #E2E8F0',
+                        borderRadius: '16px',
+                        padding: '12px 14px',
+                        boxShadow: '0 2px 8px rgba(0,0,0,0.02)'
+                      }}
+                    >
+                      <div style={{
+                        width: '38px',
+                        height: '38px',
+                        borderRadius: '50%',
+                        background: card.bg,
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        flexShrink: 0
+                      }}>
+                        <CardIcon size={19} style={{ color: card.color }} />
+                      </div>
+                      <div>
+                        <h3 style={{ fontSize: '13.5px', fontWeight: 800, color: '#0F172A', margin: '0 0 2px 0' }}>{card.title}</h3>
+                        <p style={{ fontSize: '11.5px', color: '#64748B', margin: 0, lineHeight: 1.4 }}>{card.desc}</p>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </motion.div>
+          )}
+
+          {step === 3 && (
+            <motion.div
+              key="step3"
+              className={styles.slide}
+              variants={staggerContainer}
+              initial="hidden"
+              animate="visible"
+              exit="exit"
+            >
+              <motion.div className={styles.textContent} variants={cardVariants} style={{ marginTop: '30px', marginBottom: '20px' }}>
                 <div style={{ 
                   width: '60px', 
                   height: '60px', 
@@ -319,15 +410,15 @@ export default function OnboardingPage() {
                 }}>
                   <User size={28} />
                 </div>
-                <h1 className={styles.title} style={{ color: '#1A1A1A', fontSize: '24px', fontWeight: 800 }}>What should we call you?</h1>
-                <p className={styles.description}>We'll personalize your dashboard &amp; recommendations.</p>
+                <h1 className={styles.title} style={{ color: '#1A1A1A', fontSize: '23px', fontWeight: 800 }}>{t.nameTitle}</h1>
+                <p className={styles.description}>{t.nameDesc}</p>
               </motion.div>
 
               <motion.div className={styles.inputWrapper} variants={cardVariants} style={{ width: '100%', padding: '0 10px' }}>
                 <input
                   type="text"
                   className={styles.nameInput}
-                  placeholder="Enter your name"
+                  placeholder={t.namePlaceholder}
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                   onKeyDown={(e) => e.key === 'Enter' && name.trim() && nextStep()}
@@ -343,12 +434,13 @@ export default function OnboardingPage() {
                     transition: 'all 0.3s',
                     backgroundColor: 'rgba(255, 255, 255, 0.9)',
                     backdropFilter: 'blur(8px)',
-                    color: '#1A1A1A'
+                    color: '#1A1A1A',
+                    boxSizing: 'border-box'
                   }}
                   autoFocus
                 />
                 <p style={{ fontSize: '12px', color: '#718096', marginTop: '12px', textAlign: 'center', fontWeight: 500 }}>
-                  e.g. Raghav, Sreeja, Mahesh
+                  {t.nameExamples}
                 </p>
               </motion.div>
 
@@ -369,16 +461,15 @@ export default function OnboardingPage() {
               >
                 <div style={{ color: '#0F5132', flexShrink: 0 }}><Lock size={16} /></div>
                 <span className={styles.privacyText} style={{ color: '#0F5132', fontSize: '11px', fontWeight: 600, lineHeight: 1.4 }}>
-                  Your privacy is our priority. We never share your details; they are stored strictly on this device.
+                  {t.privacyNote}
                 </span>
               </motion.div>
             </motion.div>
           )}
 
-          {/* Step 3: Ready */}
-          {step === 3 && (
+          {step === 4 && (
             <motion.div
-              key="step3"
+              key="step4"
               className={styles.slide}
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -396,7 +487,6 @@ export default function OnboardingPage() {
                 alignItems: 'center'
               }}
             >
-              {/* Logo */}
               <motion.div
                 initial={{ opacity: 0, y: 12 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -406,7 +496,6 @@ export default function OnboardingPage() {
                 <Logo size={80} />
               </motion.div>
 
-              {/* App name */}
               <motion.h2
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
@@ -420,26 +509,25 @@ export default function OnboardingPage() {
                   letterSpacing: '0.01em'
                 }}
               >
-                Saarthi
+                {selectedLanguage === 'te' ? 'సారథి' : 'Saarthi'}
               </motion.h2>
 
-              {/* Calm tagline */}
               <motion.p
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.5, duration: 0.5 }}
                 style={{
                   color: '#8A9A90',
-                  fontSize: '13px',
+                  fontSize: '13.5px',
                   fontWeight: 400,
                   margin: '0 0 48px 0',
-                  letterSpacing: '0.01em'
+                  letterSpacing: '0.01em',
+                  textAlign: 'center'
                 }}
               >
-                Getting your guide ready…
+                {t.loadingTagline}
               </motion.p>
 
-              {/* Simple progress bar */}
               <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
@@ -448,41 +536,40 @@ export default function OnboardingPage() {
               >
                 <motion.div
                   initial={{ width: '0%' }}
-                  animate={{ width: `${(loadingTick / 4) * 100}%` }}
+                  animate={{ width: ((loadingTick / 4) * 100) + '%' }}
                   transition={{ ease: 'easeInOut', duration: 0.6 }}
                   style={{ height: '100%', background: '#C89B3C', borderRadius: '2px' }}
                 />
               </motion.div>
 
-              {/* Blessing */}
               <motion.p
                 initial={{ opacity: 0 }}
-                animate={{ opacity: 0.45 }}
-                transition={{ delay: 1.2, duration: 0.8 }}
+                animate={{ opacity: 0.85 }}
+                transition={{ delay: 0.8, duration: 0.8 }}
                 style={{
                   color: '#C89B3C',
-                  fontSize: '11px',
-                  fontWeight: 500,
+                  fontSize: '12px',
+                  fontWeight: 600,
                   letterSpacing: '0.12em',
                   textTransform: 'uppercase',
-                  margin: '52px 0 0 0'
+                  margin: '52px 0 0 0',
+                  textAlign: 'center'
                 }}
               >
-                Om Sri Venkateshaya Namaha
+                {t.blessing}
               </motion.p>
             </motion.div>
           )}
         </AnimatePresence>
       </div>
 
-      {/* Footer Navigation Bar */}
-      {step < 3 && (
+      {step < 4 && (
         <footer className={styles.footer} style={{ zIndex: 10, background: 'transparent' }}>
           <div className={styles.pagination}>
-            {[1, 2].map((s) => (
+            {[1, 2, 3].map((s) => (
                <div 
                 key={s} 
-                className={`${styles.dot} ${step === s ? styles.dotActive : ''}`} 
+                className={styles.dot + (step === s ? ' ' + styles.dotActive : '')} 
                 style={{
                   backgroundColor: step === s ? '#0F5132' : 'rgba(15, 81, 50, 0.15)',
                   transform: step === s ? 'scale(1.4)' : 'scale(1)',
@@ -495,7 +582,7 @@ export default function OnboardingPage() {
           <motion.button
             className={styles.nextButton}
             onClick={nextStep}
-            disabled={step === 2 && !name.trim()}
+            disabled={step === 3 && !name.trim()}
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
             style={{
@@ -513,13 +600,13 @@ export default function OnboardingPage() {
               fontWeight: 800
             }}
           >
-            {step === 2 ? (
+            {step === 3 ? (
               <>
-                <Sparkles size={18} /> Let&apos;s Go!
+                <Sparkles size={18} /> {t.btnLetsGo}
               </>
             ) : (
               <>
-                Continue <ChevronRight size={18} />
+                {t.btnContinue} <ChevronRight size={18} />
               </>
             )}
           </motion.button>

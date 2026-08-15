@@ -1,20 +1,21 @@
 .nav {
   position: fixed;
-  bottom: 24px;
+  bottom: max(16px, env(safe-area-inset-bottom, 16px));
   left: 50%;
   transform: translateX(-50%);
-  width: calc(100% - 48px);
+  width: calc(100% - 32px);
   max-width: 400px;
   background: rgba(255, 253, 249, 0.95);
   backdrop-filter: blur(24px) saturate(180%);
   -webkit-backdrop-filter: blur(24px) saturate(180%);
   border: 1px solid rgba(208, 167, 61, 0.2);
   border-radius: 36px;
-  padding: 8px 24px;
+  padding: 8px 18px;
   z-index: 1000;
   box-shadow:
     0 16px 32px rgba(15, 81, 50, 0.1),
     0 4px 12px rgba(0, 0, 0, 0.05);
+  box-sizing: border-box;
 }
 
 .container {
@@ -23,6 +24,7 @@
   align-items: center;
   position: relative;
   height: 48px;
+  width: 100%;
 }
 
 /* ── Regular nav item ──────────────────────────────────────── */
@@ -33,16 +35,17 @@
   align-items: center;
   justify-content: center;
   text-decoration: none;
-  min-width: 48px;
+  min-width: 44px;
   height: 48px;
   border-radius: 24px;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   -webkit-tap-highlight-color: transparent;
   z-index: 2;
+  box-sizing: border-box;
 }
 
 .navLinkActive {
-  padding: 0 20px;
+  padding: 0 16px;
   min-width: auto;
 }
 
@@ -66,7 +69,7 @@
 .navContent {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
   position: relative;
   z-index: 2;
 }
@@ -74,11 +77,13 @@
 .activeIcon {
   color: #FFFFFF;
   transition: color 0.3s ease;
+  flex-shrink: 0;
 }
 
 .inactiveIcon {
   color: #94A3B8;
   transition: color 0.3s ease;
+  flex-shrink: 0;
 }
 
 .activeLabel {
@@ -146,3 +151,41 @@
   color: #FFFFFF;
   filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
 }
+
+/* ── Responsive Breakpoints for Small Screens ──────────────── */
+
+@media (max-width: 380px) {
+  .nav {
+    width: calc(100% - 24px);
+    padding: 6px 12px;
+    bottom: max(12px, env(safe-area-inset-bottom, 12px));
+  }
+
+  .navLinkActive {
+    padding: 0 12px;
+  }
+
+  .activeLabel {
+    font-size: 12px;
+  }
+
+  .navContent {
+    gap: 5px;
+  }
+}
+
+@media (max-width: 340px) {
+  .nav {
+    width: calc(100% - 16px);
+    padding: 6px 8px;
+  }
+
+  .navLinkActive {
+    padding: 0 10px;
+  }
+
+  .activeLabel {
+    font-size: 11px;
+  }
+}
+

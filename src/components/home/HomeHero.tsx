@@ -3,6 +3,180 @@
 import React, { useState } from 'react';
 import { Menu, Bell, MapPin, Sun, Sparkles, Ticket, Car, Gift, CloudRain, Bus, Clock, Route, Users, Zap, Check } from 'lucide-react';
 import Link from 'next/link';
+import { useLanguage } from '@/lib/useLanguage';
+
+const TEXTS: Record<string, any> = {
+  en: {
+    greetings: {
+      morning: 'Good Morning',
+      afternoon: 'Good Afternoon',
+      evening: 'Good Evening',
+      night: 'Good Night'
+    },
+    header: {
+      companion: 'Your Tirumala Companion'
+    },
+    tagline: "Based on your current situation, here's the best thing to do next — and why.",
+    labels: {
+      today: 'Today',
+      currentWait: 'Current Wait',
+      bestTime: 'Best Time',
+      updated: 'Updated',
+      justNow: 'Just now',
+      minAgo: 'min ago',
+      live: 'Live',
+      saarthiRecommends: 'SAARTHI RECOMMENDS',
+      recommendedBecause: 'RECOMMENDED BECAUSE',
+      rightNowOnHill: 'Right now on the hill',
+      viewAll: 'view All >'
+    },
+    badges: {
+      lowCrowd: 'LOW CROWD',
+      moderateCrowd: 'MODERATE CROWD',
+      heavyCrowd: 'HEAVY CROWD',
+      weatherAlert: 'WEATHER ALERT',
+      festivalRush: 'FESTIVAL RUSH',
+      ssdOpen: 'SSD OPEN',
+      nightUpdate: 'NIGHT UPDATE',
+      importantAdvisory: 'IMPORTANT ADVISORY'
+    },
+    subtitles: {
+      green: 'Perfect Time for Darshan',
+      yellow: 'Plan Before You Go',
+      red: 'Queue at Peak Capacity',
+      blue: 'Heavy Rain Disruption',
+      purple: 'Special Festival Advisory',
+      orange: 'Limited Token Slots Active',
+      night: 'Tomorrow Looks Better',
+      alert: 'Alipiri Route Closure'
+    },
+    recommendations: {
+      green: 'Leave your hotel now.',
+      yellow: 'Visit Kapila Theertham first. Return after lunch.',
+      red: "Don't join the queue now. Explore Tirupati.",
+      blue: 'Avoid Alipiri Steps. Take RTC Bus.',
+      orange: 'Head to Alipiri now. Slots may finish soon.',
+      purple: 'Stay in Tirupati tonight. Start tomorrow morning.',
+      night: 'Rest well. Leave hotel at 6:30 AM.',
+      alert: 'Use RTC Bus. Alternative route ready.'
+    },
+    why: {
+      green: "You'll avoid today's afternoon rush.",
+      yellow: 'Queue clears significantly during afternoon slot.',
+      red: 'Joining now puts you in the peak 11-hour queue bottleneck.',
+      blue: 'Footpaths are slippery during heavy rain.',
+      purple: 'Overnight queue wait times are at maximum capacity.',
+      orange: 'SSD token holders bypass main 10+ hour queue.',
+      night: 'Early morning queue entry is 80% faster.',
+      alert: 'Maintenance work active on primary Alipiri entrance.'
+    },
+    benefits: {
+      green: 'Save 3 hours by acting now',
+      yellow: 'Save 1 Hour wait time',
+      red: 'You save 8h 45m',
+      blue: 'Avoid 2 Hours weather delay',
+      purple: 'Save 12 Hours total wait',
+      orange: 'Lock in short queue before quota ends',
+      night: 'Save 4 hours by sleeping in Tirupati',
+      alert: 'Bypass Alipiri closure without hassle'
+    },
+    ctas: {
+      green: 'Start Journey →',
+      yellow: 'View Suggested Plan →',
+      red: 'Start My Plan →',
+      blue: 'View Safe Route →',
+      purple: "Tomorrow's Plan →",
+      orange: 'Go to SSD Counter →',
+      night: 'Set Reminder →',
+      alert: 'View Alternative Route →'
+    }
+  },
+  te: {
+    greetings: {
+      morning: 'శుభోదయం',
+      afternoon: 'శుభ మధ్యాహ్నం',
+      evening: 'శుభ సాయంత్రం',
+      night: 'శుభ రాత్రి'
+    },
+    header: {
+      companion: 'మీ తిరుమల సహచరి'
+    },
+    tagline: 'మీ ప్రస్తుత పరిస్థితి ఆధారంగా, తదుపరి ఏమి చేయాలో — మరియు ఎందుకు.',
+    labels: {
+      today: 'ఈ రోజు',
+      currentWait: 'ప్రస్తుత వేచి ఉండు సమయం',
+      bestTime: 'ఉత్తమ సమయం',
+      updated: 'అప్డేట్',
+      justNow: 'ఇప్పుడే',
+      minAgo: 'నిమిషాల క్రితం',
+      live: 'లైవ్',
+      saarthiRecommends: 'సారథి సిఫార్సు',
+      recommendedBecause: 'సిఫార్సు కారణం',
+      rightNowOnHill: 'కొండపై ప్రస్తుతం',
+      viewAll: 'అన్నీ చూడండి >'
+    },
+    badges: {
+      lowCrowd: 'తక్కువ రద్దీ',
+      moderateCrowd: 'మధ్యస్థ రద్దీ',
+      heavyCrowd: 'అధిక రద్దీ',
+      weatherAlert: 'వాతావరణ హెచ్చరిక',
+      festivalRush: 'పండుగ రద్దీ',
+      ssdOpen: 'SSD ఓపెన్',
+      nightUpdate: 'రాత్రి అప్డేట్',
+      importantAdvisory: 'ముఖ్యమైన సూచన'
+    },
+    subtitles: {
+      green: 'దర్శనానికి అనువైన సమయం',
+      yellow: 'వెళ్ళే ముందు ప్లాన్ చేయండి',
+      red: 'క్యూ గరిష్ట స్థాయిలో ఉంది',
+      blue: 'భారీ వర్షం అంతరాయం',
+      purple: 'ప్రత్యేక పండుగ సూచన',
+      orange: 'పరిమిత టోకెన్ స్లాట్లు అందుబాటులో',
+      night: 'రేపు మెరుగ్గా ఉంటుంది',
+      alert: 'అలిపిరి మార్గం మూసివేత'
+    },
+    recommendations: {
+      green: 'ఇప్పుడే హోటల్ నుండి బయలుదేరండి.',
+      yellow: 'ముందు కపిల తీర్థం సందర్శించండి. భోజనం తర్వాత తిరిగి రండి.',
+      red: 'ఇప్పుడు క్యూలో చేరవద్దు. తిరుపతి అన్వేషించండి.',
+      blue: 'అలిపిరి మెట్లు అవాయిడ్ చేయండి. RTC బస్ తీసుకోండి.',
+      orange: 'ఇప్పుడే అలిపిరికి వెళ్ళండి. స్లాట్లు త్వరలో అయిపోవచ్చు.',
+      purple: 'ఈ రాత్రి తిరుపతిలో ఉండండి. రేపు ఉదయం బయలుదేరండి.',
+      night: 'బాగా విశ్రాంతి తీసుకోండి. ఉదయం 6:30కి హోటల్ నుండి బయలుదేరండి.',
+      alert: 'RTC బస్ వాడండి. ప్రత్యామ్నాయ మార్గం సిద్ధంగా ఉంది.'
+    },
+    why: {
+      green: 'ఈ రోజు మధ్యాహ్నం రద్దీ నుండి తప్పించుకుంటారు.',
+      yellow: 'మధ్యాహ్నం సమయంలో క్యూ గణనీయంగా తగ్గుతుంది.',
+      red: 'ఇప్పుడు చేరితే 11 గంటల క్యూలో ఇరుక్కుంటారు.',
+      blue: 'భారీ వర్షంలో కాలిబాటలు జారుతాయి.',
+      purple: 'రాత్రి క్యూ వేచి సమయాలు గరిష్ట స్థాయిలో ఉన్నాయి.',
+      orange: 'SSD టోకెన్ హోల్డర్లు 10+ గంటల క్యూను దాటవేస్తారు.',
+      night: 'ఉదయం క్యూ ప్రవేశం 80% వేగంగా ఉంటుంది.',
+      alert: 'ప్రధాన అలిపిరి ప్రవేశ ద్వారంలో నిర్వహణ పనులు జరుగుతున్నాయి.'
+    },
+    benefits: {
+      green: 'ఇప్పుడు చర్య తీసుకుని 3 గంటలు ఆదా చేయండి',
+      yellow: '1 గంట వేచి సమయం ఆదా',
+      red: '8 గం. 45 ని. ఆదా',
+      blue: '2 గంటల వాతావరణ ఆలస్యం నివారించండి',
+      purple: 'మొత్తం 12 గంటల వేచి ఆదా',
+      orange: 'కోటా అయిపోకముందే చిన్న క్యూలో చేరండి',
+      night: 'తిరుపతిలో నిద్రించి 4 గంటలు ఆదా',
+      alert: 'అలిపిరి మూసివేతను ఇబ్బంది లేకుండా దాటండి'
+    },
+    ctas: {
+      green: 'యాత్ర ప్రారంభించండి →',
+      yellow: 'సూచించిన ప్లాన్ చూడండి →',
+      red: 'నా ప్లాన్ ప్రారంభించండి →',
+      blue: 'సురక్షిత మార్గం చూడండి →',
+      purple: 'రేపటి ప్లాన్ →',
+      orange: 'SSD కౌంటర్కు వెళ్ళండి →',
+      night: 'రిమైండర్ సెట్ చేయండి →',
+      alert: 'ప్రత్యామ్నాయ మార్గం చూడండి →'
+    }
+  }
+};
 
 // ── Darshan wait time cards ───────────────────────────────────────────────────
 const DARSHAN_CARDS = [
@@ -53,6 +227,8 @@ const METRIC_ICON: Record<string, React.ReactNode> = {
 };
 
 export function HomeHero({ userName, locationName, weatherTemp, liveStatus, activeAlertsCount }: any) {
+  const lang = useLanguage();
+  const t = TEXTS[lang];
   const [overrideScenario, setOverrideScenario] = useState<string>('auto');
 
   // Real wait time from admin — fallback to crowd-level estimates
@@ -67,21 +243,21 @@ export function HomeHero({ userName, locationName, weatherTemp, liveStatus, acti
 
   // "Updated X min ago" from lastUpdated timestamp
   const updatedLabel: string = (() => {
-    if (!liveStatus?.lastUpdated) return 'Live';
+    if (!liveStatus?.lastUpdated) return t.labels.live;
     const diff = Math.floor((Date.now() - new Date(liveStatus.lastUpdated).getTime()) / 60000);
-    if (diff < 1) return 'Just now';
-    if (diff < 60) return `${diff} min ago`;
+    if (diff < 1) return t.labels.justNow;
+    if (diff < 60) return `${diff} ${t.labels.minAgo}`;
     const hrs = Math.floor(diff / 60);
     if (hrs < 24) return `${hrs}h ago`;
-    return 'Today';
+    return t.labels.today;
   })();
 
   const getGreetingPrefix = () => {
     const hr = new Date().getHours();
-    if (hr >= 5 && hr < 12) return 'Good Morning';
-    if (hr >= 12 && hr < 17) return 'Good Afternoon';
-    if (hr >= 17 && hr < 21) return 'Good Evening';
-    return 'Good Night';
+    if (hr >= 5 && hr < 12) return t.greetings.morning;
+    if (hr >= 12 && hr < 17) return t.greetings.afternoon;
+    if (hr >= 17 && hr < 21) return t.greetings.evening;
+    return t.greetings.night;
   };
 
   const crowdLevel = (liveStatus?.crowdLevel || 'high').toLowerCase();
@@ -161,9 +337,9 @@ export function HomeHero({ userName, locationName, weatherTemp, liveStatus, acti
       case 'green':
         return {
           key: 'green',
-          badge: 'LOW CROWD',
+          badge: t.badges.lowCrowd,
           badgeDot: '#34D399',
-          subtitle: 'Perfect Time for Darshan',
+          subtitle: t.subtitles.green,
           bgGradient: 'linear-gradient(135deg, #0F6A4B 0%, #064E3B 100%)',
           btnBg: '#059669',
           accentColor: '#059669',
@@ -176,18 +352,18 @@ export function HomeHero({ userName, locationName, weatherTemp, liveStatus, acti
             ssd:   getDarshanWait('ssd'),
             special: getDarshanWait('special'),
           },
-          recommendation: 'Leave your hotel now.',
-          why: "You'll avoid today's afternoon rush.",
-          benefit: 'Save 3 hours by acting now',
-          cta: 'Start Journey →'
+          recommendation: t.recommendations.green,
+          why: t.why.green,
+          benefit: t.benefits.green,
+          cta: t.ctas.green
         };
 
       case 'yellow':
         return {
           key: 'yellow',
-          badge: 'MODERATE CROWD',
+          badge: t.badges.moderateCrowd,
           badgeDot: '#FDE047',
-          subtitle: 'Plan Before You Go',
+          subtitle: t.subtitles.yellow,
           bgGradient: 'linear-gradient(135deg, #78350F 0%, #451A03 100%)',
           btnBg: '#D97706',
           accentColor: '#D97706',
@@ -200,18 +376,18 @@ export function HomeHero({ userName, locationName, weatherTemp, liveStatus, acti
             ssd:   getDarshanWait('ssd'),
             special: getDarshanWait('special'),
           },
-          recommendation: 'Visit Kapila Theertham first. Return after lunch.',
-          why: 'Queue clears significantly during afternoon slot.',
-          benefit: 'Save 1 Hour wait time',
-          cta: 'View Suggested Plan →'
+          recommendation: t.recommendations.yellow,
+          why: t.why.yellow,
+          benefit: t.benefits.yellow,
+          cta: t.ctas.yellow
         };
 
       case 'blue':
         return {
           key: 'blue',
-          badge: 'WEATHER ALERT',
+          badge: t.badges.weatherAlert,
           badgeDot: '#60A5FA',
-          subtitle: 'Heavy Rain Disruption',
+          subtitle: t.subtitles.blue,
           bgGradient: 'linear-gradient(135deg, #1E3A8A 0%, #0F172A 100%)',
           btnBg: '#2563EB',
           accentColor: '#2563EB',
@@ -224,18 +400,18 @@ export function HomeHero({ userName, locationName, weatherTemp, liveStatus, acti
             ssd:   getDarshanWait('ssd'),
             special: getDarshanWait('special'),
           },
-          recommendation: 'Avoid Alipiri Steps. Take RTC Bus.',
-          why: 'Footpaths are slippery during heavy rain.',
-          benefit: 'Avoid 2 Hours weather delay',
-          cta: 'View Safe Route →'
+          recommendation: t.recommendations.blue,
+          why: t.why.blue,
+          benefit: t.benefits.blue,
+          cta: t.ctas.blue
         };
 
       case 'purple':
         return {
           key: 'purple',
-          badge: 'FESTIVAL RUSH',
+          badge: t.badges.festivalRush,
           badgeDot: '#C084FC',
-          subtitle: 'Special Festival Advisory',
+          subtitle: t.subtitles.purple,
           bgGradient: 'linear-gradient(135deg, #581C87 0%, #3B0764 100%)',
           btnBg: '#9333EA',
           accentColor: '#9333EA',
@@ -248,18 +424,18 @@ export function HomeHero({ userName, locationName, weatherTemp, liveStatus, acti
             ssd:   getDarshanWait('ssd'),
             special: getDarshanWait('special'),
           },
-          recommendation: 'Stay in Tirupati tonight. Start tomorrow morning.',
-          why: 'Overnight queue wait times are at maximum capacity.',
-          benefit: 'Save 12 Hours total wait',
-          cta: "Tomorrow's Plan →"
+          recommendation: t.recommendations.purple,
+          why: t.why.purple,
+          benefit: t.benefits.purple,
+          cta: t.ctas.purple
         };
 
       case 'orange':
         return {
           key: 'orange',
-          badge: 'SSD OPEN',
+          badge: t.badges.ssdOpen,
           badgeDot: '#FB923C',
-          subtitle: 'Limited Token Slots Active',
+          subtitle: t.subtitles.orange,
           bgGradient: 'linear-gradient(135deg, #9A3412 0%, #7C2D12 100%)',
           btnBg: '#EA580C',
           accentColor: '#EA580C',
@@ -272,18 +448,18 @@ export function HomeHero({ userName, locationName, weatherTemp, liveStatus, acti
             ssd:   getDarshanWait('ssd'),
             special: getDarshanWait('special'),
           },
-          recommendation: 'Head to Alipiri now. Slots may finish soon.',
-          why: 'SSD token holders bypass main 10+ hour queue.',
-          benefit: 'Lock in short queue before quota ends',
-          cta: 'Go to SSD Counter →'
+          recommendation: t.recommendations.orange,
+          why: t.why.orange,
+          benefit: t.benefits.orange,
+          cta: t.ctas.orange
         };
 
       case 'night':
         return {
           key: 'night',
-          badge: 'NIGHT UPDATE',
+          badge: t.badges.nightUpdate,
           badgeDot: '#818CF8',
-          subtitle: 'Tomorrow Looks Better',
+          subtitle: t.subtitles.night,
           bgGradient: 'linear-gradient(135deg, #1E1B4B 0%, #0F172A 100%)',
           btnBg: '#4F46E5',
           accentColor: '#4F46E5',
@@ -296,18 +472,18 @@ export function HomeHero({ userName, locationName, weatherTemp, liveStatus, acti
             ssd:   getDarshanWait('ssd'),
             special: getDarshanWait('special'),
           },
-          recommendation: 'Rest well. Leave hotel at 6:30 AM.',
-          why: 'Early morning queue entry is 80% faster.',
-          benefit: 'Save 4 hours by sleeping in Tirupati',
-          cta: 'Set Reminder →'
+          recommendation: t.recommendations.night,
+          why: t.why.night,
+          benefit: t.benefits.night,
+          cta: t.ctas.night
         };
 
       case 'alert':
         return {
           key: 'alert',
-          badge: 'IMPORTANT ADVISORY',
+          badge: t.badges.importantAdvisory,
           badgeDot: '#F87171',
-          subtitle: 'Alipiri Route Closure',
+          subtitle: t.subtitles.alert,
           bgGradient: 'linear-gradient(135deg, #881337 0%, #4C0519 100%)',
           btnBg: '#E11D48',
           accentColor: '#E11D48',
@@ -321,19 +497,19 @@ export function HomeHero({ userName, locationName, weatherTemp, liveStatus, acti
             { label: 'Delay', value: '+45 mins' }
           ],
           darshanWaits: null,
-          recommendation: 'Use RTC Bus. Alternative route ready.',
-          why: 'Maintenance work active on primary Alipiri entrance.',
-          benefit: 'Bypass Alipiri closure without hassle',
-          cta: 'View Alternative Route →'
+          recommendation: t.recommendations.alert,
+          why: t.why.alert,
+          benefit: t.benefits.alert,
+          cta: t.ctas.alert
         };
 
       case 'red':
       default:
         return {
           key: 'red',
-          badge: 'HEAVY CROWD',
+          badge: t.badges.heavyCrowd,
           badgeDot: '#EF4444',
-          subtitle: 'Queue at Peak Capacity',
+          subtitle: t.subtitles.red,
           bgGradient: 'linear-gradient(135deg, #7F1D1D 0%, #450A0A 100%)',
           btnBg: '#C2410C',
           accentColor: '#C2410C',
@@ -346,10 +522,10 @@ export function HomeHero({ userName, locationName, weatherTemp, liveStatus, acti
             ssd:   getDarshanWait('ssd'),
             special: getDarshanWait('special'),
           },
-          recommendation: "Don't join the queue now. Explore Tirupati.",
-          why: 'Joining now puts you in the peak 11-hour queue bottleneck.',
-          benefit: 'You save 8h 45m',
-          cta: 'Start My Plan →'
+          recommendation: t.recommendations.red,
+          why: t.why.red,
+          benefit: t.benefits.red,
+          cta: t.ctas.red
         };
     }
   };
@@ -385,12 +561,16 @@ export function HomeHero({ userName, locationName, weatherTemp, liveStatus, acti
         }}>
 
           {/* Left — bare menu icon */}
-          <button style={{
-            width: '36px', height: '36px', flexShrink: 0,
-            background: 'none', border: 'none',
-            display: 'flex', alignItems: 'center', justifyContent: 'center',
-            cursor: 'pointer', padding: 0
-          }}>
+          <button 
+            onClick={() => window.dispatchEvent(new CustomEvent('toggle-side-menu'))}
+            aria-label="Toggle navigation menu"
+            style={{
+              width: '36px', height: '36px', flexShrink: 0,
+              background: 'none', border: 'none',
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+              cursor: 'pointer', padding: 0
+            }}
+          >
             <Menu size={20} color="#2D4A3E" strokeWidth={1.8} />
           </button>
 
@@ -426,7 +606,7 @@ export function HomeHero({ userName, locationName, weatherTemp, liveStatus, acti
               textTransform: 'uppercase',
               lineHeight: 1
             }}>
-              Your Tirumala Companion
+              {t.header.companion}
             </div>
           </div>
 
@@ -489,7 +669,7 @@ export function HomeHero({ userName, locationName, weatherTemp, liveStatus, acti
         </div>
 
         <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '13px', fontWeight: 600, color: '#64748B' }}>
-          <span>Today • {todayDateStr}</span>
+          <span>{t.labels.today} • {todayDateStr}</span>
           <span style={{ opacity: 0.4 }}>|</span>
           <Sun size={15} color="#D97706" />
           <span>{weatherTemp || '26°C'}</span>
@@ -502,7 +682,7 @@ export function HomeHero({ userName, locationName, weatherTemp, liveStatus, acti
           {getGreetingPrefix()}, {userName || 'Sunil'}
         </h1>
         <p style={{ fontSize: '13.5px', color: '#059669', margin: '4px 0 0 0', fontWeight: 700, lineHeight: '1.4' }}>
-          Based on your current situation, here's the best thing to do next — and why.
+          {t.tagline}
         </p>
       </div>
 
@@ -544,7 +724,7 @@ export function HomeHero({ userName, locationName, weatherTemp, liveStatus, acti
           </button>
 
           <span style={{ fontSize: '11px', opacity: 0.85, fontWeight: 600 }}>
-            Updated {updatedLabel}
+            {t.labels.updated} {updatedLabel}
           </span>
         </div>
 
@@ -558,7 +738,7 @@ export function HomeHero({ userName, locationName, weatherTemp, liveStatus, acti
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '6px', marginBottom: '14px' }}>
           <div style={{ backgroundColor: 'rgba(0, 0, 0, 0.18)', borderRadius: '12px', padding: '8px 6px', textAlign: 'center' }}>
             <div style={{ fontSize: '9.5px', fontWeight: 800, opacity: 0.85, textTransform: 'uppercase', letterSpacing: '0.3px' }}>
-              Current Wait
+              {t.labels.currentWait}
             </div>
             <div style={{ fontSize: '16px', fontWeight: 900, marginTop: '2px', color: '#FFF' }}>
               {scenario.currentWait}
@@ -567,7 +747,7 @@ export function HomeHero({ userName, locationName, weatherTemp, liveStatus, acti
 
           <div style={{ backgroundColor: 'rgba(255, 255, 255, 0.18)', borderRadius: '12px', padding: '8px 6px', textAlign: 'center' }}>
             <div style={{ fontSize: '9.5px', fontWeight: 800, opacity: 0.95, textTransform: 'uppercase', letterSpacing: '0.3px' }}>
-              Best Time
+              {t.labels.bestTime}
             </div>
             <div style={{ fontSize: '16px', fontWeight: 900, marginTop: '2px', color: '#FFF' }}>
               {scenario.bestTime}
@@ -704,7 +884,7 @@ export function HomeHero({ userName, locationName, weatherTemp, liveStatus, acti
             }}>
               <div style={{ fontSize: '10px', fontWeight: 800, color: scenario.accentColor, textTransform: 'uppercase', letterSpacing: '0.6px', marginBottom: '4px', display: 'flex', alignItems: 'center', gap: '5px' }}>
                 <Sparkles size={13} color={scenario.accentColor} />
-                <span>SAARTHI RECOMMENDS</span>
+                <span>{t.labels.saarthiRecommends}</span>
               </div>
               
               <div style={{ fontSize: '14px', fontWeight: 800, color: '#0F172A', lineHeight: '1.3', marginBottom: '8px' }}>
@@ -712,7 +892,7 @@ export function HomeHero({ userName, locationName, weatherTemp, liveStatus, acti
               </div>
 
               <div style={{ fontSize: '10px', fontWeight: 800, color: '#64748B', textTransform: 'uppercase', letterSpacing: '0.4px', marginBottom: '4px' }}>
-                RECOMMENDED BECAUSE
+                {t.labels.recommendedBecause}
               </div>
 
               <div style={{ display: 'flex', flexDirection: 'column', gap: '4px', marginBottom: '10px' }}>
@@ -749,10 +929,10 @@ export function HomeHero({ userName, locationName, weatherTemp, liveStatus, acti
       {/* Section Header Below Card */}
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: '24px', marginBottom: '12px' }}>
         <h3 style={{ fontSize: '17px', fontWeight: 800, color: '#0F172A', margin: 0 }}>
-          Right now on the hill
+          {t.labels.rightNowOnHill}
         </h3>
         <Link href="/live" style={{ fontSize: '13px', fontWeight: 700, color: '#0E6B72', textDecoration: 'none' }}>
-          view All &gt;
+          {t.labels.viewAll}
         </Link>
       </div>
       </div>

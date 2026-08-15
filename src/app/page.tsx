@@ -7,6 +7,7 @@ import { useHomeData } from '@/hooks/useHomeData';
 import { useTrip } from '@/components/TripContext';
 import { LoadingState } from '@/components/common/LoadingState';
 import { calculateDrivingDistance, TIRUPATI_CENTER } from '@/lib/location';
+import { useLanguage } from '@/lib/useLanguage';
 import {
   HomeHero,
   ActiveAlerts,
@@ -16,9 +17,24 @@ import {
   LiveStatusWidget
 } from '@/components/home';
 
+const TEXTS = {
+  en: {
+    loading: 'Loading your Saarthi...',
+    nearbyPlaces: 'Nearby Places',
+    seeAll: 'See all →'
+  },
+  te: {
+    loading: 'మీ సారథి లోడ్ అవుతోంది...',
+    nearbyPlaces: 'సమీపంలోని ప్రదేశాలు',
+    seeAll: 'అన్నీ చూడండి →'
+  }
+};
+
 export default function HomePage() {
   const home = useHomeData();
   const { userLocation } = useTrip();
+  const lang = useLanguage();
+  const t = TEXTS[lang];
 
   const origin = userLocation ?? TIRUPATI_CENTER;
 
@@ -39,7 +55,7 @@ export default function HomePage() {
   }, [home.places?.allPlaces, origin.lat, origin.lng]);
 
   if (home.loading) {
-    return <LoadingState message="Loading your Saarthi..." />;
+    return <LoadingState message={t.loading} />;
   }
 
   return (
@@ -55,8 +71,8 @@ export default function HomePage() {
       {nearbyPlaces.length > 0 && (
         <div style={{ padding: '4px 0 8px 0' }}>
           <div style={{ padding: '0 16px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '10px' }}>
-            <p style={{ fontSize: '11px', fontWeight: 700, color: '#94A3B8', letterSpacing: '0.8px', textTransform: 'uppercase', margin: 0 }}>Nearby Places</p>
-            <Link href="/explore" style={{ fontSize: '11.5px', fontWeight: 700, color: '#10B981', textDecoration: 'none' }}>See all →</Link>
+            <p style={{ fontSize: '11px', fontWeight: 700, color: '#94A3B8', letterSpacing: '0.8px', textTransform: 'uppercase', margin: 0 }}>{t.nearbyPlaces}</p>
+            <Link href="/explore" style={{ fontSize: '11.5px', fontWeight: 700, color: '#10B981', textDecoration: 'none' }}>{t.seeAll}</Link>
           </div>
           <div style={{ display: 'flex', gap: '10px', overflowX: 'auto', padding: '0 16px 4px', scrollbarWidth: 'none' }}>
             {nearbyPlaces.map(p => (

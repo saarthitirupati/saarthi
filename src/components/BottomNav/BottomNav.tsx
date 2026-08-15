@@ -6,18 +6,36 @@ import { Home, Compass, Layers } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import styles from './BottomNav.module.css';
+import { useLanguage } from '@/lib/useLanguage';
 
-const navItems = [
-  { name: 'Home',       icon: Home,     href: '/' },
-  { name: 'Essentials', icon: Layers,   href: '/essentials', isFab: true },
-  { name: 'Explore',    icon: Compass,  href: '/explore' },
+const TEXTS = {
+  en: {
+    home: 'Home',
+    essentials: 'Essentials',
+    explore: 'Explore'
+  },
+  te: {
+    home: 'హోమ్',
+    essentials: 'అవసరాలు',
+    explore: 'అన్వేషించు'
+  }
+};
+
+const getNavItems = (t: any) => [
+  { name: t.home,       icon: Home,     href: '/' },
+  { name: t.essentials, icon: Layers,   href: '/essentials', isFab: true },
+  { name: t.explore,    icon: Compass,  href: '/explore' },
 ];
 
 export default function BottomNav() {
   const pathname  = usePathname();
   const [mounted, setMounted] = useState(false);
+  const lang = useLanguage();
+  const t = TEXTS[lang];
 
   useEffect(() => { setMounted(true); }, []);
+
+  const navItems = getNavItems(t);
 
   return (
     <nav className={styles.nav} suppressHydrationWarning>

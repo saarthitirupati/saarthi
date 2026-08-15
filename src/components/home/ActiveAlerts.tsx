@@ -2,9 +2,27 @@ import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useRouter } from 'next/navigation';
 import { AlertTriangle, AlertCircle } from 'lucide-react';
+import { useLanguage } from '@/lib/useLanguage';
+
+const TEXTS = {
+  en: {
+    criticalAlert: 'CRITICAL EMERGENCY ALERT',
+    ackClose: 'Acknowledge & Close',
+    dismiss: 'Dismiss',
+    livePilgrimAlert: 'Live Pilgrim Alert'
+  },
+  te: {
+    criticalAlert: 'అత్యవసర హెచ్చరిక',
+    ackClose: 'తెలుసుకున్నాను & మూసివేయి',
+    dismiss: 'తొలగించు',
+    livePilgrimAlert: 'యాత్రికుల లైవ్ అలర్ట్'
+  }
+};
 
 export function ActiveAlerts({ activePopupAlert, dismissAlert }: any) {
   const router = useRouter();
+  const lang = useLanguage();
+  const t = TEXTS[lang];
 
   if (!activePopupAlert) return null;
 
@@ -52,7 +70,7 @@ export function ActiveAlerts({ activePopupAlert, dismissAlert }: any) {
             <div style={{ width: '64px', height: '64px', borderRadius: '50%', backgroundColor: 'rgba(239, 68, 68, 0.15)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#EF4444', marginBottom: '24px' }}>
               <AlertTriangle size={32} color="#EF4444" />
             </div>
-            <span style={{ fontSize: '12px', fontWeight: 800, color: '#EF4444', letterSpacing: '1.5px', textTransform: 'uppercase', marginBottom: '12px' }}>CRITICAL EMERGENCY ALERT</span>
+            <span style={{ fontSize: '12px', fontWeight: 800, color: '#EF4444', letterSpacing: '1.5px', textTransform: 'uppercase', marginBottom: '12px' }}>{t.criticalAlert}</span>
             <h2 style={{ fontSize: '22px', fontWeight: 800, margin: '0 0 12px 0', fontFamily: 'var(--font-hero), Georgia, serif', lineHeight: 1.3 }}>{activePopupAlert.title}</h2>
             <p style={{ fontSize: '14px', color: '#94A3B8', margin: '0 0 20px 0', lineHeight: 1.6, maxWidth: '400px' }}>{activePopupAlert.description}</p>
             {activePopupAlert.image && (
@@ -81,7 +99,7 @@ export function ActiveAlerts({ activePopupAlert, dismissAlert }: any) {
                   background: 'rgba(255, 255, 255, 0.08)', color: '#FFFFFF', border: '1.5px solid rgba(255, 255, 255, 0.15)', borderRadius: '12px', padding: '14px', fontSize: '13px', fontWeight: 700, cursor: 'pointer'
                 }}
               >
-                Acknowledge &amp; Close
+                {t.ackClose}
               </button>
             </div>
           </motion.div>
@@ -98,7 +116,7 @@ export function ActiveAlerts({ activePopupAlert, dismissAlert }: any) {
           >
             <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '8px' }}>
               <AlertCircle size={14} color={activePopupAlert.category === 'High Priority' ? '#EA580C' : '#D97706'} />
-              <span style={{ fontSize: '11px', fontWeight: 800, color: activePopupAlert.category === 'High Priority' ? '#EA580C' : '#D97706', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Live Pilgrim Alert</span>
+              <span style={{ fontSize: '11px', fontWeight: 800, color: activePopupAlert.category === 'High Priority' ? '#EA580C' : '#D97706', textTransform: 'uppercase', letterSpacing: '0.5px' }}>{t.livePilgrimAlert}</span>
             </div>
             <h3 style={{ fontSize: '16px', fontWeight: 800, color: '#0F172A', margin: '0 0 6px 0', fontFamily: 'var(--font-hero), Georgia, serif' }}>{activePopupAlert.title}</h3>
             <p style={{ fontSize: '13px', color: '#4B5563', margin: '0 0 12px 0', lineHeight: 1.45 }}>{activePopupAlert.description}</p>
@@ -124,7 +142,7 @@ export function ActiveAlerts({ activePopupAlert, dismissAlert }: any) {
                 onClick={() => dismissAlert(activePopupAlert.id)}
                 style={{ flex: 1, background: '#F1F5F9', color: '#475569', border: '1px solid #CBD5E1', borderRadius: '12px', padding: '10px', fontSize: '12px', fontWeight: 700, cursor: 'pointer' }}
               >
-                Dismiss
+                {t.dismiss}
               </button>
             </div>
           </motion.div>

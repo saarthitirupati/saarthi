@@ -8,6 +8,7 @@ import BottomNav from '@/components/BottomNav/BottomNav';
 import { TripProvider, useTrip } from '@/components/TripContext';
 import LocationPrompt from '@/components/LocationPrompt/LocationPrompt';
 import { usePageAnalytics } from '@/hooks/usePageAnalytics';
+import GoogleTranslate from '@/components/GoogleTranslate';
 
 function LayoutContent({
   children,
@@ -43,6 +44,12 @@ function LayoutContent({
     }
   }, [isInitialized, showSplash, pathname, router, needsOnboarding]);
 
+  useEffect(() => {
+    const handleToggle = () => setIsMenuOpen(!isMenuOpen);
+    window.addEventListener('toggle-side-menu', handleToggle);
+    return () => window.removeEventListener('toggle-side-menu', handleToggle);
+  }, [setIsMenuOpen, isMenuOpen]);
+
   const isExcluded = pathname === '/onboarding' || pathname === '/splash' || isAdmin || isStudio;
   const isCheckingOrNeedsOnboarding = !isExcluded && (needsOnboarding === null || needsOnboarding === true);
   const showLocationPrompt = isInitialized && !showSplash && !isAdmin && pathname === '/' && locationPermission === 'default';
@@ -68,7 +75,7 @@ function LayoutContent({
         <SideMenu isOpen={isMenuOpen} onClose={() => setIsMenuOpen(false)} />
         <div style={{ 
           minHeight: '100vh',
-          paddingBottom: showBottomNav ? '125px' : '24px'
+          paddingBottom: showBottomNav ? 'calc(110px + env(safe-area-inset-bottom, 16px))' : '24px'
         }}>
           {children}
         </div>
@@ -136,6 +143,7 @@ export default function ClientLayout({
 
   return (
     <TripProvider>
+      <GoogleTranslate />
       <LayoutContent
         showSplash={showSplash}
         handleSplashFinish={handleSplashFinish}

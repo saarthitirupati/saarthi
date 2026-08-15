@@ -9,9 +9,17 @@ export default function Navbar({
   onMenuToggle, 
   onProfileToggle: _onProfileToggle 
 }: { 
-  onMenuToggle: () => void; 
-  onProfileToggle: () => void;
+  onMenuToggle?: () => void; 
+  onProfileToggle?: () => void;
 }) {
+  const handleMenuClick = () => {
+    if (onMenuToggle) {
+      onMenuToggle();
+    } else {
+      window.dispatchEvent(new CustomEvent('toggle-side-menu'));
+    }
+  };
+
   return (
     <nav className={styles.navbar}>
       <Link href="/" className={styles.brand}>
@@ -23,7 +31,7 @@ export default function Navbar({
       </Link>
       
       <div className={styles.actions}>
-        <button className={styles.iconButton} onClick={onMenuToggle}>
+        <button className={styles.iconButton} onClick={handleMenuClick} aria-label="Toggle menu">
           <Menu size={20} />
         </button>
       </div>

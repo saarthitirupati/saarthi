@@ -2,9 +2,25 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { Sparkles, Flame, Heart, Smile, Shield, Share2, Compass, MessageCircle } from 'lucide-react';
 import { getTodaysCompanion, TodaysCompanionData } from '@/data/dailySpiritualEngine';
 import { ShareableQuoteCardModal } from './ShareableQuoteCardModal';
+import { useLanguage } from '@/lib/useLanguage';
+
+const TEXTS = {
+  en: {
+    todaysCompanion: 'Today\'s Companion',
+    didYouKnow: 'Did You Know?',
+    share: 'Share',
+  },
+  te: {
+    todaysCompanion: 'నేటి సహచరి',
+    didYouKnow: 'మీకు తెలుసా?',
+    share: 'షేర్ చేయండి',
+  }
+};
 
 export function DailyContent(props: any) {
   const { dailyContent, liveStatus, todayFestival } = props;
+  const lang = useLanguage();
+  const t = TEXTS[lang];
 
   // Compute companion data — priority: API > engine with live context
   const companionData: TodaysCompanionData = useMemo(() => {
@@ -59,7 +75,7 @@ export function DailyContent(props: any) {
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '12px', gap: '8px' }}>
         <h3 style={{ fontSize: '17px', fontWeight: 900, color: '#0F172A', margin: 0, display: 'flex', alignItems: 'center', gap: '8px' }}>
           <Flame size={19} color="#D97706" />
-          <span>Today's Companion</span>
+          <span>{t.todaysCompanion}</span>
         </h3>
         <span style={{
           fontSize: '10.5px',
@@ -142,7 +158,7 @@ export function DailyContent(props: any) {
             }}
           >
             <Share2 size={13} />
-            <span>Share</span>
+            <span>{t.share}</span>
           </button>
         </div>
       </div>
@@ -160,7 +176,7 @@ export function DailyContent(props: any) {
           <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
             <Compass size={16} color="#D97706" />
             <span style={{ fontSize: '12px', fontWeight: 800, color: '#D97706', textTransform: 'uppercase', letterSpacing: '0.4px' }}>
-              Did You Know?
+              {t.didYouKnow}
             </span>
           </div>
           <span style={{ fontSize: '10px', fontWeight: 800, color: '#0284C7', backgroundColor: '#E0F2FE', padding: '2px 8px', borderRadius: '8px' }}>
