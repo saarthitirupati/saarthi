@@ -586,7 +586,7 @@ export function HomeHero({ userName, locationName, weatherTemp, liveStatus, acti
                 <line x1="16" y1="17" x2="16" y2="15.5" stroke="#78350F" strokeWidth="1.5" strokeLinecap="round"/>
               </svg>
 
-              <span style={{
+              <span className="notranslate" style={{
                 fontSize: '24px',
                 fontWeight: 800,
                 color: '#1A3C2E',
@@ -679,7 +679,7 @@ export function HomeHero({ userName, locationName, weatherTemp, liveStatus, acti
       {/* Personalized Greeting */}
       <div style={{ marginBottom: '18px' }}>
         <h1 style={{ fontSize: '26px', fontWeight: 800, color: '#0F172A', margin: 0, letterSpacing: '-0.02em' }}>
-          {getGreetingPrefix()}, {userName || 'Sunil'}
+          <span>{getGreetingPrefix()}</span>, <span className="notranslate">{userName || 'Sunil'}</span>
         </h1>
         <p style={{ fontSize: '13.5px', color: '#059669', margin: '4px 0 0 0', fontWeight: 700, lineHeight: '1.4' }}>
           {t.tagline}

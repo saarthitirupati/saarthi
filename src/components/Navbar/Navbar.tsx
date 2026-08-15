@@ -25,7 +25,7 @@ export default function Navbar({
       <Link href="/" className={styles.brand}>
         <Logo size={32} />
         <div className={styles.brandText}>
-          <span className={styles.appName}>Saarthi</span>
+          <span className={`${styles.appName} notranslate`}>Saarthi</span>
           <span className={styles.tagline}>Spiritual Place Guide</span>
         </div>
       </Link>
