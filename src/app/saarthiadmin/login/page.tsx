@@ -48,7 +48,7 @@ export default function AdminLogin() {
                 id="admin-email"
                 type="email"
                 className={styles.input}
-                placeholder="admin@jeevapath.in"
+                placeholder="admin@saarthiguide.in"
                 value={email}
                 onChange={e => setEmail(e.target.value)}
                 required
@@ -85,7 +85,7 @@ export default function AdminLogin() {
           </button>
         </form>
 
-        <p className={styles.hint} suppressHydrationWarning>admin@jeevapath.in · Admin@2024</p>
+        <p className={styles.hint} suppressHydrationWarning>Saarthi Administration Panel</p>
       </div>
     </div>
   );
