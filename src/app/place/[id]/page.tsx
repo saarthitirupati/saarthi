@@ -81,7 +81,8 @@ export default function PlaceDetails({ params }: { params: Promise<{ id: string 
       autoFare: 'Auto: ~₹80–₹120',
       carTime: 'Car / Taxi: ~10 mins',
       busNote: 'Bus: Available from Central Bus Stand',
-      localBeliefPrefix: 'According to local tradition: '
+      localBeliefPrefix: 'According to local tradition: ',
+      saarthiRec: 'Saarthi Recommendation'
     },
     te: {
       whyItMatters: 'ఈ ఆలయాన్ని ఎందుకు సందర్శించాలి?',
@@ -110,7 +111,8 @@ export default function PlaceDetails({ params }: { params: Promise<{ id: string 
       autoFare: 'ఆటో: సుమారు ₹80–₹120',
       carTime: 'కారు: సుమారు 10 నిమిషాలు',
       busNote: 'బస్సు: సెంట్రల్ బస్ స్టాండ్ నుండి అందుబాటులో ఉంది',
-      localBeliefPrefix: 'స్థానిక విశ్వాసం ప్రకారం: '
+      localBeliefPrefix: 'స్థానిక విశ్వాసం ప్రకారం: ',
+      saarthiRec: 'సారథి సూచన'
     }
   }[lang];
   
@@ -206,7 +208,7 @@ export default function PlaceDetails({ params }: { params: Promise<{ id: string 
   const [isRoundTrip, setIsRoundTrip] = useState(false);
   const [vehicleType, setVehicleType] = useState<'car' | 'bus' | 'bike' | 'cab' | 'suv'>('car');
   const [passengers, setPassengers] = useState<number>(1);
-  const [isBreakdownOpen, setIsBreakdownOpen] = useState(false);
+  const [isBreakdownOpen, setIsBreakdownOpen] = useState(true);
   const [fuelRates, setFuelRates] = useState<{ petrol: number; diesel: number }>({ petrol: 108.50, diesel: 96.20 });
 
   useEffect(() => {
@@ -404,16 +406,16 @@ export default function PlaceDetails({ params }: { params: Promise<{ id: string 
         : Math.max(30, Math.round(safeEffDist * 1.8));
       fare = safePassengers * ticketPrice * (isRoundTrip ? 2 : 1);
     } else if (vehicleType === 'car') {
-      const economy = isTirumala ? 8 : 14;
+      const economy = 15;
       liters = (safeEffDist / economy) * (isRoundTrip ? 2 : 1);
       fuel = liters * safePetrolRate;
-      tolls = isTirumala ? 250 : safeEffDist > 60 ? 80 : 0;
-      parking = 50;
-    } else if (vehicleType === 'bike') {
-      const economy = isTirumala ? 25 : 40;
-      liters = (safeEffDist / economy) * (isRoundTrip ? 2 : 1);
-      fuel = liters * safePetrolRate;
+      tolls = isTirumala ? 15 : safeEffDist > 60 ? 80 : 0;
       parking = 15;
+    } else if (vehicleType === 'bike') {
+      const economy = 35;
+      liters = (safeEffDist / economy) * (isRoundTrip ? 2 : 1);
+      fuel = liters * safePetrolRate;
+      parking = 5;
     } else if (vehicleType === 'cab') {
       if (isTirumala) {
         fare = isRoundTrip ? 2100 : 1100;
@@ -1311,7 +1313,7 @@ export default function PlaceDetails({ params }: { params: Promise<{ id: string 
             {/* Saarthi Recommendation */}
             <div className={styles.saarthiRecCard}>
               <div className={styles.saarthiRecText}>
-                <strong style={{ display: 'block', marginBottom: 2 }}>Saarthi Recommendation</strong>
+                <strong style={{ display: 'block', marginBottom: 2 }}>{t.saarthiRec}</strong>
                 {vehicleType === 'bus' ? (
                   isTirumalaSpot
                     ? `APSRTC Bus is the most cost-effective and secure way to ascend the Tirumala ghats. Great choice for ${passengers} ${passengers === 1 ? 'person' : 'people'}!`
