@@ -122,10 +122,10 @@ export function RecommendationCard({ liveStatus, todayFestival }: { liveStatus: 
       priorityTag: lang === 'te' ? 'ప్రాధాన్యత 3: హనుమాన్ మంగళవారం' : 'Priority 3: Hanuman Tuesday',
       reason: lang === 'te' ? 'హనుమాన్ మంగళవారం · ఏడు కొండలపై పవిత్ర హనుమాన్ ఆలయం' : 'Hanuman Tuesday · Sacred Hanuman shrine on the Seven Hills'
     };
-  } else if (dayOfWeek === 3) { // Wednesday — Kodandarama (4 km, town center)
+  } else if (dayOfWeek === 3) { // Wednesday — Kodandarama (1.5 km, town center)
     rec = {
       title: lang === 'te' ? 'శ్రీ కోదండరామ స్వామి ఆలయం' : 'Sri Kodandarama Swamy Temple',
-      distance: lang === 'te' ? '8 ని. ప్రయాణం' : '8 min drive',
+      distance: lang === 'te' ? '1.5 కి.మీ · 5 ని. ప్రయాణం' : '1.5 km · 5 min drive',
       crowdStatus: dynamicCrowd,
       link: '/place/kodandarama-temple',
       image: '/assets/temples/padmavathi.png',
