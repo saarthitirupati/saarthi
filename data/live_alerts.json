@@ -1,8 +1,8 @@
 [
   {
-    "id": "z3b3sy1cjnxvcv8zth5z9",
-    "title": "hello welcome",
-    "description": "Welcome to Saarthi Tirupati page ",
+    "id": "saarthi-welcome-alert-01",
+    "title": "Welcome to Tirupati & Tirumala Pilgrim Guide",
+    "description": "Stay updated with real-time TTD darshan wait times, SSD token releases, weather advisories, and local transport options.",
     "image": "https://res.cloudinary.com/kniegqlj/image/upload/v1785913143/temple-photoes_e4dytz.jpg",
     "category": "Advisory",
     "severity": "Medium",
@@ -10,41 +10,25 @@
     "cta": "None",
     "status": "Published",
     "target_location": "All Users",
-    "start_time": "2026-08-15T15:51:57.181Z",
-    "expiry_time": "2026-08-15T17:51:57.181Z",
-    "created_at": "2026-08-15T15:51:57.254Z",
-    "updated_at": "2026-08-15T15:51:57.254Z"
+    "start_time": "2026-08-01T00:00:00.000Z",
+    "expiry_time": "2027-12-31T23:59:59.999Z",
+    "created_at": "2026-08-01T00:00:00.000Z",
+    "updated_at": "2026-08-01T00:00:00.000Z"
   },
   {
-    "id": "190w06zo3cxyk2xemhk1ce",
-    "title": "hhhhhhhhhhhhhhh",
-    "description": "hbvkhfl vhfbv fireuhbiue ibjlebljqfbkjqfbvkjfjvebfkbklrbvkj;fvknlnj",
+    "id": "saarthi-ssd-token-alert-02",
+    "title": "SSD Token Counters Active at Srinivasam & Vishnu Nivasam",
+    "description": "Slotted Sarva Darshan (SSD) token counters are open at Srinivasam Complex, Vishnu Nivasam, and Bhudevi Complex.",
     "image": "https://res.cloudinary.com/kniegqlj/image/upload/v1785644167/mogili-shiva-hill-temple-chittoor-temples-fcvjtibn5n_iyg4fe.jpg",
-    "category": "Advisory",
+    "category": "High Priority",
     "severity": "High",
-    "popup_type": "Popup",
-    "cta": "None",
+    "popup_type": "Banner",
+    "cta": "Open Queue",
     "status": "Published",
-    "target_location": "All Users",
-    "start_time": "2026-08-11T05:47:10.667Z",
-    "expiry_time": "2026-08-11T07:47:10.667Z",
-    "created_at": "2026-08-11T05:47:10.747Z",
-    "updated_at": "2026-08-11T05:47:10.747Z"
-  },
-  {
-    "id": "hkh4eqq95n9i5zogo93ri",
-    "title": "hello",
-    "description": "bvhjckdkolk mklndhj nm cfknkjnfm csnhjknmdbvgjfhdksijodv bnkdjldjv nndjkv ",
-    "image": "https://res.cloudinary.com/kniegqlj/image/upload/v1786426765/caption_rp6a9a.jpg",
-    "category": "Advisory",
-    "severity": "High",
-    "popup_type": "Popup",
-    "cta": "None",
-    "status": "Published",
-    "target_location": "All Users",
-    "start_time": "2026-08-11T05:39:53.345Z",
-    "expiry_time": "2026-08-11T06:39:53.345Z",
-    "created_at": "2026-08-11T05:39:53.430Z",
-    "updated_at": "2026-08-11T05:39:53.430Z"
+    "target_location": "Tirupati",
+    "start_time": "2026-08-01T00:00:00.000Z",
+    "expiry_time": "2027-12-31T23:59:59.999Z",
+    "created_at": "2026-08-01T00:00:00.000Z",
+    "updated_at": "2026-08-01T00:00:00.000Z"
   }
 ]

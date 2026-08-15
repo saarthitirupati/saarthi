@@ -20,19 +20,43 @@ async function writeLocalAlerts(alerts: any[]) {
 
 export async function GET(request: Request) {
   try {
-    const now = new Date().toISOString();
+    const { searchParams } = new URL(request.url);
+    const showAll = searchParams.get('all') === 'true';
+    const now = Date.now();
+
+    // 1. Attempt Supabase live_alerts fetch
+    try {
+      let query = supabase.from('live_alerts').select('*');
+      if (!showAll) {
+        query = query.eq('status', 'Published');
+      }
+      const { data, error } = await query.order('created_at', { ascending: false });
+      if (!error && data && data.length > 0) {
+        const filtered = showAll ? data : data.filter((a: any) => {
+          if (!a.expiry_time) return true;
+          const exp = new Date(a.expiry_time).getTime();
+          return !isNaN(exp) && exp > now;
+        });
+        return NextResponse.json(filtered);
+      }
+    } catch (sbErr) {
+      console.warn('Supabase live_alerts fetch notice:', sbErr);
+    }
+
+    // 2. Fallback to local live_alerts data
     const localAlerts = await readLocalAlerts();
-    
     if (!Array.isArray(localAlerts)) {
       return NextResponse.json([]);
     }
 
-    const activeLocalAlerts = localAlerts
+    const filteredAlerts = localAlerts
       .filter((a: any) => {
-        if (!a || a.status !== 'Published') return false;
-        if (!a.expiry_time) return true; // Keep active if no expiry set
+        if (!a) return false;
+        if (showAll) return true; // Show all in admin control panel
+        if (a.status !== 'Published') return false;
+        if (!a.expiry_time) return true;
         const expTime = new Date(a.expiry_time).getTime();
-        return !isNaN(expTime) && expTime > Date.now();
+        return !isNaN(expTime) && expTime > now;
       })
       .sort((a: any, b: any) => {
         const tA = a.created_at ? new Date(a.created_at).getTime() : 0;
@@ -40,7 +64,7 @@ export async function GET(request: Request) {
         return tB - tA;
       });
 
-    return NextResponse.json(activeLocalAlerts);
+    return NextResponse.json(filteredAlerts);
   } catch (error: any) {
     console.error('API Error (/api/v1/alerts):', error);
     return NextResponse.json([]);
