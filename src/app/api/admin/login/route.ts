@@ -1,9 +1,9 @@
 import { NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
 
-const EMAIL    = 'admin@jeevapath.in';
-const PASSWORD = 'Admin@2024';
-const TOKEN    = 'jeevapath_admin_2024';
+const EMAIL    = process.env.ADMIN_EMAIL || 'admin@saarthiguide.in';
+const PASSWORD = process.env.ADMIN_PASSWORD || 'Saarthi@2026';
+const TOKEN    = 'saarthi_admin_token_2026';
 
 export async function POST(req: Request) {
   const { email, password } = await req.json();
