@@ -51,17 +51,17 @@ export async function POST(request: Request) {
   try {
     const body = await request.json();
     const now = new Date().toISOString();
-    const id = Math.random().toString(36).substring(2) + Math.random().toString(36).substring(2);
+    const id = body.id || (Math.random().toString(36).substring(2) + Math.random().toString(36).substring(2));
 
     const newAlert = {
       id,
       title: body.title,
       description: body.description,
       image: body.image || '',
-      category: body.category,
-      severity: body.severity,
-      popup_type: body.popup_type,
-      cta: body.cta,
+      category: body.category || 'Advisory',
+      severity: body.severity || 'Medium',
+      popup_type: body.popup_type || 'Popup',
+      cta: body.cta || 'None',
       status: body.status || 'Published',
       target_location: body.target_location || 'All Users',
       start_time: body.start_time || now,
@@ -70,15 +70,31 @@ export async function POST(request: Request) {
       updated_at: now
     };
 
-    // TODO: re-enable once 'live_alerts' table is created in Supabase
-    const localAlerts = await readLocalAlerts();
-    localAlerts.unshift(newAlert);
-    await writeLocalAlerts(localAlerts);
+    // 1. Attempt Supabase live_alerts insert
+    try {
+      const { data, error } = await supabase.from('live_alerts').insert([newAlert]).select();
+      if (!error && data && data[0]) {
+        return NextResponse.json(data[0], { status: 201 });
+      }
+    } catch (sbErr) {
+      console.warn('Supabase live_alerts insert notice:', sbErr);
+    }
 
-    return NextResponse.json(newAlert);
+    // 2. Attempt local filesystem write (local dev fallback)
+    try {
+      const localAlerts = await readLocalAlerts();
+      if (Array.isArray(localAlerts)) {
+        localAlerts.unshift(newAlert);
+        await writeLocalAlerts(localAlerts);
+      }
+    } catch (fsErr) {
+      console.warn('Vercel read-only filesystem environment:', fsErr);
+    }
+
+    return NextResponse.json(newAlert, { status: 201 });
   } catch (error: any) {
     console.error('API Error (/api/v1/alerts POST):', error);
-    return NextResponse.json({ error: 'Failed to create alert' }, { status: 500 });
+    return NextResponse.json({ error: error?.message || 'Failed to create alert' }, { status: 400 });
   }
 }
 
