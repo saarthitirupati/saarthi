@@ -21,7 +21,7 @@ export default function AdminLogin() {
       body: JSON.stringify({ email, password }),
     });
     if (res.ok) {
-      router.push('/saarthiadmin');
+      window.location.href = '/saarthiadmin';
     } else {
       const d = await res.json();
       setError(d.error ?? 'Login failed');
