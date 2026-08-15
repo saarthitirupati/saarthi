@@ -21,19 +21,29 @@ async function writeLocalAlerts(alerts: any[]) {
 export async function GET(request: Request) {
   try {
     const now = new Date().toISOString();
-
-    // TODO: re-enable once 'live_alerts' table is created in Supabase
-    // const { data, error } = await supabase.from('live_alerts').select('*')...
-
     const localAlerts = await readLocalAlerts();
+    
+    if (!Array.isArray(localAlerts)) {
+      return NextResponse.json([]);
+    }
+
     const activeLocalAlerts = localAlerts
-      .filter((a: any) => a.status === 'Published' && new Date(a.expiry_time) > new Date(now))
-      .sort((a: any, b: any) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
+      .filter((a: any) => {
+        if (!a || a.status !== 'Published') return false;
+        if (!a.expiry_time) return true; // Keep active if no expiry set
+        const expTime = new Date(a.expiry_time).getTime();
+        return !isNaN(expTime) && expTime > Date.now();
+      })
+      .sort((a: any, b: any) => {
+        const tA = a.created_at ? new Date(a.created_at).getTime() : 0;
+        const tB = b.created_at ? new Date(b.created_at).getTime() : 0;
+        return tB - tA;
+      });
 
     return NextResponse.json(activeLocalAlerts);
   } catch (error: any) {
     console.error('API Error (/api/v1/alerts):', error);
-    return NextResponse.json({ error: 'Failed to fetch alerts' }, { status: 500 });
+    return NextResponse.json([]);
   }
 }
 
