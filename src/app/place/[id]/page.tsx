@@ -55,6 +55,9 @@ export default function PlaceDetails({ params }: { params: Promise<{ id: string 
   
   const t = {
     en: {
+      whyItMatters: 'Why Visit This Temple?',
+      spiritualEssence: 'Temple Highlights & Significance',
+      culturalContext: 'History & Divine Features',
       overview: '🏛 About the Temple',
       knowBefore: '👕 Know Before You Visit',
       dressCode: 'Dress Code:',
@@ -65,8 +68,8 @@ export default function PlaceDetails({ params }: { params: Promise<{ id: string 
       facilities: '📍 Facilities Available',
       related: '📍 Nearby Places to Visit',
       legend: '📖 Sacred Legend & History',
-      originStory: 'Local Tradition & Legend',
-      mythologicalContext: 'Historical & Temple Tradition',
+      originStory: 'According to Local Tradition',
+      mythologicalContext: 'History & Temple Significance',
       feedbackTitle: 'Was this guide helpful?',
       feedbackDesc: 'Saarthi provides locally verified information. Let us know if this guide was useful for your yatra.',
       feedbackSuccess: 'Thank you! Your feedback helps us build the most trusted companion for pilgrims.',
@@ -75,12 +78,15 @@ export default function PlaceDetails({ params }: { params: Promise<{ id: string 
       submitFeedback: 'Submit Feedback',
       navigateNow: 'Navigate Now',
       howToReach: '🚗 How to Reach',
-      autoFare: 'Auto Fare: ~₹80–₹120',
-      carTime: 'Car / Taxi: ~10 mins',
-      busNote: 'Bus: Available from Central Bus Stand',
+      autoFare: '🛺 Auto: ~₹80–₹120',
+      carTime: '🚗 Car: ~10 mins',
+      busNote: '🚌 Bus: Available from Central Bus Stand',
       localBeliefPrefix: 'According to local tradition: '
     },
     te: {
+      whyItMatters: 'ఈ ఆలయాన్ని ఎందుకు సందర్శించాలి?',
+      spiritualEssence: 'ఈ ఆలయ ప్రత్యేకత',
+      culturalContext: 'చరిత్ర & విశిష్టత',
       overview: '🏛 ఆలయం గురించి',
       knowBefore: '👕 సందర్శించే ముందు తెలుసుకోవాల్సిన విషయాలు',
       dressCode: 'సంప్రదాయ దుస్తులు:',
@@ -653,15 +659,15 @@ export default function PlaceDetails({ params }: { params: Promise<{ id: string 
       <div className={styles.scrollableContent}>
         {/* ─── 3. WHY VISIT ─── */}
         <section className={styles.section} id="why-visit">
-          <h2 className={styles.sectionTitle}>Why it Matters</h2>
+          <h2 className={styles.sectionTitle}>{t.whyItMatters}</h2>
           <div className={styles.mattersCard}>
             <div className={styles.mattersHeader}>
               <div className={styles.mattersIconWrapper}>
                 <Compass size={24} color="var(--color-saffron-500)" />
               </div>
               <div style={{ flex: 1 }}>
-                <h3>Historical & Spiritual Essence</h3>
-                <p>Cultural context &amp; significance</p>
+                <h3>{t.spiritualEssence}</h3>
+                <p>{t.culturalContext}</p>
                 <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6, marginTop: 8 }}>
                   {place.architecture && (
                     <span className={styles.heritageTag}>
@@ -717,7 +723,7 @@ export default function PlaceDetails({ params }: { params: Promise<{ id: string 
         <section className={styles.section} id="travel">
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '10px', marginBottom: '14px' }}>
             <h2 className={styles.sectionTitle} style={{ margin: 0 }}>
-              <Car size={20} style={{ display: 'inline', marginRight: 6, verticalAlign: 'middle' }} /> Best Way to Reach
+              {t.howToReach}
             </h2>
             <Link
               href={`/trip-estimator?destId=${place.id}`}
