@@ -17,16 +17,16 @@ const TEXTS = {
     coveredIndoor: 'Covered & Indoor',
   },
   te: {
-    recommended: 'సిఫార్సు',
-    whyRecommended: 'ఎందుకు సిఫార్సు:',
+    recommended: 'సారథి సూచన',
+    whyRecommended: 'సారథి సూచన:',
     viewDetails: 'వివరాలు చూడండి',
     quietNight: 'ప్రశాంతం · రాత్రి సమయం',
     lowCrowd: 'తక్కువ రద్దీ · వేగ ప్రవేశం',
-    modCrowd: 'మధ్యస్థం · ~30 ని. వేచి',
+    modCrowd: 'మోస్తరు రద్దీ · ~30 ని. వేచి',
     highCrowd: 'అధిక రద్దీ · ముందుగా ప్లాన్ చేయండి',
     peakCrowd: 'గరిష్ట రద్దీ · ఎక్కువ వేచి',
     checkLive: 'లైవ్ స్థితి చూడండి',
-    coveredIndoor: 'కవర్డ్ & ఇండోర్',
+    coveredIndoor: 'వాతావరణం అనుకూలంగా ఉంది · ఇండోర్',
   }
 };
 

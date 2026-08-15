@@ -11,6 +11,7 @@ import { useSpeechSynthesis } from '@/utils/useSpeechSynthesis';
 import { useRealtimePlaces } from '@/lib/useRealtimePlaces';
 import { calculateDrivingDistance, getOsrmRoadRoute } from '@/utils/location';
 import { findNearestPlaceCandidates } from '@/lib/location';
+import { useLanguage } from '@/lib/useLanguage';
 
 function parseBestSlot(str: string): { title: string; subtitle: string } {
   if (!str) return { title: 'Anytime', subtitle: 'Recommended time' };
@@ -50,6 +51,52 @@ function parseBestSlot(str: string): { title: string; subtitle: string } {
 
 export default function PlaceDetails({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params);
+  const lang = useLanguage();
+  
+  const t = {
+    en: {
+      overview: 'Overview',
+      knowBefore: 'Know Before You Go',
+      dressCode: 'Dress Code:',
+      photoRule: 'Phones & Cameras:',
+      footwearRule: 'Footwear:',
+      entryRule: 'Entry & Fees:',
+      crowdNote: 'Crowds:',
+      facilities: 'Facilities Available',
+      related: 'Related Places',
+      legend: 'The Legend',
+      originStory: 'Origin Story',
+      mythologicalContext: 'Historical & Mythological Context',
+      feedbackTitle: 'Was this guide helpful?',
+      feedbackDesc: 'Saarthi is powered by verified local knowledge. Let us know if you found this guide helpful.',
+      feedbackSuccess: 'Thank you! Your feedback helps us build the most trusted operating layer for Tirupati.',
+      helpful: 'Helpful',
+      needsWork: 'Needs Work',
+      submitFeedback: 'Submit Feedback',
+      navigateNow: 'Navigate Now'
+    },
+    te: {
+      overview: 'ఆలయం గురించి',
+      knowBefore: 'సందర్శించే ముందు తెలుసుకోవాల్సిన విషయాలు',
+      dressCode: 'సంప్రదాయ దుస్తులు:',
+      photoRule: 'ఫోన్లు & కెమెరాలు:',
+      footwearRule: 'పాదరక్షలు:',
+      entryRule: 'ప్రవేశం & రుసుము:',
+      crowdNote: 'రద్దీ సమాచారం:',
+      facilities: 'అందుబాటులో ఉన్న సౌకర్యాలు',
+      related: 'సమీపంలోని ఇతర ప్రదేశాలు',
+      legend: 'స్థల పురాణం',
+      originStory: 'ఆలయ విశేషం',
+      mythologicalContext: 'చరిత్ర & విశిష్టత',
+      feedbackTitle: 'ఈ మార్గదర్శకం మీకు ఉపయోగపడిందా?',
+      feedbackDesc: 'స్థానికంగా ధృవీకరించిన సమాచారంతో సారథి ఈ మార్గదర్శకాన్ని రూపొందించింది. ఈ సమాచారం మీకు ఉపయోగపడిందో లేదో తెలియజేయండి.',
+      feedbackSuccess: 'ధన్యవాదాలు! మీ అభిప్రాయం మా సేవలను మరింత మెరుగుపరచడానికి తోడ్పడుతుంది.',
+      helpful: 'ఉపయోగపడింది',
+      needsWork: 'ఇంకా మెరుగుపరచవచ్చు',
+      submitFeedback: 'అభిప్రాయాన్ని సమర్పించండి',
+      navigateNow: 'ప్రయాణం ప్రారంభించండి'
+    }
+  }[lang];
   
   const { places, loading } = useRealtimePlaces(PLACES);
   const [dbFetchedPlace, setDbFetchedPlace] = useState<Place | null>(null);
@@ -1448,7 +1495,7 @@ export default function PlaceDetails({ params }: { params: Promise<{ id: string 
 
         {/* ─── 6. ABOUT ─── */}
         <section className={styles.section} id="about">
-          <h2 className={styles.sectionTitle}>Overview</h2>
+          <h2 className={styles.sectionTitle}>{t.overview}</h2>
           <div className={styles.introCard}>
             <p className={styles.introText}>{guide.shortIntro}</p>
             {isSupported && (
@@ -1465,7 +1512,7 @@ export default function PlaceDetails({ params }: { params: Promise<{ id: string 
 
         {/* ─── KNOW BEFORE YOU GO / TIPS ─── */}
         <section className={styles.section} id="tips">
-          <h2 className={styles.sectionTitle}>Know Before You Go</h2>
+          <h2 className={styles.sectionTitle}>{t.knowBefore}</h2>
           
           <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
             <div className={styles.tipCard} style={{ background: '#F8FAFC', border: '1px solid #E2E8F0', padding: '16px', borderRadius: '16px' }}>
@@ -1473,31 +1520,31 @@ export default function PlaceDetails({ params }: { params: Promise<{ id: string 
                 <li style={{ display: 'flex', gap: '12px', alignItems: 'flex-start' }}>
                   <CheckCircle2 size={18} color="#10B981" style={{ flexShrink: 0, marginTop: '2px' }} />
                   <div>
-                    <span style={{ fontWeight: 700, color: '#334155' }}>Dress Code:</span> <span style={{ color: '#475569' }}>{guide.visitorTips.dressCode}</span>
+                    <span style={{ fontWeight: 700, color: '#334155' }}>{t.dressCode}</span> <span style={{ color: '#475569' }}>{guide.visitorTips.dressCode}</span>
                   </div>
                 </li>
                 <li style={{ display: 'flex', gap: '12px', alignItems: 'flex-start' }}>
                   <CheckCircle2 size={18} color="#10B981" style={{ flexShrink: 0, marginTop: '2px' }} />
                   <div>
-                    <span style={{ fontWeight: 700, color: '#334155' }}>Phones & Cameras:</span> <span style={{ color: '#475569' }}>{guide.visitorTips.photoRule}</span>
+                    <span style={{ fontWeight: 700, color: '#334155' }}>{t.photoRule}</span> <span style={{ color: '#475569' }}>{guide.visitorTips.photoRule}</span>
                   </div>
                 </li>
                 <li style={{ display: 'flex', gap: '12px', alignItems: 'flex-start' }}>
                   <CheckCircle2 size={18} color="#10B981" style={{ flexShrink: 0, marginTop: '2px' }} />
                   <div>
-                    <span style={{ fontWeight: 700, color: '#334155' }}>Footwear:</span> <span style={{ color: '#475569' }}>{guide.visitorTips.footwearRule}</span>
+                    <span style={{ fontWeight: 700, color: '#334155' }}>{t.footwearRule}</span> <span style={{ color: '#475569' }}>{guide.visitorTips.footwearRule}</span>
                   </div>
                 </li>
                 <li style={{ display: 'flex', gap: '12px', alignItems: 'flex-start' }}>
                   <CheckCircle2 size={18} color="#10B981" style={{ flexShrink: 0, marginTop: '2px' }} />
                   <div>
-                    <span style={{ fontWeight: 700, color: '#334155' }}>Entry & Fees:</span> <span style={{ color: '#475569' }}>{guide.visitorTips.entryRule}</span>
+                    <span style={{ fontWeight: 700, color: '#334155' }}>{t.entryRule}</span> <span style={{ color: '#475569' }}>{guide.visitorTips.entryRule}</span>
                   </div>
                 </li>
                 <li style={{ display: 'flex', gap: '12px', alignItems: 'flex-start' }}>
                   <CheckCircle2 size={18} color="#10B981" style={{ flexShrink: 0, marginTop: '2px' }} />
                   <div>
-                    <span style={{ fontWeight: 700, color: '#334155' }}>Crowds:</span> <span style={{ color: '#475569' }}>{guide.visitorTips.crowdNote}</span>
+                    <span style={{ fontWeight: 700, color: '#334155' }}>{t.crowdNote}</span> <span style={{ color: '#475569' }}>{guide.visitorTips.crowdNote}</span>
                   </div>
                 </li>
               </ul>
@@ -1508,7 +1555,7 @@ export default function PlaceDetails({ params }: { params: Promise<{ id: string 
         {/* ─── FACILITIES ─── */}
         {place.facilities && (
           <section className={styles.section} id="facilities">
-            <h2 className={styles.sectionTitle}>Facilities Available</h2>
+            <h2 className={styles.sectionTitle}>{t.facilities}</h2>
             <div className={styles.facilitiesGrid}>
               {Object.entries(place.facilities)
                 .filter(([, v]) => v && v !== 'N/A')
@@ -1536,7 +1583,7 @@ export default function PlaceDetails({ params }: { params: Promise<{ id: string 
         {/* ─── RELATED PLACES ─── */}
         {place.relatedPlaces && place.relatedPlaces.length > 0 && (
           <section className={styles.section} id="related">
-            <h2 className={styles.sectionTitle}>Related Places</h2>
+            <h2 className={styles.sectionTitle}>{t.related}</h2>
             <div className={styles.relatedPlacesScroll}>
               {place.relatedPlaces.map(relId => {
                 const rel = PLACES.find(p => p.id === relId);
@@ -1567,15 +1614,15 @@ export default function PlaceDetails({ params }: { params: Promise<{ id: string 
         {/* ─── 7. HISTORY ─── */}
         {guide.history && guide.history.length > 30 && (
           <section className={styles.section} id="history">
-            <h2 className={styles.sectionTitle}>The Legend</h2>
+            <h2 className={styles.sectionTitle}>{t.legend}</h2>
             <div className={styles.legendCard}>
               <div className={styles.legendHeader}>
                 <div className={styles.legendIconRing}>
                   <Info size={20} color="var(--color-saffron-600)" />
                 </div>
                 <div style={{ flex: 1 }}>
-                  <p className={styles.legendLabel}>Origin Story</p>
-                  <p className={styles.legendSub}>Historical &amp; Mythological Context</p>
+                  <p className={styles.legendLabel}>{t.originStory}</p>
+                  <p className={styles.legendSub}>{t.mythologicalContext}</p>
                 </div>
                 {isSupported && (
                   <button
@@ -1617,7 +1664,7 @@ export default function PlaceDetails({ params }: { params: Promise<{ id: string 
 
         {/* ─── 10. FEEDBACK ─── */}
         <section className={styles.section} id="feedback" style={{ marginBottom: '80px' }}>
-          <h2 className={styles.sectionTitle}>Was this guide helpful?</h2>
+          <h2 className={styles.sectionTitle}>{t.feedbackTitle}</h2>
           <div style={{ 
             background: '#FFFFFF', 
             padding: '16px', 
@@ -1627,12 +1674,12 @@ export default function PlaceDetails({ params }: { params: Promise<{ id: string 
           }}>
             {feedbackSubmitted ? (
               <div style={{ fontSize: '13px', color: '#16A34A', fontWeight: 700, textAlign: 'center', padding: '10px 0' }}>
-                Thank you! Your feedback helps us build the most trusted operating layer for Tirupati.
+                {t.feedbackSuccess}
               </div>
             ) : (
               <>
                 <p style={{ fontSize: '12px', color: '#64748B', margin: '0 0 12px 0', lineHeight: 1.4 }}>
-                  Saarthi is powered by verified local knowledge. Let us know if you found this guide helpful.
+                  {t.feedbackDesc}
                 </p>
                 <div style={{ display: 'flex', gap: '10px', marginBottom: '12px' }}>
                   <button
@@ -1654,7 +1701,7 @@ export default function PlaceDetails({ params }: { params: Promise<{ id: string 
                       transition: 'all 0.2s'
                     }}
                   >
-                    <ThumbsUp size={14} /> Helpful
+                    <ThumbsUp size={14} /> {t.helpful}
                   </button>
                   <button
                     onClick={() => setFeedbackRating('Needs Work')}
@@ -1675,7 +1722,7 @@ export default function PlaceDetails({ params }: { params: Promise<{ id: string 
                       transition: 'all 0.2s'
                     }}
                   >
-                    <ThumbsDown size={14} /> Needs Work
+                    <ThumbsDown size={14} /> {t.needsWork}
                   </button>
                 </div>
                 
@@ -1714,7 +1761,7 @@ export default function PlaceDetails({ params }: { params: Promise<{ id: string 
                     transition: 'all 0.2s'
                   }}
                 >
-                  Submit Feedback
+                  {t.submitFeedback}
                 </button>
               </>
             )}
@@ -1744,7 +1791,7 @@ export default function PlaceDetails({ params }: { params: Promise<{ id: string 
             className={styles.navBtn}
           >
             <Navigation size={20} />
-            <span>Navigate Now</span>
+            <span>{t.navigateNow}</span>
           </a>
         </div>
       </div>
