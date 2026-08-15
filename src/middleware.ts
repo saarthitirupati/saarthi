@@ -7,7 +7,7 @@ export function middleware(request: NextRequest) {
   // Protect admin routes using the custom login page
   if (url.pathname.startsWith('/saarthiadmin') && !url.pathname.startsWith('/saarthiadmin/login')) {
     const token = request.cookies.get('admin_token')?.value;
-    if (token !== 'jeevapath_admin_2024') {
+    if (!token || (token !== 'saarthi_admin_token_2026' && token !== 'jeevapath_admin_2024')) {
       return NextResponse.redirect(new URL('/saarthiadmin/login', request.url));
     }
   }
