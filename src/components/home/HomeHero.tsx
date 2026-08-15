@@ -560,19 +560,8 @@ export function HomeHero({ userName, locationName, weatherTemp, liveStatus, acti
           justifyContent: 'space-between',
         }}>
 
-          {/* Left — bare menu icon */}
-          <button 
-            onClick={() => window.dispatchEvent(new CustomEvent('toggle-side-menu'))}
-            aria-label="Toggle navigation menu"
-            style={{
-              width: '36px', height: '36px', flexShrink: 0,
-              background: 'none', border: 'none',
-              display: 'flex', alignItems: 'center', justifyContent: 'center',
-              cursor: 'pointer', padding: 0
-            }}
-          >
-            <Menu size={20} color="#2D4A3E" strokeWidth={1.8} />
-          </button>
+          {/* Left spacer to balance header */}
+          <div style={{ width: '36px', height: '36px', flexShrink: 0 }} />
 
           {/* Center — Brand lockup */}
           <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '2px' }}>
