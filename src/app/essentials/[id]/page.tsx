@@ -163,29 +163,33 @@ export default function EssentialDetailPage({ params }: { params: Promise<{ id: 
           <section className={styles.subLocationsSection}>
             <h3 className={styles.sectionTitle}>Locations & Counters</h3>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-              {item.subLocations.map((loc, idx) => (
-                <div key={idx} className={styles.subLocationCard}>
-                  <div className={styles.subLocationInfo}>
-                    <h4 className={styles.subLocationName}>{loc.name}</h4>
-                    <div className={styles.subLocationMeta}>
-                      <span className={styles.subLocationWalk}>Walk • {loc.walkTime}</span>
-                      <span>{userLocation ? `${calculateDrivingDistance(userLocation.lat, userLocation.lng, item.coordinates.lat, item.coordinates.lng, Boolean(isTirumalaSpot))} km` : loc.distance}</span>
-                      <span style={{ color: '#16A34A', fontWeight: 600 }}>• {loc.status}</span>
+              {item.subLocations.map((loc, idx) => {
+                const distVal = userLocation ? calculateDrivingDistance(userLocation.lat, userLocation.lng, item.coordinates.lat, item.coordinates.lng, Boolean(isTirumalaSpot)) : null;
+                const isCloseBy = !distVal || distVal <= 2;
+                return (
+                  <div key={idx} className={styles.subLocationCard}>
+                    <div className={styles.subLocationInfo}>
+                      <h4 className={styles.subLocationName}>{loc.name}</h4>
+                      <div className={styles.subLocationMeta}>
+                        {isCloseBy && <span className={styles.subLocationWalk}>Walk • {loc.walkTime}</span>}
+                        <span>{distVal !== null ? `${distVal} km` : loc.distance}</span>
+                        <span style={{ color: '#16A34A', fontWeight: 600 }}>• {loc.status}</span>
+                      </div>
                     </div>
+                    <button 
+                      onClick={() => handleOpenMap(loc.name)}
+                      style={{
+                        background: '#F8F8F8', border: '1px solid #E5E5E5', borderRadius: '10px',
+                        padding: '8px 12px', fontSize: '12px', fontWeight: 700, color: '#0E6B72',
+                        cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '4px'
+                      }}
+                    >
+                      <Navigation size={12} />
+                      Directions
+                    </button>
                   </div>
-                  <button 
-                    onClick={() => handleOpenMap(loc.name)}
-                    style={{
-                      background: '#F8F8F8', border: '1px solid #E5E5E5', borderRadius: '10px',
-                      padding: '8px 12px', fontSize: '12px', fontWeight: 700, color: '#0E6B72',
-                      cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '4px'
-                    }}
-                  >
-                    <Navigation size={12} />
-                    Directions
-                  </button>
-                </div>
-              ))}
+                );
+              })}
             </div>
           </section>
         )}
