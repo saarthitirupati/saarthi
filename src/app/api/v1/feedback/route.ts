@@ -2,90 +2,116 @@ import { NextResponse } from 'next/server';
 import { supabase } from '@/lib/supabase';
 import { PLACES } from '@/data/places';
 
-// In-memory feedback store fallback
-let inMemoryFeedback: any[] = [
-  { id: 'fb-1', placeId: 'govindaraja', placeName: 'Sri Govindaraja Swamy Temple', isPositive: true, comment: 'Locker counters were super fast and clean. Thanks Saarthi!', createdAt: new Date(Date.now() - 5 * 60 * 1000).toISOString() },
-  { id: 'fb-2', placeId: 'kapila-theertham', placeName: 'Kapila Theertham', isPositive: true, comment: 'Great recommendation during rainy weather.', createdAt: new Date(Date.now() - 12 * 60 * 1000).toISOString() },
-  { id: 'fb-3', placeId: 'annaprasadam', placeName: 'Matrusri Annaprasadam Complex', isPositive: true, comment: 'Free meal timing guidance was 100% accurate.', createdAt: new Date(Date.now() - 45 * 60 * 1000).toISOString() },
-  { id: 'fb-4', placeId: 'chandragiri', placeName: 'Chandragiri Fort', isPositive: false, comment: 'Light show starts 30 mins later in winter schedule.', createdAt: new Date(Date.now() - 2 * 3600 * 1000).toISOString() },
-  { id: 'fb-5', placeId: 'srinivasam', placeName: 'Srinivasam SSD Counter', isPositive: true, comment: 'SSD token availability status saved me 4 hours of waiting.', createdAt: new Date(Date.now() - 3 * 3600 * 1000).toISOString() }
+export const dynamic = 'force-dynamic';
+
+export interface FeedbackRecord {
+  id: string;
+  placeId: string;
+  placeName: string;
+  isPositive: boolean;
+  comment: string;
+  createdAt: string;
+}
+
+// In-memory feedback store fallback for production serverless persistence
+let inMemoryFeedback: FeedbackRecord[] = [
+  { id: 'fb-1', placeId: 'govindaraja', placeName: 'Sri Govindaraja Swamy Temple', isPositive: true, comment: 'Locker counters were super fast and clean. Thanks Saarthi!', createdAt: new Date(Date.now() - 5 * 60 * 1000).toLocaleString() },
+  { id: 'fb-2', placeId: 'kapila-theertham', placeName: 'Kapila Theertham', isPositive: true, comment: 'Great recommendation during rainy weather.', createdAt: new Date(Date.now() - 12 * 60 * 1000).toLocaleString() },
+  { id: 'fb-3', placeId: 'annaprasadam', placeName: 'Matrusri Annaprasadam Complex', isPositive: true, comment: 'Free meal timing guidance was 100% accurate.', createdAt: new Date(Date.now() - 45 * 60 * 1000).toLocaleString() },
+  { id: 'fb-4', placeId: 'chandragiri', placeName: 'Chandragiri Fort', isPositive: false, comment: 'Light show starts 30 mins later in winter schedule.', createdAt: new Date(Date.now() - 2 * 3600 * 1000).toLocaleString() },
+  { id: 'fb-5', placeId: 'srinivasam', placeName: 'Srinivasam SSD Counter', isPositive: true, comment: 'SSD token availability status saved me 4 hours of waiting.', createdAt: new Date(Date.now() - 3 * 3600 * 1000).toLocaleString() }
 ];
+
+const deletedFeedbackIds = new Set<string>();
 
 export async function GET() {
   try {
     const placesMap = new Map(PLACES.map(p => [p.id, p.name]));
-    
-    // Flat query to avoid foreign key join failures
-    const { data: dbData, error } = await supabase
-      .from('feedback')
-      .select('id, place_id, is_positive, comment, created_at')
-      .order('created_at', { ascending: false })
-      .limit(100);
+    let dbFormatted: FeedbackRecord[] = [];
 
-    if (!error && dbData && dbData.length > 0) {
-      const formatted = dbData.map((row: any) => {
-        const pName = placesMap.get(row.place_id) || row.place_id || 'General Feedback';
-        return {
-          id: String(row.id),
-          placeId: row.place_id,
-          placeName: pName === 'general' ? 'General Feedback' : pName,
-          isPositive: !!row.is_positive,
-          comment: row.comment || '',
-          createdAt: row.created_at ? new Date(row.created_at).toLocaleString() : 'Recently'
-        };
-      });
+    // Query Supabase feedback table
+    try {
+      const { data: dbData, error } = await supabase
+        .from('feedback')
+        .select('id, place_id, is_positive, comment, created_at')
+        .order('created_at', { ascending: false })
+        .limit(100);
 
-      // Merge with in-memory feedback (newest first)
-      const mergedMap = new Map();
-      [...formatted, ...inMemoryFeedback].forEach(item => {
-        if (!mergedMap.has(item.id)) mergedMap.set(item.id, item);
-      });
-
-      return NextResponse.json(Array.from(mergedMap.values()));
+      if (!error && dbData && Array.isArray(dbData)) {
+        dbFormatted = dbData.map((row: any) => {
+          const pName = placesMap.get(row.place_id) || row.place_id || 'General Feedback';
+          return {
+            id: String(row.id),
+            placeId: row.place_id || 'general',
+            placeName: pName === 'general' ? 'General Feedback' : pName,
+            isPositive: Boolean(row.is_positive),
+            comment: row.comment || '',
+            createdAt: row.created_at ? new Date(row.created_at).toLocaleString() : 'Recently'
+          };
+        });
+      }
+    } catch (sbErr) {
+      console.warn('Supabase feedback fetch notice:', sbErr);
     }
-  } catch (err) {
-    console.error('Failed to fetch feedback from Supabase:', err);
-  }
 
-  return NextResponse.json(inMemoryFeedback);
+    // Merge in-memory and database records
+    const mergedMap = new Map<string, FeedbackRecord>();
+    for (const item of [...inMemoryFeedback, ...dbFormatted]) {
+      const sid = String(item.id);
+      if (item && !deletedFeedbackIds.has(sid) && !mergedMap.has(sid)) {
+        mergedMap.set(sid, item);
+      }
+    }
+
+    return NextResponse.json(Array.from(mergedMap.values()));
+  } catch (err: any) {
+    console.error('Failed to fetch feedback:', err);
+    return NextResponse.json(inMemoryFeedback.filter(f => !deletedFeedbackIds.has(String(f.id))));
+  }
 }
 
 export async function POST(request: Request) {
   try {
     const body = await request.json();
     const { placeId, isHelpful, isPositive, comment } = body;
-    const positiveVal = isPositive !== undefined ? isPositive : (isHelpful !== undefined ? isHelpful : true);
+    const positiveVal = isPositive !== undefined ? Boolean(isPositive) : (isHelpful !== undefined ? Boolean(isHelpful) : true);
     const pid = placeId || 'general';
 
     const placesMap = new Map(PLACES.map(p => [p.id, p.name]));
-    const pName = placesMap.get(pid) || pid || 'General Feedback';
+    const pName = placesMap.get(pid) || (pid === 'general' ? 'General Feedback' : pid);
 
-    const newItem = {
-      id: `fb-${Date.now()}`,
+    const newItem: FeedbackRecord = {
+      id: `fb-${Date.now()}-${Math.random().toString(36).substring(2, 6)}`,
       placeId: pid,
-      placeName: pName === 'general' ? 'General Feedback' : pName,
+      placeName: pName,
       isPositive: positiveVal,
       comment: comment || '',
       createdAt: new Date().toLocaleString()
     };
 
-    // Store in memory
+    deletedFeedbackIds.delete(newItem.id);
     inMemoryFeedback = [newItem, ...inMemoryFeedback];
 
     // Try Supabase insert
     try {
-      await supabase.from('feedback').insert([{
+      const { data: inserted, error } = await supabase.from('feedback').insert([{
         place_id: pid,
         is_positive: positiveVal,
         comment: comment || ''
-      }]);
-    } catch {}
+      }]).select();
+
+      if (!error && inserted && inserted[0]) {
+        newItem.id = String(inserted[0].id);
+      }
+    } catch (sbErr) {
+      console.warn('Supabase feedback insert notice:', sbErr);
+    }
 
     return NextResponse.json({
       success: true,
       data: newItem,
       message: 'Feedback submitted successfully'
-    });
+    }, { status: 201 });
   } catch (error: any) {
     return NextResponse.json({ success: false, error: error.message }, { status: 500 });
   }
@@ -97,13 +123,17 @@ export async function DELETE(request: Request) {
     const id = searchParams.get('id');
     if (!id) return NextResponse.json({ error: 'Missing id' }, { status: 400 });
 
-    inMemoryFeedback = inMemoryFeedback.filter(f => f.id !== id);
+    const sid = String(id);
+    deletedFeedbackIds.add(sid);
+    inMemoryFeedback = inMemoryFeedback.filter(f => String(f.id) !== sid);
 
     try {
       await supabase.from('feedback').delete().eq('id', id);
-    } catch {}
+    } catch (sbErr) {
+      console.warn('Supabase feedback delete notice:', sbErr);
+    }
 
-    return NextResponse.json({ success: true, message: 'Feedback entry deleted' });
+    return NextResponse.json({ success: true, id: sid, message: 'Feedback entry deleted' });
   } catch (err: any) {
     return NextResponse.json({ error: err.message }, { status: 500 });
   }

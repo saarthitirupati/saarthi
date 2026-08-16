@@ -1,10 +1,12 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-import { MessageSquare, ThumbsUp, ThumbsDown, RefreshCw, Plus, Trash2, CheckCircle2, Filter, Sparkles, Send } from 'lucide-react';
+import { useState, useEffect, useCallback } from 'react';
+import { MessageSquare, ThumbsUp, ThumbsDown, RefreshCw, Plus, Trash2, CheckCircle2, Filter, Sparkles, Send, X } from 'lucide-react';
 import styles from '../Dashboard.module.css';
 import { safeFetchJson } from '@/lib/safeFetch';
 import { PLACES } from '@/data/places';
+import { useLiveRefresh } from '@/hooks/useLiveRefresh';
+import { notifyRealtimeUpdate } from '@/lib/useRealtimeStatus';
 
 interface FeedbackItem {
   id: string;
@@ -20,6 +22,9 @@ export default function AdminFeedbackPage() {
   const [loading, setLoading] = useState(true);
   const [filterType, setFilterType] = useState<'all' | 'positive' | 'negative'>('all');
   
+  // Real-time hook for live updates
+  const { isConnected } = useLiveRefresh('feedback');
+
   // Submit New Feedback Modal State
   const [showAddModal, setShowAddModal] = useState(false);
   const [selectedPlaceId, setSelectedPlaceId] = useState(PLACES[0]?.id || 'general');
@@ -27,31 +32,54 @@ export default function AdminFeedbackPage() {
   const [commentText, setCommentText] = useState('');
   const [submitting, setSubmitting] = useState(false);
 
-  const fetchFeedback = async () => {
+  const fetchFeedback = useCallback(async (showLoading = true) => {
     try {
-      setLoading(true);
-      const data = await safeFetchJson<any>('/api/v1/feedback');
+      if (showLoading) setLoading(true);
+      const data = await safeFetchJson<FeedbackItem[]>('/api/v1/feedback?t=' + Date.now());
       if (Array.isArray(data)) {
         setFeedbackList(data);
       }
     } catch (e) {
       console.error('Failed to fetch feedback:', e);
     } finally {
-      setLoading(false);
+      if (showLoading) setLoading(false);
     }
-  };
+  }, []);
 
   useEffect(() => {
-    fetchFeedback();
-  }, []);
+    fetchFeedback(true);
+
+    // Dynamic auto-sync every 8 seconds
+    const interval = setInterval(() => {
+      fetchFeedback(false);
+    }, 8000);
+
+    // Listen to local Broadcast/CustomEvent realtime updates
+    const handleRealtimeUpdate = () => {
+      fetchFeedback(false);
+    };
+
+    window.addEventListener('saarthi:live_update', handleRealtimeUpdate);
+    return () => {
+      clearInterval(interval);
+      window.removeEventListener('saarthi:live_update', handleRealtimeUpdate);
+    };
+  }, [fetchFeedback, isConnected]);
 
   const handleDelete = async (id: string) => {
     if (!confirm('Are you sure you want to remove this feedback entry?')) return;
+    
+    // Optimistic UI update
+    setFeedbackList(prev => prev.filter(item => String(item.id) !== String(id)));
+
     try {
-      await fetch(`/api/v1/feedback?id=${id}`, { method: 'DELETE' });
-      setFeedbackList(prev => prev.filter(item => item.id !== id));
+      const res = await safeFetchJson<any>(`/api/v1/feedback?id=${encodeURIComponent(id)}`, { method: 'DELETE' });
+      if (res && res.success) {
+        notifyRealtimeUpdate();
+      }
     } catch (e) {
       alert('Failed to delete feedback');
+      fetchFeedback(false);
     }
   };
 
@@ -64,21 +92,29 @@ export default function AdminFeedbackPage() {
       const selectedPlace = PLACES.find(p => p.id === selectedPlaceId);
       const payload = {
         placeId: selectedPlaceId,
-        placeName: selectedPlace?.name || 'General Feedback',
+        placeName: selectedPlace?.name || (selectedPlaceId === 'general' ? 'General Feedback' : selectedPlaceId),
         isPositive,
         comment: commentText.trim()
       };
 
-      const res = await fetch('/api/v1/feedback', {
+      const res = await safeFetchJson<any>('/api/v1/feedback', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload)
       });
 
-      if (res.ok) {
+      if (res && (res.success || res.data)) {
+        const created = res.data || {
+          id: `fb-${Date.now()}`,
+          ...payload,
+          createdAt: new Date().toLocaleString()
+        };
+
+        // Optimistic UI update
+        setFeedbackList(prev => [created, ...prev.filter(i => i.id !== created.id)]);
         setCommentText('');
         setShowAddModal(false);
-        fetchFeedback();
+        notifyRealtimeUpdate();
       } else {
         alert('Failed to submit feedback');
       }
@@ -118,7 +154,7 @@ export default function AdminFeedbackPage() {
             <Plus size={16} /> Submit Feedback
           </button>
           <button 
-            onClick={fetchFeedback}
+            onClick={() => fetchFeedback(true)}
             style={{
               backgroundColor: '#F1F5F9', color: '#334155', border: '1px solid #CBD5E1', borderRadius: '10px',
               padding: '9px 16px', fontWeight: 600, fontSize: '13px', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '6px'
@@ -194,7 +230,9 @@ export default function AdminFeedbackPage() {
       <div className={styles.dataQualitySection}>
         <h3 className={styles.sectionTitle}>Live Comments & Accuracy Reports</h3>
         <div className={styles.warningList}>
-          {filteredList.length === 0 ? (
+          {loading && feedbackList.length === 0 ? (
+            <div style={{ color: '#64748B', fontSize: '14px', padding: '20px 0' }}>Loading live feedback...</div>
+          ) : filteredList.length === 0 ? (
             <div style={{ color: '#64748B', fontSize: '14px', padding: '20px 0' }}>No feedback submissions matching filter.</div>
           ) : (
             filteredList.map((item) => (
@@ -230,9 +268,18 @@ export default function AdminFeedbackPage() {
           position: 'fixed', inset: 0, background: 'rgba(15, 23, 42, 0.6)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 9999, padding: '16px'
         }}>
           <div style={{ background: '#FFFFFF', borderRadius: '20px', width: '100%', maxWidth: '480px', padding: '24px', boxShadow: '0 20px 25px -5px rgba(0,0,0,0.2)' }}>
-            <h2 style={{ fontSize: '18px', fontWeight: 800, margin: '0 0 16px 0', color: '#0F172A' }}>
-              Submit Pilgrim Feedback
-            </h2>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
+              <h2 style={{ fontSize: '18px', fontWeight: 800, margin: 0, color: '#0F172A' }}>
+                Submit Pilgrim Feedback
+              </h2>
+              <button 
+                onClick={() => setShowAddModal(false)}
+                style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#64748B' }}
+              >
+                <X size={18} />
+              </button>
+            </div>
+            
             <form onSubmit={handleAddFeedback}>
               <div style={{ marginBottom: '14px' }}>
                 <label style={{ display: 'block', fontSize: '12px', fontWeight: 700, color: '#475569', marginBottom: '6px' }}>Select Destination / Spot</label>

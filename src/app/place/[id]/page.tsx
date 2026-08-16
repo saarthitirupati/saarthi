@@ -12,6 +12,8 @@ import { useRealtimePlaces } from '@/lib/useRealtimePlaces';
 import { calculateDrivingDistance, getOsrmRoadRoute } from '@/utils/location';
 import { findNearestPlaceCandidates } from '@/lib/location';
 import { useLanguage } from '@/lib/useLanguage';
+import { safeFetchJson } from '@/lib/safeFetch';
+import { notifyRealtimeUpdate } from '@/lib/useRealtimeStatus';
 
 function parseBestSlot(str: string): { title: string; subtitle: string } {
   if (!str) return { title: 'Anytime', subtitle: 'Recommended time' };
@@ -477,7 +479,7 @@ export default function PlaceDetails({ params }: { params: Promise<{ id: string 
   const handlePlaceFeedbackSubmit = async () => {
     if (!feedbackRating) return;
     try {
-      const res = await fetch('/api/v1/feedback', {
+      await safeFetchJson('/api/v1/feedback', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -486,9 +488,8 @@ export default function PlaceDetails({ params }: { params: Promise<{ id: string 
           comment: feedbackComment
         })
       });
-      if (res.ok) {
-        setFeedbackSubmitted(true);
-      }
+      setFeedbackSubmitted(true);
+      notifyRealtimeUpdate();
     } catch (e) {
       console.error(e);
     }
