@@ -2,10 +2,12 @@ export async function safeFetchJson<T = any>(input: RequestInfo | URL, init?: Re
   try {
     let urlString = typeof input === 'string' ? input : input instanceof URL ? input.toString() : (input as Request).url;
     
-    // Dynamically prepend NEXT_PUBLIC_API_URL if configured in environment
-    const baseUrl = process.env.NEXT_PUBLIC_API_URL ? process.env.NEXT_PUBLIC_API_URL.replace(/\/+$/, '') : '';
-    if (baseUrl && urlString.startsWith('/')) {
-      urlString = `${baseUrl}${urlString}`;
+    // In browser client, relative URLs like '/api/v1/status' use same-origin fetch.
+    // Prepend NEXT_PUBLIC_API_URL only when running server-side or when NEXT_PUBLIC_API_URL points to absolute custom host.
+    const isServer = typeof window === 'undefined';
+    const envApiUrl = process.env.NEXT_PUBLIC_API_URL ? process.env.NEXT_PUBLIC_API_URL.replace(/\/+$/, '') : '';
+    if (isServer && envApiUrl && urlString.startsWith('/')) {
+      urlString = `${envApiUrl}${urlString}`;
     }
 
     const mergedHeaders = {
