@@ -97,7 +97,10 @@ export default function AdminAlertsPage() {
       });
 
       if (res.ok) {
+        const createdAlert = await res.json();
         notifyRealtimeUpdate();
+        // Optimistic UI update: add directly to list immediately
+        setAlerts(prev => [createdAlert, ...prev.filter(a => a.id !== createdAlert.id)]);
         // Reset form
         setTitle('');
         setDescription('');
@@ -109,7 +112,6 @@ export default function AdminAlertsPage() {
         setTargetLocation('All Users');
         setExpiryHours(2);
         setShowCreateForm(false);
-        fetchAlerts();
       } else {
         const err = await res.json();
         alert('Failed to publish alert: ' + err.error);
