@@ -1,7 +1,8 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { supabase } from './supabase';
+import { safeFetchJson } from './safeFetch';
 
 export interface LiveAlert {
   id: string;
@@ -24,11 +25,10 @@ export function useRealtimeAlerts() {
   const [alerts, setAlerts] = useState<LiveAlert[]>([]);
   const [loading, setLoading] = useState(true);
 
-  const fetchAlerts = async () => {
+  const fetchAlerts = useCallback(async () => {
     try {
-      const res = await fetch('/api/v1/alerts');
-      if (res.ok) {
-        const data = await res.json();
+      const data = await safeFetchJson<LiveAlert[]>('/api/v1/alerts?t=' + Date.now());
+      if (Array.isArray(data)) {
         setAlerts(data);
       }
     } catch (err) {
@@ -36,16 +36,16 @@ export function useRealtimeAlerts() {
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
 
   useEffect(() => {
     // 1. Fetch initial active alerts
     fetchAlerts();
 
-    // 2. Poll fallback: poll every 10s to ensure offline/mock environments catch updates
+    // 2. Poll fallback every 6 seconds to ensure immediate update across tabs/devices
     const pollInterval = setInterval(() => {
       fetchAlerts();
-    }, 10000);
+    }, 6000);
 
     // 3. Instant local & cross-tab admin event listeners
     const handleCustomEvent = () => fetchAlerts();
@@ -69,39 +69,13 @@ export function useRealtimeAlerts() {
         .on(
           'postgres_changes',
           { event: '*', schema: 'public', table: 'live_alerts' },
-          (payload) => {
-            const now = new Date();
-            
-            if (payload.eventType === 'INSERT') {
-              const newAlert = payload.new as LiveAlert;
-              const isPublish = newAlert.status === 'Published';
-              const isNotExpired = new Date(newAlert.expiry_time) > now;
-              
-              if (isPublish && isNotExpired) {
-                setAlerts((prev) => [newAlert, ...prev]);
-              }
-            } else if (payload.eventType === 'UPDATE') {
-              const updatedAlert = payload.new as LiveAlert;
-              const isPublish = updatedAlert.status === 'Published';
-              const isNotExpired = new Date(updatedAlert.expiry_time) > now;
-
-              setAlerts((prev) => {
-                const filtered = prev.filter((a) => a.id !== updatedAlert.id);
-                if (isPublish && isNotExpired) {
-                  return [updatedAlert, ...filtered].sort(
-                    (a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
-                  );
-                }
-                return filtered;
-              });
-            } else if (payload.eventType === 'DELETE') {
-              setAlerts((prev) => prev.filter((a) => a.id !== payload.old.id));
-            }
+          () => {
+            fetchAlerts();
           }
         )
         .subscribe();
     } catch (err) {
-      console.warn('Realtime Supabase subscription skipped (using API polling)', err);
+      console.warn('Realtime Supabase subscription fallback to API polling', err);
     }
 
     return () => {
@@ -113,12 +87,10 @@ export function useRealtimeAlerts() {
       if (subscription) {
         try {
           supabase.removeChannel(subscription);
-        } catch (e) {
-          // ignore cleanup errors
-        }
+        } catch (e) {}
       }
     };
-  }, []);
+  }, [fetchAlerts]);
 
   return { alerts, refresh: fetchAlerts, loading };
 }

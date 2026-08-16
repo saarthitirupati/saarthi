@@ -1,11 +1,11 @@
 import { useState, useEffect, useMemo } from 'react';
-import { useRealtimeAlerts } from '@/lib/useRealtimeAlerts';
+import { useRealtimeAlerts, LiveAlert } from '@/lib/useRealtimeAlerts';
 import { useTrip } from '@/components/TripContext';
 
 export function useAlerts() {
-  const { alerts } = useRealtimeAlerts();
+  const { alerts, loading } = useRealtimeAlerts();
   const { userLocation } = useTrip();
-  const [activePopupAlert, setActivePopupAlert] = useState<any>(null);
+  const [activePopupAlert, setActivePopupAlert] = useState<LiveAlert | null>(null);
   const [dismissedAlertIds, setDismissedAlertIds] = useState<string[]>([]);
 
   useEffect(() => {
@@ -21,36 +21,30 @@ export function useAlerts() {
       return;
     }
     
-    const popupAlert = alerts.find(alert => {
-      if (alert.popup_type !== 'Popup' && alert.popup_type !== 'Fullscreen' && alert.severity !== 'Critical') {
-        return false;
-      }
-      
+    // Pick the most recent active alert that hasn't been dismissed by this user
+    const alertToShow = alerts.find(alert => {
       if (dismissedAlertIds.includes(alert.id)) {
         return false;
       }
       
-      if (alert.target_location !== 'All Users') {
-        if (userLocation) {
-          const lat = userLocation.lat;
-          const lon = userLocation.lng;
-          
-          if (alert.target_location === 'Tirumala') {
-            const isNearTirumala = Math.abs(lat - 13.6833) < 0.08 && Math.abs(lon - 79.3500) < 0.08;
-            if (!isNearTirumala) return false;
-          } else if (alert.target_location === 'Tirupati') {
-            const isNearTirupati = Math.abs(lat - 13.6288) < 0.08 && Math.abs(lon - 79.4192) < 0.08;
-            if (!isNearTirupati) return false;
-          }
-        } else {
-          return false;
+      // Location targeting check (if user location is present and specified)
+      if (alert.target_location && alert.target_location !== 'All Users' && userLocation) {
+        const lat = userLocation.lat;
+        const lon = userLocation.lng;
+        
+        if (alert.target_location === 'Tirumala') {
+          const isNearTirumala = Math.abs(lat - 13.6833) < 0.1 && Math.abs(lon - 79.3500) < 0.1;
+          if (!isNearTirumala) return false;
+        } else if (alert.target_location === 'Tirupati') {
+          const isNearTirupati = Math.abs(lat - 13.6288) < 0.1 && Math.abs(lon - 79.4192) < 0.1;
+          if (!isNearTirupati) return false;
         }
       }
       
       return true;
     });
 
-    setActivePopupAlert(popupAlert || null);
+    setActivePopupAlert(alertToShow || null);
   }, [alerts, userLocation, dismissedAlertIds]);
 
   const activeAlertsCount = useMemo(() => {
@@ -72,6 +66,7 @@ export function useAlerts() {
     activePopupAlert,
     dismissedAlertIds,
     activeAlertsCount,
-    dismissAlert
+    dismissAlert,
+    loading
   };
 }
