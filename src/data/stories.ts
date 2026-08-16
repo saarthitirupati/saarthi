@@ -278,5 +278,48 @@ export const STORIES: Story[] = [
     sources: ['✓ TTD Annadanam Trust Report', '✓ Ground Operations Audit'],
     tags: ['annaprasadam', 'vengamamba', 'free food', 'service', 'charity'],
     isFeatured: false
+  },
+  {
+    id: 'story-gangamma-jatara',
+    slug: 'tirupati-ganga-jatara',
+    title: 'The 900-Year Legend of Tirupati Ganga Jatara',
+    subtitle: 'Sri Tataiahgunta Gangamma: Guardian Deity & Sister of Lord Venkateswara',
+    category: 'festival',
+    readTime: '3 min read',
+    image: 'https://res.cloudinary.com/kniegqlj/image/upload/v1786898380/tirupati-gangamma-jathara-copy_vnxhrd.jpg',
+    trustBadge: 'Verified by State Cultural & Heritage Archives',
+    quickSummary: 'Sri Tataiahgunta Gangamma is the revered Grama Devatha of Tirupati and younger sister of Lord Venkateswara. Every May, Tirupati erupts into a vibrant 900-year-old folk festival celebrating her victory over tyranny.',
+    storyBlocks: [
+      {
+        type: 'Beginning',
+        title: 'The Grama Devatha of Tirupati',
+        content: 'Sri Tataiahgunta Gangamma is worshipped as the divine guardian of Tirupati. Local tradition holds her in high reverence as the beloved younger sister of Lord Venkateswara of Tirumala.'
+      },
+      {
+        type: 'Legend',
+        title: 'The Avilala Birth & The Fall of Palegandulu',
+        content: 'According to centuries-old lore, Gangamma manifested in the village of Avilala near Tirupati. During that era, a tyrannical local chieftain (Palegandulu) terrorized the region and harassed women. When he attempted to harm Gangamma, she revealed her fierce cosmic form. Terrified, the chieftain fled into hiding. To lure him out, the goddess assumed various creative disguises over successive days until she confronted and slayed him, restoring peace and righteousness.'
+      },
+      {
+        type: 'Meaning',
+        title: 'Vichitra Veshadarana & Sibling Love (Parisu)',
+        content: 'To honor the disguises assumed by the Goddess, devotees participate in the iconic Vichitra Veshadarana—dressing as hermits (Bhairagi), forest tribes (Matangi), and lords (Dora), with men also adorning female attire to fulfill sacred vows. As a symbol of eternal brotherly bond, sacred silk vastrams (Parisu) and traditional offerings are sent directly from Lord Venkateswara’s temple atop Tirumala to Gangamma’s temple in Tirupati.'
+      },
+      {
+        type: 'TodayImportance',
+        title: 'Viswaroopa Darshanam & Sacred Prasadam',
+        content: 'The grand climax of the 8-day festival features a massive clay idol of Goddess Gangamma. On the final night, during Viswaroopa Darshanam, the idol is ritually dismantled, and small fragments of the consecrated clay are eagerly collected by thousands of devotees as powerful protective prasadam.'
+      }
+    ],
+    didYouKnow: [
+      'Over 900 years old, Ganga Jatara is Tirupati\'s grandest and oldest community folk festival.',
+      'Lord Venkateswara formally sends Parisu (silk sarees and jewels) to Gangamma as her elder brother.',
+      'Devotees wear elaborate natural body paints, neem leaves, and traditional masks during the festival.',
+      'The sacred clay from the Viswaroopa idol is preserved in homes for good health, prosperity, and protection.'
+    ],
+    relatedPlaceIds: ['tataiahgunta-gangamma', 'venkateswara', 'govindaraja'],
+    sources: ['✓ Wikipedia Cultural Archives', '✓ AP State Tourism & Cultural Heritage', '✓ TTD Historic Records'],
+    tags: ['gangamma', 'ganga jatara', 'tataiahgunta', 'grama devatha', 'tirupati festival', 'folk tradition'],
+    isFeatured: true
   }
 ];
