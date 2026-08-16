@@ -1,8 +1,9 @@
 'use client';
 
 import React from 'react';
-import { ArrowLeft, BellRing, Users, Clock, AlertTriangle, ShieldCheck, Ticket } from 'lucide-react';
+import { ArrowLeft, BellRing, Users, Clock, AlertTriangle, ShieldCheck, Ticket, Bell } from 'lucide-react';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 import { useRealtimeStatus } from '@/lib/useRealtimeStatus';
 import { useRealtimeAlerts } from '@/lib/useRealtimeAlerts';
 
@@ -26,6 +27,9 @@ const SSD_LABEL: Record<string, string> = {
   issuing: 'Issuing Now',
   paused: 'Paused',
   'closed-for-day': 'Closed for Today',
+  open: 'Tokens Available',
+  fast_filling: 'Fast Filling',
+  closed: 'Closed for Today',
 };
 
 export default function LivePage() {
@@ -45,7 +49,9 @@ export default function LivePage() {
           <BellRing size={18} />
           Live Updates
         </h1>
-        <div style={{ width: '36px' }} />
+        <Link href="/alerts" aria-label="Notifications" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '36px', height: '36px', textDecoration: 'none', color: '#0F172A' }}>
+          <Bell size={18} />
+        </Link>
       </header>
 
       <div className={styles.content}>

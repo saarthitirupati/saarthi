@@ -10,6 +10,8 @@ import LocationPrompt from '@/components/LocationPrompt/LocationPrompt';
 import { usePageAnalytics } from '@/hooks/usePageAnalytics';
 import GoogleTranslate from '@/components/GoogleTranslate';
 import { DesktopHeader } from '@/components/DesktopHeader';
+import { ActiveAlerts } from '@/components/home/ActiveAlerts';
+import { useAlerts } from '@/hooks/useAlerts';
 
 function LayoutContent({
   children,
@@ -31,6 +33,7 @@ function LayoutContent({
   const isStudio = pathname?.startsWith('/studio');
   const { locationPermission, isInitialized } = useTrip();
   const [needsOnboarding, setNeedsOnboarding] = useState<boolean | null>(null);
+  const alertsHook = useAlerts();
 
   useEffect(() => {
     const hasSeenOnboarding = localStorage.getItem('hasSeenOnboarding');
@@ -62,6 +65,12 @@ function LayoutContent({
       {showSplash && !isAdmin && <SplashScreen onFinish={handleSplashFinish} />}
       {showLocationPrompt && <LocationPrompt />}
       {!isAdmin && !showSplash && <DesktopHeader />}
+      {!isAdmin && !showSplash && !isExcluded && (
+        <ActiveAlerts 
+          activePopupAlert={alertsHook.activePopupAlert} 
+          dismissAlert={alertsHook.dismissAlert} 
+        />
+      )}
       <div 
         className="appContainer"
         style={{ 

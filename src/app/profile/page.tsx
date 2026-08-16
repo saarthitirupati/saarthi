@@ -9,8 +9,10 @@ import {
   Bookmark, 
   Clock, 
   Trash2, 
-  ExternalLink
+  ExternalLink,
+  Bell
 } from 'lucide-react';
+import Link from 'next/link';
 import styles from './Profile.module.css';
 import { useTrip } from '@/components/TripContext';
 
@@ -22,13 +24,16 @@ export default function ProfilePage() {
     removePlan 
   } = useTrip();
 
-
-
   return (
     <main className={styles.container}>
-      <button onClick={() => router.push('/')} className={styles.backBtn}>
-        <ChevronLeft size={24} />
-      </button>
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '8px' }}>
+        <button onClick={() => router.push('/')} className={styles.backBtn}>
+          <ChevronLeft size={24} />
+        </button>
+        <Link href="/alerts" aria-label="Notifications" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '36px', height: '36px', textDecoration: 'none', color: '#0F172A' }}>
+          <Bell size={20} />
+        </Link>
+      </div>
 
       <header className={styles.header}>
         <h1 className={styles.title}>Your Profile</h1>

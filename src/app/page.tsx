@@ -64,7 +64,6 @@ export default function HomePage() {
       {/* 📱 MOBILE VIEW (<768px): Action-First 1-Column Stack */}
       <div className={styles.mobileOnly}>
         <div className={styles.mobileStack}>
-          <ActiveAlerts {...home.alerts} />
           <HomeHero {...home.hero} liveStatus={home.status.liveStatus} activeAlertsCount={home.alerts.activeAlertsCount} hideHeader={false} />
           
           {/* Today's Companion Card (Placed directly under hero greeting on mobile) */}
@@ -109,7 +108,6 @@ export default function HomePage() {
 
       {/* 💻 DESKTOP & TABLET VIEW (>=768px): Multi-Column Dashboard Command Center */}
       <div className={styles.desktopOnly}>
-        <ActiveAlerts {...home.alerts} />
 
         {/* Sleek Desktop Header Greeting */}
         <div style={{ marginBottom: '16px', padding: '4px 0' }}>

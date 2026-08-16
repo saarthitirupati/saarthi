@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { Place } from '@/types/place';
 import { useRealtimePlaces } from '@/lib/useRealtimePlaces';
 import { useTrip } from '@/components/TripContext';
-import { Heart, Clock, Star, MapPin, Trash2, ArrowLeft, Bookmark } from 'lucide-react';
+import { Heart, Clock, Star, MapPin, Trash2, ArrowLeft, Bookmark, Bell } from 'lucide-react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import styles from './Saved.module.css';
@@ -25,11 +25,16 @@ export default function SavedPage() {
 
   return (
     <main className={styles.main}>
-      <header className={styles.header}>
-        <Link href="/" className={styles.backBtn} title="Back to Home">
-          <ArrowLeft size={24} />
+      <header className={styles.header} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+          <Link href="/" className={styles.backBtn} title="Back to Home">
+            <ArrowLeft size={24} />
+          </Link>
+          <h1 className={styles.title}>Saves & History</h1>
+        </div>
+        <Link href="/alerts" aria-label="Notifications" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '36px', height: '36px', textDecoration: 'none', color: '#0F5132' }}>
+          <Bell size={20} />
         </Link>
-        <h1 className={styles.title}>Saves & History</h1>
       </header>
 
       <section className={styles.content}>

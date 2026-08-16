@@ -1,7 +1,7 @@
 'use client';
 
 import { PLACES, Place } from '@/data/places';
-import { Search, Star, Filter, ArrowLeft, BookOpen, GraduationCap, MapPin, Sparkles, AlertTriangle, Compass } from 'lucide-react';
+import { Search, Star, Filter, ArrowLeft, BookOpen, GraduationCap, MapPin, Sparkles, AlertTriangle, Compass, Bell } from 'lucide-react';
 import { useState, useMemo, Suspense, useEffect, useCallback, useRef } from 'react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
@@ -241,9 +241,14 @@ function ExploreContent() {
           <ArrowLeft size={24} />
         </Link>
         <h1>Explore Places</h1>
-        <button className={styles.filterIcon} onClick={() => { const el = document.getElementById('explore-filter-list'); el?.scrollIntoView({ behavior: 'smooth' }); }}>
-          <Filter size={20} />
-        </button>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <Link href="/alerts" aria-label="Notifications" style={{ position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'center', width: '36px', height: '36px', textDecoration: 'none', color: '#0F5132' }}>
+            <Bell size={20} />
+          </Link>
+          <button className={styles.filterIcon} onClick={() => { const el = document.getElementById('explore-filter-list'); el?.scrollIntoView({ behavior: 'smooth' }); }}>
+            <Filter size={20} />
+          </button>
+        </div>
       </header>
 
       <div className={styles.stickyControls}>

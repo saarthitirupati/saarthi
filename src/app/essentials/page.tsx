@@ -7,7 +7,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { 
   ArrowLeft, Search, ClipboardCheck, Sparkles, Check, 
   MapPin, Clock, ChevronRight, HelpCircle, ChevronDown, ChevronUp, X, Navigation, Info,
-  Lock, Utensils, Scissors, Bed, ShoppingBag, ShieldAlert, Phone, AlertTriangle, FileText, Footprints
+  Lock, Utensils, Scissors, Bed, ShoppingBag, ShieldAlert, Phone, AlertTriangle, FileText, Footprints, Bell
 } from 'lucide-react';
 import styles from './Essentials.module.css';
 
@@ -210,6 +210,9 @@ export default function PilgrimEssentialsPage() {
           <p className={styles.headerSubtitle}>Everything you need before your visit</p>
         </div>
         <div className={styles.headerActions}>
+          <Link href="/alerts" aria-label="Notifications" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '36px', height: '36px', textDecoration: 'none', color: '#0F172A' }}>
+            <Bell size={20} />
+          </Link>
           <button 
             className={styles.iconButton} 
             onClick={() => setShowChecklist(p => !p)} 
