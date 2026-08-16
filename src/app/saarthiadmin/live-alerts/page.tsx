@@ -27,6 +27,8 @@ interface LiveAlert {
 
 import { useLiveRefresh } from '@/hooks/useLiveRefresh';
 
+import { safeFetchJson } from '@/lib/safeFetch';
+
 export default function AdminAlertsPage() {
   const [alerts, setAlerts] = useState<LiveAlert[]>([]);
   const [loading, setLoading] = useState(true);
@@ -49,9 +51,8 @@ export default function AdminAlertsPage() {
   const fetchAlerts = async () => {
     setLoading(true);
     try {
-      const res = await fetch('/api/v1/alerts?all=true');
-      if (res.ok) {
-        const data = await res.json();
+      const data = await safeFetchJson<LiveAlert[]>('/api/v1/alerts?all=true&t=' + Date.now());
+      if (data && Array.isArray(data)) {
         setAlerts(data);
       }
     } catch (err) {
@@ -90,14 +91,13 @@ export default function AdminAlertsPage() {
     };
 
     try {
-      const res = await fetch('/api/v1/alerts', {
+      const createdAlert = await safeFetchJson<LiveAlert>('/api/v1/alerts', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(body)
       });
 
-      if (res.ok) {
-        const createdAlert = await res.json();
+      if (createdAlert && createdAlert.id) {
         notifyRealtimeUpdate();
         // Optimistic UI update: add directly to list immediately
         setAlerts(prev => [createdAlert, ...prev.filter(a => a.id !== createdAlert.id)]);
@@ -113,8 +113,7 @@ export default function AdminAlertsPage() {
         setExpiryHours(2);
         setShowCreateForm(false);
       } else {
-        const err = await res.json();
-        alert('Failed to publish alert: ' + err.error);
+        alert('Failed to publish alert.');
       }
     } catch (err) {
       console.error('Error publishing alert:', err);
@@ -128,16 +127,17 @@ export default function AdminAlertsPage() {
     setAlerts(prev => prev.filter(a => a.id !== id));
 
     try {
-      let res = await fetch(`/api/v1/alerts/${id}`, { method: 'DELETE' });
-      if (!res.ok) {
-        res = await fetch(`/api/v1/alerts?id=${id}`, { method: 'DELETE' });
-      }
-      if (res.ok) {
+      const res = await safeFetchJson(`/api/v1/alerts/${id}`, { method: 'DELETE' });
+      if (res && res.success) {
         notifyRealtimeUpdate();
-        fetchAlerts();
       } else {
-        alert('Failed to expire alert.');
-        fetchAlerts(); // Revert on failure
+        const fallbackRes = await safeFetchJson(`/api/v1/alerts?id=${id}`, { method: 'DELETE' });
+        if (fallbackRes && fallbackRes.success) {
+          notifyRealtimeUpdate();
+        } else {
+          alert('Failed to expire alert.');
+          fetchAlerts(); // Revert on failure
+        }
       }
     } catch (err) {
       console.error('Error expiring alert:', err);
