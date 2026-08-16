@@ -111,10 +111,31 @@
   justify-content: center;
   color: #0F172A;
   cursor: pointer;
+  position: relative;
+  text-decoration: none;
   transition: all 0.2s;
 }
 
 .notifButton:hover {
   background: #F8FAFC;
   border-color: #CBD5E1;
+}
+
+.notifBadge {
+  position: absolute;
+  top: -3px;
+  right: -3px;
+  min-width: 16px;
+  height: 16px;
+  padding: 0 3px;
+  border-radius: 8px;
+  background: #DC2626;
+  border: 1.5px solid #FFFFFF;
+  color: #FFFFFF;
+  font-size: 9px;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
 }

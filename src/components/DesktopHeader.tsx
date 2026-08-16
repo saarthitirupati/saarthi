@@ -5,6 +5,8 @@ import Logo from '@/components/Logo/Logo';
 import { detectCoordinates } from '@/lib/location';
 import styles from './DesktopHeader.module.css';
 
+import { useAlerts } from '@/hooks/useAlerts';
+
 interface DesktopHeaderProps {
   weather?: string;
   temperature?: string;
@@ -12,6 +14,7 @@ interface DesktopHeaderProps {
 
 export function DesktopHeader({ weather, temperature }: DesktopHeaderProps) {
   const displayWeather = weather && temperature ? `${temperature} · ${weather}` : '☀ 24°C · Sunny';
+  const { activeAlertsCount } = useAlerts();
 
   const [selectedLocation, setSelectedLocation] = useState<string>('Tirupati');
   const [isLocating, setIsLocating] = useState<boolean>(false);
@@ -71,6 +74,11 @@ export function DesktopHeader({ weather, temperature }: DesktopHeaderProps) {
 
           <Link href="/alerts" className={styles.notifButton} aria-label="Notifications">
             <Bell size={18} />
+            {activeAlertsCount > 0 && (
+              <span className={styles.notifBadge}>
+                {activeAlertsCount > 9 ? '9+' : activeAlertsCount}
+              </span>
+            )}
           </Link>
         </div>
       </div>
