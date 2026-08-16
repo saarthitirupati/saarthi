@@ -8,12 +8,10 @@ import styles from './DesktopHeader.module.css';
 interface DesktopHeaderProps {
   weather?: string;
   temperature?: string;
-  lastUpdated?: string;
 }
 
-export function DesktopHeader({ weather, temperature, lastUpdated }: DesktopHeaderProps) {
+export function DesktopHeader({ weather, temperature }: DesktopHeaderProps) {
   const displayWeather = weather && temperature ? `${temperature} · ${weather}` : '☀ 24°C · Sunny';
-  const displayUpdated = lastUpdated || 'Updated 2m ago';
 
   const [selectedLocation, setSelectedLocation] = useState<string>('Tirupati');
   const [isLocating, setIsLocating] = useState<boolean>(false);
@@ -69,10 +67,7 @@ export function DesktopHeader({ weather, temperature, lastUpdated }: DesktopHead
             <span>{displayWeather}</span>
           </div>
 
-          <div className={styles.updatedBadge}>
-            <div className={styles.updatedDot} />
-            <span>{displayUpdated}</span>
-          </div>
+
 
           <Link href="/alerts" className={styles.notifButton} aria-label="Notifications">
             <Bell size={18} />
