@@ -31,7 +31,7 @@ export async function GET(request: Request) {
         query = query.eq('status', 'Published');
       }
       const { data, error } = await query.order('created_at', { ascending: false });
-      if (!error && data && data.length > 0) {
+      if (!error && Array.isArray(data)) {
         const filtered = showAll ? data : data.filter((a: any) => {
           if (!a.expiry_time) return true;
           const exp = new Date(a.expiry_time).getTime();

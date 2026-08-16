@@ -47,7 +47,21 @@ export function useRealtimeAlerts() {
       fetchAlerts();
     }, 10000);
 
-    // 3. Supabase Realtime channel subscription
+    // 3. Instant local & cross-tab admin event listeners
+    const handleCustomEvent = () => fetchAlerts();
+    window.addEventListener('saarthi:live_update', handleCustomEvent);
+
+    let broadcastChannel: BroadcastChannel | null = null;
+    try {
+      broadcastChannel = new BroadcastChannel('saarthi_admin_channel');
+      broadcastChannel.onmessage = (msg) => {
+        if (msg.data?.type === 'LIVE_UPDATE') {
+          fetchAlerts();
+        }
+      };
+    } catch (e) {}
+
+    // 4. Supabase Realtime channel subscription
     let subscription: any;
     try {
       subscription = supabase
@@ -92,6 +106,10 @@ export function useRealtimeAlerts() {
 
     return () => {
       clearInterval(pollInterval);
+      window.removeEventListener('saarthi:live_update', handleCustomEvent);
+      if (broadcastChannel) {
+        try { broadcastChannel.close(); } catch (e) {}
+      }
       if (subscription) {
         try {
           supabase.removeChannel(subscription);

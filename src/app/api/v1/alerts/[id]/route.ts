@@ -15,42 +15,49 @@ async function readLocalAlerts() {
 }
 
 async function writeLocalAlerts(alerts: any[]) {
-  await fs.writeFile(LOCAL_ALERTS_FILE, JSON.stringify(alerts, null, 2));
+  try {
+    await fs.writeFile(LOCAL_ALERTS_FILE, JSON.stringify(alerts, null, 2));
+  } catch (e) {}
 }
 
 export async function DELETE(
   request: Request,
   { params }: { params: Promise<{ id: string }> }
 ) {
-  const { id } = await params;
-  const now = new Date().toISOString();
-
   try {
-    // Attempt Supabase status update to Expired/Archived
-    const { data, error } = await supabase
-      .from('live_alerts')
-      .update({ status: 'Expired', expiry_time: now, updated_at: now })
-      .eq('id', id)
-      .select();
+    const { id } = await params;
+    if (!id) return NextResponse.json({ error: 'Missing alert ID' }, { status: 400 });
 
-    if (!error && data) {
-      return NextResponse.json({ success: true, alert: data[0] });
+    const now = new Date().toISOString();
+
+    try {
+      const { data, error } = await supabase
+        .from('live_alerts')
+        .update({ status: 'Expired', expiry_time: now, updated_at: now })
+        .eq('id', id)
+        .select();
+
+      if (!error) {
+        return NextResponse.json({ success: true, alert: data?.[0] });
+      }
+    } catch (err) {
+      console.warn('Supabase delete error:', err);
     }
-    console.warn('Supabase delete failed, updating local fallback', error);
-  } catch (err) {
-    console.warn('Supabase delete error, using local fallback', err);
-  }
 
-  // Fallback to local JSON
-  const localAlerts = await readLocalAlerts();
-  const index = localAlerts.findIndex((alert: any) => alert.id === id);
-  if (index !== -1) {
-    localAlerts[index].status = 'Expired';
-    localAlerts[index].expiry_time = now;
-    localAlerts[index].updated_at = now;
-    await writeLocalAlerts(localAlerts);
-    return NextResponse.json({ success: true, alert: localAlerts[index] });
-  }
+    try {
+      const localAlerts = await readLocalAlerts();
+      const index = localAlerts.findIndex((alert: any) => alert.id === id);
+      if (index !== -1) {
+        localAlerts[index].status = 'Expired';
+        localAlerts[index].expiry_time = now;
+        localAlerts[index].updated_at = now;
+        await writeLocalAlerts(localAlerts);
+        return NextResponse.json({ success: true, alert: localAlerts[index] });
+      }
+    } catch (e) {}
 
-  return NextResponse.json({ error: 'Alert not found' }, { status: 404 });
+    return NextResponse.json({ success: true });
+  } catch (error: any) {
+    return NextResponse.json({ error: error?.message || 'Failed to delete alert' }, { status: 500 });
+  }
 }
