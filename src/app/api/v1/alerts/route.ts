@@ -130,33 +130,34 @@ export async function DELETE(request: Request) {
 
     const now = new Date().toISOString();
 
+    // 1. Supabase delete
     try {
-      const { data, error } = await supabase
+      const { error } = await supabase
         .from('live_alerts')
-        .update({ status: 'Expired', expiry_time: now, updated_at: now })
-        .eq('id', id)
-        .select();
+        .delete()
+        .eq('id', id);
 
-      if (!error && data) {
-        return NextResponse.json({ success: true, alert: data[0] });
+      if (!error) {
+        try {
+          const localAlerts = await readLocalAlerts();
+          const filtered = localAlerts.filter((alert: any) => alert.id !== id);
+          await writeLocalAlerts(filtered);
+        } catch (e) {}
+        return NextResponse.json({ success: true, id });
       }
     } catch (err) {
       console.warn('Supabase delete error:', err);
     }
 
+    // 2. Local store delete
     try {
       const localAlerts = await readLocalAlerts();
-      const index = localAlerts.findIndex((alert: any) => alert.id === id);
-      if (index !== -1) {
-        localAlerts[index].status = 'Expired';
-        localAlerts[index].expiry_time = now;
-        localAlerts[index].updated_at = now;
-        await writeLocalAlerts(localAlerts);
-        return NextResponse.json({ success: true, alert: localAlerts[index] });
-      }
+      const filtered = localAlerts.filter((alert: any) => alert.id !== id);
+      await writeLocalAlerts(filtered);
+      return NextResponse.json({ success: true, id });
     } catch (e) {}
 
-    return NextResponse.json({ success: true });
+    return NextResponse.json({ success: true, id });
   } catch (error: any) {
     return NextResponse.json({ error: error?.message || 'Failed to delete alert' }, { status: 500 });
   }
