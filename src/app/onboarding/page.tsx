@@ -248,20 +248,20 @@ export default function OnboardingPage() {
               exit="exit"
               style={{ width: '100%', boxSizing: 'border-box' }}
             >
-              <div style={{ display: 'flex', justifyContent: 'center', margin: '12px 0 16px 0' }}>
-                <Logo size={72} />
+              <div style={{ display: 'flex', justifyContent: 'center', margin: '8px 0 12px 0' }}>
+                <Logo size={60} />
               </div>
 
-              <div style={{ textAlign: 'center', marginBottom: '28px' }}>
-                <h1 style={{ fontSize: '22px', fontWeight: 900, color: '#0F172A', margin: '0 0 6px 0', letterSpacing: '-0.02em', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}>
-                  <Globe size={22} style={{ color: '#0F5132' }} /> {t.selectLanguage}
+              <div style={{ textAlign: 'center', marginBottom: '20px' }}>
+                <h1 style={{ fontSize: '20px', fontWeight: 900, color: '#0F172A', margin: '0 0 4px 0', letterSpacing: '-0.02em', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}>
+                  <Globe size={20} style={{ color: '#0F5132' }} /> {t.selectLanguage}
                 </h1>
-                <p style={{ fontSize: '13.5px', color: '#64748B', lineHeight: 1.5, margin: 0 }}>
+                <p style={{ fontSize: '13px', color: '#64748B', lineHeight: 1.4, margin: 0 }}>
                   {t.selectLanguageSub}
                 </p>
               </div>
 
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '14px', width: '100%' }}>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', width: '100%' }}>
                 {LANGUAGES.map((lang) => {
                   const isSelected = selectedLanguage === lang.code;
                   return (
@@ -277,8 +277,8 @@ export default function OnboardingPage() {
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'space-between',
-                        padding: '18px 20px',
-                        borderRadius: '20px',
+                        padding: '16px 18px',
+                        borderRadius: '18px',
                         background: isSelected ? 'rgba(15, 81, 50, 0.04)' : '#FFFFFF',
                         border: isSelected ? '2px solid #0F5132' : '1px solid #E2E8F0',
                         boxShadow: isSelected ? '0 4px 16px rgba(15, 81, 50, 0.12)' : '0 2px 8px rgba(0,0,0,0.03)',
@@ -289,16 +289,16 @@ export default function OnboardingPage() {
                         boxSizing: 'border-box'
                       }}
                     >
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
-                        <span style={{ fontSize: '24px' }}>{lang.flag}</span>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
+                        <span style={{ fontSize: '22px' }}>{lang.flag}</span>
                         <div>
-                          <div style={{ fontSize: '17px', fontWeight: 800, color: '#0F172A' }}>{lang.nativeName}</div>
-                          <div style={{ fontSize: '12.5px', fontWeight: 600, color: isSelected ? '#0F5132' : '#64748B', marginTop: '2px' }}>{lang.subText}</div>
+                          <div style={{ fontSize: '16px', fontWeight: 800, color: '#0F172A' }}>{lang.nativeName}</div>
+                          <div style={{ fontSize: '12px', fontWeight: 600, color: isSelected ? '#0F5132' : '#64748B', marginTop: '2px' }}>{lang.subText}</div>
                         </div>
                       </div>
                       <div style={{
-                        width: '24px',
-                        height: '24px',
+                        width: '22px',
+                        height: '22px',
                         borderRadius: '50%',
                         border: isSelected ? 'none' : '2px solid #CBD5E1',
                         background: isSelected ? '#0F5132' : 'transparent',
@@ -307,12 +307,51 @@ export default function OnboardingPage() {
                         justifyContent: 'center',
                         flexShrink: 0
                       }}>
-                        {isSelected && <Check size={14} color="#FFFFFF" strokeWidth={3} />}
+                        {isSelected && <Check size={13} color="#FFFFFF" strokeWidth={3} />}
                       </div>
                     </motion.button>
                   );
                 })}
               </div>
+
+              <footer className={styles.footer}>
+                <div className={styles.pagination}>
+                  {[1, 2, 3].map((s) => (
+                    <div 
+                      key={s} 
+                      className={styles.dot + (step === s ? ' ' + styles.dotActive : '')} 
+                      style={{
+                        backgroundColor: step === s ? '#0F5132' : 'rgba(15, 81, 50, 0.15)',
+                        transform: step === s ? 'scale(1.4)' : 'scale(1)',
+                        transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)'
+                      }}
+                    />
+                  ))}
+                </div>
+
+                <motion.button
+                  className={styles.nextButton}
+                  onClick={nextStep}
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: '8px',
+                    borderRadius: '18px',
+                    padding: '14px 20px',
+                    background: '#0F5132',
+                    color: '#FFFFFF',
+                    boxShadow: '0 8px 24px rgba(15, 81, 50, 0.25)',
+                    border: 'none',
+                    fontSize: '15px',
+                    fontWeight: 800
+                  }}
+                >
+                  {t.btnContinue} <ChevronRight size={18} />
+                </motion.button>
+              </footer>
             </motion.div>
           )}
 
@@ -330,33 +369,33 @@ export default function OnboardingPage() {
                 display: 'flex',
                 justifyContent: 'center',
                 alignItems: 'center',
-                margin: '12px 0 20px 0'
+                margin: '8px 0 12px 0'
               }}>
                 <div style={{
-                  width: '88px',
-                  height: '88px',
-                  borderRadius: '26px',
+                  width: '68px',
+                  height: '68px',
+                  borderRadius: '22px',
                   background: 'linear-gradient(135deg, #FFFDF7 0%, #FEF3C7 100%)',
                   border: '1.5px solid #FDE68A',
-                  boxShadow: '0 10px 24px rgba(200, 155, 60, 0.16)',
+                  boxShadow: '0 8px 20px rgba(200, 155, 60, 0.14)',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center'
                 }}>
-                  <Logo size={60} />
+                  <Logo size={46} />
                 </div>
               </div>
 
-              <div style={{ textAlign: 'center', marginBottom: '22px' }}>
-                <h1 style={{ fontSize: '24px', fontWeight: 900, color: '#0F172A', margin: '0 0 6px 0', letterSpacing: '-0.02em' }}>
+              <div style={{ textAlign: 'center', marginBottom: '14px' }}>
+                <h1 style={{ fontSize: '21px', fontWeight: 900, color: '#0F172A', margin: '0 0 4px 0', letterSpacing: '-0.02em' }}>
                   <span className="notranslate">{t.welcomeTitle}</span>
                 </h1>
-                <p style={{ fontSize: '13.5px', color: '#64748B', lineHeight: 1.5, margin: 0, padding: '0 8px' }}>
+                <p style={{ fontSize: '12.5px', color: '#64748B', lineHeight: 1.45, margin: 0, padding: '0 8px' }}>
                   {t.welcomeSub}
                 </p>
               </div>
 
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', width: '100%' }}>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', width: '100%' }}>
                 {t.cards.map((card, idx) => {
                   const CardIcon = card.icon;
                   return (
@@ -365,34 +404,73 @@ export default function OnboardingPage() {
                       style={{
                         display: 'flex',
                         alignItems: 'center',
-                        gap: '14px',
+                        gap: '12px',
                         background: '#FFFFFF',
                         border: '1px solid #E2E8F0',
-                        borderRadius: '20px',
-                        padding: '14px 16px',
-                        boxShadow: '0 2px 10px rgba(0,0,0,0.025)'
+                        borderRadius: '16px',
+                        padding: '10px 14px',
+                        boxShadow: '0 2px 8px rgba(0,0,0,0.02)'
                       }}
                     >
                       <div style={{
-                        width: '42px',
-                        height: '42px',
-                        borderRadius: '14px',
+                        width: '36px',
+                        height: '36px',
+                        borderRadius: '12px',
                         background: card.bg,
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
                         flexShrink: 0
                       }}>
-                        <CardIcon size={20} style={{ color: card.color }} />
+                        <CardIcon size={18} style={{ color: card.color }} />
                       </div>
                       <div>
-                        <h3 style={{ fontSize: '14px', fontWeight: 800, color: '#0F172A', margin: '0 0 2px 0' }}>{card.title}</h3>
-                        <p style={{ fontSize: '12px', color: '#64748B', margin: 0, lineHeight: 1.45 }}>{card.desc}</p>
+                        <h3 style={{ fontSize: '13.5px', fontWeight: 800, color: '#0F172A', margin: '0 0 2px 0' }}>{card.title}</h3>
+                        <p style={{ fontSize: '11.5px', color: '#64748B', margin: 0, lineHeight: 1.35 }}>{card.desc}</p>
                       </div>
                     </div>
                   );
                 })}
               </div>
+
+              <footer className={styles.footer}>
+                <div className={styles.pagination}>
+                  {[1, 2, 3].map((s) => (
+                    <div 
+                      key={s} 
+                      className={styles.dot + (step === s ? ' ' + styles.dotActive : '')} 
+                      style={{
+                        backgroundColor: step === s ? '#0F5132' : 'rgba(15, 81, 50, 0.15)',
+                        transform: step === s ? 'scale(1.4)' : 'scale(1)',
+                        transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)'
+                      }}
+                    />
+                  ))}
+                </div>
+
+                <motion.button
+                  className={styles.nextButton}
+                  onClick={nextStep}
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: '8px',
+                    borderRadius: '18px',
+                    padding: '14px 20px',
+                    background: '#0F5132',
+                    color: '#FFFFFF',
+                    boxShadow: '0 8px 24px rgba(15, 81, 50, 0.25)',
+                    border: 'none',
+                    fontSize: '15px',
+                    fontWeight: 800
+                  }}
+                >
+                  {t.btnContinue} <ChevronRight size={18} />
+                </motion.button>
+              </footer>
             </motion.div>
           )}
 
@@ -405,26 +483,26 @@ export default function OnboardingPage() {
               animate="visible"
               exit="exit"
             >
-              <motion.div className={styles.textContent} variants={cardVariants} style={{ marginTop: '30px', marginBottom: '20px' }}>
+              <motion.div className={styles.textContent} variants={cardVariants} style={{ marginTop: '8px', marginBottom: '14px' }}>
                 <div style={{ 
-                  width: '60px', 
-                  height: '60px', 
-                  borderRadius: '20px', 
+                  width: '52px', 
+                  height: '52px', 
+                  borderRadius: '18px', 
                   backgroundColor: 'rgba(200, 155, 60, 0.15)', 
                   display: 'flex', 
                   alignItems: 'center', 
                   justifyContent: 'center', 
                   color: '#C89B3C', 
-                  margin: '0 auto 16px auto', 
+                  margin: '0 auto 12px auto', 
                   boxShadow: '0 4px 12px rgba(200, 155, 60, 0.1)' 
                 }}>
-                  <User size={28} />
+                  <User size={24} />
                 </div>
-                <h1 className={styles.title} style={{ color: '#1A1A1A', fontSize: '23px', fontWeight: 800 }}>{t.nameTitle}</h1>
-                <p className={styles.description}>{t.nameDesc}</p>
+                <h1 className={styles.title} style={{ color: '#1A1A1A', fontSize: '21px', fontWeight: 800 }}>{t.nameTitle}</h1>
+                <p className={styles.description} style={{ fontSize: '13px' }}>{t.nameDesc}</p>
               </motion.div>
 
-              <motion.div className={styles.inputWrapper} variants={cardVariants} style={{ width: '100%', padding: '0 10px' }}>
+              <motion.div className={styles.inputWrapper} variants={cardVariants} style={{ width: '100%', padding: '0 6px' }}>
                 <input
                   type="text"
                   className={styles.nameInput}
@@ -434,10 +512,10 @@ export default function OnboardingPage() {
                   onKeyDown={(e) => e.key === 'Enter' && name.trim() && nextStep()}
                   style={{
                     width: '100%',
-                    padding: '18px 24px',
-                    borderRadius: '20px',
+                    padding: '16px 20px',
+                    borderRadius: '18px',
                     border: '2px solid rgba(15, 81, 50, 0.1)',
-                    fontSize: '16px',
+                    fontSize: '15px',
                     fontWeight: 700,
                     textAlign: 'center',
                     boxShadow: '0 8px 24px rgba(0,0,0,0.03)',
@@ -449,7 +527,7 @@ export default function OnboardingPage() {
                   }}
                   autoFocus
                 />
-                <p style={{ fontSize: '12px', color: '#718096', marginTop: '12px', textAlign: 'center', fontWeight: 500 }}>
+                <p style={{ fontSize: '11.5px', color: '#718096', marginTop: '8px', textAlign: 'center', fontWeight: 500 }}>
                   {t.nameExamples}
                 </p>
               </motion.div>
@@ -458,22 +536,62 @@ export default function OnboardingPage() {
                 className={styles.privacyNote} 
                 variants={cardVariants}
                 style={{ 
-                  margin: 'auto auto 20px',
+                  margin: '12px auto 0',
                   background: 'rgba(15, 81, 50, 0.05)',
                   border: '1px solid rgba(15, 81, 50, 0.1)',
-                  borderRadius: '16px',
-                  padding: '12px 16px',
+                  borderRadius: '14px',
+                  padding: '10px 14px',
                   display: 'flex',
                   alignItems: 'center',
-                  gap: '12px',
+                  gap: '10px',
                   maxWidth: '320px'
                 }}
               >
-                <div style={{ color: '#0F5132', flexShrink: 0 }}><Lock size={16} /></div>
-                <span className={styles.privacyText} style={{ color: '#0F5132', fontSize: '11px', fontWeight: 600, lineHeight: 1.4 }}>
+                <div style={{ color: '#0F5132', flexShrink: 0 }}><Lock size={15} /></div>
+                <span className={styles.privacyText} style={{ color: '#0F5132', fontSize: '11px', fontWeight: 600, lineHeight: 1.35 }}>
                   {t.privacyNote}
                 </span>
               </motion.div>
+
+              <footer className={styles.footer}>
+                <div className={styles.pagination}>
+                  {[1, 2, 3].map((s) => (
+                    <div 
+                      key={s} 
+                      className={styles.dot + (step === s ? ' ' + styles.dotActive : '')} 
+                      style={{
+                        backgroundColor: step === s ? '#0F5132' : 'rgba(15, 81, 50, 0.15)',
+                        transform: step === s ? 'scale(1.4)' : 'scale(1)',
+                        transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)'
+                      }}
+                    />
+                  ))}
+                </div>
+
+                <motion.button
+                  className={styles.nextButton}
+                  onClick={nextStep}
+                  disabled={!name.trim()}
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: '8px',
+                    borderRadius: '18px',
+                    padding: '14px 20px',
+                    background: '#0F5132',
+                    color: '#FFFFFF',
+                    boxShadow: '0 8px 24px rgba(15, 81, 50, 0.25)',
+                    border: 'none',
+                    fontSize: '15px',
+                    fontWeight: 800
+                  }}
+                >
+                  <Sparkles size={18} /> {t.btnLetsGo}
+                </motion.button>
+              </footer>
             </motion.div>
           )}
 
@@ -572,56 +690,6 @@ export default function OnboardingPage() {
           )}
         </AnimatePresence>
       </div>
-
-      {step < 4 && (
-        <footer className={styles.footer} style={{ zIndex: 10, background: 'transparent' }}>
-          <div className={styles.pagination}>
-            {[1, 2, 3].map((s) => (
-               <div 
-                key={s} 
-                className={styles.dot + (step === s ? ' ' + styles.dotActive : '')} 
-                style={{
-                  backgroundColor: step === s ? '#0F5132' : 'rgba(15, 81, 50, 0.15)',
-                  transform: step === s ? 'scale(1.4)' : 'scale(1)',
-                  transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)'
-                }}
-              />
-            ))}
-          </div>
-          
-          <motion.button
-            className={styles.nextButton}
-            onClick={nextStep}
-            disabled={step === 3 && !name.trim()}
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              gap: '8px',
-              borderRadius: '20px',
-              padding: '16px 24px',
-              background: '#0F5132',
-              color: '#FFFFFF',
-              boxShadow: '0 8px 24px rgba(15, 81, 50, 0.25)',
-              border: 'none',
-              fontSize: '15px',
-              fontWeight: 800
-            }}
-          >
-            {step === 3 ? (
-              <>
-                <Sparkles size={18} /> {t.btnLetsGo}
-              </>
-            ) : (
-              <>
-                {t.btnContinue} <ChevronRight size={18} />
-              </>
-            )}
-          </motion.button>
-        </footer>
-      )}
     </div>
   );
 }

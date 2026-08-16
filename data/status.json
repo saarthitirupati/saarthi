@@ -1,10 +1,10 @@
 {
-  "waitTime": "18 - 20 hours",
+  "waitTime": "20-22 hours",
   "bestTime": "",
   "crowdLevel": "medium",
   "sevaStatus": "All sevas open",
   "notice": "",
-  "lastUpdated": "2026-08-15T17:09:12.562Z",
+  "lastUpdated": "2026-08-16T06:17:11.746Z",
   "darshanSpeed": "normal",
   "accommodationStatus": "available",
   "ladduAvailability": "available",
@@ -12,12 +12,12 @@
   "darshans": [
     {
       "name": "Sarva Darshan (Free)",
-      "waitTime": "18-20  hours",
+      "waitTime": "20-22  hours",
       "peakHours": "Daily 10 AM - 6 PM"
     },
     {
       "name": "Special Entry (₹300)",
-      "waitTime": "4 - 5 hours",
+      "waitTime": "4 - 6 hours",
       "peakHours": "Daily 9 AM - 3 PM"
     },
     {

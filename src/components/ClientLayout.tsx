@@ -9,6 +9,7 @@ import { TripProvider, useTrip } from '@/components/TripContext';
 import LocationPrompt from '@/components/LocationPrompt/LocationPrompt';
 import { usePageAnalytics } from '@/hooks/usePageAnalytics';
 import GoogleTranslate from '@/components/GoogleTranslate';
+import { DesktopHeader } from '@/components/DesktopHeader';
 
 function LayoutContent({
   children,
@@ -60,17 +61,19 @@ function LayoutContent({
     <>
       {showSplash && !isAdmin && <SplashScreen onFinish={handleSplashFinish} />}
       {showLocationPrompt && <LocationPrompt />}
-      <div style={{ 
-        visibility: hideContent ? 'hidden' : 'visible', 
-        height: '100%', 
-        position: 'relative',
-        maxWidth: isAdmin ? '100%' : '480px',
-        margin: isAdmin ? 'none' : '0 auto',
-        boxShadow: isAdmin ? 'none' : '0 0 32px rgba(30, 27, 24, 0.08)',
-        borderLeft: isAdmin ? 'none' : '1px solid #E7E3DD',
-        borderRight: isAdmin ? 'none' : '1px solid #E7E3DD',
-        background: '#FAFAF7',
-      }}>
+      {!isAdmin && !showSplash && <DesktopHeader />}
+      <div 
+        className="appContainer"
+        style={{ 
+          visibility: hideContent ? 'hidden' : 'visible', 
+          height: '100%', 
+          position: 'relative',
+          width: '100%',
+          maxWidth: isAdmin ? '100%' : '1440px',
+          margin: '0 auto',
+          background: '#FAFAF7',
+        }}
+      >
         {showBottomNav && <BottomNav />}
         <SideMenu isOpen={isMenuOpen} onClose={() => setIsMenuOpen(false)} />
         <div style={{ 

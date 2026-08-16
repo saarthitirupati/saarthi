@@ -1,9 +1,11 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Menu, Bell, MapPin, Sun, Sparkles, Ticket, Car, Gift, CloudRain, Bus, Clock, Route, Users, Zap, Check } from 'lucide-react';
+import { Menu, Bell, MapPin, Sun, Sparkles, Ticket, Car, Gift, CloudRain, Bus, Clock, Route, Users, Zap, Check, ChevronDown, Navigation } from 'lucide-react';
 import Link from 'next/link';
+import Logo from '@/components/Logo/Logo';
 import { useLanguage } from '@/lib/useLanguage';
+import { detectCoordinates } from '@/lib/location';
 
 const TEXTS: Record<string, any> = {
   en: {
@@ -41,14 +43,14 @@ const TEXTS: Record<string, any> = {
       importantAdvisory: 'IMPORTANT ADVISORY'
     },
     subtitles: {
-      green: 'Perfect Time for Darshan',
-      yellow: 'Plan Before You Go',
-      red: 'Queue at Peak Capacity',
-      blue: 'Heavy Rain Disruption',
-      purple: 'Special Festival Advisory',
-      orange: 'Limited Token Slots Active',
-      night: 'Tomorrow Looks Better',
-      alert: 'Alipiri Route Closure'
+      green: 'Tirumala Crowd: Normal & Clear',
+      yellow: 'Tirumala Crowd: Moderate Rush',
+      red: 'Tirumala Crowd Status: Peak Capacity',
+      blue: 'Tirumala Crowd: Rain Disruption',
+      purple: 'Tirumala Crowd: Festival Rush',
+      orange: 'Tirumala Crowd: Limited Tokens',
+      night: 'Tirumala Crowd Status: Night Update',
+      alert: 'Tirumala Crowd: Route Advisory'
     },
     recommendations: {
       green: 'Leave your hotel now.',
@@ -126,14 +128,14 @@ const TEXTS: Record<string, any> = {
       importantAdvisory: 'ముఖ్యమైన సూచన'
     },
     subtitles: {
-      green: 'దర్శనానికి అనువైన సమయం',
-      yellow: 'వెళ్లే ముందు ప్లాన్ చేయండి',
-      red: 'క్యూ గరిష్ట స్థాయిలో ఉంది',
-      blue: 'భారీ వర్షం అంతరాయం',
-      purple: 'ప్రత్యేక పండుగ సూచన',
-      orange: 'పరిమిత టోకెన్ స్లాట్లు అందుబాటులో',
-      night: 'రేపు మెరుగ్గా ఉంటుంది',
-      alert: 'అలిపిరి మార్గం మూసివేత'
+      green: 'తిరుమల రద్దీ: సామాన్య రద్దీ',
+      yellow: 'తిరుమల రద్దీ: మోస్తరు రద్దీ',
+      red: 'తిరుమల రద్దీ స్థితి: గరిష్ట స్థాయిలో ఉంది',
+      blue: 'తిరుమల రద్దీ: వర్షం అంతరాయం',
+      purple: 'తిరుమల రద్దీ: పండుగ రద్దీ',
+      orange: 'తిరుమల రద్దీ: పరిమిత టోకెన్లు',
+      night: 'తిరుమల రద్దీ స్థితి: రాత్రి అప్‌డేట్',
+      alert: 'తిరుమల రద్దీ: మార్గం సూచన'
     },
     recommendations: {
       green: 'ఈరోజు తప్పకుండా సందర్శించండి.',
@@ -226,10 +228,30 @@ const METRIC_ICON: Record<string, React.ReactNode> = {
   Crowd:    <Users size={11} opacity={0.85} />,
 };
 
-export function HomeHero({ userName, locationName, weatherTemp, liveStatus, activeAlertsCount }: any) {
+export function HomeHero({ userName, locationName, weatherTemp, liveStatus, activeAlertsCount, hideHeader = false }: any) {
   const lang = useLanguage();
   const t = TEXTS[lang];
   const [overrideScenario, setOverrideScenario] = useState<string>('auto');
+  const [selectedLocation, setSelectedLocation] = useState<string>(locationName || 'Tirupati');
+  const [isLocating, setIsLocating] = useState<boolean>(false);
+  const [isLocationModalOpen, setIsLocationModalOpen] = useState<boolean>(false);
+
+  const handleAutoDetectLocation = () => {
+    setIsLocating(true);
+    detectCoordinates(
+      (coords) => {
+        setIsLocating(false);
+        const isTirumala = coords.lat > 13.66;
+        const region = isTirumala ? 'Tirumala' : 'Tirupati';
+        setSelectedLocation(region);
+        if (typeof window !== 'undefined') localStorage.setItem('saarthi_user_region', region);
+        setIsLocationModalOpen(false);
+      },
+      () => {
+        setIsLocating(false);
+      }
+    );
+  };
 
   // Real wait time from admin — fallback to crowd-level estimates
   const liveWaitTime: string = (() => {
@@ -538,142 +560,224 @@ export function HomeHero({ userName, locationName, weatherTemp, liveStatus, acti
     const nextIdx = (list.indexOf(overrideScenario) + 1) % list.length;
     setOverrideScenario(list[nextIdx]);
   };
-
   return (
     <div style={{ fontFamily: 'system-ui, -apple-system, sans-serif', background: '#FAF8F4' }}>
 
       {/* ══════════ MODERN CLASSIC HEADER ══════════ */}
-      <header style={{
-        position: 'sticky',
-        top: 0,
-        zIndex: 50,
-        background: '#FFFFFF',
-        boxShadow: '0 1px 0 rgba(212,175,55,0.15), 0 2px 12px rgba(0,0,0,0.04)'
-      }}>
-        <div style={{
-          maxWidth: '480px',
-          margin: '0 auto',
-          padding: '0 20px',
-          height: '64px',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
+      {!hideHeader && (
+        <header style={{
+          position: 'sticky',
+          top: 0,
+          zIndex: 50,
+          background: '#FFFFFF',
+          boxShadow: '0 1px 0 rgba(212,175,55,0.15), 0 2px 12px rgba(0,0,0,0.04)'
         }}>
+          <div style={{
+            maxWidth: '100%',
+            padding: '0 16px',
+            height: '60px',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+          }}>
 
-          {/* Left spacer to balance header */}
-          <div style={{ width: '36px', height: '36px', flexShrink: 0 }} />
-
-          {/* Center — Brand lockup */}
-          <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '2px' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-              {/* Diya SVG — refined, smaller */}
-              <svg width="18" height="20" viewBox="0 0 32 36" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M16 1 C16 1 12.5 7 12.5 11.5 C12.5 13.8 14 15.5 16 15.5 C18 15.5 19.5 13.8 19.5 11.5 C19.5 7 16 1 16 1Z" fill="#F59E0B"/>
-                <path d="M16 5 C16 5 14 9.5 14 12 C14 13.3 14.8 14.5 16 14.5 C17.2 14.5 18 13.3 18 12 C18 9.5 16 5 16 5Z" fill="#FDE68A"/>
-                <path d="M7 22 Q7 17 16 17 Q25 17 25 22 L23 30 Q23 32 16 32 Q9 32 9 30 Z" fill="#B45309"/>
-                <path d="M7 22 Q7 19.5 16 19.5 Q25 19.5 25 22" fill="#D97706"/>
-                <line x1="16" y1="17" x2="16" y2="15.5" stroke="#78350F" strokeWidth="1.5" strokeLinecap="round"/>
-              </svg>
-
+            {/* Left — Official Saarthi Brand Lockup */}
+            <Link href="/" style={{ display: 'flex', alignItems: 'center', gap: '8px', textDecoration: 'none' }}>
+              <Logo size={34} />
               <span className="notranslate" style={{
-                fontSize: '24px',
-                fontWeight: 800,
-                color: '#1A3C2E',
+                fontSize: '22px',
+                fontWeight: 900,
+                color: '#0F5132',
                 letterSpacing: '-0.02em',
                 lineHeight: 1,
                 fontFamily: 'Georgia, "Times New Roman", serif'
               }}>
                 Saarthi
               </span>
-            </div>
+            </Link>
 
-            <div style={{
-              fontSize: '7.5px',
-              fontWeight: 600,
-              color: '#C2922A',
-              letterSpacing: '0.28em',
-              textTransform: 'uppercase',
-              lineHeight: 1
-            }}>
-              {t.header.companion}
+            {/* Right — Location Badge & Notification Bell */}
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <div 
+                onClick={() => setIsLocationModalOpen(true)}
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '4px',
+                  backgroundColor: '#FEF3C7',
+                  border: '1px solid #FDE68A',
+                  color: '#B45309',
+                  padding: '4px 10px',
+                  borderRadius: '16px',
+                  fontSize: '12px',
+                  fontWeight: 700,
+                  cursor: 'pointer'
+                }}
+              >
+                <MapPin size={12} color="#B45309" />
+                <span>{selectedLocation}</span>
+                <ChevronDown size={11} style={{ opacity: 0.7 }} />
+              </div>
+
+              <Link href="/alerts" aria-label="Notifications" style={{
+                width: '36px', height: '36px', flexShrink: 0,
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                textDecoration: 'none', position: 'relative'
+              }}>
+                <Bell size={20} color="#0F5132" strokeWidth={1.8} />
+                {(activeAlertsCount ?? 0) > 0 && (
+                  <span style={{
+                    position: 'absolute',
+                    top: '3px', right: '3px',
+                    minWidth: '15px', height: '15px',
+                    borderRadius: '8px',
+                    background: '#DC2626',
+                    border: '1.5px solid #FFFFFF',
+                    color: '#FFFFFF',
+                    fontSize: '8px', fontWeight: 800,
+                    display: 'flex', alignItems: 'center', justifyContent: 'center',
+                    letterSpacing: '-0.02em',
+                  }}>
+                    {activeAlertsCount > 99 ? '99+' : activeAlertsCount}
+                  </span>
+                )}
+              </Link>
             </div>
           </div>
 
-          {/* Right — bare bell icon */}
-          <Link href="/alerts" style={{
-            width: '36px', height: '36px', flexShrink: 0,
-            display: 'flex', alignItems: 'center', justifyContent: 'center',
-            textDecoration: 'none', position: 'relative'
-          }}>
-            <Bell size={20} color="#2D4A3E" strokeWidth={1.8} />
-            {(activeAlertsCount ?? 0) > 0 && (
-              <span style={{
-                position: 'absolute',
-                top: '3px', right: '3px',
-                minWidth: '15px', height: '15px',
-                borderRadius: '8px',
-                background: '#DC2626',
-                border: '1.5px solid #FFFFFF',
-                color: '#FFFFFF',
-                fontSize: '8px', fontWeight: 800,
-                display: 'flex', alignItems: 'center', justifyContent: 'center',
-                letterSpacing: '-0.02em',
+          {/* DYNAMIC REGION SELECTOR MODAL */}
+          {isLocationModalOpen && (
+            <div style={{
+              position: 'fixed',
+              top: 0, left: 0, right: 0, bottom: 0,
+              backgroundColor: 'rgba(15, 23, 42, 0.65)',
+              backdropFilter: 'blur(6px)',
+              zIndex: 9999,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              padding: '16px'
+            }}>
+              <div style={{
+                background: '#FFFFFF',
+                borderRadius: '24px',
+                width: '100%',
+                maxWidth: '380px',
+                padding: '20px',
+                boxShadow: '0 20px 40px rgba(0,0,0,0.25)',
+                animation: 'fadeIn 0.2s ease-out'
               }}>
-                {activeAlertsCount > 99 ? '99+' : activeAlertsCount}
-              </span>
-            )}
-          </Link>
-        </div>
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '16px' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                    <MapPin size={18} color="#0F5132" />
+                    <h3 style={{ fontSize: '17px', fontWeight: 800, color: '#0F172A', margin: 0 }}>Select Active Region</h3>
+                  </div>
+                  <button 
+                    onClick={() => setIsLocationModalOpen(false)}
+                    style={{ background: '#F1F5F9', border: 'none', borderRadius: '50%', width: '28px', height: '28px', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+                  >
+                    ✕
+                  </button>
+                </div>
 
-        {/* Refined golden accent line */}
-        <div style={{
-          height: '1.5px',
-          background: 'linear-gradient(90deg, transparent 0%, #C2922A 25%, #F0BC4E 50%, #C2922A 75%, transparent 100%)',
-          opacity: 0.45
-        }} />
-      </header>
+                <button
+                  onClick={handleAutoDetectLocation}
+                  disabled={isLocating}
+                  style={{
+                    width: '100%',
+                    padding: '12px 14px',
+                    borderRadius: '16px',
+                    background: '#ECFDF5',
+                    border: '1.5px solid #A7F3D0',
+                    color: '#047857',
+                    fontWeight: 800,
+                    fontSize: '13.5px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: '8px',
+                    cursor: 'pointer',
+                    marginBottom: '14px',
+                    transition: 'all 0.2s'
+                  }}
+                >
+                  <Navigation size={16} className={isLocating ? 'animate-spin' : ''} />
+                  <span>{isLocating ? 'Acquiring GPS...' : 'Auto-Detect Live GPS Location'}</span>
+                </button>
+
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                  {[
+                    { id: 'Tirupati', label: 'Tirupati City & Foothills', sub: 'Alipiri, Railway Station, Bus Stand' },
+                    { id: 'Tirumala', label: 'Tirumala Hill', sub: 'Sanctum, Mada Streets, Ghat Top' },
+                    { id: 'Renigunta', label: 'Renigunta & Suburbs', sub: 'Airport, Railway Junction' }
+                  ].map((reg) => (
+                    <div
+                      key={reg.id}
+                      onClick={() => {
+                        setSelectedLocation(reg.id);
+                        if (typeof window !== 'undefined') localStorage.setItem('saarthi_user_region', reg.id);
+                        setIsLocationModalOpen(false);
+                      }}
+                      style={{
+                        padding: '12px 14px',
+                        borderRadius: '14px',
+                        border: selectedLocation === reg.id ? '2px solid #0F5132' : '1px solid #E2E8F0',
+                        background: selectedLocation === reg.id ? '#F0FDF4' : '#FAFAFA',
+                        cursor: 'pointer',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'space-between'
+                      }}
+                    >
+                      <div>
+                        <p style={{ fontSize: '13.5px', fontWeight: 800, color: '#0F172A', margin: 0 }}>{reg.label}</p>
+                        <p style={{ fontSize: '11.5px', color: '#64748B', margin: '2px 0 0 0', fontWeight: 500 }}>{reg.sub}</p>
+                      </div>
+                      {selectedLocation === reg.id && (
+                        <div style={{ width: '20px', height: '20px', borderRadius: '50%', background: '#0F5132', color: '#FFFFFF', fontSize: '12px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 800 }}>✓</div>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Refined golden accent line */}
+          <div style={{
+            height: '1px',
+            background: 'linear-gradient(90deg, transparent 0%, #E2E8F0 25%, #CBD5E1 50%, #E2E8F0 75%, transparent 100%)',
+            opacity: 0.6
+          }} />
+        </header>
+      )}
 
       {/* ══════════ SCROLLABLE CONTENT ══════════ */}
-      <div style={{ padding: '16px 16px 20px 16px' }}>
+      <div style={{ padding: hideHeader ? '0' : '16px 16px 20px 16px', background: hideHeader ? 'transparent' : '#FAF8F4' }}>
 
+        {!hideHeader && (
+          <>
+            {/* Date & Weather Bar */}
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end', marginBottom: '16px' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '12.5px', fontWeight: 600, color: '#64748B' }}>
+                <span>{t.labels.today} • {todayDateStr}</span>
+                <span style={{ opacity: 0.4 }}>|</span>
+                <Sun size={14} color="#D97706" />
+                <span>{weatherTemp || '26°C'}</span>
+              </div>
+            </div>
 
-      {/* Location & Weather Bar */}
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '20px' }}>
-        <div style={{
-          display: 'inline-flex',
-          alignItems: 'center',
-          gap: '6px',
-          backgroundColor: '#FEF3C7',
-          border: '1px solid #FDE68A',
-          color: '#B45309',
-          padding: '6px 14px',
-          borderRadius: '20px',
-          fontSize: '13px',
-          fontWeight: 700,
-          cursor: 'pointer'
-        }}>
-          <MapPin size={14} color="#B45309" />
-          <span>{locationName || 'Tirupati'}</span>
-          <span style={{ fontSize: '10px', marginLeft: '2px' }}>▼</span>
-        </div>
-
-        <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '13px', fontWeight: 600, color: '#64748B' }}>
-          <span>{t.labels.today} • {todayDateStr}</span>
-          <span style={{ opacity: 0.4 }}>|</span>
-          <Sun size={15} color="#D97706" />
-          <span>{weatherTemp || '26°C'}</span>
-        </div>
-      </div>
-
-      {/* Personalized Greeting */}
-      <div style={{ marginBottom: '18px' }}>
-        <h1 style={{ fontSize: '26px', fontWeight: 800, color: '#0F172A', margin: 0, letterSpacing: '-0.02em' }}>
-          <span>{getGreetingPrefix()}</span>, <span className="notranslate">{userName || 'Sunil'}</span>
-        </h1>
-        <p style={{ fontSize: '13.5px', color: '#059669', margin: '4px 0 0 0', fontWeight: 700, lineHeight: '1.4' }}>
-          {t.tagline}
-        </p>
-      </div>
+            {/* Personalized Greeting */}
+            <div style={{ marginBottom: '18px' }}>
+              <h1 style={{ fontSize: '26px', fontWeight: 800, color: '#0F172A', margin: 0, letterSpacing: '-0.02em' }}>
+                <span>{getGreetingPrefix()}</span>, <span className="notranslate">{userName || 'Sunil'}</span>
+              </h1>
+              <p style={{ fontSize: '13.5px', color: '#059669', margin: '4px 0 0 0', fontWeight: 700, lineHeight: '1.4' }}>
+                {t.tagline}
+              </p>
+            </div>
+          </>
+        )}
 
       {/* STANDARDIZED SAARTHI DECISION ENGINE CARD */}
       <div style={{
@@ -916,14 +1020,16 @@ export function HomeHero({ userName, locationName, weatherTemp, liveStatus, acti
       </div>
 
       {/* Section Header Below Card */}
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: '24px', marginBottom: '12px' }}>
-        <h3 style={{ fontSize: '17px', fontWeight: 800, color: '#0F172A', margin: 0 }}>
-          {t.labels.rightNowOnHill}
-        </h3>
-        <Link href="/live" style={{ fontSize: '13px', fontWeight: 700, color: '#0E6B72', textDecoration: 'none' }}>
-          {t.labels.viewAll}
-        </Link>
-      </div>
+      {!hideHeader && (
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: '24px', marginBottom: '12px' }}>
+          <h3 style={{ fontSize: '17px', fontWeight: 800, color: '#0F172A', margin: 0 }}>
+            {t.labels.rightNowOnHill}
+          </h3>
+          <Link href="/live" style={{ fontSize: '13px', fontWeight: 700, color: '#0E6B72', textDecoration: 'none' }}>
+            {t.labels.viewAll}
+          </Link>
+        </div>
+      )}
       </div>
     </div>
   );

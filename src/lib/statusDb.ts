@@ -251,8 +251,7 @@ export async function updateStatus(updates: Partial<TirumalaStatus>): Promise<Ti
 
     await supabase
       .from('live_metrics')
-      .update(payload)
-      .eq('id', 1);
+      .upsert({ id: 1, ...payload });
 
   } catch (e) {
     console.error("Supabase live_metrics update failed:", e);

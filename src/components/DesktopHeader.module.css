@@ -1,0 +1,120 @@
+.desktopHeaderContainer {
+  display: none;
+  width: 100%;
+  background: #FFFFFF;
+  border-bottom: 1px solid #E2E8F0;
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+}
+
+@media (min-width: 1024px) {
+  .desktopHeaderContainer {
+    display: block;
+  }
+}
+
+.innerHeader {
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 12px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.leftBrand {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.logoWrapper {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  color: #0F172A;
+}
+
+.brandName {
+  font-size: 20px;
+  font-weight: 800;
+  color: #0F5132;
+  letter-spacing: -0.3px;
+}
+
+.locationBadge {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: #F1F5F9;
+  border: 1px solid #E2E8F0;
+  border-radius: 20px;
+  padding: 6px 14px;
+  font-size: 13px;
+  font-weight: 700;
+  color: #0F172A;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.locationBadge:hover {
+  background: #E2E8F0;
+}
+
+.rightMeta {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.weatherBadge {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #FFF7ED;
+  border: 1px solid #FFEDD5;
+  border-radius: 20px;
+  padding: 6px 14px;
+  font-size: 13px;
+  font-weight: 700;
+  color: #C2410C;
+}
+
+.updatedBadge {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: #64748B;
+}
+
+.updatedDot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #10B981;
+  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.2);
+}
+
+.notifButton {
+  width: 38px;
+  height: 38px;
+  border-radius: 12px;
+  border: 1px solid #E2E8F0;
+  background: #FFFFFF;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #0F172A;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.notifButton:hover {
+  background: #F8FAFC;
+  border-color: #CBD5E1;
+}

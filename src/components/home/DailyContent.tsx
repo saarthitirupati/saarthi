@@ -18,7 +18,8 @@ const TEXTS = {
 };
 
 export function DailyContent(props: any) {
-  const { dailyContent, liveStatus, todayFestival } = props;
+  const { dailyContent, liveStatus, todayFestival, variant = 'mobile' } = props;
+  const isDesktop = variant === 'desktop';
   const lang = useLanguage();
   const t = TEXTS[lang];
 
@@ -69,7 +70,7 @@ export function DailyContent(props: any) {
   const badge = priorityColors[(companionData.priorityLevel as 1|2|3|4)] ?? priorityColors[3];
 
   return (
-    <div style={{ padding: '0 16px 8px 16px' }}>
+    <div style={{ padding: isDesktop ? '0' : '0 16px 8px 16px' }}>
 
       {/* ── SECTION HEADER ── */}
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '12px', gap: '8px' }}>

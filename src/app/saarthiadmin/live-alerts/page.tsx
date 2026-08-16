@@ -122,10 +122,12 @@ export default function AdminAlertsPage() {
   const handleExpireAlert = async (id: string) => {
     if (!confirm('Are you sure you want to expire this alert immediately?')) return;
     try {
-      const res = await fetch(`/api/v1/alerts/${id}`, {
-        method: 'DELETE'
-      });
+      let res = await fetch(`/api/v1/alerts/${id}`, { method: 'DELETE' });
+      if (!res.ok) {
+        res = await fetch(`/api/v1/alerts?id=${id}`, { method: 'DELETE' });
+      }
       if (res.ok) {
+        notifyRealtimeUpdate();
         fetchAlerts();
       } else {
         alert('Failed to expire alert.');

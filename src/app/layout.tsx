@@ -1,30 +1,12 @@
 import type { Metadata, Viewport } from "next";
-import { DM_Serif_Display, Plus_Jakarta_Sans, Inter, Noto_Sans_Telugu } from "next/font/google";
 import Script from "next/script";
 import "./globals.css";
 import ClientLayout from "@/components/ClientLayout";
 
-const dmSerifDisplay = DM_Serif_Display({
-  subsets: ["latin"],
-  weight: ["400"],
-  variable: "--font-hero",
-});
-
-const plusJakartaSans = Plus_Jakarta_Sans({
-  subsets: ["latin"],
-  variable: "--font-heading",
-});
-
-const inter = Inter({
-  subsets: ["latin"],
-  variable: "--font-body",
-});
-
-const notoSansTelugu = Noto_Sans_Telugu({
-  subsets: ["telugu"],
-  variable: "--font-telugu",
-  weight: ["400", "500", "600", "700", "800", "900"],
-});
+const dmSerifDisplay = { variable: "--font-hero" };
+const plusJakartaSans = { variable: "--font-heading" };
+const inter = { variable: "--font-body" };
+const notoSansTelugu = { variable: "--font-telugu" };
 
 const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://saarthiguide.in';
 

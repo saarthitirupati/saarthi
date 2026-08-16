@@ -30,18 +30,26 @@ const TEXTS = {
   }
 };
 
-export function RecommendationCard({ liveStatus, todayFestival }: { liveStatus: any; todayFestival?: any }) {
+export function RecommendationCard({ 
+  liveStatus, 
+  todayFestival,
+  variant = 'mobile'
+}: { 
+  liveStatus: any; 
+  todayFestival?: any;
+  variant?: 'mobile' | 'desktop';
+}) {
   const lang = useLanguage();
   const t = TEXTS[lang];
 
-  if (!liveStatus) return null;
+  const status = liveStatus || {};
 
   const date = new Date();
   const dayOfWeek = date.getDay();
   const hr = date.getHours();
   const isNight = hr >= 21 || hr < 5;
-  const crowd = (liveStatus.crowdLevel || 'moderate').toLowerCase();
-  const weatherStr = (liveStatus.weather || '').toLowerCase();
+  const crowd = (status.crowdLevel || 'moderate').toLowerCase();
+  const weatherStr = (status.weather || '').toLowerCase();
   const isRainy = weatherStr.includes('rain') || weatherStr.includes('shower') || weatherStr.includes('storm');
 
   // Dynamic crowd status derived from live data
@@ -177,99 +185,107 @@ export function RecommendationCard({ liveStatus, todayFestival }: { liveStatus: 
     };
   }
 
+  const isDesktop = variant === 'desktop';
 
   return (
-    <div style={{ padding: '0 16px 16px 16px' }}>
+    <div style={{ padding: isDesktop ? '0' : '0 16px 16px 16px', height: 'auto' }}>
       <div style={{
         backgroundColor: '#FFFFFF',
-        borderRadius: '20px',
-        padding: '18px 20px',
+        borderRadius: '24px',
+        padding: isDesktop ? '24px' : '18px 20px',
         border: '1px solid #E2E8F0',
-        boxShadow: '0 4px 16px rgba(0, 0, 0, 0.03)'
+        boxShadow: '0 4px 16px rgba(0, 0, 0, 0.03)',
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'space-between',
+        height: isDesktop ? '100%' : 'auto',
+        boxSizing: 'border-box'
       }}>
         
         {/* RECOMMENDED BADGE WITH PRIORITY TAG */}
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '12px' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-            <Sparkles size={16} color="#10B981" />
-            <span style={{ fontSize: '12px', fontWeight: 800, color: '#10B981', letterSpacing: '0.6px', textTransform: 'uppercase' }}>
-              {t.recommended}
+        <div>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '14px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+              <Sparkles size={18} color="#10B981" />
+              <span style={{ fontSize: '13px', fontWeight: 800, color: '#10B981', letterSpacing: '0.6px', textTransform: 'uppercase' }}>
+                🔥 {t.recommended} RIGHT NOW
+              </span>
+            </div>
+            <span style={{ fontSize: '10.5px', fontWeight: 800, color: '#047857', backgroundColor: '#ECFDF5', border: '1px solid #A7F3D0', padding: '3px 10px', borderRadius: '10px' }}>
+              {rec.priorityTag}
             </span>
           </div>
-          <span style={{ fontSize: '10px', fontWeight: 800, color: '#047857', backgroundColor: '#ECFDF5', border: '1px solid #A7F3D0', padding: '2px 8px', borderRadius: '8px' }}>
-            {rec.priorityTag}
-          </span>
-        </div>
 
-        {/* MAIN CONTENT ROW: LEFT DETAILS + RIGHT IMAGE THUMBNAIL */}
-        <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: '12px', marginBottom: '14px' }}>
-          <div>
-            <h3 style={{ fontSize: '20px', fontWeight: 800, color: '#0F172A', margin: '0 0 10px 0', letterSpacing: '-0.01em', lineHeight: '1.2' }}>
-              {rec.title}
-            </h3>
+          {/* MAIN CONTENT ROW: LEFT DETAILS + RIGHT IMAGE THUMBNAIL */}
+          <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: '16px', marginBottom: '16px' }}>
+            <div>
+              <h3 style={{ fontSize: isDesktop ? '24px' : '20px', fontWeight: 900, color: '#0F172A', margin: '0 0 12px 0', letterSpacing: '-0.01em', lineHeight: '1.25' }}>
+                {rec.title}
+              </h3>
 
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '13.5px', color: '#475569', fontWeight: 600 }}>
-                <Navigation size={15} color="#475569" />
-                <span>{rec.distance}</span>
-              </div>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '14px', color: '#475569', fontWeight: 600 }}>
+                  <Navigation size={16} color="#0F5132" />
+                  <span>{rec.distance}</span>
+                </div>
 
-              <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '13.5px', color: '#0284C7', fontWeight: 700 }}>
-                <Users size={15} color="#0284C7" />
-                <span>{rec.crowdStatus}</span>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '14px', color: '#0284C7', fontWeight: 700 }}>
+                  <Users size={16} color="#0284C7" />
+                  <span>Overall Crowd Wait: {rec.crowdStatus}</span>
+                </div>
               </div>
             </div>
+
+            {/* RIGHT IMAGE THUMBNAIL */}
+            <div style={{
+              width: isDesktop ? '120px' : '90px',
+              height: isDesktop ? '95px' : '75px',
+              borderRadius: '18px',
+              backgroundImage: `url(${rec.image})`,
+              backgroundSize: 'cover',
+              backgroundPosition: 'center',
+              backgroundColor: '#F1F5F9',
+              flexShrink: 0
+            }} />
           </div>
 
-          {/* RIGHT IMAGE THUMBNAIL */}
+          {/* MANDATORY EXPLAINABLE REASON BADGE */}
           <div style={{
-            width: '90px',
-            height: '75px',
-            borderRadius: '16px',
-            backgroundImage: `url(${rec.image})`,
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
-            backgroundColor: '#F1F5F9',
-            flexShrink: 0
-          }} />
+            fontSize: '12px',
+            fontWeight: 700,
+            color: '#047857',
+            backgroundColor: '#F0FDF4',
+            border: '1px solid #BBF7D0',
+            padding: '10px 14px',
+            borderRadius: '14px',
+            marginBottom: '16px',
+            display: 'flex',
+            alignItems: 'flex-start',
+            gap: '8px',
+            lineHeight: '1.45'
+          }}>
+            <Info size={16} color="#047857" style={{ flexShrink: 0, marginTop: '2px' }} />
+            <span><strong>{t.whyRecommended}</strong> {rec.reason}</span>
+          </div>
         </div>
 
-        {/* MANDATORY EXPLAINABLE REASON BADGE */}
-        <div style={{
-          fontSize: '11.5px',
-          fontWeight: 700,
-          color: '#047857',
-          backgroundColor: '#F0FDF4',
-          border: '1px solid #BBF7D0',
-          padding: '8px 12px',
-          borderRadius: '12px',
-          marginBottom: '12px',
-          display: 'flex',
-          alignItems: 'flex-start',
-          gap: '6px',
-          lineHeight: '1.4'
-        }}>
-          <Info size={15} color="#047857" style={{ flexShrink: 0, marginTop: '1px' }} />
-          <span><strong>{t.whyRecommended}</strong> {rec.reason}</span>
-        </div>
-
-        {/* FULL-WIDTH BUTTON */}
+        {/* PRIMARY CTA BUTTON */}
         <Link href={rec.link} style={{
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          backgroundColor: '#F0FDF4',
-          border: '1px solid #BBF7D0',
-          color: '#166534',
-          padding: '11px',
-          borderRadius: '14px',
-          fontSize: '14px',
+          backgroundColor: '#0F5132',
+          color: '#FFFFFF',
+          padding: '14px',
+          borderRadius: '16px',
+          fontSize: '14.5px',
           fontWeight: 800,
           textDecoration: 'none',
           width: '100%',
-          textAlign: 'center'
+          textAlign: 'center',
+          boxShadow: '0 4px 14px rgba(15, 81, 50, 0.2)'
         }}>
-          {t.viewDetails}
+          {isDesktop ? 'Start Navigation →' : t.viewDetails}
         </Link>
 
       </div>

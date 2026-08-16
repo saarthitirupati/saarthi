@@ -209,6 +209,31 @@ function ExploreContent() {
     return result;
   }, [searchQuery, activeFilter, places, userLocation, isAlternativeQuery, isTirupatiQuery]);
 
+  const mustVisit = useMemo(() => {
+    return filteredPlaces
+      .filter((p: Place) => p.isMustVisit || (p.rating && p.rating >= 4.5) || (p as any).importanceLevel === 'iconic')
+      .slice(0, 10);
+  }, [filteredPlaces]);
+
+  const hiddenGems = useMemo(() => {
+    return filteredPlaces
+      .filter((p: Place) => {
+        const toStr = (v: any) => typeof v === 'string' ? v : (v?.name || v?.slug || String(v || ''));
+        const tagsLower = (p.tags || []).map((t: any) => toStr(t).toLowerCase());
+        const categoryLower = toStr(p.category).toLowerCase();
+        const placeTypeLower = toStr(p.placeType).toLowerCase();
+        const interestsLower = (p.interests || []).map((i: any) => toStr(i).toLowerCase());
+        return (
+          p.isHiddenGem ||
+          placeTypeLower === 'hidden' ||
+          categoryLower.includes('hidden') ||
+          tagsLower.some((t: string) => ['hidden', 'hidden gem', 'peaceful', 'serene', 'off-beat', 'offbeat', 'untouched', 'quiet', 'nature'].includes(t)) ||
+          interestsLower.includes('hidden')
+        );
+      })
+      .slice(0, 10);
+  }, [filteredPlaces]);
+
   return (
     <main className={styles.main}>
       <header className={styles.header}>
@@ -226,7 +251,7 @@ function ExploreContent() {
           <Search size={20} color="#999" />
           <input 
             type="text" 
-            placeholder="Search places, stories, encyclopedia…" 
+            placeholder="Search places, temples, waterfalls, restaurants, history…" 
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
           />
@@ -246,108 +271,101 @@ function ExploreContent() {
       </div>
 
       <section className={styles.content}>
-        {locationError && (
-          <div style={{
-            background: '#FFFBEB', border: '1px solid #FCD34D', borderRadius: '12px',
-            padding: '10px 14px', marginBottom: '12px',
-            display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '10px'
-          }}>
-            <span style={{ fontSize: '12.5px', color: '#92400E', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '6px' }}>
-              <MapPin size={14} /> Location unavailable — showing distances from Tirupati centre
-            </span>
-            <button onClick={() => setLocationError(false)} style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#92400E', flexShrink: 0 }}>✕</button>
+        <div className={styles.exploreLayout}>
+          {/* Desktop Left Filter Sidebar */}
+          <aside className={styles.sidebarFilter}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '20px', paddingBottom: '12px', borderBottom: '1px solid #F1F5F9' }}>
+              <Filter size={18} color="#059669" />
+              <h3 style={{ fontSize: '16px', fontWeight: 800, color: '#0F172A', margin: 0 }}>Explore Filters</h3>
+            </div>
+
+            <div style={{ marginBottom: '20px' }}>
+              <label style={{ fontSize: '12px', fontWeight: 800, color: '#64748B', textTransform: 'uppercase', letterSpacing: '0.05em', display: 'block', marginBottom: '10px' }}>
+                Categories
+              </label>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                {filters.map((filter) => (
+                  <button
+                    key={filter}
+                    onClick={() => handleFilterClick(filter)}
+                    style={{
+                      padding: '8px 12px',
+                      borderRadius: '10px',
+                      border: 'none',
+                      background: activeFilter === filter ? '#ECFDF5' : 'transparent',
+                      color: activeFilter === filter ? '#059669' : '#334155',
+                      fontWeight: activeFilter === filter ? 800 : 600,
+                      fontSize: '13px',
+                      textAlign: 'left',
+                      cursor: 'pointer',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'space-between',
+                      transition: 'all 0.15s'
+                    }}
+                  >
+                    <span>{filter}</span>
+                    {activeFilter === filter && <span style={{ color: '#059669', fontWeight: 800 }}>✓</span>}
+                  </button>
+                ))}
+              </div>
+            </div>
+          </aside>
+
+          {/* Main Content Area */}
+          <div className={styles.mainContentArea}>
+            {locationError && (
+              <div style={{
+                background: '#FFFBEB', border: '1px solid #FCD34D', borderRadius: '12px',
+                padding: '10px 14px', marginBottom: '16px',
+                display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '10px'
+              }}>
+                <span style={{ fontSize: '12.5px', color: '#92400E', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '6px' }}>
+                  <MapPin size={14} /> Location unavailable — showing distances from Tirupati centre
+                </span>
+                <button onClick={() => setLocationError(false)} style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#92400E', flexShrink: 0 }}>✕</button>
+              </div>
+            )}
+        {/* Nearby Places Section */}
+        {filteredPlaces.length > 0 && (
+          <div className={styles.curatedSection}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
+              <h2 className={styles.curatedTitle} style={{ display: 'flex', alignItems: 'center', gap: '6px', margin: 0 }}>
+                Nearby <MapPin size={18} style={{ color: '#2F6144' }} />
+              </h2>
+              <span style={{ fontSize: '11px', color: '#059669', fontWeight: 800, background: '#DCFCE7', padding: '2px 8px', borderRadius: '12px' }}>
+                {userLocation ? 'Live GPS Distance' : 'Nearest First'}
+              </span>
+            </div>
+            <div className={styles.horizontalScroll}>
+              {filteredPlaces.slice(0, 10).map((place) => {
+                const dist = Number((place as any).computedDistance || 0);
+                let travelStr = '';
+                if (dist <= 1.5) {
+                  travelStr = `${Math.max(1, Math.round(dist * 12))} mins • Walk`;
+                } else if (dist <= 8.0) {
+                  travelStr = `${Math.max(2, Math.round(dist * 2.5))} mins • Bike`;
+                } else {
+                  travelStr = `${Math.max(5, Math.round(dist * 2.0))} mins • Bus/Car`;
+                }
+
+                return (
+                  <Link href={`/place/${place.id}`} key={place.id} className={styles.curatedCard}>
+                    <div className={styles.curatedImage} style={{ backgroundImage: `url(${place.image || 'https://images.unsplash.com/photo-1514222134-b57cbf8ce673?auto=format&fit=crop&q=80&w=800'})` }} />
+                    <div className={styles.curatedInfo}>
+                      <h4>{place.name}</h4>
+                      <div style={{ display: 'flex', flexDirection: 'column', gap: '2px', marginTop: '2px' }}>
+                        <span style={{ color: '#2F6144', fontWeight: 800, fontSize: '11px' }}>
+                          {dist < 0.5 ? '< 0.5 km away' : `${dist.toFixed(1)} km away`} • {travelStr}
+                        </span>
+                      </div>
+                    </div>
+                  </Link>
+                );
+              })}
+            </div>
           </div>
         )}
-        {(() => {
-          const source = filteredPlaces.length > 0 ? filteredPlaces : (places.length > 0 ? places : PLACES);
-          const effectiveLocation = userLocation || TIRUPATI_CENTER;
-
-          const calculatePlaceDist = (p: Place) => {
-            const lat = p.coordinates?.lat || TIRUPATI_CENTER.lat;
-            const lng = p.coordinates?.lng || TIRUPATI_CENTER.lng;
-            const isTirumala = p.location?.toLowerCase().includes('tirumala') || 
-                               p.location?.toLowerCase().includes('narayanagiri') || 
-                               !!(p.category && p.category.toLowerCase().includes('tirumala'));
-            return calculateDrivingDistance(effectiveLocation.lat, effectiveLocation.lng, lat, lng, isTirumala);
-          };
-
-          const formatDistStr = (d: number) => {
-            if (d < 0.5) return '< 0.5 km away';
-            return `${d.toFixed(1)} km away`;
-          };
-
-          const mustVisit = source
-            .filter(p => p.isMustVisit || (p.rating && p.rating >= 4.5) || (p as any).importanceLevel === 'iconic')
-            .map(p => ({ ...p, computedDistance: (p as any).computedDistance ?? calculatePlaceDist(p) }))
-            .slice(0, 10);
-
-          const hiddenGems = source
-            .filter(p => {
-              const toStr = (v: any) => typeof v === 'string' ? v : (v?.name || v?.slug || String(v || ''));
-              const tagsLower = (p.tags || []).map(t => toStr(t).toLowerCase());
-              const categoryLower = toStr(p.category).toLowerCase();
-              const placeTypeLower = toStr(p.placeType).toLowerCase();
-              const interestsLower = (p.interests || []).map(i => toStr(i).toLowerCase());
-              return (
-                p.isHiddenGem ||
-                placeTypeLower === 'hidden' ||
-                categoryLower.includes('hidden') ||
-                tagsLower.some(t => ['hidden', 'hidden gem', 'peaceful', 'serene', 'off-beat', 'offbeat', 'untouched', 'quiet', 'nature'].includes(t)) ||
-                interestsLower.includes('hidden')
-              );
-            })
-            .map(p => ({ ...p, computedDistance: (p as any).computedDistance ?? calculatePlaceDist(p) }))
-            .slice(0, 10);
-
-          const nearbyPlaces = [...source]
-            .map(p => ({ ...p, computedDistance: (p as any).computedDistance ?? calculatePlaceDist(p) }))
-            .sort((a: any, b: any) => a.computedDistance - b.computedDistance)
-            .slice(0, 10);
-
-          // If searching or filtering, show curated rows matching query/filter if any, then main list
-          return (
-            <>
-              {/* Nearby Places Section */}
-              {nearbyPlaces.length > 0 && (
-                <div className={styles.curatedSection}>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
-                    <h2 className={styles.curatedTitle} style={{ display: 'flex', alignItems: 'center', gap: '6px', margin: 0 }}>
-                      Nearby <MapPin size={18} style={{ color: '#2F6144' }} />
-                    </h2>
-                    <span style={{ fontSize: '11px', color: '#059669', fontWeight: 800, background: '#DCFCE7', padding: '2px 8px', borderRadius: '12px' }}>
-                      {userLocation ? 'Live GPS Distance' : 'Nearest First'}
-                    </span>
-                  </div>
-                  <div className={styles.horizontalScroll}>
-                    {nearbyPlaces.map((place) => {
-                      const dist = Number((place as any).computedDistance);
-                      let travelStr = '';
-                      if (dist <= 1.5) {
-                        travelStr = `${Math.max(1, Math.round(dist * 12))} mins • Walk`;
-                      } else if (dist <= 8.0) {
-                        travelStr = `${Math.max(2, Math.round(dist * 2.5))} mins • Bike`;
-                      } else {
-                        travelStr = `${Math.max(5, Math.round(dist * 2.0))} mins • Bus/Car`;
-                      }
-
-                      return (
-                        <Link href={`/place/${place.id}`} key={place.id} className={styles.curatedCard}>
-                          <div className={styles.curatedImage} style={{ backgroundImage: `url(${place.image || 'https://images.unsplash.com/photo-1514222134-b57cbf8ce673?auto=format&fit=crop&q=80&w=800'})` }} />
-                          <div className={styles.curatedInfo}>
-                            <h4>{place.name}</h4>
-                            <div style={{ display: 'flex', flexDirection: 'column', gap: '2px', marginTop: '2px' }}>
-                              <span style={{ color: '#2F6144', fontWeight: 800, fontSize: '11px' }}>
-                                {formatDistStr(dist)} • {travelStr}
-                              </span>
-                            </div>
-                          </div>
-                        </Link>
-                      );
-                    })}
-                  </div>
-                </div>
-              )}
-
               {/* Must-Visit Section */}
               {mustVisit.length > 0 && (
                 <div className={styles.curatedSection}>
@@ -373,7 +391,7 @@ function ExploreContent() {
                             </span>
                             <span className={styles.curatedDistance} style={{ gap: '2px' }}>
                               <MapPin size={10} strokeWidth={2.5} />
-                              {formatDistStr(Number((place as any).computedDistance))}
+                              {Number((place as any).computedDistance || 0) < 0.5 ? '< 0.5 km' : `${Number((place as any).computedDistance || 0).toFixed(1)} km`}
                             </span>
                           </div>
                         </div>
@@ -404,7 +422,7 @@ function ExploreContent() {
                           <h4 title={place.name}>{place.name}</h4>
                           <div className={styles.curatedDistance}>
                             <MapPin size={10} strokeWidth={2.5} />
-                            {formatDistStr(Number((place as any).computedDistance))}
+                            {Number((place as any).computedDistance || 0) < 0.5 ? '< 0.5 km' : `${Number((place as any).computedDistance || 0).toFixed(1)} km`}
                           </div>
                         </div>
                       </Link>
@@ -412,9 +430,6 @@ function ExploreContent() {
                   </div>
                 </div>
               )}
-            </>
-          );
-        })()}
 
         {isAlternativeQuery && (
           <div style={{
@@ -629,9 +644,10 @@ function ExploreContent() {
             )}
           </div>
         )}
-
-      </section>
-    </main>
+      </div>
+    </div>
+  </section>
+</main>
   );
 }
 

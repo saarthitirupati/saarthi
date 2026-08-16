@@ -18,6 +18,12 @@
   box-sizing: border-box;
 }
 
+@media (min-width: 1024px) {
+  .nav {
+    display: none;
+  }
+}
+
 .container {
   display: flex;
   justify-content: space-between;

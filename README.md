@@ -1,13 +1,10 @@
-<div align="center">
-
 # 🪔 Saarthi (సారథి)
-### *Your Trusted Companion for a Smooth & Meaningful Journey in Tirupati & Tirumala*
+### *Your Real-Time Pilgrim Companion for Tirupati & Tirumala*
 
 [![Next.js 16](https://img.shields.io/badge/Next.js-16.0-black?style=for-the-badge&logo=next.js&logoColor=white)](https://nextjs.org/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.0-3178C6?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
-[![FastAPI](https://img.shields.io/badge/FastAPI-0.100+-009688?style=for-the-badge&logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com/)
 [![Supabase](https://img.shields.io/badge/Supabase-Realtime-3ECF8E?style=for-the-badge&logo=supabase&logoColor=white)](https://supabase.com/)
-[![i18n](https://img.shields.io/badge/Language-English_%7C_తెలుగు-FF6B6B?style=for-the-badge)](https://github.com/thatrasunil/saarthi)
+[![i18n](https://img.shields.io/badge/Language-English_%7C_తెలుగు-FF6B6B?style=for-the-badge)](https://github.com/saarthitirupati/saarthiguide1)
 [![License](https://img.shields.io/badge/License-MIT-blue?style=for-the-badge)](LICENSE)
 
 <br/>
@@ -20,36 +17,17 @@
 
 <br/>
 
-## 🌐 Dynamic Multi-Language Support (తెలుగు & English)
-
-Saarthi is built language-first for global and regional pilgrims:
-
-```
-          ┌───────────────────────────────────────────────┐
-          │        🌐 Select Language (English / తెలుగు)   │
-          └───────────────────────┬───────────────────────┘
-                                  ▼
-          ┌───────────────────────────────────────────────┐
-          │    Dynamic App UI & Auto-Translation Engine   │
-          └───────────────────────────────────────────────┘
-```
-
-- **Language-First Onboarding**: Select your preferred language before starting your yatra.
-- **Native Typography**: Integrated **Noto Sans Telugu** Google Font for crisp, beautifully rendered regional script.
-- **Zero-Cost Architecture**: Uses open-source React translation hooks + client-side translation widget with **0 paid API fees**.
-
----
-
 ## ⚡ Key Highlights & Features
 
 | Feature | Description | Impact |
 | :--- | :--- | :--- |
 | **🤖 Saarthi Decision Engine** | Evaluates weather, live queue wait times, and token quotas to suggest the optimal next step. | Saves up to **8+ hours** in peak queues |
-| **🎫 Live SSD Token Monitor** | Tracks offline Slotted Sarva Darshan token status across Vishnu Nivasam, Srinivasam & Bhudevi complexes. | Prevents wasted trips when quotas fill |
-| **⏱️ Real-time Wait Times** | Live darshan queue duration updates for Sarva Darshan, SSD/DD, and ₹300 Special Entry. | Accurate decision-making |
-| **🪔 Daily Spiritual Engine** | Day-specific themes, Annamayya sankeertanas, daily reflection quotes, and trivia. | Enriches spiritual experience |
-| **🚨 Live Pilgrim Advisories** | Instant broadcast banner & full-screen emergency popups for rain, route closures, or festival rushes. | Enhances pilgrim safety |
-| **🔒 Admin Control Center** | Dedicated `/saarthiadmin` panel for live queue adjustments, alert broadcasts, and token schedules. | Operational control |
+| **🗺️ Interactive 9.5/10 Journey Map** | Live topographic map showing Ghat Road route, Alipiri Checkpost, SSD Counters & Tirumala Temple with real-time status. | Clear situational awareness |
+| **🎫 Live SSD Token Monitor** | Real-time tracking of offline Slotted Sarva Darshan tokens across Vishnu Nivasam, Srinivasam & Bhudevi complexes via Supabase. | Prevents wasted trips when quotas fill |
+| **📍 Dynamic GPS & Region Selector** | Hardware GPS auto-detection to dynamically identify whether pilgrim is at Tirumala Hill or Tirupati City. | Location-aware guidance |
+| **📱 Full Responsive Layout System** | Multi-breakpoint design (Mobile <768px carousels, Tablet 2-col, Small Desktop 3-col, Desktop 4-col with Sticky Filter Sidebar). | Seamless across all screens |
+| **🚨 Real-Time Admin Alerts** | Supabase PostgreSQL WebSockets for instant broadcast of rain alerts, route closures, and queue advisories. | Real-time pilgrim safety |
+| **🔒 Saarthi Admin Suite (`/saarthiadmin`)** | Production-ready admin panel connected directly to Supabase `live_alerts` & `live_metrics` tables. | Instant operational control |
 
 ---
 
@@ -57,50 +35,42 @@ Saarthi is built language-first for global and regional pilgrims:
 
 ```mermaid
 graph TD
-    A[Pilgrim Mobile/Web Client] -->|Reads saved language & preferences| B[Next.js 16 App Router]
-    B -->|Fetches real-time status| C[FastAPI Backend Engine]
-    B -->|Real-time Subscriptions| D[Supabase PostgreSQL DB]
-    C -->|Hydrates queue & token metrics| E[(Live Data Cache)]
+    A[Pilgrim Mobile/Desktop Client] -->|Real-time Subscriptions| B[Supabase PostgreSQL DB]
+    A -->|Server Actions & API Routes| C[Next.js 16 App Router]
+    C -->|Calculations & Proximity| D[Location & Routing Engine]
     
     subgraph Decision Engine
-        C --> F{Evaluate Live Context}
-        F -->|Rain / Severe Weather| G[Suggest Indoor Shrine / RTC Bus]
-        F -->|Peak Queue > 10 hrs| H[Suggest Alternate Shrine in Town]
-        F -->|SSD Tokens Active| I[Direct to Nearest Counter]
+        C --> E{Evaluate Live Context}
+        E -->|Heavy Crowd > 10 hrs| F[Suggest Alternate Shrine in City]
+        E -->|Rain / Severe Weather| G[Suggest Indoor Shrine / RTC Bus]
+        E -->|SSD Tokens Active| H[Direct to Nearest Counter]
     end
     
-    F -->|Return Recommendation + Explainable Reason| B
+    E -->|Explainable Advice & Reason| A
 ```
 
 ---
 
-## 📱 Mobile-First Pilgrim Flow
+## 📱 Mobile & Desktop Responsive Layout Blueprint
 
-```
-Splash Screen ➔ 🌐 Language Selection ➔ Welcome ➔ Name ➔ Home Dashboard
-                                                                │
-         ┌───────────────────────┬──────────────────────────────┴─────────────────────────┐
-         ▼                       ▼                                                         ▼
-🎯 Decision Hero         🎫 SSD Token Status                                      🪔 Today's Companion
-(Dynamic Advice)       (Live Counter Badges)                                    (Quotes & Daily Seva)
-```
+- **Mobile (`<768px`)**: Single column container with horizontal scrolling place carousels.
+- **Tablet (`768px–1023px`)**: 2-column grid layout for places & categories.
+- **Small Desktop (`1024px–1279px`)**: 3-column place grids with expanded 720px search bar.
+- **Desktop (`1280px+`)**: Sticky Left Filter Sidebar (Categories, Distance, Open Now) + 3/4-column place grid.
 
 ---
 
 ## 🛠️ Technology Stack
 
-### **Frontend Stack**
+### **Frontend & Framework**
 - **Framework**: [Next.js 16](https://nextjs.org/) (App Router, Turbopack)
 - **Language**: [TypeScript](https://www.typescriptlang.org/)
-- **Styling**: Vanilla CSS Modules (Design tokens, modern glassmorphism, responsive UI)
-- **Animations**: [Framer Motion](https://www.framer.com/motion/)
+- **Styling**: Vanilla CSS Modules (Design tokens, modern glassmorphism, responsive grid system)
 - **Icons**: [Lucide React](https://lucide.dev/)
-- **Typography**: `Noto Sans Telugu`, `Plus Jakarta Sans`, `DM Serif Display`, `Inter`
 
-### **Backend & Data Stack**
-- **API Server**: [FastAPI](https://fastapi.tiangolo.com/) (Python 3.10+, Pydantic v2, Uvicorn)
-- **Database**: [Supabase](https://supabase.com/) (PostgreSQL with Realtime WebSockets)
-- **State & Storage**: Client `localStorage` preference persistence
+### **Backend & Realtime**
+- **Database & WebSockets**: [Supabase](https://supabase.com/) (PostgreSQL `live_alerts`, `live_metrics`, `places`)
+- **Location Engine**: Hardware GPS Geolocation API + Haversine & OSRM road distance routing
 
 ---
 
@@ -108,31 +78,16 @@ Splash Screen ➔ 🌐 Language Selection ➔ Welcome ➔ Name ➔ Home Dashboar
 
 ### Prerequisites
 - **Node.js** >= 18.x
-- **Python** >= 3.10
 - **npm** or **pnpm**
 
 ### 1. Clone the Repository
 ```bash
-git clone https://github.com/thatrasunil/saarthi.git
-cd saarthi
+git clone https://github.com/saarthitirupati/saarthiguide1.git
+cd saarthiguide1
 ```
 
-### 2. Start Backend API
+### 2. Install & Start Web App
 ```bash
-cd backend
-python -m venv venv
-# On Windows:
-.\venv\Scripts\activate
-# On Linux/macOS:
-source venv/bin/activate
-
-pip install -r requirements.txt
-python -m uvicorn app.main:app --port 8000 --reload
-```
-
-### 3. Start Frontend Web App
-```bash
-# In the root directory (saarthi)
 npm install
 npm run dev
 ```
@@ -147,25 +102,18 @@ Open `http://localhost:3000` in your browser to launch Saarthi!
 saarthi/
 ├── src/
 │   ├── app/
-│   │   ├── onboarding/       # Language-first onboarding flow
-│   │   ├── place/[id]/       # Detailed temple & place guide
-│   │   ├── saarthiadmin/     # Admin briefing dashboard
-│   │   ├── layout.tsx        # Root layout with font definitions
-│   │   └── page.tsx          # Main home dashboard
+│   │   ├── explore/          # Responsive 2-column discovery page with sidebar
+│   │   ├── saarthiadmin/     # Real-time admin control panel
+│   │   ├── page.tsx          # Home dashboard & decision engine
+│   │   └── layout.tsx        # Root layout & meta configuration
 │   ├── components/
-│   │   ├── home/             # HomeHero, QuickChecklist, DailyContent, RecommendationCard
-│   │   ├── BottomNav/        # Mobile bottom navigation bar
-│   │   ├── SideMenu/         # Slide-out navigation drawer
-│   │   ├── GoogleTranslate.tsx # Auto-translation provider
-│   │   └── ClientLayout.tsx  # Root wrapper & location handler
+│   │   ├── home/             # HomeHero, RecommendationCard, DailyContent, JourneyOverviewPanel
+│   │   ├── DesktopHeader.tsx # Desktop top bar & dynamic region selector
+│   │   └── Logo/             # Brand logo lockup
 │   └── lib/
-│       ├── useLanguage.ts    # Language state & hook
+│       ├── location.ts       # Hardware GPS & IP location pipeline
+│       ├── statusDb.ts       # Supabase live metrics upsert helper
 │       └── supabase.ts       # Supabase client
-├── backend/                  # FastAPI operational backend
-│   └── app/
-│       └── main.py           # REST endpoints & status engine
-├── data/
-│   └── status.json           # Live status fallback store
 └── README.md
 ```
 
