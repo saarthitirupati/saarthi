@@ -77,8 +77,10 @@ function LayoutContent({
         {showBottomNav && <BottomNav />}
         <SideMenu isOpen={isMenuOpen} onClose={() => setIsMenuOpen(false)} />
         <div style={{ 
-          minHeight: '100vh',
-          paddingBottom: showBottomNav ? 'calc(110px + env(safe-area-inset-bottom, 16px))' : '24px'
+          minHeight: pathname === '/onboarding' ? '100dvh' : '100vh',
+          height: pathname === '/onboarding' ? '100dvh' : 'auto',
+          overflow: pathname === '/onboarding' ? 'hidden' : 'visible',
+          paddingBottom: showBottomNav ? 'calc(110px + env(safe-area-inset-bottom, 16px))' : (pathname === '/onboarding' ? '0px' : '24px')
         }}>
           {children}
         </div>

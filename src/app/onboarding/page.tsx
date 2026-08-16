@@ -248,70 +248,72 @@ export default function OnboardingPage() {
               exit="exit"
               style={{ width: '100%', boxSizing: 'border-box' }}
             >
-              <div style={{ display: 'flex', justifyContent: 'center', margin: '8px 0 12px 0' }}>
-                <Logo size={60} />
-              </div>
+              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%' }}>
+                <div style={{ display: 'flex', justifyContent: 'center', margin: '4px 0 8px 0' }}>
+                  <Logo size={48} />
+                </div>
 
-              <div style={{ textAlign: 'center', marginBottom: '20px' }}>
-                <h1 style={{ fontSize: '20px', fontWeight: 900, color: '#0F172A', margin: '0 0 4px 0', letterSpacing: '-0.02em', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}>
-                  <Globe size={20} style={{ color: '#0F5132' }} /> {t.selectLanguage}
-                </h1>
-                <p style={{ fontSize: '13px', color: '#64748B', lineHeight: 1.4, margin: 0 }}>
-                  {t.selectLanguageSub}
-                </p>
-              </div>
+                <div style={{ textAlign: 'center', marginBottom: '14px' }}>
+                  <h1 style={{ fontSize: '19px', fontWeight: 900, color: '#0F172A', margin: '0 0 4px 0', letterSpacing: '-0.02em', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}>
+                    <Globe size={18} style={{ color: '#0F5132' }} /> {t.selectLanguage}
+                  </h1>
+                  <p style={{ fontSize: '12.5px', color: '#64748B', lineHeight: 1.35, margin: 0 }}>
+                    {t.selectLanguageSub}
+                  </p>
+                </div>
 
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', width: '100%' }}>
-                {LANGUAGES.map((lang) => {
-                  const isSelected = selectedLanguage === lang.code;
-                  return (
-                    <motion.button
-                      key={lang.code}
-                      onClick={() => {
-                        setSelectedLanguage(lang.code);
-                        localStorage.setItem('saarthi_user_language', lang.code);
-                      }}
-                      whileHover={{ scale: 1.01 }}
-                      whileTap={{ scale: 0.98 }}
-                      style={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'space-between',
-                        padding: '16px 18px',
-                        borderRadius: '18px',
-                        background: isSelected ? 'rgba(15, 81, 50, 0.04)' : '#FFFFFF',
-                        border: isSelected ? '2px solid #0F5132' : '1px solid #E2E8F0',
-                        boxShadow: isSelected ? '0 4px 16px rgba(15, 81, 50, 0.12)' : '0 2px 8px rgba(0,0,0,0.03)',
-                        cursor: 'pointer',
-                        textAlign: 'left',
-                        transition: 'all 0.2s cubic-bezier(0.4, 0, 0.2, 1)',
-                        width: '100%',
-                        boxSizing: 'border-box'
-                      }}
-                    >
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
-                        <span style={{ fontSize: '22px' }}>{lang.flag}</span>
-                        <div>
-                          <div style={{ fontSize: '16px', fontWeight: 800, color: '#0F172A' }}>{lang.nativeName}</div>
-                          <div style={{ fontSize: '12px', fontWeight: 600, color: isSelected ? '#0F5132' : '#64748B', marginTop: '2px' }}>{lang.subText}</div>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', width: '100%' }}>
+                  {LANGUAGES.map((lang) => {
+                    const isSelected = selectedLanguage === lang.code;
+                    return (
+                      <motion.button
+                        key={lang.code}
+                        onClick={() => {
+                          setSelectedLanguage(lang.code);
+                          localStorage.setItem('saarthi_user_language', lang.code);
+                        }}
+                        whileHover={{ scale: 1.01 }}
+                        whileTap={{ scale: 0.98 }}
+                        style={{
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'space-between',
+                          padding: '13px 16px',
+                          borderRadius: '16px',
+                          background: isSelected ? 'rgba(15, 81, 50, 0.04)' : '#FFFFFF',
+                          border: isSelected ? '2px solid #0F5132' : '1px solid #E2E8F0',
+                          boxShadow: isSelected ? '0 4px 16px rgba(15, 81, 50, 0.12)' : '0 2px 8px rgba(0,0,0,0.03)',
+                          cursor: 'pointer',
+                          textAlign: 'left',
+                          transition: 'all 0.2s cubic-bezier(0.4, 0, 0.2, 1)',
+                          width: '100%',
+                          boxSizing: 'border-box'
+                        }}
+                      >
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                          <span style={{ fontSize: '20px' }}>{lang.flag}</span>
+                          <div>
+                            <div style={{ fontSize: '15px', fontWeight: 800, color: '#0F172A' }}>{lang.nativeName}</div>
+                            <div style={{ fontSize: '11.5px', fontWeight: 600, color: isSelected ? '#0F5132' : '#64748B', marginTop: '1px' }}>{lang.subText}</div>
+                          </div>
                         </div>
-                      </div>
-                      <div style={{
-                        width: '22px',
-                        height: '22px',
-                        borderRadius: '50%',
-                        border: isSelected ? 'none' : '2px solid #CBD5E1',
-                        background: isSelected ? '#0F5132' : 'transparent',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        flexShrink: 0
-                      }}>
-                        {isSelected && <Check size={13} color="#FFFFFF" strokeWidth={3} />}
-                      </div>
-                    </motion.button>
-                  );
-                })}
+                        <div style={{
+                          width: '20px',
+                          height: '20px',
+                          borderRadius: '50%',
+                          border: isSelected ? 'none' : '2px solid #CBD5E1',
+                          background: isSelected ? '#0F5132' : 'transparent',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          flexShrink: 0
+                        }}>
+                          {isSelected && <Check size={12} color="#FFFFFF" strokeWidth={3} />}
+                        </div>
+                      </motion.button>
+                    );
+                  })}
+                </div>
               </div>
 
               <footer className={styles.footer}>
@@ -339,13 +341,13 @@ export default function OnboardingPage() {
                     alignItems: 'center',
                     justifyContent: 'center',
                     gap: '8px',
-                    borderRadius: '18px',
-                    padding: '14px 20px',
+                    borderRadius: '16px',
+                    padding: '13px 20px',
                     background: '#0F5132',
                     color: '#FFFFFF',
                     boxShadow: '0 8px 24px rgba(15, 81, 50, 0.25)',
                     border: 'none',
-                    fontSize: '15px',
+                    fontSize: '14.5px',
                     fontWeight: 800
                   }}
                 >
@@ -365,72 +367,74 @@ export default function OnboardingPage() {
               exit="exit"
               style={{ width: '100%', boxSizing: 'border-box' }}
             >
-              <div style={{
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-                margin: '8px 0 12px 0'
-              }}>
+              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%' }}>
                 <div style={{
-                  width: '68px',
-                  height: '68px',
-                  borderRadius: '22px',
-                  background: 'linear-gradient(135deg, #FFFDF7 0%, #FEF3C7 100%)',
-                  border: '1.5px solid #FDE68A',
-                  boxShadow: '0 8px 20px rgba(200, 155, 60, 0.14)',
                   display: 'flex',
+                  justifyContent: 'center',
                   alignItems: 'center',
-                  justifyContent: 'center'
+                  margin: '4px 0 8px 0'
                 }}>
-                  <Logo size={46} />
+                  <div style={{
+                    width: '54px',
+                    height: '54px',
+                    borderRadius: '18px',
+                    background: 'linear-gradient(135deg, #FFFDF7 0%, #FEF3C7 100%)',
+                    border: '1.5px solid #FDE68A',
+                    boxShadow: '0 6px 16px rgba(200, 155, 60, 0.14)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center'
+                  }}>
+                    <Logo size={36} />
+                  </div>
                 </div>
-              </div>
 
-              <div style={{ textAlign: 'center', marginBottom: '14px' }}>
-                <h1 style={{ fontSize: '21px', fontWeight: 900, color: '#0F172A', margin: '0 0 4px 0', letterSpacing: '-0.02em' }}>
-                  <span className="notranslate">{t.welcomeTitle}</span>
-                </h1>
-                <p style={{ fontSize: '12.5px', color: '#64748B', lineHeight: 1.45, margin: 0, padding: '0 8px' }}>
-                  {t.welcomeSub}
-                </p>
-              </div>
+                <div style={{ textAlign: 'center', marginBottom: '10px' }}>
+                  <h1 style={{ fontSize: '19px', fontWeight: 900, color: '#0F172A', margin: '0 0 3px 0', letterSpacing: '-0.02em' }}>
+                    <span className="notranslate">{t.welcomeTitle}</span>
+                  </h1>
+                  <p style={{ fontSize: '12px', color: '#64748B', lineHeight: 1.35, margin: 0, padding: '0 8px' }}>
+                    {t.welcomeSub}
+                  </p>
+                </div>
 
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', width: '100%' }}>
-                {t.cards.map((card, idx) => {
-                  const CardIcon = card.icon;
-                  return (
-                    <div 
-                      key={idx}
-                      style={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        gap: '12px',
-                        background: '#FFFFFF',
-                        border: '1px solid #E2E8F0',
-                        borderRadius: '16px',
-                        padding: '10px 14px',
-                        boxShadow: '0 2px 8px rgba(0,0,0,0.02)'
-                      }}
-                    >
-                      <div style={{
-                        width: '36px',
-                        height: '36px',
-                        borderRadius: '12px',
-                        background: card.bg,
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        flexShrink: 0
-                      }}>
-                        <CardIcon size={18} style={{ color: card.color }} />
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', width: '100%' }}>
+                  {t.cards.map((card, idx) => {
+                    const CardIcon = card.icon;
+                    return (
+                      <div 
+                        key={idx}
+                        style={{
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: '10px',
+                          background: '#FFFFFF',
+                          border: '1px solid #E2E8F0',
+                          borderRadius: '14px',
+                          padding: '8px 12px',
+                          boxShadow: '0 2px 8px rgba(0,0,0,0.02)'
+                        }}
+                      >
+                        <div style={{
+                          width: '32px',
+                          height: '32px',
+                          borderRadius: '10px',
+                          background: card.bg,
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          flexShrink: 0
+                        }}>
+                          <CardIcon size={16} style={{ color: card.color }} />
+                        </div>
+                        <div>
+                          <h3 style={{ fontSize: '13px', fontWeight: 800, color: '#0F172A', margin: '0 0 1px 0' }}>{card.title}</h3>
+                          <p style={{ fontSize: '11px', color: '#64748B', margin: 0, lineHeight: 1.3 }}>{card.desc}</p>
+                        </div>
                       </div>
-                      <div>
-                        <h3 style={{ fontSize: '13.5px', fontWeight: 800, color: '#0F172A', margin: '0 0 2px 0' }}>{card.title}</h3>
-                        <p style={{ fontSize: '11.5px', color: '#64748B', margin: 0, lineHeight: 1.35 }}>{card.desc}</p>
-                      </div>
-                    </div>
-                  );
-                })}
+                    );
+                  })}
+                </div>
               </div>
 
               <footer className={styles.footer}>
@@ -458,13 +462,13 @@ export default function OnboardingPage() {
                     alignItems: 'center',
                     justifyContent: 'center',
                     gap: '8px',
-                    borderRadius: '18px',
-                    padding: '14px 20px',
+                    borderRadius: '16px',
+                    padding: '13px 20px',
                     background: '#0F5132',
                     color: '#FFFFFF',
                     boxShadow: '0 8px 24px rgba(15, 81, 50, 0.25)',
                     border: 'none',
-                    fontSize: '15px',
+                    fontSize: '14.5px',
                     fontWeight: 800
                   }}
                 >
@@ -482,76 +486,79 @@ export default function OnboardingPage() {
               initial="hidden"
               animate="visible"
               exit="exit"
+              style={{ width: '100%', boxSizing: 'border-box' }}
             >
-              <motion.div className={styles.textContent} variants={cardVariants} style={{ marginTop: '8px', marginBottom: '14px' }}>
-                <div style={{ 
-                  width: '52px', 
-                  height: '52px', 
-                  borderRadius: '18px', 
-                  backgroundColor: 'rgba(200, 155, 60, 0.15)', 
-                  display: 'flex', 
-                  alignItems: 'center', 
-                  justifyContent: 'center', 
-                  color: '#C89B3C', 
-                  margin: '0 auto 12px auto', 
-                  boxShadow: '0 4px 12px rgba(200, 155, 60, 0.1)' 
-                }}>
-                  <User size={24} />
-                </div>
-                <h1 className={styles.title} style={{ color: '#1A1A1A', fontSize: '21px', fontWeight: 800 }}>{t.nameTitle}</h1>
-                <p className={styles.description} style={{ fontSize: '13px' }}>{t.nameDesc}</p>
-              </motion.div>
+              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%' }}>
+                <motion.div className={styles.textContent} variants={cardVariants} style={{ marginTop: '4px', marginBottom: '10px' }}>
+                  <div style={{ 
+                    width: '44px', 
+                    height: '44px', 
+                    borderRadius: '14px', 
+                    backgroundColor: 'rgba(200, 155, 60, 0.15)', 
+                    display: 'flex', 
+                    alignItems: 'center', 
+                    justifyContent: 'center', 
+                    color: '#C89B3C', 
+                    margin: '0 auto 8px auto', 
+                    boxShadow: '0 4px 12px rgba(200, 155, 60, 0.1)' 
+                  }}>
+                    <User size={22} />
+                  </div>
+                  <h1 className={styles.title} style={{ color: '#1A1A1A', fontSize: '19px', fontWeight: 800, margin: '0 0 3px 0' }}>{t.nameTitle}</h1>
+                  <p className={styles.description} style={{ fontSize: '12px', margin: 0 }}>{t.nameDesc}</p>
+                </motion.div>
 
-              <motion.div className={styles.inputWrapper} variants={cardVariants} style={{ width: '100%', padding: '0 6px' }}>
-                <input
-                  type="text"
-                  className={styles.nameInput}
-                  placeholder={t.namePlaceholder}
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                  onKeyDown={(e) => e.key === 'Enter' && name.trim() && nextStep()}
-                  style={{
-                    width: '100%',
-                    padding: '16px 20px',
-                    borderRadius: '18px',
-                    border: '2px solid rgba(15, 81, 50, 0.1)',
-                    fontSize: '15px',
-                    fontWeight: 700,
-                    textAlign: 'center',
-                    boxShadow: '0 8px 24px rgba(0,0,0,0.03)',
-                    transition: 'all 0.3s',
-                    backgroundColor: 'rgba(255, 255, 255, 0.9)',
-                    backdropFilter: 'blur(8px)',
-                    color: '#1A1A1A',
-                    boxSizing: 'border-box'
+                <motion.div className={styles.inputWrapper} variants={cardVariants} style={{ width: '100%', padding: '0 4px' }}>
+                  <input
+                    type="text"
+                    className={styles.nameInput}
+                    placeholder={t.namePlaceholder}
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    onKeyDown={(e) => e.key === 'Enter' && name.trim() && nextStep()}
+                    style={{
+                      width: '100%',
+                      padding: '13px 18px',
+                      borderRadius: '16px',
+                      border: '2px solid rgba(15, 81, 50, 0.12)',
+                      fontSize: '15px',
+                      fontWeight: 700,
+                      textAlign: 'center',
+                      boxShadow: '0 6px 20px rgba(0,0,0,0.03)',
+                      transition: 'all 0.3s',
+                      backgroundColor: 'rgba(255, 255, 255, 0.95)',
+                      backdropFilter: 'blur(8px)',
+                      color: '#1A1A1A',
+                      boxSizing: 'border-box'
+                    }}
+                    autoFocus
+                  />
+                  <p style={{ fontSize: '11px', color: '#718096', marginTop: '6px', textAlign: 'center', fontWeight: 500 }}>
+                    {t.nameExamples}
+                  </p>
+                </motion.div>
+
+                <motion.div 
+                  className={styles.privacyNote} 
+                  variants={cardVariants}
+                  style={{ 
+                    margin: '8px auto 0',
+                    background: 'rgba(15, 81, 50, 0.05)',
+                    border: '1px solid rgba(15, 81, 50, 0.1)',
+                    borderRadius: '12px',
+                    padding: '8px 12px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '8px',
+                    maxWidth: '320px'
                   }}
-                  autoFocus
-                />
-                <p style={{ fontSize: '11.5px', color: '#718096', marginTop: '8px', textAlign: 'center', fontWeight: 500 }}>
-                  {t.nameExamples}
-                </p>
-              </motion.div>
-
-              <motion.div 
-                className={styles.privacyNote} 
-                variants={cardVariants}
-                style={{ 
-                  margin: '12px auto 0',
-                  background: 'rgba(15, 81, 50, 0.05)',
-                  border: '1px solid rgba(15, 81, 50, 0.1)',
-                  borderRadius: '14px',
-                  padding: '10px 14px',
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '10px',
-                  maxWidth: '320px'
-                }}
-              >
-                <div style={{ color: '#0F5132', flexShrink: 0 }}><Lock size={15} /></div>
-                <span className={styles.privacyText} style={{ color: '#0F5132', fontSize: '11px', fontWeight: 600, lineHeight: 1.35 }}>
-                  {t.privacyNote}
-                </span>
-              </motion.div>
+                >
+                  <div style={{ color: '#0F5132', flexShrink: 0 }}><Lock size={13} /></div>
+                  <span className={styles.privacyText} style={{ color: '#0F5132', fontSize: '10.5px', fontWeight: 600, lineHeight: 1.3 }}>
+                    {t.privacyNote}
+                  </span>
+                </motion.div>
+              </div>
 
               <footer className={styles.footer}>
                 <div className={styles.pagination}>
@@ -579,13 +586,13 @@ export default function OnboardingPage() {
                     alignItems: 'center',
                     justifyContent: 'center',
                     gap: '8px',
-                    borderRadius: '18px',
-                    padding: '14px 20px',
+                    borderRadius: '16px',
+                    padding: '13px 20px',
                     background: '#0F5132',
                     color: '#FFFFFF',
                     boxShadow: '0 8px 24px rgba(15, 81, 50, 0.25)',
                     border: 'none',
-                    fontSize: '15px',
+                    fontSize: '14.5px',
                     fontWeight: 800
                   }}
                 >
