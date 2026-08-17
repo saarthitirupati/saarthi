@@ -367,10 +367,6 @@ export default function HomePage() {
             )}
           </div>
 
-          {/* LAYER 6: MAP & JOURNEY OVERVIEW (MOBILE) */}
-          <div style={{ padding: '0 16px 24px' }}>
-            <JourneyOverviewPanel />
-          </div>
         </div>
       </div>
 
