@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { MapPin, Lock, Utensils, Scissors, Bed, ChevronRight, Sparkles, BookOpen, ShieldCheck, HelpCircle } from 'lucide-react';
+import { MapPin, Lock, Utensils, Scissors, Bed, ChevronRight, Sparkles, BookOpen, ShieldCheck, HelpCircle, ChevronDown, ChevronUp } from 'lucide-react';
 import { useState, useMemo } from 'react';
 import { useHomeData } from '@/hooks/useHomeData';
 import { useTrip } from '@/components/TripContext';
@@ -220,13 +220,16 @@ export default function HomePage() {
 
                     <div style={{ padding: '8px 10px 10px' }}>
                       <span style={{
-                        display: 'inline-block',
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        gap: '4px',
                         fontSize: '9.5px',
                         fontWeight: 700,
                         color: srv.statusColor,
                         marginBottom: '2px'
                       }}>
-                        ● {srv.status}
+                        <span style={{ width: '4px', height: '4px', borderRadius: '50%', backgroundColor: 'currentColor' }} />
+                        <span>{srv.status}</span>
                       </span>
                       <h3 style={{ fontSize: '12.5px', fontWeight: 800, color: '#0F172A', margin: '0 0 2px', lineHeight: 1.25 }}>
                         {srv.title}
@@ -356,9 +359,10 @@ export default function HomePage() {
                   </span>
                 </div>
               </div>
-              <span style={{ fontSize: '11px', fontWeight: 800, color: '#0F5132' }}>
-                {showLoreDrawer ? '▲ Hide' : '▼ View'}
-              </span>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '4px', fontSize: '11px', fontWeight: 800, color: '#0F5132' }}>
+                <span>{showLoreDrawer ? (lang === 'te' ? 'దాచు' : 'Hide') : (lang === 'te' ? 'చూడు' : 'View')}</span>
+                {showLoreDrawer ? <ChevronUp size={14} /> : <ChevronDown size={14} />}
+              </div>
             </button>
 
             {showLoreDrawer && (

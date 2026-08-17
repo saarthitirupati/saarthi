@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { Sparkles, Flame, Heart, Smile, Shield, Share2, Compass, MessageCircle } from 'lucide-react';
+import { Sparkles, Flame, Heart, Smile, Shield, Share2, Compass, MessageCircle, UtensilsCrossed } from 'lucide-react';
 import { getTodaysCompanion, TodaysCompanionData } from '@/data/dailySpiritualEngine';
 import { ShareableQuoteCardModal } from './ShareableQuoteCardModal';
 import { useLanguage } from '@/lib/useLanguage';
@@ -297,7 +297,8 @@ export function DailyContent(props: any) {
             whiteSpace: 'nowrap',
             flexShrink: 0
           }}>
-            🛕 Annaprasadam
+            <UtensilsCrossed size={12} color="#166534" />
+            <span>Annaprasadam</span>
           </span>
           <span style={{ fontSize: '11px', color: '#475569', lineHeight: '1.4', fontWeight: 600 }}>
             {lang === 'te' 

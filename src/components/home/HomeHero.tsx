@@ -852,9 +852,12 @@ export function HomeHero({ userName, locationName, weatherTemp, liveStatus, acti
                   animation: 'fadeIn 0.2s ease-out'
                 }}>
                   <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '4px' }}>
-                    <span style={{ fontSize: '11px', fontWeight: 800, color: '#FDE047', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
-                      {lang === 'te' ? '✨ శ్రీవారి దివ్య ఆశీర్వచనం' : '✨ Srivari Divine Blessing'}
-                    </span>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
+                      <Sparkles size={12} color="#FDE047" />
+                      <span style={{ fontSize: '11px', fontWeight: 800, color: '#FDE047', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
+                        {lang === 'te' ? 'శ్రీవారి దివ్య ఆశీర్వచనం' : 'Srivari Divine Blessing'}
+                      </span>
+                    </div>
                     <span style={{ fontSize: '10px', color: '#94A3B8' }}>
                       {lang === 'te' ? `జపం #${chantCount}` : `Chant #${chantCount}`}
                     </span>
@@ -940,7 +943,7 @@ export function HomeHero({ userName, locationName, weatherTemp, liveStatus, acti
               <Flame size={14} color="#FBBF24" />
             </div>
             <span style={{ fontSize: '12px', fontWeight: 900, letterSpacing: '0.5px', textTransform: 'uppercase', color: '#FEF3C7' }}>
-              {lang === 'te' ? '🪔 శ్రీవారి ప్రత్యక్ష దర్శన స్థితి' : '🪔 LIVE TEMPLE PULSE'}
+              {lang === 'te' ? 'శ్రీవారి ప్రత్యక్ష దర్శన స్థితి' : 'LIVE TEMPLE PULSE'}
             </span>
           </div>
           <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '11px', color: '#CBD5E1', fontWeight: 700 }}>
@@ -1005,9 +1008,13 @@ export function HomeHero({ userName, locationName, weatherTemp, liveStatus, acti
                     backgroundColor: sarvaBg,
                     padding: '2px 8px',
                     borderRadius: '6px',
-                    border: sarvaBorder
+                    border: sarvaBorder,
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '4px'
                   }}>
-                    ● {sarvaText}
+                    <span style={{ width: '4px', height: '4px', borderRadius: '50%', backgroundColor: 'currentColor' }} />
+                    <span>{sarvaText}</span>
                   </span>
                 </div>
               </div>
@@ -1050,9 +1057,13 @@ export function HomeHero({ userName, locationName, weatherTemp, liveStatus, acti
                 backgroundColor: 'rgba(245, 158, 11, 0.2)',
                 padding: '2px 8px',
                 borderRadius: '6px',
-                border: '1px solid rgba(245, 158, 11, 0.35)'
+                border: '1px solid rgba(245, 158, 11, 0.35)',
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '4px'
               }}>
-                ● {lang === 'te' ? 'స్లాట్ ఆధారితం' : 'Slot Bound'}
+                <span style={{ width: '4px', height: '4px', borderRadius: '50%', backgroundColor: 'currentColor' }} />
+                <span>{lang === 'te' ? 'స్లాట్ ఆధారితం' : 'Slot Bound'}</span>
               </span>
             </div>
           </div>
@@ -1100,9 +1111,13 @@ export function HomeHero({ userName, locationName, weatherTemp, liveStatus, acti
                 backgroundColor: ssdTokenStatus === 'closed-for-day' ? 'rgba(239, 68, 68, 0.2)' : ssdTokenStatus === 'paused' ? 'rgba(245, 158, 11, 0.2)' : 'rgba(16, 185, 129, 0.2)',
                 padding: '2px 8px',
                 borderRadius: '6px',
-                border: ssdTokenStatus === 'closed-for-day' ? '1px solid rgba(239, 68, 68, 0.35)' : ssdTokenStatus === 'paused' ? '1px solid rgba(245, 158, 11, 0.35)' : '1px solid rgba(16, 185, 129, 0.35)'
+                border: ssdTokenStatus === 'closed-for-day' ? '1px solid rgba(239, 68, 68, 0.35)' : ssdTokenStatus === 'paused' ? '1px solid rgba(245, 158, 11, 0.35)' : '1px solid rgba(16, 185, 129, 0.35)',
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '4px'
               }}>
-                ● {ssdTokenStatus === 'closed-for-day' ? (lang === 'te' ? 'ఈ రోజు పూర్తయింది' : 'Closed for Today') : ssdTokenStatus === 'paused' ? (lang === 'te' ? 'తాత్కాలికంగా ఆపబడింది' : 'Paused') : (lang === 'te' ? 'టోకెన్లు అందుబాటులో ఉన్నాయి' : 'Tokens Available')}
+                <span style={{ width: '4px', height: '4px', borderRadius: '50%', backgroundColor: 'currentColor' }} />
+                <span>{ssdTokenStatus === 'closed-for-day' ? (lang === 'te' ? 'ఈ రోజు పూర్తయింది' : 'Closed for Today') : ssdTokenStatus === 'paused' ? (lang === 'te' ? 'తాత్కాలికంగా ఆపబడింది' : 'Paused') : (lang === 'te' ? 'టోకెన్లు అందుబాటులో ఉన్నాయి' : 'Tokens Available')}</span>
               </span>
             </div>
           </div>
@@ -1213,7 +1228,7 @@ export function HomeHero({ userName, locationName, weatherTemp, liveStatus, acti
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '6px' }}>
                 <div style={{ fontSize: '10.5px', fontWeight: 900, color: '#0F5132', textTransform: 'uppercase', letterSpacing: '0.5px', display: 'flex', alignItems: 'center', gap: '5px' }}>
                   <Sparkles size={13} color="#0F5132" />
-                  <span>{lang === 'te' ? '✨ సారథి సూచన' : '✨ SAARTHI GUIDANCE'}</span>
+                  <span>{lang === 'te' ? 'సారథి సూచన' : 'SAARTHI GUIDANCE'}</span>
                 </div>
                 <span style={{ fontSize: '10px', color: '#92400E', fontWeight: 700, fontStyle: 'italic' }}>
                   {lang === 'te' ? '“శాంతితో శ్రీవారిని దర్శించండి”' : '“In calm faith, seek Srivari”'}
@@ -1255,7 +1270,7 @@ export function HomeHero({ userName, locationName, weatherTemp, liveStatus, acti
 
               {/* Subtle Trust & Confidence Indicator */}
               <div style={{ fontSize: '10px', color: '#94A3B8', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '4px' }}>
-                <span>⚡</span>
+                <Zap size={11} color="#94A3B8" />
                 <span>Based on live queue trends • Verified recently</span>
               </div>
             </div>
