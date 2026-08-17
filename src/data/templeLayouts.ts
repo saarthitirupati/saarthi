@@ -272,6 +272,100 @@ export const CURATED_LAYOUTS: Record<string, Partial<TempleLayoutData>> = {
     ]
   },
 
+  'srivari-padalu-spot': {
+    placeId: 'srivari-padalu-spot',
+    titleEn: 'Srivari Paadaalu (Narayanagiri Peak) Precinct Map',
+    titleTe: 'శ్రీవారి పాదాలు (నారాయణగిరి శిఖరం) ప్రాంగణ మ్యాప్',
+    layoutType: 'geo-nature-park',
+    centerCoordinates: { lat: 13.6790, lng: 79.3331 },
+    routePath: [[430, 290], [270, 275], [145, 255], [150, 130], [270, 90], [380, 160], [270, 275]],
+    pins: [
+      {
+        id: 'parking',
+        nameEn: 'Narayanagiri Peak Parking Bay',
+        nameTe: 'నారాయణగిరి శిఖర పార్కింగ్',
+        category: 'parking',
+        lat: 13.6785,
+        lng: 79.3325,
+        svgX: 430,
+        svgY: 290,
+        descEn: 'Designated vehicle and taxi parking lot atop Narayanagiri hill road.',
+        descTe: 'నారాయణగిరి కొండపై వాహనాల పార్కింగ్ స్థలం.'
+      },
+      {
+        id: 'entry',
+        nameEn: 'Narayanagiri Hilltop Entrance Arch',
+        nameTe: 'నారాయణగిరి కొండపై ప్రవేశ ముఖద్వారం',
+        category: 'entry',
+        lat: 13.6788,
+        lng: 79.3328,
+        svgX: 270,
+        svgY: 275,
+        descEn: 'Stone archway and paved stairway leading to the highest point of Tirumala.',
+        descTe: 'తిరుమల ఎత్తైన శిఖరానికి వెళ్లే ప్రవేశ మార్గం.'
+      },
+      {
+        id: 'footwear',
+        nameEn: 'Footwear Stand',
+        nameTe: 'పాదరక్షల స్టాండ్',
+        category: 'footwear',
+        lat: 13.6789,
+        lng: 79.3327,
+        svgX: 145,
+        svgY: 255,
+        descEn: 'Shoe deposit area before ascending the sacred granite steps.',
+        descTe: 'చెప్పులు భద్రపరిచే ప్రదేశం.'
+      },
+      {
+        id: 'panoramic-view',
+        nameEn: '360° Seshachalam Hills & Ananda Nilayam Viewpoint',
+        nameTe: '360° ఏడుకొండలు & ఆనంద నిలయం వీక్షణ వేదిక',
+        category: 'info',
+        lat: 13.6791,
+        lng: 79.3328,
+        svgX: 150,
+        svgY: 130,
+        descEn: 'Spectacular 360-degree viewpoint overlooking the entire Seshachalam mountain range and the golden Ananda Nilayam.',
+        descTe: 'తిరుమల కొండలు మరియు ఆనంద నిలయం వీక్షించే అద్భుత వేదిక.'
+      },
+      {
+        id: 'sanctum',
+        nameEn: 'Sri Padala Mandapam (Sacred Divine Footprints)',
+        nameTe: 'శ్రీ పాదాల మండపం (దివ్య శ్రీవారి పాదాలు)',
+        category: 'sanctum',
+        lat: 13.6793,
+        lng: 79.3331,
+        svgX: 270,
+        svgY: 90,
+        descEn: 'Glass-encased rock footprints where Lord Venkateswara first set foot on Earth in the Kali Yuga. Harathi and theertham are offered here.',
+        descTe: 'కలియుగంలో శ్రీవారు భూమిపై మొదట అడుగుపెట్టిన పవిత్ర శిలా పాదాలు.'
+      },
+      {
+        id: 'theertham-prasadam',
+        nameEn: 'Harathi, Theertham & Kumkum Prasadam Counter',
+        nameTe: 'హారతి, తీర్థం & కుంకుమ ప్రసాదం',
+        category: 'food',
+        lat: 13.6790,
+        lng: 79.3335,
+        svgX: 380,
+        svgY: 160,
+        descEn: 'Receive blessed harathi blessings, holy theertham, and sacred akshatas from TTD archakas.',
+        descTe: 'పవిత్ర హారతి ఆశీస్సులు మరియు తీర్థ ప్రసాదం.'
+      }
+    ],
+    routeSteps: [
+      { stepNumber: 1, titleEn: 'Narayanagiri Peak Arrival & Parking', titleTe: 'నారాయణగిరి శిఖరం చేరుకోవడం', distance: '0.0 km', timeMins: 0, descEn: 'Park vehicle at the Narayanagiri hill parking lot.', descTe: 'వాహనాన్ని పార్క్ చేయండి.' },
+      { stepNumber: 2, titleEn: 'Entrance Arch & Footwear Depot', titleTe: 'ప్రవేశ ద్వారం & పాదరక్షల స్టాండ్', distance: '30m', timeMins: 2, descEn: 'Deposit shoes and take the stone steps up the sacred hill.', descTe: 'చెప్పులు విడిచి మెట్లు ఎక్కండి.' },
+      { stepNumber: 3, titleEn: '360° Seshachalam Mountain Viewpoint', titleTe: 'ఏడుకొండల అద్భుత వీక్షణ', distance: '50m', timeMins: 5, descEn: 'Enjoy panoramic vistas of the Seven Hills and Tirumala valley.', descTe: 'అందమైన కొండల దృశ్యాలను తిలకించండి.' },
+      { stepNumber: 4, titleEn: 'Srivari Divine Footprints Darshan', titleTe: 'శ్రీవారి దివ్య పాదాల దర్శనం', distance: '60m', timeMins: 15, descEn: 'Offer prayers at the sacred glass-protected footprint relic of Lord Balaji.', descTe: 'శ్రీవారి పవిత్ర పాద ముద్రలను దర్శించుకోండి.' },
+      { stepNumber: 5, titleEn: 'Harathi & Theertha Prasadam', titleTe: 'హారతి & తీర్థ ప్రసాదం', distance: '40m', timeMins: 5, descEn: 'Receive sacred harathi, theertham, and kumkum blessings.', descTe: 'హారతి మరియు తీర్థం స్వీకరించండి.' }
+    ],
+    emergencyContacts: [
+      { titleEn: 'TTD Narayanagiri Security Post', titleTe: 'నారాయణగిరి భద్రతా విభాగం', number: '08772264555' },
+      { titleEn: 'Emergency Helpline', titleTe: 'అత్యవసర హెల్ప్‌లైన్', number: '112' }
+    ]
+  },
+
   'srivari-mettu-path': {
     placeId: 'srivari-mettu-path',
     titleEn: 'Srivari Mettu Footpath Trail Precinct Map',
