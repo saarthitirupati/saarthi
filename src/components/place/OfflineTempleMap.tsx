@@ -576,51 +576,53 @@ export default function OfflineTempleMap({
                  pin.category === 'parking' ? 'Parking' :
                  pin.category === 'medical' ? 'Medical' :
                  pin.category === 'safari' ? 'Safari' :
-                 layout.layoutType === 'botanical-garden' ? (pin.id.includes('topiary') ? 'Topiary Walk' : pin.id.includes('garland') ? 'Garland Pavilion' : 'Gardens') :
-                 layout.layoutType === 'annaprasadam-complex' ? (pin.id.includes('kitchen') ? 'Mega Kitchen' : pin.id.includes('donor') ? 'Donor Desk' : 'Complex') :
-                 layout.layoutType === 'sacred-pushkarini' ? (pin.id.includes('varaha') ? 'Varahaswamy' : pin.id.includes('way') ? 'Temple Walkway' : 'Ghats') :
-                 layout.layoutType === 'geo-nature-park' ? (pin.id.includes('viewing') ? 'Viewing Deck' : 'Garden Path') :
+                 // Specific pin IDs across all layouts
+                 pin.id.includes('dhwaja') ? 'Dhwajasthambham' :
+                 pin.id.includes('pushkarini') || pin.id.includes('sarovar') || pin.id.includes('tank') || pin.id.includes('kalyani') ? 'Pushkarini' :
+                 pin.id.includes('shrine') || pin.id.includes('shiva') || pin.id.includes('sub') || pin.id.includes('varaha') || pin.id.includes('padmavathi') || pin.id.includes('anandavalli') || pin.id.includes('anjaneya') || pin.id.includes('ranganatha') || pin.id.includes('krishna') || pin.id.includes('sundararaja') || pin.id.includes('kamakshi') || pin.id.includes('manikantheswara') ? 'Sub-Shrine' :
+                 pin.id.includes('sangam') || pin.id.includes('ghat') ? 'River Ghats' :
+                 pin.id.includes('view') || pin.id.includes('hills') || pin.id.includes('panoramic') ? 'Viewpoint' :
+                 pin.id.includes('topiary') ? 'Topiary Walk' :
+                 pin.id.includes('garland') ? 'Garland Pavilion' :
+                 pin.id.includes('kitchen') ? 'Mega Kitchen' :
+                 pin.id.includes('donor') ? 'Donor Desk' :
+                 pin.id.includes('way') ? 'Temple Walkway' :
+                 pin.id.includes('token') ? 'Token Counter' :
+                 pin.id.includes('rest') || pin.id.includes('mandapam') || pin.id.includes('midpoint') ? 'Rest Mandapam' :
+                 pin.id.includes('yantra') || pin.id.includes('peetham') ? 'Yantra Peetham' :
+                 pin.id.includes('inscription') ? 'Inscriptions' :
+                 layout.layoutType === 'ancient-shrine' ? 'Courtyard' :
+                 layout.layoutType === 'botanical-garden' ? 'Gardens' :
+                 layout.layoutType === 'trek-trail' ? 'Waypoint' :
+                 layout.layoutType === 'hill-waterfall' ? 'Viewpoint' :
                  layout.layoutType === 'shopping-market' ? 'Textiles' :
                  layout.layoutType === 'museum-gallery' ? 'Pavilion' :
-                 layout.layoutType === 'ancient-shrine' ? (
-                   pin.id.includes('dhwaja') ? 'Dhwajasthambham' :
-                   pin.id.includes('sangam') || pin.id.includes('ghat') ? 'River Ghats' :
-                   pin.id.includes('view') || pin.id.includes('hills') ? 'View Balcony' :
-                   pin.id.includes('padmavathi') || pin.id.includes('anandavalli') || pin.id.includes('shrine') || pin.id.includes('anjaneya') || pin.id.includes('ranganatha') ? 'Sub-Shrine' :
-                   pin.id.includes('inscription') ? 'Inscriptions' : 'Courtyard'
-                 ) :
-                 layout.layoutType === 'city-shrine' ? 'Dhwajasthambham' :
-                 layout.layoutType === 'trek-trail' ? (pin.id.includes('token') ? 'Token Counter' : (pin.id.includes('rest') || pin.id.includes('mandapam') || pin.id.includes('midpoint') ? 'Rest Mandapam' : 'Trail Waypoint')) :
-                 layout.layoutType === 'hill-waterfall' ? 'Viewpoint' :
-                 layout.layoutType === 'wildlife-safari' ? 'Aviary' : 'Pushkarini');
+                 layout.layoutType === 'wildlife-safari' ? 'Aviary' :
+                 layout.layoutType === 'city-shrine' ? 'Dhwajasthambham' : 'Courtyard');
 
             const icon = 
               layout.layoutType === 'trek-trail' && pin.category === 'sanctum' ? '🏔️' :
-              layout.layoutType === 'trek-trail' && pin.id.includes('token') ? '🎟️' :
-              layout.layoutType === 'trek-trail' && pin.id.includes('footwear') ? '🎒' :
-              layout.layoutType === 'trek-trail' && (pin.id.includes('rest') || pin.id.includes('mandapam') || pin.id.includes('midpoint')) ? '🏛️' :
+              pin.id.includes('token') ? '🎟️' :
+              pin.id.includes('footwear') ? '🎒' :
+              pin.id.includes('dhwaja') ? '🚩' :
+              pin.id.includes('pushkarini') || pin.id.includes('sarovar') || pin.id.includes('tank') || pin.id.includes('kalyani') || pin.id.includes('theertham') || pin.id.includes('sangam') || pin.id.includes('ghat') ? '🌊' :
+              pin.id.includes('view') || pin.id.includes('hills') || pin.id.includes('panoramic') ? '🔭' :
+              pin.id.includes('yantra') || pin.id.includes('peetham') ? '🔯' :
+              pin.id.includes('shrine') || pin.id.includes('shiva') || pin.id.includes('sub') || pin.id.includes('varaha') || pin.id.includes('padmavathi') || pin.id.includes('anandavalli') || pin.id.includes('anjaneya') || pin.id.includes('ranganatha') || pin.id.includes('krishna') || pin.id.includes('sundararaja') || pin.id.includes('kamakshi') || pin.id.includes('manikantheswara') ? '🛕' :
+              pin.id.includes('rest') || pin.id.includes('mandapam') || pin.id.includes('midpoint') ? '🏛️' :
+              pin.id.includes('topiary') ? '🌳' :
+              pin.id.includes('garland') ? '🌺' :
+              pin.id.includes('kitchen') ? '🍳' :
+              pin.id.includes('donor') ? '🌸' :
               layout.layoutType === 'botanical-garden' && pin.category === 'sanctum' ? '🌸' :
-              layout.layoutType === 'botanical-garden' && pin.id.includes('topiary') ? '🌳' :
-              layout.layoutType === 'botanical-garden' && pin.id.includes('garland') ? '🌺' :
               layout.layoutType === 'annaprasadam-complex' && pin.category === 'food' ? '🍲' :
-              layout.layoutType === 'annaprasadam-complex' && pin.id.includes('kitchen') ? '🍳' :
-              layout.layoutType === 'annaprasadam-complex' && pin.id.includes('donor') ? '🌸' :
               layout.layoutType === 'sacred-pushkarini' && pin.category === 'sanctum' ? '🌊' :
-              layout.layoutType === 'sacred-pushkarini' && pin.id.includes('varaha') ? '🛕' :
-              layout.layoutType === 'sacred-pushkarini' && pin.id.includes('way') ? '🏛️' :
               layout.layoutType === 'geo-nature-park' && pin.category === 'sanctum' ? '🪨' :
               layout.layoutType === 'geo-nature-park' && pin.id.includes('garden') ? '🌿' :
-              layout.layoutType === 'geo-nature-park' && pin.id.includes('viewing') ? '🔭' :
               layout.layoutType === 'shopping-market' && pin.category === 'sanctum' ? '🛍️' :
               layout.layoutType === 'shopping-market' && pin.category === 'info' ? '🧵' :
               layout.layoutType === 'dining-restaurant' && pin.category === 'sanctum' ? '🍽️' :
               layout.layoutType === 'museum-gallery' && pin.category === 'sanctum' ? '🏛️' :
-              pin.id.includes('dhwaja') ? '🚩' :
-              pin.id.includes('sangam') || pin.id.includes('ghat') ? '🌊' :
-              pin.id.includes('view') || pin.id.includes('hills') ? '🔭' :
-              pin.id.includes('shrine') || pin.id.includes('padmavathi') || pin.id.includes('anandavalli') || pin.id.includes('anjaneya') || pin.id.includes('ranganatha') ? '🛕' :
-              layout.layoutType === 'city-shrine' && pin.category === 'info' ? '🚩' :
-              layout.layoutType === 'city-shrine' && pin.category === 'laddu' ? '🌸' :
               cat.icon;
 
             return (
