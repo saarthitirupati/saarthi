@@ -1273,7 +1273,7 @@ export const PLACES: Place[] = [
     address: 'SV Zoo Road, Tirupati outskirts',
     rating: 4.2,
     reviewCount: 16500,
-    image: 'https://lh3.googleusercontent.com/gps-cs-s/AHRPTWlqK0LeE57s5bplOsYvd9BlE8c80YU3B2PfbZoSKIWE0F-tChRmVmI7xupMnw9Ea4HpbyJ2NVnzL3zlHiRl75BvIzjKdcYOmr1049SyBpnUP6PYB2EZEXhOi0sw8e47N6KiaqGv8Q=w408-h272-k-no',
+    image: 'https://res.cloudinary.com/kniegqlj/image/upload/v1786980173/enterence-1_znty1n.png',
     coordinates: { lat: 13.6248524, lng: 79.3646486 },
     tags: ['Zoo', 'Safari', 'Conservation'],
     bestTime: 'Morning (10:00 AM - 12:00 PM) or Late Afternoon (3:00 PM - 4:30 PM)',

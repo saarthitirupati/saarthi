@@ -147,28 +147,28 @@ export default function HomePage() {
           <HomeHero {...home.hero} liveStatus={home.status.liveStatus} activeAlertsCount={home.alerts.activeAlertsCount} hideHeader={false} />
 
           {/* LAYER 2: SSD TOKEN STATUS & COLLECTION CENTRES (IMMEDIATELY AFTER CROWD DETAILS) */}
-          <div style={{ marginTop: '10px', marginBottom: '14px' }}>
+          <div style={{ marginTop: '4px', marginBottom: '8px' }}>
             <QuickChecklist {...home.checklist} liveStatus={home.status.liveStatus} />
           </div>
 
           {/* LAYER 3: PRIMARY PILGRIM SERVICES (ACT) */}
-          <div style={{ padding: '0 16px', marginTop: '4px', marginBottom: '22px' }}>
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '12px' }}>
+          <div style={{ padding: '0 14px', marginTop: '2px', marginBottom: '16px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '10px' }}>
               <div>
-                <h2 style={{ fontSize: '16px', fontWeight: 800, color: '#0F172A', margin: 0, letterSpacing: '-0.01em' }}>
+                <h2 style={{ fontSize: '15px', fontWeight: 800, color: '#0F172A', margin: 0, letterSpacing: '-0.01em' }}>
                   {t.primaryServices}
                 </h2>
-                <p style={{ fontSize: '11.5px', color: '#64748B', margin: '2px 0 0 0', fontWeight: 500 }}>
+                <p style={{ fontSize: '11px', color: '#64748B', margin: '1px 0 0 0', fontWeight: 500 }}>
                   {t.servicesSub}
                 </p>
               </div>
-              <Link href="/essentials" style={{ fontSize: '12px', fontWeight: 800, color: '#0F5132', textDecoration: 'none' }}>
+              <Link href="/essentials" style={{ fontSize: '11.5px', fontWeight: 800, color: '#0F5132', textDecoration: 'none' }}>
                 {t.seeAll}
               </Link>
             </div>
 
             {/* 2x2 Action Grid with Soft Elevation */}
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
               {PRIMARY_SERVICES.map(srv => {
                 const IconComp = srv.icon;
                 return (
@@ -178,17 +178,17 @@ export default function HomePage() {
                     style={{
                       textDecoration: 'none',
                       backgroundColor: '#FFFFFF',
-                      borderRadius: '22px',
+                      borderRadius: '16px',
                       overflow: 'hidden',
                       border: '1px solid rgba(15, 23, 42, 0.06)',
-                      boxShadow: '0 8px 24px -4px rgba(15, 23, 42, 0.04), 0 2px 6px rgba(15, 23, 42, 0.02)',
+                      boxShadow: '0 6px 20px -4px rgba(15, 23, 42, 0.04), 0 2px 6px rgba(15, 23, 42, 0.02)',
                       display: 'flex',
                       flexDirection: 'column',
                       transition: 'transform 0.15s ease'
                     }}
                   >
                     <div style={{
-                      height: '88px',
+                      height: '74px',
                       width: '100%',
                       backgroundImage: `url(${srv.image})`,
                       backgroundSize: 'cover',
@@ -202,38 +202,38 @@ export default function HomePage() {
                       }} />
                       <div style={{
                         position: 'absolute',
-                        top: '8px',
-                        left: '8px',
-                        width: '28px',
-                        height: '28px',
-                        borderRadius: '8px',
+                        top: '6px',
+                        left: '6px',
+                        width: '24px',
+                        height: '24px',
+                        borderRadius: '6px',
                         backgroundColor: 'rgba(15, 23, 42, 0.75)',
                         backdropFilter: 'blur(4px)',
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center'
                       }}>
-                        <IconComp size={15} color="#F8FAFC" />
+                        <IconComp size={13} color="#F8FAFC" />
                       </div>
                     </div>
 
-                    <div style={{ padding: '10px 12px 12px' }}>
+                    <div style={{ padding: '8px 10px 10px' }}>
                       <span style={{
                         display: 'inline-block',
-                        fontSize: '10px',
+                        fontSize: '9.5px',
                         fontWeight: 700,
                         color: srv.statusColor,
-                        marginBottom: '3px'
+                        marginBottom: '2px'
                       }}>
                         ● {srv.status}
                       </span>
-                      <h3 style={{ fontSize: '13px', fontWeight: 800, color: '#0F172A', margin: '0 0 2px', lineHeight: 1.25 }}>
+                      <h3 style={{ fontSize: '12.5px', fontWeight: 800, color: '#0F172A', margin: '0 0 2px', lineHeight: 1.25 }}>
                         {srv.title}
                       </h3>
-                      <p style={{ fontSize: '11px', color: '#64748B', margin: '0 0 8px', lineHeight: 1.3, fontWeight: 500 }}>
+                      <p style={{ fontSize: '10.5px', color: '#64748B', margin: '0 0 6px', lineHeight: 1.25, fontWeight: 500 }}>
                         {srv.subtitle}
                       </p>
-                      <div style={{ fontSize: '11px', fontWeight: 800, color: '#0F5132', display: 'flex', alignItems: 'center', gap: '2px' }}>
+                      <div style={{ fontSize: '10.5px', fontWeight: 800, color: '#0F5132', display: 'flex', alignItems: 'center', gap: '2px' }}>
                         <span>{t.navigate}</span>
                       </div>
                     </div>
@@ -245,16 +245,16 @@ export default function HomePage() {
 
           {/* LAYER 4: EXPLORE AROUND YOU (PHOTO-FIRST CARDS) */}
           {nearbyPlaces.length > 0 && (
-            <div style={{ padding: '0 0 22px' }}>
-              <div style={{ padding: '0 16px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '10px' }}>
+            <div style={{ padding: '0 0 16px' }}>
+              <div style={{ padding: '0 14px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '8px' }}>
                 <p style={{ fontSize: '13px', fontWeight: 800, color: '#0F172A', letterSpacing: '0.2px', margin: 0 }}>
                   {t.nearbyPlaces}
                 </p>
-                <Link href="/explore" style={{ fontSize: '11.5px', fontWeight: 800, color: '#0F5132', textDecoration: 'none' }}>
+                <Link href="/explore" style={{ fontSize: '11px', fontWeight: 800, color: '#0F5132', textDecoration: 'none' }}>
                   {t.seeAll}
                 </Link>
               </div>
-              <div style={{ display: 'flex', gap: '12px', overflowX: 'auto', padding: '0 16px 6px', scrollbarWidth: 'none' }}>
+              <div style={{ display: 'flex', gap: '10px', overflowX: 'auto', padding: '0 14px 4px', scrollbarWidth: 'none' }}>
                 {nearbyPlaces.map(p => (
                   <Link 
                     key={p.id} 
@@ -262,18 +262,18 @@ export default function HomePage() {
                     style={{ 
                       textDecoration: 'none', 
                       flexShrink: 0, 
-                      width: '144px',
+                      width: '136px',
                       backgroundColor: '#FFFFFF',
-                      borderRadius: '18px',
+                      borderRadius: '16px',
                       overflow: 'hidden',
                       border: '1px solid rgba(15, 23, 42, 0.06)',
-                      boxShadow: '0 8px 24px -4px rgba(15, 23, 42, 0.04), 0 2px 6px rgba(15, 23, 42, 0.02)'
+                      boxShadow: '0 6px 20px -4px rgba(15, 23, 42, 0.04), 0 2px 6px rgba(15, 23, 42, 0.02)'
                     }}
                   >
                     {/* PHOTO BANNER */}
                     <div style={{
-                      width: '144px', 
-                      height: '95px', 
+                      width: '136px', 
+                      height: '84px', 
                       backgroundImage: `url(${p.image})`, 
                       backgroundSize: 'cover', 
                       backgroundPosition: 'center',
@@ -282,17 +282,17 @@ export default function HomePage() {
                     }}>
                       <div style={{
                         position: 'absolute',
-                        bottom: '6px',
-                        left: '6px',
+                        bottom: '5px',
+                        left: '5px',
                         backgroundColor: 'rgba(15, 23, 42, 0.75)',
                         backdropFilter: 'blur(4px)',
-                        padding: '2px 7px',
-                        borderRadius: '6px',
+                        padding: '2px 6px',
+                        borderRadius: '5px',
                         display: 'flex',
                         alignItems: 'center',
                         gap: '3px',
                         color: '#FFFFFF',
-                        fontSize: '10px',
+                        fontSize: '9.5px',
                         fontWeight: 700
                       }}>
                         <MapPin size={9} />
@@ -300,9 +300,9 @@ export default function HomePage() {
                       </div>
                     </div>
 
-                    <div style={{ padding: '8px 10px 10px' }}>
+                    <div style={{ padding: '7px 8px 9px' }}>
                       <p style={{
-                        fontSize: '12.5px', 
+                        fontSize: '12px', 
                         fontWeight: 800, 
                         color: '#0F172A', 
                         margin: '0 0 2px', 
@@ -314,7 +314,7 @@ export default function HomePage() {
                       }}>
                         {p.name}
                       </p>
-                      <span style={{ fontSize: '10.5px', color: '#64748B', fontWeight: 600 }}>
+                      <span style={{ fontSize: '10px', color: '#64748B', fontWeight: 600 }}>
                         {p._dist ? `${Math.max(4, Math.round(Number(p._dist) * 3))} min away` : 'Nearby'}
                       </span>
                     </div>
@@ -325,13 +325,13 @@ export default function HomePage() {
           )}
 
           {/* LAYER 5: DEVOTIONAL TRADITIONS & SACRED LORE (Single Consolidated Drawer) */}
-          <div style={{ padding: '0 16px 16px' }}>
+          <div style={{ padding: '0 14px 14px' }}>
             <button
               onClick={() => setShowLoreDrawer(!showLoreDrawer)}
               style={{
                 width: '100%',
-                padding: '14px 18px',
-                borderRadius: '20px',
+                padding: '12px 14px',
+                borderRadius: '16px',
                 backgroundColor: '#FFFFFF',
                 border: '1px solid rgba(200, 155, 60, 0.3)',
                 background: 'linear-gradient(135deg, #FFFFFF 0%, #FFFDF7 100%)',
@@ -339,29 +339,29 @@ export default function HomePage() {
                 alignItems: 'center',
                 justifyContent: 'space-between',
                 cursor: 'pointer',
-                boxShadow: '0 8px 24px -4px rgba(200, 155, 60, 0.08), 0 2px 6px rgba(15, 23, 42, 0.02)'
+                boxShadow: '0 6px 20px -4px rgba(200, 155, 60, 0.08), 0 2px 6px rgba(15, 23, 42, 0.02)'
               }}
             >
-              <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                <div style={{ width: '28px', height: '28px', borderRadius: '8px', background: '#FEF9C3', border: '1px solid #FDE047', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                  <Sparkles size={15} color="#CA8A04" />
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <div style={{ width: '24px', height: '24px', borderRadius: '6px', background: '#FEF9C3', border: '1px solid #FDE047', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                  <Sparkles size={13} color="#CA8A04" />
                 </div>
                 <div style={{ textAlign: 'left' }}>
-                  <span style={{ fontSize: '13.5px', fontWeight: 800, color: '#0F172A', display: 'block', lineHeight: 1.2 }}>
+                  <span style={{ fontSize: '12.5px', fontWeight: 800, color: '#0F172A', display: 'block', lineHeight: 1.2 }}>
                     {lang === 'te' ? 'స్వామివారి విశేషాలు & ఆధ్యాత్మిక విశేషాలు' : 'Sacred Lore, Chants & Traditions'}
                   </span>
-                  <span style={{ fontSize: '10.5px', color: '#854D0E', fontWeight: 600 }}>
+                  <span style={{ fontSize: '10px', color: '#854D0E', fontWeight: 600 }}>
                     {lang === 'te' ? 'నేటి సుప్రభాతం, శ్లోకాలు, ప్రసాద విశేషాలు' : 'Daily Shloka, Suprabhatam & Tirumala lore'}
                   </span>
                 </div>
               </div>
-              <span style={{ fontSize: '12px', fontWeight: 800, color: '#0F5132' }}>
+              <span style={{ fontSize: '11px', fontWeight: 800, color: '#0F5132' }}>
                 {showLoreDrawer ? '▲ Hide' : '▼ View'}
               </span>
             </button>
 
             {showLoreDrawer && (
-              <div style={{ marginTop: '14px', display: 'flex', flexDirection: 'column', gap: '14px' }}>
+              <div style={{ marginTop: '10px', display: 'flex', flexDirection: 'column', gap: '10px' }}>
                 <DailyContent {...home.daily} liveStatus={home.status.liveStatus} variant="mobile" />
               </div>
             )}

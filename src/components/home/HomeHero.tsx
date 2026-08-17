@@ -753,43 +753,43 @@ export function HomeHero({ userName, locationName, weatherTemp, liveStatus, acti
       )}
 
       {/* ══════════ SCROLLABLE CONTENT ══════════ */}
-      <div style={{ padding: hideHeader ? '0' : '16px 16px 20px 16px', background: hideHeader ? 'transparent' : 'var(--bg-canvas, #FAF8F5)' }}>
+      <div style={{ padding: hideHeader ? '0' : '12px 14px 16px 14px', background: hideHeader ? 'transparent' : 'var(--bg-canvas, #FAF8F5)' }}>
 
         {!hideHeader && (
           <>
             {/* Devotional Invocation & Weather Bar */}
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '14px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '10px' }}>
               <div style={{
                 display: 'inline-flex',
                 alignItems: 'center',
                 gap: '6px',
-                padding: '4px 10px',
-                borderRadius: '16px',
+                padding: '3px 8px',
+                borderRadius: '14px',
                 background: '#FEF9C3',
                 border: '1px solid #FDE047',
-                fontSize: '11px',
+                fontSize: '10.5px',
                 fontWeight: 800,
                 color: '#854D0E',
                 letterSpacing: '0.2px'
               }}>
-                <Sparkles size={12} color="#CA8A04" />
+                <Sparkles size={11} color="#CA8A04" />
                 <span>{lang === 'te' ? 'ఓం నమో వేంకటేశాయ' : 'Om Namo Venkatesaya'}</span>
               </div>
 
-              <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '12px', fontWeight: 600, color: '#64748B' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '5px', fontSize: '11.5px', fontWeight: 600, color: '#64748B' }}>
                 <span>{todayDateStr}</span>
                 <span style={{ opacity: 0.3 }}>•</span>
-                <Sun size={13} color="#D97706" />
+                <Sun size={12} color="#D97706" />
                 <span>{weatherTemp || '26°C'}</span>
               </div>
             </div>
 
             {/* Personalized Greeting */}
-            <div style={{ marginBottom: '16px' }}>
-              <h1 style={{ fontSize: '24px', fontWeight: 800, color: '#0F172A', margin: 0, letterSpacing: '-0.02em' }}>
+            <div style={{ marginBottom: '12px' }}>
+              <h1 style={{ fontSize: '20px', fontWeight: 800, color: '#0F172A', margin: 0, letterSpacing: '-0.02em' }}>
                 <span>{getGreetingPrefix()}</span>, <span className="notranslate">{userName || 'Pilgrim'}</span>
               </h1>
-              <p style={{ fontSize: '13px', color: '#0F5132', margin: '3px 0 0 0', fontWeight: 700, lineHeight: '1.4' }}>
+              <p style={{ fontSize: '12px', color: '#0F5132', margin: '2px 0 0 0', fontWeight: 700, lineHeight: '1.3' }}>
                 {t.tagline}
               </p>
             </div>
@@ -799,33 +799,33 @@ export function HomeHero({ userName, locationName, weatherTemp, liveStatus, acti
       {/* 🛕 SIGNATURE LIVE TEMPLE PULSE CARD */}
       <div style={{
         background: '#0F172A',
-        borderRadius: '22px',
-        padding: '18px 16px',
+        borderRadius: '20px',
+        padding: '15px 14px',
         color: '#FFFFFF',
-        boxShadow: '0 12px 32px rgba(15, 23, 42, 0.3)',
+        boxShadow: '0 10px 28px rgba(15, 23, 42, 0.25)',
         border: '1px solid rgba(255, 255, 255, 0.1)',
         position: 'relative',
         overflow: 'hidden'
       }}>
         
         {/* HEADER ROW */}
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '14px' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <div style={{ width: '24px', height: '24px', borderRadius: '7px', background: 'rgba(200, 155, 60, 0.18)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-              <Flame size={14} color="#F59E0B" />
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '10px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '7px' }}>
+            <div style={{ width: '22px', height: '22px', borderRadius: '6px', background: 'rgba(200, 155, 60, 0.18)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              <Flame size={13} color="#F59E0B" />
             </div>
-            <span style={{ fontSize: '12.5px', fontWeight: 800, letterSpacing: '0.8px', textTransform: 'uppercase', color: '#F8FAFC' }}>
+            <span style={{ fontSize: '11.5px', fontWeight: 800, letterSpacing: '0.6px', textTransform: 'uppercase', color: '#F8FAFC' }}>
               {lang === 'te' ? 'లైవ్ ఆలయ స్థితి' : 'LIVE TEMPLE PULSE'}
             </span>
           </div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '11px', color: '#94A3B8', fontWeight: 600 }}>
-            <span style={{ width: '6px', height: '6px', borderRadius: '50%', backgroundColor: '#10B981', boxShadow: '0 0 6px #10B981' }} />
+          <div style={{ display: 'flex', alignItems: 'center', gap: '5px', fontSize: '10.5px', color: '#94A3B8', fontWeight: 600 }}>
+            <span style={{ width: '5px', height: '5px', borderRadius: '50%', backgroundColor: '#10B981', boxShadow: '0 0 6px #10B981' }} />
             <span>{t.labels.live} · {updatedLabel}</span>
           </div>
         </div>
 
         {/* 1️⃣ CROWD FIRST: 3 PRIMARY DARSHAN QUEUES (LINKED TO LIVE ADMIN STATUS) */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', marginBottom: '14px' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', marginBottom: '10px' }}>
           {/* Sarva Darshan */}
           <Link
             href="/darshan/general"
@@ -833,12 +833,12 @@ export function HomeHero({ userName, locationName, weatherTemp, liveStatus, acti
               textDecoration: 'none',
               background: 'rgba(255, 255, 255, 0.04)',
               border: '1px solid rgba(255, 255, 255, 0.08)',
-              borderRadius: '16px',
-              padding: '12px 14px',
+              borderRadius: '14px',
+              padding: '9px 12px',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'space-between',
-              minHeight: '52px',
+              minHeight: '46px',
               transition: 'background 0.15s ease'
             }}
           >
@@ -1075,32 +1075,32 @@ export function HomeHero({ userName, locationName, weatherTemp, liveStatus, acti
           return (
             <div style={{
               backgroundColor: '#FFFFFF',
-              borderRadius: '20px',
-              padding: '16px 18px',
+              borderRadius: '16px',
+              padding: '12px 14px',
               color: '#0F172A',
-              boxShadow: '0 8px 24px rgba(0, 0, 0, 0.12)'
+              boxShadow: '0 6px 20px rgba(0, 0, 0, 0.1)'
             }}>
               {/* Header with Devotional Cue */}
-              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '8px' }}>
-                <div style={{ fontSize: '11px', fontWeight: 900, color: '#0F5132', textTransform: 'uppercase', letterSpacing: '0.6px', display: 'flex', alignItems: 'center', gap: '6px' }}>
-                  <Sparkles size={14} color="#0F5132" />
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '6px' }}>
+                <div style={{ fontSize: '10.5px', fontWeight: 900, color: '#0F5132', textTransform: 'uppercase', letterSpacing: '0.5px', display: 'flex', alignItems: 'center', gap: '5px' }}>
+                  <Sparkles size={13} color="#0F5132" />
                   <span>{lang === 'te' ? 'సారథి సలహా' : 'SAARTHI SUGGESTS'}</span>
                 </div>
-                <span style={{ fontSize: '10.5px', color: '#854D0E', fontWeight: 700, fontStyle: 'italic' }}>
+                <span style={{ fontSize: '10px', color: '#854D0E', fontWeight: 700, fontStyle: 'italic' }}>
                   “Patience brings peaceful darshan”
                 </span>
               </div>
               
               {/* Warm Companion Recommendation */}
-              <div style={{ fontSize: '15.5px', fontWeight: 900, color: '#0F172A', lineHeight: '1.35', marginBottom: '10px', letterSpacing: '-0.01em' }}>
+              <div style={{ fontSize: '14px', fontWeight: 900, color: '#0F172A', lineHeight: '1.3', marginBottom: '8px', letterSpacing: '-0.01em' }}>
                 {scenario.recommendation}
               </div>
 
               {/* Rationale Checklist */}
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '5px', marginBottom: '12px' }}>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '4px', marginBottom: '8px' }}>
                 {recommendationReasons.map((point, i) => (
-                  <div key={i} style={{ fontSize: '12px', color: '#334155', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '6px' }}>
-                    <Check size={13} color="#10B981" strokeWidth={2.5} style={{ flexShrink: 0 }} />
+                  <div key={i} style={{ fontSize: '11.5px', color: '#334155', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '5px' }}>
+                    <Check size={12} color="#10B981" strokeWidth={2.5} style={{ flexShrink: 0 }} />
                     <span>{point}</span>
                   </div>
                 ))}
@@ -1110,22 +1110,22 @@ export function HomeHero({ userName, locationName, weatherTemp, liveStatus, acti
               <div style={{
                 display: 'flex',
                 alignItems: 'center',
-                gap: '6px',
+                gap: '5px',
                 backgroundColor: '#FEF3C7',
                 border: '1px solid #FDE68A',
                 color: '#92400E',
-                padding: '7px 12px',
-                borderRadius: '12px',
-                fontSize: '12px',
+                padding: '5px 10px',
+                borderRadius: '10px',
+                fontSize: '11px',
                 fontWeight: 800,
-                marginBottom: '8px'
+                marginBottom: '6px'
               }}>
-                <Zap size={14} color="#D97706" fill="#D97706" style={{ flexShrink: 0 }} />
+                <Zap size={13} color="#D97706" fill="#D97706" style={{ flexShrink: 0 }} />
                 <span>{scenario.benefit || 'Save approx. 4 hours by starting at 6:00 AM'}</span>
               </div>
 
               {/* Subtle Trust & Confidence Indicator */}
-              <div style={{ fontSize: '10.5px', color: '#94A3B8', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '4px' }}>
+              <div style={{ fontSize: '10px', color: '#94A3B8', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '4px' }}>
                 <span>⚡</span>
                 <span>Based on live queue trends • Verified recently</span>
               </div>
@@ -1136,11 +1136,11 @@ export function HomeHero({ userName, locationName, weatherTemp, liveStatus, acti
 
       {/* Section Header Below Card */}
       {!hideHeader && (
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: '20px', marginBottom: '12px' }}>
-          <h3 style={{ fontSize: '16px', fontWeight: 800, color: '#0F172A', margin: 0 }}>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: '14px', marginBottom: '8px' }}>
+          <h3 style={{ fontSize: '15px', fontWeight: 800, color: '#0F172A', margin: 0 }}>
             {t.labels.rightNowOnHill}
           </h3>
-          <Link href="/live" style={{ fontSize: '12.5px', fontWeight: 700, color: '#0E6B72', textDecoration: 'none' }}>
+          <Link href="/live" style={{ fontSize: '12px', fontWeight: 700, color: '#0E6B72', textDecoration: 'none' }}>
             {t.labels.viewAll}
           </Link>
         </div>

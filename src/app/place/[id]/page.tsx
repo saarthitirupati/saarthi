@@ -16,6 +16,7 @@ import { useRealtimePlaces } from '@/lib/useRealtimePlaces';
 import { calculateDrivingDistance } from '@/utils/location';
 import { findNearestPlaceCandidates } from '@/lib/location';
 import { useLanguage } from '@/lib/useLanguage';
+import OfflineTempleMap from '@/components/place/OfflineTempleMap';
 
 export default function PlaceDetails() {
   const routeParams = useParams();
@@ -47,17 +48,20 @@ export default function PlaceDetails() {
   const guide = useMemo(() => getPlaceGuideData(place), [place]);
   const isSaved = savedPlaces.includes(place.id);
 
+  // Dynamic place category checks
+  const isTemple = place.placeType === 'spiritual' || place.category === 'Temple' || (place.tags || []).some((t: string) => t.toLowerCase().includes('temple'));
+  const isZooOrWildlife = place.id === 'sv-zoo-park' || (place.tags || []).some((t: string) => ['zoo', 'safari', 'wildlife', 'deer park'].includes(t.toLowerCase()));
+  const isNatureSpot = place.category === 'Nature' || place.placeType === 'leisure' || (place.tags || []).some((t: string) => ['waterfall', 'nature', 'viewpoint', 'dam', 'hills', 'garden'].includes(t.toLowerCase()));
+
   useEffect(() => {
     if (place?.id) {
       addViewedPlace(place.id);
     }
   }, [place?.id, addViewedPlace]);
 
-  // Nearby temples calculation
+  // Nearby places calculation
   const nearbyPlacesList = useMemo(() => {
     if (!place?.coordinates) return [];
-    
-    const isTemple = place.placeType === 'spiritual' || place.category === 'Temple' || (place.tags || []).includes('temple');
     
     const validNeighbors = allPlaces.filter(p => {
       if (p.id === place.id) return false;
@@ -359,14 +363,18 @@ export default function PlaceDetails() {
         {lang === 'te' 
           ? (place.id === 'govindaraja'
               ? 'ఉదయం 7:30 లోపు లేదా సాయంత్రం 5:30 (ఊంజల్ సేవ / కల్యాణోత్సవం) వేళల్లో దర్శనం అత్యంత శ్రేయస్కరం. తక్కువ నిరీక్షణ సమయం (15–25 నిమిషాలు).'
-              : 'ఉదయం వేళల్లో దర్శనం ప్రశాంతంగా ఉంటుంది. తక్కువ క్యూ సమయం (15–25 నిమిషాలు).')
-          : saarthiTip}
+              : (place.id === 'sv-zoo-park'
+                  ? 'ఉదయం 9:00 - 11:30 మధ్య జంతువులు చురుగ్గా ఉంటాయి. సఫారీ రైడ్ కోసం ముందుగా టికెట్లు తీసుకోండి.'
+                  : (isTemple ? 'ఉదయం వేళల్లో దర్శనం ప్రశాంతంగా ఉంటుంది. తక్కువ క్యూ సమయం (15–25 నిమిషాలు).' : 'ఉదయం లేదా సాయంత్రం వేళల్లో సందర్శించడం ఆహ్లాదకరంగా ఉంటుంది.')))
+          : (place.id === 'sv-zoo-park'
+              ? 'Visit between 9:00 AM - 11:30 AM when animals are most active in open enclosures. Battery vehicles and safari available.'
+              : saarthiTip)}
       </p>
 
       <div style={{ display: 'flex', alignItems: 'center', gap: '12px', fontSize: '11.5px', color: '#64748B', borderTop: '1px solid #F1F5F9', paddingTop: '8px' }}>
         <span style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
           <Clock size={13} color="#64748B" />
-          {lang === 'te' ? 'సమయం:' : 'Visit:'} <strong>{lang === 'te' ? '45 నిమిషాలు' : (guide.duration || '45 mins')}</strong>
+          {lang === 'te' ? 'సమయం:' : 'Visit:'} <strong>{lang === 'te' ? (place.durationMins ? `${place.durationMins} నిమి.` : '45 నిమిషాలు') : (place.durationMins ? `${place.durationMins} mins` : (guide.duration || '45 mins'))}</strong>
         </span>
         <span>•</span>
         <span style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
@@ -403,7 +411,9 @@ export default function PlaceDetails() {
       >
         <Navigation size={18} color="#FFFFFF" fill="#FFFFFF" />
         <span style={{ color: '#FFFFFF' }}>
-          {lang === 'te' ? `దర్శన మార్గం ప్రారంభించండి (${driveTimeMins} ని.)` : `Start Navigation (${driveTimeMins} mins)`}
+          {lang === 'te' 
+            ? (isTemple ? `దర్శన మార్గం ప్రారంభించండి (${driveTimeMins} ని.)` : `మార్గం ప్రారంభించండి (${driveTimeMins} ని.)`) 
+            : `Start Navigation (${driveTimeMins} mins)`}
         </span>
       </button>
 
@@ -411,8 +421,8 @@ export default function PlaceDetails() {
         <button
           onClick={() => togglePlace(place.id)}
           style={{
-            backgroundColor: '#FFFFFF',
-            border: '1px solid rgba(15, 23, 42, 0.08)',
+            backgroundColor: isSaved ? '#FFF1F2' : '#FFFFFF',
+            border: isSaved ? '1px solid #FECDD3' : '1px solid rgba(15, 23, 42, 0.08)',
             borderRadius: '14px',
             padding: '11px',
             fontSize: '12.5px',
@@ -427,7 +437,7 @@ export default function PlaceDetails() {
           }}
         >
           <Heart size={16} fill={isSaved ? '#E11D48' : 'none'} />
-          <span>{isSaved ? (lang === 'te' ? 'సేవ్ చేయబడింది' : 'Saved') : (lang === 'te' ? 'ఆలయాన్ని సేవ్ చేయండి' : 'Save Temple')}</span>
+          <span>{isSaved ? (lang === 'te' ? 'సేవ్ చేయబడింది' : 'Saved') : (lang === 'te' ? (isTemple ? 'ఆలయాన్ని సేవ్ చేయండి' : 'ప్రదేశాన్ని సేవ్ చేయండి') : (isTemple ? 'Save Temple' : 'Save Place'))}</span>
         </button>
 
         <button
@@ -510,7 +520,7 @@ export default function PlaceDetails() {
     </div>
   );
 
-  // 6. DARSHAN & LIVE TELEMETRY
+  // 6. DARSHAN / VISITING STATUS
   const darshanStatusNode = (
     <div style={{
       backgroundColor: '#FFFFFF',
@@ -521,7 +531,7 @@ export default function PlaceDetails() {
     }}>
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '10px' }}>
         <span style={{ fontSize: '13.5px', fontWeight: 800, color: '#0F172A' }}>
-          {lang === 'te' ? 'దర్శన స్థితి' : 'Darshan Status'}
+          {lang === 'te' ? (isTemple ? 'దర్శన స్థితి' : 'సందర్శన స్థితి') : (isTemple ? 'Darshan Status' : (isZooOrWildlife ? 'Zoo & Safari Status' : 'Visiting Status'))}
         </span>
         <span style={{
           fontSize: '11px',
@@ -538,14 +548,14 @@ export default function PlaceDetails() {
 
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '8px 0', borderBottom: '1px solid #F1F5F9' }}>
         <span style={{ fontSize: '12px', color: '#64748B', fontWeight: 600 }}>
-          {lang === 'te' ? 'అంచనా నిరీక్షణ సమయం' : 'Estimated Waiting Time'}
+          {lang === 'te' ? (isTemple ? 'అంచనా దర్శనం నిరీక్షణ సమయం' : 'అంచనా ప్రవేశ సమయం') : (isTemple ? 'Estimated Waiting Time' : 'Estimated Entry / Queue Time')}
         </span>
         <span style={{ fontSize: '13px', fontWeight: 800, color: '#0F172A' }}>
           {lang === 'te' ? '15–30 నిమిషాలు' : (place.saarthiIntelligence?.waitingTime || '15–30 mins')}
         </span>
       </div>
 
-      {place.spiritualInfo?.god && (
+      {isTemple && place.spiritualInfo?.god && (
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '8px 0', borderBottom: '1px solid #F1F5F9' }}>
           <span style={{ fontSize: '12px', color: '#64748B', fontWeight: 600 }}>
             {lang === 'te' ? 'ప్రధాన దైవం' : 'Presiding Deity'}
@@ -556,7 +566,7 @@ export default function PlaceDetails() {
         </div>
       )}
 
-      {place.spiritualInfo?.mantra && (
+      {isTemple && place.spiritualInfo?.mantra && (
         <div style={{ paddingTop: '8px' }}>
           <span style={{ fontSize: '10.5px', fontWeight: 700, color: '#854D0E', display: 'block', marginBottom: '2px' }}>
             {lang === 'te' ? 'పవిత్ర నామస్మరణ:' : 'Sacred Chanting:'}
@@ -569,7 +579,7 @@ export default function PlaceDetails() {
     </div>
   );
 
-  // 7. ABOUT THIS TEMPLE
+  // 7. ABOUT THIS PLACE / TEMPLE
   const aboutTempleNode = (
     <div style={{
       backgroundColor: '#FFFFFF',
@@ -579,14 +589,16 @@ export default function PlaceDetails() {
       boxShadow: '0 4px 14px rgba(15,23,42,0.03)'
     }}>
       <h2 style={{ fontSize: '16px', fontWeight: 800, color: '#0F172A', margin: '0 0 8px' }}>
-        {lang === 'te' ? 'ఆలయ విశేషాలు' : 'About This Temple'}
+        {lang === 'te' ? (isTemple ? 'ఆలయ విశేషాలు' : 'ప్రదేశ విశేషాలు') : (isTemple ? 'About This Temple' : (isZooOrWildlife ? 'About This Zoological Park' : 'About This Place'))}
       </h2>
       <p style={{ fontSize: '13.5px', color: '#475569', lineHeight: 1.6, margin: '0 0 12px' }}>
         {lang === 'te' 
           ? (place.id === 'govindaraja'
               ? 'శ్రీ గోవిందరాజ స్వామి వారి ఆలయం తిరుపతి నడిబొడ్డున ఉన్న 12వ శతాబ్దపు ప్రసిద్ధ ద్రవిడ ఆలయం. ఇక్కడ శయన ముద్రలో ఉన్న మహావిష్ణువు కొలువై ఉన్నారు.'
-              : 'తిరుపతి ప్రాంతంలో ఎంతో ప్రాశస్త్యం కలిగిన పవిత్ర పుణ్యక్షేత్రం.')
-          : (place.shortIntro || (place.description ? String(place.description).split('.')[0] + '.' : 'A sacred shrine deeply revered in Tirupati.'))}
+              : (place.id === 'sv-zoo-park'
+                  ? 'ఆసియాలోనే అతిపెద్ద జూ పార్కులలో ఒకటైన ఇది శేషాచలం కొండల పాదాల వద్ద 1,200 హెక్టార్ల విస్తీర్ణంలో విస్తరించి ఉంది.'
+                  : (isTemple ? 'తిరుపతి ప్రాంతంలో ఎంతో ప్రాశస్త్యం కలిగిన పవిత్ర పుణ్యక్షేత్రం.' : 'తిరుపతి ప్రాంతంలో ప్రసిద్ధి చెందిన సందర్శనీయ ప్రదేశం.')))
+          : (place.shortIntro || (place.description ? String(place.description).split('.')[0] + '.' : (isTemple ? 'A sacred shrine deeply revered in Tirupati.' : 'A popular destination in Tirupati.')))}
       </p>
       <button
         onClick={() => toggleDrawer('legend')}
@@ -603,7 +615,11 @@ export default function PlaceDetails() {
           gap: '4px'
         }}
       >
-        <span>{lang === 'te' ? 'స్థల పురాణం & పవిత్ర విశేషాలు చదవండి ↓' : 'Read Sacred Legend & Sthala Puranam ↓'}</span>
+        <span>
+          {lang === 'te' 
+            ? (isTemple ? 'స్థల పురాణం & పవిత్ర విశేషాలు చదవండి ↓' : 'చరిత్ర & సందర్శకుల వివరాలు చదవండి ↓') 
+            : (isTemple ? 'Read Sacred Legend & Sthala Puranam ↓' : 'Read History & Highlights ↓')}
+        </span>
       </button>
     </div>
   );
@@ -619,7 +635,7 @@ export default function PlaceDetails() {
     }}>
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '14px' }}>
         <h2 style={{ fontSize: '16px', fontWeight: 800, color: '#0F172A', margin: 0 }}>
-          {lang === 'te' ? 'సమీప పవిత్ర ఆలయాలు' : 'Nearby Sacred Temples'}
+          {lang === 'te' ? (isTemple ? 'సమీప పవిత్ర ఆలయాలు' : 'సమీప సందర్శనీయ ప్రదేశాలు') : (isTemple ? 'Nearby Sacred Temples' : 'Nearby Places to Visit')}
         </h2>
         <Link href="/explore" style={{ fontSize: '12px', fontWeight: 800, color: '#0F5132', textDecoration: 'none' }}>
           {lang === 'te' ? 'అన్నీ చూడండి →' : 'View All →'}
@@ -701,15 +717,15 @@ export default function PlaceDetails() {
     </div>
   ) : null;
 
-  // 10. HERITAGE ACCORDIONS
+  // 10. HERITAGE / VISITOR ACCORDIONS
   const heritageAccordionsNode = (
     <div>
       <h2 style={{ fontSize: '16px', fontWeight: 800, color: '#0F172A', margin: '0 0 12px' }}>
-        {lang === 'te' ? 'ఆలయ చరిత్ర & సంప్రదాయాలు' : 'More Details & Heritage'}
+        {lang === 'te' ? (isTemple ? 'ఆలయ చరిత్ర & సంప్రదాయాలు' : 'చరిత్ర & సందర్శకుల సమాచారం') : (isTemple ? 'More Details & Heritage' : 'History & Visitor Highlights')}
       </h2>
 
       <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-        {/* Drawer 1: Sthala Puranam & Legend */}
+        {/* Drawer 1: History & Overview */}
         <div style={{ backgroundColor: '#FFFFFF', border: '1px solid rgba(15,23,42,0.06)', borderRadius: '16px', overflow: 'hidden' }}>
           <button
             onClick={() => toggleDrawer('legend')}
@@ -729,7 +745,7 @@ export default function PlaceDetails() {
           >
             <span style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
               <BookOpen size={16} color="#0F5132" />
-              <span>{lang === 'te' ? 'స్థల పురాణం & పవిత్ర విశేషాలు' : 'Sthala Puranam & Sacred Legend'}</span>
+              <span>{lang === 'te' ? (isTemple ? 'స్థల పురాణం & పవిత్ర విశేషాలు' : 'చరిత్ర & విశేషాలు') : (isTemple ? 'Sthala Puranam & Sacred Legend' : 'History & Overview')}</span>
             </span>
             {openDrawer === 'legend' ? <ChevronUp size={16} color="#0F5132" /> : <ChevronDown size={16} color="#94A3B8" />}
           </button>
@@ -739,14 +755,14 @@ export default function PlaceDetails() {
                 {lang === 'te' 
                   ? (place.id === 'govindaraja'
                       ? 'స్థల పురాణం ప్రకారం, శ్రీవారి కల్యాణం కోసం కుబేరుడు ఇచ్చిన రుణాన్ని లెక్కించడానికి, నిర్వహించడానికి వేంకటేశ్వర స్వామి అన్నగారైన శ్రీ గోవిందరాజ స్వామి ఇక్కడ వెలిశారు. క్రీ.శ. 1130లో వైష్ణవాచార్యులు శ్రీ రామానుజాచార్యుల వారు చిదంబరం నుండి స్వామివారి మూలవిరాట్టును తెచ్చి ఈ పవిత్ర ఆలయంలో ప్రతిష్ఠించి, మందిరాన్ని స్థాపించారు. సంపద, ఐశ్వర్యం, రుణ విముక్తి కోసం భక్తులు స్వామివారిని దర్శించుకుంటారు.'
-                      : (place.history || 'ఈ పవిత్ర ఆలయానికి ఘనమైన చరిత్ర మరియు ఆధ్యాత్మిక ప్రాశస్త్యం ఉన్నాయి.'))
-                  : (place.history || 'This sacred shrine holds deep importance in regional traditions, passing down timeless lore of divine grace and protection.')}
+                      : (place.history || (isTemple ? 'ఈ పవిత్ర ఆలయానికి ఘనమైన చరిత్ర మరియు ఆధ్యాత్మిక ప్రాశస్త్యం ఉన్నాయి.' : 'ఈ ప్రదేశానికి తిరుపతి ప్రాంతంలో ప్రత్యేక గుర్తింపు ఉంది.')))
+                  : (place.history || (isTemple ? 'This sacred shrine holds deep importance in regional traditions, passing down timeless lore of divine grace and protection.' : (place.whyVisit || place.description || 'A key attraction in the Tirupati region.')))}
               </p>
             </div>
           )}
         </div>
 
-        {/* Drawer 2: Festivals & Annual Rituals */}
+        {/* Drawer 2: Events / Season */}
         <div style={{ backgroundColor: '#FFFFFF', border: '1px solid rgba(15,23,42,0.06)', borderRadius: '16px', overflow: 'hidden' }}>
           <button
             onClick={() => toggleDrawer('festivals')}
@@ -766,7 +782,7 @@ export default function PlaceDetails() {
           >
             <span style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
               <Flame size={16} color="#D97706" />
-              <span>{lang === 'te' ? 'ఉత్సవాలు & వార్షిక వేడుకలు' : 'Festivals & Annual Celebrations'}</span>
+              <span>{lang === 'te' ? (isTemple ? 'ఉత్సవాలు & వార్షిక వేడుకలు' : 'ప్రత్యేక సందర్భాలు & అనువైన కాలం') : (isTemple ? 'Festivals & Annual Celebrations' : 'Special Events & Best Season')}</span>
             </span>
             {openDrawer === 'festivals' ? <ChevronUp size={16} color="#0F5132" /> : <ChevronDown size={16} color="#94A3B8" />}
           </button>
@@ -774,14 +790,18 @@ export default function PlaceDetails() {
             <div style={{ padding: '0 18px 18px', fontSize: '13px', color: '#475569', lineHeight: 1.6, borderTop: '1px solid #F1F5F9' }}>
               <p style={{ marginTop: '12px' }}>
                 {lang === 'te' 
-                  ? 'వార్షిక బ్రహ్మోత్సవాలు, నవరాత్రి ఉత్సవాలు మరియు ప్రతినెలా పౌర్ణమి గరుడసేవ ఊరేగింపులు ఆలయ అర్చకులు మరియు భక్తుల సమక్షంలో అత్యంత వైభవంగా జరుగుతాయి.'
-                  : 'Annual Brahmotsavams, Navaratri Utsavams, and special monthly Pournami processions are celebrated with deep fervor by the temple priests and visiting devotees.'}
+                  ? (isTemple
+                      ? 'వార్షిక బ్రహ్మోత్సవాలు, నవరాత్రి ఉత్సవాలు మరియు ప్రతినెలా పౌర్ణమి గరుడసేవ ఊరేగింపులు ఆలయ అర్చకులు మరియు భక్తుల సమక్షంలో అత్యంత వైభవంగా జరుగుతాయి.'
+                      : (place.bestTime ? `సందర్శించడానికి అనువైన సమయం: ${place.bestTime}. వారాంతాల్లో మరియు సెలవు దినాల్లో పర్యాటకుల రద్దీ ఎక్కువగా ఉంటుంది.` : 'వారాంతాల్లో మరియు సెలవు దినాల్లో పర్యాటకులు అధిక సంఖ్యలో సందర్శిస్తారు.'))
+                  : (isTemple
+                      ? 'Annual Brahmotsavams, Navaratri Utsavams, and special monthly Pournami processions are celebrated with deep fervor by the temple priests and visiting devotees.'
+                      : (place.bestTime ? `Best visiting hours: ${place.bestTime}. High tourist rush observed during weekends and public holidays.` : 'Popular weekend destination with high visitor footfall during winter and holiday seasons.'))}
               </p>
             </div>
           )}
         </div>
 
-        {/* Drawer 3: Architecture & Guidelines */}
+        {/* Drawer 3: Layout & Guidelines */}
         <div style={{ backgroundColor: '#FFFFFF', border: '1px solid rgba(15,23,42,0.06)', borderRadius: '16px', overflow: 'hidden' }}>
           <button
             onClick={() => toggleDrawer('architecture')}
@@ -801,7 +821,7 @@ export default function PlaceDetails() {
           >
             <span style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
               <Landmark size={16} color="#0F5132" />
-              <span>{lang === 'te' ? 'ఆలయ శిల్పకళ & నియమావళి' : 'Architecture & Sanctum Guidelines'}</span>
+              <span>{lang === 'te' ? (isTemple ? 'ఆలయ శిల్పకళ & నియమావళి' : 'లేఅవుట్ & సందర్శకుల నియమావళి') : (isTemple ? 'Architecture & Sanctum Guidelines' : 'Layout, Safari & Guidelines')}</span>
             </span>
             {openDrawer === 'architecture' ? <ChevronUp size={16} color="#0F5132" /> : <ChevronDown size={16} color="#94A3B8" />}
           </button>
@@ -809,14 +829,27 @@ export default function PlaceDetails() {
             <div style={{ padding: '0 18px 18px', fontSize: '13px', color: '#475569', lineHeight: 1.6, borderTop: '1px solid #F1F5F9' }}>
               <p style={{ marginTop: '12px' }}>
                 {lang === 'te' 
-                  ? 'దక్షిణ భారతీయ ద్రవిడ శైలిలో నిర్మించబడిన ఈ ఆలయం అద్భుతమైన రాతి స్తంభాలు, 7 అంతస్తుల రాజగోపురం మరియు ఆగమ శాస్త్రాల ప్రకారం రూపొందించిన గర్భగుడితో అలరారుతోంది.'
-                  : 'Built in classical South Indian Dravidian temple architecture style featuring intricately carved stone pillars, Raja Gopuram tower, and sanctum sanctorum designed according to ancient Agama Sastras.'}
+                  ? (isTemple
+                      ? 'దక్షిణ భారతీయ ద్రవిడ శైలిలో నిర్మించబడిన ఈ ఆలయం అద్భుతమైన రాతి స్తంభాలు, 7 అంతస్తుల రాజగోపురం మరియు ఆగమ శాస్త్రాల ప్రకారం రూపొందించిన గర్భగుడితో అలరారుతోంది.'
+                      : (place.id === 'sv-zoo-park'
+                          ? '1987లో స్థాపించబడిన ఈ జూ పార్క్ పౌరాణిక ఇతివృత్తంతో రూపొందించబడింది. జంతువులను సహజసిద్ధమైన భారీ ఆవరణలలో సంరక్షిస్తున్నారు. ప్లాస్టిక్ నిషేధం అమలులో ఉంది.'
+                          : (place.practicalInfo?.dressCode ? `నియమావళి: ${place.practicalInfo.dressCode}. పరిసరాలను పరిశుభ్రంగా ఉంచండి.` : 'సందర్శకులు పరిసరాల నియమాలను పాటించాలి.')))
+                  : (isTemple
+                      ? 'Built in classical South Indian Dravidian temple architecture style featuring intricately carved stone pillars, Raja Gopuram tower, and sanctum sanctorum designed according to ancient Agama Sastras.'
+                      : (place.id === 'sv-zoo-park'
+                          ? 'Spanning over 1,200 hectares, this zoo is designed on mythological themes with large open moated enclosures mimicking natural habitats rather than traditional cages. Plastic-free zone.'
+                          : (place.practicalInfo?.dressCode ? `Guidelines: ${place.practicalInfo.dressCode}. Keep the premises clean.` : 'Visitors are requested to follow on-site park guidelines and preserve nature.')))}
               </p>
             </div>
           )}
         </div>
       </div>
     </div>
+  );
+
+  // 11. OFFLINE PRECINCT VECTOR MAP & WAYFINDING
+  const offlineMapNode = (
+    <OfflineTempleMap placeId={place.id} place={place} lang={lang} isTemple={isTemple} coordinates={place.coordinates} />
   );
 
   return (
@@ -1074,6 +1107,7 @@ export default function PlaceDetails() {
         {quickFactsNode}
         {saarthiSuggestsNode}
         {ctaButtonsNode}
+        {offlineMapNode}
         {essentialFacilitiesNode}
         {darshanStatusNode}
         {aboutTempleNode}
@@ -1087,6 +1121,7 @@ export default function PlaceDetails() {
       <div className="place-desktop-container">
         {/* Left Column: Sacred Heritage & Visuals */}
         <div className="place-desktop-main">
+          {offlineMapNode}
           {aboutTempleNode}
           {heritageAccordionsNode}
           {nearbyTemplesNode}

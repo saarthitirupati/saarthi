@@ -1721,14 +1721,14 @@
   width: 100%;
   max-width: 1440px;
   margin: 0 auto;
-  padding: 0 16px 100px 16px;
+  padding: 0 12px 76px 12px;
   box-sizing: border-box;
 }
 
 .mobileStack {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 10px;
 }
 
 .desktopOnly {

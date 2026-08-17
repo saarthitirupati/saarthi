@@ -70,26 +70,26 @@ export function DailyContent(props: any) {
   const badge = priorityColors[(companionData.priorityLevel as 1|2|3|4)] ?? priorityColors[3];
 
   return (
-    <div style={{ padding: isDesktop ? '0' : '0 16px 8px 16px' }}>
+    <div style={{ padding: isDesktop ? '0' : '0 2px 2px 2px' }}>
 
       {/* ── SECTION HEADER ── */}
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '12px', gap: '8px' }}>
-        <h3 style={{ fontSize: '17px', fontWeight: 900, color: '#0F172A', margin: 0, display: 'flex', alignItems: 'center', gap: '8px' }}>
-          <Flame size={19} color="#D97706" />
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '10px', gap: '8px' }}>
+        <h3 style={{ fontSize: '15.5px', fontWeight: 900, color: '#0F172A', margin: 0, display: 'flex', alignItems: 'center', gap: '6px' }}>
+          <Flame size={17} color="#D97706" />
           <span>{t.todaysCompanion}</span>
         </h3>
         <span style={{
-          fontSize: '10.5px',
+          fontSize: '10px',
           fontWeight: 800,
           color: badge.text,
           backgroundColor: badge.bg,
           border: `1px solid ${badge.border}`,
-          padding: '3px 10px',
-          borderRadius: '12px',
-          letterSpacing: '0.3px',
+          padding: '2px 8px',
+          borderRadius: '10px',
+          letterSpacing: '0.2px',
           whiteSpace: 'nowrap',
           flexShrink: 0,
-          maxWidth: '160px',
+          maxWidth: '150px',
           overflow: 'hidden',
           textOverflow: 'ellipsis'
         }}>
@@ -101,44 +101,44 @@ export function DailyContent(props: any) {
       <div style={{
         background: 'linear-gradient(135deg, #FFFBEB 0%, #FEF3C7 100%)',
         border: '1.5px solid #FDE68A',
-        borderRadius: '20px',
-        padding: '18px 16px',
-        marginBottom: '14px',
-        boxShadow: '0 6px 18px rgba(217, 119, 6, 0.1)'
+        borderRadius: '16px',
+        padding: '14px 14px',
+        marginBottom: '10px',
+        boxShadow: '0 4px 14px rgba(217, 119, 6, 0.08)'
       }}>
         {/* Theme tag + duration */}
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '10px' }}>
-          <span style={{ fontSize: '10.5px', fontWeight: 900, color: '#B45309', textTransform: 'uppercase', letterSpacing: '0.6px', backgroundColor: '#FEF3C7', border: '1px solid #FDE68A', padding: '2px 8px', borderRadius: '6px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '8px' }}>
+          <span style={{ fontSize: '10px', fontWeight: 900, color: '#B45309', textTransform: 'uppercase', letterSpacing: '0.5px', backgroundColor: '#FEF3C7', border: '1px solid #FDE68A', padding: '2px 7px', borderRadius: '5px' }}>
             {companionData.theme}
           </span>
-          <span style={{ fontSize: '11px', color: '#78350F', fontWeight: 700, display: 'flex', alignItems: 'center', gap: '4px' }}>
-            <Sparkles size={13} color="#D97706" />
+          <span style={{ fontSize: '10.5px', color: '#78350F', fontWeight: 700, display: 'flex', alignItems: 'center', gap: '3px' }}>
+            <Sparkles size={12} color="#D97706" />
             <span>{companionData.divineMoment.duration}</span>
           </span>
         </div>
 
         {/* Headline */}
-        <div style={{ fontSize: '13px', fontWeight: 800, color: '#92400E', marginBottom: '8px' }}>
+        <div style={{ fontSize: '12.5px', fontWeight: 800, color: '#92400E', marginBottom: '6px' }}>
           {companionData.headline}
         </div>
 
         {/* Quote */}
         <blockquote style={{
-          fontSize: '15px',
+          fontSize: '13.5px',
           fontWeight: 700,
           color: '#78350F',
-          margin: '0 0 10px 0',
-          lineHeight: '1.5',
+          margin: '0 0 8px 0',
+          lineHeight: '1.4',
           fontStyle: 'italic',
           borderLeft: '3px solid #FCD34D',
-          paddingLeft: '12px'
+          paddingLeft: '10px'
         }}>
           "{companionData.divineMoment.quote}"
         </blockquote>
 
         {/* Author + Share */}
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: '10px', paddingTop: '8px', borderTop: '1px dashed #FDE68A' }}>
-          <div style={{ fontSize: '12px', fontWeight: 800, color: '#B45309' }}>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: '8px', paddingTop: '6px', borderTop: '1px dashed #FDE68A' }}>
+          <div style={{ fontSize: '11.5px', fontWeight: 800, color: '#B45309' }}>
             ~ {companionData.divineMoment.author}
           </div>
           <button
@@ -146,19 +146,19 @@ export function DailyContent(props: any) {
             style={{
               display: 'flex',
               alignItems: 'center',
-              gap: '6px',
+              gap: '5px',
               backgroundColor: '#FFFFFF',
               border: '1px solid #FCD34D',
-              borderRadius: '12px',
-              padding: '5px 10px',
-              fontSize: '11px',
+              borderRadius: '10px',
+              padding: '4px 8px',
+              fontSize: '10.5px',
               fontWeight: 800,
               color: '#B45309',
               cursor: 'pointer',
-              boxShadow: '0 2px 6px rgba(0,0,0,0.04)'
+              boxShadow: '0 2px 4px rgba(0,0,0,0.03)'
             }}
           >
-            <Share2 size={13} />
+            <Share2 size={12} />
             <span>{t.share}</span>
           </button>
         </div>
@@ -168,26 +168,26 @@ export function DailyContent(props: any) {
       <div style={{
         backgroundColor: '#FFFFFF',
         border: '1px solid #E2E8F0',
-        borderRadius: '18px',
-        padding: '14px 16px',
-        marginBottom: '14px',
-        boxShadow: '0 2px 8px rgba(0,0,0,0.02)'
+        borderRadius: '14px',
+        padding: '12px 14px',
+        marginBottom: '10px',
+        boxShadow: '0 2px 6px rgba(0,0,0,0.02)'
       }}>
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '8px' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-            <Compass size={16} color="#D97706" />
-            <span style={{ fontSize: '12px', fontWeight: 800, color: '#D97706', textTransform: 'uppercase', letterSpacing: '0.4px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '6px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
+            <Compass size={14} color="#D97706" />
+            <span style={{ fontSize: '11px', fontWeight: 800, color: '#D97706', textTransform: 'uppercase', letterSpacing: '0.4px' }}>
               {t.didYouKnow}
             </span>
           </div>
-          <span style={{ fontSize: '10px', fontWeight: 800, color: '#0284C7', backgroundColor: '#E0F2FE', padding: '2px 8px', borderRadius: '8px' }}>
+          <span style={{ fontSize: '9.5px', fontWeight: 800, color: '#0284C7', backgroundColor: '#E0F2FE', padding: '2px 6px', borderRadius: '6px' }}>
             {companionData.significance.category}
           </span>
         </div>
-        <div style={{ fontSize: '13.5px', fontWeight: 800, color: '#1E293B', lineHeight: '1.4', marginBottom: '4px' }}>
+        <div style={{ fontSize: '12.5px', fontWeight: 800, color: '#1E293B', lineHeight: '1.35', marginBottom: '3px' }}>
           {companionData.significance.title}
         </div>
-        <p style={{ fontSize: '12.5px', color: '#475569', margin: 0, lineHeight: '1.45' }}>
+        <p style={{ fontSize: '11.5px', color: '#475569', margin: 0, lineHeight: '1.4' }}>
           {companionData.significance.description}
         </p>
       </div>
@@ -195,17 +195,17 @@ export function DailyContent(props: any) {
       {/* ── MOOD CHECK ── */}
       <div style={{
         backgroundColor: '#FFF',
-        borderRadius: '16px',
-        padding: '12px 14px',
+        borderRadius: '14px',
+        padding: '10px 12px',
         border: '1px solid #E2E8F0',
-        marginBottom: '14px'
+        marginBottom: '10px'
       }}>
-        <div style={{ fontSize: '11.5px', fontWeight: 800, color: '#334155', marginBottom: '8px', display: 'flex', alignItems: 'center', gap: '6px' }}>
-          <MessageCircle size={15} color="#D97706" />
+        <div style={{ fontSize: '11px', fontWeight: 800, color: '#334155', marginBottom: '6px', display: 'flex', alignItems: 'center', gap: '5px' }}>
+          <MessageCircle size={14} color="#D97706" />
           <span>{companionData.moodPrompt.question}</span>
         </div>
 
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '6px' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '5px' }}>
           {companionData.moodPrompt.options.map((opt) => {
             const isSelected = selectedMood === opt.id;
             return (
@@ -215,8 +215,8 @@ export function DailyContent(props: any) {
                 style={{
                   backgroundColor: isSelected ? '#FEF3C7' : '#F8FAFC',
                   border: isSelected ? '1.5px solid #F59E0B' : '1px solid #E2E8F0',
-                  borderRadius: '10px',
-                  padding: '8px 4px',
+                  borderRadius: '8px',
+                  padding: '6px 3px',
                   display: 'flex',
                   flexDirection: 'column',
                   alignItems: 'center',
@@ -224,10 +224,10 @@ export function DailyContent(props: any) {
                   transition: 'all 0.15s ease'
                 }}
               >
-                <div style={{ marginBottom: '2px' }}>
+                <div style={{ marginBottom: '1px' }}>
                   {renderMoodIcon(opt.iconName)}
                 </div>
-                <span style={{ fontSize: '10px', fontWeight: 800, color: isSelected ? '#B45309' : '#64748B', marginTop: '2px' }}>
+                <span style={{ fontSize: '9.5px', fontWeight: 800, color: isSelected ? '#B45309' : '#64748B', marginTop: '1px' }}>
                   {opt.label}
                 </span>
               </button>
@@ -236,7 +236,7 @@ export function DailyContent(props: any) {
         </div>
 
         {selectedMoodObj && (
-          <div style={{ fontSize: '11px', fontWeight: 700, color: '#B45309', marginTop: '8px', textAlign: 'center', backgroundColor: '#FFFBEB', padding: '6px', borderRadius: '8px' }}>
+          <div style={{ fontSize: '10.5px', fontWeight: 700, color: '#B45309', marginTop: '6px', textAlign: 'center', backgroundColor: '#FFFBEB', padding: '5px', borderRadius: '6px' }}>
             {selectedMoodObj.feedback}
           </div>
         )}
@@ -246,25 +246,25 @@ export function DailyContent(props: any) {
       <div style={{
         background: 'linear-gradient(135deg, #FFFFFF 0%, #FEFDF9 100%)',
         border: '1px solid rgba(200, 155, 60, 0.25)',
-        borderRadius: '18px',
-        padding: '14px 16px',
-        marginBottom: '14px',
-        boxShadow: '0 4px 16px rgba(200, 155, 60, 0.06)'
+        borderRadius: '16px',
+        padding: '12px 14px',
+        marginBottom: '10px',
+        boxShadow: '0 4px 12px rgba(200, 155, 60, 0.05)'
       }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
-          <div style={{ width: '24px', height: '24px', borderRadius: '6px', background: '#FEF9C3', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-            <Sparkles size={13} color="#CA8A04" />
+        <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '6px' }}>
+          <div style={{ width: '22px', height: '22px', borderRadius: '5px', background: '#FEF9C3', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <Sparkles size={12} color="#CA8A04" />
           </div>
-          <span style={{ fontSize: '12.5px', fontWeight: 800, color: '#854D0E' }}>
+          <span style={{ fontSize: '12px', fontWeight: 800, color: '#854D0E' }}>
             {lang === 'te' ? 'గోవింద నామావళి & ప్రసాద విశేషాలు' : 'Govinda Namavali & Temple Prasadam'}
           </span>
         </div>
-        <p style={{ fontSize: '12px', color: '#78350F', margin: '0 0 10px', lineHeight: 1.45, fontStyle: 'italic' }}>
+        <p style={{ fontSize: '11.5px', color: '#78350F', margin: '0 0 8px', lineHeight: 1.4, fontStyle: 'italic' }}>
           {lang === 'te' 
             ? '“శ్రీ శ్రీనివాస గోవిందా • శ్రీ వేంకటేశ గోవిందా • భక్తవత్సల గోవిందా • తిరుమలేశ గోవిందా” — క్యూ లైన్‌లో లేదా ప్రయాణంలో స్మరించండి.'
             : '“Sri Srinivasa Govinda • Sri Venkatesa Govinda • Bhakta Vatsala Govinda • Tirumalesa Govinda” — Chant during queue waiting for mental tranquility.'}
         </p>
-        <div style={{ fontSize: '11px', color: '#64748B', display: 'flex', alignItems: 'center', gap: '4px', borderTop: '1px solid #F3F4F6', paddingTop: '8px' }}>
+        <div style={{ fontSize: '10.5px', color: '#64748B', display: 'flex', alignItems: 'center', gap: '4px', borderTop: '1px solid #F3F4F6', paddingTop: '6px' }}>
           <span style={{ fontWeight: 700, color: '#0F5132' }}>🛕 Annaprasadam:</span>
           <span>Tarigonda Vengamamba Complex serves free hot meals 9:00 AM – 11:00 PM daily.</span>
         </div>

@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { Home, Compass, Layers } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
@@ -48,52 +48,70 @@ export default function BottomNav() {
 
           if (item.isFab) {
             return (
-              <Link key={item.name} href={item.href} className={styles.fabWrapper}>
-                <div className={styles.fabRing} />
-                <motion.div
-                  className={styles.fabBtn}
-                  whileTap={{ scale: 0.92 }}
-                  transition={{ type: 'spring', stiffness: 400, damping: 20 }}
-                >
-                  <item.icon size={26} className={styles.fabIcon} />
-                </motion.div>
-              </Link>
+              <div key={item.name} className={styles.slot}>
+                <Link href={item.href} className={styles.fabWrapper}>
+                  <motion.div 
+                    className={styles.fabRing}
+                    animate={{
+                      scale: [1, 1.15, 1],
+                      opacity: [0.75, 0.25, 0.75]
+                    }}
+                    transition={{
+                      repeat: Infinity,
+                      duration: 2.8,
+                      ease: 'easeInOut'
+                    }}
+                  />
+                  <motion.div
+                    className={styles.fabBtn}
+                    whileHover={{ scale: 1.06, y: -2 }}
+                    whileTap={{ scale: 0.88, rotate: -10 }}
+                    transition={{ type: 'spring', stiffness: 450, damping: 22 }}
+                  >
+                    <motion.div
+                      animate={isActive ? { rotate: [0, 180, 360], scale: [1, 1.15, 1] } : { scale: 1, rotate: 0 }}
+                      transition={{ duration: 0.5, ease: 'easeOut' }}
+                    >
+                      <item.icon size={23} className={styles.fabIcon} />
+                    </motion.div>
+                  </motion.div>
+                </Link>
+              </div>
             );
           }
 
           return (
-            <Link 
-              key={item.name} 
-              href={item.href} 
-              className={`${styles.navLink} ${isActive ? styles.navLinkActive : ''}`}
-            >
-              {isActive && (
+            <div key={item.name} className={styles.slot}>
+              <Link 
+                href={item.href} 
+                className={`${styles.navLink} ${isActive ? styles.navLinkActive : ''}`}
+              >
                 <motion.div
-                  layoutId="navPill"
-                  className={styles.activeBg}
-                  transition={{ type: 'spring', bounce: 0.2, duration: 0.5 }}
-                />
-              )}
-              <div className={styles.navContent}>
-                <item.icon
-                  size={22}
-                  className={isActive ? styles.activeIcon : styles.inactiveIcon}
-                />
-                <AnimatePresence mode="popLayout">
+                  className={styles.navContent}
+                  whileTap={{ scale: 0.92 }}
+                  transition={{ type: 'spring', stiffness: 500, damping: 25 }}
+                >
+                  <motion.div
+                    animate={{ 
+                      scale: isActive ? 1.08 : 1,
+                      y: isActive ? -1 : 0
+                    }}
+                    transition={{ type: 'spring', stiffness: 420, damping: 22 }}
+                    style={{ display: 'flex', alignItems: 'center' }}
+                  >
+                    <item.icon
+                      size={20}
+                      className={isActive ? styles.activeIcon : styles.inactiveIcon}
+                    />
+                  </motion.div>
                   {isActive && (
-                    <motion.span
-                      initial={{ opacity: 0, width: 0, scale: 0.8 }}
-                      animate={{ opacity: 1, width: 'auto', scale: 1 }}
-                      exit={{ opacity: 0, width: 0, scale: 0.8 }}
-                      transition={{ type: 'spring', bounce: 0, duration: 0.4 }}
-                      className={styles.activeLabel}
-                    >
+                    <span className={styles.activeLabel}>
                       {item.name}
-                    </motion.span>
+                    </span>
                   )}
-                </AnimatePresence>
-              </div>
-            </Link>
+                </motion.div>
+              </Link>
+            </div>
           );
         })}
       </div>
