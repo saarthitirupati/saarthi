@@ -170,8 +170,51 @@ export default function OfflineTempleMap({
           {/* ═══════════════════════════════════════════════════
               ARCHITECTURAL BACKDROPS MATCHING SPECIFIC CATEGORIES
               ═══════════════════════════════════════════════════ */}
-          {layout.layoutType === 'geo-nature-park' ? (
-            /* 1. GEOLOGICAL & BOTANICAL PARK (Silathoranam Natural Rock Arch & Park) */
+          {layout.layoutType === 'sacred-pushkarini' ? (
+            /* 1. SACRED PUSHKARINI & HOLY THEERTHAM LAKE (Swami Pushkarini, Papavinasam, Akasa Ganga) */
+            <g>
+              {/* Outer Promenade Pavement */}
+              <rect x="40" y="30" width="460" height="270" rx="16" fill="#F8FAFC" stroke="#0284C7" strokeWidth="2" strokeDasharray="8 3" />
+
+              {/* Stepped Ghats Tier 1 */}
+              <rect x="90" y="55" width="360" height="195" rx="12" fill="#E2E8F0" stroke="#94A3B8" strokeWidth="1.5" />
+              {/* Stepped Ghats Tier 2 */}
+              <rect x="120" y="70" width="300" height="165" rx="8" fill="#CBD5E1" stroke="#64748B" strokeWidth="1.2" />
+              {/* Stepped Ghats Tier 3 */}
+              <rect x="145" y="85" width="250" height="135" rx="6" fill="#94A3B8" stroke="#475569" strokeWidth="1" />
+
+              {/* Holy Water Tank Center */}
+              <rect x="165" y="98" width="210" height="110" rx="6" fill="url(#waterTankGrad)" stroke="#0284C7" strokeWidth="2" />
+              
+              {/* Sacred Water Ripples */}
+              <path d="M 190 130 Q 215 125 240 130 Q 265 135 290 130 Q 315 125 340 130" stroke="#BAE6FD" strokeWidth="1.5" fill="none" opacity="0.7" />
+              <path d="M 200 170 Q 225 165 250 170 Q 275 175 300 170 Q 325 165 350 170" stroke="#BAE6FD" strokeWidth="1.5" fill="none" opacity="0.7" />
+
+              {/* Central Neerazhi Floating Mandapam Pavilion */}
+              <g transform="translate(255, 138)">
+                <rect x="0" y="0" width="30" height="28" rx="4" fill="#FEF3C7" stroke="#D97706" strokeWidth="1.5" />
+                <polygon points="15,-6 4,0 26,0" fill="#CA8A04" stroke="#78350F" strokeWidth="1" />
+                <circle cx="15" cy="14" r="3" fill="#B45309" />
+              </g>
+
+              {/* Sri Varahaswamy Shrine on North-West Bank */}
+              <g transform="translate(115, 55)">
+                <circle cx="25" cy="25" r="24" fill="url(#sanctumGlow)" />
+                <rect x="5" y="5" width="40" height="40" rx="6" fill="#FEF3C7" stroke="#D97706" strokeWidth="1.5" />
+                <polygon points="25,8 10,35 40,35" fill="url(#goldVimana)" stroke="#92400E" strokeWidth="1" />
+              </g>
+
+              {/* Footwear & Changing Rooms (South-West) */}
+              <rect x="120" y="225" width="80" height="30" rx="6" fill="#F1F5F9" stroke="#64748B" strokeWidth="1.2" />
+
+              {/* Connecting Pathway to Srivari Temple (East) */}
+              <rect x="360" y="140" width="65" height="40" rx="6" fill="#FEF9C3" stroke="#CA8A04" strokeWidth="1.2" />
+
+              {/* Main Entrance Gateway (South) */}
+              <rect x="225" y="262" width="90" height="26" rx="6" fill="#0284C7" stroke="#0369A1" strokeWidth="1.5" />
+            </g>
+          ) : layout.layoutType === 'geo-nature-park' ? (
+            /* 2. GEOLOGICAL & BOTANICAL PARK (Silathoranam Natural Rock Arch & Park) */
             <g>
               {/* Botanical Park Base */}
               <rect x="40" y="30" width="460" height="270" rx="16" fill="#F4FBF4" stroke="#86EFAC" strokeWidth="2" />
@@ -429,6 +472,7 @@ export default function OfflineTempleMap({
             const label = lang === 'te' 
               ? (pin.nameTe.length > 14 ? pin.nameTe.split(' ')[0] : pin.nameTe)
               : (pin.category === 'sanctum' ? (
+                  layout.layoutType === 'sacred-pushkarini' ? 'Holy Tank' :
                   layout.layoutType === 'geo-nature-park' ? 'Rock Arch' :
                   layout.layoutType === 'shopping-market' ? 'Main Bazaar' :
                   layout.layoutType === 'dining-restaurant' ? 'Dining Hall' :
@@ -440,11 +484,12 @@ export default function OfflineTempleMap({
                  pin.category === 'entry' ? 'Entrance' :
                  pin.category === 'queue' ? 'Queue' :
                  pin.category === 'laddu' ? (layout.layoutType === 'city-shrine' ? 'Kumkum / Prasadam' : 'Prasadam') :
-                 pin.category === 'footwear' ? 'Footwear' :
+                 pin.category === 'footwear' ? (layout.layoutType === 'sacred-pushkarini' ? 'Footwear & Rooms' : 'Footwear') :
                  pin.category === 'food' ? (layout.layoutType === 'shopping-market' ? 'Street Food' : 'Food / Dining') :
                  pin.category === 'parking' ? 'Parking' :
                  pin.category === 'medical' ? 'Medical' :
                  pin.category === 'safari' ? 'Safari' :
+                 layout.layoutType === 'sacred-pushkarini' ? (pin.id.includes('varaha') ? 'Varahaswamy' : pin.id.includes('way') ? 'Temple Walkway' : 'Ghats') :
                  layout.layoutType === 'geo-nature-park' ? (pin.id.includes('viewing') ? 'Viewing Deck' : 'Garden Path') :
                  layout.layoutType === 'shopping-market' ? 'Textiles' :
                  layout.layoutType === 'museum-gallery' ? 'Pavilion' :
@@ -455,6 +500,9 @@ export default function OfflineTempleMap({
                  layout.layoutType === 'wildlife-safari' ? 'Aviary' : 'Pushkarini');
 
             const icon = 
+              layout.layoutType === 'sacred-pushkarini' && pin.category === 'sanctum' ? '🌊' :
+              layout.layoutType === 'sacred-pushkarini' && pin.id.includes('varaha') ? '🛕' :
+              layout.layoutType === 'sacred-pushkarini' && pin.id.includes('way') ? '🏛️' :
               layout.layoutType === 'geo-nature-park' && pin.category === 'sanctum' ? '🪨' :
               layout.layoutType === 'geo-nature-park' && pin.id.includes('garden') ? '🌿' :
               layout.layoutType === 'geo-nature-park' && pin.id.includes('viewing') ? '🔭' :

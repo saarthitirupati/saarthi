@@ -31,6 +31,7 @@ export interface TempleLayoutData {
     | 'ancient-shrine' 
     | 'city-shrine'
     | 'grand-temple' 
+    | 'sacred-pushkarini'
     | 'hill-waterfall' 
     | 'wildlife-safari' 
     | 'heritage-fort' 
@@ -218,6 +219,89 @@ export const CURATED_LAYOUTS: Record<string, Partial<TempleLayoutData>> = {
         svgY: 140,
         descEn: 'Railed viewing platform for photography and viewing the geological strata.',
         descTe: 'శిలాతోరణాన్ని తిలకించేందుకు మరియు ఫోటోలు తీసుకునేందుకు వీక్షణ వేదిక.'
+      }
+    ]
+  },
+
+  'swami-pushkarini': {
+    placeId: 'swami-pushkarini',
+    titleEn: 'Swami Pushkarini Holy Lake & Stepped Ghats',
+    titleTe: 'స్వామి పుష్కరిణి పవిత్ర తీర్థం & ఘాట్లు',
+    layoutType: 'sacred-pushkarini',
+    centerCoordinates: { lat: 13.6837, lng: 79.3480 },
+    routePath: [[430, 290], [270, 275], [160, 240], [270, 140], [150, 85], [390, 160]],
+    pins: [
+      {
+        id: 'parking',
+        nameEn: 'Central Tirumala Parking Bay',
+        nameTe: 'తిరుమల సెంట్రల్ పార్కింగ్',
+        category: 'parking',
+        lat: 13.6828,
+        lng: 79.3475,
+        svgX: 430,
+        svgY: 290,
+        descEn: 'Designated vehicle parking near CRO and Bata Gangamma square.',
+        descTe: 'సి.ఆర్.ఓ సమీపంలోని వాహనాల పార్కింగ్ స్థలం.'
+      },
+      {
+        id: 'entry',
+        nameEn: 'Swami Pushkarini Main Entrance',
+        nameTe: 'పుష్కరిణి ప్రధాన ప్రవేశ ద్వారం',
+        category: 'entry',
+        lat: 13.6832,
+        lng: 79.3478,
+        svgX: 270,
+        svgY: 275,
+        descEn: 'Main gateway leading into the sacred Pushkarini parikrama promenade.',
+        descTe: 'పుష్కరిణి ఘాట్ల వైపు వెళ్ళే ప్రధాన ద్వారం.'
+      },
+      {
+        id: 'footwear',
+        nameEn: 'Footwear & Changing Room Stand',
+        nameTe: 'పాదరక్షలు & డ్రెస్సింగ్ రూమ్స్',
+        category: 'footwear',
+        lat: 13.6833,
+        lng: 79.3474,
+        svgX: 160,
+        svgY: 240,
+        descEn: 'Free footwear custody counter and separate changing rooms for pilgrims.',
+        descTe: 'చెప్పులు విడిచే స్థలం మరియు దుస్తులు మార్చుకునే గదులు.'
+      },
+      {
+        id: 'sanctum',
+        nameEn: 'Swami Pushkarini Holy Stepped Tank',
+        nameTe: 'స్వామి పుష్కరిణి పవిత్ర తీర్థం (కోనేరు)',
+        category: 'sanctum',
+        lat: 13.6837,
+        lng: 79.3480,
+        svgX: 270,
+        svgY: 140,
+        descEn: 'Sacred 1.5-acre holy water lake brought from Vaikuntam by Garuda. Taking a holy dip or prokshana here cleanses sins before Srivari Darshan.',
+        descTe: 'శ్రీవారి దర్శనానికి ముందు పుణ్యస్నానం ఆచరించే పవిత్ర దివ్య తీర్థం.'
+      },
+      {
+        id: 'varahaswamy',
+        nameEn: 'Sri Bhu Varaha Swamy Temple (North Bank)',
+        nameTe: 'శ్రీ భూ వరాహ స్వామి ఆలయం',
+        category: 'info',
+        lat: 13.6841,
+        lng: 79.3476,
+        svgX: 150,
+        svgY: 85,
+        descEn: 'Ancient temple on the northwest bank of Pushkarini. By tradition, pilgrims visit Varahaswamy first.',
+        descTe: 'పుష్కరిణి ఒడ్డున ఉన్న ఆది వరాహ స్వామి ఆలయం.'
+      },
+      {
+        id: 'temple-way',
+        nameEn: 'Pathway to Sri Vari Temple Mahadwaram',
+        nameTe: 'శ్రీవారి ప్రధాన ఆలయ మార్గం',
+        category: 'info',
+        lat: 13.6835,
+        lng: 79.3485,
+        svgX: 390,
+        svgY: 160,
+        descEn: 'Covered stone walkway connecting directly to the main entrance of Tirumala Temple.',
+        descTe: 'శ్రీవారి ప్రధాన ఆలయం మహాద్వారం వైపు వెళ్ళే మార్గం.'
       }
     ]
   },
@@ -606,7 +690,41 @@ export function getTempleLayout(placeInput: string | PlaceInputContext, fallback
   const tags = (placeObj?.tags || []).map(t => t.toLowerCase());
   const nameLower = name.toLowerCase();
 
-  // 1. Silathoranam / Geological Heritage Park
+  // 1. Swami Pushkarini / Sacred Theertham Tanks
+  if (
+    placeId.includes('pushkarini') || 
+    nameLower.includes('pushkarini') || 
+    placeId.includes('koneer') || 
+    nameLower.includes('koneeru') ||
+    placeId === 'swami-pushkarini'
+  ) {
+    const curated = CURATED_LAYOUTS['swami-pushkarini']!;
+    return {
+      placeId,
+      titleEn: `${name} Precinct Map`,
+      titleTe: `${name} ప్రాంగణ మ్యాప్`,
+      layoutType: 'sacred-pushkarini',
+      centerCoordinates: fallbackCoords || { lat: 13.6837, lng: 79.3480 },
+      defaultZoom: 17,
+      compassBearingDeg: 0,
+      sanctumNameEn: 'Swami Pushkarini Holy Tank',
+      sanctumNameTe: 'స్వామి పుష్కరిణి పవిత్ర తీర్థం',
+      routePath: curated.routePath || [[430, 290], [270, 275], [160, 240], [270, 140], [150, 85], [390, 160]],
+      pins: curated.pins as MapPin[],
+      routeSteps: [
+        { stepNumber: 1, titleEn: 'Arrival & Central Parking', titleTe: 'పార్కింగ్ చేరుకోవడం', distance: '0.0 km', timeMins: 0, descEn: 'Park vehicle at central Tirumala parking near CRO.', descTe: 'వాహనాన్ని పార్క్ చేసి పుష్కరిణి వైపు వెళ్ళండి.' },
+        { stepNumber: 2, titleEn: 'Footwear Deposit & Stepped Ghats', titleTe: 'పాదరక్షల కేంద్రం & ఘాట్ ప్రవేశం', distance: '40m', timeMins: 2, descEn: 'Leave footwear and proceed to the sacred stepped lake.', descTe: 'చెప్పులు విడిచి పవిత్ర ఘాట్ల వద్దకు వెళ్ళండి.' },
+        { stepNumber: 3, titleEn: 'Holy Dip / Prokshana & Varahaswamy Darshan', titleTe: 'పుణ్యస్నానం & వరాహస్వామి దర్శనం', distance: '80m', timeMins: 15, descEn: 'Take sacred holy water dip/sprinkling and seek blessings at Sri Varahaswamy Temple.', descTe: 'పుష్కరిణి తీర్థం చల్లుకుని వరాహస్వామి వారిని దర్శించుకోండి.' },
+        { stepNumber: 4, titleEn: 'Pathway to Srivari Mahadwaram', titleTe: 'శ్రీవారి ప్రధాన ఆలయ మార్గం', distance: '100m', timeMins: 5, descEn: 'Proceed along the covered stone corridor to Sri Venkateswara Temple entrance.', descTe: 'శ్రీవారి ఆలయ ప్రవేశం వైపు వెళ్ళండి.' }
+      ],
+      emergencyContacts: [
+        { titleEn: 'TTD Central Vigilance & Temple Security', titleTe: 'టీటీడీ భద్రతా విభాగం', number: '08772264555' },
+        { titleEn: 'Emergency Helpline', titleTe: 'అత్యవసర హెల్ప్‌లైన్', number: '112' }
+      ]
+    };
+  }
+
+  // 2. Silathoranam / Geological Heritage Park
   if (placeId.includes('silathoranam') || nameLower.includes('silathoranam') || nameLower.includes('sila thoranam')) {
     const curated = CURATED_LAYOUTS['silathoranam']!;
     return {
