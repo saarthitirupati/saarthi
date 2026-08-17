@@ -409,40 +409,7 @@ function ExploreContent() {
             </div>
           </div>
         )}
-              {/* Must-Visit Section */}
-              {mustVisit.length > 0 && (
-                <div className={styles.curatedSection}>
-                  <h2 className={styles.curatedTitle} style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                    {lang === 'te' ? 'తప్పక దర్శించాల్సినవి' : 'Must-Visit'} <Sparkles size={18} style={{ color: '#FF9933' }} />
-                  </h2>
-                  <div className={styles.horizontalScroll}>
-                    {mustVisit.map((place) => (
-                      <Link href={`/place/${place.id}`} key={place.id} className={styles.curatedCard}>
-                        <div
-                          className={styles.curatedImage}
-                          style={{ backgroundImage: `url(${place.image || 'https://images.unsplash.com/photo-1514222134-b57cbf8ce673?auto=format&fit=crop&q=80&w=800'})` }}
-                        >
-                          {place.placeType && (
-                            <span className={styles.curatedImageBadge}>{place.placeType}</span>
-                          )}
-                        </div>
-                        <div className={styles.curatedInfo}>
-                          <h4 title={place.name}>{place.name}</h4>
-                          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', fontSize: '11px' }}>
-                            <span style={{ display: 'flex', alignItems: 'center', gap: '3px', color: '#B0550C', fontWeight: 700 }}>
-                              <Star size={11} fill="#F59E0B" color="#F59E0B" /> {place.rating}
-                            </span>
-                            <span className={styles.curatedDistance} style={{ gap: '2px' }}>
-                              <MapPin size={10} strokeWidth={2.5} />
-                              {Number((place as any).computedDistance || 0) < 0.5 ? '< 0.5 km' : `${Number((place as any).computedDistance || 0).toFixed(1)} km`}
-                            </span>
-                          </div>
-                        </div>
-                      </Link>
-                    ))}
-                  </div>
-                </div>
-              )}
+
 
               {/* Hidden Gems Section */}
               {hiddenGems.length > 0 && (
