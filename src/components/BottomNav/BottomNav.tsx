@@ -72,7 +72,7 @@ export default function BottomNav() {
                       animate={isActive ? { rotate: [0, 180, 360], scale: [1, 1.15, 1] } : { scale: 1, rotate: 0 }}
                       transition={{ duration: 0.5, ease: 'easeOut' }}
                     >
-                      <item.icon size={23} className={styles.fabIcon} />
+                      <item.icon size={28} className={styles.fabIcon} />
                     </motion.div>
                   </motion.div>
                 </Link>
@@ -100,7 +100,7 @@ export default function BottomNav() {
                     style={{ display: 'flex', alignItems: 'center' }}
                   >
                     <item.icon
-                      size={20}
+                      size={24}
                       className={isActive ? styles.activeIcon : styles.inactiveIcon}
                     />
                   </motion.div>

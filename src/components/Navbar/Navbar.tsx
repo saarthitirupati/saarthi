@@ -23,7 +23,7 @@ export default function Navbar({
   return (
     <nav className={styles.navbar}>
       <Link href="/" className={styles.brand}>
-        <Logo size={32} />
+        <Logo size={46} />
         <div className={styles.brandText}>
           <span className={`${styles.appName} notranslate`}>Saarthi</span>
           <span className={styles.tagline}>Spiritual Place Guide</span>
@@ -32,7 +32,7 @@ export default function Navbar({
       
       <div className={styles.actions}>
         <button className={styles.iconButton} onClick={handleMenuClick} aria-label="Toggle menu">
-          <Menu size={20} />
+          <Menu size={26} />
         </button>
       </div>
     </nav>

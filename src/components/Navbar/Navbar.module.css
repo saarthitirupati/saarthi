@@ -1,13 +1,13 @@
 .navbar {
-  height: 64px;
+  height: 80px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 20px;
+  padding: 0 24px;
   padding-top: max(0px, env(safe-area-inset-top, 0px));
-  background: rgba(255, 255, 255, 0.85);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  background: rgba(255, 255, 255, 0.94);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
   border-bottom: 1px solid var(--border);
   position: sticky;
   top: 0;
@@ -19,7 +19,7 @@
 .brand {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 16px;
   text-decoration: none;
   color: var(--text);
   min-width: 0;
@@ -29,20 +29,23 @@
   display: flex;
   flex-direction: column;
   min-width: 0;
+  gap: 2px;
 }
 
 .appName {
-  font-size: 1rem;
-  font-weight: 800;
-  line-height: 1;
+  font-size: 1.5rem;
+  font-weight: 900;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  color: #0F172A;
 }
 
 .tagline {
-  font-size: 0.65rem;
-  font-weight: 600;
+  font-size: 0.85rem;
+  font-weight: 700;
   color: var(--primary);
   text-transform: uppercase;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.06em;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -50,23 +53,23 @@
 
 .actions {
   display: flex;
-  gap: 8px;
+  gap: 12px;
   flex-shrink: 0;
 }
 
 .iconButton {
-  width: 42px;
-  height: 42px;
+  width: 52px;
+  height: 52px;
   display: flex;
   align-items: center;
   justify-content: center;
   background: rgba(255, 153, 51, 0.08); /* Warm primary tint */
   border-radius: 50%;
-  border: 1px solid rgba(255, 153, 51, 0.1);
+  border: 1px solid rgba(255, 153, 51, 0.16);
   color: var(--primary); /* Saffron Gold */
   cursor: pointer;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: 0 2px 8px rgba(255, 153, 51, 0.05);
+  box-shadow: 0 2px 8px rgba(255, 153, 51, 0.06);
   flex-shrink: 0;
 }
 
@@ -79,21 +82,26 @@
 
 @media (max-width: 380px) {
   .navbar {
-    padding-left: 12px;
-    padding-right: 12px;
+    height: 74px;
+    padding-left: 16px;
+    padding-right: 16px;
   }
 
   .brand {
-    gap: 8px;
+    gap: 12px;
   }
 
   .appName {
-    font-size: 0.95rem;
+    font-size: 1.3rem;
+  }
+
+  .tagline {
+    font-size: 0.78rem;
   }
 
   .iconButton {
-    width: 38px;
-    height: 38px;
+    width: 46px;
+    height: 46px;
   }
 }
 
