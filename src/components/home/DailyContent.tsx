@@ -247,45 +247,83 @@ export function DailyContent(props: any) {
         background: 'linear-gradient(135deg, #FFFFFF 0%, #FEFDF9 100%)',
         border: '1px solid rgba(200, 155, 60, 0.25)',
         borderRadius: '16px',
-        padding: '12px 14px',
+        padding: '13px 14px',
         marginBottom: '10px',
-        boxShadow: '0 4px 12px rgba(200, 155, 60, 0.05)'
+        boxShadow: '0 4px 14px rgba(200, 155, 60, 0.06)'
       }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '6px' }}>
-          <div style={{ width: '22px', height: '22px', borderRadius: '5px', background: '#FEF9C3', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '7px', marginBottom: '8px' }}>
+          <div style={{ width: '22px', height: '22px', borderRadius: '6px', background: '#FEF9C3', display: 'flex', alignItems: 'center', justifyContent: 'center', border: '1px solid #FDE68A' }}>
             <Sparkles size={12} color="#CA8A04" />
           </div>
-          <span style={{ fontSize: '12px', fontWeight: 800, color: '#854D0E' }}>
+          <span style={{ fontSize: '12.5px', fontWeight: 800, color: '#854D0E' }}>
             {lang === 'te' ? 'గోవింద నామావళి & ప్రసాద విశేషాలు' : 'Govinda Namavali & Temple Prasadam'}
           </span>
         </div>
-        <p style={{ fontSize: '11.5px', color: '#78350F', margin: '0 0 8px', lineHeight: 1.4, fontStyle: 'italic' }}>
+
+        <blockquote style={{
+          fontSize: '12px',
+          color: '#78350F',
+          margin: '0 0 10px 0',
+          lineHeight: '1.45',
+          fontStyle: 'italic',
+          backgroundColor: '#FFFBEB',
+          borderLeft: '3px solid #F59E0B',
+          padding: '8px 10px',
+          borderRadius: '0 8px 8px 0'
+        }}>
           {lang === 'te' 
             ? '“శ్రీ శ్రీనివాస గోవిందా • శ్రీ వేంకటేశ గోవిందా • భక్తవత్సల గోవిందా • తిరుమలేశ గోవిందా” — క్యూ లైన్‌లో లేదా ప్రయాణంలో స్మరించండి.'
             : '“Sri Srinivasa Govinda • Sri Venkatesa Govinda • Bhakta Vatsala Govinda • Tirumalesa Govinda” — Chant during queue waiting for mental tranquility.'}
-        </p>
-        <div style={{ fontSize: '10.5px', color: '#64748B', display: 'flex', alignItems: 'center', gap: '4px', borderTop: '1px solid #F3F4F6', paddingTop: '6px' }}>
-          <span style={{ fontWeight: 700, color: '#0F5132' }}>🛕 Annaprasadam:</span>
-          <span>Tarigonda Vengamamba Complex serves free hot meals 9:00 AM – 11:00 PM daily.</span>
+        </blockquote>
+
+        <div style={{
+          display: 'flex',
+          alignItems: 'flex-start',
+          gap: '8px',
+          borderTop: '1px solid #F1F5F9',
+          paddingTop: '8px'
+        }}>
+          <span style={{
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: '4px',
+            backgroundColor: '#DCFCE7',
+            border: '1px solid #BBF7D0',
+            color: '#166534',
+            fontSize: '10.5px',
+            fontWeight: 800,
+            padding: '2px 8px',
+            borderRadius: '6px',
+            whiteSpace: 'nowrap',
+            flexShrink: 0
+          }}>
+            🛕 Annaprasadam
+          </span>
+          <span style={{ fontSize: '11px', color: '#475569', lineHeight: '1.4', fontWeight: 600 }}>
+            {lang === 'te' 
+              ? 'తరిగొండ వెంగమాంబ అన్నప్రసాద భవనంలో ప్రతిరోజూ ఉదయం 9:00 నుండి రాత్రి 11:00 వరకు ఉచిత భోజనం లభిస్తుంది.'
+              : 'Tarigonda Vengamamba Complex serves free hot meals 9:00 AM – 11:00 PM daily.'}
+          </span>
         </div>
       </div>
 
       {/* ── HABIT FOOTER ── */}
       <div style={{
-        backgroundColor: '#FFFBEB',
-        border: '1px dashed #FCD34D',
+        background: 'linear-gradient(135deg, #FFFBEB 0%, #FEF3C7 100%)',
+        border: '1px solid #FDE68A',
         borderRadius: '14px',
-        padding: '10px 14px',
+        padding: '11px 16px',
         textAlign: 'center',
-        fontSize: '11.5px',
+        fontSize: '12px',
         fontWeight: 800,
-        color: '#B45309',
+        color: '#92400E',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        gap: '6px'
+        gap: '7px',
+        boxShadow: '0 2px 8px rgba(217, 119, 6, 0.06)'
       }}>
-        <Sparkles size={14} color="#D97706" />
+        <Sparkles size={14} color="#D97706" style={{ flexShrink: 0 }} />
         <span>{companionData.habitPrompt.text}</span>
       </div>
 

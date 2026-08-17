@@ -147,6 +147,12 @@ export default function OfflineTempleMap({
               <stop offset="100%" stopColor="#B45309" />
             </linearGradient>
 
+            <linearGradient id="rockGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stopColor="#A8A29E" />
+              <stop offset="50%" stopColor="#78716C" />
+              <stop offset="100%" stopColor="#57534E" />
+            </linearGradient>
+
             <linearGradient id="waterTankGrad" x1="0%" y1="0%" x2="100%" y2="100%">
               <stop offset="0%" stopColor="#38BDF8" stopOpacity="0.5" />
               <stop offset="100%" stopColor="#0284C7" stopOpacity="0.75" />
@@ -162,15 +168,147 @@ export default function OfflineTempleMap({
           <rect width="540" height="340" fill="url(#stonePavement)" />
 
           {/* ═══════════════════════════════════════════════════
-              ARCHITECTURAL BACKDROP (Clean pure graphics, NO static text)
+              ARCHITECTURAL BACKDROPS MATCHING SPECIFIC CATEGORIES
               ═══════════════════════════════════════════════════ */}
-          {layout.layoutType === 'ancient-shrine' ? (
-            /* 1. ANCIENT SHRINE (Gudimallam, Appalayagunta) */
+          {layout.layoutType === 'geo-nature-park' ? (
+            /* 1. GEOLOGICAL & BOTANICAL PARK (Silathoranam Natural Rock Arch & Park) */
+            <g>
+              {/* Botanical Park Base */}
+              <rect x="40" y="30" width="460" height="270" rx="16" fill="#F4FBF4" stroke="#86EFAC" strokeWidth="2" />
+              
+              {/* Landscaped Tree Clusters */}
+              <circle cx="90" cy="80" r="22" fill="#DCFCE7" stroke="#22C55E" strokeWidth="1.2" />
+              <circle cx="110" cy="100" r="18" fill="#BBF7D0" stroke="#16A34A" strokeWidth="1.2" />
+              <circle cx="450" cy="80" r="22" fill="#DCFCE7" stroke="#22C55E" strokeWidth="1.2" />
+              <circle cx="430" cy="100" r="18" fill="#BBF7D0" stroke="#16A34A" strokeWidth="1.2" />
+
+              {/* Paved Garden Walkway Promenade */}
+              <path d="M 270 270 Q 170 220 170 170 Q 170 110 270 90 Q 370 110 380 160" fill="none" stroke="#CBD5E1" strokeWidth="18" strokeLinecap="round" strokeLinejoin="round" />
+              <path d="M 270 270 Q 170 220 170 170 Q 170 110 270 90 Q 370 110 380 160" fill="none" stroke="#E2E8F0" strokeWidth="12" strokeDasharray="3 3" strokeLinecap="round" />
+
+              {/* Natural Rock Arch Formation (Silathoranam) */}
+              <g transform="translate(195, 45)">
+                {/* Left Pillar */}
+                <path d="M 20 70 L 25 25 Q 35 15 50 15 L 50 70 Z" fill="url(#rockGrad)" stroke="#44403C" strokeWidth="1.5" />
+                {/* Right Pillar */}
+                <path d="M 100 70 L 100 15 Q 115 15 125 25 L 130 70 Z" fill="url(#rockGrad)" stroke="#44403C" strokeWidth="1.5" />
+                {/* Natural Spanning Arch Bridge */}
+                <path d="M 40 25 Q 75 0 110 25 Q 75 14 40 25 Z" fill="url(#rockGrad)" stroke="#292524" strokeWidth="1.8" />
+                {/* Arch opening highlight */}
+                <ellipse cx="75" cy="55" rx="28" ry="20" fill="#F4FBF4" />
+              </g>
+
+              {/* ASI Geological Viewing Deck */}
+              <rect x="345" y="115" width="75" height="42" rx="8" fill="#FEF9C3" stroke="#CA8A04" strokeWidth="1.5" />
+
+              {/* Park Entrance Arch */}
+              <rect x="220" y="262" width="100" height="28" rx="6" fill="#15803D" stroke="#14532D" strokeWidth="1.5" />
+            </g>
+          ) : layout.layoutType === 'city-shrine' ? (
+            /* 2. CITY & VILLAGE SHRINE (Sri Jagannatha, Veshalamma, Gangamma, Bedi Anjaneya) */
+            <g>
+              <rect x="40" y="30" width="460" height="270" rx="16" fill="#FDFBF7" stroke="#D97706" strokeWidth="2" strokeDasharray="8 3" />
+              <circle cx="45" cy="35" r="7" fill="#E2D9C8" stroke="#D97706" strokeWidth="1" />
+              <circle cx="495" cy="35" r="7" fill="#E2D9C8" stroke="#D97706" strokeWidth="1" />
+
+              {/* Inner Sacred Courtyard Pavement */}
+              <rect x="80" y="50" width="380" height="225" rx="12" fill="#F4EFE6" stroke="#92400E" strokeWidth="1.5" />
+
+              {/* Mukha Mandapam Pillared Hall */}
+              <rect x="200" y="125" width="140" height="55" rx="8" fill="#FEF3C7" stroke="#D97706" strokeWidth="1.5" />
+              <circle cx="215" cy="138" r="3" fill="#78350F" />
+              <circle cx="325" cy="138" r="3" fill="#78350F" />
+              <circle cx="215" cy="168" r="3" fill="#78350F" />
+              <circle cx="325" cy="168" r="3" fill="#78350F" />
+
+              {/* Dhwajasthambham Flag Mast & Deepasthambham in Open Courtyard */}
+              <g transform="translate(270, 205)">
+                <circle cx="0" cy="0" r="11" fill="#FEF9C3" stroke="#CA8A04" strokeWidth="1.5" />
+                <circle cx="0" cy="0" r="4.5" fill="#B45309" />
+              </g>
+
+              {/* Garbha Griha (Inner Sanctum) */}
+              <g transform="translate(225, 45)">
+                <circle cx="45" cy="45" r="45" fill="url(#sanctumGlow)" />
+                <rect x="10" y="10" width="70" height="65" rx="8" fill="#FEF3C7" stroke="#D97706" strokeWidth="2" />
+                <polygon points="45,15 20,60 70,60" fill="url(#goldVimana)" stroke="#92400E" strokeWidth="1.2" />
+                <circle cx="45" cy="13" r="3" fill="#FDE047" stroke="#78350F" />
+              </g>
+
+              {/* Kumkum & Prasadam Counter Pavilion (Eastern Courtyard) */}
+              <rect x="360" y="135" width="75" height="45" rx="6" fill="#FEF9C3" stroke="#CA8A04" strokeWidth="1.5" />
+
+              {/* Footwear Stand (Western Entrance Side) */}
+              <rect x="105" y="235" width="75" height="32" rx="6" fill="#F1F5F9" stroke="#64748B" strokeWidth="1.2" />
+
+              {/* Entrance Gopuram Arch */}
+              <g transform="translate(225, 265)">
+                <rect x="0" y="0" width="90" height="28" rx="6" fill="#D97706" stroke="#78350F" strokeWidth="2" />
+                <polygon points="45,-10 15,0 75,0" fill="#B45309" stroke="#78350F" strokeWidth="1.2" />
+              </g>
+            </g>
+          ) : layout.layoutType === 'shopping-market' ? (
+            /* 3. SHOPPING MARKET / BAZAAR AVENUE (Gandhi Road, Markets) */
+            <g>
+              <rect x="35" y="25" width="470" height="285" rx="16" fill="#FFFDF8" stroke="#E2D9C8" strokeWidth="2" />
+              
+              {/* Central Pedestrian Shopping Street */}
+              <rect x="230" y="40" width="80" height="260" rx="10" fill="#F5EFE6" stroke="#CBD5E1" strokeWidth="1.5" />
+              <line x1="270" y1="50" x2="270" y2="290" stroke="#CBD5E1" strokeWidth="2" strokeDasharray="8 6" />
+
+              {/* Storefront Blocks Left */}
+              <rect x="70" y="60" width="130" height="70" rx="8" fill="#FEF3C7" stroke="#D97706" strokeWidth="1.5" />
+              <rect x="70" y="150" width="130" height="80" rx="8" fill="#F1F5F9" stroke="#94A3B8" strokeWidth="1.5" />
+
+              {/* Storefront Blocks Right */}
+              <rect x="340" y="60" width="130" height="70" rx="8" fill="#DCFCE7" stroke="#16A34A" strokeWidth="1.5" />
+              <rect x="340" y="150" width="130" height="80" rx="8" fill="#FEE2E2" stroke="#EF4444" strokeWidth="1.5" />
+
+              {/* Street Entrance Archway */}
+              <rect x="220" y="265" width="100" height="28" rx="6" fill="#D97706" stroke="#78350F" strokeWidth="1.5" />
+            </g>
+          ) : layout.layoutType === 'dining-restaurant' ? (
+            /* 4. DINING & RESTAURANT */
+            <g>
+              <rect x="40" y="30" width="460" height="275" rx="16" fill="#FFFDF5" stroke="#FDE68A" strokeWidth="2" />
+              
+              {/* Main Dining Hall */}
+              <rect x="120" y="70" width="300" height="150" rx="14" fill="#FEF9C3" stroke="#CA8A04" strokeWidth="2" />
+              
+              {/* Tables & Seating Pods */}
+              <circle cx="170" cy="110" r="14" fill="#FEF08A" stroke="#CA8A04" strokeWidth="1" />
+              <circle cx="270" cy="110" r="18" fill="#FDE047" stroke="#B45309" strokeWidth="1.5" />
+              <circle cx="370" cy="110" r="14" fill="#FEF08A" stroke="#CA8A04" strokeWidth="1" />
+
+              <circle cx="170" cy="170" r="14" fill="#FEF08A" stroke="#CA8A04" strokeWidth="1" />
+              <circle cx="270" cy="170" r="14" fill="#FEF08A" stroke="#CA8A04" strokeWidth="1" />
+              <circle cx="370" cy="170" r="14" fill="#FEF08A" stroke="#CA8A04" strokeWidth="1" />
+
+              {/* Reception Lobby */}
+              <rect x="210" y="260" width="120" height="30" rx="6" fill="#D97706" />
+            </g>
+          ) : layout.layoutType === 'museum-gallery' ? (
+            /* 5. MUSEUM & SCIENCE GALLERY */
+            <g>
+              <rect x="35" y="25" width="470" height="285" rx="18" fill="#F8FAFC" stroke="#94A3B8" strokeWidth="2" />
+
+              {/* Museum Central Rotunda / Exhibit Hall */}
+              <circle cx="270" cy="130" r="70" fill="#EFF6FF" stroke="#3B82F6" strokeWidth="2" />
+              <circle cx="270" cy="130" r="40" fill="#DBEAFE" stroke="#2563EB" strokeWidth="1.5" />
+
+              {/* Side Wings / Pavilions */}
+              <rect x="60" y="80" width="110" height="100" rx="10" fill="#F1F5F9" stroke="#64748B" strokeWidth="1.5" />
+              <rect x="370" y="80" width="110" height="100" rx="10" fill="#F1F5F9" stroke="#64748B" strokeWidth="1.5" />
+
+              {/* Main Grand Entrance */}
+              <rect x="220" y="265" width="100" height="28" rx="6" fill="#1E40AF" />
+            </g>
+          ) : layout.layoutType === 'ancient-shrine' ? (
+            /* 6. ANCIENT SHRINE (Gudimallam, Appalayagunta) */
             <g>
               <rect x="50" y="30" width="440" height="270" rx="16" fill="#FDFBF7" stroke="#D97706" strokeWidth="2" strokeDasharray="8 3" />
               <rect x="150" y="60" width="240" height="200" rx="12" fill="#F4EFE6" stroke="#92400E" strokeWidth="1.5" />
 
-              {/* Stone Pillars */}
               <circle cx="170" cy="80" r="4" fill="#92400E" />
               <circle cx="370" cy="80" r="4" fill="#92400E" />
               <circle cx="170" cy="240" r="4" fill="#92400E" />
@@ -184,61 +322,30 @@ export default function OfflineTempleMap({
                 <circle cx="45" cy="42" r="7" fill="#F59E0B" />
               </g>
 
-              {/* ASI Pillar Pedestal */}
               <rect x="105" y="145" width="40" height="30" rx="4" fill="#E2E8F0" stroke="#475569" strokeWidth="1.5" />
-
-              {/* Mukha Mandapam Gateway */}
               <rect x="220" y="215" width="100" height="30" rx="6" fill="#D97706" stroke="#78350F" strokeWidth="1.5" />
-
-              {/* Village Tree Grove */}
-              <g fill="#16A34A" opacity="0.65">
-                <circle cx="80" cy="60" r="12" />
-                <circle cx="100" cy="55" r="9" />
-                <circle cx="450" cy="65" r="14" />
-                <circle cx="470" cy="60" r="10" />
-              </g>
             </g>
           ) : layout.layoutType === 'trek-trail' ? (
-            /* 2. SACRED FOOTPATH & TREK (Alipiri Mettu / Garuda Statue, Srivari Mettu) */
+            /* 7. SACRED FOOTPATH & TREK (Alipiri Mettu / Garuda Statue) */
             <g>
-              {/* Mountain Foothill Silhouette */}
               <path d="M 20 180 Q 150 70 270 90 Q 390 60 520 160 L 520 320 L 20 320 Z" fill="#F4F8F4" stroke="#CBD5E1" strokeWidth="1.5" />
-
-              {/* Stepped Stone Walking Staircase Trail */}
               <path d="M 270 280 L 270 70" stroke="#CBD5E1" strokeWidth="20" strokeLinecap="round" />
               <path d="M 270 280 L 270 70" stroke="#E2E8F0" strokeWidth="14" strokeDasharray="3 3" />
-
-              {/* Resting Mandapams / Waypoint Pavilions */}
               <rect x="235" y="145" width="70" height="30" rx="6" fill="#E0E7FF" stroke="#4F46E5" strokeWidth="1.5" />
               <rect x="240" y="55" width="60" height="30" rx="6" fill="#FEF3C7" stroke="#D97706" strokeWidth="1.5" />
-
-              {/* Hilltop Forest Pine Trees */}
-              <g fill="#15803D" opacity="0.6">
-                <polygon points="120,120 100,160 140,160" />
-                <polygon points="170,100 150,140 190,140" />
-                <polygon points="370,100 350,140 390,140" />
-                <polygon points="430,120 410,160 450,160" />
-              </g>
             </g>
           ) : layout.layoutType === 'hill-waterfall' ? (
-            /* 3. HILL & WATERFALL (Kapila Theertham, Talakona, Kailasakona) */
+            /* 8. HILL & WATERFALL (Kapila Theertham, Talakona, Kailasakona) */
             <g>
-              {/* Rocky Mountain Backdrop */}
               <path d="M 30 140 Q 150 40 270 50 Q 390 40 510 140 L 510 310 L 30 310 Z" fill="#F5F3EF" stroke="#CBD5E1" strokeWidth="2" />
-
-              {/* Mountain Waterfall Cascade */}
               <g transform="translate(245, 30)">
                 <path d="M 25 0 Q 20 40 25 80" stroke="#0284C7" strokeWidth="16" strokeLinecap="round" opacity="0.6" />
                 <path d="M 25 0 Q 30 40 25 80" stroke="#BAE6FD" strokeWidth="8" strokeLinecap="round" />
               </g>
-
-              {/* Sacred Temple Kund Pool */}
               <g transform="translate(210, 50)">
                 <rect x="0" y="0" width="120" height="40" rx="8" fill="#BAE6FD" stroke="#0284C7" strokeWidth="1.5" />
                 <rect x="4" y="4" width="112" height="32" rx="6" fill="url(#waterTankGrad)" />
               </g>
-
-              {/* Shiva Sanctum Mandapam */}
               <g transform="translate(225, 135)">
                 <circle cx="45" cy="45" r="42" fill="url(#sanctumGlow)" />
                 <rect x="10" y="10" width="70" height="65" rx="8" fill="#FEF3C7" stroke="#D97706" strokeWidth="2" />
@@ -246,35 +353,20 @@ export default function OfflineTempleMap({
               </g>
             </g>
           ) : layout.layoutType === 'wildlife-safari' ? (
-            /* 4. WILDLIFE & PARKS (SV Zoo Park, Deer Park) */
+            /* 9. WILDLIFE & PARKS (SV Zoo Park, Deer Park) */
             <g>
               <rect x="30" y="25" width="480" height="285" rx="18" fill="#F4F9F4" stroke="#86EFAC" strokeWidth="2" />
-              
-              {/* Predator Zone */}
               <rect x="330" y="55" width="150" height="90" rx="12" fill="#FEF2F2" stroke="#EF4444" strokeWidth="1.5" strokeDasharray="5 3" />
-
-              {/* Herbivore Valley */}
               <rect x="60" y="120" width="160" height="100" rx="12" fill="#F0FDF4" stroke="#22C55E" strokeWidth="1.5" strokeDasharray="5 3" />
-
-              {/* Aviary */}
               <ellipse cx="270" cy="140" rx="50" ry="35" fill="#EFF6FF" stroke="#3B82F6" strokeWidth="1.5" strokeDasharray="4 2" />
-
-              {/* Trees */}
-              <g fill="#16A34A" opacity="0.6">
-                <circle cx="80" cy="65" r="10" />
-                <circle cx="260" cy="65" r="8" />
-                <circle cx="450" cy="275" r="10" />
-              </g>
             </g>
           ) : (
-            /* 5. GRAND TEMPLE (Tirumala, Padmavathi, Govindaraja, Srikalahasti) */
+            /* 10. GRAND TEMPLE (Tirumala, Padmavathi, Govindaraja with Pushkarini) */
             <g>
-              {/* Outer Prakaram Wall */}
               <rect x="40" y="30" width="460" height="270" rx="16" fill="#F8F5EE" stroke="#B45309" strokeWidth="2.5" strokeDasharray="10 3" />
               <circle cx="45" cy="35" r="8" fill="#E2D9C8" stroke="#B45309" strokeWidth="1" />
               <circle cx="495" cy="35" r="8" fill="#E2D9C8" stroke="#B45309" strokeWidth="1" />
 
-              {/* Inner Pradakshina Corridor */}
               <rect x="90" y="65" width="360" height="200" rx="12" fill="#F1ECE1" stroke="#CBD5E1" strokeWidth="1.5" />
 
               {/* Pushkarini Water Tank */}
@@ -336,19 +428,43 @@ export default function OfflineTempleMap({
 
             const label = lang === 'te' 
               ? (pin.nameTe.length > 14 ? pin.nameTe.split(' ')[0] : pin.nameTe)
-              : (pin.category === 'sanctum' ? (layout.layoutType === 'trek-trail' ? 'Summit' : layout.layoutType === 'hill-waterfall' ? 'Main Falls' : layout.layoutType === 'heritage-fort' ? 'Palace' : 'Sanctum') :
+              : (pin.category === 'sanctum' ? (
+                  layout.layoutType === 'geo-nature-park' ? 'Rock Arch' :
+                  layout.layoutType === 'shopping-market' ? 'Main Bazaar' :
+                  layout.layoutType === 'dining-restaurant' ? 'Dining Hall' :
+                  layout.layoutType === 'museum-gallery' ? 'Exhibits' :
+                  layout.layoutType === 'trek-trail' ? 'Summit' :
+                  layout.layoutType === 'hill-waterfall' ? 'Main Falls' :
+                  layout.layoutType === 'heritage-fort' ? 'Palace' : 'Sanctum'
+                ) :
                  pin.category === 'entry' ? 'Entrance' :
                  pin.category === 'queue' ? 'Queue' :
-                 pin.category === 'laddu' ? 'Prasadam' :
+                 pin.category === 'laddu' ? (layout.layoutType === 'city-shrine' ? 'Kumkum / Prasadam' : 'Prasadam') :
                  pin.category === 'footwear' ? 'Footwear' :
-                 pin.category === 'food' ? 'Food / Water' :
+                 pin.category === 'food' ? (layout.layoutType === 'shopping-market' ? 'Street Food' : 'Food / Dining') :
                  pin.category === 'parking' ? 'Parking' :
                  pin.category === 'medical' ? 'Medical' :
                  pin.category === 'safari' ? 'Safari' :
+                 layout.layoutType === 'geo-nature-park' ? (pin.id.includes('viewing') ? 'Viewing Deck' : 'Garden Path') :
+                 layout.layoutType === 'shopping-market' ? 'Textiles' :
+                 layout.layoutType === 'museum-gallery' ? 'Pavilion' :
                  layout.layoutType === 'ancient-shrine' ? 'Inscriptions' :
+                 layout.layoutType === 'city-shrine' ? 'Dhwajasthambham' :
                  layout.layoutType === 'trek-trail' ? 'Waypoint' :
                  layout.layoutType === 'hill-waterfall' ? 'Viewpoint' :
                  layout.layoutType === 'wildlife-safari' ? 'Aviary' : 'Pushkarini');
+
+            const icon = 
+              layout.layoutType === 'geo-nature-park' && pin.category === 'sanctum' ? '🪨' :
+              layout.layoutType === 'geo-nature-park' && pin.id.includes('garden') ? '🌿' :
+              layout.layoutType === 'geo-nature-park' && pin.id.includes('viewing') ? '🔭' :
+              layout.layoutType === 'shopping-market' && pin.category === 'sanctum' ? '🛍️' :
+              layout.layoutType === 'shopping-market' && pin.category === 'info' ? '🧵' :
+              layout.layoutType === 'dining-restaurant' && pin.category === 'sanctum' ? '🍽️' :
+              layout.layoutType === 'museum-gallery' && pin.category === 'sanctum' ? '🏛️' :
+              layout.layoutType === 'city-shrine' && pin.category === 'info' ? '🚩' :
+              layout.layoutType === 'city-shrine' && pin.category === 'laddu' ? '🌸' :
+              cat.icon;
 
             return (
               <g 
@@ -376,9 +492,9 @@ export default function OfflineTempleMap({
                 {/* Pin Badge Bubble */}
                 <g transform="translate(0, -16)">
                   <rect 
-                    x="-40" 
+                    x="-42" 
                     y="-11" 
-                    width="80" 
+                    width="84" 
                     height="22" 
                     rx="11" 
                     fill={cat.bg} 
@@ -394,7 +510,7 @@ export default function OfflineTempleMap({
                     textAnchor="middle" 
                     fill={cat.text}
                   >
-                    {cat.icon} {label}
+                    {icon} {label}
                   </text>
                   <polygon 
                     points="0,16 -3,11 3,11" 
@@ -416,13 +532,25 @@ export default function OfflineTempleMap({
         {layout.pins.map((pin) => {
           const cat = CATEGORY_STYLES[pin.category] || CATEGORY_STYLES.info;
           const isSelected = activePin?.id === pin.id;
+          const icon = 
+            layout.layoutType === 'geo-nature-park' && pin.category === 'sanctum' ? '🪨' :
+            layout.layoutType === 'geo-nature-park' && pin.id.includes('garden') ? '🌿' :
+            layout.layoutType === 'geo-nature-park' && pin.id.includes('viewing') ? '🔭' :
+            layout.layoutType === 'shopping-market' && pin.category === 'sanctum' ? '🛍️' :
+            layout.layoutType === 'shopping-market' && pin.category === 'info' ? '🧵' :
+            layout.layoutType === 'dining-restaurant' && pin.category === 'sanctum' ? '🍽️' :
+            layout.layoutType === 'museum-gallery' && pin.category === 'sanctum' ? '🏛️' :
+            layout.layoutType === 'city-shrine' && pin.category === 'info' ? '🚩' :
+            layout.layoutType === 'city-shrine' && pin.category === 'laddu' ? '🌸' :
+            cat.icon;
+
           return (
             <button
               key={pin.id}
               onClick={() => setActivePin(pin)}
               className={`${styles.legendPill} ${isSelected ? styles.legendPillActive : ''}`}
             >
-              <span>{cat.icon}</span>
+              <span>{icon}</span>
               <span>{lang === 'te' ? pin.nameTe : pin.nameEn}</span>
             </button>
           );

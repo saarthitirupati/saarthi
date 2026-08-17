@@ -520,64 +520,7 @@ export default function PlaceDetails() {
     </div>
   );
 
-  // 6. DARSHAN / VISITING STATUS
-  const darshanStatusNode = (
-    <div style={{
-      backgroundColor: '#FFFFFF',
-      border: '1px solid rgba(15, 23, 42, 0.06)',
-      borderRadius: '20px',
-      padding: '16px 18px',
-      boxShadow: '0 4px 14px rgba(15,23,42,0.03)'
-    }}>
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '10px' }}>
-        <span style={{ fontSize: '13.5px', fontWeight: 800, color: '#0F172A' }}>
-          {lang === 'te' ? (isTemple ? 'దర్శన స్థితి' : 'సందర్శన స్థితి') : (isTemple ? 'Darshan Status' : (isZooOrWildlife ? 'Zoo & Safari Status' : 'Visiting Status'))}
-        </span>
-        <span style={{
-          fontSize: '11px',
-          fontWeight: 800,
-          color: '#166534',
-          backgroundColor: '#DCFCE7',
-          border: '1px solid #86EFAC',
-          padding: '3px 10px',
-          borderRadius: '16px'
-        }}>
-          ● {lang === 'te' ? 'సాధారణ రద్దీ' : (place.saarthiIntelligence?.crowdLevel ? `${place.saarthiIntelligence.crowdLevel} Crowd` : 'Comfortable')}
-        </span>
-      </div>
 
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '8px 0', borderBottom: '1px solid #F1F5F9' }}>
-        <span style={{ fontSize: '12px', color: '#64748B', fontWeight: 600 }}>
-          {lang === 'te' ? (isTemple ? 'అంచనా దర్శనం నిరీక్షణ సమయం' : 'అంచనా ప్రవేశ సమయం') : (isTemple ? 'Estimated Waiting Time' : 'Estimated Entry / Queue Time')}
-        </span>
-        <span style={{ fontSize: '13px', fontWeight: 800, color: '#0F172A' }}>
-          {lang === 'te' ? '15–30 నిమిషాలు' : (place.saarthiIntelligence?.waitingTime || '15–30 mins')}
-        </span>
-      </div>
-
-      {isTemple && place.spiritualInfo?.god && (
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '8px 0', borderBottom: '1px solid #F1F5F9' }}>
-          <span style={{ fontSize: '12px', color: '#64748B', fontWeight: 600 }}>
-            {lang === 'te' ? 'ప్రధాన దైవం' : 'Presiding Deity'}
-          </span>
-          <span style={{ fontSize: '12.5px', fontWeight: 700, color: '#0F5132' }}>
-            {lang === 'te' && place.id === 'govindaraja' ? 'శ్రీ గోవిందరాజ స్వామి (శయన విష్ణువు)' : place.spiritualInfo.god}
-          </span>
-        </div>
-      )}
-
-      {isTemple && place.spiritualInfo?.mantra && (
-        <div style={{ paddingTop: '8px' }}>
-          <span style={{ fontSize: '10.5px', fontWeight: 700, color: '#854D0E', display: 'block', marginBottom: '2px' }}>
-            {lang === 'te' ? 'పవిత్ర నామస్మరణ:' : 'Sacred Chanting:'}
-          </span>
-          <span style={{ fontSize: '11.5px', fontStyle: 'italic', color: '#78350F' }}>
-            "{place.spiritualInfo.mantra}"
-          </span>
-        </div>
-      )}
-    </div>
-  );
 
   // 7. ABOUT THIS PLACE / TEMPLE
   const aboutTempleNode = (
@@ -1109,7 +1052,6 @@ export default function PlaceDetails() {
         {ctaButtonsNode}
         {offlineMapNode}
         {essentialFacilitiesNode}
-        {darshanStatusNode}
         {aboutTempleNode}
         {nearbyTemplesNode}
         {heritageAccordionsNode}
@@ -1132,7 +1074,6 @@ export default function PlaceDetails() {
           {quickFactsNode}
           {saarthiSuggestsNode}
           {ctaButtonsNode}
-          {darshanStatusNode}
           {essentialFacilitiesNode}
         </div>
       </div>

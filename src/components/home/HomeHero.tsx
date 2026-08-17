@@ -798,100 +798,113 @@ export function HomeHero({ userName, locationName, weatherTemp, liveStatus, acti
 
       {/* 🛕 SIGNATURE LIVE TEMPLE PULSE CARD */}
       <div style={{
-        background: '#0F172A',
-        borderRadius: '20px',
-        padding: '15px 14px',
+        background: 'linear-gradient(145deg, #0B132B 0%, #162035 100%)',
+        borderRadius: '22px',
+        padding: '16px 14px',
         color: '#FFFFFF',
-        boxShadow: '0 10px 28px rgba(15, 23, 42, 0.25)',
-        border: '1px solid rgba(255, 255, 255, 0.1)',
+        boxShadow: '0 12px 32px rgba(11, 19, 43, 0.35)',
+        border: '1px solid rgba(255, 255, 255, 0.12)',
         position: 'relative',
         overflow: 'hidden'
       }}>
         
         {/* HEADER ROW */}
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '10px' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '7px' }}>
-            <div style={{ width: '22px', height: '22px', borderRadius: '6px', background: 'rgba(200, 155, 60, 0.18)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-              <Flame size={13} color="#F59E0B" />
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '12px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <div style={{ width: '24px', height: '24px', borderRadius: '7px', background: 'rgba(245, 158, 11, 0.18)', display: 'flex', alignItems: 'center', justifyContent: 'center', border: '1px solid rgba(245, 158, 11, 0.3)' }}>
+              <Flame size={14} color="#F59E0B" />
             </div>
-            <span style={{ fontSize: '11.5px', fontWeight: 800, letterSpacing: '0.6px', textTransform: 'uppercase', color: '#F8FAFC' }}>
+            <span style={{ fontSize: '12px', fontWeight: 900, letterSpacing: '0.6px', textTransform: 'uppercase', color: '#F8FAFC' }}>
               {lang === 'te' ? 'లైవ్ ఆలయ స్థితి' : 'LIVE TEMPLE PULSE'}
             </span>
           </div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '5px', fontSize: '10.5px', color: '#94A3B8', fontWeight: 600 }}>
-            <span style={{ width: '5px', height: '5px', borderRadius: '50%', backgroundColor: '#10B981', boxShadow: '0 0 6px #10B981' }} />
+          <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '11px', color: '#94A3B8', fontWeight: 700 }}>
+            <span style={{ width: '6px', height: '6px', borderRadius: '50%', backgroundColor: '#10B981', boxShadow: '0 0 8px #10B981' }} />
             <span>{t.labels.live} · {updatedLabel}</span>
           </div>
         </div>
 
         {/* 1️⃣ CROWD FIRST: 3 PRIMARY DARSHAN QUEUES (LINKED TO LIVE ADMIN STATUS) */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', marginBottom: '10px' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '7px', marginBottom: '12px' }}>
           {/* Sarva Darshan */}
-          <Link
-            href="/darshan/general"
-            style={{
-              textDecoration: 'none',
-              background: 'rgba(255, 255, 255, 0.04)',
-              border: '1px solid rgba(255, 255, 255, 0.08)',
-              borderRadius: '14px',
-              padding: '9px 12px',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-              minHeight: '46px',
-              transition: 'background 0.15s ease'
-            }}
-          >
-            <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-              <div style={{
-                width: '10px',
-                height: '10px',
-                borderRadius: '50%',
-                backgroundColor: crowdLevel === 'low' ? '#10B981' : crowdLevel === 'moderate' ? '#F59E0B' : '#EF4444',
-                boxShadow: crowdLevel === 'low' ? '0 0 8px #10B981' : crowdLevel === 'moderate' ? '0 0 8px #F59E0B' : '0 0 8px #EF4444',
-                flexShrink: 0
-              }} />
-              <div>
-                <div style={{ fontSize: '14.5px', fontWeight: 800, color: '#F8FAFC', letterSpacing: '-0.01em' }}>
-                  {lang === 'te' ? 'సర్వదర్శనం (ఉచితం)' : 'Sarva Darshan'}
+          {(() => {
+            const sarvaWait = getDarshanWait('sarva');
+            const isSarvaHeavy = sarvaWait.includes('24') || sarvaWait.includes('30') || sarvaWait.includes('18') || sarvaWait.includes('20') || sarvaWait.includes('15');
+            const isSarvaLow = sarvaWait.includes('4') || sarvaWait.includes('5') || sarvaWait.includes('6');
+            const sarvaDot = isSarvaHeavy ? '#EF4444' : isSarvaLow ? '#10B981' : '#F59E0B';
+            const sarvaText = isSarvaHeavy ? (lang === 'te' ? 'అధిక రద్దీ' : 'Heavy Rush') : isSarvaLow ? (lang === 'te' ? 'తక్కువ రద్దీ' : 'Low Crowd') : (lang === 'te' ? 'సాధారణ రద్దీ' : 'Moderate Crowd');
+            const sarvaColor = isSarvaHeavy ? '#FECACA' : isSarvaLow ? '#A7F3D0' : '#FDE68A';
+            const sarvaBg = isSarvaHeavy ? 'rgba(239, 68, 68, 0.2)' : isSarvaLow ? 'rgba(16, 185, 129, 0.2)' : 'rgba(245, 158, 11, 0.2)';
+            const sarvaBorder = isSarvaHeavy ? '1px solid rgba(239, 68, 68, 0.35)' : isSarvaLow ? '1px solid rgba(16, 185, 129, 0.35)' : '1px solid rgba(245, 158, 11, 0.35)';
+
+            return (
+              <Link
+                href="/darshan/general"
+                style={{
+                  textDecoration: 'none',
+                  background: 'rgba(255, 255, 255, 0.05)',
+                  border: '1px solid rgba(255, 255, 255, 0.09)',
+                  borderRadius: '14px',
+                  padding: '10px 12px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  minHeight: '48px',
+                  transition: 'all 0.15s ease'
+                }}
+              >
+                <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                  <div style={{
+                    width: '10px',
+                    height: '10px',
+                    borderRadius: '50%',
+                    backgroundColor: sarvaDot,
+                    boxShadow: `0 0 8px ${sarvaDot}`,
+                    flexShrink: 0
+                  }} />
+                  <div>
+                    <div style={{ fontSize: '14.5px', fontWeight: 800, color: '#F8FAFC', letterSpacing: '-0.01em' }}>
+                      {lang === 'te' ? 'సర్వదర్శనం (ఉచితం)' : 'Sarva Darshan'}
+                    </div>
+                    <div style={{ fontSize: '11px', color: '#94A3B8', fontWeight: 600 }}>
+                      {lang === 'te' ? 'ఉచిత సాధారణ దర్శనం' : 'Free General Queue'}
+                    </div>
+                  </div>
                 </div>
-                <div style={{ fontSize: '11px', color: '#94A3B8', fontWeight: 600 }}>
-                  {lang === 'te' ? 'ఉచిత సాధారణ దర్శనం' : 'Free General Queue'}
+                <div style={{ textAlign: 'right', display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '3px' }}>
+                  <div style={{ fontSize: '16.5px', fontWeight: 900, color: '#FFFFFF', letterSpacing: '-0.02em', fontVariantNumeric: 'tabular-nums' }}>
+                    {sarvaWait}
+                  </div>
+                  <span style={{
+                    fontSize: '10px',
+                    fontWeight: 800,
+                    color: sarvaColor,
+                    backgroundColor: sarvaBg,
+                    padding: '2px 8px',
+                    borderRadius: '6px',
+                    border: sarvaBorder
+                  }}>
+                    ● {sarvaText}
+                  </span>
                 </div>
-              </div>
-            </div>
-            <div style={{ textAlign: 'right', display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '3px' }}>
-              <div style={{ fontSize: '17px', fontWeight: 900, color: '#FFFFFF', letterSpacing: '-0.02em', fontVariantNumeric: 'tabular-nums' }}>
-                {getDarshanWait('sarva')}
-              </div>
-              <span style={{
-                fontSize: '10px',
-                fontWeight: 800,
-                color: crowdLevel === 'low' ? '#A7F3D0' : crowdLevel === 'moderate' ? '#FDE68A' : '#FECACA',
-                backgroundColor: crowdLevel === 'low' ? 'rgba(16, 185, 129, 0.2)' : crowdLevel === 'moderate' ? 'rgba(245, 158, 11, 0.2)' : 'rgba(239, 68, 68, 0.2)',
-                padding: '2px 8px',
-                borderRadius: '6px',
-                border: crowdLevel === 'low' ? '1px solid rgba(16, 185, 129, 0.35)' : crowdLevel === 'moderate' ? '1px solid rgba(245, 158, 11, 0.35)' : '1px solid rgba(239, 68, 68, 0.35)'
-              }}>
-                ● {crowdLevel === 'low' ? (lang === 'te' ? 'తక్కువ రద్దీ' : 'Low Crowd') : crowdLevel === 'moderate' ? (lang === 'te' ? 'సాధారణ రద్దీ' : 'Moderate Crowd') : (lang === 'te' ? 'అధిక రద్దీ' : 'Heavy Rush')}
-              </span>
-            </div>
-          </Link>
+              </Link>
+            );
+          })()}
 
           {/* ₹300 Special Entry */}
           <Link
             href="/darshan/special"
             style={{
               textDecoration: 'none',
-              background: 'rgba(255, 255, 255, 0.04)',
-              border: '1px solid rgba(255, 255, 255, 0.08)',
-              borderRadius: '16px',
-              padding: '12px 14px',
+              background: 'rgba(255, 255, 255, 0.05)',
+              border: '1px solid rgba(255, 255, 255, 0.09)',
+              borderRadius: '14px',
+              padding: '10px 12px',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'space-between',
-              minHeight: '52px',
-              transition: 'background 0.15s ease'
+              minHeight: '48px',
+              transition: 'all 0.15s ease'
             }}
           >
             <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
@@ -906,7 +919,7 @@ export function HomeHero({ userName, locationName, weatherTemp, liveStatus, acti
               </div>
             </div>
             <div style={{ textAlign: 'right', display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '3px' }}>
-              <div style={{ fontSize: '17px', fontWeight: 900, color: '#FFFFFF', letterSpacing: '-0.02em', fontVariantNumeric: 'tabular-nums' }}>
+              <div style={{ fontSize: '16.5px', fontWeight: 900, color: '#FFFFFF', letterSpacing: '-0.02em', fontVariantNumeric: 'tabular-nums' }}>
                 {getDarshanWait('special')}
               </div>
               <span style={{
@@ -928,15 +941,15 @@ export function HomeHero({ userName, locationName, weatherTemp, liveStatus, acti
             href="/darshan/ssd"
             style={{
               textDecoration: 'none',
-              background: 'rgba(255, 255, 255, 0.04)',
-              border: '1px solid rgba(255, 255, 255, 0.08)',
-              borderRadius: '16px',
-              padding: '12px 14px',
+              background: 'rgba(255, 255, 255, 0.05)',
+              border: '1px solid rgba(255, 255, 255, 0.09)',
+              borderRadius: '14px',
+              padding: '10px 12px',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'space-between',
-              minHeight: '52px',
-              transition: 'background 0.15s ease'
+              minHeight: '48px',
+              transition: 'all 0.15s ease'
             }}
           >
             <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
@@ -958,7 +971,7 @@ export function HomeHero({ userName, locationName, weatherTemp, liveStatus, acti
               </div>
             </div>
             <div style={{ textAlign: 'right', display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '3px' }}>
-              <div style={{ fontSize: '17px', fontWeight: 900, color: '#FFFFFF', letterSpacing: '-0.02em', fontVariantNumeric: 'tabular-nums' }}>
+              <div style={{ fontSize: '16.5px', fontWeight: 900, color: '#FFFFFF', letterSpacing: '-0.02em', fontVariantNumeric: 'tabular-nums' }}>
                 {getDarshanWait('ssd')}
               </div>
               <span style={{
@@ -977,19 +990,19 @@ export function HomeHero({ userName, locationName, weatherTemp, liveStatus, acti
         </div>
 
         {/* ── DIVIDER ── */}
-        <div style={{ height: '1px', backgroundColor: 'rgba(255, 255, 255, 0.08)', marginBottom: '12px' }} />
+        <div style={{ height: '1px', backgroundColor: 'rgba(255, 255, 255, 0.08)', marginBottom: '10px' }} />
 
-        {/* 2️⃣ TRAVEL & WEATHER CONDITIONS (LUCIDE ICONS, CLEAN GROUPING) */}
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '14px', flexWrap: 'wrap', gap: '8px' }}>
+        {/* 2️⃣ TRAVEL & WEATHER CONDITIONS CAPSULES */}
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '12px', flexWrap: 'wrap', gap: '8px' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '6px', flexWrap: 'wrap' }}>
             <span style={{
               display: 'inline-flex',
               alignItems: 'center',
               gap: '5px',
-              backgroundColor: 'rgba(16, 185, 129, 0.18)',
-              border: '1px solid rgba(52, 211, 153, 0.25)',
-              padding: '4px 9px',
-              borderRadius: '16px',
+              backgroundColor: 'rgba(16, 185, 129, 0.15)',
+              border: '1px solid rgba(52, 211, 153, 0.3)',
+              padding: '3px 9px',
+              borderRadius: '12px',
               fontSize: '11px',
               fontWeight: 700,
               color: '#6EE7B7'
@@ -1002,10 +1015,10 @@ export function HomeHero({ userName, locationName, weatherTemp, liveStatus, acti
                 display: 'inline-flex',
                 alignItems: 'center',
                 gap: '5px',
-                backgroundColor: 'rgba(30, 58, 138, 0.45)',
-                border: '1px solid rgba(96, 165, 250, 0.25)',
-                padding: '4px 9px',
-                borderRadius: '16px',
+                backgroundColor: 'rgba(30, 58, 138, 0.35)',
+                border: '1px solid rgba(96, 165, 250, 0.3)',
+                padding: '3px 9px',
+                borderRadius: '12px',
                 fontSize: '11px',
                 fontWeight: 700,
                 color: '#93C5FD'
@@ -1019,10 +1032,10 @@ export function HomeHero({ userName, locationName, weatherTemp, liveStatus, acti
                 display: 'inline-flex',
                 alignItems: 'center',
                 gap: '5px',
-                backgroundColor: 'rgba(14, 116, 144, 0.45)',
-                border: '1px solid rgba(34, 211, 238, 0.25)',
-                padding: '4px 9px',
-                borderRadius: '16px',
+                backgroundColor: 'rgba(14, 116, 144, 0.35)',
+                border: '1px solid rgba(34, 211, 238, 0.3)',
+                padding: '3px 9px',
+                borderRadius: '12px',
                 fontSize: '11px',
                 fontWeight: 700,
                 color: '#67E8F9'
