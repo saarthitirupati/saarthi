@@ -272,6 +272,112 @@ export const CURATED_LAYOUTS: Record<string, Partial<TempleLayoutData>> = {
     ]
   },
 
+  'sree-padmagiri-subramanya': {
+    placeId: 'sree-padmagiri-subramanya',
+    titleEn: 'Sri Padmagiri Balagnana Dandayudhapani Swamy Temple Precinct Map',
+    titleTe: 'శ్రీ పద్మగిరి బాలజ్ఞాన దండాయుధపాణి స్వామి ఆలయ ప్రాంగణ మ్యాప్',
+    layoutType: 'ancient-shrine',
+    centerCoordinates: { lat: 13.6062, lng: 79.4312 },
+    routePath: [[430, 290], [270, 275], [145, 255], [270, 205], [150, 130], [270, 85], [395, 160], [270, 250]],
+    pins: [
+      {
+        id: 'parking',
+        nameEn: 'Padmagiri Hill Base Parking',
+        nameTe: 'పద్మగిరి కొండ దిగువన పార్కింగ్',
+        category: 'parking',
+        lat: 13.6056,
+        lng: 79.4305,
+        svgX: 430,
+        svgY: 290,
+        descEn: 'Shaded vehicle parking area at the base of Padmagiri hill.',
+        descTe: 'కొండ దిగువన ఉన్న వాహనాల పార్కింగ్ స్థలం.'
+      },
+      {
+        id: 'entry',
+        nameEn: 'Hilltop Entrance Raja Gopuram & Steps',
+        nameTe: 'కొండపై రాజగోపురం & మెట్ల మార్గం',
+        category: 'entry',
+        lat: 13.6059,
+        lng: 79.4308,
+        svgX: 270,
+        svgY: 275,
+        descEn: 'Sacred entrance archway atop the hill overlooking Thanapalli.',
+        descTe: 'కొండపై ఆలయ ప్రధాన ప్రవేశ ద్వారం.'
+      },
+      {
+        id: 'footwear',
+        nameEn: 'Footwear Stand',
+        nameTe: 'పాదరక్షల స్టాండ్',
+        category: 'footwear',
+        lat: 13.6060,
+        lng: 79.4307,
+        svgX: 145,
+        svgY: 255,
+        descEn: 'Shoe custody counter near temple gateway.',
+        descTe: 'చెప్పులు భద్రపరిచే ప్రదేశం.'
+      },
+      {
+        id: 'dhwajasthambham',
+        nameEn: 'Dhwajasthambham & Mayura (Peacock) Vahanam',
+        nameTe: 'ధ్వజస్తంభం & మయూర వాహనం',
+        category: 'info',
+        lat: 13.6061,
+        lng: 79.4310,
+        svgX: 270,
+        svgY: 205,
+        descEn: 'Sacred flag mast and Lord Murugan\'s divine Peacock vehicle in the courtyard.',
+        descTe: 'మయూర వాహన మండపం మరియు పవిత్ర ధ్వజస్తంభం.'
+      },
+      {
+        id: 'shatkona-peetham',
+        nameEn: 'Shatkona Yantra Peetham & Navagraha Shrine',
+        nameTe: 'షట్కోణ యంత్ర పీఠం & నవగ్రహ సన్నిధి',
+        category: 'info',
+        lat: 13.6063,
+        lng: 79.4308,
+        svgX: 150,
+        svgY: 130,
+        descEn: 'Mystic hexagonal Shatkona Yantra established by Sri Ganapathi Swamy.',
+        descTe: 'శ్రీ గణపతి స్వామి స్థాపించిన మహిమాన్విత షట్కోణ యంత్ర పీఠం.'
+      },
+      {
+        id: 'sanctum',
+        nameEn: 'Sri Balagnana Dandayudhapani Swamy Garbhalayam',
+        nameTe: 'శ్రీ బాలజ్ఞాన దండాయుధపాణి స్వామి గర్భాలయం',
+        category: 'sanctum',
+        lat: 13.6064,
+        lng: 79.4312,
+        svgX: 270,
+        svgY: 85,
+        descEn: 'Lord Murugan worshipped in celibate Balagnana Dandayudhapani posture holding the divine Vel/Danda.',
+        descTe: 'బాల మురుగన్ (దండాయుధపాణి) దివ్య మూలవిరాట్టు దర్శనం.'
+      },
+      {
+        id: 'laddu',
+        nameEn: 'Vibhuti & Panchamrutham Prasadam Counter',
+        nameTe: 'విభూతి & పంచామృతం ప్రసాదం కౌంటర్',
+        category: 'laddu',
+        lat: 13.6062,
+        lng: 79.4315,
+        svgX: 395,
+        svgY: 160,
+        descEn: 'Collect consecrated Vibhuti and Palani-style holy Panchamrutham prasadam.',
+        descTe: 'పవిత్ర విభూతి మరియు పంచామృత ప్రసాదం.'
+      }
+    ],
+    routeSteps: [
+      { stepNumber: 1, titleEn: 'Padmagiri Hill Arrival & Parking', titleTe: 'పద్మగిరి కొండ చేరుకోవడం', distance: '0.0 km', timeMins: 0, descEn: 'Park vehicle at the base of the Thanapalli hill.', descTe: 'వాహనాన్ని పార్క్ చేయండి.' },
+      { stepNumber: 2, titleEn: 'Hill Steps & Raja Gopuram Entrance', titleTe: 'మెట్లు & రాజగోపురం ప్రవేశం', distance: '40m', timeMins: 3, descEn: 'Ascend the steps, deposit footwear, and enter the sanctum courtyard.', descTe: 'మెట్లు ఎక్కి చెప్పులు విడిచి గోపురం గుండా ప్రవేశించండి.' },
+      { stepNumber: 3, titleEn: 'Dhwajasthambham & Shatkona Yantra Peetham', titleTe: 'ధ్వజస్తంభం & షట్కోణ యంత్రం', distance: '60m', timeMins: 5, descEn: 'Offer prayers at the Peacock vehicle and meditate at the mystical Shatkona Yantra.', descTe: 'మయూర వాహనం మరియు షట్కోణ యంత్రాన్ని దర్శించండి.' },
+      { stepNumber: 4, titleEn: 'Sri Balagnana Dandayudhapani Sanctum Darshan', titleTe: 'శ్రీ దండాయుధపాణి స్వామి దర్శనం', distance: '80m', timeMins: 15, descEn: 'Receive the powerful blessings of Lord Subramanya Swamy holding the divine Vel.', descTe: 'స్వామివారి దివ్య దర్శనం మరియు ఆశీస్సులు.' },
+      { stepNumber: 5, titleEn: 'Vibhuti & Panchamrutham Prasadam', titleTe: 'విభూతి & పంచామృతం', distance: '60m', timeMins: 5, descEn: 'Collect blessed Vibhuti and holy Panchamrutham.', descTe: 'పవిత్ర విభూతి ప్రసాదం పొందండి.' }
+    ],
+    emergencyContacts: [
+      { titleEn: 'Padmagiri Temple Information Office', titleTe: 'పద్మగిరి ఆలయ సమాచార విభాగం', number: '08772264555' },
+      { titleEn: 'Emergency Helpline', titleTe: 'అత్యవసర హెల్ప్‌లైన్', number: '112' }
+    ]
+  },
+
   'vakula-matha': {
     placeId: 'vakula-matha',
     titleEn: 'Sri Vakula Matha Temple (Perur Banda) Precinct Map',
@@ -1740,8 +1846,8 @@ export function getTempleLayout(placeInput: string | PlaceInputContext, fallback
       { id: 'viewing-deck', nameEn: 'Scenic Viewing Deck & Photo Point', nameTe: 'వీక్షణ వేదిక & ఫోటో పాయింట్', category: 'info', lat: baseLat + 0.0004, lng: baseLng + 0.0006, svgX: 380, svgY: 140, descEn: 'Elevated scenic platform for photography and landscape views.', descTe: 'అందమైన ప్రకృతి దృశ్యాలను తిలకించేందుకు వేదిక.' }
     ];
   } else if (layoutType === 'city-shrine') {
-    // 🛕 AUTHENTIC CITY / VILLAGE SHRINE
-    generatedRoute = [[430, 290], [270, 275], [145, 255], [270, 205], [150, 130], [270, 85], [395, 120], [395, 160], [270, 250]];
+    // 🛕 AUTHENTIC CITY / VILLAGE SHRINE - Clean Clockwise Pradakshina
+    generatedRoute = [[430, 290], [270, 275], [145, 255], [270, 205], [270, 85], [395, 160], [270, 275]];
     generatedPins = [
       { 
         id: 'parking', 
