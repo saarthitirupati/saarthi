@@ -272,6 +272,112 @@ export const CURATED_LAYOUTS: Record<string, Partial<TempleLayoutData>> = {
     ]
   },
 
+  'bonthalamma-temple': {
+    placeId: 'bonthalamma-temple',
+    titleEn: 'Sri Bonthalamma Talli Alayam Precinct Map',
+    titleTe: 'శ్రీ బొంతలమ్మ తల్లి ఆలయ ప్రాంగణ మ్యాప్',
+    layoutType: 'city-shrine',
+    centerCoordinates: { lat: 13.6459, lng: 79.4404 },
+    routePath: [[430, 290], [270, 275], [145, 255], [270, 205], [150, 130], [270, 85], [395, 160], [270, 275]],
+    pins: [
+      {
+        id: 'parking',
+        nameEn: 'Approach Lane Parking Area',
+        nameTe: 'ఆలయ అప్రోచ్ పార్కింగ్',
+        category: 'parking',
+        lat: 13.6455,
+        lng: 79.4400,
+        svgX: 430,
+        svgY: 290,
+        descEn: 'Street and approach lane parking for two-wheelers and cars.',
+        descTe: 'ద్విచక్ర వాహనాలు మరియు కార్ల పార్కింగ్ స్థలం.'
+      },
+      {
+        id: 'entry',
+        nameEn: 'Temple Entrance Mukhadwaram',
+        nameTe: 'ఆలయ ప్రవేశ ముఖద్వారం',
+        category: 'entry',
+        lat: 13.6457,
+        lng: 79.4402,
+        svgX: 270,
+        svgY: 275,
+        descEn: 'Main entrance gate leading into the sacred Gramadevata courtyard.',
+        descTe: 'గ్రామదేవత ఆలయ ప్రధాన ప్రవేశ ద్వారం.'
+      },
+      {
+        id: 'footwear',
+        nameEn: 'Footwear Stand',
+        nameTe: 'పాదరక్షల స్టాండ్',
+        category: 'footwear',
+        lat: 13.6458,
+        lng: 79.4401,
+        svgX: 145,
+        svgY: 255,
+        descEn: 'Designated shoe keeping stand near the entrance gate.',
+        descTe: 'పాదరక్షలు విడిచే ప్రదేశం.'
+      },
+      {
+        id: 'dhwajasthambham',
+        nameEn: 'Dhwajasthambham & Trisulam Deepasthambham',
+        nameTe: 'ధ్వజస్తంభం & త్రిశూల దీపస్తంభం',
+        category: 'info',
+        lat: 13.6459,
+        lng: 79.4403,
+        svgX: 270,
+        svgY: 205,
+        descEn: 'Sacred flag mast, trident (Trisula), and brass lamp pillar in the central courtyard.',
+        descTe: 'పవిత్ర ధ్వజస్తంభం, త్రిశూలం మరియు దీపారాధన స్తంభం.'
+      },
+      {
+        id: 'neem-tree',
+        nameEn: 'Sacred Neem & Peepal Tree (Vriksha Pradakshina)',
+        nameTe: 'పవిత్ర వేప & రావి వృక్ష ప్రదక్షిణ',
+        category: 'info',
+        lat: 13.6461,
+        lng: 79.4402,
+        svgX: 150,
+        svgY: 130,
+        descEn: 'Sacred mother neem tree where women tie turmeric threads and perform pradakshina for good health and fertility.',
+        descTe: 'మహిళలు పసుపు దారాలు కట్టి ప్రదక్షిణలు చేసే పవిత్ర వేప చెట్టు.'
+      },
+      {
+        id: 'sanctum',
+        nameEn: 'Sri Bonthalamma Talli Moolavirat Garbhalayam',
+        nameTe: 'శ్రీ బొంతలమ్మ తల్లి మూలవిరాట్టు గర్భాలయం',
+        category: 'sanctum',
+        lat: 13.6460,
+        lng: 79.4404,
+        svgX: 270,
+        svgY: 85,
+        descEn: 'Consecrated sanctum of protective Mother Goddess Bonthalamma adorned with kumkum, turmeric, and silver kavacham.',
+        descTe: 'పసుపు, కుంకుమలతో దివ్యంగా అలంకరించబడిన బొంతలమ్మ తల్లి గర్భగుడి.'
+      },
+      {
+        id: 'kumkum-prasadam',
+        nameEn: 'Kumkumarchana, Theertham & Prasadam Counter',
+        nameTe: 'కుంకుమార్చన, తీర్థం & ప్రసాదం కౌంటర్',
+        category: 'laddu',
+        lat: 13.6458,
+        lng: 79.4406,
+        svgX: 395,
+        svgY: 160,
+        descEn: 'Collect sacred Raksha Kumkum, blessed neem leaves, holy theertham, and sweet pongal prasadam.',
+        descTe: 'అమ్మవారి పవిత్ర కుంకుమ, తీర్థం మరియు ప్రసాదం స్వీకరించే స్థలం.'
+      }
+    ],
+    routeSteps: [
+      { stepNumber: 1, titleEn: 'Akkarampalle Arrival & Parking', titleTe: 'అక్కరంపల్లె చేరుకోవడం', distance: '0.0 km', timeMins: 0, descEn: 'Park vehicle along the approach lane.', descTe: 'వాహనాన్ని పార్క్ చేయండి.' },
+      { stepNumber: 2, titleEn: 'Temple Entrance & Footwear', titleTe: 'ప్రవేశం & పాదరక్షల కేంద్రం', distance: '20m', timeMins: 2, descEn: 'Deposit shoes and enter through the temple archway.', descTe: 'చెప్పులు విడిచి ఆలయంలోకి ప్రవేశించండి.' },
+      { stepNumber: 3, titleEn: 'Dhwajasthambham & Sacred Neem Tree', titleTe: 'ధ్వజస్తంభం & వేప వృక్ష ప్రదక్షిణ', distance: '40m', timeMins: 5, descEn: 'Bow before the flag mast and perform pradakshina around the holy neem tree.', descTe: 'ధ్వజస్తంభ నమస్కారం మరియు వృక్ష ప్రదక్షిణ.' },
+      { stepNumber: 4, titleEn: 'Sri Bonthalamma Talli Darshan', titleTe: 'శ్రీ బొంతలమ్మ తల్లి దివ్య దర్శనం', distance: '60m', timeMins: 10, descEn: 'Seek blessings of the protective Gramadevata in the sanctum.', descTe: 'అమ్మవారి ఆశీస్సులు పొందండి.' },
+      { stepNumber: 5, titleEn: 'Kumkumarchana & Blessed Prasadam', titleTe: 'కుంకుమార్చన & ప్రసాదం', distance: '40m', timeMins: 5, descEn: 'Receive blessed vermillion (Kumkum) and sacred theertham.', descTe: 'రక్షా కుంకుమ మరియు తీర్థం స్వీకరించండి.' }
+    ],
+    emergencyContacts: [
+      { titleEn: 'Bonthalamma Temple Committee Office', titleTe: 'బొంతలమ్మ ఆలయ కమిటీ కార్యాలయం', number: '08772264555' },
+      { titleEn: 'Emergency Helpline', titleTe: 'అత్యవసర హెల్ప్‌లైన్', number: '112' }
+    ]
+  },
+
   'mogili-temple': {
     placeId: 'mogili-temple',
     titleEn: 'Sri Mogileeswara Swamy Temple Precinct Map',

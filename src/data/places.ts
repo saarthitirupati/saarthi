@@ -2397,6 +2397,53 @@ export const PLACES: Place[] = [
     },
     travelEstimates: { 'railway-station': '8 mins', 'bus-stand': '10 mins' },
     relatedPlaces: ['iskcon-tirupati', 'govindaraja', 'kapila-theertham']
+  },
+  {
+    id: 'bonthalamma-temple',
+    name: 'Sri Bonthalamma Talli Alayam',
+    category: 'Tirupati City',
+    placeType: 'spiritual',
+    location: 'Akkarampalle, Tirupati',
+    distanceKms: 3.5,
+    durationMins: 45,
+    budgetLevel: 'budget',
+    entryFeeNum: 0,
+    interests: ['spiritual', 'culture', 'heritage', 'goddess', 'gramadevata'],
+    openFrom: 6,
+    openTo: 20.5,
+    isMustVisit: false,
+    description: 'Sri Bonthalamma Talli Alayam is an ancient and powerful Gramadevata (guardian village goddess) temple located in Akkarampalle, Tirupati. Revered for centuries as the protective mother guarding the city from illnesses, epidemics, and misfortunes, devotees seek her blessings for health, prosperity, and wish fulfillment.',
+    shortIntro: 'Ancient Gramadevata temple in Akkarampalle dedicated to Goddess Bonthalamma Talli, the guardian mother deity protecting Tirupati and bestowing health, courage, and prosperity.',
+    history: 'According to sthala puranam, Goddess Bonthalamma Talli manifested centuries ago as the guardian village deity (Gramadevata) protecting Tirupati\'s eastern suburbs in Akkarampalle. The local community has revered her through generations as a protective mother shielding families from epidemics and negative energies. Devotees celebrate her annual Jatara with great fervor, offering turmeric water, neem leaves, pongal, and participating in Kumkumarchana and Abhishekam sevas.',
+    whyVisit: 'Authentic Gramadevata temple experience in Tirupati, divine blessings of protective Goddess Bonthalamma Talli, powerful Kumkumarchana & Abhishekam sevas, peaceful community atmosphere, and rich regional folk heritage.',
+    timings: 'Morning: 6:00 AM – 12:30 PM, Evening: 4:00 PM – 8:30 PM (Aarti at 6:30 AM, 12:00 PM, 6:30 PM)',
+    entryFee: 'Free entry for all devotees (Special Sevas: Abhishekam ₹350, Kumkumarchana ₹100, Vasthralankarana ₹750, Lakshmi Pooja ₹250)',
+    address: 'Akkarampalle, Tirupati, Andhra Pradesh 517507',
+    rating: 4.7,
+    reviewCount: 310,
+    image: 'https://res.cloudinary.com/kniegqlj/image/upload/v1786987570/bonthalamma-talli-alayam-tirupati-ea9vspd6l4_a4n4fo.jpg',
+    images: ['https://res.cloudinary.com/kniegqlj/image/upload/v1786987570/bonthalamma-talli-alayam-tirupati-ea9vspd6l4_a4n4fo.jpg'],
+    coordinates: { lat: 13.6459728, lng: 79.4403959 },
+    tags: ['Goddess', 'Gramadevata', 'Bonthalamma', 'Folk Deity', 'Akkarampalle', 'Tirupati', 'Protection', 'Kumkumarchana'],
+    bestTime: 'Morning Darshan (6:30 AM – 9:30 AM) & Evening Sandhya Aarti (6:30 PM)',
+    breakTimings: [{ from: '12:30', to: '16:00' }],
+    spiritualInfo: {
+      god: 'Goddess Bonthalamma Talli (Gramadevata)',
+      knownFor: 'Protection from Negative Energies, Health, Prosperity & Wish Fulfillment',
+      mantra: 'Om Sri Bonthalamma Devyai Namaha | Om Sarva Mangala Maangalye Shive Sarvaartha Saadhike',
+      devoteeTips: [
+        'Morning Abhishekam at 6:30 AM and Kumkumarchana (₹100) are very auspicious to participate in',
+        'Devotees offer turmeric, vermillion (kumkum), and neem leaves for health and divine protection',
+        'Limited vehicle parking available on the approach road outside temple'
+      ]
+    },
+    practicalInfo: {
+      dressCode: 'Traditional or modest attire (Saree/Churidar for women, Dhoti/Shirt-Trousers for men)',
+      food: 'Prasadam available, local tiffin centers and eateries within 500m',
+      parking: 'Limited street parking available outside temple'
+    },
+    travelEstimates: { 'railway-station': '15 mins (4.2 km)', 'bus-stand': '12 mins (3.5 km)', 'airport': '35 mins (18 km)' },
+    relatedPlaces: ['tataiahgunta-gangamma', 'padmavathi', 'govindaraja']
   }
 ];
 
