@@ -272,6 +272,124 @@ export const CURATED_LAYOUTS: Record<string, Partial<TempleLayoutData>> = {
     ]
   },
 
+  'agastheeshwara': {
+    placeId: 'agastheeshwara',
+    titleEn: 'Sri Agastheeswara Swamy Temple (Mukkoti) Precinct Map',
+    titleTe: 'శ్రీ అగస్త్యేశ్వర స్వామి ఆలయం (ముక్కోటి) ప్రాంగణ మ్యాప్',
+    layoutType: 'ancient-shrine',
+    centerCoordinates: { lat: 13.5968, lng: 79.3411 },
+    routePath: [[430, 290], [270, 275], [145, 255], [270, 205], [150, 130], [270, 85], [395, 120], [395, 160], [270, 250]],
+    pins: [
+      {
+        id: 'parking',
+        nameEn: 'Mukkoti Riverside Parking Bay',
+        nameTe: 'ముక్కోటి నదీతీర పార్కింగ్',
+        category: 'parking',
+        lat: 13.5962,
+        lng: 79.3405,
+        svgX: 430,
+        svgY: 290,
+        descEn: 'Shaded vehicle parking area along the Swarnamukhi river approach.',
+        descTe: 'స్వర్ణముఖి నది సమీపంలోని వాహనాల పార్కింగ్ ప్రదేశం.'
+      },
+      {
+        id: 'entry',
+        nameEn: 'Eastern Raja Gopuram Main Entrance',
+        nameTe: 'తూర్పు రాజగోపురం ప్రధాన ప్రవేశం',
+        category: 'entry',
+        lat: 13.5965,
+        lng: 79.3408,
+        svgX: 270,
+        svgY: 275,
+        descEn: 'Historic stone entrance tower leading into Sage Agastya’s temple courtyard.',
+        descTe: 'అగస్త్య మహర్షి స్థాపించిన ప్రాచీన ఆలయ ముఖద్వారం.'
+      },
+      {
+        id: 'footwear',
+        nameEn: 'Footwear Stand',
+        nameTe: 'పాదరక్షల స్టాండ్',
+        category: 'footwear',
+        lat: 13.5966,
+        lng: 79.3407,
+        svgX: 145,
+        svgY: 255,
+        descEn: 'Shoe custody counter near temple entrance.',
+        descTe: 'చెప్పులు భద్రపరిచే ప్రదేశం.'
+      },
+      {
+        id: 'dhwajasthambham',
+        nameEn: 'Dhwajasthambham & Nandi Mandapam',
+        nameTe: 'ధ్వజస్తంభం & నంది మండపం',
+        category: 'info',
+        lat: 13.5967,
+        lng: 79.3410,
+        svgX: 270,
+        svgY: 205,
+        descEn: 'Sacred stone Nandi facing the Shiva sanctum and golden flag mast.',
+        descTe: 'శివుని అభిముఖంగా ఉన్న పవిత్ర నందీశ్వరుడు మరియు ధ్వజస్తంభం.'
+      },
+      {
+        id: 'anandavalli-shrine',
+        nameEn: 'Sri Anandavalli Ammavari (Parvathi) Shrine',
+        nameTe: 'శ్రీ ఆనందవల్లి అమ్మవారి సన్నిధి',
+        category: 'info',
+        lat: 13.5969,
+        lng: 79.3408,
+        svgX: 150,
+        svgY: 130,
+        descEn: 'South-facing shrine of Divine Mother Parvathi (Sri Anandavalli).',
+        descTe: 'పార్వతీ దేవి (ఆనందవల్లి తాయారు) పవిత్ర ఉపాలయం.'
+      },
+      {
+        id: 'sanctum',
+        nameEn: 'Sri Agastheeswara Shiva Lingam Garbhalayam',
+        nameTe: 'శ్రీ అగస్త్యేశ్వర స్వామి (శివలింగ గర్భాలయం)',
+        category: 'sanctum',
+        lat: 13.5970,
+        lng: 79.3411,
+        svgX: 270,
+        svgY: 85,
+        descEn: 'Sacred Shiva Lingam consecrated by Sage Agastya, worshipped daily by Lord Venkateswara after his marriage.',
+        descTe: 'అగస్త్య మహర్షి ప్రతిష్టించిన శివలింగం - శ్రీవారు నిత్యం పూజించిన పవిత్ర సన్నిధి.'
+      },
+      {
+        id: 'sangamam-ghat',
+        nameEn: 'Triveni Sangamam (Three Rivers Confluence Ghats)',
+        nameTe: 'త్రివేణి సంగమం (స్వర్ణముఖి, కళ్యాణి, భీమ నదుల సంగమ ఘాట్)',
+        category: 'info',
+        lat: 13.5969,
+        lng: 79.3414,
+        svgX: 395,
+        svgY: 120,
+        descEn: 'Sacred bathing ghat where Swarnamukhi, Kalyani, and Bhima rivers merge.',
+        descTe: 'మూడు పవిత్ర నదులు కలిసే పుణ్యస్నాన ఘాట్.'
+      },
+      {
+        id: 'bilva-counter',
+        nameEn: 'Bilva Archana & Vibhuti Prasadam Counter',
+        nameTe: 'బిల్వార్చన & విభూతి ప్రసాదం కౌంటర్',
+        category: 'laddu',
+        lat: 13.5967,
+        lng: 79.3413,
+        svgX: 395,
+        svgY: 160,
+        descEn: 'Collect sacred holy ash (Vibhuti) and consecrated Bilva leaves.',
+        descTe: 'పవిత్ర విభూతి మరియు బిల్వ ప్రసాదాలు.'
+      }
+    ],
+    routeSteps: [
+      { stepNumber: 1, titleEn: 'Arrival & Riverside Parking', titleTe: 'పార్కింగ్ చేరుకోవడం', distance: '0.0 km', timeMins: 0, descEn: 'Park vehicle along the peaceful Swarnamukhi river road.', descTe: 'నదీతీరంలో వాహనాన్ని పార్క్ చేయండి.' },
+      { stepNumber: 2, titleEn: 'Raja Gopuram Entrance & Footwear', titleTe: 'రాజగోపురం & పాదరక్షల కేంద్రం', distance: '50m', timeMins: 2, descEn: 'Leave footwear and enter through the stone gateway.', descTe: 'చెప్పులు విడిచి రాజగోపురం ద్వారా ప్రవేశించండి.' },
+      { stepNumber: 3, titleEn: 'Dhwajasthambham & Nandi Namaskaram', titleTe: 'ధ్వజస్తంభం & నందీశ్వర దర్శనం', distance: '80m', timeMins: 5, descEn: 'Seek blessings from Lord Nandi and flag mast.', descTe: 'నందీశ్వరుడిని, ధ్వజస్తంభాన్ని దర్శించండి.' },
+      { stepNumber: 4, titleEn: 'Sri Agastheeswara Swamy & Anandavalli Darshan', titleTe: 'అగస్త్యేశ్వర & ఆనందవల్లి దర్శనం', distance: '100m', timeMins: 15, descEn: 'Receive sanctum darshan of Sage Agastya\'s Shiva Lingam and Mother Anandavalli.', descTe: 'పవిత్ర శివలింగం మరియు అమ్మవారి దివ్య దర్శనం.' },
+      { stepNumber: 5, titleEn: 'Triveni Sangamam View & Vibhuti Prasadam', titleTe: 'త్రివేణి సంగమం & ప్రసాదం', distance: '120m', timeMins: 10, descEn: 'Visit the 3-river confluence point and collect blessed Vibhuti.', descTe: 'త్రివేణి సంగమ ఘాట్ వీక్షించి విభూతి ప్రసాదం పొందండి.' }
+    ],
+    emergencyContacts: [
+      { titleEn: 'TTD Agastheeswara Temple Information', titleTe: 'అగస్త్యేశ్వర ఆలయ సమాచార విభాగం', number: '08772264555' },
+      { titleEn: 'Emergency Helpline', titleTe: 'అత్యవసర హెల్ప్‌లైన్', number: '112' }
+    ]
+  },
+
   'appalayagunta-temple': {
     placeId: 'appalayagunta-temple',
     titleEn: 'Sri Prasanna Venkateswara Swamy Temple Precinct Map',

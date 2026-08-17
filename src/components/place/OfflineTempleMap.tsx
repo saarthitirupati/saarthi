@@ -577,7 +577,12 @@ export default function OfflineTempleMap({
                  layout.layoutType === 'geo-nature-park' ? (pin.id.includes('viewing') ? 'Viewing Deck' : 'Garden Path') :
                  layout.layoutType === 'shopping-market' ? 'Textiles' :
                  layout.layoutType === 'museum-gallery' ? 'Pavilion' :
-                 layout.layoutType === 'ancient-shrine' ? 'Inscriptions' :
+                 layout.layoutType === 'ancient-shrine' ? (
+                   pin.id.includes('dhwaja') ? 'Dhwajasthambham' :
+                   pin.id.includes('sangam') || pin.id.includes('ghat') ? 'River Ghats' :
+                   pin.id.includes('padmavathi') || pin.id.includes('anandavalli') || pin.id.includes('shrine') || pin.id.includes('anjaneya') || pin.id.includes('ranganatha') ? 'Sub-Shrine' :
+                   pin.id.includes('inscription') ? 'Inscriptions' : 'Courtyard'
+                 ) :
                  layout.layoutType === 'city-shrine' ? 'Dhwajasthambham' :
                  layout.layoutType === 'trek-trail' ? 'Waypoint' :
                  layout.layoutType === 'hill-waterfall' ? 'Viewpoint' :
@@ -600,6 +605,9 @@ export default function OfflineTempleMap({
               layout.layoutType === 'shopping-market' && pin.category === 'info' ? '🧵' :
               layout.layoutType === 'dining-restaurant' && pin.category === 'sanctum' ? '🍽️' :
               layout.layoutType === 'museum-gallery' && pin.category === 'sanctum' ? '🏛️' :
+              pin.id.includes('dhwaja') ? '🚩' :
+              pin.id.includes('sangam') || pin.id.includes('ghat') ? '🌊' :
+              pin.id.includes('shrine') || pin.id.includes('padmavathi') || pin.id.includes('anandavalli') || pin.id.includes('anjaneya') || pin.id.includes('ranganatha') ? '🛕' :
               layout.layoutType === 'city-shrine' && pin.category === 'info' ? '🚩' :
               layout.layoutType === 'city-shrine' && pin.category === 'laddu' ? '🌸' :
               cat.icon;
