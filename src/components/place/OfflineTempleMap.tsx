@@ -34,6 +34,81 @@ const CATEGORY_STYLES: Record<string, { bg: string; border: string; text: string
   info: { bg: '#ECFDF5', border: '#0F5132', text: '#0F5132', fill: '#10B981', icon: 'ℹ️' }
 };
 
+function renderMapSvgIcon(category: string, pinId: string = '', color: string = '#D97706') {
+  if (pinId.includes('dhwaja') || pinId.includes('flag')) {
+    return (
+      <g stroke={color} strokeWidth="1.2" fill="none">
+        <line x1="2.5" y1="1" x2="2.5" y2="11" />
+        <polygon points="2.5,2 9.5,4.5 2.5,7" fill={color} />
+      </g>
+    );
+  }
+  if (pinId.includes('shrine') || pinId.includes('shiva') || pinId.includes('parvathi') || category === 'sanctum') {
+    return (
+      <g fill={color} stroke={color} strokeWidth="0.5">
+        <polygon points="6,1 1.5,10.5 10.5,10.5" />
+        <rect x="4.5" y="8.5" width="3" height="2.5" fill="#FFFFFF" />
+      </g>
+    );
+  }
+  if (category === 'parking') {
+    return (
+      <g fill={color}>
+        <rect x="1" y="1" width="10" height="10" rx="2.5" fill={color} />
+        <text x="6" y="8.5" fill="#FFFFFF" fontSize="7.5" fontWeight="900" textAnchor="middle">P</text>
+      </g>
+    );
+  }
+  if (category === 'entry') {
+    return (
+      <g stroke={color} strokeWidth="1.2" fill="none">
+        <path d="M 2 11 L 2 4 Q 6 1 10 4 L 10 11" />
+        <line x1="6" y1="1" x2="6" y2="11" />
+      </g>
+    );
+  }
+  if (category === 'footwear') {
+    return (
+      <g fill={color}>
+        <ellipse cx="6" cy="7" rx="4.5" ry="2.5" />
+        <rect x="3.5" y="4.5" width="5" height="3" rx="1.5" fill={color} />
+      </g>
+    );
+  }
+  if (category === 'laddu' || category === 'food') {
+    return (
+      <g fill={color} stroke={color} strokeWidth="0.6">
+        <path d="M 2 6 Q 6 11 10 6 Z" fill={color} />
+        <circle cx="6" cy="4" r="1.5" fill={color} />
+      </g>
+    );
+  }
+  if (category === 'queue') {
+    return (
+      <g stroke={color} strokeWidth="1.1" fill="none" strokeLinecap="round">
+        <circle cx="6" cy="3" r="1.5" fill={color} />
+        <line x1="6" y1="4.5" x2="6" y2="8" />
+        <line x1="6" y1="8" x2="4" y2="11" />
+        <line x1="6" y1="8" x2="8" y2="11" />
+      </g>
+    );
+  }
+  if (category === 'medical') {
+    return (
+      <g fill={color}>
+        <rect x="4.5" y="1.5" width="3" height="9" rx="1" />
+        <rect x="1.5" y="4.5" width="9" height="3" rx="1" />
+      </g>
+    );
+  }
+  return (
+    <g stroke={color} strokeWidth="1.2" fill="none">
+      <circle cx="6" cy="6" r="4.5" />
+      <circle cx="6" cy="6" r="1.5" fill={color} />
+    </g>
+  );
+}
+
 export default function OfflineTempleMap({ 
   placeId, 
   place,
@@ -428,26 +503,45 @@ export default function OfflineTempleMap({
               <rect x="220" y="265" width="100" height="28" rx="6" fill="#1E40AF" />
             </g>
           ) : layout.layoutType === 'ancient-shrine' ? (
-            /* 6. ANCIENT SHRINE (Gudimallam, Appalayagunta) */
+            /* 6. ANCIENT SHRINE (Gudimallam, Appalayagunta, Jeeva Lingeshwara) */
             <g>
-              <rect x="50" y="30" width="440" height="270" rx="16" fill="#FDFBF7" stroke="#D97706" strokeWidth="2" strokeDasharray="8 3" />
-              <rect x="150" y="60" width="240" height="200" rx="12" fill="#F4EFE6" stroke="#92400E" strokeWidth="1.5" />
+              {/* Outer Sacred Prakaram Boundary */}
+              <rect x="40" y="25" width="460" height="285" rx="16" fill="#FDFBF7" stroke="#D97706" strokeWidth="2" strokeDasharray="8 3" />
+              <rect x="90" y="45" width="360" height="240" rx="12" fill="#F4EFE6" stroke="#92400E" strokeWidth="1.5" />
 
-              <circle cx="170" cy="80" r="4" fill="#92400E" />
-              <circle cx="370" cy="80" r="4" fill="#92400E" />
-              <circle cx="170" cy="240" r="4" fill="#92400E" />
-              <circle cx="370" cy="240" r="4" fill="#92400E" />
+              {/* Corner Pillar Markers */}
+              <circle cx="110" cy="65" r="4" fill="#92400E" />
+              <circle cx="430" cy="65" r="4" fill="#92400E" />
+              <circle cx="110" cy="265" r="4" fill="#92400E" />
+              <circle cx="430" cy="265" r="4" fill="#92400E" />
 
-              {/* Sanctum Base */}
-              <g transform="translate(225, 70)">
-                <circle cx="45" cy="40" r="45" fill="url(#sanctumGlow)" />
+              {/* Sanctum Base (Sanctum Sanctorum) */}
+              <g transform="translate(225, 40)">
+                <circle cx="45" cy="45" r="45" fill="url(#sanctumGlow)" />
                 <rect x="10" y="10" width="70" height="65" rx="8" fill="#FEF3C7" stroke="#D97706" strokeWidth="2" />
-                <circle cx="45" cy="42" r="16" fill="#78350F" />
-                <circle cx="45" cy="42" r="7" fill="#F59E0B" />
+                <polygon points="45,15 20,60 70,60" fill="url(#goldVimana)" stroke="#92400E" strokeWidth="1.2" />
+                <circle cx="45" cy="13" r="3" fill="#FDE047" stroke="#78350F" />
+                <circle cx="45" cy="42" r="14" fill="#78350F" />
+                <circle cx="45" cy="42" r="6" fill="#F59E0B" />
               </g>
 
-              <rect x="105" y="145" width="40" height="30" rx="4" fill="#E2E8F0" stroke="#475569" strokeWidth="1.5" />
-              <rect x="220" y="215" width="100" height="30" rx="6" fill="#D97706" stroke="#78350F" strokeWidth="1.5" />
+              {/* Nandi & Dhwaja Mandapam (Center) */}
+              <rect x="210" y="175" width="120" height="42" rx="6" fill="#FEF3C7" stroke="#D97706" strokeWidth="1.5" />
+
+              {/* Parvathi / Sub-Shrine Pavilion (North-West) */}
+              <rect x="110" y="100" width="65" height="44" rx="6" fill="#DCFCE7" stroke="#16A34A" strokeWidth="1.5" />
+
+              {/* Prasadam & Vibhuti Counter (North-East) */}
+              <rect x="365" y="130" width="70" height="40" rx="6" fill="#FEF9C3" stroke="#CA8A04" strokeWidth="1.5" />
+
+              {/* Footwear Stand (South-West) */}
+              <rect x="105" y="232" width="75" height="32" rx="6" fill="#F1F5F9" stroke="#64748B" strokeWidth="1.2" />
+
+              {/* Entrance Gopuram / Archway (South) */}
+              <g transform="translate(225, 258)">
+                <rect x="0" y="0" width="90" height="26" rx="6" fill="#D97706" stroke="#78350F" strokeWidth="2" />
+                <polygon points="45,-8 15,0 75,0" fill="#B45309" stroke="#78350F" strokeWidth="1.2" />
+              </g>
             </g>
           ) : layout.layoutType === 'trek-trail' ? (
             /* 7. SACRED FOOTPATH & TREK (Srivari Mettu, Alipiri Mettu) */
@@ -570,13 +664,12 @@ export default function OfflineTempleMap({
                 ) :
                  pin.category === 'entry' ? 'Entrance' :
                  pin.category === 'queue' ? (layout.layoutType === 'annaprasadam-complex' ? 'Holding Hall' : 'Queue') :
-                 pin.category === 'laddu' ? (layout.layoutType === 'city-shrine' ? 'Kumkum / Prasadam' : 'Prasadam') :
-                 pin.category === 'footwear' ? (layout.layoutType === 'sacred-pushkarini' ? 'Footwear & Rooms' : 'Footwear') :
-                 pin.category === 'food' ? (layout.layoutType === 'annaprasadam-complex' ? 'Dining Halls 1–4' : (layout.layoutType === 'shopping-market' ? 'Street Food' : 'Food / Dining')) :
+                 pin.category === 'laddu' ? (layout.layoutType === 'city-shrine' ? 'Prasadam' : 'Prasadam') :
+                 pin.category === 'footwear' ? (layout.layoutType === 'sacred-pushkarini' ? 'Footwear' : 'Footwear') :
+                 pin.category === 'food' ? (layout.layoutType === 'annaprasadam-complex' ? 'Dining Halls' : (layout.layoutType === 'shopping-market' ? 'Street Food' : 'Food / Dining')) :
                  pin.category === 'parking' ? 'Parking' :
                  pin.category === 'medical' ? 'Medical' :
                  pin.category === 'safari' ? 'Safari' :
-                 // Specific pin IDs across all layouts
                  pin.id.includes('dhwaja') ? 'Dhwajasthambham' :
                  pin.id.includes('pushkarini') || pin.id.includes('sarovar') || pin.id.includes('tank') || pin.id.includes('kalyani') ? 'Pushkarini' :
                  pin.id.includes('shrine') || pin.id.includes('shiva') || pin.id.includes('sub') || pin.id.includes('varaha') || pin.id.includes('padmavathi') || pin.id.includes('anandavalli') || pin.id.includes('anjaneya') || pin.id.includes('ranganatha') || pin.id.includes('krishna') || pin.id.includes('sundararaja') || pin.id.includes('kamakshi') || pin.id.includes('manikantheswara') ? 'Sub-Shrine' :
@@ -600,30 +693,8 @@ export default function OfflineTempleMap({
                  layout.layoutType === 'wildlife-safari' ? 'Aviary' :
                  layout.layoutType === 'city-shrine' ? 'Dhwajasthambham' : 'Courtyard');
 
-            const icon = 
-              layout.layoutType === 'trek-trail' && pin.category === 'sanctum' ? '🏔️' :
-              pin.id.includes('token') ? '🎟️' :
-              pin.id.includes('footwear') ? '🎒' :
-              pin.id.includes('dhwaja') ? '🚩' :
-              pin.id.includes('pushkarini') || pin.id.includes('sarovar') || pin.id.includes('tank') || pin.id.includes('kalyani') || pin.id.includes('theertham') || pin.id.includes('sangam') || pin.id.includes('ghat') ? '🌊' :
-              pin.id.includes('view') || pin.id.includes('hills') || pin.id.includes('panoramic') ? '🔭' :
-              pin.id.includes('yantra') || pin.id.includes('peetham') ? '🔯' :
-              pin.id.includes('shrine') || pin.id.includes('shiva') || pin.id.includes('sub') || pin.id.includes('varaha') || pin.id.includes('padmavathi') || pin.id.includes('anandavalli') || pin.id.includes('anjaneya') || pin.id.includes('ranganatha') || pin.id.includes('krishna') || pin.id.includes('sundararaja') || pin.id.includes('kamakshi') || pin.id.includes('manikantheswara') ? '🛕' :
-              pin.id.includes('rest') || pin.id.includes('mandapam') || pin.id.includes('midpoint') ? '🏛️' :
-              pin.id.includes('topiary') ? '🌳' :
-              pin.id.includes('garland') ? '🌺' :
-              pin.id.includes('kitchen') ? '🍳' :
-              pin.id.includes('donor') ? '🌸' :
-              layout.layoutType === 'botanical-garden' && pin.category === 'sanctum' ? '🌸' :
-              layout.layoutType === 'annaprasadam-complex' && pin.category === 'food' ? '🍲' :
-              layout.layoutType === 'sacred-pushkarini' && pin.category === 'sanctum' ? '🌊' :
-              layout.layoutType === 'geo-nature-park' && pin.category === 'sanctum' ? '🪨' :
-              layout.layoutType === 'geo-nature-park' && pin.id.includes('garden') ? '🌿' :
-              layout.layoutType === 'shopping-market' && pin.category === 'sanctum' ? '🛍️' :
-              layout.layoutType === 'shopping-market' && pin.category === 'info' ? '🧵' :
-              layout.layoutType === 'dining-restaurant' && pin.category === 'sanctum' ? '🍽️' :
-              layout.layoutType === 'museum-gallery' && pin.category === 'sanctum' ? '🏛️' :
-              cat.icon;
+            const badgeWidth = Math.max(74, Math.min(125, label.length * 6.2 + 28));
+            const badgeX = -badgeWidth / 2;
 
             return (
               <g 
@@ -649,32 +720,39 @@ export default function OfflineTempleMap({
                 )}
 
                 {/* Pin Badge Bubble */}
-                <g transform="translate(0, -16)">
+                <g transform="translate(0, -18)">
                   <rect 
-                    x="-42" 
-                    y="-11" 
-                    width="84" 
-                    height="22" 
-                    rx="11" 
+                    x={badgeX} 
+                    y="-12" 
+                    width={badgeWidth} 
+                    height="24" 
+                    rx="12" 
                     fill={cat.bg} 
                     stroke={cat.border} 
-                    strokeWidth={isSelected ? "2.2" : "1.4"} 
+                    strokeWidth={isSelected ? "2.4" : "1.4"} 
                     filter="drop-shadow(0 2px 5px rgba(0,0,0,0.12))"
                   />
+                  <polygon 
+                    points="0,17 -3.5,12 3.5,12" 
+                    fill={cat.border} 
+                  />
+
+                  {/* Clean Vector Category Icon */}
+                  <g transform={`translate(${badgeX + 8}, -6)`}>
+                    {renderMapSvgIcon(pin.category, pin.id, cat.border)}
+                  </g>
+
+                  {/* Label Text */}
                   <text 
-                    x="0" 
-                    y="4" 
+                    x={badgeX + 22 + (badgeWidth - 26) / 2} 
+                    y="3.5" 
                     fontSize="9.5" 
                     fontWeight="800" 
                     textAnchor="middle" 
                     fill={cat.text}
                   >
-                    {icon} {label}
+                    {label}
                   </text>
-                  <polygon 
-                    points="0,16 -3,11 3,11" 
-                    fill={cat.border} 
-                  />
                 </g>
 
                 {/* Target Marker Pin Point */}
@@ -691,17 +769,6 @@ export default function OfflineTempleMap({
         {layout.pins.map((pin) => {
           const cat = CATEGORY_STYLES[pin.category] || CATEGORY_STYLES.info;
           const isSelected = activePin?.id === pin.id;
-          const icon = 
-            layout.layoutType === 'geo-nature-park' && pin.category === 'sanctum' ? '🪨' :
-            layout.layoutType === 'geo-nature-park' && pin.id.includes('garden') ? '🌿' :
-            layout.layoutType === 'geo-nature-park' && pin.id.includes('viewing') ? '🔭' :
-            layout.layoutType === 'shopping-market' && pin.category === 'sanctum' ? '🛍️' :
-            layout.layoutType === 'shopping-market' && pin.category === 'info' ? '🧵' :
-            layout.layoutType === 'dining-restaurant' && pin.category === 'sanctum' ? '🍽️' :
-            layout.layoutType === 'museum-gallery' && pin.category === 'sanctum' ? '🏛️' :
-            layout.layoutType === 'city-shrine' && pin.category === 'info' ? '🚩' :
-            layout.layoutType === 'city-shrine' && pin.category === 'laddu' ? '🌸' :
-            cat.icon;
 
           return (
             <button
@@ -709,7 +776,11 @@ export default function OfflineTempleMap({
               onClick={() => setActivePin(pin)}
               className={`${styles.legendPill} ${isSelected ? styles.legendPillActive : ''}`}
             >
-              <span>{icon}</span>
+              <span style={{ display: 'inline-flex', alignItems: 'center', width: '12px', height: '12px' }}>
+                <svg width="12" height="12" viewBox="0 0 12 12">
+                  {renderMapSvgIcon(pin.category, pin.id, isSelected ? '#FFFFFF' : cat.border)}
+                </svg>
+              </span>
               <span>{lang === 'te' ? pin.nameTe : pin.nameEn}</span>
             </button>
           );
@@ -720,8 +791,21 @@ export default function OfflineTempleMap({
       {activePin && (
         <div className={styles.pinDetailCard}>
           <div className={styles.pinDetailHeader}>
-            <span className={styles.pinTitle}>
-              <span>{CATEGORY_STYLES[activePin.category]?.icon || '📍'}</span>
+            <span className={styles.pinTitle} style={{ display: 'inline-flex', alignItems: 'center', gap: '8px' }}>
+              <span style={{ 
+                display: 'inline-flex', 
+                alignItems: 'center', 
+                justifyContent: 'center', 
+                width: '24px', 
+                height: '24px', 
+                borderRadius: '6px', 
+                backgroundColor: CATEGORY_STYLES[activePin.category]?.bg || '#FEF3C7', 
+                border: `1px solid ${CATEGORY_STYLES[activePin.category]?.border || '#D97706'}` 
+              }}>
+                <svg width="12" height="12" viewBox="0 0 12 12">
+                  {renderMapSvgIcon(activePin.category, activePin.id, CATEGORY_STYLES[activePin.category]?.border || '#D97706')}
+                </svg>
+              </span>
               <span>{lang === 'te' ? activePin.nameTe : activePin.nameEn}</span>
             </span>
             <span 
