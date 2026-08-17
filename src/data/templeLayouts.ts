@@ -272,6 +272,112 @@ export const CURATED_LAYOUTS: Record<string, Partial<TempleLayoutData>> = {
     ]
   },
 
+  'mogili-temple': {
+    placeId: 'mogili-temple',
+    titleEn: 'Sri Mogileeswara Swamy Temple Precinct Map',
+    titleTe: 'శ్రీ మొగిలీశ్వర స్వామి ఆలయ ప్రాంగణ మ్యాప్',
+    layoutType: 'ancient-shrine',
+    centerCoordinates: { lat: 13.2081, lng: 78.8950 },
+    routePath: [[430, 290], [270, 275], [145, 255], [270, 205], [150, 130], [270, 85], [395, 160], [270, 275]],
+    pins: [
+      {
+        id: 'parking',
+        nameEn: 'Highway Approach Parking Bay',
+        nameTe: 'హైవే పార్కింగ్ ప్రదేశం',
+        category: 'parking',
+        lat: 13.2075,
+        lng: 78.8945,
+        svgX: 430,
+        svgY: 290,
+        descEn: 'Shaded vehicle and car parking area along the Chennai-Bangalore highway.',
+        descTe: 'చెన్నై-బెంగళూరు హైవే వద్ద ఉన్న పార్కింగ్ స్థలం.'
+      },
+      {
+        id: 'entry',
+        nameEn: 'Eastern Raja Gopuram Entrance',
+        nameTe: 'తూర్పు రాజగోపురం ప్రవేశం',
+        category: 'entry',
+        lat: 13.2078,
+        lng: 78.8948,
+        svgX: 270,
+        svgY: 275,
+        descEn: 'Ancient stone entrance gateway welcoming devotees.',
+        descTe: 'ఆలయ ప్రధాన ప్రవేశ గోపురం.'
+      },
+      {
+        id: 'footwear',
+        nameEn: 'Footwear Stand',
+        nameTe: 'పాదరక్షల స్టాండ్',
+        category: 'footwear',
+        lat: 13.2079,
+        lng: 78.8946,
+        svgX: 145,
+        svgY: 255,
+        descEn: 'Shoe custody counter near temple entrance.',
+        descTe: 'చెప్పులు భద్రపరిచే ప్రదేశం.'
+      },
+      {
+        id: 'dhwajasthambham',
+        nameEn: 'Dhwajasthambham & Gomukha Nandi Spring',
+        nameTe: 'ధ్వజస్తంభం & గోముఖ నంది జలధార',
+        category: 'info',
+        lat: 13.2080,
+        lng: 78.8949,
+        svgX: 270,
+        svgY: 205,
+        descEn: 'Sacred Nandi bull idol where cold perennial water constantly trickles from beneath its feet year-round.',
+        descTe: 'నంది పాదాల నుండి నిరంతరం ప్రవహించే పవిత్ర జీవ జలధార.'
+      },
+      {
+        id: 'kamakshi-shrine',
+        nameEn: 'Sri Kamakshi Ammavari Shrine',
+        nameTe: 'శ్రీ కామాక్షి అమ్మవారి సన్నిధి',
+        category: 'info',
+        lat: 13.2082,
+        lng: 78.8947,
+        svgX: 150,
+        svgY: 130,
+        descEn: 'Goddess Kamakshi (Parvathi Devi) sub-shrine in the sacred courtyard.',
+        descTe: 'శ్రీ కామాక్షి అమ్మవారి ఉపాలయం.'
+      },
+      {
+        id: 'sanctum',
+        nameEn: 'Sri Mogileeswara Swamy Swayambhu Garbhalayam',
+        nameTe: 'శ్రీ మొగిలీశ్వర స్వామి స్వయంభూ గర్భాలయం',
+        category: 'sanctum',
+        lat: 13.2083,
+        lng: 78.8950,
+        svgX: 270,
+        svgY: 85,
+        descEn: 'Self-manifested Shiva Lingam discovered beneath ancient Mogili (Kewra) thickets.',
+        descTe: 'మొగిలి పొదల్లో వెలసిన స్వయంభూ శివలింగం మరియు పవిత్ర గర్భగుడి.'
+      },
+      {
+        id: 'laddu',
+        nameEn: 'Bilva Archana & Vibhuti Theertha Prasadam',
+        nameTe: 'బిల్వార్చన & విభూతి ప్రసాదం కౌంటర్',
+        category: 'laddu',
+        lat: 13.2081,
+        lng: 78.8953,
+        svgX: 395,
+        svgY: 160,
+        descEn: 'Collect blessed Vibhuti, holy Bilva leaves, and Nandi spring theertham.',
+        descTe: 'పవిత్ర విభూతి మరియు నంది తీర్థం స్వీకరించండి.'
+      }
+    ],
+    routeSteps: [
+      { stepNumber: 1, titleEn: 'Mogili Arrival & Parking', titleTe: 'మొగిలి పార్కింగ్ చేరుకోవడం', distance: '0.0 km', timeMins: 0, descEn: 'Park vehicle along the highway approach bay.', descTe: 'వాహనాన్ని పార్క్ చేయండి.' },
+      { stepNumber: 2, titleEn: 'Raja Gopuram Entrance & Footwear', titleTe: 'రాజగోపురం & పాదరక్షల కేంద్రం', distance: '30m', timeMins: 2, descEn: 'Deposit shoes and enter through the stone gopuram.', descTe: 'చెప్పులు విడిచి గోపురం ద్వారా ప్రవేశించండి.' },
+      { stepNumber: 3, titleEn: 'Gomukha Nandi Perennial Spring', titleTe: 'గోముఖ నంది పవిత్ర జలధార', distance: '50m', timeMins: 5, descEn: 'Witness the mysterious perennial stream trickling from Nandi\'s feet.', descTe: 'నంది పాదాల నుండి వచ్చే పవిత్ర జలాన్ని దర్శించండి.' },
+      { stepNumber: 4, titleEn: 'Sri Mogileeswara Lingam Darshan', titleTe: 'శ్రీ మొగిలీశ్వర స్వామి దర్శనం', distance: '70m', timeMins: 15, descEn: 'Seek blessings of the Swayambhu Shiva Lingam in the sanctum.', descTe: 'స్వామివారి దివ్య దర్శనం మరియు ఆశీస్సులు.' },
+      { stepNumber: 5, titleEn: 'Kamakshi Shrine & Vibhuti Prasadam', titleTe: 'అమ్మవారి దర్శనం & ప్రసాదం', distance: '50m', timeMins: 5, descEn: 'Visit Sri Kamakshi Ammavaru and receive holy vibhuti theertham.', descTe: 'కామాక్షి అమ్మవారి దర్శనం మరియు విభూతి ప్రసాదం పొందండి.' }
+    ],
+    emergencyContacts: [
+      { titleEn: 'Mogili Temple Administration Office', titleTe: 'మొగిలి ఆలయ సమాచార విభాగం', number: '08572281540' },
+      { titleEn: 'Emergency Helpline', titleTe: 'అత్యవసర హెల్ప్‌లైన్', number: '112' }
+    ]
+  },
+
   'kanipakam': {
     placeId: 'kanipakam',
     titleEn: 'Sri Varasiddhi Vinayaka Swamy Temple (Kanipakam) Precinct Map',
