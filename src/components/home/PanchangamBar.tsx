@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Sun, Moon, Clock, Calendar, Sparkles, X, ChevronRight, Compass, ShieldAlert, CheckCircle2 } from 'lucide-react';
 import { getPanchangamData, PanchangamData } from '@/lib/panchangam';
 import { useLanguage } from '@/lib/useLanguage';
@@ -9,7 +9,16 @@ import styles from './PanchangamBar.module.css';
 export function PanchangamBar() {
   const lang = useLanguage();
   const [isOpen, setIsOpen] = useState(false);
-  const data: PanchangamData = getPanchangamData();
+  const [data, setData] = useState<PanchangamData>(() => getPanchangamData(new Date()));
+
+  useEffect(() => {
+    // Dynamically update panchangam data every 30 minutes / on date change
+    setData(getPanchangamData(new Date()));
+    const timer = setInterval(() => {
+      setData(getPanchangamData(new Date()));
+    }, 1000 * 60 * 30);
+    return () => clearInterval(timer);
+  }, []);
 
   const isTelugu = lang === 'te';
 
