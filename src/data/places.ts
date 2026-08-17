@@ -2444,6 +2444,53 @@ export const PLACES: Place[] = [
     },
     travelEstimates: { 'railway-station': '15 mins (4.2 km)', 'bus-stand': '12 mins (3.5 km)', 'airport': '35 mins (18 km)' },
     relatedPlaces: ['tataiahgunta-gangamma', 'padmavathi', 'govindaraja']
+  },
+  {
+    id: 'panchamukha-anjaneya-temple',
+    name: 'Sri Pancha Mukha Anjaneya Swamy Temple',
+    category: 'Tirupati City',
+    placeType: 'spiritual',
+    location: 'Balaji Nagar, Tirupati City',
+    distanceKms: 1.2,
+    durationMins: 40,
+    budgetLevel: 'budget',
+    entryFeeNum: 0,
+    interests: ['spiritual', 'hanuman', 'culture', 'heritage'],
+    openFrom: 6,
+    openTo: 20.5,
+    isMustVisit: false,
+    description: 'Sri Pancha Mukha Anjaneya Swamy Temple in Tirupati is dedicated to Lord Hanuman in his rare and powerful five-faced (Pancha Mukha) avatar, embodying the divine forms of Sri Hanuman, Sri Narasimha, Sri Garuda, Sri Varaha, and Sri Hayagriva.',
+    shortIntro: 'A revered shrine in Tirupati enshrining the rare five-faced avatar of Lord Hanuman, granting courage, invincibility, and relief from all fears and planetary afflictions.',
+    history: 'According to the Ramayana sthala puranam, Lord Hanuman assumed the mighty Pancha Mukha avatar during the war against Ravana in Patala Loka to destroy the demon king Ahiravana. Because Ahiravana could only be slain by extinguishing five directional lamps at the very same instant, Lord Hanuman manifested five divine heads—East: Sri Hanuman (granting purity and courage), South: Sri Narasimha (fearlessness and victory), West: Sri Garuda (nullifying poisons and negative spirits), North: Sri Varaha (prosperity and protection), and Upward: Sri Hayagriva (supreme wisdom and knowledge). Devotees venerate this supreme protective form to conquer obstacles and achieve victory.',
+    whyVisit: 'Rare 5-faced Hanuman manifestation in Tirupati, powerful Vadamala & Betel Leaf (Aku Puja) sevas, Saturday special Sindhoora alankaram, relief from fears and Shani dosha, and convenient central city access.',
+    timings: 'Mon-Fri, Sun: 6:00 AM – 12:30 PM, 4:00 PM – 8:30 PM (Saturdays: 5:30 AM – 1:00 PM, 4:00 PM – 9:00 PM)',
+    entryFee: 'Free entry for all devotees (Special Sevas: Special Darshan ₹50, Sahasranama Archana ₹300, Pancha Mukha Abhishekam ₹750, Vadamala Seva ₹400, Betel Leaf Archana ₹250)',
+    address: 'Balaji Nagar, Tirupati, Andhra Pradesh 517501',
+    rating: 4.8,
+    reviewCount: 420,
+    image: 'https://res.cloudinary.com/kniegqlj/image/upload/v1786987831/panchamukha-anjaneya-swami-temple-balaji-nagar-tirupati-temples-vXLHdB8jzc-250_gsc4ip.jpg',
+    images: ['https://res.cloudinary.com/kniegqlj/image/upload/v1786987831/panchamukha-anjaneya-swami-temple-balaji-nagar-tirupati-temples-vXLHdB8jzc-250_gsc4ip.jpg'],
+    coordinates: { lat: 13.6311371, lng: 79.4148817 },
+    tags: ['Hanuman', 'Pancha Mukha', 'Anjaneya', 'Balaji Nagar', 'Tirupati', 'Protection', 'Vadamala', 'Betel Leaf Puja'],
+    bestTime: 'Saturdays & Tuesdays (Morning 6:00 AM – 10:00 AM or Evening Sandhya Aarti 7:00 PM)',
+    breakTimings: [{ from: '12:30', to: '16:00' }],
+    spiritualInfo: {
+      god: 'Sri Pancha Mukha Anjaneya Swamy (Hanuman, Narasimha, Garuda, Varaha, Hayagriva)',
+      knownFor: 'Protection against Evil Spirits, Courage, Planetary Relief & Wish Fulfillment',
+      mantra: 'Om Namo Bhagavathe Panchavadanaya Poorva Kapimukhaya Sakala Shatru Samhaaranaya Swaha',
+      devoteeTips: [
+        'Special Saturday Vadamala seva (garland of savory vadas) and Betel Leaf (Tambula) archana are highly auspicious',
+        'Pancha Mukha Abhishekam performed on Tuesday and Saturday mornings removes deep-seated obstacles',
+        'Street parking is limited; auto-rickshaw or two-wheeler travel recommended'
+      ]
+    },
+    practicalInfo: {
+      dressCode: 'Modest / Traditional wear recommended',
+      food: 'Prasadam available; numerous restaurants and cafes along nearby Gandhi Road and Balaji Colony',
+      parking: 'Limited street parking available outside'
+    },
+    travelEstimates: { 'railway-station': '5 mins (1.2 km)', 'bus-stand': '7 mins (1.8 km)' },
+    relatedPlaces: ['japali-hanuman', 'govindaraja', 'kapila-theertham']
   }
 ];
 

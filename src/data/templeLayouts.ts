@@ -272,6 +272,112 @@ export const CURATED_LAYOUTS: Record<string, Partial<TempleLayoutData>> = {
     ]
   },
 
+  'panchamukha-anjaneya-temple': {
+    placeId: 'panchamukha-anjaneya-temple',
+    titleEn: 'Sri Pancha Mukha Anjaneya Swamy Temple Precinct Map',
+    titleTe: 'శ్రీ పంచముఖ ఆంజనేయ స్వామి ఆలయ ప్రాంగణ మ్యాప్',
+    layoutType: 'city-shrine',
+    centerCoordinates: { lat: 13.6311, lng: 79.4149 },
+    routePath: [[430, 290], [270, 275], [145, 255], [270, 205], [150, 130], [270, 85], [395, 160], [270, 275]],
+    pins: [
+      {
+        id: 'parking',
+        nameEn: 'Balaji Nagar Street Parking Area',
+        nameTe: 'బాలాజీ నగర్ వీధి పార్కింగ్',
+        category: 'parking',
+        lat: 13.6308,
+        lng: 79.4145,
+        svgX: 430,
+        svgY: 290,
+        descEn: 'Street parking along Balaji Nagar lane for two-wheelers and autos.',
+        descTe: 'వాహనాలు మరియు ఆటోల పార్కింగ్ స్థలం.'
+      },
+      {
+        id: 'entry',
+        nameEn: 'Temple Entrance Mukhadwaram',
+        nameTe: 'ఆలయ ప్రవేశ ముఖద్వారం',
+        category: 'entry',
+        lat: 13.6310,
+        lng: 79.4147,
+        svgX: 270,
+        svgY: 275,
+        descEn: 'Main temple entrance leading into the sacred Hanuman mandapam.',
+        descTe: 'ఆలయ ప్రధాన ప్రవేశ ద్వారం.'
+      },
+      {
+        id: 'footwear',
+        nameEn: 'Footwear Stand',
+        nameTe: 'పాదరక్షల స్టాండ్',
+        category: 'footwear',
+        lat: 13.6309,
+        lng: 79.4146,
+        svgX: 145,
+        svgY: 255,
+        descEn: 'Designated shoe keeping stand near the entrance gate.',
+        descTe: 'పాదరక్షలు విడిచే ప్రదేశం.'
+      },
+      {
+        id: 'dhwajasthambham',
+        nameEn: 'Dhwajasthambham & Deepasthambham',
+        nameTe: 'ధ్వజస్తంభం & దీపస్తంభం',
+        category: 'info',
+        lat: 13.6311,
+        lng: 79.4148,
+        svgX: 270,
+        svgY: 205,
+        descEn: 'Sacred flag mast and brass lamp pillar in the front courtyard.',
+        descTe: 'పవిత్ర ధ్వజస్తంభం మరియు దీపారాధన స్తంభం.'
+      },
+      {
+        id: 'sita-rama-shrine',
+        nameEn: 'Sri Sita Rama Lakshmana Sub-Shrine',
+        nameTe: 'శ్రీ సీతారామ లక్ష్మణ సన్నిధి',
+        category: 'info',
+        lat: 13.6313,
+        lng: 79.4147,
+        svgX: 150,
+        svgY: 130,
+        descEn: 'Revered sanctum of Lord Sri Rama, Sita Devi, and Lakshmana Swamy worshipped with devotion.',
+        descTe: 'శ్రీ సీతారామ లక్ష్మణుల పవిత్ర సన్నిధి.'
+      },
+      {
+        id: 'sanctum',
+        nameEn: 'Sri Pancha Mukha Anjaneya Garbhalayam',
+        nameTe: 'శ్రీ పంచముఖ ఆంజనేయ స్వామి గర్భాలయం',
+        category: 'sanctum',
+        lat: 13.6312,
+        lng: 79.4149,
+        svgX: 270,
+        svgY: 85,
+        descEn: 'Mighty 5-faced Lord Hanuman idol (Hanuman, Narasimha, Garuda, Varaha, Hayagriva) adorned with Sindhooram and Vadamala.',
+        descTe: 'సింధూర అలంకరణ, వడమాలతో దర్శనమిచ్చే పంచముఖ ఆంజనేయ స్వామి మూలవిరాట్టు.'
+      },
+      {
+        id: 'kumkum-prasadam',
+        nameEn: 'Sindhooram, Betel Leaf & Prasadam Counter',
+        nameTe: 'సింధూరం, తమలపాకుల పూజ & ప్రసాదం కౌంటర్',
+        category: 'laddu',
+        lat: 13.6310,
+        lng: 79.4151,
+        svgX: 395,
+        svgY: 160,
+        descEn: 'Collect blessed Sindhooram, holy theertham, sweet laddu, and sanctified Vada prasadam.',
+        descTe: 'స్వామివారి దివ్య సింధూరం, తీర్థం మరియు ప్రసాదం స్వీకరించే స్థలం.'
+      }
+    ],
+    routeSteps: [
+      { stepNumber: 1, titleEn: 'Balaji Nagar Arrival & Parking', titleTe: 'బాలాజీ నగర్ చేరుకోవడం', distance: '0.0 km', timeMins: 0, descEn: 'Park vehicle along the street parking bay.', descTe: 'వాహనాన్ని పార్క్ చేయండి.' },
+      { stepNumber: 2, titleEn: 'Temple Entrance & Footwear', titleTe: 'ప్రవేశం & పాదరక్షల కేంద్రం', distance: '20m', timeMins: 2, descEn: 'Deposit shoes and enter through the temple archway.', descTe: 'చెప్పులు విడిచి ఆలయంలోకి ప్రవేశించండి.' },
+      { stepNumber: 3, titleEn: 'Dhwajasthambham & Sri Rama Shrine', titleTe: 'ధ్వజస్తంభం & సీతారాముల సన్నిధి', distance: '40m', timeMins: 5, descEn: 'Bow before the flag mast and seek blessings at Sri Rama shrine.', descTe: 'ధ్వజస్తంభ నమస్కారం మరియు శ్రీరాముని దర్శనం.' },
+      { stepNumber: 4, titleEn: 'Pancha Mukha Anjaneya Darshan', titleTe: 'పంచముఖ ఆంజనేయ స్వామి దర్శనం', distance: '50m', timeMins: 10, descEn: 'Witness the mighty 5-faced Hanuman in the inner sanctum.', descTe: 'స్వామివారి దివ్య దర్శనం మరియు ఆశీస్సులు.' },
+      { stepNumber: 5, titleEn: 'Sindhooram & Blessed Prasadam', titleTe: 'సింధూరం & ప్రసాదం స్వీకరణ', distance: '30m', timeMins: 5, descEn: 'Receive blessed Sindhooram and sacred Vada / Laddu prasadam.', descTe: 'సింధూర ప్రసాదం పొందండి.' }
+    ],
+    emergencyContacts: [
+      { titleEn: 'Pancha Mukha Temple Desk', titleTe: 'ఆలయ సమాచార విభాగం', number: '08772264555' },
+      { titleEn: 'Emergency Helpline', titleTe: 'అత్యవసర హెల్ప్‌లైన్', number: '112' }
+    ]
+  },
+
   'bonthalamma-temple': {
     placeId: 'bonthalamma-temple',
     titleEn: 'Sri Bonthalamma Talli Alayam Precinct Map',
