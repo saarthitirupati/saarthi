@@ -272,6 +272,112 @@ export const CURATED_LAYOUTS: Record<string, Partial<TempleLayoutData>> = {
     ]
   },
 
+  'jeeva-lingeshwara-temple': {
+    placeId: 'jeeva-lingeshwara-temple',
+    titleEn: 'Sri Jeeva Lingeshwara Swamy Temple Precinct Map',
+    titleTe: 'శ్రీ జీవ లింగేశ్వర స్వామి ఆలయ ప్రాంగణ మ్యాప్',
+    layoutType: 'ancient-shrine',
+    centerCoordinates: { lat: 13.6581, lng: 79.4292 },
+    routePath: [[430, 290], [270, 275], [145, 255], [270, 205], [150, 130], [270, 85], [395, 160], [270, 275]],
+    pins: [
+      {
+        id: 'parking',
+        nameEn: 'Mangalam Approach Parking Plaza',
+        nameTe: 'మంగళం ఆలయ పార్కింగ్',
+        category: 'parking',
+        lat: 13.6577,
+        lng: 79.4288,
+        svgX: 430,
+        svgY: 290,
+        descEn: 'Open vehicle and auto parking area in Mangalam village.',
+        descTe: 'వాహనాలు మరియు ఆటోల పార్కింగ్ స్థలం.'
+      },
+      {
+        id: 'entry',
+        nameEn: 'Temple Entrance Mukhadwaram',
+        nameTe: 'ఆలయ ప్రవేశ ముఖద్వారం',
+        category: 'entry',
+        lat: 13.6579,
+        lng: 79.4290,
+        svgX: 270,
+        svgY: 275,
+        descEn: 'Stone archway and entrance facing the Tirumala hill slopes.',
+        descTe: 'ఆలయ ప్రధాన ప్రవేశ ద్వారం.'
+      },
+      {
+        id: 'footwear',
+        nameEn: 'Footwear Stand',
+        nameTe: 'పాదరక్షల స్టాండ్',
+        category: 'footwear',
+        lat: 13.6580,
+        lng: 79.4289,
+        svgX: 145,
+        svgY: 255,
+        descEn: 'Shoe custody counter near the courtyard entrance.',
+        descTe: 'పాదరక్షలు విడిచే ప్రదేశం.'
+      },
+      {
+        id: 'dhwajasthambham',
+        nameEn: 'Dhwajasthambham & Nandi Mandapam',
+        nameTe: 'ధ్వజస్తంభం & నంది మండపం',
+        category: 'info',
+        lat: 13.6581,
+        lng: 79.4291,
+        svgX: 270,
+        svgY: 205,
+        descEn: 'Sacred flag mast and stone Nandi bull seated facing the Shiva sanctum.',
+        descTe: 'పవిత్ర ధ్వజస్తంభం మరియు నందీశ్వరుని దర్శనం.'
+      },
+      {
+        id: 'navagraha-shrine',
+        nameEn: 'Sri Parvathi Ammavaru & Navagraha Sub-Shrines',
+        nameTe: 'పార్వతీ అమ్మవారు & నవగ్రహ సన్నిధులు',
+        category: 'info',
+        lat: 13.6583,
+        lng: 79.4289,
+        svgX: 150,
+        svgY: 130,
+        descEn: 'Dedicated shrines for Goddess Parvathi, Lord Ganesha, and Navagrahas for Dosha Parihara.',
+        descTe: 'పార్వతీ దేవి మరియు నవగ్రహ ఉపాలయాలు.'
+      },
+      {
+        id: 'sanctum',
+        nameEn: 'Sri Jeeva Lingeshwara Swamy Garbhalayam',
+        nameTe: 'శ్రీ జీవ లింగేశ్వర స్వామి గర్భాలయం',
+        category: 'sanctum',
+        lat: 13.6582,
+        lng: 79.4292,
+        svgX: 270,
+        svgY: 85,
+        descEn: 'Consecrated living Shiva Lingam revered for granting peace of mind, health, and spiritual upliftment.',
+        descTe: 'ప్రశాంత ఆధ్యాత్మిక వాతావరణంలో దర్శనమిచ్చే జీవ లింగేశ్వర స్వామి మూలవిరాట్టు.'
+      },
+      {
+        id: 'laddu',
+        nameEn: 'Rudrabhishekam, Bilva Archana & Vibhuti Counter',
+        nameTe: 'రుద్రాభిషేకం, బిల్వార్చన & విభూతి ప్రసాదం',
+        category: 'laddu',
+        lat: 13.6580,
+        lng: 79.4294,
+        svgX: 395,
+        svgY: 160,
+        descEn: 'Obtain Rudrabhishekam seva tokens, sacred Bilva leaves, and blessed Vibhuti theertham.',
+        descTe: 'రుద్రాభిషేక పూజ టోకెన్లు మరియు పవిత్ర విభూతి ప్రసాదం స్వీకరించే స్థలం.'
+      }
+    ],
+    routeSteps: [
+      { stepNumber: 1, titleEn: 'Mangalam Arrival & Parking', titleTe: 'మంగళం చేరుకోవడం', distance: '0.0 km', timeMins: 0, descEn: 'Park vehicle along the foothill approach plaza.', descTe: 'వాహనాన్ని పార్క్ చేయండి.' },
+      { stepNumber: 2, titleEn: 'Temple Entrance & Footwear', titleTe: 'ప్రవేశం & పాదరక్షల కేంద్రం', distance: '20m', timeMins: 2, descEn: 'Deposit shoes and enter through the stone archway.', descTe: 'చెప్పులు విడిచి గోపురం ద్వారా ప్రవేశించండి.' },
+      { stepNumber: 3, titleEn: 'Dhwajasthambham & Nandi Mandapam', titleTe: 'ధ్వజస్తంభం & నంది నమస్కారం', distance: '30m', timeMins: 5, descEn: 'Bow before the flag mast and take blessings of Nandi.', descTe: 'ధ్వజస్తంభం వద్ద ప్రార్థించండి.' },
+      { stepNumber: 4, titleEn: 'Sri Jeeva Lingeshwara Darshan', titleTe: 'శ్రీ జీవ లింగేశ్వర స్వామి దర్శనం', distance: '50m', timeMins: 10, descEn: 'Seek blessings of Lord Shiva in the sanctum.', descTe: 'స్వామివారి దివ్య దర్శనం మరియు ఆశీస్సులు.' },
+      { stepNumber: 5, titleEn: 'Navagraha & Vibhuti Prasadam', titleTe: 'నవగ్రహ దర్శనం & విభూతి ప్రసాదం', distance: '30m', timeMins: 5, descEn: 'Perform Navagraha pradakshina and receive holy Vibhuti.', descTe: 'నవగ్రహ పూజ చేసి విభూతి పొందండి.' }
+    ],
+    emergencyContacts: [
+      { titleEn: 'Mangalam Temple Desk', titleTe: 'ఆలయ సమాచార విభాగం', number: '08772264555' },
+      { titleEn: 'Emergency Helpline', titleTe: 'అత్యవసర హెల్ప్‌లైన్', number: '112' }
+    ]
+  },
+
   'panchamukha-anjaneya-temple': {
     placeId: 'panchamukha-anjaneya-temple',
     titleEn: 'Sri Pancha Mukha Anjaneya Swamy Temple Precinct Map',

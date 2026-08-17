@@ -2491,6 +2491,53 @@ export const PLACES: Place[] = [
     },
     travelEstimates: { 'railway-station': '5 mins (1.2 km)', 'bus-stand': '7 mins (1.8 km)' },
     relatedPlaces: ['japali-hanuman', 'govindaraja', 'kapila-theertham']
+  },
+  {
+    id: 'jeeva-lingeshwara-temple',
+    name: 'Sri Jeeva Lingeshwara Swamy Temple',
+    category: 'Tirupati City',
+    placeType: 'spiritual',
+    location: 'Mangalam, Tirupati',
+    distanceKms: 8.5,
+    durationMins: 45,
+    budgetLevel: 'budget',
+    entryFeeNum: 0,
+    interests: ['spiritual', 'shiva', 'culture', 'heritage'],
+    openFrom: 6,
+    openTo: 20,
+    isMustVisit: false,
+    description: 'Sri Jeeva Lingeshwara Swamy Temple is a serene Shaivite shrine located in Mangalam village, nestled at the scenic foothills of the Tirumala ranges. Dedicated to Lord Shiva as Jeeva Lingeshwara, the living divine consciousness, the temple is famed for its peaceful meditative ambiance, powerful Rudrabhishekam rituals, and grand Maha Shivaratri celebrations.',
+    shortIntro: 'Tranquil Shiva shrine in Mangalam at the foot of Tirumala hills enshrining Jeeva Lingeshwara Swamy, renowned for Rudrabhishekam and Dosha Parihara poojas.',
+    history: 'According to local temple lore, the sanctum houses a consecrated Jeeva Lingam imbued with living spiritual vibrations that brings serenity and protection to the surrounding valley of Mangalam. Devotees and local sadhus have worshipped here for generations, especially seeking astrological remedies, Dosha Nivarana, and inner peace away from urban crowds.',
+    whyVisit: 'Peaceful foothill Shiva temple in Mangalam, powerful Rudrabhishekam & Bilva Archana sevas, astrology & Dosha Parihara poojas, low crowd serenity, and scenic natural views of the Tirumala hill backdrop.',
+    timings: '6:00 AM – 12:30 PM, 4:00 PM – 8:00 PM (Extended hours during Pradosham and Maha Shivaratri)',
+    entryFee: 'Free entry for all devotees (Rudrabhishekam and Special Archana tickets available at the counter)',
+    address: 'Mangalam, Tirupati Rural, Andhra Pradesh 517507',
+    rating: 4.6,
+    reviewCount: 190,
+    image: 'https://res.cloudinary.com/kniegqlj/image/upload/v1786988251/images_hnjqzi.jpg',
+    images: ['https://res.cloudinary.com/kniegqlj/image/upload/v1786988251/images_hnjqzi.jpg'],
+    coordinates: { lat: 13.6581135, lng: 79.4291628 },
+    tags: ['Shiva', 'Jeeva Lingeshwara', 'Mangalam', 'Tirupati', 'Rudrabhishekam', 'Dosha Nivarana', 'Pradosham'],
+    bestTime: 'Mondays, Pradosham days, and Maha Shivaratri (Morning 6:30 AM – 9:00 AM or Evening 5:30 PM – 7:30 PM)',
+    breakTimings: [{ from: '12:30', to: '16:00' }],
+    spiritualInfo: {
+      god: 'Lord Shiva (Sri Jeeva Lingeshwara Swamy)',
+      knownFor: 'Rudrabhishekam, Peace of Mind, Dosha Parihara & Pradosha Pooja',
+      mantra: 'Om Namah Shivaya | Om Tryambakam Yajaamahe Sugandhim Pushtivardhanam',
+      devoteeTips: [
+        'Rudrabhishekam tickets can be availed directly at the temple ticket counter without advance booking',
+        'Share autos and city buses are easily available from Tirupati Central Bus Station to Mangalam',
+        'Peaceful foothill atmosphere ideal for quiet meditation and prayer'
+      ]
+    },
+    practicalInfo: {
+      dressCode: 'Traditional or modest attire recommended',
+      food: 'Local village shops and eateries nearby; city restaurants within 4 km',
+      parking: 'Free parking available near temple entrance'
+    },
+    travelEstimates: { 'railway-station': '20 mins (8.5 km)', 'bus-stand': '18 mins (7.5 km)' },
+    relatedPlaces: ['kapila-theertham', 'agastheeshwara', 'gudimallam-temple']
   }
 ];
 
