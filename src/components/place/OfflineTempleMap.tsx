@@ -170,8 +170,43 @@ export default function OfflineTempleMap({
           {/* ═══════════════════════════════════════════════════
               ARCHITECTURAL BACKDROPS MATCHING SPECIFIC CATEGORIES
               ═══════════════════════════════════════════════════ */}
-          {layout.layoutType === 'sacred-pushkarini' ? (
-            /* 1. SACRED PUSHKARINI & HOLY THEERTHAM LAKE (Swami Pushkarini, Papavinasam, Akasa Ganga) */
+          {layout.layoutType === 'annaprasadam-complex' ? (
+            /* 1. MATRUSRI TARIGONDA VENGAMAMBA ANNAPRASADAM COMPLEX */
+            <g>
+              {/* Complex Ground Foundation */}
+              <rect x="35" y="25" width="470" height="285" rx="16" fill="#FFFDF8" stroke="#16A34A" strokeWidth="2" />
+
+              {/* 4 Grand Dining Halls Block */}
+              <rect x="120" y="60" width="300" height="110" rx="10" fill="#DCFCE7" stroke="#16A34A" strokeWidth="1.8" />
+
+              {/* Dining Hall Rows & Service Counters */}
+              <line x1="140" y1="85" x2="400" y2="85" stroke="#86EFAC" strokeWidth="6" strokeLinecap="round" />
+              <line x1="140" y1="115" x2="400" y2="115" stroke="#86EFAC" strokeWidth="6" strokeLinecap="round" />
+              <line x1="140" y1="145" x2="400" y2="145" stroke="#86EFAC" strokeWidth="6" strokeLinecap="round" />
+
+              {/* Automated Steam Mega Kitchen Annex (North-East) */}
+              <g transform="translate(345, 55)">
+                <rect x="0" y="0" width="90" height="50" rx="8" fill="#FEF3C7" stroke="#D97706" strokeWidth="1.5" />
+                <circle cx="25" cy="25" r="10" fill="#FDE047" stroke="#B45309" strokeWidth="1" />
+                <circle cx="65" cy="25" r="10" fill="#FDE047" stroke="#B45309" strokeWidth="1" />
+              </g>
+
+              {/* Devotee Holding Lounge & Wash Station (South-West) */}
+              <rect x="90" y="185" width="140" height="55" rx="8" fill="#DBEAFE" stroke="#2563EB" strokeWidth="1.5" />
+              {/* Wash Station Faucets */}
+              <circle cx="115" cy="230" r="3" fill="#3B82F6" />
+              <circle cx="135" cy="230" r="3" fill="#3B82F6" />
+              <circle cx="155" cy="230" r="3" fill="#3B82F6" />
+              <circle cx="175" cy="230" r="3" fill="#3B82F6" />
+
+              {/* Tarigonda Vengamamba Statue & Donor Office (South-East) */}
+              <rect x="335" y="185" width="110" height="50" rx="8" fill="#FEF9C3" stroke="#CA8A04" strokeWidth="1.5" />
+
+              {/* Grand Entrance Foyer (South) */}
+              <rect x="215" y="262" width="110" height="28" rx="6" fill="#15803D" stroke="#14532D" strokeWidth="1.5" />
+            </g>
+          ) : layout.layoutType === 'sacred-pushkarini' ? (
+            /* 2. SACRED PUSHKARINI & HOLY THEERTHAM LAKE (Swami Pushkarini, Papavinasam, Akasa Ganga) */
             <g>
               {/* Outer Promenade Pavement */}
               <rect x="40" y="30" width="460" height="270" rx="16" fill="#F8FAFC" stroke="#0284C7" strokeWidth="2" strokeDasharray="8 3" />
@@ -482,13 +517,14 @@ export default function OfflineTempleMap({
                   layout.layoutType === 'heritage-fort' ? 'Palace' : 'Sanctum'
                 ) :
                  pin.category === 'entry' ? 'Entrance' :
-                 pin.category === 'queue' ? 'Queue' :
+                 pin.category === 'queue' ? (layout.layoutType === 'annaprasadam-complex' ? 'Holding Hall' : 'Queue') :
                  pin.category === 'laddu' ? (layout.layoutType === 'city-shrine' ? 'Kumkum / Prasadam' : 'Prasadam') :
                  pin.category === 'footwear' ? (layout.layoutType === 'sacred-pushkarini' ? 'Footwear & Rooms' : 'Footwear') :
-                 pin.category === 'food' ? (layout.layoutType === 'shopping-market' ? 'Street Food' : 'Food / Dining') :
+                 pin.category === 'food' ? (layout.layoutType === 'annaprasadam-complex' ? 'Dining Halls 1–4' : (layout.layoutType === 'shopping-market' ? 'Street Food' : 'Food / Dining')) :
                  pin.category === 'parking' ? 'Parking' :
                  pin.category === 'medical' ? 'Medical' :
                  pin.category === 'safari' ? 'Safari' :
+                 layout.layoutType === 'annaprasadam-complex' ? (pin.id.includes('kitchen') ? 'Mega Kitchen' : pin.id.includes('donor') ? 'Donor Desk' : 'Complex') :
                  layout.layoutType === 'sacred-pushkarini' ? (pin.id.includes('varaha') ? 'Varahaswamy' : pin.id.includes('way') ? 'Temple Walkway' : 'Ghats') :
                  layout.layoutType === 'geo-nature-park' ? (pin.id.includes('viewing') ? 'Viewing Deck' : 'Garden Path') :
                  layout.layoutType === 'shopping-market' ? 'Textiles' :
@@ -500,6 +536,9 @@ export default function OfflineTempleMap({
                  layout.layoutType === 'wildlife-safari' ? 'Aviary' : 'Pushkarini');
 
             const icon = 
+              layout.layoutType === 'annaprasadam-complex' && pin.category === 'food' ? '🍲' :
+              layout.layoutType === 'annaprasadam-complex' && pin.id.includes('kitchen') ? '🍳' :
+              layout.layoutType === 'annaprasadam-complex' && pin.id.includes('donor') ? '🌸' :
               layout.layoutType === 'sacred-pushkarini' && pin.category === 'sanctum' ? '🌊' :
               layout.layoutType === 'sacred-pushkarini' && pin.id.includes('varaha') ? '🛕' :
               layout.layoutType === 'sacred-pushkarini' && pin.id.includes('way') ? '🏛️' :

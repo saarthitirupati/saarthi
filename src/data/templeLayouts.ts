@@ -32,6 +32,7 @@ export interface TempleLayoutData {
     | 'city-shrine'
     | 'grand-temple' 
     | 'sacred-pushkarini'
+    | 'annaprasadam-complex'
     | 'hill-waterfall' 
     | 'wildlife-safari' 
     | 'heritage-fort' 
@@ -302,6 +303,89 @@ export const CURATED_LAYOUTS: Record<string, Partial<TempleLayoutData>> = {
         svgY: 160,
         descEn: 'Covered stone walkway connecting directly to the main entrance of Tirumala Temple.',
         descTe: 'శ్రీవారి ప్రధాన ఆలయం మహాద్వారం వైపు వెళ్ళే మార్గం.'
+      }
+    ]
+  },
+
+  'annaprasadam-complex': {
+    placeId: 'annaprasadam-complex',
+    titleEn: 'Matrusri Tarigonda Vengamamba Annaprasadam Complex',
+    titleTe: 'మాతృశ్రీ తరిగొండ వెంగమాంబ అన్నప్రసాదం భవనం',
+    layoutType: 'annaprasadam-complex',
+    centerCoordinates: { lat: 13.6841, lng: 79.3498 },
+    routePath: [[430, 290], [270, 275], [160, 210], [270, 110], [390, 100], [380, 210]],
+    pins: [
+      {
+        id: 'parking',
+        nameEn: 'CRO & Rambag Vehicle Parking',
+        nameTe: 'రాంబాగ్‌ / సి.ఆర్.ఓ పార్కింగ్',
+        category: 'parking',
+        lat: 13.6832,
+        lng: 79.3490,
+        svgX: 430,
+        svgY: 290,
+        descEn: 'Central Tirumala parking area near Ring Road and CRO office.',
+        descTe: 'రింగ్ రోడ్డు సమీపంలోని వాహనాల పార్కింగ్ స్థలం.'
+      },
+      {
+        id: 'entry',
+        nameEn: 'Annaprasadam Complex Main Entrance',
+        nameTe: 'అన్నప్రసాదం ప్రధాన ముఖద్వారం',
+        category: 'entry',
+        lat: 13.6836,
+        lng: 79.3495,
+        svgX: 270,
+        svgY: 275,
+        descEn: 'Spacious welcoming entrance foyer and pilgrim queue entrance.',
+        descTe: 'భక్తుల ప్రవేశ ముఖద్వారం.'
+      },
+      {
+        id: 'holding-lounge',
+        nameEn: 'Devotee Waiting Lounge & Handwash Station',
+        nameTe: 'వేచి ఉండే హాల్ & చేతులు కడుగుకునే స్థలం',
+        category: 'queue',
+        lat: 13.6838,
+        lng: 79.3492,
+        svgX: 160,
+        svgY: 210,
+        descEn: 'Air-cooled waiting lounge with display screens and clean stainless steel washbasins.',
+        descTe: 'భక్తులు కూర్చునే హాలు మరియు వాష్‌బేసిన్ల సదుపాయం.'
+      },
+      {
+        id: 'dining-halls',
+        nameEn: 'Grand Dining Halls (Halls 1–4, 4,000 Capacity)',
+        nameTe: 'ప్రధాన భోజన శాలలు (హాల్స్ 1-4, 4,000 సీటింగ్)',
+        category: 'food',
+        lat: 13.6841,
+        lng: 79.3498,
+        svgX: 270,
+        svgY: 110,
+        descEn: 'Four massive hygienic dining halls serving continuous, unlimited hot Mahaprasadam (Rice, Dal, Sambar, Rasam, Chutney & Sweet).',
+        descTe: 'స్వామివారి నిత్యాన్నదాన భోజన శాల - ఉచితంగా అపరిమిత భోజనం వడ్డిస్తారు.'
+      },
+      {
+        id: 'mega-kitchen',
+        nameEn: 'Automated Steam Mega Kitchen & Potu',
+        nameTe: 'అత్యాధునిక ఆటోమేటిక్ స్టీమ్ కిచెన్',
+        category: 'info',
+        lat: 13.6844,
+        lng: 79.3502,
+        svgX: 390,
+        svgY: 100,
+        descEn: 'World-class automated steam boiler kitchen capable of cooking for 200,000 pilgrims per day.',
+        descTe: 'రోజుకు 2 లక్షల మందికి పైగా వంట చేసే భారీ అత్యాధునిక వంటశాల.'
+      },
+      {
+        id: 'donor-office',
+        nameEn: 'Tarigonda Vengamamba Statue & Srivari Donor Desk',
+        nameTe: 'తరిగొండ వెంగమాంబ విగ్రహం & దాతల విభాగం',
+        category: 'info',
+        lat: 13.6839,
+        lng: 79.3505,
+        svgX: 380,
+        svgY: 210,
+        descEn: 'Life-size bronze statue of Saint Vengamamba and Srivari Nitya Annadanam trust donation counter.',
+        descTe: 'శ్రీవారి నిత్యాన్నదాన ట్రస్ట్ విరాళాల కౌంటర్.'
       }
     ]
   },
@@ -690,7 +774,43 @@ export function getTempleLayout(placeInput: string | PlaceInputContext, fallback
   const tags = (placeObj?.tags || []).map(t => t.toLowerCase());
   const nameLower = name.toLowerCase();
 
-  // 1. Swami Pushkarini / Sacred Theertham Tanks
+  // 1. Matrusri Tarigonda Vengamamba Annaprasadam Complex
+  if (
+    placeId.includes('annaprasadam') || 
+    placeId.includes('vengamamba') || 
+    nameLower.includes('annaprasadam') || 
+    nameLower.includes('annadanam') || 
+    nameLower.includes('vengamamba') ||
+    nameLower.includes('free meals') ||
+    placeId === 'annaprasadam-complex'
+  ) {
+    const curated = CURATED_LAYOUTS['annaprasadam-complex']!;
+    return {
+      placeId,
+      titleEn: `${name} Precinct Map`,
+      titleTe: `${name} ప్రాంగణ మ్యాప్`,
+      layoutType: 'annaprasadam-complex',
+      centerCoordinates: fallbackCoords || { lat: 13.6841, lng: 79.3498 },
+      defaultZoom: 17,
+      compassBearingDeg: 0,
+      sanctumNameEn: 'Grand Annaprasadam Dining Halls',
+      sanctumNameTe: 'ప్రధాన నిత్యాన్నదాన భోజన శాలలు',
+      routePath: curated.routePath || [[430, 290], [270, 275], [160, 210], [270, 110], [390, 100], [380, 210]],
+      pins: curated.pins as MapPin[],
+      routeSteps: [
+        { stepNumber: 1, titleEn: 'Arrival & Ring Road Parking', titleTe: 'పార్కింగ్ చేరుకోవడం', distance: '0.0 km', timeMins: 0, descEn: 'Park vehicle at central Tirumala parking near Ring Road.', descTe: 'వాహనాన్ని పార్క్ చేసి అన్నప్రసాదం భవనం వైపు వెళ్ళండి.' },
+        { stepNumber: 2, titleEn: 'Main Entrance & Holding Lounge', titleTe: 'ప్రవేశం & వేచి ఉండే హాల్', distance: '40m', timeMins: 2, descEn: 'Enter through the main foyer and proceed into the air-cooled holding hall.', descTe: 'ప్రధాన ద్వారం గుండా వేచి ఉండే హాలులోకి ప్రవేశించండి.' },
+        { stepNumber: 3, titleEn: 'Handwash & Grand Dining Hall Seating', titleTe: 'చేతులు కడగడం & భోజన శాల ప్రవేశం', distance: '80m', timeMins: 20, descEn: 'Wash hands at the stainless steel counters and take seat in Halls 1 to 4 for unlimited hot Mahaprasadam.', descTe: 'చేతులు శుభ్రం చేసుకుని భోజన శాలలో కూర్చోండి.' },
+        { stepNumber: 4, titleEn: 'Steam Kitchen View & Vengamamba Statue Exit', titleTe: 'స్టీమ్ కిచెన్ & నిష్క్రమణ', distance: '60m', timeMins: 5, descEn: 'View the massive automated cooking plant and exit past Saint Vengamamba statue.', descTe: 'మెగా వంటశాల వీక్షించి వెంగమాంబ విగ్రహం వద్ద నుండి నిష్క్రమించండి.' }
+      ],
+      emergencyContacts: [
+        { titleEn: 'TTD Annaprasadam Office & Helpline', titleTe: 'అన్నప్రసాదం సమాచార విభాగం', number: '08772264555' },
+        { titleEn: 'Emergency Helpline', titleTe: 'అత్యవసర హెల్ప్‌లైన్', number: '112' }
+      ]
+    };
+  }
+
+  // 2. Swami Pushkarini / Sacred Theertham Tanks
   if (
     placeId.includes('pushkarini') || 
     nameLower.includes('pushkarini') || 
