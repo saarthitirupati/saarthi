@@ -222,6 +222,77 @@ export const CURATED_LAYOUTS: Record<string, Partial<TempleLayoutData>> = {
     ]
   },
 
+  'srivari-museum': {
+    placeId: 'srivari-museum',
+    titleEn: 'Srivari Museum & TTD ₹125 Cr Modernization Project',
+    titleTe: 'శ్రీవారి మ్యూజియం & టీటీడీ ఆధునీకరణ ప్రాజెక్ట్',
+    layoutType: 'museum-gallery',
+    centerCoordinates: { lat: 13.6840, lng: 79.3433 },
+    routePath: [[430, 290], [270, 275], [170, 220], [270, 120], [380, 140]],
+    pins: [
+      {
+        id: 'parking',
+        nameEn: 'Central CRO Visitor Parking',
+        nameTe: 'సి.ఆర్.ఓ సెంట్రల్ పార్కింగ్',
+        category: 'parking',
+        lat: 13.6835,
+        lng: 79.3430,
+        svgX: 430,
+        svgY: 290,
+        descEn: 'Central Tirumala vehicle parking directly opposite the CRO office square.',
+        descTe: 'సి.ఆర్.ఓ కార్యాలయం ఎదురుగా ఉన్న వాహనాల పార్కింగ్ స్థలం.'
+      },
+      {
+        id: 'entry',
+        nameEn: 'Museum Welcome Arch & CRO Plaza',
+        nameTe: 'మ్యూజియం ప్రవేశ ద్వారం & ప్లాజా',
+        category: 'entry',
+        lat: 13.6838,
+        lng: 79.3432,
+        svgX: 270,
+        svgY: 275,
+        descEn: 'Main gateway facing the CRO office circle in central Tirumala.',
+        descTe: 'తిరుమల సి.ఆర్.ఓ కూడలి వద్ద ప్రధాన ప్రవేశం.'
+      },
+      {
+        id: 'project-desk',
+        nameEn: 'TTD ₹125 Cr Modernization Project Info',
+        nameTe: 'టీటీడీ ₹125 కోట్ల ఆధునీకరణ సమాచార బోర్డు',
+        category: 'info',
+        lat: 13.6839,
+        lng: 79.3431,
+        svgX: 170,
+        svgY: 220,
+        descEn: 'Project briefing on the upcoming 3D spiritual digital museum in collaboration with TCS.',
+        descTe: 'టీసీఎస్ సహకారంతో నిర్మిస్తున్న అత్యాధునిక 3D డిజిటల్ మ్యూజియం వివరాలు.'
+      },
+      {
+        id: 'sanctum',
+        nameEn: 'Srivari Museum Complex (Under Active Reconstruction)',
+        nameTe: 'శ్రీవారి మ్యూజియం కాంప్లెక్స్ (నిర్మాణ పనులలో ఉంది)',
+        category: 'sanctum',
+        lat: 13.6840,
+        lng: 79.3433,
+        svgX: 270,
+        svgY: 120,
+        descEn: 'The historic museum building currently undergoing comprehensive structural redevelopment and digital exhibition setup.',
+        descTe: 'ప్రస్తుతం పునర్నిర్మాణంలో ఉన్న ప్రధాన మ్యూజియం భవనం.'
+      },
+      {
+        id: 'future-gallery',
+        nameEn: 'Future 3D Immersive Spiritual Gallery Wing',
+        nameTe: 'నూతన 3D డిజిటల్ ఆధ్యాత్మిక ప్రదర్శన విభాగం',
+        category: 'info',
+        lat: 13.6842,
+        lng: 79.3435,
+        svgX: 380,
+        svgY: 140,
+        descEn: 'Upcoming state-of-the-art immersive halls showcasing Venkateswara Vaibhavam and sacred temple artifacts.',
+        descTe: 'శ్రీవారి వైభవాన్ని కళ్ళకు కట్టే నూతన డిజిటల్ గ్యాలరీ.'
+      }
+    ]
+  },
+
   'alipiri-padhala-mandapam': {
     placeId: 'alipiri-padhala-mandapam',
     titleEn: 'Alipiri Padhala Mandapam & Rajagopuram',

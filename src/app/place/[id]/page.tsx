@@ -243,6 +243,58 @@ export default function PlaceDetails() {
   // MODULAR SUB-BLOCKS (Rendered once, shared cleanly)
   // ═══════════════════════════════════════════════════
 
+  // 1. CLOSURE & RECONSTRUCTION ADVISORY BANNER
+  const closureAlertNode = place.isTemporarilyClosed ? (
+    <div style={{
+      backgroundColor: '#FFFBEB',
+      border: '1.5px solid #F59E0B',
+      borderRadius: '18px',
+      padding: '16px 18px',
+      boxShadow: '0 4px 14px rgba(245, 158, 11, 0.08)'
+    }}>
+      <div style={{ display: 'flex', alignItems: 'flex-start', gap: '12px' }}>
+        <div style={{
+          width: '36px',
+          height: '36px',
+          borderRadius: '10px',
+          backgroundColor: '#FEF3C7',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          fontSize: '18px',
+          flexShrink: 0
+        }}>
+          🚧
+        </div>
+        <div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px', flexWrap: 'wrap' }}>
+            <h3 style={{ fontSize: '15px', fontWeight: 900, color: '#92400E', margin: 0 }}>
+              {lang === 'te' ? 'తీర్థయాత్రికుల సమాచారం: పునర్నిర్మాణం & ఆధునీకరణ' : 'Pilgrim Advisory: Under Reconstruction & Modernization'}
+            </h3>
+            <span style={{
+              fontSize: '10.5px',
+              fontWeight: 800,
+              color: '#92400E',
+              backgroundColor: '#FDE68A',
+              padding: '2px 8px',
+              borderRadius: '12px'
+            }}>
+              {lang === 'te' ? 'తాత్కాలికంగా మూసివేయబడింది' : 'Temporarily Closed'}
+            </span>
+          </div>
+          <p style={{ fontSize: '13px', color: '#78350F', lineHeight: 1.5, margin: '0 0 6px' }}>
+            {lang === 'te' 
+              ? (place.closureNotice?.te || 'ఈ ప్రదేశం ప్రస్తుతం పునర్నిర్మాణం పనుల నిమిత్తం తాత్కాలికంగా మూసివేయబడింది.')
+              : (place.closureNotice?.en || 'TTD is transforming Srivari Museum into a ₹125+ Cr world-class digital immersive 3D heritage center in partnership with TCS. General visitor entry is temporarily closed during active reconstruction.')}
+          </p>
+          <div style={{ fontSize: '11.5px', fontWeight: 700, color: '#B45309' }}>
+            ℹ️ {lang === 'te' ? 'టీటీడీ పనులు పూర్తయిన తర్వాత పునఃప్రారంభ తేదీ ప్రకటించబడుతుంది.' : 'TTD will announce the grand reopening schedule once digital modernization is complete.'}
+          </div>
+        </div>
+      </div>
+    </div>
+  ) : null;
+
   // 2. QUICK FACTS
   const quickFactsNode = (
     <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '10px' }}>
@@ -1003,17 +1055,31 @@ export default function PlaceDetails() {
               <span>{place.rating || 4.8}</span>
             </span>
 
-            <span style={{
-              fontSize: '11px',
-              fontWeight: 800,
-              backgroundColor: isOpenNow ? 'rgba(34, 197, 94, 0.25)' : 'rgba(239, 68, 68, 0.25)',
-              color: isOpenNow ? '#86EFAC' : '#FCA5A5',
-              padding: '3px 9px',
-              borderRadius: '6px',
-              border: `1px solid ${isOpenNow ? 'rgba(134, 239, 172, 0.4)' : 'rgba(252, 165, 165, 0.4)'}`
-            }}>
-              ● {isOpenNow ? 'Open Now' : 'Closed Now'}
-            </span>
+            {place.isTemporarilyClosed ? (
+              <span style={{
+                fontSize: '11px',
+                fontWeight: 800,
+                backgroundColor: 'rgba(217, 119, 6, 0.35)',
+                color: '#FDE047',
+                padding: '3px 9px',
+                borderRadius: '6px',
+                border: '1px solid rgba(253, 224, 71, 0.6)'
+              }}>
+                🚧 {lang === 'te' ? 'పునర్నిర్మాణంలో ఉంది (మూసివేయబడింది)' : 'Under Reconstruction (Closed)'}
+              </span>
+            ) : (
+              <span style={{
+                fontSize: '11px',
+                fontWeight: 800,
+                backgroundColor: isOpenNow ? 'rgba(34, 197, 94, 0.25)' : 'rgba(239, 68, 68, 0.25)',
+                color: isOpenNow ? '#86EFAC' : '#FCA5A5',
+                padding: '3px 9px',
+                borderRadius: '6px',
+                border: `1px solid ${isOpenNow ? 'rgba(134, 239, 172, 0.4)' : 'rgba(252, 165, 165, 0.4)'}`
+              }}>
+                ● {isOpenNow ? 'Open Now' : 'Closed Now'}
+              </span>
+            )}
           </div>
 
           <h1 style={{
@@ -1047,6 +1113,7 @@ export default function PlaceDetails() {
           MOBILE FLOW (< 900px): Exact 1 -> 9 Pilgrim Order
           ═══════════════════════════════════════════════════ */}
       <div className="place-mobile-container">
+        {closureAlertNode}
         {quickFactsNode}
         {saarthiSuggestsNode}
         {ctaButtonsNode}
@@ -1063,6 +1130,7 @@ export default function PlaceDetails() {
       <div className="place-desktop-container">
         {/* Left Column: Sacred Heritage & Visuals */}
         <div className="place-desktop-main">
+          {closureAlertNode}
           {offlineMapNode}
           {aboutTempleNode}
           {heritageAccordionsNode}

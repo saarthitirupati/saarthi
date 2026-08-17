@@ -148,6 +148,9 @@ export interface Place {
 
   // Master Template v1.1 Operational & Classification Fields
   status?: OperationalStatus;
+  isTemporarilyClosed?: boolean;
+  operationalStatus?: string;
+  closureNotice?: { en: string; te: string };
   importanceLevel?: ImportanceTier;
   visitDifficulty?: VisitDifficulty;
   visitType?: VisitDurationType;
