@@ -154,6 +154,124 @@ export const CURATED_LAYOUTS: Record<string, Partial<TempleLayoutData>> = {
     ]
   },
 
+  'padmavathi': {
+    placeId: 'padmavathi',
+    titleEn: 'Sri Padmavathi Ammavari Temple (Tiruchanur) Precinct Map',
+    titleTe: 'శ్రీ పద్మావతి అమ్మవారి ఆలయం (తిరుచానూరు) ప్రాంగణ మ్యాప్',
+    layoutType: 'grand-temple',
+    centerCoordinates: { lat: 13.6068, lng: 79.4475 },
+    routePath: [[430, 290], [270, 275], [145, 255], [270, 205], [150, 130], [270, 90], [412, 105], [370, 190], [270, 275]],
+    pins: [
+      {
+        id: 'parking',
+        nameEn: 'Tiruchanur Temple Parking Bay',
+        nameTe: 'తిరుచానూరు ఆలయ పార్కింగ్',
+        category: 'parking',
+        lat: 13.6060,
+        lng: 79.4470,
+        svgX: 430,
+        svgY: 290,
+        descEn: 'TTD vehicle and bus parking area along temple entrance lane.',
+        descTe: 'వాహనాల పార్కింగ్ స్థలం.'
+      },
+      {
+        id: 'entry',
+        nameEn: 'Eastern Raja Gopuram Main Entrance',
+        nameTe: 'తూర్పు రాజగోపురం ప్రధాన ప్రవేశం',
+        category: 'entry',
+        lat: 13.6065,
+        lng: 79.4473,
+        svgX: 270,
+        svgY: 275,
+        descEn: 'Magnificent 7-tier entrance gopuram and covered queue mandapam.',
+        descTe: 'ఏడు అంతస్తుల రాజగోపురం మరియు క్యూ కాంప్లెక్స్.'
+      },
+      {
+        id: 'footwear',
+        nameEn: 'Free Footwear & Baggage Counter',
+        nameTe: 'ఉచిత పాదరక్షల & లగేజ్ కేంద్రం',
+        category: 'footwear',
+        lat: 13.6064,
+        lng: 79.4468,
+        svgX: 145,
+        svgY: 255,
+        descEn: 'Safe custody token counter for shoes and phones.',
+        descTe: 'చెప్పులు భద్రపరిచే కేంద్రం.'
+      },
+      {
+        id: 'dhwajasthambham',
+        nameEn: 'Dhwajasthambham & Balipeetham',
+        nameTe: 'ధ్వజస్తంభం & బలిపీఠం',
+        category: 'info',
+        lat: 13.6067,
+        lng: 79.4474,
+        svgX: 270,
+        svgY: 205,
+        descEn: 'Sacred golden flag mast facing Mother Padmavathi sanctum.',
+        descTe: 'ఆలయ అంతర ప్రాంగణంలోని పవిత్ర ధ్వజస్తంభం.'
+      },
+      {
+        id: 'sundararaja-shrine',
+        nameEn: 'Sri Sundararaja Swamy & Krishna Sub-Shrines',
+        nameTe: 'శ్రీ సుందరరాజ స్వామి & శ్రీ కృష్ణ సన్నిధి',
+        category: 'info',
+        lat: 13.6069,
+        lng: 79.4470,
+        svgX: 150,
+        svgY: 130,
+        descEn: 'Sub-shrines dedicated to Sri Sundararaja Swamy (Varadaraja) and Sri Krishna within the temple prakaram.',
+        descTe: 'ఆలయ ప్రాకారంలోని ఉపాలయాలు.'
+      },
+      {
+        id: 'sanctum',
+        nameEn: 'Sri Padmavathi Devi Garbhalayam (Sanctum)',
+        nameTe: 'శ్రీ పద్మావతి అమ్మవారి గర్భాలయం',
+        category: 'sanctum',
+        lat: 13.6070,
+        lng: 79.4475,
+        svgX: 270,
+        svgY: 90,
+        descEn: 'Presiding deity of Goddess Lakshmi manifested as Padmavathi, seated in Padmasana on a golden lotus holding two lotuses.',
+        descTe: 'స్వర్ణ పద్మాసనారూఢురాలైన పద్మావతి అమ్మవారి దివ్య దర్శనం.'
+      },
+      {
+        id: 'pushkarini',
+        nameEn: 'Padma Sarovaram (Holy Lotus Pushkarini)',
+        nameTe: 'పద్మ సరోవరం (పవిత్ర కోనేరు)',
+        category: 'info',
+        lat: 13.6072,
+        lng: 79.4482,
+        svgX: 412,
+        svgY: 105,
+        descEn: 'Sacred lake where Goddess Padmavathi emerged on a golden lotus. Devotees take theertha prokshana.',
+        descTe: 'అమ్మవారు స్వర్ణ కమలంలో ఉద్భవించిన పవిత్ర పద్మ సరోవరం.'
+      },
+      {
+        id: 'laddu',
+        nameEn: 'Kumkum Archana, Turmeric & TTD Laddu Prasadam',
+        nameTe: 'కుంకుమార్చన & లడ్డూ ప్రసాదం కౌంటర్',
+        category: 'laddu',
+        lat: 13.6067,
+        lng: 79.4478,
+        svgX: 370,
+        svgY: 190,
+        descEn: 'Collect blessed turmeric, kumkum packets, and fresh TTD Tiruchanur laddu prasadam.',
+        descTe: 'అమ్మవారి పవిత్ర కుంకుమ మరియు తిరుచానూరు లడ్డూ ప్రసాదం.'
+      }
+    ],
+    routeSteps: [
+      { stepNumber: 1, titleEn: 'Tiruchanur Arrival & Parking', titleTe: 'తిరుచానూరు పార్కింగ్ చేరుకోవడం', distance: '0.0 km', timeMins: 0, descEn: 'Park vehicle at the TTD parking bay.', descTe: 'వాహనాన్ని పార్క్ చేయండి.' },
+      { stepNumber: 2, titleEn: 'Raja Gopuram Entrance & Footwear', titleTe: 'రాజగోపురం & పాదరక్షల కేంద్రం', distance: '50m', timeMins: 2, descEn: 'Deposit shoes and enter through the 7-tier Raja Gopuram.', descTe: 'చెప్పులు విడిచి రాజగోపురం ద్వారా ప్రవేశించండి.' },
+      { stepNumber: 3, titleEn: 'Dhwajasthambham & Sundararaja Shrine', titleTe: 'ధ్వజస్తంభం & సుందరరాజ స్వామి సన్నిధి', distance: '80m', timeMins: 5, descEn: 'Offer prayers at the flag mast and visit Sri Sundararaja Swamy & Krishna shrines.', descTe: 'ధ్వజస్తంభ నమస్కారం మరియు ఉపాలయాల దర్శనం.' },
+      { stepNumber: 4, titleEn: 'Sri Padmavathi Devi Moolavirat Darshan', titleTe: 'శ్రీ పద్మావతి అమ్మవారి మూలవిరాట్టు దర్శనం', distance: '100m', timeMins: 20, descEn: 'Receive the divine compassion and prosperity blessings of Mother Padmavathi in the sanctum.', descTe: 'అమ్మవారి దివ్య గర్భాలయ దర్శనం మరియు ఆశీస్సులు.' },
+      { stepNumber: 5, titleEn: 'Padma Sarovaram & Prasadam', titleTe: 'పద్మ సరోవరం & ప్రసాదం కౌంటర్', distance: '120m', timeMins: 10, descEn: 'Sprinkle holy theertham from Padma Sarovaram and collect blessed Kumkum & Tiruchanur Laddu.', descTe: 'పద్మ సరోవర తీర్థం మరియు లడ్డూ ప్రసాదం పొందండి.' }
+    ],
+    emergencyContacts: [
+      { titleEn: 'TTD Tiruchanur Temple Information Office', titleTe: 'తిరుచానూరు ఆలయ సమాచార విభాగం', number: '08772264555' },
+      { titleEn: 'Emergency Helpline', titleTe: 'అత్యవసర హెల్ప్‌లైన్', number: '112' }
+    ]
+  },
+
   'srinivasa-mangapuram': {
     placeId: 'srinivasa-mangapuram',
     titleEn: 'Sri Kalyana Venkateswara Swamy Temple Precinct Map',
