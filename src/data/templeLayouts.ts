@@ -154,6 +154,338 @@ export const CURATED_LAYOUTS: Record<string, Partial<TempleLayoutData>> = {
     ]
   },
 
+  'srinivasa-mangapuram': {
+    placeId: 'srinivasa-mangapuram',
+    titleEn: 'Sri Kalyana Venkateswara Swamy Temple Precinct Map',
+    titleTe: 'శ్రీ కల్యాణ వేంకటేశ్వర స్వామి ఆలయ ప్రాంగణ మ్యాప్',
+    layoutType: 'ancient-shrine',
+    centerCoordinates: { lat: 13.6108, lng: 79.3277 },
+    routePath: [[430, 290], [270, 275], [145, 255], [270, 205], [150, 130], [270, 85], [395, 120], [395, 160], [270, 250]],
+    pins: [
+      {
+        id: 'parking',
+        nameEn: 'Temple Visitor Parking Complex',
+        nameTe: 'ఆలయ పార్కింగ్ సముదాయం',
+        category: 'parking',
+        lat: 13.6100,
+        lng: 79.3270,
+        svgX: 430,
+        svgY: 290,
+        descEn: 'Spacious four-wheeler and two-wheeler parking opposite the temple gopuram.',
+        descTe: 'రాజగోపురం ఎదురుగా ఉన్న వాహనాల పార్కింగ్ స్థలం.'
+      },
+      {
+        id: 'entry',
+        nameEn: 'Eastern Raja Gopuram Main Entrance',
+        nameTe: 'తూర్పు రాజగోపురం ప్రధాన ప్రవేశం',
+        category: 'entry',
+        lat: 13.6105,
+        lng: 79.3275,
+        svgX: 270,
+        svgY: 275,
+        descEn: 'Majestic 5-tier ancient Dravidian entrance tower.',
+        descTe: 'భవ్యం మరియు పురాతనమైన 5 అంతస్తుల రాజగోపురం.'
+      },
+      {
+        id: 'footwear',
+        nameEn: 'Free Footwear & Baggage Counter',
+        nameTe: 'ఉచిత పాదరక్షల భద్రతా కేంద్రం',
+        category: 'footwear',
+        lat: 13.6106,
+        lng: 79.3273,
+        svgX: 145,
+        svgY: 255,
+        descEn: 'Deposit shoes before entering the holy temple prakaram.',
+        descTe: 'ఆలయ ప్రాంగణంలోకి ప్రవేశించే ముందు చెప్పులు భద్రపరిచే కౌంటర్.'
+      },
+      {
+        id: 'dhwajasthambham',
+        nameEn: 'Dhwajasthambham & Balipeetham Flag Mast',
+        nameTe: 'ధ్వజస్తంభం & బలిపీఠం',
+        category: 'info',
+        lat: 13.6107,
+        lng: 79.3276,
+        svgX: 270,
+        svgY: 205,
+        descEn: 'Golden flag mast offering sashtanga namaskaram before sanctum darshan.',
+        descTe: 'ధ్వజస్తంభానికి సాష్టాంగ నమస్కారం ఆచరించే స్థలం.'
+      },
+      {
+        id: 'padmavathi-shrine',
+        nameEn: 'Sri Padmavathi Devi Sub-Shrine',
+        nameTe: 'శ్రీ పద్మావతి అమ్మవారి ఉపాలయం',
+        category: 'info',
+        lat: 13.6109,
+        lng: 79.3274,
+        svgX: 150,
+        svgY: 130,
+        descEn: 'Sanctum of Divine Mother Padmavathi in the inner parikrama corridor.',
+        descTe: 'ప్రాకార మండపంలో ఉన్న శ్రీ పద్మావతి దేవి సన్నిధి.'
+      },
+      {
+        id: 'sanctum',
+        nameEn: 'Sri Kalyana Venkateswara Swamy Garbhalayam',
+        nameTe: 'శ్రీ కల్యాణ వేంకటేశ్వర స్వామి మూలవిరాట్టు',
+        category: 'sanctum',
+        lat: 13.6110,
+        lng: 79.3277,
+        svgX: 270,
+        svgY: 85,
+        descEn: 'Presiding deity standing in grand Kalyana posture where Lord Venkateswara stayed after marriage. Devotees receive sacred Kalyana Kankanam.',
+        descTe: 'కల్యాణ వైభవ రూపంలో స్వామివారి దర్శనం - కల్యాణ కంకణాల ఆశీస్సులు.'
+      },
+      {
+        id: 'ranganatha-shrine',
+        nameEn: 'Sri Ranganatha Swamy Shrine',
+        nameTe: 'శ్రీ రంగనాథ స్వామి సన్నిధి',
+        category: 'info',
+        lat: 13.6109,
+        lng: 79.3280,
+        svgX: 395,
+        svgY: 120,
+        descEn: 'Sub-shrine dedicated to Lord Ranganatha in resting posture.',
+        descTe: 'శ్రీ రంగనాథ స్వామి వారి ఉపాలయం.'
+      },
+      {
+        id: 'laddu',
+        nameEn: 'Kalyana Kankanam & TTD Laddu Prasadam Counter',
+        nameTe: 'కల్యాణ కంకణం & లడ్డూ ప్రసాదం కౌంటర్',
+        category: 'laddu',
+        lat: 13.6107,
+        lng: 79.3279,
+        svgX: 395,
+        svgY: 160,
+        descEn: 'Collect sacred wedding thread (Kankanam) and fresh TTD laddu prasadam.',
+        descTe: 'స్వామివారి కల్యాణ కంకణం మరియు లడ్డూ ప్రసాదం పొందే కౌంటర్.'
+      }
+    ],
+    routeSteps: [
+      { stepNumber: 1, titleEn: 'Arrival & Temple Parking', titleTe: 'పార్కింగ్ చేరుకోవడం', distance: '0.0 km', timeMins: 0, descEn: 'Park vehicle in front of the Raja Gopuram.', descTe: 'రాజగోపురం ఎదురుగా వాహనాన్ని పార్క్ చేయండి.' },
+      { stepNumber: 2, titleEn: 'Raja Gopuram Entrance & Footwear', titleTe: 'రాజగోపురం & పాదరక్షల కేంద్రం', distance: '50m', timeMins: 2, descEn: 'Deposit shoes and enter through the 5-tier Gopuram.', descTe: 'చెప్పులు విడిచి రాజగోపురం గుండా ప్రవేశించండి.' },
+      { stepNumber: 3, titleEn: 'Dhwajasthambham & Padmavathi Shrine', titleTe: 'ధ్వజస్తంభం & పద్మావతి అమ్మవారి సన్నిధి', distance: '80m', timeMins: 5, descEn: 'Offer prayers at the flag mast and visit Mother Padmavathi shrine.', descTe: 'ధ్వజస్తంభ నమస్కారం మరియు అమ్మవారి దర్శనం.' },
+      { stepNumber: 4, titleEn: 'Sri Kalyana Venkateswara Swamy Darshan', titleTe: 'శ్రీ కల్యాణ వేంకటేశ్వర స్వామి దర్శనం', distance: '100m', timeMins: 15, descEn: 'Receive sanctum darshan of the Lord in divine wedding form and blessed Kalyana Kankanam.', descTe: 'స్వామివారి కల్యాణ వైభవ దర్శనం మరియు కల్యాణ కంకణాలు.' },
+      { stepNumber: 5, titleEn: 'Ranganatha Shrine & Laddu Prasadam Counter', titleTe: 'రంగనాథ సన్నిధి & లడ్డూ ప్రసాదం', distance: '120m', timeMins: 5, descEn: 'Visit Sri Ranganatha Swamy and collect fresh TTD laddu prasadam.', descTe: 'శ్రీ రంగనాథ స్వామి దర్శనం మరియు లడ్డూ ప్రసాదం పొందండి.' }
+    ],
+    emergencyContacts: [
+      { titleEn: 'TTD Srinivasa Mangapuram Temple Office', titleTe: 'శ్రీనివాస మంగాపురం ఆలయ విభాగం', number: '08772264555' },
+      { titleEn: 'Emergency Helpline', titleTe: 'అత్యవసర హెల్ప్‌లైన్', number: '112' }
+    ]
+  },
+
+  'appalayagunta-temple': {
+    placeId: 'appalayagunta-temple',
+    titleEn: 'Sri Prasanna Venkateswara Swamy Temple Precinct Map',
+    titleTe: 'శ్రీ ప్రసన్న వేంకటేశ్వర స్వామి ఆలయ ప్రాంగణ మ్యాప్',
+    layoutType: 'ancient-shrine',
+    centerCoordinates: { lat: 13.5463, lng: 79.5226 },
+    routePath: [[430, 290], [270, 275], [145, 255], [270, 205], [150, 130], [270, 85], [395, 120], [395, 160], [270, 250]],
+    pins: [
+      {
+        id: 'parking',
+        nameEn: 'Appalayagunta Temple Parking',
+        nameTe: 'అప్పలాయగుంట పార్కింగ్',
+        category: 'parking',
+        lat: 13.5458,
+        lng: 79.5220,
+        svgX: 430,
+        svgY: 290,
+        descEn: 'Parking area in front of the temple complex.',
+        descTe: 'ఆలయం ఎదురుగా ఉన్న పార్కింగ్ స్థలం.'
+      },
+      {
+        id: 'entry',
+        nameEn: 'Raja Gopuram Entrance',
+        nameTe: 'రాజగోపురం ప్రవేశం',
+        category: 'entry',
+        lat: 13.5460,
+        lng: 79.5223,
+        svgX: 270,
+        svgY: 275,
+        descEn: 'Ancient Dravidian temple entrance gopuram.',
+        descTe: 'ఆలయ ప్రధాన రాజగోపురం.'
+      },
+      {
+        id: 'footwear',
+        nameEn: 'Footwear Counter',
+        nameTe: 'పాదరక్షల కౌంటర్',
+        category: 'footwear',
+        lat: 13.5461,
+        lng: 79.5222,
+        svgX: 145,
+        svgY: 255,
+        descEn: 'Deposit shoes before entering.',
+        descTe: 'చెప్పులు భద్రపరిచే ప్రదేశం.'
+      },
+      {
+        id: 'dhwajasthambham',
+        nameEn: 'Dhwajasthambham Flag Mast',
+        nameTe: 'ధ్వజస్తంభం',
+        category: 'info',
+        lat: 13.5462,
+        lng: 79.5225,
+        svgX: 270,
+        svgY: 205,
+        descEn: 'Sacred temple flag mast in the outer courtyard.',
+        descTe: 'ఆలయ ధ్వజస్తంభం.'
+      },
+      {
+        id: 'anjaneya-shrine',
+        nameEn: 'Sri Anjaneya Swamy Sub-Shrine (Miraculous Healer)',
+        nameTe: 'శ్రీ ఆంజనేయ స్వామి సన్నిధి (వ్యాధి నివారణ)',
+        category: 'info',
+        lat: 13.5464,
+        lng: 79.5223,
+        svgX: 150,
+        svgY: 130,
+        descEn: 'Powerful Hanuman shrine famous for granting relief from chronic diseases and distress.',
+        descTe: 'వ్యాధి నివారణ ప్రసిద్ధి చెందిన శ్రీ హనుమాన్ సన్నిధి.'
+      },
+      {
+        id: 'sanctum',
+        nameEn: 'Sri Prasanna Venkateswara Swamy Garbhalayam (Abhaya Hasta)',
+        nameTe: 'శ్రీ ప్రసన్న వేంకటేశ్వర స్వామి (అభయ హస్తం)',
+        category: 'sanctum',
+        lat: 13.5465,
+        lng: 79.5226,
+        svgX: 270,
+        svgY: 85,
+        descEn: 'Presiding deity in unique Abhaya Hasta (blessing) posture.',
+        descTe: 'అభయ హస్త ముద్రలో దర్శనమిచ్చే స్వామివారి మూలవిరాట్టు.'
+      },
+      {
+        id: 'padmavathi-shrine',
+        nameEn: 'Sri Padmavathi Ammavari Shrine',
+        nameTe: 'శ్రీ పద్మావతి అమ్మవారి సన్నిధి',
+        category: 'info',
+        lat: 13.5464,
+        lng: 79.5229,
+        svgX: 395,
+        svgY: 120,
+        descEn: 'Sub-shrine for Sri Padmavathi Devi.',
+        descTe: 'శ్రీ పద్మావతి అమ్మవారి ఆలయం.'
+      },
+      {
+        id: 'laddu',
+        nameEn: 'TTD Prasadam Counter',
+        nameTe: 'టీటీడీ ప్రసాదం కౌంటర్',
+        category: 'laddu',
+        lat: 13.5462,
+        lng: 79.5228,
+        svgX: 395,
+        svgY: 160,
+        descEn: 'Fresh laddu and pulihora prasadam counter.',
+        descTe: 'లడ్డూ మరియు పులిహోర ప్రసాదాలు.'
+      }
+    ]
+  },
+
+  'narayanavanam': {
+    placeId: 'narayanavanam',
+    titleEn: 'Sri Kalyana Venkateswara Swamy Temple (Divine Wedding Site)',
+    titleTe: 'శ్రీ కల్యాణ వేంకటేశ్వర స్వామి ఆలయం (నారాయణవనం కల్యాణ వేదిక)',
+    layoutType: 'ancient-shrine',
+    centerCoordinates: { lat: 13.4184, lng: 79.5828 },
+    routePath: [[430, 290], [270, 275], [145, 255], [270, 205], [150, 130], [270, 85], [395, 120], [395, 160], [270, 250]],
+    pins: [
+      {
+        id: 'parking',
+        nameEn: 'Narayanavanam Temple Parking',
+        nameTe: 'నారాయణవనం పార్కింగ్',
+        category: 'parking',
+        lat: 13.4178,
+        lng: 79.5820,
+        svgX: 430,
+        svgY: 290,
+        descEn: 'Parking area opposite the historic temple gopuram.',
+        descTe: 'ఆలయ రాజగోపురం ఎదురుగా ఉన్న పార్కింగ్.'
+      },
+      {
+        id: 'entry',
+        nameEn: 'Vijayanagara Raja Gopuram Gateway',
+        nameTe: 'విజయనగర రాజగోపురం ప్రవేశం',
+        category: 'entry',
+        lat: 13.4180,
+        lng: 79.5824,
+        svgX: 270,
+        svgY: 275,
+        descEn: 'Towering Vijayanagara style entrance gateway built by King Akasa Raju.',
+        descTe: 'ఆకాశరాజు నిర్మించిన చారిత్రక రాజగోపురం.'
+      },
+      {
+        id: 'footwear',
+        nameEn: 'Footwear Counter',
+        nameTe: 'పాదరక్షల కౌంటర్',
+        category: 'footwear',
+        lat: 13.4181,
+        lng: 79.5822,
+        svgX: 145,
+        svgY: 255,
+        descEn: 'Shoe custody counter.',
+        descTe: 'చెప్పులు భద్రపరిచే ప్రదేశం.'
+      },
+      {
+        id: 'dhwajasthambham',
+        nameEn: 'Dhwajasthambham & Kalyanotsava Mandapam',
+        nameTe: 'ధ్వజస్తంభం & కల్యాణోత్సవ మండపం',
+        category: 'info',
+        lat: 13.4182,
+        lng: 79.5826,
+        svgX: 270,
+        svgY: 205,
+        descEn: 'Grand carved stone mandapam where Lord Venkateswara married Goddess Padmavathi.',
+        descTe: 'శ్రీవారి కల్యాణం జరిగిన పవిత్ర కల్యాణ మండపం.'
+      },
+      {
+        id: 'padmavathi-shrine',
+        nameEn: 'Sri Padmavathi Devi Mula Sannidhi',
+        nameTe: 'శ్రీ పద్మావతి దేవి మూల సన్నిధి',
+        category: 'info',
+        lat: 13.4185,
+        lng: 79.5825,
+        svgX: 150,
+        svgY: 130,
+        descEn: 'Shrine of Goddess Padmavathi at her birthplace/wedding site.',
+        descTe: 'అమ్మవారి పవిత్ర సన్నిధి.'
+      },
+      {
+        id: 'sanctum',
+        nameEn: 'Sri Kalyana Venkateswara Swamy Garbhalayam',
+        nameTe: 'శ్రీ కల్యాణ వేంకటేశ్వర స్వామి మూలవిరాట్టు',
+        category: 'sanctum',
+        lat: 13.4186,
+        lng: 79.5828,
+        svgX: 270,
+        svgY: 85,
+        descEn: 'Presiding deity in divine wedding splendour.',
+        descTe: 'కల్యాణ వైభవ రూపంలో స్వామివారి గర్భాలయం.'
+      },
+      {
+        id: 'agastheeswara-shrine',
+        nameEn: 'Sri Agastheeswara Swamy (Shiva) Sub-Shrine',
+        nameTe: 'శ్రీ అగస్త్యేశ్వర స్వామి (శివ) ఆలయం',
+        category: 'info',
+        lat: 13.4185,
+        lng: 79.5831,
+        svgX: 395,
+        svgY: 120,
+        descEn: 'Ancient Shiva temple installed by Sage Agastya within the complex.',
+        descTe: 'అగస్త్య మహర్షి ప్రతిష్టించిన శివాలయం.'
+      },
+      {
+        id: 'laddu',
+        nameEn: 'TTD Prasadam Counter',
+        nameTe: 'ప్రసాదం కౌంటర్',
+        category: 'laddu',
+        lat: 13.4183,
+        lng: 79.5830,
+        svgX: 395,
+        svgY: 160,
+        descEn: 'TTD laddu and temple holy prasadam.',
+        descTe: 'స్వామివారి ప్రసాదాల కౌంటర్.'
+      }
+    ]
+  },
+
   'silathoranam': {
     placeId: 'silathoranam',
     titleEn: 'Silathoranam Natural Geological Arch & Park',
@@ -1011,7 +1343,12 @@ export function getTempleLayout(placeInput: string | PlaceInputContext, fallback
   }
 
   // Check other curated layouts
-  const curatedKey = Object.keys(CURATED_LAYOUTS).find(k => k === placeId || placeId.includes(k) || k.includes(placeId) || nameLower.includes(k.replace('-', ' ')));
+  const curatedKey = Object.keys(CURATED_LAYOUTS).find(k => {
+    if (k === 'venkateswara') {
+      return placeId === 'venkateswara' || placeId === 'tirumala' || placeId === 'tirumala-temple' || placeId === 'tirumala-srivari-temple';
+    }
+    return k === placeId || placeId === k || (k.includes('-') && (placeId.includes(k) || k.includes(placeId)));
+  });
   if (curatedKey && CURATED_LAYOUTS[curatedKey]) {
     const curated = CURATED_LAYOUTS[curatedKey];
     return {
@@ -1026,12 +1363,12 @@ export function getTempleLayout(placeInput: string | PlaceInputContext, fallback
       sanctumNameTe: curated.sanctumNameTe || `${name} గర్భాలయం`,
       routePath: curated.routePath || [[430, 290], [270, 275], [145, 255], [270, 205], [150, 130], [270, 85], [395, 120], [395, 160], [270, 250]],
       pins: (curated.pins as MapPin[]) || [],
-      routeSteps: [
+      routeSteps: curated.routeSteps || [
         { stepNumber: 1, titleEn: 'Arrival & Parking Bay', titleTe: 'పార్కింగ్ చేరుకోవడం', distance: '0.0 km', timeMins: 0, descEn: 'Park vehicle and proceed to the main entrance.', descTe: 'వాహనాన్ని పార్క్ చేయండి.' },
         { stepNumber: 2, titleEn: 'Entrance & Exploration', titleTe: 'ప్రవేశం & సందర్శన', distance: '50m', timeMins: 2, descEn: 'Walk through the main walkway.', descTe: 'ప్రధాన మార్గం గుండా వెళ్ళండి.' },
         { stepNumber: 3, titleEn: 'Main Landmark & Blessings', titleTe: 'ప్రధాన కేంద్రం & దర్శనం', distance: '120m', timeMins: 10, descEn: 'Visit key highlights and view points.', descTe: 'కీలక ప్రదేశాలను సందర్శించండి.' }
       ],
-      emergencyContacts: [
+      emergencyContacts: curated.emergencyContacts || [
         { titleEn: 'Tourism / Information Desk', titleTe: 'సమాచార విభాగం', number: '08772264555' },
         { titleEn: 'Emergency Helpline', titleTe: 'అత్యవసర హెల్ప్‌లైన్', number: '112' }
       ]
