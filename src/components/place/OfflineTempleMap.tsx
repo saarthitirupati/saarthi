@@ -170,7 +170,53 @@ export default function OfflineTempleMap({
           {/* ═══════════════════════════════════════════════════
               ARCHITECTURAL BACKDROPS MATCHING SPECIFIC CATEGORIES
               ═══════════════════════════════════════════════════ */}
-          {layout.layoutType === 'annaprasadam-complex' ? (
+          {layout.layoutType === 'botanical-garden' ? (
+            /* 1. SACRED BOTANICAL GARDENS (Srivari Udyanavanam / TTD Flower Gardens) */
+            <g>
+              {/* Lush Garden Foundation */}
+              <rect x="35" y="25" width="470" height="285" rx="16" fill="#F2FAF2" stroke="#22C55E" strokeWidth="2" />
+
+              {/* Central Srivari Seva Flower Nursery Beds */}
+              <circle cx="270" cy="110" r="50" fill="#DCFCE7" stroke="#16A34A" strokeWidth="2" />
+              <circle cx="270" cy="110" r="32" fill="#FEF08A" stroke="#CA8A04" strokeWidth="1.5" />
+              <circle cx="270" cy="110" r="14" fill="#38BDF8" stroke="#0284C7" strokeWidth="1.2" />
+
+              {/* Colorful Flower Bed Petals / Rings */}
+              <circle cx="245" cy="110" r="5" fill="#EF4444" />
+              <circle cx="295" cy="110" r="5" fill="#EF4444" />
+              <circle cx="270" cy="85" r="5" fill="#F59E0B" />
+              <circle cx="270" cy="135" r="5" fill="#F59E0B" />
+
+              <circle cx="252" cy="92" r="4" fill="#EC4899" />
+              <circle cx="288" cy="92" r="4" fill="#EC4899" />
+              <circle cx="252" cy="128" r="4" fill="#8B5CF6" />
+              <circle cx="288" cy="128" r="4" fill="#8B5CF6" />
+
+              {/* Sacred Tulsi Polyhouses & Greenhouses (North-West) */}
+              <g transform="translate(85, 65)">
+                <rect x="0" y="0" width="85" height="60" rx="8" fill="#E0F2FE" stroke="#0284C7" strokeWidth="1.5" strokeDasharray="4 2" />
+                <line x1="0" y1="30" x2="85" y2="30" stroke="#38BDF8" strokeWidth="1" />
+                <line x1="42" y1="0" x2="42" y2="60" stroke="#38BDF8" strokeWidth="1" />
+              </g>
+
+              {/* Topiary Promenade & Shankha-Chakra Topiary (South-West) */}
+              <g transform="translate(100, 175)">
+                <rect x="0" y="0" width="120" height="50" rx="8" fill="#DCFCE7" stroke="#16A34A" strokeWidth="1.5" />
+                <circle cx="35" cy="25" r="12" fill="#22C55E" stroke="#15803D" strokeWidth="1.2" />
+                <circle cx="85" cy="25" r="12" fill="#22C55E" stroke="#15803D" strokeWidth="1.2" />
+              </g>
+
+              {/* Thomala Garland Making Pavilion (North-East) */}
+              <rect x="340" y="115" width="90" height="52" rx="8" fill="#FEF9C3" stroke="#CA8A04" strokeWidth="1.5" />
+
+              {/* Winding Paved Garden Walkway */}
+              <path d="M 270 270 Q 160 210 270 110 Q 380 110 380 160" fill="none" stroke="#CBD5E1" strokeWidth="16" strokeLinecap="round" strokeLinejoin="round" />
+              <path d="M 270 270 Q 160 210 270 110 Q 380 110 380 160" fill="none" stroke="#E2E8F0" strokeWidth="10" strokeDasharray="3 3" strokeLinecap="round" />
+
+              {/* Divya Udyanavanam Welcome Floral Gate (South) */}
+              <rect x="215" y="262" width="110" height="28" rx="6" fill="#15803D" stroke="#14532D" strokeWidth="1.5" />
+            </g>
+          ) : layout.layoutType === 'annaprasadam-complex' ? (
             /* 1. MATRUSRI TARIGONDA VENGAMAMBA ANNAPRASADAM COMPLEX */
             <g>
               {/* Complex Ground Foundation */}
@@ -507,6 +553,7 @@ export default function OfflineTempleMap({
             const label = lang === 'te' 
               ? (pin.nameTe.length > 14 ? pin.nameTe.split(' ')[0] : pin.nameTe)
               : (pin.category === 'sanctum' ? (
+                  layout.layoutType === 'botanical-garden' ? 'Flower Nursery' :
                   layout.layoutType === 'sacred-pushkarini' ? 'Holy Tank' :
                   layout.layoutType === 'geo-nature-park' ? 'Rock Arch' :
                   layout.layoutType === 'shopping-market' ? 'Main Bazaar' :
@@ -524,6 +571,7 @@ export default function OfflineTempleMap({
                  pin.category === 'parking' ? 'Parking' :
                  pin.category === 'medical' ? 'Medical' :
                  pin.category === 'safari' ? 'Safari' :
+                 layout.layoutType === 'botanical-garden' ? (pin.id.includes('topiary') ? 'Topiary Walk' : pin.id.includes('garland') ? 'Garland Pavilion' : 'Gardens') :
                  layout.layoutType === 'annaprasadam-complex' ? (pin.id.includes('kitchen') ? 'Mega Kitchen' : pin.id.includes('donor') ? 'Donor Desk' : 'Complex') :
                  layout.layoutType === 'sacred-pushkarini' ? (pin.id.includes('varaha') ? 'Varahaswamy' : pin.id.includes('way') ? 'Temple Walkway' : 'Ghats') :
                  layout.layoutType === 'geo-nature-park' ? (pin.id.includes('viewing') ? 'Viewing Deck' : 'Garden Path') :
@@ -536,6 +584,9 @@ export default function OfflineTempleMap({
                  layout.layoutType === 'wildlife-safari' ? 'Aviary' : 'Pushkarini');
 
             const icon = 
+              layout.layoutType === 'botanical-garden' && pin.category === 'sanctum' ? '🌸' :
+              layout.layoutType === 'botanical-garden' && pin.id.includes('topiary') ? '🌳' :
+              layout.layoutType === 'botanical-garden' && pin.id.includes('garland') ? '🌺' :
               layout.layoutType === 'annaprasadam-complex' && pin.category === 'food' ? '🍲' :
               layout.layoutType === 'annaprasadam-complex' && pin.id.includes('kitchen') ? '🍳' :
               layout.layoutType === 'annaprasadam-complex' && pin.id.includes('donor') ? '🌸' :

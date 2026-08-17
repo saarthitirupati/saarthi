@@ -33,6 +33,7 @@ export interface TempleLayoutData {
     | 'grand-temple' 
     | 'sacred-pushkarini'
     | 'annaprasadam-complex'
+    | 'botanical-garden'
     | 'hill-waterfall' 
     | 'wildlife-safari' 
     | 'heritage-fort' 
@@ -220,6 +221,77 @@ export const CURATED_LAYOUTS: Record<string, Partial<TempleLayoutData>> = {
         svgY: 140,
         descEn: 'Railed viewing platform for photography and viewing the geological strata.',
         descTe: 'శిలాతోరణాన్ని తిలకించేందుకు మరియు ఫోటోలు తీసుకునేందుకు వీక్షణ వేదిక.'
+      }
+    ]
+  },
+
+  'srivari-udyanavanam': {
+    placeId: 'srivari-udyanavanam',
+    titleEn: 'Srivari Udyanavanam (TTD Sacred Gardens)',
+    titleTe: 'శ్రీవారి ఉద్యానవనం (టీటీడీ దివ్య తోటలు)',
+    layoutType: 'botanical-garden',
+    centerCoordinates: { lat: 13.6905, lng: 79.3425 },
+    routePath: [[430, 290], [270, 275], [160, 200], [270, 110], [380, 140]],
+    pins: [
+      {
+        id: 'parking',
+        nameEn: 'Udyanavanam Visitor Parking Bay',
+        nameTe: 'ఉద్యానవనం పార్కింగ్ స్థలం',
+        category: 'parking',
+        lat: 13.6898,
+        lng: 79.3430,
+        svgX: 430,
+        svgY: 290,
+        descEn: 'Shaded vehicle parking area surrounded by flowering trees.',
+        descTe: 'వాహనాల పార్కింగ్ ప్రదేశం.'
+      },
+      {
+        id: 'entry',
+        nameEn: 'Divya Udyanavanam Floral Welcome Gateway',
+        nameTe: 'దివ్య ఉద్యానవనం పుష్ప ముఖద్వారం',
+        category: 'entry',
+        lat: 13.6901,
+        lng: 79.3427,
+        svgX: 270,
+        svgY: 275,
+        descEn: 'Main entrance archway leading into the sacred 460-acre horticulture gardens.',
+        descTe: 'పవిత్ర ఉద్యానవన ప్రధాన ప్రవేశ ద్వారం.'
+      },
+      {
+        id: 'topiary-walk',
+        nameEn: 'Shankha-Chakra Topiary & Promenade',
+        nameTe: 'శంఖ-చక్ర ఆకారాల సుందర మార్గం',
+        category: 'info',
+        lat: 13.6903,
+        lng: 79.3420,
+        svgX: 160,
+        svgY: 200,
+        descEn: 'Ornamental topiary plants shaped as Garuda, Shankha, Chakra, and lotus ponds with fountains.',
+        descTe: 'శంఖ చక్రాలు, గరుడ ఆకారాలలో తీర్చిదిద్దిన పచ్చని మొక్కలు.'
+      },
+      {
+        id: 'flower-beds',
+        nameEn: 'Sacred Srivari Seva Flower Beds & Tulsi Nursery',
+        nameTe: 'శ్రీవారి కైంకర్యాల పూలతోట & తులసి వనం',
+        category: 'sanctum',
+        lat: 13.6906,
+        lng: 79.3425,
+        svgX: 270,
+        svgY: 110,
+        descEn: 'Sacred polyhouses cultivating exclusive roses, jasmines, marigolds, and Krishna Tulasi strictly reserved for Lord Venkateswara’s daily sevas.',
+        descTe: 'శ్రీవారి నిత్య పూజలకు, అలంకరణకు ఉపయోగించే ప్రత్యేక పుష్పాల తోట.'
+      },
+      {
+        id: 'garland-pavilion',
+        nameEn: 'Thomala Garland Crafting Pavilion (Mala Mandapam)',
+        nameTe: 'తోమాల సేవా పూలమాలల తయారీ మండపం',
+        category: 'info',
+        lat: 13.6908,
+        lng: 79.3428,
+        svgX: 380,
+        svgY: 140,
+        descEn: 'Specialized pavilion where master artisans weave massive floral garlands for daily temple Alankarams.',
+        descTe: 'శ్రీవారికి సమర్పించే దివ్య తోమాల పూలమాలలను తయారుచేసే కేంద్రం.'
       }
     ]
   },
@@ -810,7 +882,40 @@ export function getTempleLayout(placeInput: string | PlaceInputContext, fallback
     };
   }
 
-  // 2. Swami Pushkarini / Sacred Theertham Tanks
+  // 2. Srivari Udyanavanam / Sacred Horticulture Flower Gardens
+  if (
+    placeId.includes('udyanavanam') || 
+    nameLower.includes('udyanavanam') || 
+    nameLower.includes('flower garden') || 
+    placeId === 'srivari-udyanavanam'
+  ) {
+    const curated = CURATED_LAYOUTS['srivari-udyanavanam']!;
+    return {
+      placeId,
+      titleEn: `${name} Precinct Map`,
+      titleTe: `${name} ప్రాంగణ మ్యాప్`,
+      layoutType: 'botanical-garden',
+      centerCoordinates: fallbackCoords || { lat: 13.6905, lng: 79.3425 },
+      defaultZoom: 17,
+      compassBearingDeg: 0,
+      sanctumNameEn: 'Sacred Seva Flower Nursery',
+      sanctumNameTe: 'శ్రీవారి పూలతోట & తులసి వనం',
+      routePath: curated.routePath || [[430, 290], [270, 275], [160, 200], [270, 110], [380, 140]],
+      pins: curated.pins as MapPin[],
+      routeSteps: [
+        { stepNumber: 1, titleEn: 'Arrival & Shaded Garden Parking', titleTe: 'పార్కింగ్ చేరుకోవడం', distance: '0.0 km', timeMins: 0, descEn: 'Park vehicle at the shaded Udyanavanam visitor lot.', descTe: 'వాహనాన్ని పార్క్ చేసి ఉద్యానవన ప్రవేశ ద్వారం వైపు వెళ్ళండి.' },
+        { stepNumber: 2, titleEn: 'Floral Welcome Gate & Topiary Walk', titleTe: 'పుష్ప ద్వారం & తోటలో నడక', distance: '40m', timeMins: 2, descEn: 'Enter through the flower arch and stroll past Shankha-Chakra topiary plants.', descTe: 'శంఖ చక్ర ఆకారాల పచ్చని మొక్కల నడుమ నడవండి.' },
+        { stepNumber: 3, titleEn: 'Sacred Flower Beds & Tulsi Polyhouses', titleTe: 'శ్రీవారి పూలతోటల దర్శనం', distance: '80m', timeMins: 15, descEn: 'Marvel at hundreds of varieties of roses, jasmines, and holy Tulasi reserved for Lord Venkateswara.', descTe: 'శ్రీవారి కైంకర్యాలకు ఉపయోగించే పవిత్ర పుష్పాల తోటలను తిలకించండి.' },
+        { stepNumber: 4, titleEn: 'Thomala Garland Making Pavilion', titleTe: 'తోమాల పూలమాలల తయారీ కేంద్రం', distance: '70m', timeMins: 10, descEn: 'Watch traditional garland making for daily temple Alankarams.', descTe: 'స్వామివారికి సమర్పించే దివ్య పూలమాలల తయారీని వీక్షించండి.' }
+      ],
+      emergencyContacts: [
+        { titleEn: 'TTD Horticulture & Garden Office', titleTe: 'టీటీడీ ఉద్యానవన సమాచార కేంద్రం', number: '08772264555' },
+        { titleEn: 'Emergency Helpline', titleTe: 'అత్యవసర హెల్ప్‌లైన్', number: '112' }
+      ]
+    };
+  }
+
+  // 3. Swami Pushkarini / Sacred Theertham Tanks
   if (
     placeId.includes('pushkarini') || 
     nameLower.includes('pushkarini') || 
