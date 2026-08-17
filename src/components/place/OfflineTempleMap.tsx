@@ -450,13 +450,18 @@ export default function OfflineTempleMap({
               <rect x="220" y="215" width="100" height="30" rx="6" fill="#D97706" stroke="#78350F" strokeWidth="1.5" />
             </g>
           ) : layout.layoutType === 'trek-trail' ? (
-            /* 7. SACRED FOOTPATH & TREK (Alipiri Mettu / Garuda Statue) */
+            /* 7. SACRED FOOTPATH & TREK (Srivari Mettu, Alipiri Mettu) */
             <g>
               <path d="M 20 180 Q 150 70 270 90 Q 390 60 520 160 L 520 320 L 20 320 Z" fill="#F4F8F4" stroke="#CBD5E1" strokeWidth="1.5" />
-              <path d="M 270 280 L 270 70" stroke="#CBD5E1" strokeWidth="20" strokeLinecap="round" />
-              <path d="M 270 280 L 270 70" stroke="#E2E8F0" strokeWidth="14" strokeDasharray="3 3" />
-              <rect x="235" y="145" width="70" height="30" rx="6" fill="#E0E7FF" stroke="#4F46E5" strokeWidth="1.5" />
-              <rect x="240" y="55" width="60" height="30" rx="6" fill="#FEF3C7" stroke="#D97706" strokeWidth="1.5" />
+              {/* Stepped mountain path */}
+              <path d="M 270 280 L 270 65" stroke="#CBD5E1" strokeWidth="22" strokeLinecap="round" />
+              <path d="M 270 280 L 270 65" stroke="#E2E8F0" strokeWidth="16" strokeDasharray="3 3" />
+              {/* Midpoint Rest Mandapam */}
+              <rect x="230" y="122" width="80" height="28" rx="6" fill="#E0E7FF" stroke="#4F46E5" strokeWidth="1.5" />
+              {/* Hilltop Summit Terminal Pavilion */}
+              <rect x="235" y="50" width="70" height="30" rx="6" fill="#FEF3C7" stroke="#D97706" strokeWidth="1.5" />
+              {/* Footwear / Luggage Shed (West) */}
+              <rect x="105" y="228" width="80" height="32" rx="6" fill="#F1F5F9" stroke="#64748B" strokeWidth="1.2" />
             </g>
           ) : layout.layoutType === 'hill-waterfall' ? (
             /* 8. HILL & WATERFALL (Kapila Theertham, Talakona, Kailasakona) */
@@ -585,11 +590,15 @@ export default function OfflineTempleMap({
                    pin.id.includes('inscription') ? 'Inscriptions' : 'Courtyard'
                  ) :
                  layout.layoutType === 'city-shrine' ? 'Dhwajasthambham' :
-                 layout.layoutType === 'trek-trail' ? 'Waypoint' :
+                 layout.layoutType === 'trek-trail' ? (pin.id.includes('token') ? 'Token Counter' : (pin.id.includes('rest') || pin.id.includes('mandapam') || pin.id.includes('midpoint') ? 'Rest Mandapam' : 'Trail Waypoint')) :
                  layout.layoutType === 'hill-waterfall' ? 'Viewpoint' :
                  layout.layoutType === 'wildlife-safari' ? 'Aviary' : 'Pushkarini');
 
             const icon = 
+              layout.layoutType === 'trek-trail' && pin.category === 'sanctum' ? '🏔️' :
+              layout.layoutType === 'trek-trail' && pin.id.includes('token') ? '🎟️' :
+              layout.layoutType === 'trek-trail' && pin.id.includes('footwear') ? '🎒' :
+              layout.layoutType === 'trek-trail' && (pin.id.includes('rest') || pin.id.includes('mandapam') || pin.id.includes('midpoint')) ? '🏛️' :
               layout.layoutType === 'botanical-garden' && pin.category === 'sanctum' ? '🌸' :
               layout.layoutType === 'botanical-garden' && pin.id.includes('topiary') ? '🌳' :
               layout.layoutType === 'botanical-garden' && pin.id.includes('garland') ? '🌺' :

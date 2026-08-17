@@ -272,6 +272,100 @@ export const CURATED_LAYOUTS: Record<string, Partial<TempleLayoutData>> = {
     ]
   },
 
+  'srivari-mettu-path': {
+    placeId: 'srivari-mettu-path',
+    titleEn: 'Srivari Mettu Footpath Trail Precinct Map',
+    titleTe: 'శ్రీవారి మెట్టు నడక మార్గం ప్రాంగణ మ్యాప్',
+    layoutType: 'trek-trail',
+    centerCoordinates: { lat: 13.6338, lng: 79.3308 },
+    routePath: [[430, 290], [270, 275], [145, 245], [270, 200], [270, 135], [270, 65]],
+    pins: [
+      {
+        id: 'parking',
+        nameEn: 'Srivari Mettu Base Parking Plaza',
+        nameTe: 'శ్రీవారి మెట్టు బేస్ పార్కింగ్',
+        category: 'parking',
+        lat: 13.6330,
+        lng: 79.3300,
+        svgX: 430,
+        svgY: 290,
+        descEn: 'Spacious four-wheeler, two-wheeler parking, and taxi drop stand at trail base.',
+        descTe: 'నడక మార్గం వద్ద వాహనాల పార్కింగ్ స్థలం.'
+      },
+      {
+        id: 'entry',
+        nameEn: 'Srivari Mettu Path Entrance Arch (Step 1)',
+        nameTe: 'శ్రీవారి మెట్టు ప్రారంభ ద్వారం (మొదటి మెట్టు)',
+        category: 'entry',
+        lat: 13.6334,
+        lng: 79.3305,
+        svgX: 270,
+        svgY: 275,
+        descEn: 'Sacred entrance archway and the 1st step of the 2,388 steps pedestrian trail to Tirumala.',
+        descTe: 'తిరుమల 2,388 మెట్ల నడక మార్గం ప్రారంభ ద్వారం.'
+      },
+      {
+        id: 'footwear',
+        nameEn: 'Free TTD Luggage & Footwear Transfer Depot',
+        nameTe: 'ఉచిత లగేజ్ & పాదరక్షల రవాణా కేంద్రం',
+        category: 'footwear',
+        lat: 13.6335,
+        lng: 79.3303,
+        svgX: 145,
+        svgY: 245,
+        descEn: 'Free TTD baggage delivery counter that transfers your bags directly to Tirumala hilltop.',
+        descTe: 'ఉచిత లగేజ్ కేంద్రం - మీ బ్యాగులను కొండపైకి చేరవేస్తుంది.'
+      },
+      {
+        id: 'token-checkpoint',
+        nameEn: 'Divya Darshanam (SSD) Token & Biometric Checkpoint (Step 500)',
+        nameTe: 'దివ్య దర్శనం టోకెన్ & బయోమెట్రిక్ కౌంటర్ (500వ మెట్టు)',
+        category: 'info',
+        lat: 13.6337,
+        lng: 79.3308,
+        svgX: 270,
+        svgY: 200,
+        descEn: 'TTD Divya Darshan token issuance & biometric stamping point for walking pilgrims.',
+        descTe: 'పాదచారులకు దివ్య దర్శన టోకెన్లు ఇచ్చే కేంద్రం.'
+      },
+      {
+        id: 'rest-mandapam',
+        nameEn: 'Midpoint Resting Pavilion & RO Water Stalls (Step 1,200)',
+        nameTe: 'మధ్య విశ్రాంతి మండపం & తాగునీటి కేంద్రం (1200వ మెట్టు)',
+        category: 'info',
+        lat: 13.6342,
+        lng: 79.3312,
+        svgX: 270,
+        svgY: 135,
+        descEn: 'Sheltered rest mandapam with free RO drinking water, restrooms, and medical first-aid.',
+        descTe: 'విశ్రాంతి మండపం, తాగునీరు మరియు ప్రథమ చికిత్స కేంద్రం.'
+      },
+      {
+        id: 'sanctum',
+        nameEn: 'Tirumala Summit Terminal & Srivari Padalu (Step 2,388)',
+        nameTe: 'తిరుమల కొండపై ముగింపు & శ్రీవారి పాదాలు (2388వ మెట్టు)',
+        category: 'sanctum',
+        lat: 13.6348,
+        lng: 79.3318,
+        svgX: 270,
+        svgY: 65,
+        descEn: 'Final 2,388th step joining Tirumala ring road, luggage collection center, and Srivari Temple entry.',
+        descTe: 'కొండపై నడక మార్గం ముగింపు మరియు లగేజ్ సేకరణ కేంద్రం.'
+      }
+    ],
+    routeSteps: [
+      { stepNumber: 1, titleEn: 'Base Arrival & Parking', titleTe: 'పార్కింగ్ చేరుకోవడం', distance: '0.0 km', timeMins: 0, descEn: 'Park vehicle at Srivari Mettu base.', descTe: 'వాహనాన్ని పార్క్ చేయండి.' },
+      { stepNumber: 2, titleEn: 'Free Luggage Handover', titleTe: 'లగేజ్ కౌంటర్ వద్ద ఇవ్వడం', distance: '50m', timeMins: 3, descEn: 'Deposit heavy bags for free TTD vehicle transfer to Tirumala.', descTe: 'లగేజ్‌ను ఉచిత బస్సు రవాణా కోసం ఇవ్వండి.' },
+      { stepNumber: 3, titleEn: 'Entrance & Divya Darshan Token (Step 500)', titleTe: 'ప్రారంభం & టోకెన్ పొందడం', distance: '300m', timeMins: 15, descEn: 'Pass entrance arch and scan biometric at Step 500.', descTe: '500వ మెట్టు వద్ద టోకెన్ బయోమెట్రిక్ చేయించుకోండి.' },
+      { stepNumber: 4, titleEn: 'Midway Rest Mandapam (Step 1,200)', titleTe: 'విశ్రాంతి మండపం (1200వ మెట్టు)', distance: '800m', timeMins: 35, descEn: 'Take a short break and refill water bottles.', descTe: 'తాగునీరు తాగి కాసేపు విశ్రాంతి తీసుకోండి.' },
+      { stepNumber: 5, titleEn: 'Tirumala Summit Arrival (Step 2,388)', titleTe: 'తిరుమల శిఖరం చేరుకోవడం (2388వ మెట్టు)', distance: '1.0 km', timeMins: 45, descEn: 'Reach Tirumala summit, collect luggage, and proceed to Srivari Temple.', descTe: 'కొండపై లగేజ్ తీసుకుని శ్రీవారి దర్శనానికి వెళ్ళండి.' }
+    ],
+    emergencyContacts: [
+      { titleEn: 'TTD Srivari Mettu Toll / Security Post', titleTe: 'శ్రీవారి మెట్టు భద్రతా విభాగం', number: '08772264555' },
+      { titleEn: 'Emergency Helpline', titleTe: 'అత్యవసర హెల్ప్‌లైన్', number: '112' }
+    ]
+  },
+
   'srinivasa-mangapuram': {
     placeId: 'srinivasa-mangapuram',
     titleEn: 'Sri Kalyana Venkateswara Swamy Temple Precinct Map',
@@ -2051,13 +2145,13 @@ export function getTempleLayout(placeInput: string | PlaceInputContext, fallback
       { id: 'sanctum', nameEn: `${name} Sanctum`, nameTe: `${name} గర్భాలయం`, category: 'sanctum', lat: baseLat, lng: baseLng, svgX: 270, svgY: 105, descEn: 'Sacred inner sanctum sanctorum and deity idol.', descTe: 'ప్రధాన గర్భాలయం మరియు మూలవిరాట్టు.' }
     ];
   } else if (layoutType === 'trek-trail') {
-    generatedRoute = [[430, 290], [270, 275], [170, 230], [270, 160], [270, 70]];
+    generatedRoute = [[430, 290], [270, 275], [145, 245], [270, 145], [270, 65]];
     generatedPins = [
       { id: 'parking', nameEn: 'Trailhead Parking Plaza', nameTe: 'పార్కింగ్ ప్రదేశం', category: 'parking', lat: baseLat - 0.0012, lng: baseLng + 0.0008, svgX: 430, svgY: 290, descEn: 'Vehicle parking and taxi drop zone.', descTe: 'వాహనాల పార్కింగ్ స్థలం.' },
       { id: 'entry', nameEn: `${name} Entrance Gateway`, nameTe: `${name} ప్రారంభ ముఖద్వారం`, category: 'entry', lat: baseLat - 0.0006, lng: baseLng, svgX: 270, svgY: 275, descEn: 'Iconic gateway and starting point of the pedestrian trail.', descTe: 'నడక మార్గ ప్రారంభ ద్వారం.' },
-      { id: 'footwear', nameEn: 'Luggage & Footwear Transfer Depot', nameTe: 'లగేజ్ & పాదరక్షల కేంద్రం', category: 'footwear', lat: baseLat - 0.0004, lng: baseLng - 0.0005, svgX: 170, svgY: 230, descEn: 'Free luggage delivery to the hilltop.', descTe: 'ఉచిత లగేజ్ రవాణా కౌంటర్.' },
-      { id: 'sanctum', nameEn: 'Sacred Waypoint / Mandapam', nameTe: 'పవిత్ర మండపం', category: 'sanctum', lat: baseLat + 0.0004, lng: baseLng, svgX: 270, svgY: 160, descEn: 'Sheltered resting mandapam and deity darshan.', descTe: 'తాగునీరు మరియు దర్శనం.' },
-      { id: 'info', nameEn: 'Hilltop Summit Trailhead', nameTe: 'కొండపై ముగింపు కేంద్రం', category: 'info', lat: baseLat + 0.0010, lng: baseLng, svgX: 270, svgY: 70, descEn: 'Continuation of the scenic walking trail.', descTe: 'నడక మార్గం ముగింపు ప్రదేశం.' }
+      { id: 'footwear', nameEn: 'Luggage & Footwear Transfer Depot', nameTe: 'లగేజ్ & పాదరక్షల కేంద్రం', category: 'footwear', lat: baseLat - 0.0004, lng: baseLng - 0.0005, svgX: 145, svgY: 245, descEn: 'Free luggage delivery to the hilltop.', descTe: 'ఉచిత లగేజ్ రవాణా కౌంటర్.' },
+      { id: 'midpoint', nameEn: 'Sacred Rest Mandapam / Waypoint', nameTe: 'విశ్రాంతి మండపం & తాగునీరు', category: 'info', lat: baseLat + 0.0004, lng: baseLng, svgX: 270, svgY: 145, descEn: 'Sheltered resting mandapam and free RO drinking water.', descTe: 'తాగునీరు మరియు విశ్రాంతి ప్రదేశం.' },
+      { id: 'sanctum', nameEn: `${name} Summit Terminal`, nameTe: `${name} కొండపై ముగింపు కేంద్రం`, category: 'sanctum', lat: baseLat + 0.0010, lng: baseLng, svgX: 270, svgY: 65, descEn: 'Tirumala summit arrival and continuation to the temple.', descTe: 'కొండపై నడక మార్గం ముగింపు ప్రదేశం.' }
     ];
   } else if (layoutType === 'shopping-market') {
     generatedRoute = [[430, 290], [270, 280], [170, 200], [270, 120], [380, 160]];
