@@ -6,6 +6,7 @@ import Link from 'next/link';
 import Logo from '@/components/Logo/Logo';
 import { useLanguage } from '@/lib/useLanguage';
 import { detectCoordinates } from '@/lib/location';
+import { playTempleBellChime } from '@/lib/audioBell';
 
 const TEXTS: Record<string, any> = {
   en: {
@@ -552,6 +553,27 @@ export function HomeHero({ userName, locationName, weatherTemp, liveStatus, acti
     }
   };
 
+  const [showBlessing, setShowBlessing] = useState(false);
+  const [isChanting, setIsChanting] = useState(false);
+  const [chantCount, setChantCount] = useState<number>(() => {
+    if (typeof window !== 'undefined') {
+      return parseInt(localStorage.getItem('srivari_chant_count') || '1', 10);
+    }
+    return 1;
+  });
+
+  const handleChantTap = () => {
+    playTempleBellChime();
+    setIsChanting(true);
+    const nextCount = chantCount + 1;
+    setChantCount(nextCount);
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('srivari_chant_count', nextCount.toString());
+    }
+    setShowBlessing(true);
+    setTimeout(() => setIsChanting(false), 350);
+  };
+
   const scenario = getSaarthiDecisionScenario();
   const todayDateStr = new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'short' });
 
@@ -758,23 +780,33 @@ export function HomeHero({ userName, locationName, weatherTemp, liveStatus, acti
         {!hideHeader && (
           <>
             {/* Devotional Invocation & Weather Bar */}
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '10px' }}>
-              <div style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '6px',
-                padding: '3px 8px',
-                borderRadius: '14px',
-                background: '#FEF9C3',
-                border: '1px solid #FDE047',
-                fontSize: '10.5px',
-                fontWeight: 800,
-                color: '#854D0E',
-                letterSpacing: '0.2px'
-              }}>
-                <Sparkles size={11} color="#CA8A04" />
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '10px', position: 'relative' }}>
+              <button
+                type="button"
+                onClick={handleChantTap}
+                aria-label={lang === 'te' ? 'ఓం నమో వేంకటేశాయ జపించండి మరియు ఆశీస్సులు పొందండి' : 'Chant Om Namo Venkatesaya & receive divine blessings'}
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '6px',
+                  padding: '4px 10px',
+                  borderRadius: '16px',
+                  background: 'linear-gradient(135deg, #FFFBEB 0%, #FEF3C7 50%, #FDE68A 100%)',
+                  border: '1px solid rgba(245, 158, 11, 0.45)',
+                  boxShadow: '0 2px 8px rgba(245, 158, 11, 0.18)',
+                  fontSize: '11px',
+                  fontWeight: 800,
+                  color: '#78350F',
+                  letterSpacing: '0.1px',
+                  cursor: 'pointer',
+                  transform: isChanting ? 'scale(0.95)' : 'scale(1)',
+                  transition: 'all 0.2s cubic-bezier(0.16, 1, 0.3, 1)',
+                  userSelect: 'none'
+                }}
+              >
+                <Sparkles size={12} color="#D97706" style={{ animation: isChanting ? 'spin 0.4s ease' : 'none' }} />
                 <span>{lang === 'te' ? 'ఓం నమో వేంకటేశాయ' : 'Om Namo Venkatesaya'}</span>
-              </div>
+              </button>
 
               <div style={{ display: 'flex', alignItems: 'center', gap: '5px', fontSize: '11.5px', fontWeight: 600, color: '#64748B' }}>
                 <span>{todayDateStr}</span>
@@ -782,6 +814,37 @@ export function HomeHero({ userName, locationName, weatherTemp, liveStatus, acti
                 <Sun size={12} color="#D97706" />
                 <span>{weatherTemp || '26°C'}</span>
               </div>
+
+              {/* 🪔 Floating Sacred Blessing Toast */}
+              {showBlessing && (
+                <div style={{
+                  position: 'absolute',
+                  top: '32px',
+                  left: '0',
+                  zIndex: 40,
+                  background: 'linear-gradient(135deg, #1E1B4B 0%, #0F172A 100%)',
+                  color: '#FFFFFF',
+                  borderRadius: '14px',
+                  padding: '10px 14px',
+                  boxShadow: '0 10px 25px -3px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(245, 158, 11, 0.3)',
+                  maxWidth: '280px',
+                  animation: 'fadeIn 0.2s ease-out'
+                }}>
+                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '4px' }}>
+                    <span style={{ fontSize: '11px', fontWeight: 800, color: '#FDE047', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
+                      {lang === 'te' ? '✨ శ్రీవారి దివ్య ఆశీర్వచనం' : '✨ Srivari Divine Blessing'}
+                    </span>
+                    <span style={{ fontSize: '10px', color: '#94A3B8' }}>
+                      {lang === 'te' ? `జపం #${chantCount}` : `Chant #${chantCount}`}
+                    </span>
+                  </div>
+                  <p style={{ margin: 0, fontSize: '12px', lineHeight: 1.35, color: '#F1F5F9', fontWeight: 500 }}>
+                    {lang === 'te' 
+                      ? 'గోవిందా! శ్రీ వేంకటేశ్వర స్వామివారి దివ్య కృపాకటాక్షాలు మీకు మరియు మీ కుటుంబానికి ఎల్లప్పుడూ ఉండుగాక.'
+                      : 'Govinda! May Lord Venkateswara shower peace, health, and auspicious blessings upon your pilgrimage.'}
+                  </p>
+                </div>
+              )}
             </div>
 
             {/* Personalized Greeting */}
