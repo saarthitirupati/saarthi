@@ -555,6 +555,7 @@ export function HomeHero({ userName, locationName, weatherTemp, liveStatus, acti
 
   const [showBlessing, setShowBlessing] = useState(false);
   const [isChanting, setIsChanting] = useState(false);
+  const blessingTimerRef = React.useRef<NodeJS.Timeout | null>(null);
   const [chantCount, setChantCount] = useState<number>(() => {
     if (typeof window !== 'undefined') {
       return parseInt(localStorage.getItem('srivari_chant_count') || '1', 10);
@@ -571,8 +572,23 @@ export function HomeHero({ userName, locationName, weatherTemp, liveStatus, acti
       localStorage.setItem('srivari_chant_count', nextCount.toString());
     }
     setShowBlessing(true);
-    setTimeout(() => setIsChanting(false), 350);
+    setTimeout(() => setIsChanting(false), 300);
+
+    if (blessingTimerRef.current) {
+      clearTimeout(blessingTimerRef.current);
+    }
+    blessingTimerRef.current = setTimeout(() => {
+      setShowBlessing(false);
+    }, 2000);
   };
+
+  React.useEffect(() => {
+    return () => {
+      if (blessingTimerRef.current) {
+        clearTimeout(blessingTimerRef.current);
+      }
+    };
+  }, []);
 
   const scenario = getSaarthiDecisionScenario();
   const todayDateStr = new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'short' });
