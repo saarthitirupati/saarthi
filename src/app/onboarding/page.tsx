@@ -249,15 +249,15 @@ export default function OnboardingPage() {
               style={{ width: '100%', boxSizing: 'border-box' }}
             >
               <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%' }}>
-                <div style={{ display: 'flex', justifyContent: 'center', margin: '4px 0 8px 0' }}>
-                  <Logo size={48} />
+                <div style={{ display: 'flex', justifyContent: 'center', margin: '2px 0 6px 0' }}>
+                  <Logo size={42} />
                 </div>
 
-                <div style={{ textAlign: 'center', marginBottom: '14px' }}>
-                  <h1 style={{ fontSize: '19px', fontWeight: 900, color: '#0F172A', margin: '0 0 4px 0', letterSpacing: '-0.02em', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}>
+                <div style={{ textAlign: 'center', marginBottom: '12px' }}>
+                  <h1 style={{ fontSize: '18px', fontWeight: 900, color: '#0F172A', margin: '0 0 3px 0', letterSpacing: '-0.02em', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}>
                     <Globe size={18} style={{ color: '#0F5132' }} /> {t.selectLanguage}
                   </h1>
-                  <p style={{ fontSize: '12.5px', color: '#64748B', lineHeight: 1.35, margin: 0 }}>
+                  <p style={{ fontSize: '12px', color: '#64748B', lineHeight: 1.3, margin: 0 }}>
                     {t.selectLanguageSub}
                   </p>
                 </div>
@@ -271,6 +271,10 @@ export default function OnboardingPage() {
                         onClick={() => {
                           setSelectedLanguage(lang.code);
                           localStorage.setItem('saarthi_user_language', lang.code);
+                          // 1-tap quick progression if re-tapped or directly clicked
+                          if (isSelected) {
+                            nextStep();
+                          }
                         }}
                         whileHover={{ scale: 1.01 }}
                         whileTap={{ scale: 0.98 }}
@@ -279,10 +283,10 @@ export default function OnboardingPage() {
                           alignItems: 'center',
                           justifyContent: 'space-between',
                           padding: '13px 16px',
-                          borderRadius: '16px',
-                          background: isSelected ? 'rgba(15, 81, 50, 0.04)' : '#FFFFFF',
+                          borderRadius: '18px',
+                          background: isSelected ? '#F0FDF4' : '#FFFFFF',
                           border: isSelected ? '2px solid #0F5132' : '1px solid #E2E8F0',
-                          boxShadow: isSelected ? '0 4px 16px rgba(15, 81, 50, 0.12)' : '0 2px 8px rgba(0,0,0,0.03)',
+                          boxShadow: isSelected ? '0 4px 18px rgba(15, 81, 50, 0.14)' : '0 2px 8px rgba(0,0,0,0.03)',
                           cursor: 'pointer',
                           textAlign: 'left',
                           transition: 'all 0.2s cubic-bezier(0.4, 0, 0.2, 1)',
@@ -293,13 +297,15 @@ export default function OnboardingPage() {
                         <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
                           <span style={{ fontSize: '20px' }}>{lang.flag}</span>
                           <div>
-                            <div style={{ fontSize: '15px', fontWeight: 800, color: '#0F172A' }}>{lang.nativeName}</div>
-                            <div style={{ fontSize: '11.5px', fontWeight: 600, color: isSelected ? '#0F5132' : '#64748B', marginTop: '1px' }}>{lang.subText}</div>
+                            <div style={{ fontSize: '15px', fontWeight: 900, color: '#0F172A' }}>{lang.nativeName}</div>
+                            <div style={{ fontSize: '11.5px', fontWeight: 700, color: isSelected ? '#0F5132' : '#64748B', marginTop: '1px' }}>
+                              {isSelected ? (lang.code === 'te' ? 'తెలుగులో కొనసాగండి →' : 'Continue in English →') : lang.subText}
+                            </div>
                           </div>
                         </div>
                         <div style={{
-                          width: '20px',
-                          height: '20px',
+                          width: '22px',
+                          height: '22px',
                           borderRadius: '50%',
                           border: isSelected ? 'none' : '2px solid #CBD5E1',
                           background: isSelected ? '#0F5132' : 'transparent',
@@ -308,7 +314,7 @@ export default function OnboardingPage() {
                           justifyContent: 'center',
                           flexShrink: 0
                         }}>
-                          {isSelected && <Check size={12} color="#FFFFFF" strokeWidth={3} />}
+                          {isSelected && <Check size={13} color="#FFFFFF" strokeWidth={3} />}
                         </div>
                       </motion.button>
                     );
@@ -342,7 +348,7 @@ export default function OnboardingPage() {
                     justifyContent: 'center',
                     gap: '8px',
                     borderRadius: '16px',
-                    padding: '13px 20px',
+                    padding: '12px 18px',
                     background: '#0F5132',
                     color: '#FFFFFF',
                     boxShadow: '0 8px 24px rgba(15, 81, 50, 0.25)',

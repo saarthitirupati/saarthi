@@ -41,7 +41,7 @@ export interface PlaceRecommendationContext {
 
 export interface PlaceSearchIntelligence {
   aliases: string[];
-  tags: string[];
+  tags?: string[];
   intentQueries: string[];
   misspellings?: string[];
 }
@@ -216,6 +216,7 @@ export interface Place {
   approxBikeCost?: string;
 
   images?: string[];
+  gallery?: string[];
   visitorTips?: {
     dressCode?: string;
     crowdNote?: string;

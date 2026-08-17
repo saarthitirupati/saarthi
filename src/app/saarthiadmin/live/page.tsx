@@ -136,14 +136,21 @@ export default function AdminLiveUpdates() {
       if (data && data.places) {
         setLivePlaces(data.places);
         
-        if (id === 'uuid-1' || id.includes('1')) {
+        if (id === 'uuid-1' || id.includes('1') || id === 'tirumala') {
           const globalStatusUpdates: any = {};
           if (updates.time) globalStatusUpdates.waitTime = updates.time;
-          if (updates.crowd) globalStatusUpdates.crowdLevel = updates.crowd.toLowerCase();
+          if (updates.crowd) {
+            const c = updates.crowd.toUpperCase();
+            if (c === 'LOW') globalStatusUpdates.crowdLevel = 'low';
+            else if (c === 'MEDIUM') globalStatusUpdates.crowdLevel = 'moderate';
+            else if (c === 'HIGH') globalStatusUpdates.crowdLevel = 'high';
+            else if (c === 'EXTREME') globalStatusUpdates.crowdLevel = 'very-high';
+            else globalStatusUpdates.crowdLevel = updates.crowd.toLowerCase();
+          }
           if (updates.parking) globalStatusUpdates.accommodationStatus = updates.parking === 'FULL' ? 'full' : 'available';
 
           // Update individual Darshan Category wait times
-          if (updates.sarva || updates.ssd || updates.special) {
+          if (updates.sarva || updates.ssd || updates.special || updates.time) {
             const list = statusData?.darshans || [
               { name: 'Sarva Darshan (Free)', waitTime: '12-15 hours', peakHours: 'Daily 10 AM - 6 PM' },
               { name: 'Special Entry (₹300)', waitTime: '3-4 hours', peakHours: 'Daily 9 AM - 3 PM' },
@@ -152,8 +159,8 @@ export default function AdminLiveUpdates() {
             ];
             globalStatusUpdates.darshans = list.map((d: any) => {
               const nameLower = (d.name || '').toLowerCase();
-              if (updates.sarva && (nameLower.includes('sarva') || nameLower.includes('free'))) {
-                return { ...d, waitTime: updates.sarva };
+              if ((updates.sarva || updates.time) && (nameLower.includes('sarva') || nameLower.includes('free'))) {
+                return { ...d, waitTime: updates.sarva || updates.time };
               }
               if (updates.ssd && (nameLower.includes('divya') || nameLower.includes('footpath') || nameLower.includes('ssd'))) {
                 return { ...d, waitTime: updates.ssd };
@@ -163,6 +170,9 @@ export default function AdminLiveUpdates() {
               }
               return d;
             });
+            if (updates.sarva) {
+              globalStatusUpdates.waitTime = updates.sarva;
+            }
           }
           
           await fetch('/api/admin/status', {
@@ -173,7 +183,9 @@ export default function AdminLiveUpdates() {
         }
         
         notifyRealtimeUpdate();
+        fetchLiveData();
         setPlaceUpdateStatus(prev => ({ ...prev, [id]: '✓ Updated!' }));
+        showToast('Live Temple Status updated and broadcasted live!');
         setTimeout(() => {
           setPlaceUpdateStatus(prev => ({ ...prev, [id]: '' }));
         }, 2500);

@@ -242,6 +242,34 @@ export function DailyContent(props: any) {
         )}
       </div>
 
+      {/* ── SACRED GOVINDA NAMALU & PRASADAM TRADITION ── */}
+      <div style={{
+        background: 'linear-gradient(135deg, #FFFFFF 0%, #FEFDF9 100%)',
+        border: '1px solid rgba(200, 155, 60, 0.25)',
+        borderRadius: '18px',
+        padding: '14px 16px',
+        marginBottom: '14px',
+        boxShadow: '0 4px 16px rgba(200, 155, 60, 0.06)'
+      }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
+          <div style={{ width: '24px', height: '24px', borderRadius: '6px', background: '#FEF9C3', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <Sparkles size={13} color="#CA8A04" />
+          </div>
+          <span style={{ fontSize: '12.5px', fontWeight: 800, color: '#854D0E' }}>
+            {lang === 'te' ? 'గోవింద నామావళి & ప్రసాద విశేషాలు' : 'Govinda Namavali & Temple Prasadam'}
+          </span>
+        </div>
+        <p style={{ fontSize: '12px', color: '#78350F', margin: '0 0 10px', lineHeight: 1.45, fontStyle: 'italic' }}>
+          {lang === 'te' 
+            ? '“శ్రీ శ్రీనివాస గోవిందా • శ్రీ వేంకటేశ గోవిందా • భక్తవత్సల గోవిందా • తిరుమలేశ గోవిందా” — క్యూ లైన్‌లో లేదా ప్రయాణంలో స్మరించండి.'
+            : '“Sri Srinivasa Govinda • Sri Venkatesa Govinda • Bhakta Vatsala Govinda • Tirumalesa Govinda” — Chant during queue waiting for mental tranquility.'}
+        </p>
+        <div style={{ fontSize: '11px', color: '#64748B', display: 'flex', alignItems: 'center', gap: '4px', borderTop: '1px solid #F3F4F6', paddingTop: '8px' }}>
+          <span style={{ fontWeight: 700, color: '#0F5132' }}>🛕 Annaprasadam:</span>
+          <span>Tarigonda Vengamamba Complex serves free hot meals 9:00 AM – 11:00 PM daily.</span>
+        </div>
+      </div>
+
       {/* ── HABIT FOOTER ── */}
       <div style={{
         backgroundColor: '#FFFBEB',

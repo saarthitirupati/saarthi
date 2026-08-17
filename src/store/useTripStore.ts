@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 
 import { PlanStop, Plan, PlannerInput, TripState } from '@/types/journey';
 
@@ -107,18 +107,18 @@ export function useTripStore() {
     }
   }, [state]);
 
-  const setDays = (days: number) => setState(prev => ({ ...prev, days }));
+  const setDays = useCallback((days: number) => setState(prev => (prev.days === days ? prev : { ...prev, days })), []);
   
-  const toggleMantra = (mantra: string) => {
+  const toggleMantra = useCallback((mantra: string) => {
     setState(prev => ({
       ...prev,
       savedMantras: prev.savedMantras.includes(mantra)
         ? prev.savedMantras.filter(m => m !== mantra)
         : [...prev.savedMantras, mantra]
     }));
-  };
+  }, []);
 
-  const togglePlace = (placeId: string) => {
+  const togglePlace = useCallback((placeId: string) => {
     setState(prev => {
       const nextSaved = prev.savedPlaces.includes(placeId)
         ? prev.savedPlaces.filter(id => id !== placeId)
@@ -140,9 +140,9 @@ export function useTripStore() {
         savedPlaces: nextSaved
       };
     });
-  };
+  }, []);
 
-  const toggleVisited = (placeId: string) => {
+  const toggleVisited = useCallback((placeId: string) => {
     setState(prev => {
       const nextVisited = prev.visitedPlaces.includes(placeId)
         ? prev.visitedPlaces.filter(id => id !== placeId)
@@ -166,20 +166,20 @@ export function useTripStore() {
         visitedPlaces: nextVisited
       };
     });
-  };
+  }, []);
 
-  const setPlannerInput = (input: Partial<PlannerInput>) => {
+  const setPlannerInput = useCallback((input: Partial<PlannerInput>) => {
     setState(prev => ({
       ...prev,
       plannerInput: { ...prev.plannerInput, ...input }
     }));
-  };
+  }, []);
 
-  const setGeneratedPlans = (plans: Plan[] | null, recommendations: any[] | null = null) => {
+  const setGeneratedPlans = useCallback((plans: Plan[] | null, recommendations: any[] | null = null) => {
     setState(prev => ({ ...prev, generatedPlans: plans, recommendations }));
-  };
+  }, []);
 
-  const savePlan = (plan: Plan) => {
+  const savePlan = useCallback((plan: Plan) => {
     setState(prev => {
       const alreadySaved = prev.savedPlans.some(p => 
         p.type === plan.type && p.totalCost === plan.totalCost && p.stops.length === plan.stops.length
@@ -194,16 +194,16 @@ export function useTripStore() {
         ]
       };
     });
-  };
+  }, []);
 
-  const removePlan = (id: string) => {
+  const removePlan = useCallback((id: string) => {
     setState(prev => ({
       ...prev,
       savedPlans: prev.savedPlans.filter(p => p.id !== id)
     }));
-  };
+  }, []);
 
-  const resetTrip = () => {
+  const resetTrip = useCallback(() => {
     setState({
       days: 0,
       savedMantras: [],
@@ -218,10 +218,14 @@ export function useTripStore() {
       locationPermission: 'default',
       savedPlans: []
     });
-  };
+  }, []);
 
-  const addViewedPlace = (placeId: string) => {
+  const addViewedPlace = useCallback((placeId: string) => {
+    if (!placeId) return;
     setState(prev => {
+      if (prev.viewedPlaces && prev.viewedPlaces[0] === placeId) {
+        return prev;
+      }
       const filtered = (prev.viewedPlaces || []).filter(id => id !== placeId);
       const nextViewed = [placeId, ...filtered].slice(0, 20);
       return {
@@ -229,26 +233,28 @@ export function useTripStore() {
         viewedPlaces: nextViewed
       };
     });
-  };
+  }, []);
 
-  const clearViewedHistory = () => {
-    setState(prev => ({
-      ...prev,
-      viewedPlaces: []
-    }));
-  };
+  const clearViewedHistory = useCallback(() => {
+    setState(prev => (prev.viewedPlaces.length === 0 ? prev : { ...prev, viewedPlaces: [] }));
+  }, []);
 
-  const setUserLocation = (userLocation: { lat: number; lng: number } | null) => {
-    setState(prev => ({ ...prev, userLocation }));
-  };
+  const setUserLocation = useCallback((userLocation: { lat: number; lng: number } | null) => {
+    setState(prev => {
+      if (prev.userLocation?.lat === userLocation?.lat && prev.userLocation?.lng === userLocation?.lng) {
+        return prev;
+      }
+      return { ...prev, userLocation };
+    });
+  }, []);
 
-  const setLocationPermission = (locationPermission: 'default' | 'granted' | 'denied') => {
-    setState(prev => ({ ...prev, locationPermission }));
-  };
+  const setLocationPermission = useCallback((locationPermission: 'default' | 'granted' | 'denied') => {
+    setState(prev => (prev.locationPermission === locationPermission ? prev : { ...prev, locationPermission }));
+  }, []);
 
-  const setLocationName = (locationName: string) => {
-    setState(prev => ({ ...prev, locationName }));
-  };
+  const setLocationName = useCallback((locationName: string) => {
+    setState(prev => (prev.locationName === locationName ? prev : { ...prev, locationName }));
+  }, []);
 
   return {
     ...state,

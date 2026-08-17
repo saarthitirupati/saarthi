@@ -226,14 +226,14 @@ export default function PilgrimEssentialsPage() {
       {/* Main Scroll Content */}
       <div className={styles.scrollArea}>
         
-        {/* Search Bar (56px Height) */}
+        {/* Search Bar (56px Height - Clean and Focused) */}
         <div className={styles.searchContainer}>
           <div className={styles.searchBar}>
             <Search size={20} color="#64748B" />
             <input 
               type="text"
               className={styles.searchInput}
-              placeholder="Need something? Phone • Locker • Food • Room • Hair"
+              placeholder="Search lockers, food, rooms, tonsure..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
             />
@@ -246,36 +246,6 @@ export default function PilgrimEssentialsPage() {
               </button>
             )}
           </div>
-          
-          {/* Natural Language Alias Hint Chips (Lucide Icons, No Emojis) */}
-          {!searchQuery && (
-            <div className={styles.searchHints}>
-              <span className={styles.searchHintChip} onClick={() => setSearchQuery('Phone')}>
-                <Smartphone size={12} style={{ display: 'inline', marginRight: '4px' }} />
-                Phone
-              </span>
-              <span className={styles.searchHintChip} onClick={() => setSearchQuery('Locker')}>
-                <Lock size={12} style={{ display: 'inline', marginRight: '4px' }} />
-                Lockers
-              </span>
-              <span className={styles.searchHintChip} onClick={() => setSearchQuery('Food')}>
-                <Utensils size={12} style={{ display: 'inline', marginRight: '4px' }} />
-                Free Meals
-              </span>
-              <span className={styles.searchHintChip} onClick={() => setSearchQuery('Room')}>
-                <Bed size={12} style={{ display: 'inline', marginRight: '4px' }} />
-                Room / CRO
-              </span>
-              <span className={styles.searchHintChip} onClick={() => setSearchQuery('Hair')}>
-                <Scissors size={12} style={{ display: 'inline', marginRight: '4px' }} />
-                Kalyana Katta
-              </span>
-              <span className={styles.searchHintChip} onClick={() => setSearchQuery('Aadhaar')}>
-                <FileText size={12} style={{ display: 'inline', marginRight: '4px' }} />
-                Aadhaar
-              </span>
-            </div>
-          )}
         </div>
 
         {/* Today's Notice Card (Conditional) */}
@@ -394,41 +364,182 @@ export default function PilgrimEssentialsPage() {
             )}
           </section>
         ) : (
-          /* PRIMARY 2-COLUMN INTENT CARDS GRID */
+          /* PRIMARY 4 PHOTO-FIRST SERVICE CARDS */
           <section className={styles.primaryGridSection}>
             <div className={styles.sectionHeaderRow}>
-              <h2 className={styles.sectionTitle}>Need Something?</h2>
-              <span style={{ fontSize: '13px', color: '#64748B', fontWeight: 500 }}>Select intent</span>
+              <div>
+                <h2 className={styles.sectionTitle}>What You Need Right Now</h2>
+                <p style={{ fontSize: '12px', color: '#64748B', margin: '2px 0 0 0', fontWeight: 600 }}>
+                  Essential facilities before your darshan
+                </p>
+              </div>
             </div>
 
-            <div className={styles.primaryGrid}>
-              {primaryIntents.map((intent) => {
-                const IconComp = intent.icon;
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '16px', marginTop: '12px' }}>
+              {[
+                {
+                  id: 'secure-belongings',
+                  title: 'Free Lockers & Mobile Deposit',
+                  subtitle: 'Secure phones, smart watches & luggage before entering VQC queue',
+                  status: '🟢 6 Locations Open',
+                  statusColor: '#16A34A',
+                  icon: Lock,
+                  image: 'https://res.cloudinary.com/kniegqlj/image/upload/v1786968161/IMG_6992_cq6gls.jpg',
+                  cta: 'Navigate →'
+                },
+                {
+                  id: 'free-meals',
+                  title: 'Free Annaprasadam Meals',
+                  subtitle: 'Continuous hot, sacred vegetarian meals at Tarigonda Vengamamba Complex',
+                  status: '🟢 Serving Now',
+                  statusColor: '#16A34A',
+                  icon: Utensils,
+                  image: 'https://res.cloudinary.com/kniegqlj/image/upload/v1786968272/Annaprasadam-4-copy_lyo86v.jpg',
+                  cta: 'Navigate →'
+                },
+                {
+                  id: 'hair-offering',
+                  title: 'Kalyana Katta (Hair Offering)',
+                  subtitle: 'Sacred head tonsure counters with token-free sanitized service',
+                  status: '🟢 Open 24/7',
+                  statusColor: '#16A34A',
+                  icon: Scissors,
+                  image: 'https://res.cloudinary.com/kniegqlj/image/upload/v1786968353/painted-sign-board-of-kalyanakatta-balaji-temple-tirupati-andhra-pradesh-F5M0J1_p7hkr5.jpg',
+                  cta: 'Navigate →'
+                },
+                {
+                  id: 'accommodation',
+                  title: 'Accommodation & PAC Rest Halls',
+                  subtitle: 'Free pilgrim rest halls & TTD CRO room reservation counters',
+                  status: '🟡 Halls Available',
+                  statusColor: '#D97706',
+                  icon: Bed,
+                  image: 'https://res.cloudinary.com/kniegqlj/image/upload/v1786968555/maxresdefault_fwmwke.jpg',
+                  cta: 'Navigate →'
+                }
+              ].map((service) => {
+                const IconComp = service.icon;
                 return (
                   <div 
-                    key={intent.id}
-                    className={styles.primaryCard}
-                    onClick={() => handleCardClick(intent.id)}
+                    key={service.id}
+                    onClick={() => handleCardClick(service.id)}
+                    style={{
+                      backgroundColor: '#FFFFFF',
+                      borderRadius: '24px',
+                      overflow: 'hidden',
+                      border: '1px solid #E2E8F0',
+                      boxShadow: '0 6px 20px rgba(0, 0, 0, 0.04)',
+                      cursor: 'pointer',
+                      display: 'flex',
+                      flexDirection: 'column',
+                      transition: 'transform 0.15s ease'
+                    }}
                   >
-                    <div className={styles.primaryCardIconBox}>
-                      <IconComp size={24} />
+                    {/* PHOTO BANNER */}
+                    <div style={{
+                      height: '130px',
+                      width: '100%',
+                      backgroundImage: `url(${service.image})`,
+                      backgroundSize: 'cover',
+                      backgroundPosition: 'center',
+                      position: 'relative'
+                    }}>
+                      <div style={{
+                        position: 'absolute',
+                        top: '12px',
+                        left: '12px',
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        gap: '6px',
+                        backgroundColor: 'rgba(15, 23, 42, 0.85)',
+                        backdropFilter: 'blur(6px)',
+                        padding: '6px 12px',
+                        borderRadius: '20px',
+                        color: '#FFFFFF',
+                        fontSize: '11px',
+                        fontWeight: 800
+                      }}>
+                        <span>{service.status}</span>
+                      </div>
                     </div>
-                    <div>
-                      <h3 className={styles.primaryCardTitle}>{intent.title}</h3>
-                      <p className={styles.primaryCardSub}>{intent.subtitle}</p>
-                    </div>
-                    <div className={styles.primaryCardFooter}>
-                      <span className={
-                        intent.statusType === 'green' ? styles.statusGreen :
-                        intent.statusType === 'amber' ? styles.statusAmber : styles.statusRed
-                      }>
-                        {intent.status}
-                      </span>
-                      <ChevronRight size={16} color="#64748B" />
+
+                    {/* CONTENT & 1 CTA */}
+                    <div style={{ padding: '16px 18px 18px' }}>
+                      <h3 style={{ fontSize: '17px', fontWeight: 900, color: '#0F172A', margin: '0 0 4px', letterSpacing: '-0.01em' }}>
+                        {service.title}
+                      </h3>
+                      <p style={{ fontSize: '13px', color: '#64748B', margin: '0 0 14px', lineHeight: '1.4', fontWeight: 500 }}>
+                        {service.subtitle}
+                      </p>
+                      
+                      <button
+                        style={{
+                          width: '100%',
+                          padding: '12px 14px',
+                          borderRadius: '14px',
+                          backgroundColor: '#0F5132',
+                          color: '#FFFFFF',
+                          border: 'none',
+                          fontSize: '14px',
+                          fontWeight: 800,
+                          cursor: 'pointer',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          gap: '6px',
+                          boxShadow: '0 4px 12px rgba(15, 81, 50, 0.18)'
+                        }}
+                      >
+                        <span>{service.cta}</span>
+                      </button>
                     </div>
                   </div>
                 );
               })}
+            </div>
+
+            {/* SECONDARY SERVICES SECTION */}
+            <div style={{ marginTop: '28px', borderTop: '1px solid #E2E8F0', paddingTop: '20px' }}>
+              <h3 style={{ fontSize: '15px', fontWeight: 800, color: '#0F172A', margin: '0 0 12px' }}>
+                Support & Emergency Services
+              </h3>
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
+                <div
+                  onClick={() => handleCardClick('shopping')}
+                  style={{
+                    backgroundColor: '#F8FAFC',
+                    border: '1px solid #E2E8F0',
+                    borderRadius: '16px',
+                    padding: '14px',
+                    cursor: 'pointer',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: '4px'
+                  }}
+                >
+                  <ShoppingBag size={20} color="#0F5132" />
+                  <span style={{ fontSize: '13.5px', fontWeight: 800, color: '#0F172A', marginTop: '4px' }}>Official Shopping</span>
+                  <span style={{ fontSize: '11px', color: '#64748B' }}>TTD Books & Laddus</span>
+                </div>
+
+                <div
+                  onClick={() => handleCardClick('emergency')}
+                  style={{
+                    backgroundColor: '#FEF2F2',
+                    border: '1px solid #FECACA',
+                    borderRadius: '16px',
+                    padding: '14px',
+                    cursor: 'pointer',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: '4px'
+                  }}
+                >
+                  <ShieldAlert size={20} color="#DC2626" />
+                  <span style={{ fontSize: '13.5px', fontWeight: 800, color: '#991B1B', marginTop: '4px' }}>Emergency Help</span>
+                  <span style={{ fontSize: '11px', color: '#B91C1C' }}>Police & Medical 24/7</span>
+                </div>
+              </div>
             </div>
           </section>
         )}

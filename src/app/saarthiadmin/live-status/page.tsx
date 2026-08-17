@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { Activity, Clock, Bell, Save, Users } from 'lucide-react';
 import styles from '../admin.module.css';
+import { notifyRealtimeUpdate } from '@/lib/useRealtimeStatus';
 
 interface DarshanTypeStatus {
   name: string;
@@ -105,6 +106,7 @@ export default function LiveStatusEditor() {
       }
       setStatus(updated);
       setStatusSaved(true);
+      notifyRealtimeUpdate();
       setTimeout(() => setStatusSaved(false), 2500);
     } finally {
       setStatusSaving(false);

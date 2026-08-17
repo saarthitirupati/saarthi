@@ -357,12 +357,15 @@
 @media (min-width: 600px) {
   .container {
     max-width: 440px;
-    margin: 24px auto;
-    min-height: calc(100vh - 48px);
-    min-height: calc(100dvh - 48px);
+    margin: 16px auto;
+    height: calc(100vh - 32px);
+    height: calc(100dvh - 32px);
+    max-height: calc(100dvh - 32px);
+    min-height: calc(100dvh - 32px);
     border-radius: 28px;
     box-shadow: 0 16px 48px rgba(0, 0, 0, 0.08), 0 4px 16px rgba(15, 81, 50, 0.05);
     border: 1px solid rgba(0, 0, 0, 0.06);
     background: #FAF8F4;
+    overflow: hidden;
   }
 }

@@ -64,7 +64,7 @@ function LayoutContent({
     <>
       {showSplash && !isAdmin && <SplashScreen onFinish={handleSplashFinish} />}
       {showLocationPrompt && <LocationPrompt />}
-      {!isAdmin && !showSplash && <DesktopHeader />}
+      {!isAdmin && !showSplash && !isExcluded && <DesktopHeader />}
       {!isAdmin && !showSplash && !isExcluded && (
         <ActiveAlerts 
           activePopupAlert={alertsHook.activePopupAlert} 
@@ -89,7 +89,7 @@ function LayoutContent({
           minHeight: pathname === '/onboarding' ? '100dvh' : '100vh',
           height: pathname === '/onboarding' ? '100dvh' : 'auto',
           overflow: pathname === '/onboarding' ? 'hidden' : 'visible',
-          paddingBottom: showBottomNav ? 'calc(110px + env(safe-area-inset-bottom, 16px))' : (pathname === '/onboarding' ? '0px' : '24px')
+          paddingBottom: showBottomNav ? 'var(--layout-padding-bottom)' : (pathname === '/onboarding' ? '0px' : '24px')
         }}>
           {children}
         </div>

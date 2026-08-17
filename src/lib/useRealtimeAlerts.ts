@@ -29,7 +29,12 @@ export function useRealtimeAlerts() {
     try {
       const data = await safeFetchJson<LiveAlert[]>('/api/v1/alerts?t=' + Date.now());
       if (Array.isArray(data)) {
-        setAlerts(data);
+        setAlerts(prev => {
+          if (prev.length === data.length && prev.every((p, i) => p.id === data[i].id && p.updated_at === data[i].updated_at)) {
+            return prev;
+          }
+          return data;
+        });
       }
     } catch (err) {
       console.error('Failed to fetch live alerts:', err);
@@ -61,11 +66,12 @@ export function useRealtimeAlerts() {
       };
     } catch (e) {}
 
-    // 4. Supabase Realtime channel subscription
+    // 4. Supabase Realtime channel subscription with unique identifier
+    const channelName = `public:live_alerts_${Date.now()}_${Math.random().toString(36).slice(2, 7)}`;
     let subscription: any;
     try {
       subscription = supabase
-        .channel('public:live_alerts')
+        .channel(channelName)
         .on(
           'postgres_changes',
           { event: '*', schema: 'public', table: 'live_alerts' },
@@ -75,7 +81,7 @@ export function useRealtimeAlerts() {
         )
         .subscribe();
     } catch (err) {
-      console.warn('Realtime Supabase subscription fallback to API polling', err);
+      // Silent fallback: 6s API polling is already active
     }
 
     return () => {

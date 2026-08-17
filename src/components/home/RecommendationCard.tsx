@@ -169,7 +169,7 @@ export function RecommendationCard({
       distance: lang === 'te' ? '4 ని. ప్రయాణం' : '4 min drive',
       crowdStatus: lang === 'te' ? 'కవర్డ్ & ఇండోర్' : 'Covered & Indoor',
       link: '/place/iskcon-tirupati',
-      image: '/assets/temples/iskcon.png',
+      image: 'https://res.cloudinary.com/kniegqlj/image/upload/v1786967622/iskcon-temple-tirupati_wl7dd2.jpg',
       priorityTag: lang === 'te' ? 'వాతావరణం: వర్షం అనుకూలం' : 'Weather Context: Rain Friendly',
       reason: lang === 'te' ? 'వర్షపు వాతావరణం · కవర్డ్ ఇండోర్ ఆలయం మరియు సౌకర్యవంతమైన సీటింగ్' : 'Rainy Weather · Covered indoor sanctum and comfortable seating'
     };
@@ -179,7 +179,7 @@ export function RecommendationCard({
       distance: lang === 'te' ? '6 ని. ప్రయాణం' : '6 min drive',
       crowdStatus: dynamicCrowd,
       link: '/place/govindaraja',
-      image: '/assets/temples/govindaraja.png',
+      image: 'https://res.cloudinary.com/kniegqlj/image/upload/v1786966916/960px-Tirupathi__286337140675_29.jpg_hez2ha.jpg',
       priorityTag: lang === 'te' ? 'క్యూ: అధిక రద్దీ ప్రత్యామ్నాయం' : 'Queue Context: High Crowd Alternate',
       reason: lang === 'te' ? 'తిరుమలలో అధిక రద్దీ · తిరుపతి పట్టణంలో వేగవంతమైన ప్రవేశ ప్రత్యామ్నాయ ఆలయం' : 'High Crowd in Tirumala · Fast entry alternate shrine in Tirupati town'
     };

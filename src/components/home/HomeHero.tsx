@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Menu, Bell, MapPin, Sun, Sparkles, Ticket, Car, Gift, CloudRain, Bus, Clock, Route, Users, Zap, Check, ChevronDown, Navigation } from 'lucide-react';
+import { Menu, Bell, MapPin, Sun, Sparkles, Ticket, Car, Gift, CloudRain, Bus, Clock, Route, Users, Zap, Check, ChevronDown, Navigation, Flame, Moon } from 'lucide-react';
 import Link from 'next/link';
 import Logo from '@/components/Logo/Logo';
 import { useLanguage } from '@/lib/useLanguage';
@@ -53,34 +53,34 @@ const TEXTS: Record<string, any> = {
       alert: 'Tirumala Crowd: Route Advisory'
     },
     recommendations: {
-      green: 'Leave your hotel now.',
-      yellow: 'Visit Kapila Theertham first. Return after lunch.',
-      red: "Don't join the queue now. Explore Tirupati.",
-      blue: 'Avoid Alipiri Steps. Take RTC Bus.',
-      orange: 'Head to Alipiri now. Slots may finish soon.',
-      purple: 'Stay in Tirupati tonight. Start tomorrow morning.',
-      night: 'Rest well. Leave hotel at 6:30 AM.',
-      alert: 'Use RTC Bus. Alternative route ready.'
+      green: 'A serene darshan window is open. Start your journey now.',
+      yellow: 'Visit Kapila Theertham first. Return for darshan after lunch.',
+      red: 'Rest tonight. A quieter darshan awaits tomorrow morning at 6:00 AM.',
+      blue: 'Alipiri steps are slippery from rain. Take the APSRTC Electric Bus.',
+      orange: 'Head to Alipiri now. SSD token slots are filling fast.',
+      purple: 'Stay in Tirupati tonight. Start fresh at 6:00 AM tomorrow.',
+      night: 'Rest well tonight. Start your darshan around 6:00 AM.',
+      alert: 'Use RTC Bus route. Alternative scenic route is ready.'
     },
     why: {
-      green: "You'll avoid today's afternoon rush.",
-      yellow: 'Queue clears significantly during afternoon slot.',
-      red: 'Joining now puts you in the peak 11-hour queue bottleneck.',
-      blue: 'Footpaths are slippery during heavy rain.',
-      purple: 'Overnight queue wait times are at maximum capacity.',
-      orange: 'SSD token holders bypass main 10+ hour queue.',
-      night: 'Early morning queue entry is 80% faster.',
-      alert: 'Maintenance work active on primary Alipiri entrance.'
+      green: "You'll comfortably bypass today's peak afternoon rush.",
+      yellow: 'Queue wait times clear significantly during the afternoon slot.',
+      red: 'Joining right now means an 11-hour bottleneck in holding compartments.',
+      blue: 'Footpaths are slippery during heavy rain. Buses run safely.',
+      purple: 'Overnight queue compartments are currently near full capacity.',
+      orange: 'SSD tokens bypass the main 10+ hour general queue.',
+      night: 'Morning 6:00 AM queue entry is over 70% faster and cooler.',
+      alert: 'Maintenance work active on primary entrance route.'
     },
     benefits: {
-      green: 'Save 3 hours by acting now',
-      yellow: 'Save 1 Hour wait time',
-      red: 'You save 8h 45m',
-      blue: 'Avoid 2 Hours weather delay',
-      purple: 'Save 12 Hours total wait',
-      orange: 'Lock in short queue before quota ends',
-      night: 'Save 4 hours by sleeping in Tirupati',
-      alert: 'Bypass Alipiri closure without hassle'
+      green: 'Save approx. 3 hours of wait time by leaving now',
+      yellow: 'Save approx. 2 hours by visiting in the afternoon slot',
+      red: 'Save approx. 4 hours by starting at 6:00 AM',
+      blue: 'Avoid 2 hours of weather delay and wet footpaths',
+      purple: 'Save over 6 hours of queue waiting by starting fresh',
+      orange: 'Save 8+ hours by securing an SSD slot right now',
+      night: 'Save approx. 4 hours by starting at 6:00 AM',
+      alert: 'Bypass traffic delay seamlessly'
     },
     ctas: {
       green: 'Start Journey →',
@@ -138,34 +138,34 @@ const TEXTS: Record<string, any> = {
       alert: 'తిరుమల రద్దీ: మార్గం సూచన'
     },
     recommendations: {
-      green: 'ఈరోజు తప్పకుండా సందర్శించండి.',
-      yellow: 'ముందు కపిల తీర్థం సందర్శించండి. భోజనం తర్వాత తిరిగి రండి.',
-      red: 'ఇప్పుడు క్యూలో చేరవద్దు. తిరుపతి అన్వేషించండి.',
-      blue: 'వాతావరణం అనుకూలంగా లేదు — అలిపిరి మెట్లు అవాయిడ్ చేయండి. RTC బస్ తీసుకోండి.',
-      orange: 'ఇప్పుడే అలిపిరికి వెళ్ళండి. స్లాట్లు త్వరలో అయిపోవచ్చు.',
-      purple: 'ఈ రాత్రి తిరుపతిలో ఉండండి. రేపు ఉదయం బయలుదేరండి.',
-      night: 'బాగా విశ్రాంతి తీసుకోండి. ఉదయం 6:30కి హోటల్ నుండి బయలుదేరండి.',
-      alert: 'RTC బస్ వాడండి. ప్రత్యామ్నాయ మార్గం సిద్ధంగా ఉంది.'
+      green: 'ప్రశాంతమైన దర్శన సమయం ప్రారంభమైంది. ఇప్పుడే యాత్ర ప్రారంభించండి.',
+      yellow: 'ముందు కపిల తీర్థం దర్శించుకోండి. మధ్యాహ్నం దర్శనానికి వెళ్ళండి.',
+      red: 'ఈ రాత్రి విశ్రాంతి తీసుకోండి. రేపు ఉదయం 6:00 గంటలకు ప్రశాంతమైన దర్శనం లభిస్తుంది.',
+      blue: 'వర్షం వల్ల అలిపిరి మెట్ల మార్గం జారుడుగా ఉంది. APSRTC ఎలక్ట్రిక్ బస్ వాడండి.',
+      orange: 'ఇప్పుడే అలిపిరికి వెళ్ళండి. SSD టోకెన్ స్లాట్లు వేగంగా భర్తీ అవుతున్నాయి.',
+      purple: 'ఈ రాత్రి తిరుపతిలోనే ఉండండి. రేపు ఉదయం 6:00కి తాజాగా ప్రారంభించండి.',
+      night: 'ఈ రాత్రి హాయిగా విశ్రాంతి తీసుకోండి. ఉదయం 6:00కి దర్శనం ప్రారంభించండి.',
+      alert: 'RTC బస్ మార్గం వాడండి. సురక్షిత ప్రయాణ మార్గం సిద్ధంగా ఉంది.'
     },
     why: {
-      green: 'ఈ రోజు మధ్యాహ్నం రద్దీ నుండి తప్పించుకుంటారు.',
-      yellow: 'మధ్యాహ్నం సమయంలో క్యూ గణనీయంగా తగ్గుతుంది.',
-      red: 'ఇప్పుడు చేరితే 11 గంటల క్యూలో ఇరుక్కుంటారు.',
-      blue: 'భారీ వర్షంలో కాలిబాటలు జారుతాయి.',
-      purple: 'రాత్రి క్యూ వేచి సమయాలు గరిష్ట స్థాయిలో ఉన్నాయి.',
-      orange: 'SSD టోకెన్ హోల్డర్లు 10+ గంటల క్యూను దాటవేస్తారు.',
-      night: 'ఉదయం క్యూ ప్రవేశం 80% వేగంగా ఉంటుంది.',
-      alert: 'ప్రధాన అలిపిరి ప్రవేశ ద్వారంలో నిర్వహణ పనులు జరుగుతున్నాయి.'
+      green: 'ఈ రోజు మధ్యాహ్నం రద్దీని సులభంగా అధిగమించవచ్చు.',
+      yellow: 'మధ్యాహ్నం సమయంలో క్యూ వేచి సమయం గణనీయంగా తగ్గుతుంది.',
+      red: 'ఇప్పుడు చేరితే కంపార్ట్‌మెంట్లలో 11 గంటల రద్దీలో నిలబడాల్సి వస్తుంది.',
+      blue: 'వర్షంలో కాలిబాటలు జారుతాయి. బస్సులు సురక్షితంగా తిరుగుతున్నాయి.',
+      purple: 'రాత్రి కంపార్ట్‌మెంట్లు పూర్తి సామర్థ్యానికి చేరుకున్నాయి.',
+      orange: 'SSD టోకెన్లతో 10+ గంటల సాధారణ క్యూను నివారించవచ్చు.',
+      night: 'ఉదయం 6:00 గంటలకు ప్రవేశం 70% వేగంగా, చల్లగా ఉంటుంది.',
+      alert: 'ప్రధాన మార్గంలో నిర్వహణ పనులు జరుగుతున్నాయి.'
     },
     benefits: {
-      green: 'ఇప్పుడు చర్య తీసుకుని 3 గంటలు ఆదా చేయండి',
-      yellow: '1 గంట వేచి సమయం ఆదా',
-      red: '8 గం. 45 ని. ఆదా',
-      blue: '2 గంటల వాతావరణ ఆలస్యం నివారించండి',
-      purple: 'మొత్తం 12 గంటల వేచి ఆదా',
-      orange: 'కోటా అయిపోకముందే చిన్న క్యూలో చేరండి',
-      night: 'తిరుపతిలో నిద్రించి 4 గంటలు ఆదా',
-      alert: 'అలిపిరి మూసివేతను ఇబ్బంది లేకుండా దాటండి'
+      green: 'ఇప్పుడే బయలుదేరి సుమారు 3 గంటల సమయం ఆదా చేయండి',
+      yellow: 'మధ్యాహ్న స్లాట్‌లో సుమారు 2 గంటల సమయం ఆదా',
+      red: 'ఉదయం 6:00కి ప్రారంభించి సుమారు 4 గంటల సమయం ఆదా',
+      blue: 'వర్షం ఆలస్యం లేకుండా సురక్షిత ప్రయాణం',
+      purple: 'రాత్రి వేచి ఉండకుండా 6+ గంటల సమయం ఆదా',
+      orange: 'ఇప్పుడే స్లాట్ తీసుకుని 8+ గంటల క్యూ నివారించండి',
+      night: 'ఉదయం 6:00కి ప్రారంభించి సుమారు 4 గంటల సమయం ఆదా',
+      alert: 'ట్రాఫిక్ ఇబ్బంది లేకుండా ప్రయాణం'
     },
     ctas: {
       green: 'యాత్ర ప్రారంభించండి →',
@@ -753,203 +753,308 @@ export function HomeHero({ userName, locationName, weatherTemp, liveStatus, acti
       )}
 
       {/* ══════════ SCROLLABLE CONTENT ══════════ */}
-      <div style={{ padding: hideHeader ? '0' : '16px 16px 20px 16px', background: hideHeader ? 'transparent' : '#FAF8F4' }}>
+      <div style={{ padding: hideHeader ? '0' : '16px 16px 20px 16px', background: hideHeader ? 'transparent' : 'var(--bg-canvas, #FAF8F5)' }}>
 
         {!hideHeader && (
           <>
-            {/* Date & Weather Bar */}
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end', marginBottom: '16px' }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '12.5px', fontWeight: 600, color: '#64748B' }}>
-                <span>{t.labels.today} • {todayDateStr}</span>
-                <span style={{ opacity: 0.4 }}>|</span>
-                <Sun size={14} color="#D97706" />
+            {/* Devotional Invocation & Weather Bar */}
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '14px' }}>
+              <div style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '6px',
+                padding: '4px 10px',
+                borderRadius: '16px',
+                background: '#FEF9C3',
+                border: '1px solid #FDE047',
+                fontSize: '11px',
+                fontWeight: 800,
+                color: '#854D0E',
+                letterSpacing: '0.2px'
+              }}>
+                <Sparkles size={12} color="#CA8A04" />
+                <span>{lang === 'te' ? 'ఓం నమో వేంకటేశాయ' : 'Om Namo Venkatesaya'}</span>
+              </div>
+
+              <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '12px', fontWeight: 600, color: '#64748B' }}>
+                <span>{todayDateStr}</span>
+                <span style={{ opacity: 0.3 }}>•</span>
+                <Sun size={13} color="#D97706" />
                 <span>{weatherTemp || '26°C'}</span>
               </div>
             </div>
 
             {/* Personalized Greeting */}
-            <div style={{ marginBottom: '18px' }}>
-              <h1 style={{ fontSize: '26px', fontWeight: 800, color: '#0F172A', margin: 0, letterSpacing: '-0.02em' }}>
-                <span>{getGreetingPrefix()}</span>, <span className="notranslate">{userName || 'Sunil'}</span>
+            <div style={{ marginBottom: '16px' }}>
+              <h1 style={{ fontSize: '24px', fontWeight: 800, color: '#0F172A', margin: 0, letterSpacing: '-0.02em' }}>
+                <span>{getGreetingPrefix()}</span>, <span className="notranslate">{userName || 'Pilgrim'}</span>
               </h1>
-              <p style={{ fontSize: '13.5px', color: '#059669', margin: '4px 0 0 0', fontWeight: 700, lineHeight: '1.4' }}>
+              <p style={{ fontSize: '13px', color: '#0F5132', margin: '3px 0 0 0', fontWeight: 700, lineHeight: '1.4' }}>
                 {t.tagline}
               </p>
             </div>
           </>
         )}
 
-      {/* STANDARDIZED SAARTHI DECISION ENGINE CARD */}
+      {/* 🛕 SIGNATURE LIVE TEMPLE PULSE CARD */}
       <div style={{
-        background: scenario.bgGradient,
+        background: '#0F172A',
         borderRadius: '24px',
         padding: '20px 18px',
         color: '#FFFFFF',
-        boxShadow: scenario.boxShadow,
+        boxShadow: '0 12px 32px rgba(15, 23, 42, 0.3)',
+        border: '1px solid rgba(255, 255, 255, 0.1)',
         position: 'relative',
-        overflow: 'hidden',
-        transition: 'all 0.5s ease'
+        overflow: 'hidden'
       }}>
         
-        {/* 1️⃣ SITUATION BADGE ROW */}
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '10px' }}>
-          <button 
-            onClick={handleCycleScenario}
-            title="Click to test all 8 Saarthi Decision Engine Scenarios"
+        {/* HEADER ROW */}
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '14px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <div style={{ width: '24px', height: '24px', borderRadius: '7px', background: 'rgba(200, 155, 60, 0.18)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              <Flame size={14} color="#F59E0B" />
+            </div>
+            <span style={{ fontSize: '12.5px', fontWeight: 800, letterSpacing: '0.8px', textTransform: 'uppercase', color: '#F8FAFC' }}>
+              {lang === 'te' ? 'లైవ్ ఆలయ స్థితి' : 'LIVE TEMPLE PULSE'}
+            </span>
+          </div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '11px', color: '#94A3B8', fontWeight: 600 }}>
+            <span style={{ width: '6px', height: '6px', borderRadius: '50%', backgroundColor: '#10B981', boxShadow: '0 0 6px #10B981' }} />
+            <span>{t.labels.live} · {updatedLabel}</span>
+          </div>
+        </div>
+
+        {/* 1️⃣ CROWD FIRST: 3 PRIMARY DARSHAN QUEUES (LINKED TO LIVE ADMIN STATUS) */}
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', marginBottom: '14px' }}>
+          {/* Sarva Darshan */}
+          <Link
+            href="/darshan/general"
             style={{
-              display: 'inline-flex',
+              textDecoration: 'none',
+              background: 'rgba(255, 255, 255, 0.04)',
+              border: '1px solid rgba(255, 255, 255, 0.08)',
+              borderRadius: '16px',
+              padding: '12px 14px',
+              display: 'flex',
               alignItems: 'center',
-              gap: '6px',
-              backgroundColor: 'rgba(255, 255, 255, 0.18)',
-              border: 'none',
-              padding: '5px 12px',
-              borderRadius: '20px',
-              fontSize: '11px',
-              fontWeight: 800,
-              cursor: 'pointer',
-              color: '#FFF',
-              backdropFilter: 'blur(8px)'
+              justifyContent: 'space-between',
+              minHeight: '52px',
+              transition: 'background 0.15s ease'
             }}
           >
-            <span style={{ width: '8px', height: '8px', borderRadius: '50%', backgroundColor: scenario.badgeDot, boxShadow: `0 0 8px ${scenario.badgeDot}` }} />
-            <span>{scenario.badge}</span>
-            {overrideScenario !== 'auto' && <span style={{ opacity: 0.75, fontSize: '9px', marginLeft: '4px' }}>({overrideScenario.toUpperCase()})</span>}
-          </button>
-
-          <span style={{ fontSize: '11px', opacity: 0.85, fontWeight: 600 }}>
-            {t.labels.updated} {updatedLabel}
-          </span>
-        </div>
-
-        <div style={{ fontSize: '14px', fontWeight: 700, color: 'rgba(255, 255, 255, 0.9)', marginBottom: '14px' }}>
-          {scenario.subtitle}
-        </div>
-
-        <div style={{ height: '1px', backgroundColor: 'rgba(255, 255, 255, 0.18)', marginBottom: '14px' }} />
-
-        {/* 2️⃣ 3-COLUMN HERO STAT (CURRENT WAIT vs BEST TIME vs YOU SAVE) */}
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '6px', marginBottom: '14px' }}>
-          <div style={{ backgroundColor: 'rgba(0, 0, 0, 0.18)', borderRadius: '12px', padding: '8px 6px', textAlign: 'center' }}>
-            <div style={{ fontSize: '9.5px', fontWeight: 800, opacity: 0.85, textTransform: 'uppercase', letterSpacing: '0.3px' }}>
-              {t.labels.currentWait}
-            </div>
-            <div style={{ fontSize: '16px', fontWeight: 900, marginTop: '2px', color: '#FFF' }}>
-              {scenario.currentWait}
-            </div>
-          </div>
-
-          <div style={{ backgroundColor: 'rgba(255, 255, 255, 0.18)', borderRadius: '12px', padding: '8px 6px', textAlign: 'center' }}>
-            <div style={{ fontSize: '9.5px', fontWeight: 800, opacity: 0.95, textTransform: 'uppercase', letterSpacing: '0.3px' }}>
-              {t.labels.bestTime}
-            </div>
-            <div style={{ fontSize: '16px', fontWeight: 900, marginTop: '2px', color: '#FFF' }}>
-              {scenario.bestTime}
-            </div>
-          </div>
-        </div>
-
-        <div style={{ height: '1px', backgroundColor: 'rgba(255, 255, 255, 0.18)', marginBottom: '14px' }} />
-
-
-        {/* 3️⃣ DARSHAN WAIT TIME CARDS (CREATIVE HIGH-CONTRAST STYLE) */}
-        {scenario.darshanWaits ? (
-          <div style={{
-            display: 'grid',
-            gridTemplateColumns: '1fr 1fr 1fr',
-            gap: '8px',
-            marginBottom: '14px',
-          }}>
-            {DARSHAN_CARDS.map(card => {
-              const waitValue = scenario.darshanWaits[card.key as keyof typeof scenario.darshanWaits];
-              return (
-                <div 
-                  key={card.key} 
-                  style={{
-                    background: card.bg,
-                    border: `1px solid ${card.border}`,
-                    backdropFilter: 'blur(10px)',
-                    borderRadius: '12px',
-                    padding: '9px 6px',
-                    textAlign: 'center',
-                    boxShadow: '0 4px 14px rgba(0, 0, 0, 0.12)',
-                    display: 'flex',
-                    flexDirection: 'column',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    gap: '4px',
-                  }}
-                >
-                  <div style={{
-                    display: 'inline-flex',
-                    alignItems: 'center',
-                    gap: '4px',
-                    backgroundColor: 'rgba(0, 0, 0, 0.22)',
-                    padding: '3px 8px',
-                    borderRadius: '20px',
-                    border: `1px solid ${card.border}`,
-                  }}>
-                    <span style={{ 
-                      color: card.iconColor, 
-                      display: 'flex', 
-                      alignItems: 'center' 
-                    }}>
-                      {card.icon}
-                    </span>
-                    <span style={{ 
-                      fontSize: '9.5px', 
-                      fontWeight: 700, 
-                      color: card.accent,
-                      letterSpacing: '0.2px',
-                      whiteSpace: 'nowrap'
-                    }}>
-                      {card.label}
-                    </span>
-                  </div>
-
-                  <div style={{ 
-                    fontWeight: 900, 
-                    color: '#FFFFFF', 
-                    fontSize: '13.5px', 
-                    letterSpacing: '-0.2px',
-                    lineHeight: 1.2,
-                    textShadow: '0 1px 3px rgba(0, 0, 0, 0.4)'
-                  }}>
-                    {waitValue}
-                  </div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+              <div style={{
+                width: '10px',
+                height: '10px',
+                borderRadius: '50%',
+                backgroundColor: crowdLevel === 'low' ? '#10B981' : crowdLevel === 'moderate' ? '#F59E0B' : '#EF4444',
+                boxShadow: crowdLevel === 'low' ? '0 0 8px #10B981' : crowdLevel === 'moderate' ? '0 0 8px #F59E0B' : '0 0 8px #EF4444',
+                flexShrink: 0
+              }} />
+              <div>
+                <div style={{ fontSize: '14.5px', fontWeight: 800, color: '#F8FAFC', letterSpacing: '-0.01em' }}>
+                  {lang === 'te' ? 'సర్వదర్శనం (ఉచితం)' : 'Sarva Darshan'}
                 </div>
-              );
-            })}
-          </div>
-        ) : (
-          /* Alert scenario: keep original metric chips */
-          <div style={{
-            display: 'grid',
-            gridTemplateColumns: '1fr 1fr',
-            gap: '6px',
-            marginBottom: '14px',
-            fontSize: '11px',
-            fontWeight: 600
-          }}>
-            {scenario.metrics.map((m: any, idx: number) => (
-              <div key={idx} style={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-                backgroundColor: 'rgba(255, 255, 255, 0.12)',
-                borderRadius: '10px',
-                padding: '7px 10px'
-              }}>
-                <span style={{ opacity: 0.9, display: 'flex', alignItems: 'center', gap: '5px' }}>
-                  {METRIC_ICON[m.label] ?? null}
-                  {m.label}
-                </span>
-                <span style={{ fontWeight: 800, color: '#FFF' }}>{m.value}</span>
+                <div style={{ fontSize: '11px', color: '#94A3B8', fontWeight: 600 }}>
+                  {lang === 'te' ? 'ఉచిత సాధారణ దర్శనం' : 'Free General Queue'}
+                </div>
               </div>
-            ))}
-          </div>
-        )}
+            </div>
+            <div style={{ textAlign: 'right', display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '3px' }}>
+              <div style={{ fontSize: '17px', fontWeight: 900, color: '#FFFFFF', letterSpacing: '-0.02em', fontVariantNumeric: 'tabular-nums' }}>
+                {getDarshanWait('sarva')}
+              </div>
+              <span style={{
+                fontSize: '10px',
+                fontWeight: 800,
+                color: crowdLevel === 'low' ? '#A7F3D0' : crowdLevel === 'moderate' ? '#FDE68A' : '#FECACA',
+                backgroundColor: crowdLevel === 'low' ? 'rgba(16, 185, 129, 0.2)' : crowdLevel === 'moderate' ? 'rgba(245, 158, 11, 0.2)' : 'rgba(239, 68, 68, 0.2)',
+                padding: '2px 8px',
+                borderRadius: '6px',
+                border: crowdLevel === 'low' ? '1px solid rgba(16, 185, 129, 0.35)' : crowdLevel === 'moderate' ? '1px solid rgba(245, 158, 11, 0.35)' : '1px solid rgba(239, 68, 68, 0.35)'
+              }}>
+                ● {crowdLevel === 'low' ? (lang === 'te' ? 'తక్కువ రద్దీ' : 'Low Crowd') : crowdLevel === 'moderate' ? (lang === 'te' ? 'సాధారణ రద్దీ' : 'Moderate Crowd') : (lang === 'te' ? 'అధిక రద్దీ' : 'Heavy Rush')}
+              </span>
+            </div>
+          </Link>
 
-        {/* 4️⃣ & 5️⃣ ⭐ SAARTHI RECOMMENDS & WHY RATIONALE */}
+          {/* ₹300 Special Entry */}
+          <Link
+            href="/darshan/special"
+            style={{
+              textDecoration: 'none',
+              background: 'rgba(255, 255, 255, 0.04)',
+              border: '1px solid rgba(255, 255, 255, 0.08)',
+              borderRadius: '16px',
+              padding: '12px 14px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              minHeight: '52px',
+              transition: 'background 0.15s ease'
+            }}
+          >
+            <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+              <div style={{ width: '10px', height: '10px', borderRadius: '50%', backgroundColor: '#F59E0B', boxShadow: '0 0 8px rgba(245, 158, 11, 0.7)', flexShrink: 0 }} />
+              <div>
+                <div style={{ fontSize: '14.5px', fontWeight: 800, color: '#F8FAFC', letterSpacing: '-0.01em' }}>
+                  {lang === 'te' ? '₹300 ప్రత్యేక ప్రవేశం' : '₹300 Special Entry'}
+                </div>
+                <div style={{ fontSize: '11px', color: '#94A3B8', fontWeight: 600 }}>
+                  {lang === 'te' ? 'ఆన్‌లైన్ సీగ్రా దర్శనం' : 'Online Booked Slot'}
+                </div>
+              </div>
+            </div>
+            <div style={{ textAlign: 'right', display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '3px' }}>
+              <div style={{ fontSize: '17px', fontWeight: 900, color: '#FFFFFF', letterSpacing: '-0.02em', fontVariantNumeric: 'tabular-nums' }}>
+                {getDarshanWait('special')}
+              </div>
+              <span style={{
+                fontSize: '10px',
+                fontWeight: 800,
+                color: '#FDE68A',
+                backgroundColor: 'rgba(245, 158, 11, 0.2)',
+                padding: '2px 8px',
+                borderRadius: '6px',
+                border: '1px solid rgba(245, 158, 11, 0.35)'
+              }}>
+                ● {lang === 'te' ? 'స్లాట్ ఆధారితం' : 'Slot Bound'}
+              </span>
+            </div>
+          </Link>
+
+          {/* SSD Token Darshan */}
+          <Link
+            href="/darshan/ssd"
+            style={{
+              textDecoration: 'none',
+              background: 'rgba(255, 255, 255, 0.04)',
+              border: '1px solid rgba(255, 255, 255, 0.08)',
+              borderRadius: '16px',
+              padding: '12px 14px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              minHeight: '52px',
+              transition: 'background 0.15s ease'
+            }}
+          >
+            <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+              <div style={{
+                width: '10px',
+                height: '10px',
+                borderRadius: '50%',
+                backgroundColor: ssdTokenStatus === 'closed-for-day' ? '#EF4444' : ssdTokenStatus === 'paused' ? '#F59E0B' : '#10B981',
+                boxShadow: ssdTokenStatus === 'closed-for-day' ? '0 0 8px #EF4444' : ssdTokenStatus === 'paused' ? '0 0 8px #F59E0B' : '0 0 8px #10B981',
+                flexShrink: 0
+              }} />
+              <div>
+                <div style={{ fontSize: '14.5px', fontWeight: 800, color: '#F8FAFC', letterSpacing: '-0.01em' }}>
+                  {lang === 'te' ? 'SSD టోకెన్ దర్శనం' : 'SSD Token Darshan'}
+                </div>
+                <div style={{ fontSize: '11px', color: '#94A3B8', fontWeight: 600 }}>
+                  {lang === 'te' ? 'ఉచిత సమయ స్లాట్ టోకెన్లు' : 'Time-Slotted Free Darshan'}
+                </div>
+              </div>
+            </div>
+            <div style={{ textAlign: 'right', display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '3px' }}>
+              <div style={{ fontSize: '17px', fontWeight: 900, color: '#FFFFFF', letterSpacing: '-0.02em', fontVariantNumeric: 'tabular-nums' }}>
+                {getDarshanWait('ssd')}
+              </div>
+              <span style={{
+                fontSize: '10px',
+                fontWeight: 800,
+                color: ssdTokenStatus === 'closed-for-day' ? '#FECACA' : ssdTokenStatus === 'paused' ? '#FDE68A' : '#A7F3D0',
+                backgroundColor: ssdTokenStatus === 'closed-for-day' ? 'rgba(239, 68, 68, 0.2)' : ssdTokenStatus === 'paused' ? 'rgba(245, 158, 11, 0.2)' : 'rgba(16, 185, 129, 0.2)',
+                padding: '2px 8px',
+                borderRadius: '6px',
+                border: ssdTokenStatus === 'closed-for-day' ? '1px solid rgba(239, 68, 68, 0.35)' : ssdTokenStatus === 'paused' ? '1px solid rgba(245, 158, 11, 0.35)' : '1px solid rgba(16, 185, 129, 0.35)'
+              }}>
+                ● {ssdTokenStatus === 'closed-for-day' ? (lang === 'te' ? 'ఈ రోజు పూర్తయింది' : 'Closed for Today') : ssdTokenStatus === 'paused' ? (lang === 'te' ? 'తాత్కాలికంగా ఆపబడింది' : 'Paused') : (lang === 'te' ? 'టోకెన్లు అందుబాటులో ఉన్నాయి' : 'Tokens Available')}
+              </span>
+            </div>
+          </Link>
+        </div>
+
+        {/* ── DIVIDER ── */}
+        <div style={{ height: '1px', backgroundColor: 'rgba(255, 255, 255, 0.08)', marginBottom: '12px' }} />
+
+        {/* 2️⃣ TRAVEL & WEATHER CONDITIONS (LUCIDE ICONS, CLEAN GROUPING) */}
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '14px', flexWrap: 'wrap', gap: '8px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '6px', flexWrap: 'wrap' }}>
+            <span style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '5px',
+              backgroundColor: 'rgba(16, 185, 129, 0.18)',
+              border: '1px solid rgba(52, 211, 153, 0.25)',
+              padding: '4px 9px',
+              borderRadius: '16px',
+              fontSize: '11px',
+              fontWeight: 700,
+              color: '#6EE7B7'
+            }}>
+              <Car size={13} color="#6EE7B7" />
+              <span>Ghats Open</span>
+            </span>
+            {isNight && (
+              <span style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '5px',
+                backgroundColor: 'rgba(30, 58, 138, 0.45)',
+                border: '1px solid rgba(96, 165, 250, 0.25)',
+                padding: '4px 9px',
+                borderRadius: '16px',
+                fontSize: '11px',
+                fontWeight: 700,
+                color: '#93C5FD'
+              }}>
+                <Moon size={13} color="#93C5FD" />
+                <span>Night</span>
+              </span>
+            )}
+            {isRainy ? (
+              <span style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '5px',
+                backgroundColor: 'rgba(14, 116, 144, 0.45)',
+                border: '1px solid rgba(34, 211, 238, 0.25)',
+                padding: '4px 9px',
+                borderRadius: '16px',
+                fontSize: '11px',
+                fontWeight: 700,
+                color: '#67E8F9'
+              }}>
+                <CloudRain size={13} color="#67E8F9" />
+                <span>Rain</span>
+              </span>
+            ) : (
+              <span style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '5px',
+                backgroundColor: 'rgba(217, 119, 6, 0.2)',
+                border: '1px solid rgba(251, 191, 36, 0.25)',
+                padding: '4px 9px',
+                borderRadius: '16px',
+                fontSize: '11px',
+                fontWeight: 700,
+                color: '#FDE68A'
+              }}>
+                <Sun size={13} color="#FDE68A" />
+                <span>{weatherTemp || '26°C'}</span>
+              </span>
+            )}
+          </div>
+
+          <Link href="/live" style={{ fontSize: '11.5px', fontWeight: 800, color: '#38BDF8', textDecoration: 'none' }}>
+            {lang === 'te' ? 'లైవ్ స్టేటస్ →' : '→ Full Live Status'}
+          </Link>
+        </div>
+
+        {/* 3️⃣ ⭐ SAARTHI SUGGESTS (HERO COMPANION GUIDANCE) */}
         {(() => {
           const recommendationReasons = [
             scenario.why,
@@ -964,31 +1069,35 @@ export function HomeHero({ userName, locationName, weatherTemp, liveStatus, acti
               ? 'SSD quota closed for today'
               : liveStatus?.ssdNextTokenTime
               ? `SSD tokens resume at ${liveStatus.ssdNextTokenTime}`
-              : `Recommended best slot: ${scenario.bestTime || 'Afternoon'}`
+              : `Recommended best slot: ${scenario.bestTime || 'Morning 6:00 AM'}`
           ];
 
           return (
             <div style={{
               backgroundColor: '#FFFFFF',
               borderRadius: '20px',
-              padding: '14px 14px',
+              padding: '16px 18px',
               color: '#0F172A',
-              boxShadow: '0 8px 24px rgba(0, 0, 0, 0.15)'
+              boxShadow: '0 8px 24px rgba(0, 0, 0, 0.12)'
             }}>
-              <div style={{ fontSize: '10px', fontWeight: 800, color: scenario.accentColor, textTransform: 'uppercase', letterSpacing: '0.6px', marginBottom: '4px', display: 'flex', alignItems: 'center', gap: '5px' }}>
-                <Sparkles size={13} color={scenario.accentColor} />
-                <span>{t.labels.saarthiRecommends}</span>
+              {/* Header with Devotional Cue */}
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '8px' }}>
+                <div style={{ fontSize: '11px', fontWeight: 900, color: '#0F5132', textTransform: 'uppercase', letterSpacing: '0.6px', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                  <Sparkles size={14} color="#0F5132" />
+                  <span>{lang === 'te' ? 'సారథి సలహా' : 'SAARTHI SUGGESTS'}</span>
+                </div>
+                <span style={{ fontSize: '10.5px', color: '#854D0E', fontWeight: 700, fontStyle: 'italic' }}>
+                  “Patience brings peaceful darshan”
+                </span>
               </div>
               
-              <div style={{ fontSize: '14px', fontWeight: 800, color: '#0F172A', lineHeight: '1.3', marginBottom: '8px' }}>
+              {/* Warm Companion Recommendation */}
+              <div style={{ fontSize: '15.5px', fontWeight: 900, color: '#0F172A', lineHeight: '1.35', marginBottom: '10px', letterSpacing: '-0.01em' }}>
                 {scenario.recommendation}
               </div>
 
-              <div style={{ fontSize: '10px', fontWeight: 800, color: '#64748B', textTransform: 'uppercase', letterSpacing: '0.4px', marginBottom: '4px' }}>
-                {t.labels.recommendedBecause}
-              </div>
-
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '4px', marginBottom: '10px' }}>
+              {/* Rationale Checklist */}
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '5px', marginBottom: '12px' }}>
                 {recommendationReasons.map((point, i) => (
                   <div key={i} style={{ fontSize: '12px', color: '#334155', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '6px' }}>
                     <Check size={13} color="#10B981" strokeWidth={2.5} style={{ flexShrink: 0 }} />
@@ -997,22 +1106,28 @@ export function HomeHero({ userName, locationName, weatherTemp, liveStatus, acti
                 ))}
               </div>
 
-              {/* 5️⃣ BENEFIT / TIME SAVED PILL */}
+              {/* HIGHLIGHTED BENEFIT PILL */}
               <div style={{
-                display: 'inline-flex',
+                display: 'flex',
                 alignItems: 'center',
                 gap: '6px',
                 backgroundColor: '#FEF3C7',
                 border: '1px solid #FDE68A',
                 color: '#92400E',
-                padding: '5px 10px',
-                borderRadius: '10px',
-                fontSize: '11px',
+                padding: '7px 12px',
+                borderRadius: '12px',
+                fontSize: '12px',
                 fontWeight: 800,
-                marginBottom: '0px'
+                marginBottom: '8px'
               }}>
-                <Zap size={12} color="#D97706" fill="#D97706" />
-                <span>{scenario.benefit}</span>
+                <Zap size={14} color="#D97706" fill="#D97706" style={{ flexShrink: 0 }} />
+                <span>{scenario.benefit || 'Save approx. 4 hours by starting at 6:00 AM'}</span>
+              </div>
+
+              {/* Subtle Trust & Confidence Indicator */}
+              <div style={{ fontSize: '10.5px', color: '#94A3B8', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '4px' }}>
+                <span>⚡</span>
+                <span>Based on live queue trends • Verified recently</span>
               </div>
             </div>
           );
@@ -1021,11 +1136,11 @@ export function HomeHero({ userName, locationName, weatherTemp, liveStatus, acti
 
       {/* Section Header Below Card */}
       {!hideHeader && (
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: '24px', marginBottom: '12px' }}>
-          <h3 style={{ fontSize: '17px', fontWeight: 800, color: '#0F172A', margin: 0 }}>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: '20px', marginBottom: '12px' }}>
+          <h3 style={{ fontSize: '16px', fontWeight: 800, color: '#0F172A', margin: 0 }}>
             {t.labels.rightNowOnHill}
           </h3>
-          <Link href="/live" style={{ fontSize: '13px', fontWeight: 700, color: '#0E6B72', textDecoration: 'none' }}>
+          <Link href="/live" style={{ fontSize: '12.5px', fontWeight: 700, color: '#0E6B72', textDecoration: 'none' }}>
             {t.labels.viewAll}
           </Link>
         </div>

@@ -46,7 +46,7 @@ export function runLocationVerification() {
 
   // Locked Coordinate Registry — Guarantees zero future regressions
   const LOCKED_COORDINATES: Record<string, { lat: number; lng: number }> = {
-    'govindaraja': { lat: 13.6299, lng: 79.4163 },
+    'govindaraja': { lat: 13.629941, lng: 79.4162996 },
     'iskcon-tirupati': { lat: 13.6469, lng: 79.4138 },
     'kapila-theertham': { lat: 13.6564, lng: 79.4208 },
     'alipiri-mettu': { lat: 13.647051, lng: 79.405856 },
@@ -72,7 +72,9 @@ export function runLocationVerification() {
     'kodandarama-temple': { lat: 13.635037, lng: 79.416753 },
     'mamanduru-forest': { lat: 13.750691, lng: 79.466337 },
     'dhyana-vignan-mandiram': { lat: 13.680238, lng: 79.346987 },
-    'silparamam-tirupati': { lat: 13.614049, lng: 79.439608 }
+    'silparamam-tirupati': { lat: 13.614049, lng: 79.439608 },
+    'veshalamma-temple': { lat: 13.6296781, lng: 79.4130316 },
+    'jagannatha-temple': { lat: 13.6349956, lng: 79.4041733 }
   };
 
   for (const place of rawPlaces) {

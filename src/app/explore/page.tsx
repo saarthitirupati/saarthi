@@ -10,13 +10,26 @@ import styles from './Explore.module.css';
 import { calculateDrivingDistance, TIRUPATI_CENTER } from '@/utils/location';
 import { useTrip } from '@/components/TripContext';
 import { useRealtimePlaces } from '@/lib/useRealtimePlaces';
+import { useLanguage } from '@/lib/useLanguage';
+
+const FILTERS_DATA = [
+  { key: 'All', labelEn: 'All', labelTe: 'అన్నీ' },
+  { key: 'Nearby', labelEn: 'Nearby', labelTe: 'సమీపంలో' },
+  { key: 'Spiritual', labelEn: 'Spiritual', labelTe: 'ఆధ్యాత్మికం' },
+  { key: 'Nature', labelEn: 'Nature', labelTe: 'ప్రకృతి' },
+  { key: 'Water', labelEn: 'Theerthams', labelTe: 'తీర్థాలు' },
+  { key: 'Historical', labelEn: 'Heritage', labelTe: 'చారిత్రకం' },
+  { key: 'Hidden', labelEn: 'Hidden Gems', labelTe: 'దాగి ఉన్నవి' },
+  { key: 'Culture', labelEn: 'Culture', labelTe: 'సంస్కృతి' }
+];
 
 function ExploreContent() {
+  const lang = useLanguage();
   const searchParams = useSearchParams();
   const initialQuery = searchParams.get('q') || '';
   const initialFilter = searchParams.get('category') || searchParams.get('filter') || '';
   
-  const filters = ['All', 'Nearby', 'Spiritual', 'Nature', 'Water', 'Historical', 'Hidden', 'Leisure', 'Culture'];
+  const filters = FILTERS_DATA.map(f => f.key);
   const { places, loading: _loading } = useRealtimePlaces(PLACES);
   const [searchQuery, setSearchQuery] = useState(initialQuery);
   const [activeFilter, setActiveFilter] = useState('All');
@@ -125,34 +138,57 @@ function ExploreContent() {
         return !isTirumala;
       }
 
-      const toStr = (v: any) => typeof v === 'string' ? v : (v?.name || v?.slug || String(v || ''));
+      const normalize = (str: string) => (str || '').toLowerCase().replace(/[^a-z0-9]/g, '');
       const q = searchQuery.trim().toLowerCase();
+      const qNorm = normalize(q);
+      const qTokens = q.split(/\s+/).filter(Boolean);
 
-      // Explicit Alias Map for robust pilgrim search intents
-      let searchTerms = [q];
-      if (q === 'hanuman' || q === 'anjaneya') {
-        searchTerms.push('japali', 'bedi anjaneya', 'prasanna anjaneya');
-      } else if (q === 'waterfall' || q === 'waterfalls' || q === 'falls') {
-        searchTerms.push('talakona', 'nagala', 'kailasa', 'tada', 'kapila');
-      } else if (q === 'appalayagunta' || q === 'appalaya') {
-        searchTerms.push('prasanna venkateswara', 'appalayagunta');
-      } else if (q === 'jain' || q === 'jainism' || q === 'dharamshala' || q === 'parshwanath') {
-        searchTerms.push('jain', 'parshwanath', 'shwetambar', 'dharamshala');
+      // Build comprehensive searchable place text
+      const placeBlob = [
+        place.name,
+        place.id,
+        place.location,
+        place.address,
+        place.category,
+        place.placeType,
+        place.description,
+        place.shortIntro,
+        place.spiritualInfo?.god,
+        place.spiritualInfo?.knownFor,
+        place.spiritualInfo?.mantra,
+        ...(place.tags || []),
+        ...(place.interests || []),
+        ...((place as any).searchIntelligence?.aliases || []),
+        ...((place as any).searchIntelligence?.intentQueries || []),
+        ...((place as any).searchIntelligence?.misspellings || [])
+      ].filter(Boolean).map(v => String(v).toLowerCase()).join(' ');
+
+      const placeBlobNorm = normalize(placeBlob);
+
+      // 1. Direct substring match or normalized space-insensitive match (e.g. "Govinda Raja" <-> "Govindaraja")
+      const directMatch = placeBlob.includes(q) || placeBlobNorm.includes(qNorm);
+
+      // 2. Tokenized word matching (handles multi-word queries)
+      const STOP_WORDS = new Set(['sri', 'shri', 'vari', 'temple', 'the', 'and', 'in', 'at', 'of']);
+      const significantTokens = qTokens.filter(t => !STOP_WORDS.has(t) && t.length > 1);
+      const tokensMatch = significantTokens.length > 0
+        ? significantTokens.every(token => placeBlob.includes(token) || placeBlobNorm.includes(normalize(token)))
+        : qTokens.every(token => placeBlob.includes(token));
+
+      // 3. Pilgrim intent alias matching
+      let aliasMatch = false;
+      if (q.includes('hanuman') || q.includes('anjaneya')) {
+        aliasMatch = placeBlob.includes('japali') || placeBlob.includes('anjaneya') || placeBlob.includes('hanuman');
+      } else if (q.includes('waterfall') || q.includes('falls')) {
+        aliasMatch = placeBlob.includes('talakona') || placeBlob.includes('nagala') || placeBlob.includes('kailasa') || placeBlob.includes('tada') || placeBlob.includes('kapila');
+      } else if (q.includes('govinda') || q.includes('govindaraja')) {
+        aliasMatch = placeBlobNorm.includes('govindaraja');
+      } else if (q.includes('jain') || q.includes('parshwanath')) {
+        aliasMatch = placeBlob.includes('jain') || placeBlob.includes('parshwanath');
       }
 
-      const nameMatch = searchTerms.some(term => toStr(place.name).toLowerCase().includes(term));
-      const locationMatch = searchTerms.some(term => toStr(place.location).toLowerCase().includes(term));
-      const addressMatch = searchTerms.some(term => toStr(place.address).toLowerCase().includes(term));
-      const idMatch = searchTerms.some(term => toStr(place.id).toLowerCase().includes(term));
-      const descMatch = searchTerms.some(term => toStr(place.description || place.shortIntro).toLowerCase().includes(term));
-      const typeMatch = searchTerms.some(term => toStr(place.placeType).toLowerCase().includes(term));
-      const heritageMatch = q === 'heritage' && (place.placeType === 'historical' || toStr(place.category).toLowerCase().includes('core temple'));
-      const categoryMatch = searchTerms.some(term => toStr(place.category).toLowerCase().includes(term));
-      const godMatch = !!(place.spiritualInfo?.god && searchTerms.some(term => toStr(place.spiritualInfo?.god).toLowerCase().includes(term)));
-      const tagsMatch = !!(place.tags && Array.isArray(place.tags) && place.tags.some((tag: any) => searchTerms.some(term => toStr(tag).toLowerCase().includes(term))));
-      const interestsMatch = !!(place.interests && Array.isArray(place.interests) && place.interests.some((interest: any) => searchTerms.some(term => toStr(interest).toLowerCase().includes(term))));
-
-      const matchesSearch = !q || nameMatch || locationMatch || addressMatch || idMatch || descMatch || typeMatch || heritageMatch || categoryMatch || godMatch || tagsMatch || interestsMatch;
+      const toStr = (v: any) => typeof v === 'string' ? v : (v?.name || v?.slug || String(v || ''));
+      const matchesSearch = !q || directMatch || tokensMatch || aliasMatch;
         
       // Multi-attribute Filter Matching logic
       const f = activeFilter.toLowerCase();
@@ -240,7 +276,7 @@ function ExploreContent() {
         <Link href="/" className={styles.backButton}>
           <ArrowLeft size={24} />
         </Link>
-        <h1>Explore Places</h1>
+        <h1>{lang === 'te' ? 'దర్శనీయ ప్రదేశాలు & ఆలయాలు' : 'Explore Places'}</h1>
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
           <Link href="/alerts" aria-label="Notifications" style={{ position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'center', width: '36px', height: '36px', textDecoration: 'none', color: '#0F5132' }}>
             <Bell size={20} />
@@ -256,20 +292,20 @@ function ExploreContent() {
           <Search size={20} color="#999" />
           <input 
             type="text" 
-            placeholder="Search places, temples, waterfalls, restaurants, history…" 
+            placeholder={lang === 'te' ? 'ఆలయాలు, జలపాతాలు, ప్రసాదం, చరిత్ర శోధించండి…' : 'Search places, temples, waterfalls, restaurants, history…'} 
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
           />
         </div>
 
         <div className={styles.filterList} id="explore-filter-list">
-          {filters.map((filter) => (
+          {FILTERS_DATA.map((filter) => (
             <button
-              key={filter}
-              className={`${styles.filterItem} ${activeFilter === filter ? styles.activeFilter : ''}`}
-              onClick={() => handleFilterClick(filter)}
+              key={filter.key}
+              className={`${styles.filterItem} ${activeFilter === filter.key ? styles.activeFilter : ''}`}
+              onClick={() => handleFilterClick(filter.key)}
             >
-              {filter}
+              {lang === 'te' ? filter.labelTe : filter.labelEn}
             </button>
           ))}
         </div>
@@ -281,25 +317,27 @@ function ExploreContent() {
           <aside className={styles.sidebarFilter}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '20px', paddingBottom: '12px', borderBottom: '1px solid #F1F5F9' }}>
               <Filter size={18} color="#059669" />
-              <h3 style={{ fontSize: '16px', fontWeight: 800, color: '#0F172A', margin: 0 }}>Explore Filters</h3>
+              <h3 style={{ fontSize: '16px', fontWeight: 800, color: '#0F172A', margin: 0 }}>
+                {lang === 'te' ? 'వర్గాలు & ఫిల్టర్లు' : 'Explore Filters'}
+              </h3>
             </div>
 
             <div style={{ marginBottom: '20px' }}>
               <label style={{ fontSize: '12px', fontWeight: 800, color: '#64748B', textTransform: 'uppercase', letterSpacing: '0.05em', display: 'block', marginBottom: '10px' }}>
-                Categories
+                {lang === 'te' ? 'వర్గాలు' : 'Categories'}
               </label>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
-                {filters.map((filter) => (
+                {FILTERS_DATA.map((filter) => (
                   <button
-                    key={filter}
-                    onClick={() => handleFilterClick(filter)}
+                    key={filter.key}
+                    onClick={() => handleFilterClick(filter.key)}
                     style={{
                       padding: '8px 12px',
                       borderRadius: '10px',
                       border: 'none',
-                      background: activeFilter === filter ? '#ECFDF5' : 'transparent',
-                      color: activeFilter === filter ? '#059669' : '#334155',
-                      fontWeight: activeFilter === filter ? 800 : 600,
+                      background: activeFilter === filter.key ? '#ECFDF5' : 'transparent',
+                      color: activeFilter === filter.key ? '#059669' : '#334155',
+                      fontWeight: activeFilter === filter.key ? 800 : 600,
                       fontSize: '13px',
                       textAlign: 'left',
                       cursor: 'pointer',
@@ -309,8 +347,8 @@ function ExploreContent() {
                       transition: 'all 0.15s'
                     }}
                   >
-                    <span>{filter}</span>
-                    {activeFilter === filter && <span style={{ color: '#059669', fontWeight: 800 }}>✓</span>}
+                    <span>{lang === 'te' ? filter.labelTe : filter.labelEn}</span>
+                    {activeFilter === filter.key && <span style={{ color: '#059669', fontWeight: 800 }}>✓</span>}
                   </button>
                 ))}
               </div>
@@ -336,10 +374,10 @@ function ExploreContent() {
           <div className={styles.curatedSection}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
               <h2 className={styles.curatedTitle} style={{ display: 'flex', alignItems: 'center', gap: '6px', margin: 0 }}>
-                Nearby <MapPin size={18} style={{ color: '#2F6144' }} />
+                {lang === 'te' ? 'సమీపంలోని ప్రదేశాలు' : 'Nearby'} <MapPin size={18} style={{ color: '#2F6144' }} />
               </h2>
               <span style={{ fontSize: '11px', color: '#059669', fontWeight: 800, background: '#DCFCE7', padding: '2px 8px', borderRadius: '12px' }}>
-                {userLocation ? 'Live GPS Distance' : 'Nearest First'}
+                {userLocation ? (lang === 'te' ? 'లైవ్ GPS దూరం' : 'Live GPS Distance') : (lang === 'te' ? 'దగ్గరివి మొదట' : 'Nearest First')}
               </span>
             </div>
             <div className={styles.horizontalScroll}>
@@ -347,11 +385,11 @@ function ExploreContent() {
                 const dist = Number((place as any).computedDistance || 0);
                 let travelStr = '';
                 if (dist <= 1.5) {
-                  travelStr = `${Math.max(1, Math.round(dist * 12))} mins • Walk`;
+                  travelStr = lang === 'te' ? `${Math.max(1, Math.round(dist * 12))} నిమిషాలు • నడకదారి` : `${Math.max(1, Math.round(dist * 12))} mins • Walk`;
                 } else if (dist <= 8.0) {
-                  travelStr = `${Math.max(2, Math.round(dist * 2.5))} mins • Bike`;
+                  travelStr = lang === 'te' ? `${Math.max(2, Math.round(dist * 2.5))} నిమిషాలు • బైక్/ఆటో` : `${Math.max(2, Math.round(dist * 2.5))} mins • Bike`;
                 } else {
-                  travelStr = `${Math.max(5, Math.round(dist * 2.0))} mins • Bus/Car`;
+                  travelStr = lang === 'te' ? `${Math.max(5, Math.round(dist * 2.0))} నిమిషాలు • బస్సు/కారు` : `${Math.max(5, Math.round(dist * 2.0))} mins • Bus/Car`;
                 }
 
                 return (
@@ -361,7 +399,7 @@ function ExploreContent() {
                       <h4>{place.name}</h4>
                       <div style={{ display: 'flex', flexDirection: 'column', gap: '2px', marginTop: '2px' }}>
                         <span style={{ color: '#2F6144', fontWeight: 800, fontSize: '11px' }}>
-                          {dist < 0.5 ? '< 0.5 km away' : `${dist.toFixed(1)} km away`} • {travelStr}
+                          {dist < 0.5 ? (lang === 'te' ? '< 0.5 కి.మీ దూరం' : '< 0.5 km away') : `${dist.toFixed(1)} ${lang === 'te' ? 'కి.మీ దూరం' : 'km away'}`} • {travelStr}
                         </span>
                       </div>
                     </div>
@@ -375,7 +413,7 @@ function ExploreContent() {
               {mustVisit.length > 0 && (
                 <div className={styles.curatedSection}>
                   <h2 className={styles.curatedTitle} style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                    Must-Visit <Sparkles size={18} style={{ color: '#FF9933' }} />
+                    {lang === 'te' ? 'తప్పక దర్శించాల్సినవి' : 'Must-Visit'} <Sparkles size={18} style={{ color: '#FF9933' }} />
                   </h2>
                   <div className={styles.horizontalScroll}>
                     {mustVisit.map((place) => (
@@ -410,7 +448,7 @@ function ExploreContent() {
               {hiddenGems.length > 0 && (
                 <div className={styles.curatedSection}>
                   <h2 className={styles.curatedTitle} style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                    Hidden Gems <Sparkles size={18} style={{ color: '#6C63FF' }} />
+                    {lang === 'te' ? 'దాగి ఉన్న పవిత్ర క్షేత్రాలు' : 'Hidden Gems'} <Sparkles size={18} style={{ color: '#6C63FF' }} />
                   </h2>
                   <div className={styles.horizontalScroll}>
                     {hiddenGems.map((place) => (
@@ -510,58 +548,117 @@ function ExploreContent() {
 
         <div className={styles.sectionHeader}>
           <h2 className={styles.sectionTitle}>
-            {isAlternativeQuery ? 'Recommended Alternatives' : isTirupatiQuery ? 'Attractions in Tirupati City' : searchQuery ? `Results for "${searchQuery}"` : activeFilter === 'All' ? 'All Experiences' : `${activeFilter} Places`}
+            {isAlternativeQuery 
+              ? (lang === 'te' ? 'ప్రత్యామ్నాయ పవిత్ర దర్శనాలు' : 'Recommended Alternatives') 
+              : isTirupatiQuery 
+              ? (lang === 'te' ? 'తిరుపతి నగరంలోని ఆకర్షణలు' : 'Attractions in Tirupati City') 
+              : searchQuery 
+              ? (lang === 'te' ? `"${searchQuery}" ఫలితాలు` : `Results for "${searchQuery}"`) 
+              : activeFilter === 'All' 
+              ? (lang === 'te' ? 'అన్ని దర్శనీయ స్థలాలు' : 'All Experiences') 
+              : (lang === 'te' ? `${FILTERS_DATA.find(f => f.key === activeFilter)?.labelTe || activeFilter} ప్రదేశాలు` : `${activeFilter} Places`)}
           </h2>
           <span className={styles.count}>
-            {filteredPlaces.length} {filteredPlaces.length === 1 ? 'result' : 'results'}
+            {filteredPlaces.length} {filteredPlaces.length === 1 ? (lang === 'te' ? 'ప్రదేశం' : 'result') : (lang === 'te' ? 'ప్రదేశాలు' : 'results')}
           </span>
         </div>
 
         <div className={styles.templeList}>
           {filteredPlaces.length > 0 ? (
-            filteredPlaces.map((place: Place, index: number) => (
-              <motion.div
-                key={place.id}
-                className={styles.templeItem}
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: index * 0.05 }}
-              >
-                <Link href={`/place/${place.id}`} className={styles.templeLink}>
-                  <div 
-                    className={styles.itemImage}
-                    style={{ backgroundImage: `url(${place.image || 'https://images.unsplash.com/photo-1514222134-b57cbf8ce673?auto=format&fit=crop&q=80&w=800'})` }}
-                  />
-                  <div className={styles.itemInfo}>
-                    <div className={styles.itemHeader}>
-                      <h3>{place.name}</h3>
-                      <div className={styles.rating}>
-                        <Star size={14} fill="#FF9933" color="#FF9933" />
-                        <span>{place.rating}</span>
+            filteredPlaces.map((place: Place, index: number) => {
+              const explainableReason = place.oneReasonToVisit || place.spiritualInfo?.knownFor || place.whyVisit?.split('.')[0];
+              const crowd = place.saarthiIntelligence?.crowdLevel;
+
+              return (
+                <motion.div
+                  key={place.id}
+                  className={styles.templeItem}
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: index * 0.05 }}
+                >
+                  <Link href={`/place/${place.id}`} className={styles.templeLink}>
+                    <div 
+                      className={styles.itemImage}
+                      style={{ backgroundImage: `url(${place.image || 'https://images.unsplash.com/photo-1514222134-b57cbf8ce673?auto=format&fit=crop&q=80&w=800'})` }}
+                    />
+                    <div className={styles.itemInfo}>
+                      <div className={styles.itemHeader}>
+                        <h3 style={{ fontSize: '15px', fontWeight: 800, color: '#0F172A', margin: 0 }}>
+                          {place.name}
+                        </h3>
+                        <div className={styles.rating}>
+                          <Star size={14} fill="#FF9933" color="#FF9933" />
+                          <span>{place.rating}</span>
+                        </div>
+                      </div>
+
+                      {/* Explainable Recommendation Badge */}
+                      {explainableReason && (
+                        <div style={{
+                          display: 'inline-flex',
+                          alignItems: 'center',
+                          gap: '5px',
+                          backgroundColor: '#FEF9C3',
+                          color: '#854D0E',
+                          fontSize: '11px',
+                          fontWeight: 700,
+                          borderRadius: '6px',
+                          padding: '2.5px 7px',
+                          margin: '4px 0 6px 0',
+                          border: '1px solid rgba(234, 179, 8, 0.25)',
+                          lineHeight: 1.3
+                        }}>
+                          <Sparkles size={11} color="#CA8A04" style={{ flexShrink: 0 }} />
+                          <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', maxWidth: '300px' }}>
+                            {explainableReason}
+                          </span>
+                        </div>
+                      )}
+
+                      <p className={styles.description}>{place.description}</p>
+                      
+                      <div className={styles.tags} style={{ marginTop: '8px' }}>
+                        {(place as any).computedDistance !== undefined ? (
+                          <span className={styles.tag} style={{ backgroundColor: '#E5F3EB', color: '#2F6144', fontWeight: 700, display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
+                            <MapPin size={12} style={{ flexShrink: 0 }} />
+                            {Number((place as any).computedDistance) < 0.5
+                              ? (lang === 'te' ? '< 0.5 కి.మీ దూరం' : '< 0.5 km away')
+                              : `${Number((place as any).computedDistance).toFixed(1)} ${lang === 'te' ? 'కి.మీ దూరం' : 'km away'}`}
+                          </span>
+                        ) : (
+                          <span className={styles.tag}>{place.distanceKms} km from Tirupati</span>
+                        )}
+
+                        {crowd && (
+                          <span className={styles.tag} style={{
+                            backgroundColor: crowd === 'High' ? '#FEE2E2' : '#DCFCE7',
+                            color: crowd === 'High' ? '#991B1B' : '#166534',
+                            fontWeight: 800,
+                            display: 'inline-flex',
+                            alignItems: 'center',
+                            gap: '4px'
+                          }}>
+                            ● {crowd} {lang === 'te' ? 'రద్దీ' : 'Crowd'}
+                          </span>
+                        )}
+
+                        {(place.tags || []).slice(0, 3).map((tag: string) => (
+                          <span key={tag} className={styles.tag}>{tag}</span>
+                        ))}
                       </div>
                     </div>
-                    <p className={styles.description}>{place.description}</p>
-                    <div className={styles.tags}>
-                      {(place as any).computedDistance !== undefined ? (
-                        <span className={styles.tag} style={{ backgroundColor: '#E5F3EB', color: '#2F6144', fontWeight: 700, display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
-                          <MapPin size={12} style={{ flexShrink: 0 }} /> {Number((place as any).computedDistance).toFixed(1)} km away
-                        </span>
-                      ) : (
-                        <span className={styles.tag}>{place.distanceKms} km from Tirupati</span>
-                      )}
-                      {(place.tags || []).map((tag: string) => (
-                        <span key={tag} className={styles.tag}>{tag}</span>
-                      ))}
-                    </div>
-                  </div>
-                </Link>
-              </motion.div>
-            ))
+                  </Link>
+                </motion.div>
+              );
+            })
           ) : (
             <div className={styles.noResults}>
-              <p>No places found matching your search.</p>
+              <p>{lang === 'te' ? 'మీ శోధనకు సరిపోలే ప్రదేశాలు ఏవీ కనుగొనబడలేదు.' : 'No places found matching your search.'}</p>
               {searchQuery.length >= 2 && crossResults.stories.length === 0 && crossResults.encyclopedia.length === 0 && (
-                <p style={{ fontSize: 13, color: '#999', marginTop: 4 }}>Try searching for temples, festivals, stories, or landmarks.</p>
+                <p style={{ fontSize: 13, color: '#999', marginTop: 4 }}>
+                  {lang === 'te' ? 'ఆలయాలు, పండుగలు, పురాణాలు లేదా స్థలాలను శోధించడానికి ప్రయత్నించండి.' : 'Try searching for temples, festivals, stories, or landmarks.'}
+                </p>
               )}
             </div>
           )}

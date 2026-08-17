@@ -94,12 +94,12 @@ export async function GET(request: Request) {
         deletedSlugs,
       });
     } catch (fallbackError: any) {
-      console.error('Fallback failed:', fallbackError);
+      console.warn('Database fallback failed, returning static PLACES:', fallbackError?.message || fallbackError);
       return NextResponse.json({
-        success: false,
-        data: null,
-        error: 'Failed to fetch places',
-      }, { status: 500 });
+        success: true,
+        data: withVerifiedCoords(PLACES),
+        deletedSlugs: [],
+      });
     }
   }
 }

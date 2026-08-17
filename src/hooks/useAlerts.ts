@@ -44,8 +44,11 @@ export function useAlerts() {
       return true;
     });
 
-    setActivePopupAlert(alertToShow || null);
-  }, [alerts, userLocation, dismissedAlertIds]);
+    setActivePopupAlert(prev => {
+      if (prev?.id === (alertToShow?.id || null)) return prev;
+      return alertToShow || null;
+    });
+  }, [alerts, userLocation?.lat, userLocation?.lng, dismissedAlertIds]);
 
   const activeAlertsCount = useMemo(() => {
     if (!alerts) return 0;

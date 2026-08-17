@@ -1,0 +1,477 @@
+.pageWrapper {
+  min-height: 100vh;
+  background: #F8FAF7;
+  padding-bottom: 60px;
+}
+
+.topHeader {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: rgba(255, 255, 255, 0.94);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid #E2E8F0;
+  padding: 14px 20px;
+}
+
+.headerInner {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.backBtn {
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  background: #F1F5F9;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #334155;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+}
+
+.backBtn:hover {
+  background: #E2E8F0;
+  color: #0F172A;
+}
+
+.headerTitles {
+  flex: 1;
+}
+
+.pageTitle {
+  font-size: 17px;
+  font-weight: 800;
+  color: #0F172A;
+  margin: 0;
+  letter-spacing: -0.01em;
+}
+
+.headerSub {
+  font-size: 11.5px;
+  color: #64748B;
+  font-weight: 500;
+  display: block;
+}
+
+.shareBtn {
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  background: #ECFDF5;
+  border: 1px solid #A7F3D0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #047857;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.shareBtn:hover {
+  background: #D1FAE5;
+}
+
+.contentContainer {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+@media (min-width: 1440px) {
+  .headerInner,
+  .contentContainer {
+    max-width: 1400px;
+  }
+}
+
+/* ── TELEMETRY RADAR SUMMARY ── */
+
+.telemetryCard {
+  background: #FFFFFF;
+  border: 1px solid #E2E8F0;
+  border-radius: 20px;
+  padding: 16px 20px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.03);
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.telemetryHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.radarPulse {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.pulseDot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #10B981;
+  box-shadow: 0 0 10px #10B981;
+  animation: pulseGreen 2s infinite ease-in-out;
+}
+
+@keyframes pulseGreen {
+  0%, 100% { box-shadow: 0 0 6px #10B981; }
+  50% { box-shadow: 0 0 14px #34D399; }
+}
+
+.pulseText {
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  color: #047857;
+}
+
+.weatherTag {
+  font-size: 11.5px;
+  font-weight: 700;
+  color: #475569;
+  background: #F1F5F9;
+  padding: 4px 10px;
+  border-radius: 10px;
+}
+
+.statsGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+
+.statBox {
+  background: #F8FAFC;
+  border: 1px solid #F1F5F9;
+  border-radius: 14px;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.statLabel {
+  font-size: 11px;
+  color: #64748B;
+  font-weight: 600;
+}
+
+.statValue {
+  font-size: 16px;
+  font-weight: 800;
+  color: #0F172A;
+}
+
+.copiedToast {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  font-weight: 700;
+  color: #047857;
+  background: #ECFDF5;
+  padding: 6px 12px;
+  border-radius: 8px;
+}
+
+/* ── STRATEGY BANNER ── */
+
+.strategyBanner {
+  background: linear-gradient(135deg, #FEF9C3 0%, #FEF08A 100%);
+  border: 1px solid #FDE047;
+  border-radius: 18px;
+  padding: 16px;
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+}
+
+.strategyIcon {
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  background: #FFFFFF;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  box-shadow: 0 2px 6px rgba(202, 138, 4, 0.15);
+}
+
+.strategyText strong {
+  font-size: 13.5px;
+  color: #854D0E;
+  display: block;
+  margin-bottom: 2px;
+}
+
+.strategyText p {
+  font-size: 12.5px;
+  color: #713F12;
+  margin: 0;
+  line-height: 1.45;
+  font-weight: 500;
+}
+
+/* ── TIMELINE SECTION ── */
+
+.timelineSection {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.sectionTitle {
+  font-size: 16.5px;
+  font-weight: 800;
+  color: #0F172A;
+  margin: 0;
+}
+
+.timelineList {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.timelineItem {
+  display: flex;
+  gap: 14px;
+}
+
+.connectorCol {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 28px;
+  flex-shrink: 0;
+}
+
+.stepNumberBadge {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: #0F5132;
+  color: #FFFFFF;
+  font-size: 12px;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 6px rgba(15, 81, 50, 0.3);
+  z-index: 2;
+}
+
+.connectorLine {
+  width: 2px;
+  flex: 1;
+  background: repeating-linear-gradient(to bottom, #CBD5E1 0px, #CBD5E1 4px, transparent 4px, transparent 8px);
+  margin: 4px 0;
+}
+
+.stepCard {
+  flex: 1;
+  background: #FFFFFF;
+  border: 1px solid #E2E8F0;
+  border-radius: 18px;
+  padding: 16px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.03);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  transition: all 0.2s ease;
+}
+
+.highlightedCard {
+  border: 1.5px solid #F59E0B;
+  box-shadow: 0 4px 18px rgba(245, 158, 11, 0.15);
+}
+
+.stepCardHeader {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.stepIconWrap {
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  background: #F0FDF4;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.stepTitleWrap {
+  flex: 1;
+}
+
+.stepTitle {
+  font-size: 14.5px;
+  font-weight: 800;
+  color: #0F172A;
+  margin: 0;
+  line-height: 1.3;
+}
+
+.stepLocation {
+  font-size: 11.5px;
+  color: #64748B;
+  font-weight: 600;
+}
+
+.statusPill {
+  font-size: 11px;
+  font-weight: 800;
+  padding: 4px 9px;
+  border-radius: 10px;
+  white-space: nowrap;
+}
+
+.stepDesc {
+  font-size: 12.5px;
+  color: #334155;
+  margin: 0;
+  line-height: 1.45;
+}
+
+.reasonRow {
+  background: #F8FAFC;
+  border-left: 3px solid #0F5132;
+  padding: 7px 10px;
+  border-radius: 6px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.reasonLabel {
+  font-size: 9.5px;
+  font-weight: 800;
+  color: #0F5132;
+  letter-spacing: 0.5px;
+}
+
+.reasonText {
+  font-size: 11.5px;
+  color: #475569;
+  font-weight: 600;
+}
+
+.stepGpsBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 9px 14px;
+  background: #0F5132;
+  color: #FFFFFF;
+  border-radius: 12px;
+  text-decoration: none;
+  font-size: 12.5px;
+  font-weight: 700;
+  align-self: flex-start;
+  transition: all 0.2s ease;
+}
+
+.stepGpsBtn:hover {
+  background: #0A3C24;
+  transform: translateY(-1px);
+}
+
+/* ── HELPLINE CARD ── */
+
+.helplineCard {
+  background: #FFFFFF;
+  border: 1px solid #E2E8F0;
+  border-radius: 20px;
+  padding: 18px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.03);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.helplineHeader {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.helplineTitle {
+  font-size: 14.5px;
+  font-weight: 800;
+  color: #0F172A;
+  margin: 0;
+}
+
+.helplineGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 10px;
+}
+
+.helpItem {
+  background: #F8FAFC;
+  border: 1px solid #E2E8F0;
+  border-radius: 12px;
+  padding: 10px 12px;
+  text-decoration: none;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  transition: all 0.2s ease;
+}
+
+.helpItem:hover {
+  background: #F0FDF4;
+  border-color: #86EFAC;
+}
+
+.helpName {
+  font-size: 11px;
+  color: #64748B;
+  font-weight: 600;
+}
+
+.helpNumber {
+  font-size: 13.5px;
+  color: #0F5132;
+  font-weight: 800;
+}
+
+@media (max-width: 640px) {
+  .statsGrid {
+    grid-template-columns: 1fr;
+  }
+  .stepCardHeader {
+    flex-direction: column;
+    gap: 6px;
+  }
+  .statusPill {
+    align-self: flex-start;
+  }
+  .stepGpsBtn {
+    width: 100%;
+  }
+}

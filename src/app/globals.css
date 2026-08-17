@@ -1,7 +1,43 @@
 :root {
-  /* --- Primary/Secondary Mappings for Legacy/Modern compatibility --- */
-  --primary: var(--color-teal-500);
-  --secondary: var(--color-saffron-500);
+  /* =========================================
+     SAARTHI DESIGN SYSTEM — PILGRIM COMPANION
+     ========================================= */
+
+  /* --- Core Palette --- */
+  --bg-canvas: #FAF8F5;
+  --surface-card: #FFFFFF;
+  --surface-pulse: #0F172A;
+  --surface-elevated: #FFFFFF;
+
+  /* --- Brand & Devotional Accents --- */
+  --color-emerald: #0F5132;       /* Primary Action & Confidence */
+  --color-emerald-light: #F0FDF4;
+  --color-gold: #C89B3C;          /* Sacred Temple Gold */
+  --color-gold-light: #FEF9C3;
+  --color-saffron: #E9801D;       /* Devotional Energy */
+
+  /* --- Operational Live Status (Strictly for live queue data) --- */
+  --status-green: #16A34A;
+  --status-green-bg: #DCFCE7;
+  --status-yellow: #D97706;
+  --status-yellow-bg: #FEF3C7;
+  --status-red: #DC2626;
+  --status-red-bg: #FEE2E2;
+
+  /* --- Borders & Shadows (Soft Elevation) --- */
+  --border-subtle: 1px solid rgba(15, 23, 42, 0.06);
+  --border-card: 1px solid #ECE9E3;
+  --border-glass: 1px solid rgba(255, 255, 255, 0.12);
+  --shadow-card: 0 8px 24px -4px rgba(15, 23, 42, 0.04), 0 2px 6px rgba(15, 23, 42, 0.02);
+  --shadow-elevated: 0 16px 40px -8px rgba(15, 23, 42, 0.08);
+  --shadow-pulse: 0 12px 32px -4px rgba(15, 23, 42, 0.25);
+
+  /* --- Layout & Navigation Metrics --- */
+  --layout-padding-bottom: calc(84px + env(safe-area-inset-bottom, 12px));
+
+  /* --- Primary/Secondary Mappings for Legacy compatibility --- */
+  --primary: var(--color-emerald);
+  --secondary: var(--color-saffron);
 
   /* =========================================
      JEEVAPATH DESIGN SYSTEM — TRAVEL MODERNISM
@@ -194,6 +230,12 @@
   --duration-slow:    420ms;
   --duration-slower:  600ms;
   --duration-slowest: 900ms;
+}
+
+@media (min-width: 768px) {
+  :root {
+    --layout-padding-bottom: 24px;
+  }
 }
 
 body {

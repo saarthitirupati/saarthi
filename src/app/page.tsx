@@ -1,8 +1,8 @@
 'use client';
 
 import Link from 'next/link';
-import { MapPin } from 'lucide-react';
-import { useMemo } from 'react';
+import { MapPin, Lock, Utensils, Scissors, Bed, ChevronRight, Sparkles, BookOpen, ShieldCheck, HelpCircle } from 'lucide-react';
+import { useState, useMemo } from 'react';
 import { useHomeData } from '@/hooks/useHomeData';
 import { useTrip } from '@/components/TripContext';
 import { LoadingState } from '@/components/common/LoadingState';
@@ -10,10 +10,9 @@ import { calculateDrivingDistance, TIRUPATI_CENTER } from '@/lib/location';
 import { useLanguage } from '@/lib/useLanguage';
 import {
   HomeHero,
-  ActiveAlerts,
   RecommendationCard,
-  QuickChecklist,
   DailyContent,
+  QuickChecklist,
   JourneyOverviewPanel
 } from '@/components/home';
 import styles from './Home.module.css';
@@ -21,13 +20,47 @@ import styles from './Home.module.css';
 const TEXTS = {
   en: {
     loading: 'Loading your Saarthi...',
-    nearbyPlaces: 'Nearby Places',
-    seeAll: 'See all →'
+    primaryServices: 'What You Need Right Now',
+    servicesSub: 'Essential facilities before your darshan',
+    nearbyPlaces: 'Explore Around You',
+    seeAll: 'See all →',
+    navigate: 'Navigate →',
+    openDrawer: 'More for your pilgrimage',
+    closeDrawer: 'Close',
+    lockers: 'Lockers & Luggage',
+    lockersSub: 'Free deposit for phones & bags',
+    lockersStatus: '6 Locations Open',
+    meals: 'Free Annaprasadam',
+    mealsSub: 'Fresh hot meals continuously',
+    mealsStatus: 'Serving Now',
+    tonsure: 'Kalyana Katta (Tonsure)',
+    tonsureSub: 'Sacred head shaving counters',
+    tonsureStatus: 'Open 24/7',
+    stay: 'Stay & PAC Halls',
+    staySub: 'Free rest halls & CRO rooms',
+    stayStatus: 'Halls Available'
   },
   te: {
     loading: 'మీ సారథి లోడ్ అవుతోంది...',
-    nearbyPlaces: 'సమీపంలోని ప్రదేశాలు',
-    seeAll: 'అన్నీ చూడండి →'
+    primaryServices: 'మీకు ఇప్పుడు అవసరమైనవి',
+    servicesSub: 'దర్శనానికి ముందు ముఖ్యమైన సదుపాయాలు',
+    nearbyPlaces: 'మీ చుట్టూ ఉన్న ప్రదేశాలు',
+    seeAll: 'అన్నీ చూడండి →',
+    navigate: 'మార్గం →',
+    openDrawer: 'మరిన్ని వివరాలు & సమాచారం',
+    closeDrawer: 'మూసివేయి',
+    lockers: 'లాకర్లు & లగేజీ',
+    lockersSub: 'ఫోన్లు, లగేజీ ఉచిత డిపాజిట్',
+    lockersStatus: '6 కేంద్రాలు ఓపెన్',
+    meals: 'ఉచిత అన్నప్రసాదం',
+    mealsSub: 'నిరంతర వేడి భోజనం',
+    mealsStatus: 'అందుబాటులో ఉంది',
+    tonsure: 'కళ్యాణకట్ట (తలనీలాలు)',
+    tonsureSub: 'పవిత్ర కేశ సమర్పణ కేంద్రాలు',
+    tonsureStatus: '24/7 అందుబాటులో ఉంది',
+    stay: 'వసతి & PAC హాళ్ళు',
+    staySub: 'ఉచిత విశ్రాంతి సముదాయాలు',
+    stayStatus: 'హాళ్ళు అందుబాటులో ఉన్నాయి'
   }
 };
 
@@ -36,6 +69,7 @@ export default function HomePage() {
   const { userLocation } = useTrip();
   const lang = useLanguage();
   const t = TEXTS[lang];
+  const [showLoreDrawer, setShowLoreDrawer] = useState(false);
 
   const origin = userLocation ?? TIRUPATI_CENTER;
 
@@ -59,122 +93,478 @@ export default function HomePage() {
     return <LoadingState message={t.loading} />;
   }
 
+  const PRIMARY_SERVICES = [
+    {
+      id: 'lockers',
+      title: t.lockers,
+      subtitle: t.lockersSub,
+      status: t.lockersStatus,
+      statusColor: '#16A34A',
+      icon: Lock,
+      image: 'https://res.cloudinary.com/kniegqlj/image/upload/v1786968161/IMG_6992_cq6gls.jpg',
+      link: '/essentials'
+    },
+    {
+      id: 'meals',
+      title: t.meals,
+      subtitle: t.mealsSub,
+      status: t.mealsStatus,
+      statusColor: '#16A34A',
+      icon: Utensils,
+      image: 'https://res.cloudinary.com/kniegqlj/image/upload/v1786968272/Annaprasadam-4-copy_lyo86v.jpg',
+      link: '/essentials'
+    },
+    {
+      id: 'tonsure',
+      title: t.tonsure,
+      subtitle: t.tonsureSub,
+      status: t.tonsureStatus,
+      statusColor: '#16A34A',
+      icon: Scissors,
+      image: 'https://res.cloudinary.com/kniegqlj/image/upload/v1786968353/painted-sign-board-of-kalyanakatta-balaji-temple-tirupati-andhra-pradesh-F5M0J1_p7hkr5.jpg',
+      link: '/essentials'
+    },
+    {
+      id: 'stay',
+      title: t.stay,
+      subtitle: t.staySub,
+      status: t.stayStatus,
+      statusColor: '#D97706',
+      icon: Bed,
+      image: 'https://res.cloudinary.com/kniegqlj/image/upload/v1786968555/maxresdefault_fwmwke.jpg',
+      link: '/essentials'
+    }
+  ];
+
   return (
-    <div className={styles.homeWrapper}>
-      {/* 📱 MOBILE VIEW (<768px): Action-First 1-Column Stack */}
+    <div className={styles.homeWrapper} style={{ backgroundColor: 'var(--bg-canvas, #FAF8F5)', minHeight: '100vh' }}>
+      
+      {/* 📱 MOBILE VIEW (<768px): 3-Layer Information Architecture */}
       <div className={styles.mobileOnly}>
         <div className={styles.mobileStack}>
-          <HomeHero {...home.hero} liveStatus={home.status.liveStatus} activeAlertsCount={home.alerts.activeAlertsCount} hideHeader={false} />
           
-          {/* Today's Companion Card (Placed directly under hero greeting on mobile) */}
-          <DailyContent {...home.daily} liveStatus={home.status.liveStatus} variant="mobile" />
+          {/* LAYER 1: HERO DECISION ENGINE & GUIDANCE */}
+          <HomeHero {...home.hero} liveStatus={home.status.liveStatus} activeAlertsCount={home.alerts.activeAlertsCount} hideHeader={false} />
 
-          {/* Quick Checklist */}
-          <div style={{ padding: '0 16px' }}>
+          {/* LAYER 2: SSD TOKEN STATUS & COLLECTION CENTRES (IMMEDIATELY AFTER CROWD DETAILS) */}
+          <div style={{ marginTop: '10px', marginBottom: '14px' }}>
             <QuickChecklist {...home.checklist} liveStatus={home.status.liveStatus} />
           </div>
 
-          {nearbyPlaces.length > 0 && (
-            <div style={{ padding: '8px 0' }}>
-              <div style={{ padding: '0 16px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '10px' }}>
-                <p style={{ fontSize: '11px', fontWeight: 700, color: '#94A3B8', letterSpacing: '0.8px', textTransform: 'uppercase', margin: 0 }}>{t.nearbyPlaces}</p>
-                <Link href="/explore" style={{ fontSize: '11.5px', fontWeight: 700, color: '#10B981', textDecoration: 'none' }}>{t.seeAll}</Link>
+          {/* LAYER 3: PRIMARY PILGRIM SERVICES (ACT) */}
+          <div style={{ padding: '0 16px', marginTop: '4px', marginBottom: '22px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '12px' }}>
+              <div>
+                <h2 style={{ fontSize: '16px', fontWeight: 800, color: '#0F172A', margin: 0, letterSpacing: '-0.01em' }}>
+                  {t.primaryServices}
+                </h2>
+                <p style={{ fontSize: '11.5px', color: '#64748B', margin: '2px 0 0 0', fontWeight: 500 }}>
+                  {t.servicesSub}
+                </p>
               </div>
-              <div style={{ display: 'flex', gap: '10px', overflowX: 'auto', padding: '0 16px 4px', scrollbarWidth: 'none' }}>
-                {nearbyPlaces.map(p => (
-                  <Link key={p.id} href={`/place/${p.id}`} style={{ textDecoration: 'none', flexShrink: 0, width: '120px' }}>
+              <Link href="/essentials" style={{ fontSize: '12px', fontWeight: 800, color: '#0F5132', textDecoration: 'none' }}>
+                {t.seeAll}
+              </Link>
+            </div>
+
+            {/* 2x2 Action Grid with Soft Elevation */}
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
+              {PRIMARY_SERVICES.map(srv => {
+                const IconComp = srv.icon;
+                return (
+                  <Link
+                    key={srv.id}
+                    href={srv.link}
+                    style={{
+                      textDecoration: 'none',
+                      backgroundColor: '#FFFFFF',
+                      borderRadius: '22px',
+                      overflow: 'hidden',
+                      border: '1px solid rgba(15, 23, 42, 0.06)',
+                      boxShadow: '0 8px 24px -4px rgba(15, 23, 42, 0.04), 0 2px 6px rgba(15, 23, 42, 0.02)',
+                      display: 'flex',
+                      flexDirection: 'column',
+                      transition: 'transform 0.15s ease'
+                    }}
+                  >
                     <div style={{
-                      width: '120px', height: '80px', borderRadius: '12px',
-                      backgroundImage: `url(${p.image})`, backgroundSize: 'cover', backgroundPosition: 'center',
-                      backgroundColor: '#E2E8F0', marginBottom: '7px'
-                    }} />
-                    <p style={{
-                      fontSize: '12px', fontWeight: 700, color: '#0F172A', margin: '0 0 3px', lineHeight: 1.3,
-                      overflow: 'hidden', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical' as const
+                      height: '88px',
+                      width: '100%',
+                      backgroundImage: `url(${srv.image})`,
+                      backgroundSize: 'cover',
+                      backgroundPosition: 'center',
+                      position: 'relative'
                     }}>
-                      {p.name}
-                    </p>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '3px', color: '#64748B' }}>
-                      <MapPin size={10} />
-                      <span style={{ fontSize: '10.5px', fontWeight: 600 }}>{p._dist} km</span>
+                      <div style={{
+                        position: 'absolute',
+                        inset: 0,
+                        background: 'linear-gradient(180deg, rgba(0,0,0,0.15) 0%, rgba(0,0,0,0.45) 100%)'
+                      }} />
+                      <div style={{
+                        position: 'absolute',
+                        top: '8px',
+                        left: '8px',
+                        width: '28px',
+                        height: '28px',
+                        borderRadius: '8px',
+                        backgroundColor: 'rgba(15, 23, 42, 0.75)',
+                        backdropFilter: 'blur(4px)',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center'
+                      }}>
+                        <IconComp size={15} color="#F8FAFC" />
+                      </div>
+                    </div>
+
+                    <div style={{ padding: '10px 12px 12px' }}>
+                      <span style={{
+                        display: 'inline-block',
+                        fontSize: '10px',
+                        fontWeight: 700,
+                        color: srv.statusColor,
+                        marginBottom: '3px'
+                      }}>
+                        ● {srv.status}
+                      </span>
+                      <h3 style={{ fontSize: '13px', fontWeight: 800, color: '#0F172A', margin: '0 0 2px', lineHeight: 1.25 }}>
+                        {srv.title}
+                      </h3>
+                      <p style={{ fontSize: '11px', color: '#64748B', margin: '0 0 8px', lineHeight: 1.3, fontWeight: 500 }}>
+                        {srv.subtitle}
+                      </p>
+                      <div style={{ fontSize: '11px', fontWeight: 800, color: '#0F5132', display: 'flex', alignItems: 'center', gap: '2px' }}>
+                        <span>{t.navigate}</span>
+                      </div>
+                    </div>
+                  </Link>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* LAYER 4: EXPLORE AROUND YOU (PHOTO-FIRST CARDS) */}
+          {nearbyPlaces.length > 0 && (
+            <div style={{ padding: '0 0 22px' }}>
+              <div style={{ padding: '0 16px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '10px' }}>
+                <p style={{ fontSize: '13px', fontWeight: 800, color: '#0F172A', letterSpacing: '0.2px', margin: 0 }}>
+                  {t.nearbyPlaces}
+                </p>
+                <Link href="/explore" style={{ fontSize: '11.5px', fontWeight: 800, color: '#0F5132', textDecoration: 'none' }}>
+                  {t.seeAll}
+                </Link>
+              </div>
+              <div style={{ display: 'flex', gap: '12px', overflowX: 'auto', padding: '0 16px 6px', scrollbarWidth: 'none' }}>
+                {nearbyPlaces.map(p => (
+                  <Link 
+                    key={p.id} 
+                    href={`/place/${p.id}`} 
+                    style={{ 
+                      textDecoration: 'none', 
+                      flexShrink: 0, 
+                      width: '144px',
+                      backgroundColor: '#FFFFFF',
+                      borderRadius: '18px',
+                      overflow: 'hidden',
+                      border: '1px solid rgba(15, 23, 42, 0.06)',
+                      boxShadow: '0 8px 24px -4px rgba(15, 23, 42, 0.04), 0 2px 6px rgba(15, 23, 42, 0.02)'
+                    }}
+                  >
+                    {/* PHOTO BANNER */}
+                    <div style={{
+                      width: '144px', 
+                      height: '95px', 
+                      backgroundImage: `url(${p.image})`, 
+                      backgroundSize: 'cover', 
+                      backgroundPosition: 'center',
+                      backgroundColor: '#E2E8F0',
+                      position: 'relative'
+                    }}>
+                      <div style={{
+                        position: 'absolute',
+                        bottom: '6px',
+                        left: '6px',
+                        backgroundColor: 'rgba(15, 23, 42, 0.75)',
+                        backdropFilter: 'blur(4px)',
+                        padding: '2px 7px',
+                        borderRadius: '6px',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '3px',
+                        color: '#FFFFFF',
+                        fontSize: '10px',
+                        fontWeight: 700
+                      }}>
+                        <MapPin size={9} />
+                        <span>{p._dist} km</span>
+                      </div>
+                    </div>
+
+                    <div style={{ padding: '8px 10px 10px' }}>
+                      <p style={{
+                        fontSize: '12.5px', 
+                        fontWeight: 800, 
+                        color: '#0F172A', 
+                        margin: '0 0 2px', 
+                        lineHeight: 1.25,
+                        overflow: 'hidden', 
+                        display: '-webkit-box', 
+                        WebkitLineClamp: 1, 
+                        WebkitBoxOrient: 'vertical' as const
+                      }}>
+                        {p.name}
+                      </p>
+                      <span style={{ fontSize: '10.5px', color: '#64748B', fontWeight: 600 }}>
+                        {p._dist ? `${Math.max(4, Math.round(Number(p._dist) * 3))} min away` : 'Nearby'}
+                      </span>
                     </div>
                   </Link>
                 ))}
               </div>
             </div>
           )}
+
+          {/* LAYER 5: DEVOTIONAL TRADITIONS & SACRED LORE (Single Consolidated Drawer) */}
+          <div style={{ padding: '0 16px 16px' }}>
+            <button
+              onClick={() => setShowLoreDrawer(!showLoreDrawer)}
+              style={{
+                width: '100%',
+                padding: '14px 18px',
+                borderRadius: '20px',
+                backgroundColor: '#FFFFFF',
+                border: '1px solid rgba(200, 155, 60, 0.3)',
+                background: 'linear-gradient(135deg, #FFFFFF 0%, #FFFDF7 100%)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                cursor: 'pointer',
+                boxShadow: '0 8px 24px -4px rgba(200, 155, 60, 0.08), 0 2px 6px rgba(15, 23, 42, 0.02)'
+              }}
+            >
+              <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                <div style={{ width: '28px', height: '28px', borderRadius: '8px', background: '#FEF9C3', border: '1px solid #FDE047', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                  <Sparkles size={15} color="#CA8A04" />
+                </div>
+                <div style={{ textAlign: 'left' }}>
+                  <span style={{ fontSize: '13.5px', fontWeight: 800, color: '#0F172A', display: 'block', lineHeight: 1.2 }}>
+                    {lang === 'te' ? 'స్వామివారి విశేషాలు & ఆధ్యాత్మిక విశేషాలు' : 'Sacred Lore, Chants & Traditions'}
+                  </span>
+                  <span style={{ fontSize: '10.5px', color: '#854D0E', fontWeight: 600 }}>
+                    {lang === 'te' ? 'నేటి సుప్రభాతం, శ్లోకాలు, ప్రసాద విశేషాలు' : 'Daily Shloka, Suprabhatam & Tirumala lore'}
+                  </span>
+                </div>
+              </div>
+              <span style={{ fontSize: '12px', fontWeight: 800, color: '#0F5132' }}>
+                {showLoreDrawer ? '▲ Hide' : '▼ View'}
+              </span>
+            </button>
+
+            {showLoreDrawer && (
+              <div style={{ marginTop: '14px', display: 'flex', flexDirection: 'column', gap: '14px' }}>
+                <DailyContent {...home.daily} liveStatus={home.status.liveStatus} variant="mobile" />
+              </div>
+            )}
+          </div>
+
+          {/* LAYER 6: MAP & JOURNEY OVERVIEW (MOBILE) */}
+          <div style={{ padding: '0 16px 24px' }}>
+            <JourneyOverviewPanel />
+          </div>
         </div>
       </div>
 
-      {/* 💻 DESKTOP & TABLET VIEW (>=768px): Multi-Column Dashboard Command Center */}
+      {/* 💻 DESKTOP & TABLET VIEW (>=768px): Multi-Column Command Center */}
       <div className={styles.desktopOnly}>
-
-        {/* Sleek Desktop Header Greeting */}
-        <div style={{ marginBottom: '16px', padding: '4px 0' }}>
-          <h1 style={{ fontSize: '26px', fontWeight: 900, color: '#0F172A', margin: '0 0 6px 0', letterSpacing: '-0.02em' }}>
+        <div style={{ marginBottom: '20px', padding: '8px 0' }}>
+          <h1 style={{ fontSize: '28px', fontWeight: 900, color: '#0F172A', margin: '0 0 6px 0', letterSpacing: '-0.02em' }}>
             {(() => {
               const hr = new Date().getHours();
-              if (hr >= 5 && hr < 12) return 'Good Morning';
-              if (hr >= 12 && hr < 17) return 'Good Afternoon';
-              if (hr >= 17 && hr < 21) return 'Good Evening';
-              return 'Good Night';
+              if (hr >= 5 && hr < 12) return lang === 'te' ? 'శుభోదయం' : 'Good Morning';
+              if (hr >= 12 && hr < 17) return lang === 'te' ? 'శుభ మధ్యాహ్నం' : 'Good Afternoon';
+              if (hr >= 17 && hr < 21) return lang === 'te' ? 'శుభ సాయంత్రం' : 'Good Evening';
+              return lang === 'te' ? 'శుభ రాత్రి' : 'Good Night';
             })()}, <span style={{ color: '#0F5132' }}>{home.hero.userName}</span>
           </h1>
-          <p style={{ fontSize: '14px', color: '#0F5132', margin: 0, fontWeight: 700 }}>
-            Based on your current situation, here's the best thing to do next — and why.
+          <p style={{ fontSize: '14.5px', color: '#0F5132', margin: 0, fontWeight: 700 }}>
+            {lang === 'te' ? 'తిరుమల, తిరుపతి ప్రత్యక్ష యాత్రా సహచరి.' : 'Live pilgrimage companion for Tirumala and Tirupati.'}
           </p>
         </div>
 
         {/* ROW 1: 2-COLUMN DASHBOARD GRID */}
         <div className={styles.dashboardGrid}>
-          {/* COLUMN 1: DOMINANT LIVE DECISION CARD + RECOMMENDED SPOT CARD */}
+          {/* COLUMN 1: LIVE DECISION ENGINE & DEVOTIONAL WISDOM */}
           <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
             <HomeHero {...home.hero} liveStatus={home.status.liveStatus} activeAlertsCount={home.alerts.activeAlertsCount} hideHeader={true} />
-            <RecommendationCard liveStatus={home.status.liveStatus} todayFestival={home.daily.todayFestival} variant="desktop" />
+            <DailyContent {...home.daily} liveStatus={home.status.liveStatus} variant="desktop" />
           </div>
 
-          {/* COLUMN 2: TODAY'S COMPANION & QUICK CHECKLIST */}
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-            <DailyContent {...home.daily} liveStatus={home.status.liveStatus} variant="desktop" />
+          {/* COLUMN 2: PRIMARY SERVICES + EXPLORE AROUND YOU + SSD TOKEN RADAR */}
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+            {/* Primary Pilgrim Services */}
+            <div style={{ backgroundColor: '#FFFFFF', borderRadius: '24px', padding: '20px', border: '1px solid #E2E8F0', boxShadow: '0 4px 16px rgba(15, 23, 42, 0.03)' }}>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '14px' }}>
+                <div>
+                  <h2 style={{ fontSize: '17px', fontWeight: 800, color: '#0F172A', margin: 0 }}>
+                    {t.primaryServices}
+                  </h2>
+                  <p style={{ fontSize: '12px', color: '#64748B', margin: '2px 0 0', fontWeight: 500 }}>
+                    {t.servicesSub}
+                  </p>
+                </div>
+                <Link href="/essentials" style={{ fontSize: '12.5px', fontWeight: 800, color: '#0F5132', textDecoration: 'none' }}>
+                  {t.seeAll}
+                </Link>
+              </div>
+
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
+                {PRIMARY_SERVICES.map(srv => {
+                  const IconComp = srv.icon;
+                  return (
+                    <Link
+                      key={srv.id}
+                      href={srv.link}
+                      style={{
+                        textDecoration: 'none',
+                        backgroundColor: '#FFFFFF',
+                        borderRadius: '18px',
+                        overflow: 'hidden',
+                        border: '1px solid rgba(15, 23, 42, 0.07)',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        transition: 'transform 0.15s ease, box-shadow 0.15s ease'
+                      }}
+                    >
+                      <div style={{
+                        height: '76px',
+                        width: '100%',
+                        backgroundImage: `url(${srv.image})`,
+                        backgroundSize: 'cover',
+                        backgroundPosition: 'center',
+                        position: 'relative'
+                      }}>
+                        <div style={{
+                          position: 'absolute',
+                          inset: 0,
+                          background: 'linear-gradient(180deg, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.45) 100%)'
+                        }} />
+                        <div style={{
+                          position: 'absolute',
+                          top: '6px',
+                          left: '6px',
+                          width: '26px',
+                          height: '26px',
+                          borderRadius: '7px',
+                          backgroundColor: 'rgba(15, 23, 42, 0.8)',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center'
+                        }}>
+                          <IconComp size={14} color="#FFFFFF" />
+                        </div>
+                      </div>
+                      <div style={{ padding: '10px 12px' }}>
+                        <span style={{ fontSize: '10.5px', fontWeight: 800, color: srv.statusColor, display: 'block', marginBottom: '2px' }}>
+                          ● {srv.status}
+                        </span>
+                        <h3 style={{ fontSize: '13.5px', fontWeight: 800, color: '#0F172A', margin: '0 0 2px' }}>
+                          {srv.title}
+                        </h3>
+                        <p style={{ fontSize: '11px', color: '#64748B', margin: 0, lineHeight: 1.3 }}>
+                          {srv.subtitle}
+                        </p>
+                      </div>
+                    </Link>
+                  );
+                })}
+              </div>
+            </div>
+
+            {/* Explore Around You (Desktop 3-Column Grid) */}
+            {nearbyPlaces.length > 0 && (
+              <div style={{ backgroundColor: '#FFFFFF', borderRadius: '24px', padding: '20px', border: '1px solid #E2E8F0', boxShadow: '0 4px 16px rgba(15, 23, 42, 0.03)' }}>
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '12px' }}>
+                  <h2 style={{ fontSize: '17px', fontWeight: 800, color: '#0F172A', margin: 0 }}>
+                    {t.nearbyPlaces}
+                  </h2>
+                  <Link href="/explore" style={{ fontSize: '12.5px', fontWeight: 800, color: '#0F5132', textDecoration: 'none' }}>
+                    {t.seeAll}
+                  </Link>
+                </div>
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '10px' }}>
+                  {nearbyPlaces.slice(0, 6).map(p => (
+                    <Link
+                      key={p.id}
+                      href={`/place/${p.id}`}
+                      style={{
+                        textDecoration: 'none',
+                        backgroundColor: '#F8FAFC',
+                        borderRadius: '14px',
+                        overflow: 'hidden',
+                        border: '1px solid #E2E8F0',
+                        display: 'flex',
+                        flexDirection: 'column'
+                      }}
+                    >
+                      <div style={{
+                        height: '70px',
+                        width: '100%',
+                        backgroundImage: `url(${p.image})`,
+                        backgroundSize: 'cover',
+                        backgroundPosition: 'center',
+                        position: 'relative'
+                      }}>
+                        <div style={{
+                          position: 'absolute',
+                          bottom: '4px',
+                          left: '4px',
+                          backgroundColor: 'rgba(15, 23, 42, 0.75)',
+                          padding: '2px 6px',
+                          borderRadius: '4px',
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: '2px',
+                          color: '#FFFFFF',
+                          fontSize: '9.5px',
+                          fontWeight: 700
+                        }}>
+                          <MapPin size={8} />
+                          <span>{p._dist} km</span>
+                        </div>
+                      </div>
+                      <div style={{ padding: '6px 8px' }}>
+                        <p style={{
+                          fontSize: '12px',
+                          fontWeight: 800,
+                          color: '#0F172A',
+                          margin: 0,
+                          lineHeight: 1.2,
+                          overflow: 'hidden',
+                          display: '-webkit-box',
+                          WebkitLineClamp: 1,
+                          WebkitBoxOrient: 'vertical'
+                        }}>
+                          {p.name}
+                        </p>
+                        <span style={{ fontSize: '10px', color: '#64748B', fontWeight: 600 }}>
+                          {p._dist ? `${Math.max(4, Math.round(Number(p._dist) * 3))} min away` : 'Nearby'}
+                        </span>
+                      </div>
+                    </Link>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Real-time SSD Free Token Quota, Slots & Counters Checklist */}
             <QuickChecklist {...home.checklist} liveStatus={home.status.liveStatus} />
           </div>
         </div>
 
-        {/* ROW 2: MAP OVERVIEW PANEL */}
-        <div className={styles.secondRowGrid}>
+        {/* ROW 2: FULL-WIDTH JOURNEY OVERVIEW PANEL */}
+        <div className={styles.secondRowGrid} style={{ marginTop: '24px' }}>
           <JourneyOverviewPanel />
         </div>
-
-        {/* NEARBY PLACES SLIDER */}
-        {nearbyPlaces.length > 0 && (
-          <div style={{ marginTop: '24px', background: '#FFFFFF', border: '1px solid #E2E8F0', borderRadius: '24px', padding: '20px' }}>
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '14px' }}>
-              <p style={{ fontSize: '14px', fontWeight: 800, color: '#0F172A', letterSpacing: '0.5px', textTransform: 'uppercase', margin: 0 }}>{t.nearbyPlaces}</p>
-              <Link href="/explore" style={{ fontSize: '13px', fontWeight: 700, color: '#10B981', textDecoration: 'none' }}>{t.seeAll}</Link>
-            </div>
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(160px, 1fr))', gap: '16px' }}>
-              {nearbyPlaces.map(p => (
-                <Link key={p.id} href={`/place/${p.id}`} style={{ textDecoration: 'none' }}>
-                  <div style={{
-                    width: '100%', height: '110px', borderRadius: '16px',
-                    backgroundImage: `url(${p.image})`, backgroundSize: 'cover', backgroundPosition: 'center',
-                    backgroundColor: '#E2E8F0', marginBottom: '8px'
-                  }} />
-                  <p style={{
-                    fontSize: '13.5px', fontWeight: 800, color: '#0F172A', margin: '0 0 4px', lineHeight: 1.3,
-                    overflow: 'hidden', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical' as const
-                  }}>
-                    {p.name}
-                  </p>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '4px', color: '#64748B' }}>
-                    <MapPin size={12} />
-                    <span style={{ fontSize: '11.5px', fontWeight: 600 }}>{p._dist} km</span>
-                  </div>
-                </Link>
-              ))}
-            </div>
-          </div>
-        )}
       </div>
     </div>
   );
