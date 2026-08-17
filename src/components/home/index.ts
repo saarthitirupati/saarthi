@@ -7,5 +7,6 @@ export { DailyContent } from './DailyContent';
 export { RecommendationCard } from './RecommendationCard';
 export { NextUpdateCard } from './NextUpdateCard';
 export { JourneyOverviewPanel } from './JourneyOverviewPanel';
+export { PanchangamBar } from './PanchangamBar';
 
 

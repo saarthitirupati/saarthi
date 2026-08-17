@@ -13,7 +13,8 @@ import {
   RecommendationCard,
   DailyContent,
   QuickChecklist,
-  JourneyOverviewPanel
+  JourneyOverviewPanel,
+  PanchangamBar
 } from '@/components/home';
 import styles from './Home.module.css';
 
@@ -145,6 +146,11 @@ export default function HomePage() {
           
           {/* LAYER 1: HERO DECISION ENGINE & GUIDANCE */}
           <HomeHero {...home.hero} liveStatus={home.status.liveStatus} activeAlertsCount={home.alerts.activeAlertsCount} hideHeader={false} />
+
+          {/* 🕉️ VEDIC PANCHANGAM & TITHI BAR */}
+          <div style={{ padding: '0 14px' }}>
+            <PanchangamBar />
+          </div>
 
           {/* LAYER 2: SSD TOKEN STATUS & COLLECTION CENTRES (IMMEDIATELY AFTER CROWD DETAILS) */}
           <div style={{ marginTop: '4px', marginBottom: '8px' }}>
@@ -385,6 +391,9 @@ export default function HomePage() {
           <p style={{ fontSize: '14.5px', color: '#0F5132', margin: 0, fontWeight: 700 }}>
             {lang === 'te' ? 'తిరుమల, తిరుపతి ప్రత్యక్ష యాత్రా సహచరి.' : 'Live pilgrimage companion for Tirumala and Tirupati.'}
           </p>
+          <div style={{ marginTop: '8px', maxWidth: '600px' }}>
+            <PanchangamBar />
+          </div>
         </div>
 
         {/* ROW 1: 2-COLUMN DASHBOARD GRID */}
