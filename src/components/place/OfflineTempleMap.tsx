@@ -339,11 +339,11 @@ export default function OfflineTempleMap({
               <rect x="80" y="50" width="380" height="225" rx="12" fill="#F4EFE6" stroke="#92400E" strokeWidth="1.5" />
 
               {/* Mukha Mandapam Pillared Hall */}
-              <rect x="200" y="125" width="140" height="55" rx="8" fill="#FEF3C7" stroke="#D97706" strokeWidth="1.5" />
-              <circle cx="215" cy="138" r="3" fill="#78350F" />
-              <circle cx="325" cy="138" r="3" fill="#78350F" />
-              <circle cx="215" cy="168" r="3" fill="#78350F" />
-              <circle cx="325" cy="168" r="3" fill="#78350F" />
+              <rect x="205" y="112" width="130" height="48" rx="8" fill="#FEF3C7" stroke="#D97706" strokeWidth="1.5" />
+              <circle cx="218" cy="124" r="3" fill="#78350F" />
+              <circle cx="322" cy="124" r="3" fill="#78350F" />
+              <circle cx="218" cy="148" r="3" fill="#78350F" />
+              <circle cx="322" cy="148" r="3" fill="#78350F" />
 
               {/* Dhwajasthambham Flag Mast & Deepasthambham in Open Courtyard */}
               <g transform="translate(270, 205)">
@@ -360,10 +360,10 @@ export default function OfflineTempleMap({
               </g>
 
               {/* Kumkum & Prasadam Counter Pavilion (Eastern Courtyard) */}
-              <rect x="360" y="135" width="75" height="45" rx="6" fill="#FEF9C3" stroke="#CA8A04" strokeWidth="1.5" />
+              <rect x="355" y="138" width="80" height="44" rx="6" fill="#FEF9C3" stroke="#CA8A04" strokeWidth="1.5" />
 
               {/* Footwear Stand (Western Entrance Side) */}
-              <rect x="105" y="235" width="75" height="32" rx="6" fill="#F1F5F9" stroke="#64748B" strokeWidth="1.2" />
+              <rect x="105" y="238" width="80" height="34" rx="6" fill="#F1F5F9" stroke="#64748B" strokeWidth="1.2" />
 
               {/* Entrance Gopuram Arch */}
               <g transform="translate(225, 265)">
@@ -580,6 +580,7 @@ export default function OfflineTempleMap({
                  layout.layoutType === 'ancient-shrine' ? (
                    pin.id.includes('dhwaja') ? 'Dhwajasthambham' :
                    pin.id.includes('sangam') || pin.id.includes('ghat') ? 'River Ghats' :
+                   pin.id.includes('view') || pin.id.includes('hills') ? 'View Balcony' :
                    pin.id.includes('padmavathi') || pin.id.includes('anandavalli') || pin.id.includes('shrine') || pin.id.includes('anjaneya') || pin.id.includes('ranganatha') ? 'Sub-Shrine' :
                    pin.id.includes('inscription') ? 'Inscriptions' : 'Courtyard'
                  ) :
@@ -607,6 +608,7 @@ export default function OfflineTempleMap({
               layout.layoutType === 'museum-gallery' && pin.category === 'sanctum' ? '🏛️' :
               pin.id.includes('dhwaja') ? '🚩' :
               pin.id.includes('sangam') || pin.id.includes('ghat') ? '🌊' :
+              pin.id.includes('view') || pin.id.includes('hills') ? '🔭' :
               pin.id.includes('shrine') || pin.id.includes('padmavathi') || pin.id.includes('anandavalli') || pin.id.includes('anjaneya') || pin.id.includes('ranganatha') ? '🛕' :
               layout.layoutType === 'city-shrine' && pin.category === 'info' ? '🚩' :
               layout.layoutType === 'city-shrine' && pin.category === 'laddu' ? '🌸' :

@@ -272,6 +272,112 @@ export const CURATED_LAYOUTS: Record<string, Partial<TempleLayoutData>> = {
     ]
   },
 
+  'vakula-matha': {
+    placeId: 'vakula-matha',
+    titleEn: 'Sri Vakula Matha Temple (Perur Banda) Precinct Map',
+    titleTe: 'శ్రీ వకుళమాత ఆలయం (పేరూరు బండ) ప్రాంగణ మ్యాప్',
+    layoutType: 'ancient-shrine',
+    centerCoordinates: { lat: 13.5995, lng: 79.3691 },
+    routePath: [[430, 290], [270, 275], [145, 255], [270, 205], [150, 130], [270, 85], [395, 160], [270, 250]],
+    pins: [
+      {
+        id: 'parking',
+        nameEn: 'Perur Banda Hill Parking Bay',
+        nameTe: 'పేరూరు బండ కొండ పార్కింగ్',
+        category: 'parking',
+        lat: 13.5990,
+        lng: 79.3685,
+        svgX: 430,
+        svgY: 290,
+        descEn: 'Vehicle parking area at the base and summit of Perur hill.',
+        descTe: 'కొండ దిగువన మరియు పైభాగంలో ఉన్న పార్కింగ్ స్థలం.'
+      },
+      {
+        id: 'entry',
+        nameEn: 'Hilltop Raja Gopuram Entrance',
+        nameTe: 'కొండపై రాజగోపురం ప్రధాన ప్రవేశం',
+        category: 'entry',
+        lat: 13.5993,
+        lng: 79.3688,
+        svgX: 270,
+        svgY: 275,
+        descEn: 'Magnificent entrance gopuram offering panoramic views of Tirupati valley.',
+        descTe: 'అందమైన లోయ దృశ్యాలతో కూడిన రాజగోపురం.'
+      },
+      {
+        id: 'footwear',
+        nameEn: 'Footwear Custody Stand',
+        nameTe: 'పాదరక్షల భద్రతా స్టాండ్',
+        category: 'footwear',
+        lat: 13.5994,
+        lng: 79.3687,
+        svgX: 145,
+        svgY: 255,
+        descEn: 'Shoe custody counter near temple gateway.',
+        descTe: 'చెప్పులు భద్రపరిచే ప్రదేశం.'
+      },
+      {
+        id: 'dhwajasthambham',
+        nameEn: 'Dhwajasthambham Flag Mast',
+        nameTe: 'ధ్వజస్తంభం',
+        category: 'info',
+        lat: 13.5995,
+        lng: 79.3690,
+        svgX: 270,
+        svgY: 205,
+        descEn: 'Sacred flag mast facing the mother deity.',
+        descTe: 'ఆలయ ప్రాంగణంలోని పవిత్ర ధ్వజస్తంభం.'
+      },
+      {
+        id: 'seven-hills-view',
+        nameEn: 'Seven Hills & Ananda Nilayam Viewpoint Balcony',
+        nameTe: 'ఏడుకొండలు & ఆనంద నిలయం వీక్షణ బాల్కనీ',
+        category: 'info',
+        lat: 13.5996,
+        lng: 79.3688,
+        svgX: 150,
+        svgY: 130,
+        descEn: 'Sacred balcony facing northeast where Mother Vakula gazes lovingly towards Tirumala Seven Hills.',
+        descTe: 'వకుళమాత తన కుమారుడైన శ్రీవారిని వీక్షించే దివ్య కోణం.'
+      },
+      {
+        id: 'sanctum',
+        nameEn: 'Sri Vakula Matha Garbhalayam (Mother of Lord Venkateswara)',
+        nameTe: 'శ్రీ వకుళమాత మూలవిరాట్టు (గర్భాలయం)',
+        category: 'sanctum',
+        lat: 13.5997,
+        lng: 79.3691,
+        svgX: 270,
+        svgY: 85,
+        descEn: 'Presiding deity of Mother Vakula Devi (Yashoda in Dwapara Yuga). Temple bell rings here first before Tirumala Naivedyam.',
+        descTe: 'స్వామివారికి మాతృమూర్తి అయిన వకుళమాత దివ్య దర్శనం.'
+      },
+      {
+        id: 'laddu',
+        nameEn: 'Kumkum Archana & TTD Sweet Prasadam Counter',
+        nameTe: 'కుంకుమార్చన & ప్రసాదం కౌంటర్',
+        category: 'laddu',
+        lat: 13.5995,
+        lng: 79.3694,
+        svgX: 395,
+        svgY: 160,
+        descEn: 'Blessed kumkum, sacred yellow thread, and TTD sweet prasadam.',
+        descTe: 'అమ్మవారి పవిత్ర కుంకుమ మరియు ప్రసాదాలు.'
+      }
+    ],
+    routeSteps: [
+      { stepNumber: 1, titleEn: 'Perur Hill Arrival & Parking', titleTe: 'పేరూరు కొండ చేరుకోవడం', distance: '0.0 km', timeMins: 0, descEn: 'Park vehicle at the Perur Banda hill parking lot.', descTe: 'వాహనాన్ని పార్క్ చేయండి.' },
+      { stepNumber: 2, titleEn: 'Raja Gopuram Entrance & Footwear', titleTe: 'రాజగోపురం & పాదరక్షల స్టాండ్', distance: '40m', timeMins: 2, descEn: 'Deposit shoes and enter the scenic hilltop courtyard.', descTe: 'చెప్పులు విడిచి రాజగోపురం ద్వారా ప్రవేశించండి.' },
+      { stepNumber: 3, titleEn: 'Dhwajasthambham & Seven Hills View Balcony', titleTe: 'ధ్వజస్తంభం & ఏడుకొండల వీక్షణ', distance: '60m', timeMins: 5, descEn: 'Offer prayers at the flag mast and gaze towards Tirumala Seven Hills.', descTe: 'ధ్వజస్తంభ దర్శనం మరియు ఏడుకొండలను తిలకించండి.' },
+      { stepNumber: 4, titleEn: 'Sri Vakula Matha Sanctum Darshan', titleTe: 'శ్రీ వకుళమాత దివ్య దర్శనం', distance: '80m', timeMins: 15, descEn: 'Seek the unconditional maternal blessings of Sri Vakula Devi.', descTe: 'శ్రీవారి మాతృమూర్తి ఆశీస్సులు పొందండి.' },
+      { stepNumber: 5, titleEn: 'Kumkum Archana & Prasadam', titleTe: 'కుంకుమార్చన & ప్రసాదం', distance: '60m', timeMins: 5, descEn: 'Collect blessed kumkum and sweet prasadam.', descTe: 'పవిత్ర కుంకుమ మరియు ప్రసాదం స్వీకరించండి.' }
+    ],
+    emergencyContacts: [
+      { titleEn: 'TTD Vakulamatha Temple Office', titleTe: 'వకుళమాత ఆలయ సమాచార విభాగం', number: '08772264555' },
+      { titleEn: 'Emergency Helpline', titleTe: 'అత్యవసర హెల్ప్‌లైన్', number: '112' }
+    ]
+  },
+
   'agastheeshwara': {
     placeId: 'agastheeshwara',
     titleEn: 'Sri Agastheeswara Swamy Temple (Mukkoti) Precinct Map',
