@@ -826,16 +826,15 @@ export default function PlaceDetails() {
           position: relative;
           width: 100%;
           overflow: hidden;
-          height: 42vh;
-          min-height: 290px;
+          height: clamp(280px, 38vh, 340px);
         }
         .place-mobile-container {
           max-width: 640px;
           margin: 0 auto;
-          padding: 16px 16px 0 16px;
+          padding: 12px 14px 24px 14px;
           display: flex;
           flex-direction: column;
-          gap: 16px;
+          gap: 14px;
         }
         .place-desktop-container {
           display: none;
@@ -1042,13 +1041,14 @@ export default function PlaceDetails() {
           </div>
 
           <h1 style={{
-            fontSize: '28px',
+            fontSize: 'clamp(21px, 5.5vw, 28px)',
             fontWeight: 900,
             color: '#FFFFFF',
             margin: '0 0 4px',
             lineHeight: 1.2,
             letterSpacing: '-0.02em',
-            textShadow: '0 2px 10px rgba(0, 0, 0, 0.9), 0 1px 3px rgba(0, 0, 0, 0.8)'
+            textShadow: '0 2px 10px rgba(0, 0, 0, 0.9), 0 1px 3px rgba(0, 0, 0, 0.8)',
+            wordBreak: 'break-word'
           }}>
             {place.name}
           </h1>

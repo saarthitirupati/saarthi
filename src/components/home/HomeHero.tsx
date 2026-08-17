@@ -799,8 +799,8 @@ export function HomeHero({ userName, locationName, weatherTemp, liveStatus, acti
       {/* 🛕 SIGNATURE LIVE TEMPLE PULSE CARD */}
       <div style={{
         background: '#0F172A',
-        borderRadius: '24px',
-        padding: '20px 18px',
+        borderRadius: '22px',
+        padding: '18px 16px',
         color: '#FFFFFF',
         boxShadow: '0 12px 32px rgba(15, 23, 42, 0.3)',
         border: '1px solid rgba(255, 255, 255, 0.1)',
