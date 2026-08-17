@@ -2,12 +2,11 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import styles from './LiveUpdates.module.css';
-import { Activity, Clock, Zap, AlertTriangle, RefreshCw, CheckCircle2, Ticket } from 'lucide-react';
+import { Activity, Clock, Zap, AlertTriangle, RefreshCw, CheckCircle2 } from 'lucide-react';
 import { notifyRealtimeUpdate } from '@/lib/useRealtimeStatus';
 import { safeFetchJson } from '@/lib/safeFetch';
 
 export default function AdminLiveUpdates() {
-  const [ssdStatus, setSsdStatus] = useState({ ssdTokenStatus: 'issuing', ssdNextTokenTime: '', ssdNotice: '' });
   const [weatherState, setWeatherState] = useState<string>('Auto (API)');
   const [livePlaces, setLivePlaces] = useState<any[]>([]);
   const [statusData, setStatusData] = useState<any>(null);
@@ -30,11 +29,6 @@ export default function AdminLiveUpdates() {
 
       if (fetchedStatus) {
         setStatusData(fetchedStatus);
-        setSsdStatus({
-          ssdTokenStatus: fetchedStatus.ssdTokenStatus || 'issuing',
-          ssdNextTokenTime: fetchedStatus.ssdNextTokenTime || '',
-          ssdNotice: fetchedStatus.ssdNotice || ''
-        });
         if (fetchedStatus.weather) {
           setWeatherState(fetchedStatus.weather);
         }
@@ -64,21 +58,6 @@ export default function AdminLiveUpdates() {
       window.removeEventListener('saarthi:live_update', handleCustomEvent);
     };
   }, [fetchLiveData]);
-
-  const handleBroadcastSsd = async () => {
-    try {
-      await fetch('/api/admin/status', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(ssdStatus)
-      });
-      notifyRealtimeUpdate();
-      showToast('SSD Token Status Broadcasted Live!');
-      fetchLiveData();
-    } catch (e) {
-      showToast('Failed to broadcast SSD status');
-    }
-  };
 
   const handleWeatherOverride = async (weather: string) => {
     setWeatherState(weather);
@@ -282,59 +261,6 @@ export default function AdminLiveUpdates() {
               {w}
             </button>
           ))}
-        </div>
-      </div>
-
-      <div className={styles.ssdSection}>
-        <div className={styles.overrideHeader}>
-          <h3 style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <Ticket size={18} color="#2563EB" /> Slotted Sarva Darshan (SSD) Token Operations
-          </h3>
-        </div>
-        <p className={styles.overrideDesc}>Manage offline free darshan token counters in Tirupati (Srinivasam, Vishnu Nivasam, Bhudevi Complex).</p>
-        
-        <div className={styles.ssdControls}>
-          <div className={styles.controlGroup}>
-            <label>Token Status</label>
-            <select 
-              className={styles.select} 
-              value={ssdStatus.ssdTokenStatus} 
-              onChange={e => setSsdStatus(s => ({ ...s, ssdTokenStatus: e.target.value }))}
-            >
-              <option value="issuing">Issuing Tokens</option>
-              <option value="paused">Paused Temporarily</option>
-              <option value="closed-for-day">Closed for the Day</option>
-            </select>
-          </div>
-
-          <div className={styles.controlGroup}>
-            <label>Issue Time / Quota Updates</label>
-            <input 
-              type="text" 
-              className={styles.input} 
-              value={ssdStatus.ssdNextTokenTime} 
-              onChange={e => setSsdStatus(s => ({ ...s, ssdNextTokenTime: e.target.value }))} 
-              placeholder="e.g., Tomorrow 4:00 AM" 
-              style={{ width: '100%' }} 
-            />
-          </div>
-
-          <div className={styles.controlGroup}>
-            <label>Pro Tip (When to go faster)</label>
-            <input 
-              type="text" 
-              className={styles.input} 
-              value={ssdStatus.ssdNotice} 
-              onChange={e => setSsdStatus(s => ({ ...s, ssdNotice: e.target.value }))} 
-              placeholder="e.g., Visit Bhudevi Complex after 4 PM for faster queues" 
-              style={{ width: '100%' }} 
-            />
-          </div>
-        </div>
-        <div style={{ marginTop: '16px', display: 'flex', justifyContent: 'flex-end' }}>
-          <button className={styles.updateButton} onClick={handleBroadcastSsd} style={{ width: 'auto', padding: '8px 24px', background: '#2563EB', color: '#FFFFFF' }}>
-            Broadcast SSD Update Live
-          </button>
         </div>
       </div>
 

@@ -45,13 +45,11 @@ export function QuickChecklist(props: any) {
           ═══════════════════════════════════════════════════ */}
       <div style={{ padding: '0 14px 2px 14px' }}>
         <div
-          onClick={() => router.push('/live')}
           style={{
             background: '#FFFFFF',
             border: '1px solid rgba(15, 23, 42, 0.06)',
             borderRadius: '18px',
             padding: '14px 14px',
-            cursor: 'pointer',
             boxShadow: '0 6px 20px -4px rgba(15, 23, 42, 0.04), 0 2px 6px rgba(15, 23, 42, 0.02)'
           }}
         >

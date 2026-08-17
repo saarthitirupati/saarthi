@@ -3,7 +3,6 @@ export const ROUTES = {
   EXPLORE: '/explore',
   PLANNER: '/planner',
   JOURNEY: '/journey',
-  LIVE: '/live',
   ONBOARDING: '/onboarding',
   PROFILE: '/profile',
   SAVED: '/saved',

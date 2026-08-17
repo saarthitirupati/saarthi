@@ -147,11 +147,6 @@ export default function HomePage() {
           {/* LAYER 1: HERO DECISION ENGINE & GUIDANCE */}
           <HomeHero {...home.hero} liveStatus={home.status.liveStatus} activeAlertsCount={home.alerts.activeAlertsCount} hideHeader={false} />
 
-          {/* 🕉️ VEDIC PANCHANGAM & TITHI BAR */}
-          <div style={{ padding: '0 14px' }}>
-            <PanchangamBar />
-          </div>
-
           {/* LAYER 2: SSD TOKEN STATUS & COLLECTION CENTRES (IMMEDIATELY AFTER CROWD DETAILS) */}
           <div style={{ marginTop: '4px', marginBottom: '8px' }}>
             <QuickChecklist {...home.checklist} liveStatus={home.status.liveStatus} />
@@ -368,6 +363,7 @@ export default function HomePage() {
 
             {showLoreDrawer && (
               <div style={{ marginTop: '10px', display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                <PanchangamBar />
                 <DailyContent {...home.daily} liveStatus={home.status.liveStatus} variant="mobile" />
               </div>
             )}
@@ -391,9 +387,6 @@ export default function HomePage() {
           <p style={{ fontSize: '14.5px', color: '#0F5132', margin: 0, fontWeight: 700 }}>
             {lang === 'te' ? 'తిరుమల, తిరుపతి ప్రత్యక్ష యాత్రా సహచరి.' : 'Live pilgrimage companion for Tirumala and Tirupati.'}
           </p>
-          <div style={{ marginTop: '8px', maxWidth: '600px' }}>
-            <PanchangamBar />
-          </div>
         </div>
 
         {/* ROW 1: 2-COLUMN DASHBOARD GRID */}
@@ -401,6 +394,7 @@ export default function HomePage() {
           {/* COLUMN 1: LIVE DECISION ENGINE & DEVOTIONAL WISDOM */}
           <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
             <HomeHero {...home.hero} liveStatus={home.status.liveStatus} activeAlertsCount={home.alerts.activeAlertsCount} hideHeader={true} />
+            <PanchangamBar />
             <DailyContent {...home.daily} liveStatus={home.status.liveStatus} variant="desktop" />
           </div>
 

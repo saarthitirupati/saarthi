@@ -4,7 +4,7 @@
   "crowdLevel": "moderate",
   "sevaStatus": "All sevas open",
   "notice": "",
-  "lastUpdated": "2026-08-17T12:51:14.051Z",
+  "lastUpdated": "2026-08-17T18:07:29.351Z",
   "darshanSpeed": "normal",
   "accommodationStatus": "available",
   "ladduAvailability": "available",
@@ -32,7 +32,7 @@
     }
   ],
   "ssdTokenStatus": "closed-for-day",
-  "ssdNextTokenTime": "4:00 AM",
+  "ssdNextTokenTime": "2:20  AM",
   "ssdTokenSlots": [
     {
       "slotTime": "5:00 AM - 7:00 AM",
@@ -66,7 +66,7 @@
     }
   ],
   "ssdNotice": "",
-  "ssdTimingsGuide": "Offline free SSD tokens are released daily starting at 10:30 AM. Batches are allocated hourly for that day's Darshan. Counters close as soon as the daily quota runs out (~15,000 - 20,000 tokens).",
+  "ssdTimingsGuide": "Offline free SSD tokens are released daily starting at 2:30 AM. Batches are allocated hourly for that day's Darshan. Counters close as soon as the daily quota runs out (~15,000 - 20,000 tokens).",
   "ssdCounters": [
     {
       "name": "Vishnu Nivasam Counter",

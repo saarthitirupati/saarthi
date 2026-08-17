@@ -38,7 +38,6 @@ export function DesktopHeader({ weather, temperature }: DesktopHeaderProps) {
     { href: '/route', label: lang === 'te' ? 'యాత్రా మార్గం' : 'Live Route & GPS', icon: Navigation },
     { href: '/essentials', label: lang === 'te' ? 'అవసరాలు' : 'Essentials', icon: Layers },
     { href: '/explore', label: lang === 'te' ? 'అన్వేషించు' : 'Explore', icon: Compass },
-    { href: '/live', label: lang === 'te' ? 'లైవ్ క్యూలు' : 'Live Queues', icon: Flame },
     { href: '/festivals', label: lang === 'te' ? 'ఉత్సవాలు' : 'Festivals', icon: Calendar },
   ];
 

@@ -158,24 +158,41 @@ export async function readStatus(): Promise<TirumalaStatus> {
       try { ssdCounters = JSON.parse(metrics.ssd_counters); } catch {}
     }
 
+    // Preserve updated SSD token status and times if Supabase value is not set or returns null
+    const resolvedSsdStatus = metrics.ssd_token_status 
+      ? (metrics.ssd_token_status as TirumalaStatus['ssdTokenStatus'])
+      : (memoryStatus.ssdTokenStatus || 'issuing');
+
+    const resolvedNextTokenTime = (metrics.ssd_next_token_time !== undefined && metrics.ssd_next_token_time !== null && metrics.ssd_next_token_time !== '')
+      ? metrics.ssd_next_token_time
+      : (memoryStatus.ssdNextTokenTime || '');
+
+    const resolvedNotice = (metrics.ssd_notice !== undefined && metrics.ssd_notice !== null && metrics.ssd_notice !== '')
+      ? metrics.ssd_notice
+      : (memoryStatus.ssdNotice || '');
+
+    const resolvedTimingsGuide = metrics.ssd_timings_guide || memoryStatus.ssdTimingsGuide || DEFAULT_STATUS.ssdTimingsGuide;
+
     memoryStatus = {
-      ...DEFAULT_STATUS,                          // start clean — no stale/error fields
+      ...memoryStatus,                            // retain current updated state
+      ...DEFAULT_STATUS,                          // apply clean defaults for anything undefined
+      ...memoryStatus,                            // re-apply local overrides
       waitTime: waitTimeVal,
       crowdLevel: crowdLvl,
-      bestTime: metrics.best_time || '',
+      bestTime: metrics.best_time || memoryStatus.bestTime || '',
       darshans: updatedDarshans,
       accommodationStatus: (metrics.parking_status?.toLowerCase() === 'full' ? 'full' : 'available') as TirumalaStatus['accommodationStatus'],
-      ladduAvailability: (metrics.laddu_availability || 'available') as TirumalaStatus['ladduAvailability'],
-      weather: metrics.weather || DEFAULT_STATUS.weather,
-      sevaStatus: metrics.seva_status || DEFAULT_STATUS.sevaStatus,
-      notice: metrics.notice || '',
-      darshanSpeed: (metrics.darshan_speed || 'normal') as TirumalaStatus['darshanSpeed'],
-      ssdTokenStatus: (metrics.ssd_token_status || 'issuing') as TirumalaStatus['ssdTokenStatus'],
-      ssdNextTokenTime: metrics.ssd_next_token_time || '',
-      ssdTokenSlots: ssdSlots,
-      ssdNotice: metrics.ssd_notice || '',
-      ssdTimingsGuide: metrics.ssd_timings_guide || DEFAULT_STATUS.ssdTimingsGuide,
-      ssdCounters,
+      ladduAvailability: (metrics.laddu_availability || memoryStatus.ladduAvailability || 'available') as TirumalaStatus['ladduAvailability'],
+      weather: metrics.weather || memoryStatus.weather || DEFAULT_STATUS.weather,
+      sevaStatus: metrics.seva_status || memoryStatus.sevaStatus || DEFAULT_STATUS.sevaStatus,
+      notice: metrics.notice || memoryStatus.notice || '',
+      darshanSpeed: (metrics.darshan_speed || memoryStatus.darshanSpeed || 'normal') as TirumalaStatus['darshanSpeed'],
+      ssdTokenStatus: resolvedSsdStatus,
+      ssdNextTokenTime: resolvedNextTokenTime,
+      ssdTokenSlots: ssdSlots && ssdSlots.length > 0 ? ssdSlots : memoryStatus.ssdTokenSlots,
+      ssdNotice: resolvedNotice,
+      ssdTimingsGuide: resolvedTimingsGuide,
+      ssdCounters: ssdCounters && ssdCounters.length > 0 ? ssdCounters : memoryStatus.ssdCounters,
       lastUpdated: metrics.updated_at || new Date().toISOString(),
     };
     

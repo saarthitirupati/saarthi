@@ -19,10 +19,10 @@ export default function AlertsPage() {
 
   const getCtaHref = (cta?: string) => {
     switch (cta) {
-      case 'Open Queue': return '/live';
+      case 'Open Queue': return '/route';
       case 'Open Essentials': return '/essentials';
       case 'Open Maps': return '/explore';
-      case 'Open Parking': return '/live';
+      case 'Open Parking': return '/route';
       default: return null;
     }
   };

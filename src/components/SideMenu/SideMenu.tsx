@@ -49,7 +49,6 @@ export default function SideMenu({ isOpen, onClose }: SideMenuProps) {
     { name: t.explore, icon: Compass, href: '/explore' },
     { name: t.tripEstimator, icon: Compass, href: '/trip-estimator' },
     { name: t.smartPlanner, icon: Compass, href: '/planner' },
-    { name: t.liveUpdates, icon: Award, href: '/live' },
     { name: t.festivals, icon: Calendar, href: '/festivals' },
     { name: t.liveAlerts, icon: Info, href: '/alerts' },
     { name: t.adminDashboard, icon: Award, href: '/saarthiadmin' },
