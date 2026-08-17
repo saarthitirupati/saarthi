@@ -272,6 +272,124 @@ export const CURATED_LAYOUTS: Record<string, Partial<TempleLayoutData>> = {
     ]
   },
 
+  'kanipakam': {
+    placeId: 'kanipakam',
+    titleEn: 'Sri Varasiddhi Vinayaka Swamy Temple (Kanipakam) Precinct Map',
+    titleTe: 'శ్రీ వరసిద్ధి వినాయక స్వామి ఆలయం (కాణిపాకం) ప్రాంగణ మ్యాప్',
+    layoutType: 'grand-temple',
+    centerCoordinates: { lat: 13.2796, lng: 79.0347 },
+    routePath: [[430, 290], [270, 275], [145, 255], [270, 205], [150, 130], [270, 90], [415, 105], [370, 190], [270, 275]],
+    pins: [
+      {
+        id: 'parking',
+        nameEn: 'Devasthanam Visitor Parking Plaza',
+        nameTe: 'దేవస్థానం పార్కింగ్ ప్రదేశం',
+        category: 'parking',
+        lat: 13.2790,
+        lng: 79.0340,
+        svgX: 430,
+        svgY: 290,
+        descEn: 'Large multi-level vehicle and tourist bus parking complex.',
+        descTe: 'వాహనాలు మరియు బస్సుల పార్కింగ్ సముదాయం.'
+      },
+      {
+        id: 'entry',
+        nameEn: 'Raja Gopuram & Covered Queue Entrance',
+        nameTe: 'రాజగోపురం & క్యూ కాంప్లెక్స్ ప్రవేశం',
+        category: 'entry',
+        lat: 13.2793,
+        lng: 79.0344,
+        svgX: 270,
+        svgY: 275,
+        descEn: 'Towering Vijayanagara-style entrance gopuram and special darshan queue entry.',
+        descTe: 'విజయనగర శైలి రాజగోపురం మరియు దర్శన ప్రవేశ ద్వారం.'
+      },
+      {
+        id: 'footwear',
+        nameEn: 'Free Footwear & Baggage Counter',
+        nameTe: 'ఉచిత పాదరక్షల కేంద్రం',
+        category: 'footwear',
+        lat: 13.2792,
+        lng: 79.0342,
+        svgX: 145,
+        svgY: 255,
+        descEn: 'Free token custody counter for footwear and electronic items.',
+        descTe: 'పాదరక్షలు భద్రపరిచే ఉచిత కౌంటర్.'
+      },
+      {
+        id: 'dhwajasthambham',
+        nameEn: 'Dhwajasthambham & Mushika (Mouse) Vahanam',
+        nameTe: 'ధ్వజస్తంభం & మూషిక వాహనం',
+        category: 'info',
+        lat: 13.2795,
+        lng: 79.0346,
+        svgX: 270,
+        svgY: 205,
+        descEn: 'Sacred golden flag mast and Lord Ganesha\'s Mushika vehicle in the inner courtyard.',
+        descTe: 'పవిత్ర ధ్వజస్తంభం మరియు మూషిక వాహన దర్శనం.'
+      },
+      {
+        id: 'shiva-shrine',
+        nameEn: 'Sri Manikantheswara Swamy & Varadaraja Sub-Shrines',
+        nameTe: 'శ్రీ మణికంఠేశ్వర & వరదరాజ స్వామి సన్నిధులు',
+        category: 'info',
+        lat: 13.2797,
+        lng: 79.0343,
+        svgX: 150,
+        svgY: 130,
+        descEn: 'Ancient Chola-era sub-shrines dedicated to Lord Shiva (Manikantheswara) and Lord Vishnu inside temple prakaram.',
+        descTe: 'ఆలయ ప్రాకారంలోని ప్రాచీన శివ మరియు విష్ణు ఉపాలయాలు.'
+      },
+      {
+        id: 'sanctum',
+        nameEn: 'Sri Varasiddhi Vinayaka Garbhalayam (Swayambhu Well)',
+        nameTe: 'శ్రీ వరసిద్ధి వినాయక స్వామి స్వయంభూ బావి (గర్భాలయం)',
+        category: 'sanctum',
+        lat: 13.2798,
+        lng: 79.0347,
+        svgX: 270,
+        svgY: 90,
+        descEn: 'Self-manifested growing idol of Lord Ganesha in the perennial holy water well. Devotees take sacred well theertham.',
+        descTe: 'నిరంతరం నీరు ఊరే పవిత్ర బావిలో స్వయంభూగా వెలసిన వినాయక స్వామి మూలవిరాట్టు.'
+      },
+      {
+        id: 'pushkarini',
+        nameEn: 'Bahuda River Holy Pushkarini Tank (Manikarnika)',
+        nameTe: 'బాహుదా నది మణికర్ణిక పుష్కరిణి',
+        category: 'info',
+        lat: 13.2800,
+        lng: 79.0352,
+        svgX: 415,
+        svgY: 105,
+        descEn: 'Sacred river water temple tank where pilgrims take a cleansing holy bath before darshan.',
+        descTe: 'దర్శనానికి ముందు భక్తులు పవిత్ర స్నానం ఆచరించే పుష్కరిణి.'
+      },
+      {
+        id: 'laddu',
+        nameEn: 'Kanipakam Laddu, Coconut & Theertham Counter',
+        nameTe: 'కాణిపాకం లడ్డూ & ప్రసాదం కౌంటర్',
+        category: 'laddu',
+        lat: 13.2795,
+        lng: 79.0350,
+        svgX: 370,
+        svgY: 190,
+        descEn: 'Famous Kanipakam delicious laddus, unbroken coconut offering return, and sanctum theertham bottles.',
+        descTe: 'ప్రసిద్ధ కాణిపాకం లడ్డూ ప్రసాదం మరియు పవిత్ర బావి తీర్థం.'
+      }
+    ],
+    routeSteps: [
+      { stepNumber: 1, titleEn: 'Kanipakam Arrival & Parking', titleTe: 'కాణిపాకం పార్కింగ్ చేరుకోవడం', distance: '0.0 km', timeMins: 0, descEn: 'Park vehicle at the Devasthanam parking plaza.', descTe: 'వాహనాన్ని పార్క్ చేయండి.' },
+      { stepNumber: 2, titleEn: 'Raja Gopuram Entrance & Footwear', titleTe: 'రాజగోపురం & పాదరక్షల కౌంటర్', distance: '50m', timeMins: 2, descEn: 'Deposit shoes and enter through the grand Raja Gopuram.', descTe: 'చెప్పులు విడిచి రాజగోపురం ద్వారా ప్రవేశించండి.' },
+      { stepNumber: 3, titleEn: 'Dhwajasthambham & Manikantheswara Shrine', titleTe: 'ధ్వజస్తంభం & మణికంఠేశ్వర స్వామి సన్నిధి', distance: '80m', timeMins: 5, descEn: 'Offer prayers at the flag mast and visit the ancient Shiva sub-shrine.', descTe: 'ధ్వజస్తంభ నమస్కారం మరియు శివాలయ దర్శనం.' },
+      { stepNumber: 4, titleEn: 'Swayambhu Varasiddhi Vinayaka Darshan', titleTe: 'స్వయంభూ వరసిద్ధి వినాయక దర్శనం', distance: '100m', timeMins: 20, descEn: 'Seek blessings of the growing Ganesha in the sacred water well and receive holy theertham.', descTe: 'పవిత్ర బావిలోని వినాయక స్వామి దివ్య దర్శనం.' },
+      { stepNumber: 5, titleEn: 'Bahuda Pushkarini & Laddu Prasadam', titleTe: 'పుష్కరిణి తీర్థం & లడ్డూ ప్రసాదం', distance: '120m', timeMins: 10, descEn: 'Visit the holy river tank and collect fresh Kanipakam laddu prasadam.', descTe: 'బాహుదా తీర్థం మరియు లడ్డూ ప్రసాదం పొందండి.' }
+    ],
+    emergencyContacts: [
+      { titleEn: 'Kanipakam Devasthanam Temple Office', titleTe: 'కాణిపాకం దేవస్థానం సమాచార విభాగం', number: '08572281540' },
+      { titleEn: 'Emergency Helpline', titleTe: 'అత్యవసర హెల్ప్‌లైన్', number: '112' }
+    ]
+  },
+
   'srivari-padalu-spot': {
     placeId: 'srivari-padalu-spot',
     titleEn: 'Srivari Paadaalu (Narayanagiri Peak) Precinct Map',
@@ -2294,14 +2412,14 @@ export function getTempleLayout(placeInput: string | PlaceInputContext, fallback
     ];
   } else {
     // 10. GRAND TEMPLE
-    generatedRoute = [[430, 290], [270, 275], [170, 260], [170, 130], [270, 110], [380, 110], [370, 210]];
+    generatedRoute = [[430, 290], [270, 275], [145, 255], [270, 205], [150, 130], [270, 90], [415, 105], [370, 190], [270, 275]];
     generatedPins = [
       { id: 'parking', nameEn: `${name} Parking Bay`, nameTe: 'పార్కింగ్ ప్రదేశం', category: 'parking', lat: baseLat - 0.0012, lng: baseLng + 0.0008, svgX: 430, svgY: 290, descEn: 'Dedicated vehicle parking and taxi drop zone.', descTe: 'వాహనాల పార్కింగ్ స్థలం.' },
       { id: 'entry', nameEn: 'Raja Gopuram Entrance', nameTe: 'రాజగోపురం ముఖద్వారం', category: 'entry', lat: baseLat - 0.0007, lng: baseLng, svgX: 270, svgY: 275, descEn: 'Main gateway tower facing east.', descTe: 'ఆలయ ప్రధాన ప్రవేశ గోపురం.' },
-      { id: 'footwear', nameEn: 'Free Footwear Counter', nameTe: 'ఉచిత పాదరక్షల కౌంటర్', category: 'footwear', lat: baseLat - 0.0006, lng: baseLng - 0.0005, svgX: 170, svgY: 260, descEn: 'Free shoe keeping counter with token safety.', descTe: 'ఉచిత చెప్పుల కౌంటర్.' },
-      { id: 'sanctum', nameEn: `${name} Sanctum`, nameTe: `${name} గర్భగుడి`, category: 'sanctum', lat: baseLat, lng: baseLng, svgX: 270, svgY: 110, descEn: 'Sacred inner sanctum sanctorum and presiding deity.', descTe: 'ప్రధాన గర్భాలయం మరియు స్వామి/అమ్మవారి దర్శనం.' },
-      { id: 'pushkarini', nameEn: 'Sacred Pushkarini Tank', nameTe: 'పుష్కరిణి తీర్థం', category: 'info', lat: baseLat, lng: baseLng + 0.0008, svgX: 380, svgY: 110, descEn: 'Holy temple water tank for holy water sprinkling.', descTe: 'పవిత్ర ఆలయ పుష్కరిణి.' },
-      { id: 'laddu', nameEn: 'Prasadam & Laddu Counter', nameTe: 'ప్రసాదం కౌంటర్', category: 'laddu', lat: baseLat - 0.0004, lng: baseLng + 0.0005, svgX: 370, svgY: 210, descEn: 'Sacred laddu, pulihora, and blessed prasadam counter.', descTe: 'స్వామివారి ప్రసాదం కౌంటర్.' }
+      { id: 'footwear', nameEn: 'Free Footwear Counter', nameTe: 'ఉచిత పాదరక్షల కౌంటర్', category: 'footwear', lat: baseLat - 0.0006, lng: baseLng - 0.0005, svgX: 145, svgY: 255, descEn: 'Free shoe keeping counter with token safety.', descTe: 'ఉచిత చెప్పుల కౌంటర్.' },
+      { id: 'sanctum', nameEn: `${name} Sanctum`, nameTe: `${name} గర్భగుడి`, category: 'sanctum', lat: baseLat, lng: baseLng, svgX: 270, svgY: 90, descEn: 'Sacred inner sanctum sanctorum and presiding deity.', descTe: 'ప్రధాన గర్భాలయం మరియు స్వామి/అమ్మవారి దర్శనం.' },
+      { id: 'pushkarini', nameEn: 'Sacred Pushkarini Tank', nameTe: 'పుష్కరిణి తీర్థం', category: 'info', lat: baseLat, lng: baseLng + 0.0008, svgX: 415, svgY: 105, descEn: 'Holy temple water tank for holy water sprinkling.', descTe: 'పవిత్ర ఆలయ పుష్కరిణి.' },
+      { id: 'laddu', nameEn: 'Prasadam & Laddu Counter', nameTe: 'ప్రసాదం కౌంటర్', category: 'laddu', lat: baseLat - 0.0004, lng: baseLng + 0.0005, svgX: 370, svgY: 190, descEn: 'Sacred laddu, pulihora, and blessed prasadam counter.', descTe: 'స్వామివారి ప్రసాదం కౌంటర్.' }
     ];
   }
 
