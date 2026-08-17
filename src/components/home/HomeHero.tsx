@@ -1124,10 +1124,6 @@ export function HomeHero({ userName, locationName, weatherTemp, liveStatus, acti
               </span>
             )}
           </div>
-
-          <Link href="/live" style={{ fontSize: '11.5px', fontWeight: 800, color: '#38BDF8', textDecoration: 'none' }}>
-            {lang === 'te' ? 'లైవ్ స్టేటస్ →' : '→ Full Live Status'}
-          </Link>
         </div>
 
         {/* 3️⃣ ⭐ SAARTHI SUGGESTS (HERO COMPANION GUIDANCE) */}
