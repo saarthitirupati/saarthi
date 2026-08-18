@@ -19,10 +19,10 @@ export default function SplashScreen({ onFinish }: { onFinish: () => void }) {
       playTempleBellChime();
     }, 800);
 
-    // ⏱️ Total choreographed sequence duration (3.6s)
+    // ⏱️ Total choreographed sequence: 3.6s animation + 1.3s hold = 4.9s
     const splashTimer = setTimeout(() => {
       handleFinish();
-    }, 3600);
+    }, 4900);
 
     return () => {
       clearTimeout(soundTimer);

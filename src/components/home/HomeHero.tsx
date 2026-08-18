@@ -8,6 +8,7 @@ import { useLanguage } from '@/lib/useLanguage';
 import { detectCoordinates } from '@/lib/location';
 import { playTempleBellChime } from '@/lib/audioBell';
 import { getPanchangamData } from '@/lib/panchangam';
+import { getDayTempleGuidance } from '@/lib/dailyGuidance';
 
 const TEXTS: Record<string, any> = {
   en: {
@@ -1204,26 +1205,42 @@ export function HomeHero({ userName, locationName, weatherTemp, liveStatus, acti
           const isSsdClosed = ssdTokenStatus === 'closed-for-day';
           const isSsdOpen = ssdTokenStatus === 'issuing';
 
+          // Day-of-week auspicious temple mapping (e.g. Monday: Shiva/Kapila, Tuesday: Hanuman/Japali, etc.)
+          const dayGuide = getDayTempleGuidance(new Date());
+
           // Contextual Dynamic Headline & Rationales
           let guidanceHeadline = scenario.recommendation;
           let highlightedBenefit = scenario.benefit || 'Save approx. 4 hours by starting at 6:00 AM';
           let customReasons: string[] = [];
 
           if (isSsdOpen) {
-            guidanceHeadline = lang === 'te' ? 'ఇప్పుడే SSD కౌంటర్‌కు వెళ్లండి. టోకెన్లు జారీ అవుతున్నాయి.' : 'Head to SSD Counter now. Free token slots are issuing.';
+            guidanceHeadline = lang === 'te' ? 'ఇప్పుడే SSD కౌంటర్‌కు వెళ్లండి. ఉచిత టోకెన్లు జారీ అవుతున్నాయి.' : 'Head to SSD Counter now. Free token slots are issuing.';
             highlightedBenefit = lang === 'te' ? '⚡ సాధారణ క్యూతో పోలిస్తే 10+ గంటలు ఆదా' : '⚡ SAVE OVER 10 HOURS VS GENERAL QUEUE';
             customReasons = [
               lang === 'te' ? 'SSD టోకెన్లు 15+ గంటల సాధారణ క్యూను నివారిస్తాయి' : 'SSD tokens bypass the 15+ hour general queue bottleneck',
               lang === 'te' ? 'అలిపిరి, శ్రీనివాసం కేంద్రాలలో కౌంటర్లు తెరిచి ఉన్నాయి' : 'Alipiri & Srinivasam counters are currently active',
               lang === 'te' ? 'ఈ రోజు దర్శనం కోసం వెంటనే పొందండి' : 'Secure your slotted darshan for today'
             ];
-          } else if (isSarvaHeavy && isSsdClosed) {
-            guidanceHeadline = lang === 'te' ? 'కపిల తీర్థం దర్శించండి. మధ్యాహ్నం తర్వాత క్యూలో ప్రవేశించండి.' : 'Visit Kapila Theertham now. Return for Darshan after lunch.';
-            highlightedBenefit = lang === 'te' ? '⚡ సుమారు 2 గంటల నిరీక్షణ సమయం ఆదా' : '⚡ SAVE APPROX. 2 HOURS';
+          } else if (crowdLevel === 'low') {
+            guidanceHeadline = lang === 'te' ? 'దర్శనానికి అనుకూల సమయం! నేరుగా శ్రీవారి క్యూలో ప్రవేశించండి.' : 'Optimal Darshan window! Enter Srivari queue directly now.';
+            highlightedBenefit = lang === 'te' ? '⚡ అత్యంత వేగవంతమైన దర్శనం — నిరీక్షణ స్వల్పం' : '⚡ MINIMAL WAIT TIME — FASTEST ENTRY';
             customReasons = [
-              lang === 'te' ? 'మధ్యాహ్నం 2:00 తర్వాత క్యూ రద్దీ గణనీయంగా తగ్గుతుంది' : 'Queue wait clears significantly during afternoon slot (after 2 PM)',
-              lang === 'te' ? 'ప్రయాణానికి వాతావరణం అనుకూలంగా ఉంది' : isRainy ? 'Take APSRTC Electric Bus due to rain on steps' : 'Weather is pleasant for local temple visit',
-              lang === 'te' ? 'ఈ రోజుకు SSD కోటా పూర్తయింది' : 'SSD quota is closed today; time your general entry wisely'
+              lang === 'te' ? 'ప్రస్తుత క్యూ సమయం చాలా తక్కువగా ఉంది' : `Live queue wait is minimal (${sarvaWait})`,
+              lang === 'te' ? 'కంపార్ట్‌మెంట్లు వేగంగా కదులుతున్నాయి' : 'Queue compartments are moving smoothly without delays',
+              lang === 'te' ? 'శ్రీవారి ప్రశాంత దర్శనం చేసుకోవడానికి ఉత్తమ సమయం' : 'Ideal time for a peaceful and unhurried Darshan'
+            ];
+          } else if (isSarvaHeavy || isSsdClosed) {
+            // Dynamic Day-of-Week Temple Recommendation
+            guidanceHeadline = lang === 'te' ? dayGuide.headlineTe : dayGuide.headlineEn;
+            highlightedBenefit = lang === 'te' ? dayGuide.benefitTe : dayGuide.benefitEn;
+            customReasons = lang === 'te' ? [
+              dayGuide.reasonsTe[0],
+              dayGuide.reasonsTe[1],
+              isRainy ? 'వర్షం కారణంగా విద్యుత్ బస్సులను ఎంచుకోండి' : dayGuide.reasonsTe[2]
+            ] : [
+              dayGuide.reasonsEn[0],
+              dayGuide.reasonsEn[1],
+              isRainy ? 'Take APSRTC Electric Bus due to rain on steps' : dayGuide.reasonsEn[2]
             ];
           } else {
             customReasons = [

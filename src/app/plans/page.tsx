@@ -3,7 +3,7 @@
 import { motion, AnimatePresence, Variants } from 'framer-motion';
 import { useRouter } from 'next/navigation';
 import { useTrip } from '@/components/TripContext';
-import { PLACES } from '@/legacy/places';
+import { PLACES } from '@/data/places';
 import { Star, Clock, Wallet, Navigation, Sparkles, MapPin, ArrowRight, Car } from 'lucide-react';
 import styles from './Plans.module.css';
 import { useState, useEffect } from 'react';

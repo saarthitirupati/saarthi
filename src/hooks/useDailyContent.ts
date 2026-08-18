@@ -2,6 +2,7 @@ import { useState, useEffect, useMemo } from 'react';
 import { safeFetchJson } from '@/lib/safeFetch';
 import { STORIES } from '@/data/stories';
 import { FESTIVALS_2026 } from '@/data/festivals';
+import { getDayTempleGuidance } from '@/lib/dailyGuidance';
 
 export function useDailyContent(places: any[]) {
   const [dailyContent, setDailyContent] = useState<any>(null);
@@ -68,7 +69,10 @@ export function useDailyContent(places: any[]) {
 
   const templeOfTheDay = useMemo(() => {
     if (dailyContent?.spotlight) return dailyContent.spotlight;
-    return places.find(p => p.id === 'srivari-swamy-temple' || p.id === 'govindaraja') 
+    const dayGuide = getDayTempleGuidance();
+    const dayMatch = places.find(p => p.id === dayGuide.placeId);
+    if (dayMatch) return dayMatch;
+    return places.find(p => p.id === 'venkateswara' || p.id === 'govindaraja') 
       || places.find(p => p.isMustVisit === true)
       || places[0];
   }, [dailyContent, places]);

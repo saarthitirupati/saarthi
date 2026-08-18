@@ -404,42 +404,21 @@ export default function OnboardingPage() {
                   </p>
                 </div>
 
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', width: '100%' }}>
-                  {t.cards.map((card, idx) => {
-                    const CardIcon = card.icon;
-                    return (
-                      <div 
-                        key={idx}
-                        style={{
-                          display: 'flex',
-                          alignItems: 'center',
-                          gap: '10px',
-                          background: '#FFFFFF',
-                          border: '1px solid #E2E8F0',
-                          borderRadius: '14px',
-                          padding: '8px 12px',
-                          boxShadow: '0 2px 8px rgba(0,0,0,0.02)'
-                        }}
-                      >
-                        <div style={{
-                          width: '32px',
-                          height: '32px',
-                          borderRadius: '10px',
-                          background: card.bg,
-                          display: 'flex',
-                          alignItems: 'center',
-                          justifyContent: 'center',
-                          flexShrink: 0
-                        }}>
-                          <CardIcon size={16} style={{ color: card.color }} />
-                        </div>
-                        <div>
-                          <h3 style={{ fontSize: '13px', fontWeight: 800, color: '#0F172A', margin: '0 0 1px 0' }}>{card.title}</h3>
-                          <p style={{ fontSize: '11px', color: '#64748B', margin: 0, lineHeight: 1.3 }}>{card.desc}</p>
-                        </div>
-                      </div>
-                    );
-                  })}
+                <div style={{
+                  width: '100%',
+                  borderRadius: '20px',
+                  overflow: 'hidden',
+                  boxShadow: '0 8px 32px rgba(0,0,0,0.08)',
+                  border: '1px solid rgba(15, 81, 50, 0.08)',
+                  aspectRatio: '3/4',
+                  maxHeight: '340px'
+                }}>
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img 
+                    src="/onboarding-tirumala.jpg" 
+                    alt="Tirumala Temple" 
+                    style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                  />
                 </div>
               </div>
 
