@@ -1,473 +1,605 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { playTempleBellChime } from '@/lib/audioBell';
 import styles from './Splash.module.css';
 
 export default function SplashScreen({ onFinish }: { onFinish: () => void }) {
   const [isVisible, setIsVisible] = useState(true);
 
-  useEffect(() => {
-    // Cinematic animation duration (3.2 seconds total, then exit transition starts)
-    const timer = setTimeout(() => {
-      setIsVisible(false);
-      setTimeout(onFinish, 700); // 700ms exit transition
-    }, 3200);
-
-    return () => clearTimeout(timer);
+  const handleFinish = useCallback(() => {
+    setIsVisible(false);
+    setTimeout(onFinish, 450); // 450ms smooth exit cross-fade
   }, [onFinish]);
 
-  const ambientParticles = Array.from({ length: 22 });
-  const titleLetters = Array.from("Saarthi");
+  useEffect(() => {
+    // 🔔 Sacred bronze temple chime when the Sanctum emerges (0.8s)
+    const soundTimer = setTimeout(() => {
+      playTempleBellChime();
+    }, 800);
 
-  // Framer Motion Staggered Variants for Title Letters
-  const titleContainerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.08,
-        delayChildren: 1.3
-      }
-    }
-  };
+    // ⏱️ Total choreographed sequence duration (3.6s)
+    const splashTimer = setTimeout(() => {
+      handleFinish();
+    }, 3600);
 
-  const letterVariants = {
-    hidden: { opacity: 0, y: 15, scale: 0.9 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      scale: 1,
-      transition: { type: 'spring' as const, stiffness: 90, damping: 14 }
-    }
-  };
+    return () => {
+      clearTimeout(soundTimer);
+      clearTimeout(splashTimer);
+    };
+  }, [handleFinish]);
 
   return (
     <AnimatePresence mode="wait">
       {isVisible && (
         <motion.div
-          className={styles.splash}
+          className={styles.splashContainer}
           initial={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 0.7, ease: "easeInOut" }}
+          exit={{ opacity: 0, scale: 1.02 }}
+          transition={{ duration: 0.45, ease: [0.4, 0, 0.2, 1] }}
+          onClick={handleFinish}
         >
-          {/* Dynamic Ambient Blur Lighting Orbs */}
+          {/* 🌌 Phase 1: Deep Sanctum Ambient Vignette (0.0s – 0.6s) */}
+          <div className={styles.sanctumVignette} />
+
+          {/* 🌟 Phase 2: Layered Golden Sanctum Aura (0.4s – 1.4s) */}
           <motion.div
-            style={{
-              position: 'absolute',
-              width: '380px',
-              height: '380px',
-              background: 'radial-gradient(circle, rgba(16, 185, 129, 0.07) 0%, transparent 70%)',
-              top: '15%',
-              left: '5%',
-              filter: 'blur(50px)',
-              pointerEvents: 'none',
-              zIndex: 1
+            className={styles.centralGoldenAura}
+            initial={{ opacity: 0, scale: 0.75 }}
+            animate={{ 
+              opacity: [0, 0.4, 0.8, 0.7], 
+              scale: [0.75, 1.02, 1.1, 1.05] 
             }}
-            animate={{
-              x: [0, 25, -15, 0],
-              y: [0, -30, 20, 0]
-            }}
-            transition={{
-              duration: 14,
-              repeat: Infinity,
-              ease: "easeInOut"
-            }}
-          />
-          
-          <motion.div
-            style={{
-              position: 'absolute',
-              width: '420px',
-              height: '420px',
-              background: 'radial-gradient(circle, rgba(59, 130, 246, 0.07) 0%, transparent 70%)',
-              bottom: '10%',
-              right: '5%',
-              filter: 'blur(60px)',
-              pointerEvents: 'none',
-              zIndex: 1
-            }}
-            animate={{
-              x: [0, -30, 20, 0],
-              y: [0, 40, -15, 0]
-            }}
-            transition={{
-              duration: 18,
-              repeat: Infinity,
-              ease: "easeInOut"
+            transition={{ 
+              duration: 2.8, 
+              times: [0, 0.25, 0.6, 1], 
+              ease: "easeOut" 
             }}
           />
 
-          {/* Drifting Background Lamp Particles */}
-          <div className={styles.particleContainer}>
-            {ambientParticles.map((_, i) => {
-              const xPos = Math.random() * 440 - 220;
-              const yPos = Math.random() * 640 - 320;
-              return (
-                <motion.div
-                  key={i}
-                  className={styles.particle}
-                  initial={{
-                    x: xPos,
-                    y: yPos,
-                    opacity: 0,
-                    scale: Math.random() * 0.8 + 0.4
-                  }}
-                  animate={{
-                    y: [yPos, yPos - 90],
-                    x: [xPos, xPos + (Math.random() * 30 - 15)],
-                    opacity: [0, 0.5, 0.5, 0]
-                  }}
-                  transition={{
-                    duration: 7 + Math.random() * 7,
-                    repeat: Infinity,
-                    ease: "easeInOut",
-                    delay: Math.random() * 3
-                  }}
-                />
-              );
-            })}
-          </div>
-
-          {/* Central light emerges (0.3s) */}
-          <motion.div
-            className={styles.centralLight}
-            initial={{ scale: 0, opacity: 0 }}
-            animate={{ scale: 1.1, opacity: 1 }}
-            transition={{ delay: 0.3, duration: 0.7, ease: "easeOut" }}
-            exit={{ opacity: 0 }}
-          />
-
-          {/* Translucent Backdrop Ripples centered on the logo summit (1.2s) */}
-          {[0, 1].map((idx) => (
-            <motion.div
-              key={idx}
-              className={styles.ripple}
-              style={{ 
-                top: 'calc(50% - 130px)', 
-                backdropFilter: 'blur(1.5px)', 
-                WebkitBackdropFilter: 'blur(1.5px)' 
-              }}
-              initial={{ width: 0, height: 0, opacity: 0 }}
-              animate={{ 
-                width: ['0px', '340px'], 
-                height: ['0px', '340px'], 
-                opacity: [0, 0.35, 0] 
-              }}
-              transition={{
-                delay: 1.2 + idx * 0.3,
-                duration: 1.8,
-                ease: "easeOut"
-              }}
-              exit={{ opacity: 0 }}
-            />
-          ))}
-
-          {/* Main Content Layout */}
-          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', zIndex: 10 }}>
-            {/* Logo and Landscape Wrapper */}
-            <motion.div
-              className={styles.logoContainer}
-              exit={{ 
-                y: -190, 
-                scale: 0.26, 
-                opacity: 0, 
-                transition: { duration: 0.65, ease: [0.25, 1, 0.5, 1] } 
-              }}
+          {/* 🛕 100% PURE VECTOR CANVAS (MATCHING REFERENCE DIVINE ARTWORK) */}
+          <div className={styles.vectorCanvasWrapper}>
+            <svg
+              viewBox="0 0 400 480"
+              className={styles.svgCanvas}
+              xmlns="http://www.w3.org/2000/svg"
             >
-              {/* Soft Logo Glow (1.2s) */}
-              <motion.div
-                className={styles.logoGlow}
-                style={{ top: 'calc(50% - 60px)' }} // Align with the summit
-                initial={{ opacity: 0, scale: 0.8 }}
-                animate={{ opacity: 1, scale: 1.15 }}
-                transition={{ delay: 1.2, duration: 0.9, ease: "easeOut" }}
+              <defs>
+                {/* 🌟 Divine Sanctum Golden Halo Behind Crown & Head */}
+                <radialGradient id="masterSanctumAura" cx="50%" cy="44%" r="46%">
+                  <stop offset="0%" stopColor="#F59E0B" stopOpacity="0.65" />
+                  <stop offset="25%" stopColor="#D97706" stopOpacity="0.45" />
+                  <stop offset="55%" stopColor="#B45309" stopOpacity="0.18" />
+                  <stop offset="80%" stopColor="#0A241C" stopOpacity="0.04" />
+                  <stop offset="100%" stopColor="#061813" stopOpacity="0" />
+                </radialGradient>
+
+                {/* Master Sacred Gold Gradient */}
+                <linearGradient id="divineGoldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stopColor="#FFFBEB" />
+                  <stop offset="20%" stopColor="#FDE68A" />
+                  <stop offset="50%" stopColor="#F59E0B" />
+                  <stop offset="80%" stopColor="#B45309" />
+                  <stop offset="100%" stopColor="#78350F" />
+                </linearGradient>
+
+                {/* Brilliant Golden Rim Highlight */}
+                <linearGradient id="goldRimGlow" x1="0%" y1="0%" x2="0%" y2="100%">
+                  <stop offset="0%" stopColor="#FFFFFF" />
+                  <stop offset="25%" stopColor="#FEF08A" />
+                  <stop offset="65%" stopColor="#F59E0B" />
+                  <stop offset="100%" stopColor="#B45309" />
+                </linearGradient>
+
+                {/* Sacred Srichoornam Tilak Red */}
+                <linearGradient id="srichoornamRed" x1="0%" y1="0%" x2="0%" y2="100%">
+                  <stop offset="0%" stopColor="#EF4444" />
+                  <stop offset="45%" stopColor="#DC2626" />
+                  <stop offset="100%" stopColor="#991B1B" />
+                </linearGradient>
+
+                {/* Soft Sacred Glow Filter */}
+                <filter id="sacredAuraGlow" x="-30%" y="-30%" width="160%" height="160%">
+                  <feGaussianBlur stdDeviation="3.2" result="blur" />
+                  <feMerge>
+                    <feMergeNode in="blur" />
+                    <feMergeNode in="SourceGraphic" />
+                  </feMerge>
+                </filter>
+
+                {/* Radiant Namam Light Bloom */}
+                <filter id="namamRadiance" x="-50%" y="-50%" width="200%" height="200%">
+                  <feGaussianBlur stdDeviation="4.2" result="blur" />
+                  <feColorMatrix type="matrix" values="
+                    1 0 0 0 0
+                    0 1 0 0 0
+                    0 0 1 0 0
+                    0 0 0 2.2 0" />
+                  <feMerge>
+                    <feMergeNode in="blur" />
+                    <feMergeNode in="SourceGraphic" />
+                  </feMerge>
+                </filter>
+              </defs>
+
+              {/* 🌟 1. BACKGROUND SANCTUM HALO & CELESTIAL ORBIT CIRCLE (0.3s - 1.2s) */}
+              <motion.circle
+                cx="200"
+                cy="210"
+                r="155"
+                fill="url(#masterSanctumAura)"
+                initial={{ opacity: 0, scale: 0.7 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ delay: 0.3, duration: 1.2, ease: "easeOut" }}
               />
 
-              {/* Advanced Self-Drawing Geometric Lotus-Compass & 7 Hills Logo (0.0s - 2.0s) */}
-              <svg viewBox="0 0 200 200" width="200" height="200" style={{ overflow: 'visible', zIndex: 10 }}>
-                {/* 1. Seshachalam 7 Hills Silhouette (0.0s - 0.7s) */}
-                <motion.path
-                  d="M 10 170 Q 38 130 68 152 Q 100 115 132 152 Q 162 125 190 170"
-                  stroke="rgba(212, 175, 55, 0.25)"
-                  strokeWidth="1.8"
-                  fill="none"
-                  initial={{ pathLength: 0 }}
-                  animate={{ pathLength: 1 }}
-                  transition={{ duration: 0.8, ease: "easeInOut" }}
-                />
+              {/* Fine Outer Celestial Compass Orbit Ring */}
+              <motion.circle
+                cx="200"
+                cy="205"
+                r="142"
+                stroke="url(#divineGoldGrad)"
+                strokeWidth="0.8"
+                strokeDasharray="4 4"
+                fill="none"
+                opacity="0.4"
+                initial={{ opacity: 0, rotate: -45 }}
+                animate={{ opacity: 0.45, rotate: 0 }}
+                transition={{ delay: 0.5, duration: 1.5, ease: "easeOut" }}
+                style={{ transformOrigin: '200px 205px' }}
+              />
 
-                {/* 2. The Winding Pilgrim Path climbing the hills (0.6s - 1.2s) */}
-                <motion.path
-                  d="M 40 165 C 65 155, 80 135, 100 115 C 115 100, 110 85, 100 70"
-                  stroke="rgba(212, 175, 55, 0.45)"
-                  strokeWidth="1.2"
-                  strokeDasharray="3,3"
-                  fill="none"
-                  initial={{ pathLength: 0 }}
-                  animate={{ pathLength: 1 }}
-                  transition={{ delay: 0.6, duration: 0.8, ease: "easeInOut" }}
-                />
-
-                {/* 3. Traveler Light Point climbing the path (0.6s - 1.2s) */}
+              {/* ✦ 2. SACRED GEOMETRY SAARTHI MANDALA (TOP CENTER X=200, Y=54) (0.6s - 1.5s) */}
+              <g id="sacred-mandala">
+                {/* Outer Golden Concentric Ring */}
                 <motion.circle
-                  cx="0" cy="0" r="3.5"
-                  fill="#D4AF37"
-                  style={{ filter: 'drop-shadow(0 0 4px #D4AF37)' }}
-                  initial={{ opacity: 0 }}
-                  animate={{
-                    opacity: [0, 1, 1, 0],
-                    x: [40, 65, 80, 100, 115, 110, 100],
-                    y: [165, 155, 135, 115, 100, 85, 70],
-                  }}
-                  transition={{
-                    delay: 0.6,
-                    duration: 0.9,
-                    times: [0, 0.1, 0.3, 0.5, 0.7, 0.9, 1.0],
-                    ease: "easeInOut"
-                  }}
-                />
-
-                {/* 4. Blooming Guide Star & Lotus Logo at the Summit (1.2s - 2.0s) */}
-                {/* Outer Ring */}
-                <motion.circle
-                  cx="100"
-                  cy="70"
-                  r="28"
-                  stroke="#D4AF37"
-                  strokeWidth="1.5"
+                  cx="200"
+                  cy="54"
+                  r="30"
+                  stroke="url(#divineGoldGrad)"
+                  strokeWidth="1.3"
                   fill="none"
                   initial={{ pathLength: 0, opacity: 0 }}
-                  animate={{ pathLength: 1, opacity: 1 }}
-                  transition={{ delay: 1.2, duration: 0.8, ease: "easeInOut" }}
+                  animate={{ pathLength: 1, opacity: 0.95 }}
+                  transition={{ delay: 0.6, duration: 0.8 }}
                 />
-
-                {/* Outer Ring Compass Ticks */}
-                <motion.path
-                  d="M 100 39 L 100 42 M 100 98 L 100 101 M 69 70 L 72 70 M 128 70 L 131 70"
-                  stroke="#D4AF37"
-                  strokeWidth="1"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 0.7 }}
-                  transition={{ delay: 1.6, duration: 0.4 }}
-                />
-
-                {/* Inner Dashed Ring */}
                 <motion.circle
-                  cx="100"
-                  cy="70"
-                  r="18"
-                  stroke="#D4AF37"
-                  strokeWidth="1"
-                  strokeDasharray="3,2"
+                  cx="200"
+                  cy="54"
+                  r="20"
+                  stroke="url(#divineGoldGrad)"
+                  strokeWidth="0.9"
                   fill="none"
-                  initial={{ pathLength: 0, opacity: 0 }}
-                  animate={{ pathLength: 1, opacity: 0.5 }}
-                  transition={{ delay: 1.3, duration: 0.7, ease: "easeInOut" }}
+                  opacity="0.8"
+                  initial={{ scale: 0 }}
+                  animate={{ scale: 1 }}
+                  transition={{ delay: 0.7, duration: 0.6 }}
+                  style={{ transformOrigin: '200px 54px' }}
+                />
+                <motion.circle
+                  cx="200"
+                  cy="54"
+                  r="10"
+                  stroke="url(#goldRimGlow)"
+                  strokeWidth="0.7"
+                  fill="none"
+                  opacity="0.7"
+                  initial={{ scale: 0 }}
+                  animate={{ scale: 1 }}
+                  transition={{ delay: 0.75, duration: 0.5 }}
+                  style={{ transformOrigin: '200px 54px' }}
                 />
 
-                {/* Major Compass Rays */}
+                {/* 8 Intersecting Sacred Flower-of-Life Arcs */}
                 <motion.path
-                  d="M 100 44 L 100 96 M 74 70 L 126 70"
-                  stroke="#D4AF37"
-                  strokeWidth="1.2"
+                  d="
+                    M 200 24 Q 220 44 200 64 Q 180 44 200 24
+                    M 200 44 Q 220 64 200 84 Q 180 64 200 44
+                    M 170 54 Q 190 74 210 54 Q 190 34 170 54
+                    M 190 54 Q 210 74 230 54 Q 210 34 190 54
+                    M 179 33 Q 200 54 221 75
+                    M 179 75 Q 200 54 221 33
+                  "
+                  stroke="url(#goldRimGlow)"
+                  strokeWidth="0.9"
+                  fill="none"
+                  initial={{ opacity: 0, rotate: -90 }}
+                  animate={{ opacity: 0.85, rotate: 0 }}
+                  transition={{ delay: 0.8, duration: 0.9, ease: "easeOut" }}
+                  style={{ transformOrigin: '200px 54px' }}
+                />
+
+                {/* Cardinal Radial Axis Rays */}
+                <motion.path
+                  d="M 200 18 L 200 90 M 164 54 L 236 54"
+                  stroke="url(#divineGoldGrad)"
+                  strokeWidth="1.1"
                   strokeLinecap="round"
-                  initial={{ pathLength: 0, opacity: 0 }}
-                  animate={{ pathLength: 1, opacity: 0.85 }}
-                  transition={{ delay: 1.4, duration: 0.7, ease: "easeInOut" }}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 0.9 }}
+                  transition={{ delay: 0.9, duration: 0.6 }}
                 />
 
-                {/* Lotus Petals (Wisdom & Guidance Bloom) */}
-                <motion.path
-                  d="M 100 70 Q 94 58 100 50 Q 106 58 100 70"
-                  stroke="#D4AF37" strokeWidth="1" fill="none"
-                  initial={{ pathLength: 0 }}
-                  animate={{ pathLength: 1 }}
-                  transition={{ delay: 1.3, duration: 0.8, ease: "easeInOut" }}
-                />
-                <motion.path
-                  d="M 100 70 Q 112 64 120 70 Q 112 76 100 70"
-                  stroke="#D4AF37" strokeWidth="1" fill="none"
-                  initial={{ pathLength: 0 }}
-                  animate={{ pathLength: 1 }}
-                  transition={{ delay: 1.3, duration: 0.8, ease: "easeInOut" }}
-                />
-                <motion.path
-                  d="M 100 70 Q 106 82 100 90 Q 94 82 100 70"
-                  stroke="#D4AF37" strokeWidth="1" fill="none"
-                  initial={{ pathLength: 0 }}
-                  animate={{ pathLength: 1 }}
-                  transition={{ delay: 1.3, duration: 0.8, ease: "easeInOut" }}
-                />
-                <motion.path
-                  d="M 100 70 Q 88 76 80 70 Q 88 64 100 70"
-                  stroke="#D4AF37" strokeWidth="1" fill="none"
-                  initial={{ pathLength: 0 }}
-                  animate={{ pathLength: 1 }}
-                  transition={{ delay: 1.3, duration: 0.8, ease: "easeInOut" }}
-                />
-
-                {/* Diagonal secondary petals */}
-                <motion.path
-                  d="M 100 70 Q 107 53 122 48 Q 117 63 100 70"
-                  stroke="#D4AF37" strokeWidth="0.8" fill="none"
-                  initial={{ pathLength: 0 }}
-                  animate={{ pathLength: 1 }}
-                  transition={{ delay: 1.5, duration: 0.7, ease: "easeInOut" }}
-                />
-                <motion.path
-                  d="M 100 70 Q 117 77 122 92 Q 107 87 100 70"
-                  stroke="#D4AF37" strokeWidth="0.8" fill="none"
-                  initial={{ pathLength: 0 }}
-                  animate={{ pathLength: 1 }}
-                  transition={{ delay: 1.5, duration: 0.7, ease: "easeInOut" }}
-                />
-                <motion.path
-                  d="M 100 70 Q 93 87 78 92 Q 83 77 100 70"
-                  stroke="#D4AF37" strokeWidth="0.8" fill="none"
-                  initial={{ pathLength: 0 }}
-                  animate={{ pathLength: 1 }}
-                  transition={{ delay: 1.5, duration: 0.7, ease: "easeInOut" }}
-                />
-                <motion.path
-                  d="M 100 70 Q 83 53 78 48 Q 93 53 100 70"
-                  stroke="#D4AF37" strokeWidth="0.8" fill="none"
-                  initial={{ pathLength: 0 }}
-                  animate={{ pathLength: 1 }}
-                  transition={{ delay: 1.5, duration: 0.7, ease: "easeInOut" }}
-                />
-
-                {/* Center Star Point */}
+                {/* Center Brilliant Diamond Star Burst */}
                 <motion.polygon
-                  points="100,63 102,68 107,70 102,72 100,77 98,72 93,70 98,68"
-                  fill="#D4AF37"
+                  points="200,40 203.5,54 218,54 203.5,56.5 200,70 196.5,56.5 182,54 196.5,54"
+                  fill="url(#goldRimGlow)"
+                  filter="url(#sacredAuraGlow)"
                   initial={{ scale: 0, opacity: 0 }}
                   animate={{ scale: 1, opacity: 1 }}
-                  transition={{ delay: 1.2, duration: 0.5, ease: "easeOut" }}
-                  style={{ transformOrigin: '100px 70px' }}
+                  transition={{ delay: 1.0, duration: 0.5, ease: "easeOut" }}
+                  style={{ transformOrigin: '200px 54px' }}
                 />
-              </svg>
+                <motion.circle
+                  cx="200"
+                  cy="54"
+                  r="2.8"
+                  fill="#FFFFFF"
+                  initial={{ scale: 0 }}
+                  animate={{ scale: [0, 1.5, 1] }}
+                  transition={{ delay: 1.1, duration: 0.4 }}
+                />
+              </g>
 
-              {/* Sparkle burst from the summit (2.6s) */}
-              <div className={styles.burstContainer}>
-                {Array.from({ length: 18 }).map((_, idx) => {
-                  const angle = (idx * 360) / 18;
-                  const distance = 80 + Math.random() * 45;
-                  const rad = (angle * Math.PI) / 180;
-                  const startX = 0;
-                  const startY = -30; // Shift relative to center to match summit (100, 70)
-                  const targetX = startX + Math.cos(rad) * distance;
-                  const targetY = startY + Math.sin(rad) * distance;
+              {/* 👑 3. LORD VENKATESWARA SWAMY MAJESTIC SILHOUETTE (1.1s - 2.4s) */}
+              <g id="divine-deity-form">
+                {/* Solid Midnight Silhouette Base */}
+                <motion.path
+                  d="
+                    M 200 88
+                    L 204 100 L 208 118 L 214 140 L 221 164 L 228 190
+                    L 236 198 L 246 206 L 254 214 L 262 224 L 268 232
+                    L 276 244 L 284 260 L 288 280 L 286 306 L 280 330
+                    L 120 330 L 114 306 L 112 280 L 116 260 L 124 244
+                    L 132 232 L 138 224 L 146 214 L 154 206 L 164 198
+                    L 172 190 L 179 164 L 186 140 L 192 118 L 196 100 Z
+                  "
+                  fill="#010A07"
+                  initial={{ opacity: 0, scale: 0.95 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ delay: 1.1, duration: 0.8, ease: "easeOut" }}
+                  style={{ transformOrigin: '200px 210px' }}
+                />
 
-                  return (
-                    <motion.div
-                      key={idx}
-                      className={styles.burstParticle}
-                      initial={{ x: startX, y: startY, scale: 0.8, opacity: 0 }}
-                      animate={{ 
-                        x: [startX, targetX], 
-                        y: [startY, targetY], 
-                        scale: [0.8, 1.1, 0], 
-                        opacity: [0, 1, 0] 
-                      }}
-                      transition={{ 
-                        delay: 2.6, 
-                        duration: 0.9, 
-                        ease: "easeOut"
-                      }}
-                    />
-                  );
-                })}
-              </div>
-            </motion.div>
+                {/* ── TOWERING RAJA KIREETAM (CROWN) ARCHITECTURE ── */}
+                {/* 1. Crown Pinnacle Kalasam Spire */}
+                <motion.path
+                  d="
+                    M 200 88 L 203.5 96 L 207 106 L 193 106 L 196.5 96 Z
+                    M 200 84 L 202 88 L 198 88 Z
+                  "
+                  fill="url(#goldRimGlow)"
+                  filter="url(#sacredAuraGlow)"
+                  initial={{ opacity: 0, y: -8 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 1.2, duration: 0.5 }}
+                />
 
-            {/* Brand Text Wrapper */}
-            <motion.div
-              className={styles.brandWrapper}
-              exit={{ 
-                opacity: 0, 
-                y: 25, 
-                transition: { duration: 0.5, ease: "easeInOut" } 
-              }}
-            >
-              {/* Confident staggered letters fade-in (1.3s - 2.0s) */}
-              <motion.div
-                className={styles.title}
-                variants={titleContainerVariants}
-                initial="hidden"
-                animate="visible"
-                style={{ display: 'flex', gap: '2px', justifyContent: 'center' }}
-              >
-                {titleLetters.map((char, index) => (
-                  <motion.span
-                    key={index}
-                    variants={letterVariants}
-                    style={{ display: 'inline-block' }}
-                  >
-                    {char}
-                  </motion.span>
-                ))}
-              </motion.div>
+                {/* 2. Stepped Gopuram Tiers with Golden Contours */}
+                <motion.path
+                  d="
+                    M 193 106 C 195 116, 198 126, 200 130 C 202 126, 205 116, 207 106
+                    M 190 120 Q 200 115 210 120
+                    M 186 134 Q 200 129 214 134
+                    M 182 150 Q 200 144 218 150
+                    M 178 168 Q 200 161 222 168
+                    M 174 188 Q 200 180 226 188
+                  "
+                  stroke="url(#divineGoldGrad)"
+                  strokeWidth="1.6"
+                  strokeLinecap="round"
+                  fill="none"
+                  initial={{ pathLength: 0, opacity: 0 }}
+                  animate={{ pathLength: 1, opacity: 0.95 }}
+                  transition={{ delay: 1.3, duration: 0.9, ease: "easeInOut" }}
+                />
 
-              {/* Subtitle / Tagline (2.0s - 2.6s) */}
-              <motion.p
-                className={styles.tagline}
-                initial="hidden"
-                animate="visible"
-                variants={{
-                  hidden: { opacity: 0, y: 8 },
-                  visible: { 
-                    opacity: 0.7, 
-                    y: 0,
-                    transition: { delay: 1.9, duration: 0.8, ease: "easeOut" } 
-                  }
-                }}
-              >
-                Know Before You Go
-              </motion.p>
+                {/* Crown Outer Ridge Flares (Rim Lighting) */}
+                <motion.path
+                  d="
+                    M 200 88
+                    C 205 108, 212 134, 218 160
+                    C 223 176, 227 188, 230 196
+                    M 200 88
+                    C 195 108, 188 134, 182 160
+                    C 177 176, 173 188, 170 196
+                  "
+                  stroke="url(#goldRimGlow)"
+                  strokeWidth="2.2"
+                  strokeLinecap="round"
+                  fill="none"
+                  filter="url(#sacredAuraGlow)"
+                  initial={{ pathLength: 0, opacity: 0 }}
+                  animate={{ pathLength: 1, opacity: 1 }}
+                  transition={{ delay: 1.3, duration: 0.8, ease: "easeInOut" }}
+                />
 
-              {/* Glowing Line Sweep (2.6s - 3.0s) */}
-              <div style={{ position: 'relative', marginTop: '24px', width: '160px', height: '1px' }}>
-                {/* Base divider line */}
-                <motion.div
-                  style={{
-                    position: 'absolute',
-                    inset: 0,
-                    background: 'rgba(212, 175, 55, 0.2)'
-                  }}
+                {/* Crown Inner Pointed Arch Tracery Panel */}
+                <motion.path
+                  d="
+                    M 196 148 Q 200 142 204 148
+                    M 194 164 Q 200 156 206 164
+                    M 191 182 Q 200 172 209 182
+                    M 197 132 L 200 126 L 203 132
+                  "
+                  stroke="url(#divineGoldGrad)"
+                  strokeWidth="1.3"
+                  fill="none"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 0.85 }}
+                  transition={{ delay: 1.5, duration: 0.5 }}
+                />
+
+                {/* ── MAKARA KUNDALAMS (ORNATE HANGING EARRINGS) ── */}
+                {/* Left Earring */}
+                <motion.g initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 1.6, duration: 0.5 }}>
+                  <circle cx="156" cy="220" r="8.5" stroke="url(#divineGoldGrad)" strokeWidth="1.5" fill="none" />
+                  <circle cx="156" cy="220" r="5" stroke="url(#goldRimGlow)" strokeWidth="1" fill="none" />
+                  <circle cx="156" cy="220" r="2.2" fill="#FDE68A" />
+                  <path d="M 156 228.5 L 156 240 M 153 240 L 159 240" stroke="url(#divineGoldGrad)" strokeWidth="1.3" strokeLinecap="round" />
+                </motion.g>
+
+                {/* Right Earring */}
+                <motion.g initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 1.6, duration: 0.5 }}>
+                  <circle cx="244" cy="220" r="8.5" stroke="url(#divineGoldGrad)" strokeWidth="1.5" fill="none" />
+                  <circle cx="244" cy="220" r="5" stroke="url(#goldRimGlow)" strokeWidth="1" fill="none" />
+                  <circle cx="244" cy="220" r="2.2" fill="#FDE68A" />
+                  <path d="M 244 228.5 L 244 240 M 241 240 L 247 240" stroke="url(#divineGoldGrad)" strokeWidth="1.3" strokeLinecap="round" />
+                </motion.g>
+
+                {/* ── SHOULDER FINIALS / KALASAMS (BHUJAKIRTI) ── */}
+                {/* Left Shoulder Kalasam */}
+                <motion.path
+                  d="
+                    M 132 232 L 136 222 L 140 232 Z
+                    M 136 218 L 136 222
+                    M 128 236 Q 136 232 144 236
+                  "
+                  stroke="url(#goldRimGlow)"
+                  strokeWidth="1.4"
+                  fill="url(#divineGoldGrad)"
+                  initial={{ opacity: 0, y: -6 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 1.65, duration: 0.5 }}
+                />
+
+                {/* Right Shoulder Kalasam */}
+                <motion.path
+                  d="
+                    M 260 232 L 264 222 L 268 232 Z
+                    M 264 218 L 264 222
+                    M 256 236 Q 264 232 272 236
+                  "
+                  stroke="url(#goldRimGlow)"
+                  strokeWidth="1.4"
+                  fill="url(#divineGoldGrad)"
+                  initial={{ opacity: 0, y: -6 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 1.65, duration: 0.5 }}
+                />
+
+                {/* Broad Shoulder Armor Arcs (Bhujakirti Contours) */}
+                <motion.path
+                  d="
+                    M 166 204
+                    C 148 208, 134 222, 126 240
+                    C 118 260, 116 282, 120 306
+                    C 124 320, 132 328, 142 334
+                    M 234 204
+                    C 252 208, 266 222, 274 240
+                    C 282 260, 284 282, 280 306
+                    C 276 320, 268 328, 258 334
+                  "
+                  stroke="url(#divineGoldGrad)"
+                  strokeWidth="2.2"
+                  strokeLinecap="round"
+                  fill="none"
+                  filter="url(#sacredAuraGlow)"
+                  initial={{ pathLength: 0, opacity: 0 }}
+                  animate={{ pathLength: 1, opacity: 0.95 }}
+                  transition={{ delay: 1.7, duration: 0.8, ease: "easeInOut" }}
+                />
+
+                {/* Shoulder Medallion Mandalas */}
+                <motion.circle cx="138" cy="266" r="10" stroke="url(#divineGoldGrad)" strokeWidth="1.2" strokeDasharray="3 2" fill="none" initial={{ opacity: 0 }} animate={{ opacity: 0.8 }} transition={{ delay: 1.8, duration: 0.5 }} />
+                <motion.circle cx="262" cy="266" r="10" stroke="url(#divineGoldGrad)" strokeWidth="1.2" strokeDasharray="3 2" fill="none" initial={{ opacity: 0 }} animate={{ opacity: 0.8 }} transition={{ delay: 1.8, duration: 0.5 }} />
+
+                {/* 🪷 4. RADIANT TIRUMALA NAMAM (Brightest Focal Light) (1.9s - 2.7s) */}
+                <g id="sacred-namam" filter="url(#namamRadiance)">
+                  {/* Left Pure White U-Arm */}
+                  <motion.path
+                    d="
+                      M 183 198 
+                      C 186 214, 190 230, 193.5 240 
+                      L 198 240 
+                      C 195 230, 191 214, 189 198 Z
+                    "
+                    fill="#FFFFFF"
+                    initial={{ scaleY: 0, opacity: 0 }}
+                    animate={{ scaleY: 1, opacity: 1 }}
+                    transition={{ delay: 1.9, duration: 0.6, ease: "easeOut" }}
+                    style={{ transformOrigin: '190px 240px' }}
+                  />
+
+                  {/* Right Pure White U-Arm */}
+                  <motion.path
+                    d="
+                      M 217 198 
+                      C 214 214, 210 230, 206.5 240 
+                      L 202 240 
+                      C 205 230, 209 214, 211 198 Z
+                    "
+                    fill="#FFFFFF"
+                    initial={{ scaleY: 0, opacity: 0 }}
+                    animate={{ scaleY: 1, opacity: 1 }}
+                    transition={{ delay: 1.9, duration: 0.6, ease: "easeOut" }}
+                    style={{ transformOrigin: '210px 240px' }}
+                  />
+
+                  {/* Connecting Curved Base */}
+                  <motion.path
+                    d="M 193.5 240 Q 200 248 206.5 240 Q 200 252 193.5 240 Z"
+                    fill="#FFFFFF"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ delay: 2.05, duration: 0.35 }}
+                  />
+
+                  {/* Central Radiant Vermilion Srichoornam Tilakam */}
+                  <motion.path
+                    d="M 198.5 200 L 201.5 200 L 201.5 246 Q 200 250 198.5 246 Z"
+                    fill="url(#srichoornamRed)"
+                    initial={{ scaleY: 0, opacity: 0 }}
+                    animate={{ scaleY: 1, opacity: 1 }}
+                    transition={{ delay: 2.0, duration: 0.55, ease: "easeOut" }}
+                    style={{ transformOrigin: '200px 200px' }}
+                  />
+                </g>
+
+                {/* Chest Necklaces (Kanthabharanam & Salagrama Haaram) */}
+                <motion.path
+                  d="
+                    M 166 260 Q 200 274 234 260
+                    M 158 278 Q 200 296 242 278
+                    M 150 298 Q 200 320 250 298
+                  "
+                  stroke="url(#divineGoldGrad)"
+                  strokeWidth="1.3"
+                  strokeDasharray="3 3"
+                  fill="none"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 0.75 }}
+                  transition={{ delay: 2.1, duration: 0.6 }}
+                />
+
+                {/* Central Jeweled Pendant (Kousthubham) */}
+                <motion.polygon
+                  points="200,290 206,299 200,308 194,299"
+                  fill="url(#goldRimGlow)"
+                  filter="url(#sacredAuraGlow)"
+                  initial={{ scale: 0 }}
+                  animate={{ scale: 1 }}
+                  transition={{ delay: 2.2, duration: 0.4 }}
+                  style={{ transformOrigin: '200px 299px' }}
+                />
+              </g>
+
+              {/* 📜 5. MASTER BRAND TYPOGRAPHY (2.3s - 3.1s) */}
+              <g id="typography">
+                {/* Saarthi Wordmark */}
+                <motion.text
+                  x="200"
+                  y="370"
+                  textAnchor="middle"
+                  fill="#FFFDF8"
+                  fontSize="40"
+                  fontWeight="500"
+                  fontFamily="Cinzel, 'Playfair Display', Georgia, serif"
+                  letterSpacing="0.22em"
+                  style={{ filter: 'drop-shadow(0 4px 16px rgba(254, 243, 199, 0.25))' }}
+                  initial={{ opacity: 0, y: 14 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 2.3, duration: 0.8, ease: [0.25, 1, 0.5, 1] }}
+                >
+                  Saarthi
+                </motion.text>
+
+                {/* Subtitle / Tagline */}
+                <motion.text
+                  x="200"
+                  y="400"
+                  textAnchor="middle"
+                  fill="#F59E0B"
+                  fontSize="11.5"
+                  fontWeight="600"
+                  fontFamily="Inter, system-ui, sans-serif"
+                  letterSpacing="0.24em"
+                  initial={{ opacity: 0, y: 8 }}
+                  animate={{ opacity: 0.95, y: 0 }}
+                  transition={{ delay: 2.6, duration: 0.6, ease: "easeOut" }}
+                >
+                  Know Before You Go
+                </motion.text>
+              </g>
+
+              {/* 🪷 6. SACRED LOTUS & GOLDEN EMBLEM BEAM (2.8s - 3.5s) */}
+              <g id="lotus-beam">
+                {/* Left Golden Hairline */}
+                <motion.line
+                  x1="95"
+                  y1="428"
+                  x2="182"
+                  y2="428"
+                  stroke="url(#divineGoldGrad)"
+                  strokeWidth="1.1"
+                  strokeLinecap="round"
                   initial={{ scaleX: 0 }}
                   animate={{ scaleX: 1 }}
-                  transition={{ delay: 2.3, duration: 0.6, ease: "easeOut" }}
+                  transition={{ delay: 2.8, duration: 0.6, ease: "easeOut" }}
+                  style={{ transformOrigin: '182px 428px' }}
                 />
-                {/* Left-to-right laser flare sweep */}
-                <motion.div
-                  style={{
-                    position: 'absolute',
-                    top: '-1px',
-                    width: '50px',
-                    height: '3px',
-                    background: 'linear-gradient(90deg, transparent, #FFFFFF 40%, #D4AF37 70%, transparent 100%)',
-                    borderRadius: '50%',
-                    filter: 'blur(0.5px)'
-                  }}
-                  initial={{ left: '-25px', opacity: 0 }}
-                  animate={{ left: ['-25px', '135px'], opacity: [0, 1, 1, 0] }}
-                  transition={{ delay: 2.6, duration: 0.9, ease: "easeInOut" }}
+                <motion.circle cx="95" cy="428" r="2.2" fill="#F59E0B" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 2.9, duration: 0.3 }} />
+
+                {/* Central Sacred Lotus Flower (3 Petals) */}
+                <motion.g
+                  initial={{ scale: 0, opacity: 0 }}
+                  animate={{ scale: 1, opacity: 1 }}
+                  transition={{ delay: 2.9, duration: 0.5, ease: "easeOut" }}
+                  style={{ transformOrigin: '200px 422px' }}
+                >
+                  {/* Center Petal */}
+                  <path d="M 200 416 Q 204.5 423 200 428 Q 195.5 423 200 416 Z" fill="url(#goldRimGlow)" />
+                  {/* Left Petal */}
+                  <path d="M 200 428 Q 189 424 192 418 Q 196.5 422 200 428 Z" fill="url(#divineGoldGrad)" />
+                  {/* Right Petal */}
+                  <path d="M 200 428 Q 211 424 208 418 Q 203.5 422 200 428 Z" fill="url(#divineGoldGrad)" />
+                </motion.g>
+
+                {/* Right Golden Hairline */}
+                <motion.line
+                  x1="218"
+                  y1="428"
+                  x2="305"
+                  y2="428"
+                  stroke="url(#divineGoldGrad)"
+                  strokeWidth="1.1"
+                  strokeLinecap="round"
+                  initial={{ scaleX: 0 }}
+                  animate={{ scaleX: 1 }}
+                  transition={{ delay: 2.8, duration: 0.6, ease: "easeOut" }}
+                  style={{ transformOrigin: '218px 428px' }}
                 />
-              </div>
-            </motion.div>
+                <motion.circle cx="305" cy="428" r="2.2" fill="#F59E0B" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 2.9, duration: 0.3 }} />
+
+                {/* Glowing Laser Light Glide Across the Lotus */}
+                <motion.circle
+                  cx="95"
+                  cy="428"
+                  r="3.5"
+                  fill="#FFFFFF"
+                  filter="url(#sacredAuraGlow)"
+                  initial={{ cx: 95, opacity: 0 }}
+                  animate={{ cx: [95, 305], opacity: [0, 1, 1, 0] }}
+                  transition={{ delay: 3.1, duration: 0.5, ease: "easeInOut" }}
+                />
+              </g>
+            </svg>
           </div>
 
-          {/* Bottom Divine Mantram */}
-          <motion.div
-            className={styles.sanskritText}
-            initial={{ opacity: 0, y: 8 }}
-            animate={{ opacity: 0.75, y: 0 }}
-            transition={{ delay: 2.1, duration: 0.9, ease: "easeOut" }}
-            exit={{ opacity: 0 }}
+          {/* ⚡ Skip button for returning devotees */}
+          <motion.button
+            className={styles.skipPill}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 1.2, duration: 0.4 }}
+            onClick={(e) => {
+              e.stopPropagation();
+              handleFinish();
+            }}
           >
-            || ॐ नमो वेंकटेशाय ||
-          </motion.div>
+            Skip →
+          </motion.button>
         </motion.div>
       )}
     </AnimatePresence>

@@ -332,12 +332,12 @@ export function HomeHero({ userName, locationName, weatherTemp, liveStatus, acti
       return d?.waitTime || '10–12 h';
     }
     if (key === 'ssd') {
-      const d = list.find((d: any) => d.name?.toLowerCase().includes('divya') || d.name?.toLowerCase().includes('footpath') || d.name?.toLowerCase().includes('ssd'));
-      return d?.waitTime || '4–6 h';
+      const d = list.find((d: any) => d.name?.toLowerCase().includes('ssd') || d.name?.toLowerCase().includes('divya') || d.name?.toLowerCase().includes('footpath') || d.name?.toLowerCase().includes('token'));
+      return d?.waitTime || '2–4 hrs';
     }
     if (key === 'special') {
       const d = list.find((d: any) => d.name?.includes('300') || d.name?.toLowerCase().includes('special'));
-      return d?.waitTime || '3–5 h';
+      return d?.waitTime || '3–5 hrs';
     }
     return '—';
   };
@@ -883,281 +883,281 @@ export function HomeHero({ userName, locationName, weatherTemp, liveStatus, acti
           </>
         )}
 
-      {/* 🛕 SIGNATURE LIVE TEMPLE PULSE CARD (WARM SANCTUM GOLDEN THEME) */}
+      {/* 🛕 SIGNATURE LIVE TEMPLE PULSE (BLACK OUTLINE INSIDE WHITE GLASS) */}
       <div style={{
-        background: 'linear-gradient(145deg, #1C120C 0%, #2A170A 45%, #180D06 100%)',
-        borderRadius: '22px',
-        padding: '16px 14px',
-        color: '#FFFFFF',
-        boxShadow: '0 16px 36px rgba(42, 23, 10, 0.4), 0 0 0 1px rgba(245, 158, 11, 0.15)',
-        border: '1px solid rgba(245, 158, 11, 0.28)',
+        background: 'linear-gradient(165deg, rgba(255, 255, 255, 0.95) 0%, rgba(248, 250, 252, 0.88) 100%)',
+        borderRadius: '24px',
+        padding: '18px 16px',
+        color: '#0F172A',
+        boxShadow: '0 16px 40px rgba(15, 23, 42, 0.08), 0 1px 3px rgba(0, 0, 0, 0.05)',
+        border: '1.5px solid #0F172A',
+        backdropFilter: 'blur(20px)',
         position: 'relative',
         overflow: 'hidden'
       }}>
-        {/* Golden Filigree Top Highlight */}
+        {/* Subtle Top Gold Beam Accent */}
         <div style={{
           position: 'absolute',
           top: 0,
-          left: '10%',
-          right: '10%',
+          left: '15%',
+          right: '15%',
           height: '2px',
-          background: 'linear-gradient(90deg, transparent 0%, #F59E0B 25%, #FEF3C7 50%, #F59E0B 75%, transparent 100%)',
+          background: 'linear-gradient(90deg, transparent 0%, #D97706 30%, #F59E0B 50%, #D97706 70%, transparent 100%)',
           opacity: 0.85
         }} />
 
-        {/* Sanctum Radial Aura & Sacred Namam Watermark */}
-        <div style={{
-          position: 'absolute',
-          top: '-40px',
-          right: '-30px',
-          width: '180px',
-          height: '180px',
-          borderRadius: '50%',
-          background: 'radial-gradient(circle, rgba(245, 158, 11, 0.14) 0%, transparent 70%)',
-          pointerEvents: 'none'
-        }} />
-
-        {/* Sacred Tirumala Namam Watermark Silhouette */}
-        <div style={{
-          position: 'absolute',
-          top: '12px',
-          right: '14px',
-          opacity: 0.14,
-          pointerEvents: 'none',
-          display: 'flex',
-          alignItems: 'center',
-          gap: '2px'
-        }}>
-          {/* Left Shankha / White Namam Wing */}
-          <div style={{ width: '6px', height: '32px', backgroundColor: '#FFFFFF', borderRadius: '3px 3px 0 0' }} />
-          {/* Center Srichoornam / Red Tilak */}
-          <div style={{ width: '4px', height: '24px', backgroundColor: '#EF4444', borderRadius: '2px' }} />
-          {/* Right Chakra / White Namam Wing */}
-          <div style={{ width: '6px', height: '32px', backgroundColor: '#FFFFFF', borderRadius: '3px 3px 0 0' }} />
-        </div>
-        
-        {/* HEADER ROW */}
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '12px', position: 'relative' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <div style={{ width: '26px', height: '26px', borderRadius: '8px', background: 'linear-gradient(135deg, rgba(245, 158, 11, 0.3) 0%, rgba(217, 119, 6, 0.15) 100%)', display: 'flex', alignItems: 'center', justifyContent: 'center', border: '1px solid rgba(245, 158, 11, 0.45)' }}>
-              <Flame size={14} color="#FBBF24" />
+        {/* 🌟 HEADER: LIVE BEACON & TITLE */}
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '16px', position: 'relative', zIndex: 2 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+            <div style={{
+              width: '32px',
+              height: '32px',
+              borderRadius: '10px',
+              background: 'rgba(217, 119, 6, 0.12)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              border: '1.5px solid #0F172A',
+              boxShadow: '0 2px 6px rgba(217, 119, 6, 0.15)'
+            }}>
+              <Flame size={16} color="#D97706" />
             </div>
-            <span style={{ fontSize: '12px', fontWeight: 900, letterSpacing: '0.5px', textTransform: 'uppercase', color: '#FEF3C7' }}>
-              {lang === 'te' ? 'శ్రీవారి ప్రత్యక్ష దర్శన స్థితి' : 'LIVE TEMPLE PULSE'}
-            </span>
+            <div>
+              <div style={{ fontSize: '13px', fontWeight: 900, letterSpacing: '0.8px', textTransform: 'uppercase', color: '#0F172A', lineHeight: '1.2' }}>
+                {lang === 'te' ? 'శ్రీవారి ప్రత్యక్ష దర్శన స్థితి' : 'LIVE TEMPLE PULSE'}
+              </div>
+              <div style={{ fontSize: '10.5px', color: '#059669', fontWeight: 700, display: 'flex', alignItems: 'center', gap: '4px', marginTop: '1px' }}>
+                <span style={{ width: '6px', height: '6px', borderRadius: '50%', backgroundColor: '#10B981', boxShadow: '0 0 6px #10B981' }} />
+                <span>TTD Sanctum Feed · {updatedLabel}</span>
+              </div>
+            </div>
           </div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '11px', color: '#CBD5E1', fontWeight: 700 }}>
-            <span style={{ width: '6px', height: '6px', borderRadius: '50%', backgroundColor: '#10B981', boxShadow: '0 0 8px #10B981' }} />
-            <span>{t.labels.live} · {updatedLabel}</span>
+
+          <div style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: '4px',
+            backgroundColor: 'rgba(16, 185, 129, 0.12)',
+            border: '1.5px solid #0F172A',
+            padding: '3px 9px',
+            borderRadius: '12px',
+            fontSize: '10px',
+            fontWeight: 800,
+            color: '#065F46',
+            letterSpacing: '0.5px'
+          }}>
+            <span>● LIVE</span>
           </div>
         </div>
 
-        {/* 1️⃣ CROWD FIRST: 3 PRIMARY DARSHAN QUEUES (LINKED TO LIVE ADMIN STATUS) */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '7px', marginBottom: '12px' }}>
-          {/* Sarva Darshan */}
+        {/* 1️⃣ THREE EXPRESSIVE SACRED QUEUE TILES (HIGHLIGHTED AS PER CROWD STATUS) */}
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', marginBottom: '14px', position: 'relative', zIndex: 2 }}>
           {(() => {
             const sarvaWait = getDarshanWait('sarva');
-            const isSarvaHeavy = sarvaWait.includes('24') || sarvaWait.includes('30') || sarvaWait.includes('18') || sarvaWait.includes('20') || sarvaWait.includes('15');
-            const isSarvaLow = sarvaWait.includes('4') || sarvaWait.includes('5') || sarvaWait.includes('6');
-            const sarvaDot = isSarvaHeavy ? '#EF4444' : isSarvaLow ? '#10B981' : '#F59E0B';
-            const sarvaText = isSarvaHeavy ? (lang === 'te' ? 'అధిక రద్దీ' : 'Heavy Rush') : isSarvaLow ? (lang === 'te' ? 'తక్కువ రద్దీ' : 'Low Crowd') : (lang === 'te' ? 'సాధారణ రద్దీ' : 'Moderate Crowd');
-            const sarvaColor = isSarvaHeavy ? '#FECACA' : isSarvaLow ? '#A7F3D0' : '#FDE68A';
-            const sarvaBg = isSarvaHeavy ? 'rgba(239, 68, 68, 0.2)' : isSarvaLow ? 'rgba(16, 185, 129, 0.2)' : 'rgba(245, 158, 11, 0.2)';
-            const sarvaBorder = isSarvaHeavy ? '1px solid rgba(239, 68, 68, 0.35)' : isSarvaLow ? '1px solid rgba(16, 185, 129, 0.35)' : '1px solid rgba(245, 158, 11, 0.35)';
+            const specialWait = getDarshanWait('special');
+            const ssdWait = getDarshanWait('ssd');
 
-            return (
+            const getMaxHours = (text: string): number => {
+              const matches = text.match(/\d+/g);
+              if (!matches || matches.length === 0) return 0;
+              return Math.max(...matches.map(Number));
+            };
+
+            // 1. Sarva State (🔴 Heavy: #E11D48, fill: #FFE4E6)
+            const sarvaHours = getMaxHours(sarvaWait);
+            const isSarvaHeavy = sarvaHours >= 12 || sarvaWait.includes('24') || sarvaWait.includes('30');
+            const sarvaStatus = isSarvaHeavy
+              ? { color: '#E11D48', bg: '#FFE4E6', badgeBg: '#E11D48', badgeText: '#FFFFFF', iconBg: '#FFFFFF', border: '#E11D48', label: lang === 'te' ? 'అధిక రద్దీ' : 'HEAVY RUSH', meter: 5 }
+              : sarvaHours > 6
+              ? { color: '#EA580C', bg: '#FFEDD5', badgeBg: '#EA580C', badgeText: '#FFFFFF', iconBg: '#FFFFFF', border: '#EA580C', label: lang === 'te' ? 'రద్దీ ఎక్కువ' : 'HIGH', meter: 4 }
+              : sarvaHours > 2
+              ? { color: '#D97706', bg: '#FEF3C7', badgeBg: '#D97706', badgeText: '#FFFFFF', iconBg: '#FFFFFF', border: '#D97706', label: lang === 'te' ? 'సాధారణ రద్దీ' : 'MODERATE', meter: 3 }
+              : { color: '#059669', bg: '#D1FAE5', badgeBg: '#059669', badgeText: '#FFFFFF', iconBg: '#FFFFFF', border: '#059669', label: lang === 'te' ? 'తక్కువ రద్దీ' : 'LOW CROWD', meter: 2 };
+
+            // 2. Special Entry State (🟡 Moderate: #D97706, fill: #FEF3C7)
+            const specialHours = getMaxHours(specialWait);
+            const specialStatus = specialHours > 7
+              ? { color: '#E11D48', bg: '#FFE4E6', badgeBg: '#E11D48', badgeText: '#FFFFFF', iconBg: '#FFFFFF', border: '#E11D48', label: lang === 'te' ? 'అధిక రద్దీ' : 'HEAVY RUSH', meter: 5 }
+              : specialHours > 6
+              ? { color: '#EA580C', bg: '#FFEDD5', badgeBg: '#EA580C', badgeText: '#FFFFFF', iconBg: '#FFFFFF', border: '#EA580C', label: lang === 'te' ? 'రద్దీ ఎక్కువ' : 'HIGH', meter: 4 }
+              : specialHours >= 2
+              ? { color: '#D97706', bg: '#FEF3C7', badgeBg: '#D97706', badgeText: '#FFFFFF', iconBg: '#FFFFFF', border: '#D97706', label: lang === 'te' ? 'స్లాట్ ఆధారితం' : 'MODERATE', meter: 3 }
+              : { color: '#059669', bg: '#D1FAE5', badgeBg: '#059669', badgeText: '#FFFFFF', iconBg: '#FFFFFF', border: '#059669', label: lang === 'te' ? 'వేగంగా కదులుతోంది' : 'LOW CROWD', meter: 2 };
+
+            // 3. SSD Token State (Dynamic Admin Push — always show wait time, never CLOSED)
+            const ssdHours = getMaxHours(ssdWait);
+            
+            const ssdStatus = ssdHours > 7
+              ? { color: '#E11D48', bg: '#FFE4E6', badgeBg: '#E11D48', badgeText: '#FFFFFF', iconBg: '#FFFFFF', border: '#E11D48', label: lang === 'te' ? 'అధిక రద్దీ' : 'HEAVY RUSH', meter: 5 }
+              : ssdHours > 4
+              ? { color: '#EA580C', bg: '#FFEDD5', badgeBg: '#EA580C', badgeText: '#FFFFFF', iconBg: '#FFFFFF', border: '#EA580C', label: lang === 'te' ? 'రద్దీ ఎక్కువ' : 'HIGH', meter: 4 }
+              : ssdHours >= 2
+              ? { color: '#D97706', bg: '#FEF3C7', badgeBg: '#D97706', badgeText: '#FFFFFF', iconBg: '#FFFFFF', border: '#D97706', label: lang === 'te' ? 'సాధారణ రద్దీ' : 'MODERATE', meter: 3 }
+              : { color: '#059669', bg: '#D1FAE5', badgeBg: '#059669', badgeText: '#FFFFFF', iconBg: '#FFFFFF', border: '#059669', label: lang === 'te' ? 'వేగంగా కదులుతోంది' : 'LOW CROWD', meter: 2 };
+
+            const queueCards = [
+              {
+                id: 'sarva',
+                icon: <Users size={16} color={sarvaStatus.color} />,
+                title: lang === 'te' ? 'సర్వదర్శనం' : 'Sarva Darshan',
+                subtitle: lang === 'te' ? 'ఉచిత సాధారణ దర్శనం' : 'Free General Queue',
+                wait: sarvaWait,
+                ...sarvaStatus,
+                isClosed: false
+              },
+              {
+                id: 'special',
+                icon: <Zap size={16} color={specialStatus.color} />,
+                title: lang === 'te' ? '₹300 ప్రత్యేక ప్రవేశం' : '₹300 Special Entry',
+                subtitle: lang === 'te' ? 'ఆన్‌లైన్ బుకింగ్ స్లాట్' : 'Online Booked Slot',
+                wait: specialWait,
+                ...specialStatus,
+                isClosed: false
+              },
+              {
+                id: 'ssd',
+                icon: <Ticket size={16} color={ssdStatus.color} />,
+                title: lang === 'te' ? 'SSD టోకెన్ దర్శనం' : 'SSD Token Darshan',
+                subtitle: lang === 'te' ? 'ఉచిత సమయ స్లాట్ టోకెన్లు' : 'Time-Slotted Free Darshan',
+                wait: ssdWait,
+                ...ssdStatus,
+                isClosed: false
+              }
+            ];
+
+            return queueCards.map((card) => (
               <div
+                key={card.id}
                 style={{
-                  background: 'rgba(254, 243, 199, 0.05)',
-                  border: '1px solid rgba(245, 158, 11, 0.16)',
+                  background: card.bg,
+                  border: '1.5px solid #0F172A',
+                  borderLeft: `6px solid ${card.color}`,
                   borderRadius: '14px',
-                  padding: '10px 12px',
+                  padding: '12px 14px',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'space-between',
-                  minHeight: '48px',
-                  userSelect: 'none'
+                  minHeight: '54px',
+                  boxShadow: '0 4px 12px rgba(15, 23, 42, 0.06)',
+                  position: 'relative',
+                  overflow: 'hidden'
                 }}
               >
-                <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                {/* Left Info with Icon Accent */}
+                <div style={{ display: 'flex', alignItems: 'center', gap: '12px', position: 'relative', zIndex: 2 }}>
                   <div style={{
-                    width: '10px',
-                    height: '10px',
-                    borderRadius: '50%',
-                    backgroundColor: sarvaDot,
-                    boxShadow: `0 0 8px ${sarvaDot}`,
-                    flexShrink: 0
-                  }} />
-                  <div>
-                    <div style={{ fontSize: '14.5px', fontWeight: 800, color: '#FFFBEB', letterSpacing: '-0.01em' }}>
-                      {lang === 'te' ? 'సర్వదర్శనం (ఉచితం)' : 'Sarva Darshan'}
-                    </div>
-                    <div style={{ fontSize: '11px', color: '#CBD5E1', fontWeight: 600 }}>
-                      {lang === 'te' ? 'ఉచిత సాధారణ దర్శనం' : 'Free General Queue'}
-                    </div>
-                  </div>
-                </div>
-                <div style={{ textAlign: 'right', display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '3px' }}>
-                  <div style={{ fontSize: '16.5px', fontWeight: 900, color: '#FEF3C7', letterSpacing: '-0.02em', fontVariantNumeric: 'tabular-nums' }}>
-                    {sarvaWait}
-                  </div>
-                  <span style={{
-                    fontSize: '10px',
-                    fontWeight: 800,
-                    color: sarvaColor,
-                    backgroundColor: sarvaBg,
-                    padding: '2px 8px',
-                    borderRadius: '6px',
-                    border: sarvaBorder,
-                    display: 'inline-flex',
+                    width: '34px',
+                    height: '34px',
+                    borderRadius: '10px',
+                    backgroundColor: card.iconBg,
+                    border: `1.5px solid ${card.color}`,
+                    display: 'flex',
                     alignItems: 'center',
-                    gap: '4px'
+                    justifyContent: 'center',
+                    boxShadow: '0 2px 6px rgba(0, 0, 0, 0.05)',
+                    flexShrink: 0
                   }}>
-                    <span style={{ width: '4px', height: '4px', borderRadius: '50%', backgroundColor: 'currentColor' }} />
-                    <span>{sarvaText}</span>
-                  </span>
+                    {card.icon}
+                  </div>
+                  <div>
+                    <div style={{ fontSize: '14.5px', fontWeight: 800, color: '#0F172A', letterSpacing: '-0.01em', lineHeight: '1.2' }}>
+                      {card.title}
+                    </div>
+                    <div style={{ fontSize: '11px', color: card.isClosed ? '#92400E' : '#334155', fontWeight: 600, marginTop: '2px' }}>
+                      {card.subtitle}
+                    </div>
+                  </div>
+                </div>
+
+                {/* Right Wait Time & Status Meter */}
+                <div style={{ textAlign: 'right', display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '4px', position: 'relative', zIndex: 2 }}>
+                  <div style={{
+                    fontSize: card.isClosed ? '14px' : '17px',
+                    fontWeight: 900,
+                    color: card.color,
+                    letterSpacing: '-0.02em',
+                    fontVariantNumeric: 'tabular-nums'
+                  }}>
+                    {card.wait}
+                  </div>
+
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                    {/* 5-Step Consistent Visual Crowd Meter */}
+                    {!card.isClosed && (
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '2px', marginRight: '2px' }}>
+                        {[1, 2, 3, 4, 5].map((seg) => (
+                          <span
+                            key={seg}
+                            style={{
+                              width: '4px',
+                              height: '7px',
+                              borderRadius: '1px',
+                              backgroundColor: seg <= card.meter ? card.color : 'rgba(15, 23, 42, 0.18)',
+                              boxShadow: seg <= card.meter ? `0 0 4px ${card.color}` : 'none'
+                            }}
+                          />
+                        ))}
+                      </div>
+                    )}
+
+                    {/* Status Pill */}
+                    <span style={{
+                      fontSize: '9.5px',
+                      fontWeight: 800,
+                      color: card.badgeText,
+                      backgroundColor: card.badgeBg,
+                      border: `1px solid ${card.border}`,
+                      padding: '2.5px 8px',
+                      borderRadius: '6px',
+                      letterSpacing: '0.04em',
+                      whiteSpace: 'nowrap',
+                      boxShadow: '0 1px 3px rgba(0, 0, 0, 0.1)'
+                    }}>
+                      {card.label}
+                    </span>
+                  </div>
                 </div>
               </div>
-            );
+            ));
+
           })()}
-
-          {/* ₹300 Special Entry */}
-          <div
-            style={{
-              background: 'rgba(254, 243, 199, 0.05)',
-              border: '1px solid rgba(245, 158, 11, 0.16)',
-              borderRadius: '14px',
-              padding: '10px 12px',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-              minHeight: '48px',
-              userSelect: 'none'
-            }}
-          >
-            <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-              <div style={{ width: '10px', height: '10px', borderRadius: '50%', backgroundColor: '#F59E0B', boxShadow: '0 0 8px rgba(245, 158, 11, 0.7)', flexShrink: 0 }} />
-              <div>
-                <div style={{ fontSize: '14.5px', fontWeight: 800, color: '#FFFBEB', letterSpacing: '-0.01em' }}>
-                  {lang === 'te' ? '₹300 ప్రత్యేక ప్రవేశం' : '₹300 Special Entry'}
-                </div>
-                <div style={{ fontSize: '11px', color: '#CBD5E1', fontWeight: 600 }}>
-                  {lang === 'te' ? 'ఆన్‌లైన్ సీగ్రా దర్శనం' : 'Online Booked Slot'}
-                </div>
-              </div>
-            </div>
-            <div style={{ textAlign: 'right', display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '3px' }}>
-              <div style={{ fontSize: '16.5px', fontWeight: 900, color: '#FEF3C7', letterSpacing: '-0.02em', fontVariantNumeric: 'tabular-nums' }}>
-                {getDarshanWait('special')}
-              </div>
-              <span style={{
-                fontSize: '10px',
-                fontWeight: 800,
-                color: '#FDE68A',
-                backgroundColor: 'rgba(245, 158, 11, 0.2)',
-                padding: '2px 8px',
-                borderRadius: '6px',
-                border: '1px solid rgba(245, 158, 11, 0.35)',
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '4px'
-              }}>
-                <span style={{ width: '4px', height: '4px', borderRadius: '50%', backgroundColor: 'currentColor' }} />
-                <span>{lang === 'te' ? 'స్లాట్ ఆధారితం' : 'Slot Bound'}</span>
-              </span>
-            </div>
-          </div>
-
-          {/* SSD Token Darshan */}
-          <div
-            style={{
-              background: 'rgba(254, 243, 199, 0.05)',
-              border: '1px solid rgba(245, 158, 11, 0.16)',
-              borderRadius: '14px',
-              padding: '10px 12px',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-              minHeight: '48px',
-              userSelect: 'none'
-            }}
-          >
-            <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-              <div style={{
-                width: '10px',
-                height: '10px',
-                borderRadius: '50%',
-                backgroundColor: ssdTokenStatus === 'closed-for-day' ? '#EF4444' : ssdTokenStatus === 'paused' ? '#F59E0B' : '#10B981',
-                boxShadow: ssdTokenStatus === 'closed-for-day' ? '0 0 8px #EF4444' : ssdTokenStatus === 'paused' ? '0 0 8px #F59E0B' : '0 0 8px #10B981',
-                flexShrink: 0
-              }} />
-              <div>
-                <div style={{ fontSize: '14.5px', fontWeight: 800, color: '#FFFBEB', letterSpacing: '-0.01em' }}>
-                  {lang === 'te' ? 'SSD టోకెన్ దర్శనం' : 'SSD Token Darshan'}
-                </div>
-                <div style={{ fontSize: '11px', color: '#CBD5E1', fontWeight: 600 }}>
-                  {lang === 'te' ? 'ఉచిత సమయ స్లాట్ టోకెన్లు' : 'Time-Slotted Free Darshan'}
-                </div>
-              </div>
-            </div>
-            <div style={{ textAlign: 'right', display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '3px' }}>
-              <div style={{ fontSize: '16.5px', fontWeight: 900, color: '#FEF3C7', letterSpacing: '-0.02em', fontVariantNumeric: 'tabular-nums' }}>
-                {getDarshanWait('ssd')}
-              </div>
-              <span style={{
-                fontSize: '10px',
-                fontWeight: 800,
-                color: ssdTokenStatus === 'closed-for-day' ? '#FECACA' : ssdTokenStatus === 'paused' ? '#FDE68A' : '#A7F3D0',
-                backgroundColor: ssdTokenStatus === 'closed-for-day' ? 'rgba(239, 68, 68, 0.2)' : ssdTokenStatus === 'paused' ? 'rgba(245, 158, 11, 0.2)' : 'rgba(16, 185, 129, 0.2)',
-                padding: '2px 8px',
-                borderRadius: '6px',
-                border: ssdTokenStatus === 'closed-for-day' ? '1px solid rgba(239, 68, 68, 0.35)' : ssdTokenStatus === 'paused' ? '1px solid rgba(245, 158, 11, 0.35)' : '1px solid rgba(16, 185, 129, 0.35)',
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '4px'
-              }}>
-                <span style={{ width: '4px', height: '4px', borderRadius: '50%', backgroundColor: 'currentColor' }} />
-                <span>{ssdTokenStatus === 'closed-for-day' ? (lang === 'te' ? 'ఈ రోజు పూర్తయింది' : 'Closed for Today') : ssdTokenStatus === 'paused' ? (lang === 'te' ? 'తాత్కాలికంగా ఆపబడింది' : 'Paused') : (lang === 'te' ? 'టోకెన్లు అందుబాటులో ఉన్నాయి' : 'Tokens Available')}</span>
-              </span>
-            </div>
-          </div>
         </div>
 
         {/* ── DIVIDER ── */}
-        <div style={{ height: '1px', backgroundColor: 'rgba(255, 255, 255, 0.08)', marginBottom: '10px' }} />
+        <div style={{ height: '1px', backgroundColor: 'rgba(15, 23, 42, 0.12)', marginBottom: '12px' }} />
 
         {/* 2️⃣ TRAVEL & WEATHER CONDITIONS CAPSULES */}
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '12px', flexWrap: 'wrap', gap: '8px' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '6px', flexWrap: 'wrap' }}>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '8px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
             <span style={{
               display: 'inline-flex',
               alignItems: 'center',
-              gap: '5px',
-              backgroundColor: 'rgba(16, 185, 129, 0.15)',
-              border: '1px solid rgba(52, 211, 153, 0.3)',
-              padding: '3px 9px',
-              borderRadius: '12px',
+              gap: '6px',
+              backgroundColor: 'rgba(16, 185, 129, 0.12)',
+              border: '1.5px solid #0F172A',
+              padding: '4px 10px',
+              borderRadius: '10px',
               fontSize: '11px',
               fontWeight: 700,
-              color: '#6EE7B7'
+              color: '#065F46'
             }}>
-              <Car size={13} color="#6EE7B7" />
+              <Car size={13} color="#065F46" />
               <span>Ghats Open</span>
             </span>
             {isNight && (
               <span style={{
                 display: 'inline-flex',
                 alignItems: 'center',
-                gap: '5px',
-                backgroundColor: 'rgba(30, 58, 138, 0.35)',
-                border: '1px solid rgba(96, 165, 250, 0.3)',
-                padding: '3px 9px',
-                borderRadius: '12px',
+                gap: '6px',
+                backgroundColor: 'rgba(30, 58, 138, 0.12)',
+                border: '1.5px solid #0F172A',
+                padding: '4px 10px',
+                borderRadius: '10px',
                 fontSize: '11px',
                 fontWeight: 700,
-                color: '#93C5FD'
+                color: '#1E3A8A'
               }}>
-                <Moon size={13} color="#93C5FD" />
+                <Moon size={13} color="#1E3A8A" />
                 <span>Night</span>
               </span>
             )}
@@ -1165,107 +1165,130 @@ export function HomeHero({ userName, locationName, weatherTemp, liveStatus, acti
               <span style={{
                 display: 'inline-flex',
                 alignItems: 'center',
-                gap: '5px',
-                backgroundColor: 'rgba(14, 116, 144, 0.35)',
-                border: '1px solid rgba(34, 211, 238, 0.3)',
-                padding: '3px 9px',
-                borderRadius: '12px',
+                gap: '6px',
+                backgroundColor: 'rgba(14, 116, 144, 0.12)',
+                border: '1.5px solid #0F172A',
+                padding: '4px 10px',
+                borderRadius: '10px',
                 fontSize: '11px',
                 fontWeight: 700,
-                color: '#67E8F9'
+                color: '#0E7490'
               }}>
-                <CloudRain size={13} color="#67E8F9" />
+                <CloudRain size={13} color="#0E7490" />
                 <span>Rain</span>
               </span>
             ) : (
               <span style={{
                 display: 'inline-flex',
                 alignItems: 'center',
-                gap: '5px',
-                backgroundColor: 'rgba(217, 119, 6, 0.2)',
-                border: '1px solid rgba(251, 191, 36, 0.25)',
-                padding: '4px 9px',
-                borderRadius: '16px',
+                gap: '6px',
+                backgroundColor: 'rgba(217, 119, 6, 0.12)',
+                border: '1.5px solid #0F172A',
+                padding: '4px 10px',
+                borderRadius: '10px',
                 fontSize: '11px',
                 fontWeight: 700,
-                color: '#FDE68A'
+                color: '#B45309'
               }}>
-                <Sun size={13} color="#FDE68A" />
+                <Sun size={13} color="#B45309" />
                 <span>{weatherTemp || '26°C'}</span>
               </span>
             )}
           </div>
         </div>
 
-        {/* 3️⃣ ⭐ SAARTHI SUGGESTS (HERO COMPANION GUIDANCE) */}
+        {/* 3️⃣ ⭐ DYNAMIC SAARTHI GUIDANCE (WARM IVORY PREMIUM CARD) */}
         {(() => {
-          const recommendationReasons = [
-            scenario.why,
-            isRainy 
-              ? `Live weather: ${liveWeather || 'Rain Showers'}` 
-              : `Weather: ${liveWeather || 'Clear Sky, Pleasant'}`,
-            ssdTokenStatus === 'issuing'
-              ? 'SSD token counters currently issuing'
-              : ssdTokenStatus === 'paused'
-              ? 'SSD token issuance currently paused'
-              : ssdTokenStatus === 'closed-for-day'
-              ? 'SSD quota closed for today'
-              : liveStatus?.ssdNextTokenTime
-              ? `SSD tokens resume at ${liveStatus.ssdNextTokenTime}`
-              : `Recommended best slot: ${scenario.bestTime || 'Morning 6:00 AM'}`
-          ];
+          const sarvaWait = getDarshanWait('sarva');
+          const isSarvaHeavy = sarvaWait.includes('24') || sarvaWait.includes('30') || sarvaWait.includes('18') || sarvaWait.includes('20') || sarvaWait.includes('15') || sarvaWait.includes('14') || sarvaWait.includes('12') || sarvaWait.includes('10');
+          const isSsdClosed = ssdTokenStatus === 'closed-for-day';
+          const isSsdOpen = ssdTokenStatus === 'issuing';
+
+          // Contextual Dynamic Headline & Rationales
+          let guidanceHeadline = scenario.recommendation;
+          let highlightedBenefit = scenario.benefit || 'Save approx. 4 hours by starting at 6:00 AM';
+          let customReasons: string[] = [];
+
+          if (isSsdOpen) {
+            guidanceHeadline = lang === 'te' ? 'ఇప్పుడే SSD కౌంటర్‌కు వెళ్లండి. టోకెన్లు జారీ అవుతున్నాయి.' : 'Head to SSD Counter now. Free token slots are issuing.';
+            highlightedBenefit = lang === 'te' ? '⚡ సాధారణ క్యూతో పోలిస్తే 10+ గంటలు ఆదా' : '⚡ SAVE OVER 10 HOURS VS GENERAL QUEUE';
+            customReasons = [
+              lang === 'te' ? 'SSD టోకెన్లు 15+ గంటల సాధారణ క్యూను నివారిస్తాయి' : 'SSD tokens bypass the 15+ hour general queue bottleneck',
+              lang === 'te' ? 'అలిపిరి, శ్రీనివాసం కేంద్రాలలో కౌంటర్లు తెరిచి ఉన్నాయి' : 'Alipiri & Srinivasam counters are currently active',
+              lang === 'te' ? 'ఈ రోజు దర్శనం కోసం వెంటనే పొందండి' : 'Secure your slotted darshan for today'
+            ];
+          } else if (isSarvaHeavy && isSsdClosed) {
+            guidanceHeadline = lang === 'te' ? 'కపిల తీర్థం దర్శించండి. మధ్యాహ్నం తర్వాత క్యూలో ప్రవేశించండి.' : 'Visit Kapila Theertham now. Return for Darshan after lunch.';
+            highlightedBenefit = lang === 'te' ? '⚡ సుమారు 2 గంటల నిరీక్షణ సమయం ఆదా' : '⚡ SAVE APPROX. 2 HOURS';
+            customReasons = [
+              lang === 'te' ? 'మధ్యాహ్నం 2:00 తర్వాత క్యూ రద్దీ గణనీయంగా తగ్గుతుంది' : 'Queue wait clears significantly during afternoon slot (after 2 PM)',
+              lang === 'te' ? 'ప్రయాణానికి వాతావరణం అనుకూలంగా ఉంది' : isRainy ? 'Take APSRTC Electric Bus due to rain on steps' : 'Weather is pleasant for local temple visit',
+              lang === 'te' ? 'ఈ రోజుకు SSD కోటా పూర్తయింది' : 'SSD quota is closed today; time your general entry wisely'
+            ];
+          } else {
+            customReasons = [
+              scenario.why,
+              isRainy 
+                ? `Live weather: ${liveWeather || 'Rain Showers'}` 
+                : `Weather: ${liveWeather || 'Clear Sky, Pleasant'}`,
+              isSsdClosed
+                ? 'SSD quota closed today'
+                : `Recommended darshan window: ${scenario.bestTime || 'Morning 6:00 AM'}`
+            ];
+          }
 
           return (
             <div style={{
-              background: 'linear-gradient(135deg, #FFFDF9 0%, #FEF9EE 100%)',
-              border: '1px solid rgba(245, 158, 11, 0.35)',
+              background: 'linear-gradient(135deg, #FFFDF7 0%, #FFF8E8 100%)',
+              border: '1px solid rgba(214, 157, 45, 0.35)',
               borderRadius: '16px',
-              padding: '12px 14px',
+              padding: '13px 15px',
               color: '#0F172A',
               boxShadow: '0 8px 24px rgba(0, 0, 0, 0.12)'
             }}>
               {/* Header with Devotional Cue */}
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '6px' }}>
-                <div style={{ fontSize: '10.5px', fontWeight: 900, color: '#0F5132', textTransform: 'uppercase', letterSpacing: '0.5px', display: 'flex', alignItems: 'center', gap: '5px' }}>
+                <div style={{ fontSize: '10.5px', fontWeight: 900, color: '#0F5132', textTransform: 'uppercase', letterSpacing: '0.6px', display: 'flex', alignItems: 'center', gap: '5px' }}>
                   <Sparkles size={13} color="#0F5132" />
                   <span>{lang === 'te' ? 'సారథి సూచన' : 'SAARTHI GUIDANCE'}</span>
                 </div>
-                <span style={{ fontSize: '10px', color: '#92400E', fontWeight: 700, fontStyle: 'italic' }}>
+                <span style={{ fontSize: '10.5px', color: '#92400E', fontWeight: 700, fontStyle: 'italic' }}>
                   {lang === 'te' ? '“శాంతితో శ్రీవారిని దర్శించండి”' : '“In calm faith, seek Srivari”'}
                 </span>
               </div>
               
               {/* Warm Companion Recommendation */}
-              <div style={{ fontSize: '14px', fontWeight: 900, color: '#0F172A', lineHeight: '1.3', marginBottom: '8px', letterSpacing: '-0.01em' }}>
-                {scenario.recommendation}
+              <div style={{ fontSize: '14.5px', fontWeight: 900, color: '#0F172A', lineHeight: '1.35', marginBottom: '9px', letterSpacing: '-0.01em' }}>
+                {guidanceHeadline}
               </div>
 
               {/* Rationale Checklist */}
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '4px', marginBottom: '8px' }}>
-                {recommendationReasons.map((point, i) => (
-                  <div key={i} style={{ fontSize: '11.5px', color: '#334155', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '5px' }}>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '5px', marginBottom: '10px' }}>
+                {customReasons.map((point, i) => (
+                  <div key={i} style={{ fontSize: '11.5px', color: '#334155', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '6px' }}>
                     <Check size={12} color="#10B981" strokeWidth={2.5} style={{ flexShrink: 0 }} />
                     <span>{point}</span>
                   </div>
                 ))}
               </div>
 
-              {/* HIGHLIGHTED BENEFIT PILL */}
+              {/* HIGHLIGHTED GOLD BENEFIT CALLOUT */}
               <div style={{
                 display: 'flex',
                 alignItems: 'center',
-                gap: '5px',
-                backgroundColor: '#FEF3C7',
-                border: '1px solid #FDE68A',
+                gap: '6px',
+                background: 'linear-gradient(90deg, rgba(255, 190, 70, 0.22) 0%, rgba(255, 230, 150, 0.4) 100%)',
+                border: '1px solid rgba(245, 158, 11, 0.35)',
                 color: '#92400E',
-                padding: '5px 10px',
+                padding: '6px 11px',
                 borderRadius: '10px',
                 fontSize: '11px',
-                fontWeight: 800,
-                marginBottom: '6px'
+                fontWeight: 900,
+                letterSpacing: '0.02em',
+                marginBottom: '7px'
               }}>
                 <Zap size={13} color="#D97706" fill="#D97706" style={{ flexShrink: 0 }} />
-                <span>{scenario.benefit || 'Save approx. 4 hours by starting at 6:00 AM'}</span>
+                <span>{highlightedBenefit}</span>
               </div>
 
               {/* Subtle Trust & Confidence Indicator */}

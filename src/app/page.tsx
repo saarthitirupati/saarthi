@@ -13,8 +13,7 @@ import {
   RecommendationCard,
   DailyContent,
   QuickChecklist,
-  JourneyOverviewPanel,
-  PanchangamBar
+  JourneyOverviewPanel
 } from '@/components/home';
 import styles from './Home.module.css';
 
@@ -367,7 +366,6 @@ export default function HomePage() {
 
             {showLoreDrawer && (
               <div style={{ marginTop: '10px', display: 'flex', flexDirection: 'column', gap: '10px' }}>
-                <PanchangamBar />
                 <DailyContent {...home.daily} liveStatus={home.status.liveStatus} variant="mobile" />
               </div>
             )}
@@ -398,7 +396,6 @@ export default function HomePage() {
           {/* COLUMN 1: LIVE DECISION ENGINE & DEVOTIONAL WISDOM */}
           <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
             <HomeHero {...home.hero} liveStatus={home.status.liveStatus} activeAlertsCount={home.alerts.activeAlertsCount} hideHeader={true} />
-            <PanchangamBar />
             <DailyContent {...home.daily} liveStatus={home.status.liveStatus} variant="desktop" />
           </div>
 
