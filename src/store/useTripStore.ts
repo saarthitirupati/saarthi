@@ -65,16 +65,24 @@ export function useTripStore() {
     if (typeof window !== 'undefined') {
       const permission = saved ? loadedState.locationPermission : 'default';
       if (permission !== 'denied') {
-        import('@/lib/location').then(({ detectCoordinates, watchCoordinates, TIRUPATI_CENTER }) => {
+        import('@/lib/location').then(({ detectCoordinates, watchCoordinates, getIPLocation, TIRUPATI_CENTER }) => {
           detectCoordinates(
             (coords, source, isApproximate, accuracyMeters) => {
+              const region = coords.lat > 13.66 ? 'Tirumala' : 'Tirupati';
               setState(prev => ({
                 ...prev,
                 userLocation: coords,
                 locationPermission: 'granted',
                 locationSource: source,
-                locationAccuracyMeters: accuracyMeters
+                locationAccuracyMeters: accuracyMeters,
+                locationName: region
               }));
+              // If IP-based, try to get real city name
+              if (source === 'ip') {
+                getIPLocation().then(({ city }) => {
+                  if (city) setState(prev => ({ ...prev, locationName: city }));
+                }).catch(() => {});
+              }
             },
             () => {
               // All detection failed — default to Tirupati Center so the app always has a location
@@ -88,7 +96,8 @@ export function useTripStore() {
 
           // Watch real-time GPS hardware updates
           watchCoordinates((coords) => {
-            setState(prev => ({ ...prev, userLocation: coords, locationPermission: 'granted' }));
+            const region = coords.lat > 13.66 ? 'Tirumala' : 'Tirupati';
+            setState(prev => ({ ...prev, userLocation: coords, locationPermission: 'granted', locationName: region }));
           });
         }).catch(() => {});
       } else if (!loadedState.userLocation) {
