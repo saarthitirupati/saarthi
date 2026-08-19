@@ -24,6 +24,8 @@ export interface DerivedContext {
   };
 }
 
+import { isCoordinateOnTirumalaHill } from '@/utils/location';
+
 export function buildDerivedContext(signals: RawSignals): DerivedContext {
   let timeOfDay: 'morning' | 'afternoon' | 'evening' | 'night' = 'morning';
   if (signals.timeHour >= 12 && signals.timeHour < 16) {
@@ -36,7 +38,7 @@ export function buildDerivedContext(signals: RawSignals): DerivedContext {
 
   // Determine location label
   let locationLabel = 'Tirupati Region';
-  if (signals.gps.lat > 13.66) {
+  if (isCoordinateOnTirumalaHill(signals.gps.lat, signals.gps.lng)) {
     locationLabel = 'Tirumala Hilltop';
   } else if (signals.gps.lat >= 13.62 && signals.gps.lat <= 13.64) {
     locationLabel = 'Tirupati Central';

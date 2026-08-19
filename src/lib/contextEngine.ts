@@ -189,7 +189,7 @@ export function getBestForToday(
   };
 }
 
-import { calculateDrivingDistance, TIRUPATI_CENTER } from '@/utils/location';
+import { calculateDrivingDistance, TIRUPATI_CENTER, isCoordinateOnTirumalaHill } from '@/utils/location';
 import { isValidCoordinates } from '@/lib/location';
 
 export type ContextInput = {
@@ -218,9 +218,9 @@ export function scorePlace(place: any, liveStatus: any, alerts: any[], context: 
   const targetLng = place?.coordinates?.lng ?? place?.lng ?? TIRUPATI_CENTER.lng;
 
   const isTirumalaSpot = Boolean(
+    place?.category === 'Tirumala Spot' ||
     place?.location?.toLowerCase().includes('tirumala') ||
-    place?.category?.toLowerCase().includes('tirumala') ||
-    targetLat >= 13.66
+    isCoordinateOnTirumalaHill(targetLat, targetLng)
   );
 
   // 1. Dynamic driving distance calculation
