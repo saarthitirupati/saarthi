@@ -113,8 +113,8 @@ export function detectCoordinates(
           return;
         }
 
-        // Target accuracy threshold < 50m for precise location
-        const isPrecise = accuracy > 0 && accuracy <= 50;
+        // Target accuracy threshold < 150m for valid smartphone city GPS
+        const isPrecise = accuracy > 0 && accuracy <= 150;
         console.log(`[LocationPipeline] GPS acquired: (${lat}, ${lng}), accuracy: ±${Math.round(accuracy)}m, precise: ${isPrecise}`);
 
         onSuccess({ lat, lng }, 'gps', !isPrecise, Math.round(accuracy));

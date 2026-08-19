@@ -106,8 +106,8 @@ async function writeLocalStatus(status: TirumalaStatus) {
 export async function readStatus(): Promise<TirumalaStatus> {
   await ensureFileLoaded();
   const now = Date.now();
-  // Cache for 5 seconds to reduce Supabase queries
-  if (now - lastFetchTime < 5000) {
+  // Cache for 3 seconds to reduce Supabase queries while remaining hyper-responsive
+  if (now - lastFetchTime < 3000) {
     return memoryStatus;
   }
 
@@ -123,17 +123,24 @@ export async function readStatus(): Promise<TirumalaStatus> {
       return memoryStatus;
     }
 
-    // Check timestamp: If local memory status is fresher than Supabase, preserve local status
-    const localTime = memoryStatus.lastUpdated ? new Date(memoryStatus.lastUpdated).getTime() : 0;
-    const remoteTime = metrics.updated_at ? new Date(metrics.updated_at).getTime() : 0;
-
-    if (localTime > 0 && remoteTime > 0 && localTime > remoteTime) {
-      // Local admin update is newer than remote row — do not overwrite with stale data
-      lastFetchTime = now;
-      return memoryStatus;
+    // 1. If full_status_json is present in Supabase, parse it directly for 100% field fidelity
+    if (metrics.full_status_json) {
+      try {
+        const parsed = JSON.parse(metrics.full_status_json);
+        memoryStatus = {
+          ...DEFAULT_STATUS,
+          ...parsed,
+          lastUpdated: metrics.updated_at || parsed.lastUpdated || new Date().toISOString()
+        };
+        lastFetchTime = now;
+        await writeLocalStatus(memoryStatus);
+        return memoryStatus;
+      } catch (jsonErr) {
+        console.warn("Failed to parse full_status_json from Supabase:", jsonErr);
+      }
     }
 
-    // Format wait time: avoid "10h 0m" — use "10 hours" instead
+    // 2. Column-by-column fallback if full_status_json is not yet populated
     const totalMins: number = metrics.crowd_wait_minutes ?? 0;
     let waitTimeVal: string = memoryStatus.waitTime || '2-3 hours';
     if (totalMins > 0) {
@@ -148,7 +155,6 @@ export async function readStatus(): Promise<TirumalaStatus> {
 
     const crowdLvl = (metrics.crowd_level?.toLowerCase() || memoryStatus.crowdLevel || 'moderate') as TirumalaStatus['crowdLevel'];
 
-    // Parse darshans: prefer JSON blob, fall back to individual columns
     let updatedDarshans: TirumalaStatus['darshans'] = memoryStatus.darshans;
     if (metrics.darshans_json) {
       try { updatedDarshans = JSON.parse(metrics.darshans_json); } catch {}
@@ -161,7 +167,6 @@ export async function readStatus(): Promise<TirumalaStatus> {
       ];
     }
 
-    // Parse SSD slots/counters JSON blobs
     let ssdSlots = memoryStatus.ssdTokenSlots;
     if (metrics.ssd_token_slots) {
       try { ssdSlots = JSON.parse(metrics.ssd_token_slots); } catch {}
@@ -171,7 +176,6 @@ export async function readStatus(): Promise<TirumalaStatus> {
       try { ssdCounters = JSON.parse(metrics.ssd_counters); } catch {}
     }
 
-    // Preserve updated SSD token status and times if Supabase value is not set or returns null
     const resolvedSsdStatus = (metrics.ssd_token_status && metrics.ssd_token_status !== '')
       ? (metrics.ssd_token_status as TirumalaStatus['ssdTokenStatus'])
       : (memoryStatus.ssdTokenStatus || 'issuing');
@@ -187,8 +191,8 @@ export async function readStatus(): Promise<TirumalaStatus> {
     const resolvedTimingsGuide = metrics.ssd_timings_guide || memoryStatus.ssdTimingsGuide || DEFAULT_STATUS.ssdTimingsGuide;
 
     memoryStatus = {
-      ...DEFAULT_STATUS,                          // apply clean defaults
-      ...memoryStatus,                            // retain current updated state
+      ...DEFAULT_STATUS,
+      ...memoryStatus,
       waitTime: waitTimeVal,
       crowdLevel: crowdLvl,
       bestTime: metrics.best_time || memoryStatus.bestTime || '',
@@ -227,7 +231,10 @@ export async function updateStatus(updates: Partial<TirumalaStatus>): Promise<Ti
   await writeLocalStatus(next);
 
   try {
-    const payload: any = { updated_at: new Date().toISOString() };
+    const payload: any = { 
+      updated_at: new Date().toISOString(),
+      full_status_json: JSON.stringify(next)
+    };
     
     if (updates.crowdLevel) {
       payload.crowd_level = updates.crowdLevel.charAt(0).toUpperCase() + updates.crowdLevel.slice(1);
@@ -267,7 +274,7 @@ export async function updateStatus(updates: Partial<TirumalaStatus>): Promise<Ti
       payload.parking_status = updates.accommodationStatus === 'full' ? 'full' : 'available';
     }
 
-    // Persist SSD and other fields as JSON blob
+    // Persist SSD and other fields as columns + JSON blob
     if (updates.ssdTokenStatus !== undefined) payload.ssd_token_status = updates.ssdTokenStatus;
     if (updates.ssdNextTokenTime !== undefined) payload.ssd_next_token_time = updates.ssdNextTokenTime;
     if (updates.ssdTokenSlots !== undefined) payload.ssd_token_slots = JSON.stringify(updates.ssdTokenSlots);
