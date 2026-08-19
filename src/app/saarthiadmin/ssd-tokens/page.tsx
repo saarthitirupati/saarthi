@@ -56,9 +56,14 @@ export default function AdminSsdTokensPage() {
     setSaving(true);
     setMessage(null);
     try {
+      const adminToken = typeof window !== 'undefined' ? (localStorage.getItem('saarthi_admin_token') || 'saarthi_admin_token_2026') : 'saarthi_admin_token_2026';
       const res = await fetch('/api/admin/ssd-tokens', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${adminToken}`
+        },
+        credentials: 'include',
         body: JSON.stringify({
           ssdTokenStatus,
           ssdNextTokenTime,
@@ -69,10 +74,18 @@ export default function AdminSsdTokensPage() {
       });
 
       if (res.ok) {
+        const data = await res.json();
+        if (data.ssdTokenStatus) setSsdTokenStatus(data.ssdTokenStatus);
+        if (data.ssdNextTokenTime !== undefined) setSsdNextTokenTime(data.ssdNextTokenTime);
+        if (data.ssdNotice !== undefined) setSsdNotice(data.ssdNotice);
+        if (data.ssdTimingsGuide !== undefined) setSsdTimingsGuide(data.ssdTimingsGuide);
+        if (Array.isArray(data.ssdTokenSlots)) setSsdSlots(data.ssdTokenSlots);
+
         setMessage('SSD Token updates published live successfully!');
         notifyRealtimeUpdate();
       } else {
-        setMessage('Failed to publish updates. Please try again.');
+        const err = await res.json().catch(() => ({}));
+        setMessage('Failed to publish: ' + (err.error || res.statusText || 'Authentication error. Please re-login.'));
       }
     } catch (e) {
       setMessage('Error updating SSD status.');

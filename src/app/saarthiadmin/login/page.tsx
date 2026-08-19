@@ -21,6 +21,10 @@ export default function AdminLogin() {
       body: JSON.stringify({ email, password }),
     });
     if (res.ok) {
+      const d = await res.json();
+      if (d.token) {
+        try { localStorage.setItem('saarthi_admin_token', d.token); } catch {}
+      }
       window.location.href = '/saarthiadmin';
     } else {
       const d = await res.json();

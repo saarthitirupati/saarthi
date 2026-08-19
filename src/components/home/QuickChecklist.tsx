@@ -154,14 +154,12 @@ export function QuickChecklist(props: any) {
             </div>
           )}
 
-          {/* Daily timing guide */}
+          {/* Daily timing guide / Custom Admin Info */}
           {liveStatus.ssdTimingsGuide && (
             <div style={{ borderTop: '1px solid #F1F5F9', paddingTop: '8px', marginTop: '8px', display: 'flex', gap: '5px', alignItems: 'flex-start' }}>
               <Clock size={11} color="#94A3B8" style={{ marginTop: '2px', flexShrink: 0 }} />
               <span style={{ fontSize: '10.5px', color: '#64748B', lineHeight: 1.4 }}>
-                {lang === 'te' 
-                  ? 'ఉచిత SSD టోకెన్లు ప్రతిరోజూ ఉదయం జారీ చేయబడతాయి. కోటా పూర్తయిన వెంటనే కౌంటర్లు ముగుస్తాయి.'
-                  : liveStatus.ssdTimingsGuide}
+                {liveStatus.ssdTimingsGuide}
               </span>
             </div>
           )}

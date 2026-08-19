@@ -44,6 +44,8 @@ export async function POST(req: Request) {
       ssdNextTokenTime: updated.ssdNextTokenTime,
       ssdTokenSlots: updated.ssdTokenSlots,
       ssdNotice: updated.ssdNotice,
+      ssdTimingsGuide: updated.ssdTimingsGuide,
+      ssdCounters: updated.ssdCounters,
       lastUpdated: updated.lastUpdated
     });
   } catch (error: any) {

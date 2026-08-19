@@ -13,9 +13,9 @@ export async function POST(req: Request) {
       httpOnly: true,
       path: '/',
       maxAge: 60 * 60 * 24, // 24h
-      sameSite: 'strict',
+      sameSite: 'lax',
     });
-    return NextResponse.json({ ok: true });
+    return NextResponse.json({ ok: true, token: TOKEN });
   }
   return NextResponse.json({ error: 'Invalid credentials' }, { status: 401 });
 }
