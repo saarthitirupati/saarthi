@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { readCampaigns, logMarketingScan } from '@/lib/adminDb';
+import { readCampaignsAsync, logMarketingScanAsync } from '@/lib/adminDb';
 
 export async function POST(
   req: Request,
@@ -7,14 +7,15 @@ export async function POST(
 ) {
   try {
     const { slug } = await params;
-    const campaigns = readCampaigns();
-    const campaign = campaigns.find(c => c.slug.toLowerCase() === slug.toLowerCase() || c.id === slug);
+    const campaigns = await readCampaignsAsync();
+    const cleanSlug = slug.toLowerCase().trim();
+    const campaign = campaigns.find(c => c.slug.toLowerCase() === cleanSlug || c.id.toLowerCase() === cleanSlug);
 
     let destination = '/';
     let campaignName = 'Saarthi Marketing Campaign';
-    let campaignId = 'unknown';
+    let campaignId = cleanSlug;
 
-    if (campaign && campaign.status === 'active') {
+    if (campaign) {
       destination = campaign.destination;
       campaignName = campaign.name;
       campaignId = campaign.id;
@@ -38,18 +39,16 @@ export async function POST(
       // Ignored if empty body
     }
 
-    // Log the scan event asynchronously
-    if (campaign) {
-      logMarketingScan({
-        campaignId: campaign.id,
-        campaignSlug: campaign.slug,
-        device,
-        browser,
-        os,
-        language,
-        referer,
-      });
-    }
+    // Log the scan event into Supabase DB synchronously
+    await logMarketingScanAsync({
+      campaignId: campaignId,
+      campaignSlug: campaign?.slug || cleanSlug,
+      device,
+      browser,
+      os,
+      language,
+      referer,
+    });
 
     return NextResponse.json({
       success: true,

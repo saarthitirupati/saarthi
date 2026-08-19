@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { readCampaigns, updateCampaign, readScans } from '@/lib/adminDb';
+import { readCampaignsAsync, updateCampaignAsync, readScansAsync } from '@/lib/adminDb';
 
 export async function GET(
   req: Request,
@@ -7,7 +7,7 @@ export async function GET(
 ) {
   try {
     const { id } = await params;
-    const campaigns = readCampaigns();
+    const campaigns = await readCampaignsAsync();
     const campaign = campaigns.find(c => c.id === id || c.slug === id);
 
     if (!campaign) {
@@ -17,7 +17,7 @@ export async function GET(
       );
     }
 
-    const allScans = readScans();
+    const allScans = await readScansAsync();
     const campaignScans = allScans.filter(s => s.campaignId === campaign.id || s.campaignSlug === campaign.slug);
 
     return NextResponse.json({
@@ -42,7 +42,7 @@ export async function PATCH(
     const { id } = await params;
     const body = await req.json();
 
-    const updated = updateCampaign(id, body);
+    const updated = await updateCampaignAsync(id, body);
     if (!updated) {
       return NextResponse.json(
         { success: false, error: 'Campaign not found' },

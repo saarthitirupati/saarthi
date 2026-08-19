@@ -1,6 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 import { Place } from '@/data/places';
+import { supabase } from '@/lib/supabase';
 
 const DATA_DIR  = path.join(process.cwd(), 'data');
 const PLACES_FILE  = path.join(DATA_DIR, 'dynamic-places.json');
@@ -386,10 +387,40 @@ const DEFAULT_CAMPAIGNS: MarketingCampaign[] = [
   }
 ];
 
+// ── Marketing Campaigns & Physical QR Scans (Supabase Persistent DB) ─────────
+
+export async function readCampaignsAsync(): Promise<MarketingCampaign[]> {
+  try {
+    const { data, error } = await supabase
+      .from('marketing_campaigns')
+      .select('*')
+      .order('created_at', { ascending: false });
+
+    if (!error && data && data.length > 0) {
+      const campaigns: MarketingCampaign[] = data.map((c: any) => ({
+        id: c.id,
+        name: c.name,
+        slug: c.slug,
+        category: c.category,
+        location: c.location,
+        destination: c.destination,
+        status: c.status as 'active' | 'paused',
+        createdAt: c.created_at,
+        updatedAt: c.updated_at,
+      }));
+      try { writeCampaigns(campaigns); } catch {}
+      return campaigns;
+    }
+  } catch (err) {
+    console.error('Error reading campaigns from Supabase:', err);
+  }
+  return readCampaigns();
+}
+
 export function readCampaigns(): MarketingCampaign[] {
   ensureDir();
   if (!fs.existsSync(CAMPAIGNS_FILE)) {
-    fs.writeFileSync(CAMPAIGNS_FILE, JSON.stringify(DEFAULT_CAMPAIGNS, null, 2));
+    try { fs.writeFileSync(CAMPAIGNS_FILE, JSON.stringify(DEFAULT_CAMPAIGNS, null, 2)); } catch {}
     return DEFAULT_CAMPAIGNS;
   }
   try {
@@ -401,20 +432,52 @@ export function readCampaigns(): MarketingCampaign[] {
 }
 
 export function writeCampaigns(campaigns: MarketingCampaign[]): void {
-  ensureDir();
-  fs.writeFileSync(CAMPAIGNS_FILE, JSON.stringify(campaigns, null, 2));
+  try {
+    ensureDir();
+    fs.writeFileSync(CAMPAIGNS_FILE, JSON.stringify(campaigns, null, 2));
+  } catch {}
+}
+
+export async function addCampaignAsync(data: Omit<MarketingCampaign, 'id' | 'createdAt' | 'updatedAt'>): Promise<MarketingCampaign> {
+  const slug = data.slug.toLowerCase().trim().replace(/[^a-z0-9-_]/g, '-');
+  const id = `cmp_${Date.now().toString(36)}`;
+  const nowStr = new Date().toISOString();
+
+  const campaign: MarketingCampaign = {
+    ...data,
+    id,
+    slug,
+    createdAt: nowStr,
+    updatedAt: nowStr,
+  };
+
+  try {
+    await supabase.from('marketing_campaigns').insert([{
+      id: campaign.id,
+      name: campaign.name,
+      slug: campaign.slug,
+      category: campaign.category,
+      location: campaign.location,
+      destination: campaign.destination,
+      status: campaign.status,
+      created_at: campaign.createdAt,
+      updated_at: campaign.updatedAt,
+    }]);
+  } catch (err) {
+    console.error('Supabase add campaign error:', err);
+  }
+
+  try {
+    const campaigns = readCampaigns();
+    campaigns.unshift(campaign);
+    writeCampaigns(campaigns);
+  } catch {}
+
+  return campaign;
 }
 
 export function addCampaign(data: Omit<MarketingCampaign, 'id' | 'createdAt' | 'updatedAt'>): MarketingCampaign {
-  const campaigns = readCampaigns();
   const slug = data.slug.toLowerCase().trim().replace(/[^a-z0-9-_]/g, '-');
-  
-  // Check duplicate slug
-  const existingIdx = campaigns.findIndex(c => c.slug === slug);
-  if (existingIdx !== -1) {
-    throw new Error(`Campaign with slug "${slug}" already exists.`);
-  }
-
   const campaign: MarketingCampaign = {
     ...data,
     id: `cmp_${Date.now().toString(36)}`,
@@ -423,9 +486,47 @@ export function addCampaign(data: Omit<MarketingCampaign, 'id' | 'createdAt' | '
     updatedAt: new Date().toISOString(),
   };
 
-  campaigns.unshift(campaign);
-  writeCampaigns(campaigns);
+  addCampaignAsync(data).catch(() => {});
   return campaign;
+}
+
+export async function updateCampaignAsync(id: string, updates: Partial<MarketingCampaign>): Promise<MarketingCampaign | null> {
+  const nowStr = new Date().toISOString();
+  const dbUpdates: any = { updated_at: nowStr };
+  if (updates.name !== undefined) dbUpdates.name = updates.name;
+  if (updates.slug !== undefined) dbUpdates.slug = updates.slug;
+  if (updates.category !== undefined) dbUpdates.category = updates.category;
+  if (updates.location !== undefined) dbUpdates.location = updates.location;
+  if (updates.destination !== undefined) dbUpdates.destination = updates.destination;
+  if (updates.status !== undefined) dbUpdates.status = updates.status;
+
+  try {
+    const { data } = await supabase
+      .from('marketing_campaigns')
+      .update(dbUpdates)
+      .or(`id.eq.${id},slug.eq.${id}`)
+      .select('*');
+
+    if (data && data[0]) {
+      const updated: MarketingCampaign = {
+        id: data[0].id,
+        name: data[0].name,
+        slug: data[0].slug,
+        category: data[0].category,
+        location: data[0].location,
+        destination: data[0].destination,
+        status: data[0].status,
+        createdAt: data[0].created_at,
+        updatedAt: data[0].updated_at,
+      };
+      try { updateCampaign(id, updates); } catch {}
+      return updated;
+    }
+  } catch (err) {
+    console.error('Supabase update campaign error:', err);
+  }
+
+  return updateCampaign(id, updates);
 }
 
 export function updateCampaign(id: string, updates: Partial<MarketingCampaign>): MarketingCampaign | null {
@@ -443,34 +544,35 @@ export function updateCampaign(id: string, updates: Partial<MarketingCampaign>):
   return updated;
 }
 
+export async function readScansAsync(): Promise<MarketingScan[]> {
+  try {
+    const { data, error } = await supabase
+      .from('marketing_scans')
+      .select('*')
+      .order('created_at', { ascending: false });
+
+    if (!error && data) {
+      return data.map((s: any) => ({
+        id: s.id,
+        campaignId: s.campaign_id,
+        campaignSlug: s.campaign_slug,
+        device: s.device,
+        browser: s.browser,
+        os: s.os,
+        language: s.language,
+        referer: s.referer,
+        timestamp: s.created_at,
+      }));
+    }
+  } catch (err) {
+    console.error('Error reading scans from Supabase:', err);
+  }
+  return readScans();
+}
+
 export function readScans(): MarketingScan[] {
   ensureDir();
-  if (!fs.existsSync(SCANS_FILE)) {
-    // Generate initial dummy scan events for default campaigns
-    const seedScans: MarketingScan[] = [];
-    const campaigns = readCampaigns();
-    const now = Date.now();
-    
-    campaigns.forEach((c, cIdx) => {
-      const count = (4 - cIdx) * 140 + 45;
-      for (let i = 0; i < count; i++) {
-        seedScans.push({
-          id: `scn_${c.id}_${i}`,
-          campaignId: c.id,
-          campaignSlug: c.slug,
-          timestamp: new Date(now - Math.random() * 7 * 86400000).toISOString(),
-          device: i % 3 === 0 ? 'iPhone (iOS)' : i % 2 === 0 ? 'Samsung (Android)' : 'Mobile Browser',
-          browser: i % 4 === 0 ? 'Safari' : 'Chrome Mobile',
-          os: i % 3 === 0 ? 'iOS 17' : 'Android 14',
-          language: 'en-US',
-          referer: 'QR Camera Scan',
-        });
-      }
-    });
-
-    fs.writeFileSync(SCANS_FILE, JSON.stringify(seedScans, null, 2));
-    return seedScans;
-  }
+  if (!fs.existsSync(SCANS_FILE)) return [];
   try {
     return JSON.parse(fs.readFileSync(SCANS_FILE, 'utf-8'));
   } catch {
@@ -478,18 +580,116 @@ export function readScans(): MarketingScan[] {
   }
 }
 
-export function logMarketingScan(scanData: Omit<MarketingScan, 'id' | 'timestamp'>): MarketingScan {
-  const scans = readScans();
+export async function logMarketingScanAsync(scanData: Omit<MarketingScan, 'id' | 'timestamp'>): Promise<MarketingScan> {
+  const scanId = `scn_${scanData.campaignId || scanData.campaignSlug}_${Date.now().toString(36)}_${Math.random().toString(36).slice(2, 6)}`;
+  const nowStr = new Date().toISOString();
+
   const scan: MarketingScan = {
     ...scanData,
-    id: `scn_${Date.now().toString(36)}_${Math.random().toString(36).slice(2, 6)}`,
+    id: scanId,
+    timestamp: nowStr,
+  };
+
+  try {
+    await supabase.from('marketing_scans').insert([{
+      id: scan.id,
+      campaign_id: scan.campaignId,
+      campaign_slug: scan.campaignSlug,
+      device: scan.device || 'Mobile',
+      browser: scan.browser || 'Browser',
+      os: scan.os || 'Mobile',
+      language: scan.language || 'en-US',
+      referer: scan.referer || 'QR Code',
+      created_at: scan.timestamp,
+    }]);
+  } catch (err) {
+    console.error('Supabase log marketing scan error:', err);
+  }
+
+  try {
+    const scans = readScans();
+    scans.unshift(scan);
+    ensureDir();
+    fs.writeFileSync(SCANS_FILE, JSON.stringify(scans.slice(0, 3000), null, 2));
+  } catch {}
+
+  return scan;
+}
+
+export function logMarketingScan(scanData: Omit<MarketingScan, 'id' | 'timestamp'>): MarketingScan {
+  const scanId = `scn_${scanData.campaignId || scanData.campaignSlug}_${Date.now().toString(36)}_${Math.random().toString(36).slice(2, 6)}`;
+  const scan: MarketingScan = {
+    ...scanData,
+    id: scanId,
     timestamp: new Date().toISOString(),
   };
 
-  scans.unshift(scan);
-  ensureDir();
-  fs.writeFileSync(SCANS_FILE, JSON.stringify(scans, null, 2));
+  logMarketingScanAsync(scanData).catch(() => {});
   return scan;
+}
+
+export async function getGrowthHubMetricsAsync() {
+  const campaigns = await readCampaignsAsync();
+  const scans = await readScansAsync();
+  const now = new Date();
+  const todayStr = now.toISOString().split('T')[0];
+
+  const totalScans = scans.length;
+  const todayScans = scans.filter(s => s.timestamp && s.timestamp.startsWith(todayStr)).length;
+
+  const campaignScanMap: Record<string, number> = {};
+  const campaignTodayMap: Record<string, number> = {};
+
+  scans.forEach(s => {
+    if (s.campaignId) {
+      campaignScanMap[s.campaignId] = (campaignScanMap[s.campaignId] || 0) + 1;
+      if (s.timestamp && s.timestamp.startsWith(todayStr)) {
+        campaignTodayMap[s.campaignId] = (campaignTodayMap[s.campaignId] || 0) + 1;
+      }
+    }
+    if (s.campaignSlug) {
+      campaignScanMap[s.campaignSlug] = (campaignScanMap[s.campaignSlug] || 0) + 1;
+      if (s.timestamp && s.timestamp.startsWith(todayStr)) {
+        campaignTodayMap[s.campaignSlug] = (campaignTodayMap[s.campaignSlug] || 0) + 1;
+      }
+    }
+  });
+
+  let topCampaign: MarketingCampaign | null = null;
+  let maxScans = -1;
+
+  campaigns.forEach(c => {
+    const countById = campaignScanMap[c.id] || 0;
+    const countBySlug = campaignScanMap[c.slug] || 0;
+    const actualCnt = Math.max(countById, countBySlug);
+    campaignScanMap[c.id] = actualCnt;
+    campaignScanMap[c.slug] = actualCnt;
+
+    const todayById = campaignTodayMap[c.id] || 0;
+    const todayBySlug = campaignTodayMap[c.slug] || 0;
+    const actualToday = Math.max(todayById, todayBySlug);
+    campaignTodayMap[c.id] = actualToday;
+    campaignTodayMap[c.slug] = actualToday;
+
+    if (actualCnt > maxScans) {
+      maxScans = actualCnt;
+      topCampaign = c;
+    }
+  });
+
+  return {
+    totalScans,
+    todayScans,
+    totalCampaigns: campaigns.length,
+    activeCampaigns: campaigns.filter(c => c.status === 'active').length,
+    topCampaign: topCampaign ? {
+      id: (topCampaign as MarketingCampaign).id,
+      name: (topCampaign as MarketingCampaign).name,
+      scans: maxScans,
+    } : null,
+    campaignScanMap,
+    campaignTodayMap,
+  };
 }
 
 export function getGrowthHubMetrics() {
@@ -499,27 +699,38 @@ export function getGrowthHubMetrics() {
   const todayStr = now.toISOString().split('T')[0];
 
   const totalScans = scans.length;
-  const todayScans = scans.filter(s => s.timestamp.startsWith(todayStr)).length;
+  const todayScans = scans.filter(s => s.timestamp && s.timestamp.startsWith(todayStr)).length;
 
-  // Scan count per campaign
   const campaignScanMap: Record<string, number> = {};
   const campaignTodayMap: Record<string, number> = {};
 
   scans.forEach(s => {
-    campaignScanMap[s.campaignId] = (campaignScanMap[s.campaignId] || 0) + 1;
-    if (s.timestamp.startsWith(todayStr)) {
-      campaignTodayMap[s.campaignId] = (campaignTodayMap[s.campaignId] || 0) + 1;
+    if (s.campaignId) {
+      campaignScanMap[s.campaignId] = (campaignScanMap[s.campaignId] || 0) + 1;
+      if (s.timestamp && s.timestamp.startsWith(todayStr)) {
+        campaignTodayMap[s.campaignId] = (campaignTodayMap[s.campaignId] || 0) + 1;
+      }
+    }
+    if (s.campaignSlug) {
+      campaignScanMap[s.campaignSlug] = (campaignScanMap[s.campaignSlug] || 0) + 1;
+      if (s.timestamp && s.timestamp.startsWith(todayStr)) {
+        campaignTodayMap[s.campaignSlug] = (campaignTodayMap[s.campaignSlug] || 0) + 1;
+      }
     }
   });
 
-  // Top campaign
   let topCampaign: MarketingCampaign | null = null;
   let maxScans = -1;
 
   campaigns.forEach(c => {
-    const cnt = campaignScanMap[c.id] || 0;
-    if (cnt > maxScans) {
-      maxScans = cnt;
+    const countById = campaignScanMap[c.id] || 0;
+    const countBySlug = campaignScanMap[c.slug] || 0;
+    const actualCnt = Math.max(countById, countBySlug);
+    campaignScanMap[c.id] = actualCnt;
+    campaignScanMap[c.slug] = actualCnt;
+
+    if (actualCnt > maxScans) {
+      maxScans = actualCnt;
       topCampaign = c;
     }
   });

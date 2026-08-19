@@ -1,11 +1,11 @@
 import { NextResponse } from 'next/server';
-import { readCampaigns, addCampaign, getGrowthHubMetrics, readScans } from '@/lib/adminDb';
+import { readCampaignsAsync, addCampaignAsync, getGrowthHubMetricsAsync, readScansAsync } from '@/lib/adminDb';
 
 export async function GET() {
   try {
-    const campaigns = readCampaigns();
-    const metrics = getGrowthHubMetrics();
-    const scans = readScans().slice(0, 50); // recent 50 scans
+    const campaigns = await readCampaignsAsync();
+    const metrics = await getGrowthHubMetricsAsync();
+    const scans = (await readScansAsync()).slice(0, 50); // recent 50 scans
 
     return NextResponse.json({
       success: true,
@@ -33,7 +33,7 @@ export async function POST(req: Request) {
       );
     }
 
-    const campaign = addCampaign({
+    const campaign = await addCampaignAsync({
       name,
       slug,
       category: category || 'other',
