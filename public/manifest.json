@@ -1,12 +1,15 @@
 {
-  "name": "Saarthi",
+  "id": "/",
+  "name": "Saarthi: Tirupati Pilgrim Guide",
   "short_name": "Saarthi",
-  "description": "Saarthi — Real-Time Live Pilgrimage Companion for Tirumala & Tirupati.",
+  "description": "Real-time pilgrimage companion for Tirupati & Tirumala. Live TTD darshan wait times, SSD token status, temple guides & verified transit.",
   "start_url": "/",
+  "scope": "/",
   "display": "standalone",
   "orientation": "portrait",
   "background_color": "#FAF8F5",
   "theme_color": "#0F5132",
+  "categories": ["travel", "navigation", "lifestyle"],
   "icons": [
     {
       "src": "/icon-192.png",
@@ -24,6 +27,29 @@
       "src": "/apple-touch-icon.png",
       "sizes": "180x180",
       "type": "image/png"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Live Darshan Wait Time",
+      "short_name": "Darshan",
+      "description": "Check real-time TTD darshan queue status and wait hours",
+      "url": "/darshan",
+      "icons": [{ "src": "/icon-192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Pre-Darshan Essentials",
+      "short_name": "Essentials",
+      "description": "Find free lockers, tonsure, and Annaprasadam",
+      "url": "/essentials",
+      "icons": [{ "src": "/icon-192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Explore Temples",
+      "short_name": "Temples",
+      "description": "73+ verified temples with Sthala Puranas & timings",
+      "url": "/explore",
+      "icons": [{ "src": "/icon-192.png", "sizes": "192x192" }]
     }
   ]
 }

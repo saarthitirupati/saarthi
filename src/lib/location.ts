@@ -1,4 +1,4 @@
-export { calculateDistance, calculateDrivingDistance, getOsrmRoadRoute } from '@/utils/location';
+export { calculateDistance, calculateDrivingDistance, getOsrmRoadRoute, isCoordinateOnTirumalaHill } from '@/utils/location';
 
 export const TIRUPATI_CENTER = { lat: 13.6288, lng: 79.4192 };
 

@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { supabase } from '@/lib/supabase';
+import { isAuthorizedAdmin } from '@/lib/authGuard';
 
 const DEFAULT_FESTIVALS = [
   {
@@ -72,6 +73,11 @@ export async function GET() {
 
 export async function POST(req: Request) {
   try {
+    const isAuthed = await isAuthorizedAdmin(req);
+    if (!isAuthed) {
+      return NextResponse.json({ error: 'Unauthorized: Admin authentication required.' }, { status: 401 });
+    }
+
     const body = await req.json();
     if (!body.slug) body.slug = body.name.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '') + '-' + Date.now();
 

@@ -13,7 +13,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { PLACES, Place, getPlaceGuideData } from '@/data/places';
 import { useTrip } from '@/components/TripContext';
 import { useRealtimePlaces } from '@/lib/useRealtimePlaces';
-import { calculateDrivingDistance } from '@/utils/location';
+import { calculateDrivingDistance, isCoordinateOnTirumalaHill } from '@/utils/location';
 import { findNearestPlaceCandidates } from '@/lib/location';
 import { useLanguage } from '@/lib/useLanguage';
 import OfflineTempleMap from '@/components/place/OfflineTempleMap';
@@ -77,10 +77,10 @@ export default function PlaceDetails() {
       35000
     ).slice(0, 4);
 
-    const isSelfTirumala = place.location?.toLowerCase().includes('tirumala');
+    const isSelfTirumala = place.category === 'Tirumala Spot' || (place.coordinates ? isCoordinateOnTirumalaHill(place.coordinates.lat, place.coordinates.lng) : false);
     return candidates.map(({ place: p }) => {
       if (!p.coordinates) return { place: p, dist: 5, timeMins: 15 };
-      const isTargetTirumala = p.location?.toLowerCase().includes('tirumala');
+      const isTargetTirumala = p.category === 'Tirumala Spot' || isCoordinateOnTirumalaHill(p.coordinates.lat, p.coordinates.lng);
       const dist = calculateDrivingDistance(
         place.coordinates!.lat, place.coordinates!.lng,
         p.coordinates.lat, p.coordinates.lng,
@@ -95,11 +95,11 @@ export default function PlaceDetails() {
   const effectiveLocation = userLocation || { lat: 13.6288, lng: 79.4192 };
   const drivingDistance = useMemo(() => {
     if (!place.coordinates) return place.distanceKms || 5;
-    const isTirumala = place.location?.toLowerCase().includes('tirumala');
+    const isTirumala = place.category === 'Tirumala Spot' || isCoordinateOnTirumalaHill(place.coordinates.lat, place.coordinates.lng);
     return calculateDrivingDistance(effectiveLocation.lat, effectiveLocation.lng, place.coordinates.lat, place.coordinates.lng, isTirumala);
   }, [place, effectiveLocation]);
 
-  const driveTimeMins = Math.max(5, Math.round(drivingDistance * 2.5));
+  const driveTimeMins = Math.max(5, Math.round(drivingDistance * 2.0));
 
   // Dynamic Facilities Evaluation Hook (Executed unconditionally with all hooks)
   const evaluatedFacilities = useMemo(() => {

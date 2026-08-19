@@ -31,6 +31,21 @@ export function calculateDistance(
  * - Handles local Tirumala hill routes (~0.1 km - 3 km)
  * - Handles local Tirupati town routes
  */
+/**
+ * Helper to determine if coordinates are truly located on Tirumala Hill (Seshachalam Hills).
+ * Tirumala Hill plateau is located north-west of Alipiri: lat >= 13.66 AND lng <= 79.385.
+ * Locations with lng > 79.385 (like Karakambadi, Mangalam, Renigunta, Mallimadugu) are in the eastern plains.
+ */
+export function isCoordinateOnTirumalaHill(lat: number, lng: number): boolean {
+  return lat >= 13.66 && lng <= 79.385;
+}
+
+/**
+ * Calculates a realistic driving distance by applying origin-aware road routing factors.
+ * - Handles Tirupati Foothill <-> Tirumala Hill Ghat Road (~22-25 km)
+ * - Handles local Tirumala hill routes (~0.1 km - 3 km)
+ * - Handles local Tirupati town routes
+ */
 export function calculateDrivingDistance(
   lat1: number,
   lon1: number,
@@ -43,9 +58,9 @@ export function calculateDrivingDistance(
   // Tirumala Main Temple Square anchor: 13.68323, 79.34731
   const TIRUMALA_SQUARE = { lat: 13.68323, lng: 79.34731 };
 
-  // Determine if origin & destination are on Tirumala hill (lat >= 13.66)
-  const isOriginOnHill = lat1 >= 13.66;
-  const isDestOnHill = isTirumalaSpot || lat2 >= 13.66;
+  // Determine if origin & destination are on Tirumala hill
+  const isOriginOnHill = isCoordinateOnTirumalaHill(lat1, lon1);
+  const isDestOnHill = isTirumalaSpot || isCoordinateOnTirumalaHill(lat2, lon2);
 
   // Case 1: Both Origin & Destination are on Tirumala Hill
   if (isOriginOnHill && isDestOnHill) {
@@ -74,14 +89,14 @@ export function calculateDrivingDistance(
     return Number(totalDistance.toFixed(1));
   }
 
-  // Case 3: Both Origin & Destination are in Tirupati Foothills / City Center
-  let factor = 1.25;
+  // Case 3: Both Origin & Destination are in Tirupati Foothills / City Center / Eastern Plains (Renigunta, Karakambadi, etc.)
+  let factor = 1.2;
   if (rawDist < 2.5) {
-    factor = 2.3;
+    factor = 1.4;
   } else if (rawDist < 8.0) {
-    factor = 1.85;
+    factor = 1.25;
   } else if (rawDist < 25.0) {
-    factor = 1.45;
+    factor = 1.18;
   }
 
   return Number(Math.max(0.1, rawDist * factor).toFixed(1));

@@ -1,6 +1,8 @@
 import { NextResponse } from 'next/server';
 import { fetchLiveAlerts, saveLiveAlert, deleteLiveAlert } from '@/lib/alertsStore';
 
+import { isAuthorizedAdmin } from '@/lib/authGuard';
+
 export const dynamic = 'force-dynamic';
 
 export async function GET(request: Request) {
@@ -17,6 +19,11 @@ export async function GET(request: Request) {
 
 export async function POST(request: Request) {
   try {
+    const isAuthed = await isAuthorizedAdmin(request);
+    if (!isAuthed) {
+      return NextResponse.json({ error: 'Unauthorized: Admin authentication required.' }, { status: 401 });
+    }
+
     const body = await request.json();
     const createdAlert = await saveLiveAlert(body);
     return NextResponse.json(createdAlert, { status: 201 });
@@ -28,6 +35,11 @@ export async function POST(request: Request) {
 
 export async function DELETE(request: Request) {
   try {
+    const isAuthed = await isAuthorizedAdmin(request);
+    if (!isAuthed) {
+      return NextResponse.json({ error: 'Unauthorized: Admin authentication required.' }, { status: 401 });
+    }
+
     const { searchParams } = new URL(request.url);
     const id = searchParams.get('id');
     if (!id) return NextResponse.json({ error: 'Missing alert ID' }, { status: 400 });

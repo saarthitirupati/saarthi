@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { supabase } from '@/lib/supabase';
 import { PLACES } from '@/data/places';
+import { isAuthorizedAdmin } from '@/lib/authGuard';
 
 export async function GET() {
   try {
@@ -18,6 +19,11 @@ export async function GET() {
 
 export async function POST(req: Request) {
   try {
+    const isAuthed = await isAuthorizedAdmin(req);
+    if (!isAuthed) {
+      return NextResponse.json({ error: 'Unauthorized: Admin authentication required.' }, { status: 401 });
+    }
+
     const body = await req.json();
     if (!body.id) body.id = body.name.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '') + '-' + Date.now();
     if (!body.practicalInfo) body.practicalInfo = { dressCode: 'Casual', food: 'Nearby', parking: 'Available' };

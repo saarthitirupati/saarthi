@@ -1,8 +1,14 @@
 import { NextResponse } from 'next/server';
 import { supabase } from '@/lib/supabase';
+import { isAuthorizedAdmin } from '@/lib/authGuard';
 
 export async function POST(req: Request) {
   try {
+    const isAuthed = await isAuthorizedAdmin(req);
+    if (!isAuthed) {
+      return NextResponse.json({ error: 'Unauthorized: Admin authentication required.' }, { status: 401 });
+    }
+
     const body = await req.json();
     const { 
       crowd_wait_minutes, 

@@ -65,10 +65,10 @@ export function useTripStore() {
     if (typeof window !== 'undefined') {
       const permission = saved ? loadedState.locationPermission : 'default';
       if (permission !== 'denied') {
-        import('@/lib/location').then(({ detectCoordinates, watchCoordinates, getIPLocation, TIRUPATI_CENTER }) => {
+        import('@/lib/location').then(({ detectCoordinates, watchCoordinates, getIPLocation, TIRUPATI_CENTER, isCoordinateOnTirumalaHill }) => {
           detectCoordinates(
             (coords, source, isApproximate, accuracyMeters) => {
-              const region = coords.lat > 13.66 ? 'Tirumala' : 'Tirupati';
+              const region = isCoordinateOnTirumalaHill(coords.lat, coords.lng) ? 'Tirumala' : 'Tirupati';
               setState(prev => ({
                 ...prev,
                 userLocation: coords,
@@ -96,7 +96,7 @@ export function useTripStore() {
 
           // Watch real-time GPS hardware updates
           watchCoordinates((coords) => {
-            const region = coords.lat > 13.66 ? 'Tirumala' : 'Tirupati';
+            const region = isCoordinateOnTirumalaHill(coords.lat, coords.lng) ? 'Tirumala' : 'Tirupati';
             setState(prev => ({ ...prev, userLocation: coords, locationPermission: 'granted', locationName: region }));
           });
         }).catch(() => {});

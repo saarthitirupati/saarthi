@@ -1,6 +1,8 @@
 import { NextResponse } from 'next/server';
 import { readStatus, updateStatus } from '@/lib/statusDb';
 
+import { isAuthorizedAdmin } from '@/lib/authGuard';
+
 export const dynamic = 'force-dynamic';
 
 export async function GET() {
@@ -14,6 +16,11 @@ export async function GET() {
 
 export async function POST(req: Request) {
   try {
+    const isAuthed = await isAuthorizedAdmin(req);
+    if (!isAuthed) {
+      return NextResponse.json({ error: 'Unauthorized: Admin authentication required.' }, { status: 401 });
+    }
+
     const body = await req.json();
     const updated = await updateStatus(body);
     return NextResponse.json(updated);

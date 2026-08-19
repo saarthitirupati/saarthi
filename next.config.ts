@@ -12,26 +12,30 @@ const nextConfig: NextConfig = {
         source: '/:path*',
         headers: [
           { key: 'ngrok-skip-browser-warning', value: 'true' },
-          { key: 'Access-Control-Allow-Origin', value: '*' },
-          { key: 'Access-Control-Allow-Methods', value: 'GET, POST, PUT, DELETE, OPTIONS, PATCH' },
-          { key: 'Access-Control-Allow-Headers', value: 'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version, Authorization' },
           { key: 'X-Content-Type-Options', value: 'nosniff' },
           { key: 'X-Frame-Options', value: 'SAMEORIGIN' },
           { key: 'X-XSS-Protection', value: '1; mode=block' },
           { key: 'Referrer-Policy', value: 'strict-origin-when-cross-origin' },
+          { key: 'Permissions-Policy', value: 'camera=(), microphone=(), geolocation=(self)' },
+          { key: 'Strict-Transport-Security', value: 'max-age=31536000; includeSubDomains; preload' }
         ],
       },
+      {
+        source: '/saarthiadmin/:path*',
+        headers: [
+          { key: 'X-Frame-Options', value: 'DENY' },
+          { key: 'Cache-Control', value: 'no-store, no-cache, must-revalidate, proxy-revalidate' }
+        ]
+      },
+      {
+        source: '/api/admin/:path*',
+        headers: [
+          { key: 'Cache-Control', value: 'no-store, max-age=0' }
+        ]
+      }
     ];
   },
   allowedDevOrigins: ['localhost:3000', '*.ngrok-free.dev', 'unsubtle-imprint-strudel.ngrok-free.dev'],
-  async rewrites() {
-    return [
-      {
-        source: '/api/admin/:path*',
-        destination: 'http://127.0.0.1:8000/api/v1/admin/:path*'
-      }
-    ]
-  },
 };
 
 export default nextConfig;

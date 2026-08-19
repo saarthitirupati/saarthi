@@ -28,16 +28,16 @@ const TEXTS = {
     openDrawer: 'More for your pilgrimage',
     closeDrawer: 'Close',
     lockers: 'Lockers & Luggage',
-    lockersSub: 'Free deposit for phones & bags',
+    lockersSub: 'Deposit phones & bags before queue at PAC-1 to 5 & VQC',
     lockersStatus: '6 Locations Open',
     meals: 'Free Annaprasadam',
-    mealsSub: 'Fresh hot meals continuously',
-    mealsStatus: 'Serving Now',
+    mealsSub: 'Free hot meals at Tarigonda Vengamamba Complex',
+    mealsStatus: 'Serving Continuously',
     tonsure: 'Kalyana Katta (Tonsure)',
-    tonsureSub: 'Sacred head shaving counters',
+    tonsureSub: 'Sacred tonsure & baths near Pushkarini (Open 24/7)',
     tonsureStatus: 'Open 24/7',
     stay: 'Stay & PAC Halls',
-    staySub: 'Free rest halls & CRO rooms',
+    staySub: 'Free rest halls at PAC-1 to 5 & CRO room counters',
     stayStatus: 'Halls Available'
   },
   te: {
@@ -50,16 +50,16 @@ const TEXTS = {
     openDrawer: 'మరిన్ని వివరాలు & సమాచారం',
     closeDrawer: 'మూసివేయి',
     lockers: 'లాకర్లు & లగేజీ',
-    lockersSub: 'ఫోన్లు, లగేజీ ఉచిత డిపాజిట్',
+    lockersSub: 'PAC-1 నుండి 5, VQC వద్ద మొబైల్స్ & లగేజీ ఉచిత భద్రత',
     lockersStatus: '6 కేంద్రాలు ఓపెన్',
     meals: 'ఉచిత అన్నప్రసాదం',
-    mealsSub: 'నిరంతర వేడి భోజనం',
+    mealsSub: 'తరిగొండ వెంగమాంబ సముదాయంలో నిరంతర ఉచిత భోజనం',
     mealsStatus: 'అందుబాటులో ఉంది',
     tonsure: 'కళ్యాణకట్ట (తలనీలాలు)',
-    tonsureSub: 'పవిత్ర కేశ సమర్పణ కేంద్రాలు',
+    tonsureSub: 'పుష్కరిణి సమీపంలో పవిత్ర తలనీలాలు & స్నానాలు (24/7)',
     tonsureStatus: '24/7 అందుబాటులో ఉంది',
     stay: 'వసతి & PAC హాళ్ళు',
-    staySub: 'ఉచిత విశ్రాంతి సముదాయాలు',
+    staySub: 'PAC 1-5 ఉచిత విశ్రాంతి హాళ్ళు & CRO రూమ్ కౌంటర్లు',
     stayStatus: 'హాళ్ళు అందుబాటులో ఉన్నాయి'
   }
 };
@@ -102,7 +102,7 @@ export default function HomePage() {
       statusColor: '#16A34A',
       icon: Lock,
       image: 'https://res.cloudinary.com/kniegqlj/image/upload/v1786968161/IMG_6992_cq6gls.jpg',
-      link: '/essentials'
+      link: '/essentials/secure-belongings'
     },
     {
       id: 'meals',
@@ -112,7 +112,7 @@ export default function HomePage() {
       statusColor: '#16A34A',
       icon: Utensils,
       image: 'https://res.cloudinary.com/kniegqlj/image/upload/v1786968272/Annaprasadam-4-copy_lyo86v.jpg',
-      link: '/essentials'
+      link: '/essentials/free-meals'
     },
     {
       id: 'tonsure',
@@ -122,7 +122,7 @@ export default function HomePage() {
       statusColor: '#16A34A',
       icon: Scissors,
       image: 'https://res.cloudinary.com/kniegqlj/image/upload/v1786968353/painted-sign-board-of-kalyanakatta-balaji-temple-tirupati-andhra-pradesh-F5M0J1_p7hkr5.jpg',
-      link: '/essentials'
+      link: '/essentials/hair-offering'
     },
     {
       id: 'stay',
@@ -132,7 +132,7 @@ export default function HomePage() {
       statusColor: '#D97706',
       icon: Bed,
       image: 'https://res.cloudinary.com/kniegqlj/image/upload/v1786968555/maxresdefault_fwmwke.jpg',
-      link: '/essentials'
+      link: '/essentials/accommodation'
     }
   ];
 

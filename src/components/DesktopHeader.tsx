@@ -7,7 +7,7 @@ import {
   Home, Layers, Compass, Flame, Calendar
 } from 'lucide-react';
 import Logo from '@/components/Logo/Logo';
-import { detectCoordinates } from '@/lib/location';
+import { detectCoordinates, isCoordinateOnTirumalaHill } from '@/lib/location';
 import styles from './DesktopHeader.module.css';
 import { useAlerts } from '@/hooks/useAlerts';
 
@@ -46,7 +46,7 @@ export function DesktopHeader({ weather, temperature }: DesktopHeaderProps) {
     detectCoordinates(
       (coords) => {
         setIsLocating(false);
-        const isTirumala = coords.lat > 13.66;
+        const isTirumala = isCoordinateOnTirumalaHill(coords.lat, coords.lng);
         const region = isTirumala ? 'Tirumala' : 'Tirupati';
         setSelectedLocation(region);
         if (typeof window !== 'undefined') localStorage.setItem('saarthi_user_region', region);

@@ -5,7 +5,7 @@ import { Menu, Bell, MapPin, Sun, Sparkles, Ticket, Car, Gift, CloudRain, Bus, C
 import Link from 'next/link';
 import Logo from '@/components/Logo/Logo';
 import { useLanguage } from '@/lib/useLanguage';
-import { detectCoordinates } from '@/lib/location';
+import { detectCoordinates, isCoordinateOnTirumalaHill } from '@/lib/location';
 import { playTempleBellChime } from '@/lib/audioBell';
 import { getPanchangamData } from '@/lib/panchangam';
 import { getDayTempleGuidance } from '@/lib/dailyGuidance';
@@ -244,7 +244,7 @@ export function HomeHero({ userName, locationName, weatherTemp, liveStatus, acti
     detectCoordinates(
       (coords) => {
         setIsLocating(false);
-        const isTirumala = coords.lat > 13.66;
+        const isTirumala = isCoordinateOnTirumalaHill(coords.lat, coords.lng);
         const region = isTirumala ? 'Tirumala' : 'Tirupati';
         setSelectedLocation(region);
         if (typeof window !== 'undefined') localStorage.setItem('saarthi_user_region', region);
