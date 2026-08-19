@@ -187,15 +187,23 @@ export default function QRGenerator({ slug, name, baseUrl }: QRGeneratorProps) {
           style={{ display: 'block', borderRadius: '8px' }}
         >
           <defs>
-            <linearGradient id="saarthiGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stopColor="#F59E0B" />
-              <stop offset="50%" stopColor="#E9801D" />
-              <stop offset="100%" stopColor="#D97706" />
-            </linearGradient>
-            <linearGradient id="goldStar" x1="0%" y1="0%" x2="0%" y2="100%">
+            <linearGradient id="logoSunGrad" x1="0%" y1="0%" x2="0%" y2="100%">
               <stop offset="0%" stopColor="#FDE047" />
               <stop offset="100%" stopColor="#F59E0B" />
             </linearGradient>
+            <linearGradient id="logoHillGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stopColor="#EAB308" />
+              <stop offset="50%" stopColor="#D97706" />
+              <stop offset="100%" stopColor="#B45309" />
+            </linearGradient>
+            <linearGradient id="logoRoadGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+              <stop offset="0%" stopColor="#FFFDF0" />
+              <stop offset="40%" stopColor="#FDE047" />
+              <stop offset="100%" stopColor="#F59E0B" />
+            </linearGradient>
+            <clipPath id={`saarthiPinClip-${slug}`}>
+              <path d="M 50 6 C 28 6 10 24 10 48 C 10 72 44 94 50 98 C 56 94 90 72 90 48 C 90 24 72 6 50 6 Z" />
+            </clipPath>
           </defs>
 
           {/* Background */}
@@ -223,23 +231,45 @@ export default function QRGenerator({ slug, name, baseUrl }: QRGeneratorProps) {
               })
             )}
 
-            {/* Official Saarthi Sacred Temple Gopuram Logo Badge */}
-            <g transform={`translate(${100 - 24}, ${100 - 24})`}>
-              <rect x="0" y="0" width="48" height="48" rx="12" fill="#073B40" stroke={activeTheme.fg} strokeWidth="2.5" />
+            {/* Official Saarthi Brand Map Pin Logo Badge */}
+            <g transform={`translate(${100 - 28}, ${100 - 28})`}>
+              {/* Outer Badge Disc */}
+              <rect x="0" y="0" width="56" height="56" rx="16" fill={activeTheme.cardBg} stroke={activeTheme.fg} strokeWidth="2.5" />
               
-              {/* Gopuram Structure */}
-              <g transform="translate(4, 4) scale(0.078)">
-                <path d="M140 370 L372 370 L350 330 L162 330 Z" fill="url(#saarthiGrad)" />
-                <path d="M162 330 L350 330 L330 280 L182 280 Z" fill="url(#saarthiGrad)" opacity="0.9" />
-                <path d="M182 280 L330 280 L310 230 L202 230 Z" fill="url(#saarthiGrad)" opacity="0.95" />
-                <path d="M202 230 L310 230 L286 170 L226 170 Z" fill="url(#goldStar)" />
+              {/* Map Pin Vector Emblem */}
+              <g transform="translate(7, 5) scale(0.42)">
+                {/* Map Pin Dark Navy Outer Frame */}
+                <path
+                  d="M 50 2 C 23.5 2 4 23.5 4 50 C 4 77 43 101 50 105 C 57 101 96 77 96 50 C 96 23.5 76.5 2 50 2 Z"
+                  fill="#07192C"
+                />
 
-                {/* Pinnacle & Star */}
-                <path d="M256 100 L276 170 L236 170 Z" fill="url(#goldStar)" />
-                <circle cx="256" cy="92" r="16" fill="#FDE047" />
-                <circle cx="256" cy="280" r="28" fill="#073B40" stroke="url(#goldStar)" strokeWidth="6" />
-                <path d="M256 254 L264 280 L256 306 L248 280 Z" fill="#FDE047" />
-                <path d="M230 280 L256 272 L282 280 L256 288 Z" fill="#FDE047" />
+                {/* Clipped Pin Interior */}
+                <g clipPath={`url(#saarthiPinClip-${slug})`}>
+                  {/* 1. Cream / Ivory Sky Background */}
+                  <rect x="0" y="0" width="100" height="110" fill="#FAF5EC" />
+
+                  {/* 2. Golden Sun */}
+                  <circle cx="50" cy="36" r="17" fill="url(#logoSunGrad)" />
+
+                  {/* 3. Rolling Golden Hills (Middleground) */}
+                  <path
+                    d="M -5 54 C 20 40 42 46 65 44 C 80 43 90 47 105 52 L 105 110 L -5 110 Z"
+                    fill="url(#logoHillGrad)"
+                  />
+
+                  {/* 4. Deep Dark Navy Foreground Landscape */}
+                  <path
+                    d="M -5 50 C 25 58 45 46 105 58 L 105 110 L -5 110 Z"
+                    fill="#07192C"
+                  />
+
+                  {/* 5. S-Curved Winding Golden Road */}
+                  <path
+                    d="M 40 102 C 45 88 23 76 44 60 C 52 54 46 49 50 47 C 54 49 58 54 53 60 C 35 74 57 86 54 102 Z"
+                    fill="url(#logoRoadGrad)"
+                  />
+                </g>
               </g>
             </g>
           </g>
@@ -251,26 +281,47 @@ export default function QRGenerator({ slug, name, baseUrl }: QRGeneratorProps) {
       </div>
 
       {/* Copy & Export Actions */}
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '8px' }}>
         <button
           onClick={copyLink}
           style={{
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            gap: '6px',
-            padding: '12px',
+            gap: '4px',
+            padding: '10px 8px',
             borderRadius: '12px',
             backgroundColor: 'rgba(255, 255, 255, 0.08)',
             color: activeTheme.text,
             border: '1px solid rgba(255, 255, 255, 0.1)',
-            fontSize: '12px',
+            fontSize: '11px',
             fontWeight: 600,
             cursor: 'pointer',
           }}
         >
-          {copied ? <Check size={16} color="#10B981" /> : <Copy size={16} />}
-          <span>{copied ? 'Link Copied!' : 'Copy Target Link'}</span>
+          {copied ? <Check size={14} color="#10B981" /> : <Copy size={14} />}
+          <span>{copied ? 'Copied!' : 'Copy Link'}</span>
+        </button>
+
+        <button
+          onClick={downloadSVG}
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            gap: '4px',
+            padding: '10px 8px',
+            borderRadius: '12px',
+            backgroundColor: 'rgba(56, 189, 248, 0.15)',
+            color: '#38BDF8',
+            border: '1px solid rgba(56, 189, 248, 0.3)',
+            fontSize: '11px',
+            fontWeight: 700,
+            cursor: 'pointer',
+          }}
+        >
+          <Download size={14} />
+          <span>Vector SVG</span>
         </button>
 
         <button
@@ -279,20 +330,20 @@ export default function QRGenerator({ slug, name, baseUrl }: QRGeneratorProps) {
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            gap: '6px',
-            padding: '12px',
+            gap: '4px',
+            padding: '10px 8px',
             borderRadius: '12px',
             backgroundColor: '#10B981',
             color: '#FFFFFF',
             border: 'none',
-            fontSize: '12px',
+            fontSize: '11px',
             fontWeight: 700,
             cursor: 'pointer',
             boxShadow: '0 4px 12px rgba(16, 185, 129, 0.3)',
           }}
         >
-          <Download size={16} />
-          <span>Download High-Res PNG</span>
+          <Download size={14} />
+          <span>High-Res PNG</span>
         </button>
       </div>
     </div>
