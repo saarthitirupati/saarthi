@@ -351,19 +351,34 @@ export function HomeHero({ userName, locationName, weatherTemp, liveStatus, acti
     return '—';
   };
 
+  const getMaxWaitHours = (text: string): number => {
+    if (!text) return 0;
+    const matches = text.match(/\d+/g);
+    return matches ? Math.max(...matches.map(Number)) : 0;
+  };
+
   // Best time: admin value wins; scenarios provide a sensible fallback
   const adminBestTime = liveStatus?.bestTime?.trim() || '';
 
   const getSaarthiDecisionScenario = () => {
     let key = overrideScenario;
 
+    const sarvaWaitStr = getDarshanWait('sarva');
+    const overallWaitStr = liveWaitTime || sarvaWaitStr;
+    const maxWaitHrs = Math.max(getMaxWaitHours(sarvaWaitStr), getMaxWaitHours(overallWaitStr));
+
+    const isHeavyWait = maxWaitHrs >= 8 || crowdLevel === 'high' || crowdLevel === 'very-high';
+    const isModerateWait = (maxWaitHrs >= 4 && maxWaitHrs < 8) || crowdLevel === 'moderate';
+    const isTrulyLowWait = maxWaitHrs > 0 && maxWaitHrs < 4 && crowdLevel === 'low';
+
     if (key === 'auto') {
       if (isNight) key = 'night';
       else if (isRainy) key = 'blue';
       else if (ssdTokenStatus === 'issuing') key = 'orange';
-      else if (crowdLevel === 'low') key = 'green';
-      else if (crowdLevel === 'moderate') key = 'yellow';
-      else key = 'red';
+      else if (isHeavyWait) key = 'red';
+      else if (isModerateWait) key = 'yellow';
+      else if (isTrulyLowWait) key = 'green';
+      else key = 'yellow';
     }
 
     switch (key) {
@@ -1255,9 +1270,11 @@ export function HomeHero({ userName, locationName, weatherTemp, liveStatus, acti
         {/* 3️⃣ ⭐ DYNAMIC SAARTHI GUIDANCE (WARM IVORY PREMIUM CARD) */}
         {(() => {
           const sarvaWait = getDarshanWait('sarva');
-          const isSarvaHeavy = sarvaWait.includes('24') || sarvaWait.includes('30') || sarvaWait.includes('18') || sarvaWait.includes('20') || sarvaWait.includes('15') || sarvaWait.includes('14') || sarvaWait.includes('12') || sarvaWait.includes('10');
-          const isSsdClosed = ssdTokenStatus === 'closed-for-day';
+          const sarvaHours = getMaxWaitHours(sarvaWait);
+          const isSsdClosed = ssdTokenStatus === 'closed-for-day' || ssdTokenStatus === 'closed';
           const isSsdOpen = ssdTokenStatus === 'issuing';
+          const isHeavyRush = sarvaHours >= 8 || crowdLevel === 'high' || crowdLevel === 'very-high';
+          const isTrulyLow = sarvaHours > 0 && sarvaHours < 4 && crowdLevel === 'low';
 
           // Day-of-week auspicious temple mapping (e.g. Monday: Shiva/Kapila, Tuesday: Hanuman/Japali, etc.)
           const dayGuide = getDayTempleGuidance(new Date());
@@ -1275,26 +1292,33 @@ export function HomeHero({ userName, locationName, weatherTemp, liveStatus, acti
               lang === 'te' ? 'అలిపిరి, శ్రీనివాసం కేంద్రాలలో కౌంటర్లు తెరిచి ఉన్నాయి' : 'Alipiri & Srinivasam counters are currently active',
               lang === 'te' ? 'ఈ రోజు దర్శనం కోసం వెంటనే పొందండి' : 'Secure your slotted darshan for today'
             ];
-          } else if (crowdLevel === 'low') {
+          } else if (isHeavyRush || isSsdClosed) {
+            // Dynamic Day-of-Week Temple Recommendation
+            guidanceHeadline = lang === 'te' ? dayGuide.headlineTe : dayGuide.headlineEn;
+            highlightedBenefit = isSsdClosed 
+              ? (lang === 'te' ? '⚡ నేటి SSD కోటా ముగిసింది — సమీప పుణ్యక్షేత్రాలను దర్శించండి' : '⚡ SSD CLOSED TODAY — VISIT SACRED SHRINES FIRST')
+              : (lang === 'te' ? dayGuide.benefitTe : dayGuide.benefitEn);
+            
+            const firstReason = isSsdClosed && liveStatus?.ssdTimingsGuide 
+              ? (liveStatus.ssdTimingsGuide.length > 110 ? `${liveStatus.ssdTimingsGuide.slice(0, 107)}...` : liveStatus.ssdTimingsGuide)
+              : (lang === 'te' ? `సర్వదర్శనం క్యూ అధిక రద్దీతో ఉంది (${sarvaWait})` : `Sarva Darshan queue has heavy rush (${sarvaWait})`);
+
+            customReasons = lang === 'te' ? [
+              firstReason,
+              dayGuide.reasonsTe[0],
+              isRainy ? 'వర్షం కారణంగా విద్యుత్ బస్సులను ఎంచుకోండి' : dayGuide.reasonsTe[1]
+            ] : [
+              firstReason,
+              dayGuide.reasonsEn[0],
+              isRainy ? 'Take APSRTC Electric Bus due to rain on steps' : dayGuide.reasonsEn[1]
+            ];
+          } else if (isTrulyLow) {
             guidanceHeadline = lang === 'te' ? 'దర్శనానికి అనుకూల సమయం! నేరుగా శ్రీవారి క్యూలో ప్రవేశించండి.' : 'Optimal Darshan window! Enter Srivari queue directly now.';
             highlightedBenefit = lang === 'te' ? '⚡ అత్యంత వేగవంతమైన దర్శనం — నిరీక్షణ స్వల్పం' : '⚡ MINIMAL WAIT TIME — FASTEST ENTRY';
             customReasons = [
-              lang === 'te' ? 'ప్రస్తుత క్యూ సమయం చాలా తక్కువగా ఉంది' : `Live queue wait is minimal (${sarvaWait})`,
+              lang === 'te' ? `ప్రస్తుత క్యూ సమయం అనుకూలంగా ఉంది (${sarvaWait})` : `Live queue wait is minimal (${sarvaWait})`,
               lang === 'te' ? 'కంపార్ట్‌మెంట్లు వేగంగా కదులుతున్నాయి' : 'Queue compartments are moving smoothly without delays',
               lang === 'te' ? 'శ్రీవారి ప్రశాంత దర్శనం చేసుకోవడానికి ఉత్తమ సమయం' : 'Ideal time for a peaceful and unhurried Darshan'
-            ];
-          } else if (isSarvaHeavy || isSsdClosed) {
-            // Dynamic Day-of-Week Temple Recommendation
-            guidanceHeadline = lang === 'te' ? dayGuide.headlineTe : dayGuide.headlineEn;
-            highlightedBenefit = lang === 'te' ? dayGuide.benefitTe : dayGuide.benefitEn;
-            customReasons = lang === 'te' ? [
-              dayGuide.reasonsTe[0],
-              dayGuide.reasonsTe[1],
-              isRainy ? 'వర్షం కారణంగా విద్యుత్ బస్సులను ఎంచుకోండి' : dayGuide.reasonsTe[2]
-            ] : [
-              dayGuide.reasonsEn[0],
-              dayGuide.reasonsEn[1],
-              isRainy ? 'Take APSRTC Electric Bus due to rain on steps' : dayGuide.reasonsEn[2]
             ];
           } else {
             customReasons = [
@@ -1304,7 +1328,7 @@ export function HomeHero({ userName, locationName, weatherTemp, liveStatus, acti
                 : `Weather: ${liveWeather || 'Clear Sky, Pleasant'}`,
               isSsdClosed
                 ? 'SSD quota closed today'
-                : `Recommended darshan window: ${scenario.bestTime || 'Morning 6:00 AM'}`
+                : `Recommended darshan window: ${scenario.bestTime || adminBestTime || 'After 2:00 PM'}`
             ];
           }
 
