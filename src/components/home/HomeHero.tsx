@@ -1027,7 +1027,6 @@ export function HomeHero({ userName, locationName, weatherTemp, liveStatus, acti
 
             if (isSsdClosedStatus) {
               isSsdCardClosed = true;
-              ssdDisplayWait = liveStatus?.ssdNextTokenTime || (lang === 'te' ? 'నేటికి ముగిసింది' : 'Closed for Today');
               resolvedSsdStatus = {
                 color: '#DC2626',
                 bg: '#FEF2F2',
@@ -1040,7 +1039,6 @@ export function HomeHero({ userName, locationName, weatherTemp, liveStatus, acti
               };
             } else if (isSsdPausedStatus) {
               isSsdCardClosed = true;
-              ssdDisplayWait = liveStatus?.ssdNextTokenTime ? `Next: ${liveStatus.ssdNextTokenTime}` : (lang === 'te' ? 'నిలిపివేయబడింది' : 'Paused');
               resolvedSsdStatus = {
                 color: '#D97706',
                 bg: '#FFFBEB',
@@ -1052,7 +1050,6 @@ export function HomeHero({ userName, locationName, weatherTemp, liveStatus, acti
                 meter: 3
               };
             } else if (ssdTokenStatus === 'issuing') {
-              ssdDisplayWait = liveStatus?.ssdNextTokenTime ? liveStatus.ssdNextTokenTime : ssdWait;
               resolvedSsdStatus = {
                 color: '#059669',
                 bg: '#D1FAE5',
