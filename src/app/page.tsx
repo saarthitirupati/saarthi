@@ -6,7 +6,7 @@ import { useState, useMemo } from 'react';
 import { useHomeData } from '@/hooks/useHomeData';
 import { useTrip } from '@/components/TripContext';
 import { LoadingState } from '@/components/common/LoadingState';
-import { calculateDrivingDistance, TIRUPATI_CENTER } from '@/lib/location';
+import { calculateDrivingDistance, TIRUPATI_CENTER, isWithinTirupatiRegion } from '@/lib/location';
 import { useLanguage } from '@/lib/useLanguage';
 import {
   HomeHero,
@@ -71,7 +71,8 @@ export default function HomePage() {
   const t = TEXTS[lang];
   const [showLoreDrawer, setShowLoreDrawer] = useState(false);
 
-  const origin = userLocation ?? TIRUPATI_CENTER;
+  const isLocalUser = userLocation && isWithinTirupatiRegion(userLocation.lat, userLocation.lng);
+  const origin = isLocalUser ? userLocation! : TIRUPATI_CENTER;
 
   const nearbyPlaces = useMemo(() => {
     if (!home.places?.allPlaces?.length) return [];

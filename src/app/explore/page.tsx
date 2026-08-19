@@ -7,7 +7,7 @@ import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { useSearchParams } from 'next/navigation';
 import styles from './Explore.module.css';
-import { calculateDrivingDistance, TIRUPATI_CENTER } from '@/utils/location';
+import { calculateDrivingDistance, TIRUPATI_CENTER, isWithinTirupatiRegion } from '@/utils/location';
 import { useTrip } from '@/components/TripContext';
 import { useRealtimePlaces } from '@/lib/useRealtimePlaces';
 import { useLanguage } from '@/lib/useLanguage';
@@ -224,7 +224,8 @@ function ExploreContent() {
       return matchesSearch && matchesFilter;
     });
 
-    const effectiveLocation = userLocation || TIRUPATI_CENTER;
+    const isLocalUser = userLocation && isWithinTirupatiRegion(userLocation.lat, userLocation.lng);
+    const effectiveLocation = isLocalUser ? userLocation! : TIRUPATI_CENTER;
     result = result.map(p => {
       const toStr = (v: any) => typeof v === 'string' ? v : (v?.name || v?.slug || String(v || ''));
       const lat = p.coordinates?.lat || TIRUPATI_CENTER.lat;

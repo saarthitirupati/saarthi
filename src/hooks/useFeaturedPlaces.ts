@@ -1,9 +1,12 @@
 import { useMemo } from 'react';
 import { useTrip } from '@/components/TripContext';
-import { calculateDrivingDistance } from '@/utils/location';
+import { calculateDrivingDistance, TIRUPATI_CENTER, isWithinTirupatiRegion } from '@/utils/location';
 
 export function useFeaturedPlaces(places: any[], liveStatus: any, weatherTemp: string) {
   const { userLocation } = useTrip();
+
+  const isLocalUser = userLocation && isWithinTirupatiRegion(userLocation.lat, userLocation.lng);
+  const effectiveOrigin = isLocalUser ? userLocation! : TIRUPATI_CENTER;
 
   const featuredPlace = useMemo(() => {
     if (!places || places.length === 0) return null;
@@ -28,11 +31,11 @@ export function useFeaturedPlaces(places: any[], liveStatus: any, weatherTemp: s
         if (openFrom <= 6) score += 10;
       }
 
-      if (userLocation && p.coordinates) {
+      if (p.coordinates) {
         const isTirumalaSpot = p.id === 'srivari-temple' || p.location?.toLowerCase().includes('tirumala');
         const distKm = calculateDrivingDistance(
-          userLocation.lat,
-          userLocation.lng,
+          effectiveOrigin.lat,
+          effectiveOrigin.lng,
           p.coordinates.lat,
           p.coordinates.lng,
           isTirumalaSpot
@@ -88,13 +91,12 @@ export function useFeaturedPlaces(places: any[], liveStatus: any, weatherTemp: s
   }, [places, userLocation, weatherTemp, liveStatus]);
 
   const featuredPlaceDistance = useMemo(() => {
-    if (!featuredPlace?.coordinates) return '12 mins away';
-    if (!userLocation) return '12 mins away';
+    if (!featuredPlace?.coordinates) return '10 mins away';
 
     const isTirumalaSpot = featuredPlace.id === 'srivari-temple' || featuredPlace.location?.toLowerCase().includes('tirumala');
     const distKm = calculateDrivingDistance(
-      userLocation.lat,
-      userLocation.lng,
+      effectiveOrigin.lat,
+      effectiveOrigin.lng,
       featuredPlace.coordinates.lat,
       featuredPlace.coordinates.lng,
       isTirumalaSpot
@@ -105,9 +107,9 @@ export function useFeaturedPlaces(places: any[], liveStatus: any, weatherTemp: s
       return `${walkMins} min walk (${distKm} km)`;
     } else {
       const driveMins = Math.max(1, Math.round(distKm * 1.8));
-      return `${driveMins} mins away (${distKm} km)`;
+      return `${driveMins} mins ${isLocalUser ? 'from you' : 'from Tirupati'} (${distKm} km)`;
     }
-  }, [featuredPlace, userLocation]);
+  }, [featuredPlace, effectiveOrigin, isLocalUser]);
 
   return { featuredPlace, featuredPlaceDistance };
 }

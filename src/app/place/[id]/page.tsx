@@ -13,7 +13,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { PLACES, Place, getPlaceGuideData } from '@/data/places';
 import { useTrip } from '@/components/TripContext';
 import { useRealtimePlaces } from '@/lib/useRealtimePlaces';
-import { calculateDrivingDistance, isCoordinateOnTirumalaHill } from '@/utils/location';
+import { calculateDrivingDistance, isCoordinateOnTirumalaHill, isWithinTirupatiRegion, TIRUPATI_CENTER } from '@/utils/location';
 import { findNearestPlaceCandidates } from '@/lib/location';
 import { useLanguage } from '@/lib/useLanguage';
 import OfflineTempleMap from '@/components/place/OfflineTempleMap';
@@ -91,15 +91,17 @@ export default function PlaceDetails() {
     });
   }, [place, allPlaces]);
 
-  // Distance from user
-  const effectiveLocation = userLocation || { lat: 13.6288, lng: 79.4192 };
+  // Distance from user (if local within 80km) or from Tirupati Center
+  const isLocalUser = userLocation && isWithinTirupatiRegion(userLocation.lat, userLocation.lng);
+  const effectiveLocation = isLocalUser ? userLocation! : TIRUPATI_CENTER;
+
   const drivingDistance = useMemo(() => {
     if (!place.coordinates) return place.distanceKms || 5;
     const isTirumala = place.category === 'Tirumala Spot' || isCoordinateOnTirumalaHill(place.coordinates.lat, place.coordinates.lng);
     return calculateDrivingDistance(effectiveLocation.lat, effectiveLocation.lng, place.coordinates.lat, place.coordinates.lng, isTirumala);
   }, [place, effectiveLocation]);
 
-  const driveTimeMins = Math.max(5, Math.round(drivingDistance * 2.0));
+  const driveTimeMins = Math.max(3, Math.round(drivingDistance * 1.8));
 
   // Dynamic Facilities Evaluation Hook (Executed unconditionally with all hooks)
   const evaluatedFacilities = useMemo(() => {
@@ -1104,7 +1106,7 @@ export default function PlaceDetails() {
             textShadow: '0 1px 4px rgba(0, 0, 0, 0.8)'
           }}>
             <MapPin size={14} color="#CBD5E1" />
-            <span>{place.location} • ~{driveTimeMins} mins away ({drivingDistance.toFixed(1)} km)</span>
+            <span>{place.location} • ~{driveTimeMins} mins {isLocalUser ? 'from you' : 'from Tirupati'} ({drivingDistance.toFixed(1)} km)</span>
           </div>
         </div>
       </div>

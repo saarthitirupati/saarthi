@@ -12,7 +12,7 @@ import styles from '../Essentials.module.css';
 
 import { KNOWLEDGE_ITEMS, FAQ_ITEMS, SubLocation } from '@/content/knowledge';
 import { useTrip } from '@/components/TripContext';
-import { calculateDistance, calculateDrivingDistance, TIRUPATI_CENTER, isCoordinateOnTirumalaHill } from '@/utils/location';
+import { calculateDistance, calculateDrivingDistance, TIRUPATI_CENTER, isCoordinateOnTirumalaHill, isWithinTirupatiRegion } from '@/utils/location';
 
 // Map iconName strings to Lucide React components
 import { 
@@ -49,7 +49,8 @@ export default function EssentialDetailPage({ params }: { params: Promise<{ id: 
   const { userLocation } = useTrip();
   const item = KNOWLEDGE_ITEMS.find(t => t.id === id || t.intentId === id);
 
-  const effectiveLocation = userLocation || TIRUPATI_CENTER;
+  const isLocalUser = userLocation && isWithinTirupatiRegion(userLocation.lat, userLocation.lng);
+  const effectiveLocation = isLocalUser ? userLocation! : TIRUPATI_CENTER;
   const isTirumalaSpot = item?.location?.toLowerCase().includes('tirumala') || 
                          item?.location?.toLowerCase().includes('vqc') || 
                          (item?.coordinates ? isCoordinateOnTirumalaHill(item.coordinates.lat, item.coordinates.lng) : false);

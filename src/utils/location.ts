@@ -41,10 +41,33 @@ export function isCoordinateOnTirumalaHill(lat: number, lng: number): boolean {
 }
 
 /**
+ * Alipiri Toll Gate / Ghat Road Entry Point
+ * The single motorized gateway connecting Tirupati plains and Tirumala Hill.
+ */
+export const ALIPIRI_GATE = { lat: 13.647051, lng: 79.405856 };
+
+/**
+ * Tirumala Main Temple Square / Bus Station Anchor
+ */
+export const TIRUMALA_CENTER = { lat: 13.68323, lng: 79.34731 };
+
+/**
+ * Fallback Tirupati Central Railway Station / Bus Stand Anchor
+ */
+export const TIRUPATI_CENTER = { lat: 13.6288, lng: 79.4192 };
+
+/**
+ * Helper to check if a location is within the local Tirupati pilgrimage region (<= 80 km).
+ */
+export function isWithinTirupatiRegion(lat: number, lng: number): boolean {
+  return calculateDistance(lat, lng, TIRUPATI_CENTER.lat, TIRUPATI_CENTER.lng) <= 80;
+}
+
+/**
  * Calculates a realistic driving distance by applying origin-aware road routing factors.
- * - Handles Tirupati Foothill <-> Tirumala Hill Ghat Road (~22-25 km)
- * - Handles local Tirumala hill routes (~0.1 km - 3 km)
- * - Handles local Tirupati town routes
+ * - Handles Tirupati Foothill <-> Tirumala Hill Ghat Road (~22-25 km via Alipiri Gate)
+ * - Handles local Tirumala hill routes (~0.1 km - 5 km)
+ * - Handles local Tirupati town and regional highway routes
  */
 export function calculateDrivingDistance(
   lat1: number,
@@ -55,60 +78,57 @@ export function calculateDrivingDistance(
 ): number {
   const rawDist = calculateDistance(lat1, lon1, lat2, lon2);
 
-  // Tirumala Main Temple Square anchor: 13.68323, 79.34731
-  const TIRUMALA_SQUARE = { lat: 13.68323, lng: 79.34731 };
-
   // Determine if origin & destination are on Tirumala hill
   const isOriginOnHill = isCoordinateOnTirumalaHill(lat1, lon1);
   const isDestOnHill = isTirumalaSpot || isCoordinateOnTirumalaHill(lat2, lon2);
 
-  // Case 1: Both Origin & Destination are on Tirumala Hill
+  // ── CASE 1: Both Origin & Destination are on Tirumala Hill ──
   if (isOriginOnHill && isDestOnHill) {
     // Local hill travel along winding mountain roads
-    const hillFactor = rawDist < 1 ? 1.4 : 1.35;
+    const hillFactor = rawDist < 1.0 ? 1.35 : 1.45;
     return Number(Math.max(0.1, rawDist * hillFactor).toFixed(1));
   }
 
-  // Case 2: Origin is Foothill (Tirupati) & Destination is Hill (Tirumala) OR vice-versa
-  if ((!isOriginOnHill && isDestOnHill) || (isOriginOnHill && !isDestOnHill)) {
-    // Base Ghat road transit distance from Tirupati foothill to Tirumala Main Temple Square (~21.5 km)
-    const baseFoothillDist = calculateDistance(lat1, lon1, TIRUMALA_SQUARE.lat, TIRUMALA_SQUARE.lng);
-    const baseGhatDist = Math.max(21.5, baseFoothillDist * 1.55);
+  // ── CASE 2: Origin is Plains & Destination is Tirumala Hill ──
+  if (!isOriginOnHill && isDestOnHill) {
+    // Step 1: Drive from Origin in plains to Alipiri Toll Gate
+    const distToAlipiri = calculateDistance(lat1, lon1, ALIPIRI_GATE.lat, ALIPIRI_GATE.lng) * 1.25;
+    // Step 2: Up-Ghat Road from Alipiri Gate to Tirumala Center (~18.5 km)
+    const ghatRoadKm = 18.5;
+    // Step 3: Local hill road from Tirumala Center to destination landmark
+    const localHillRaw = calculateDistance(TIRUMALA_CENTER.lat, TIRUMALA_CENTER.lng, lat2, lon2);
+    const localHillDist = localHillRaw > 0.2 ? localHillRaw * (lat2 > 13.685 ? 1.6 : 1.3) : 0;
 
-    // Calculate local hill distance from Tirumala Temple Square to the destination landmark
-    const localHillRaw = calculateDistance(TIRUMALA_SQUARE.lat, TIRUMALA_SQUARE.lng, lat2, lon2);
-    
-    // For spots further north on Papavanasam Road (lat2 > 13.685), apply hill road multiplier
-    let localHillOffset = 0;
-    if (localHillRaw > 0.3) {
-      const windingFactor = lat2 > 13.685 ? 1.75 : 1.3;
-      localHillOffset = localHillRaw * windingFactor;
-    }
-
-    const totalDistance = baseGhatDist + localHillOffset;
+    const totalDistance = distToAlipiri + ghatRoadKm + localHillDist;
     return Number(totalDistance.toFixed(1));
   }
 
-  // Case 3: Both Origin & Destination are in Tirupati Foothills / City Center / Eastern Plains (Renigunta, Karakambadi, etc.)
-  let factor = 1.2;
-  if (rawDist < 2.5) {
-    factor = 1.4;
-  } else if (rawDist < 8.0) {
-    factor = 1.25;
-  } else if (rawDist < 25.0) {
-    factor = 1.18;
+  // ── CASE 3: Origin is Tirumala Hill & Destination is Plains ──
+  if (isOriginOnHill && !isDestOnHill) {
+    // Step 1: Local hill road from Origin on hill to Tirumala Center
+    const localHillRaw = calculateDistance(lat1, lon1, TIRUMALA_CENTER.lat, TIRUMALA_CENTER.lng);
+    const localHillDist = localHillRaw > 0.2 ? localHillRaw * (lat1 > 13.685 ? 1.6 : 1.3) : 0;
+    // Step 2: Down-Ghat Road from Tirumala Center to Alipiri Gate (~19.5 km)
+    const ghatRoadKm = 19.5;
+    // Step 3: Drive from Alipiri Gate to destination in plains
+    const distFromAlipiri = calculateDistance(ALIPIRI_GATE.lat, ALIPIRI_GATE.lng, lat2, lon2) * 1.25;
+
+    const totalDistance = localHillDist + ghatRoadKm + distFromAlipiri;
+    return Number(totalDistance.toFixed(1));
+  }
+
+  // ── CASE 4: Both Origin & Destination are in Plains (Tirupati, Renigunta, Chandragiri, etc.) ──
+  let factor = 1.15;
+  if (rawDist < 3.0) {
+    factor = 1.30; // City street grid & turns
+  } else if (rawDist < 12.0) {
+    factor = 1.22; // Arterial town roads
+  } else if (rawDist < 40.0) {
+    factor = 1.16; // State highways
   }
 
   return Number(Math.max(0.1, rawDist * factor).toFixed(1));
 }
-
-/**
- * Fallback Tirupati center coordinates
- */
-export const TIRUPATI_CENTER = {
-  lat: 13.6288,
-  lng: 79.4192,
-};
 
 /**
  * OSRM Real Road Distance Helper:

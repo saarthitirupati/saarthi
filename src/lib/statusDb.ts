@@ -119,27 +119,40 @@ export async function readStatus(): Promise<TirumalaStatus> {
       .single();
 
     if (error || !metrics) {
+      lastFetchTime = now;
+      return memoryStatus;
+    }
+
+    // Check timestamp: If local memory status is fresher than Supabase, preserve local status
+    const localTime = memoryStatus.lastUpdated ? new Date(memoryStatus.lastUpdated).getTime() : 0;
+    const remoteTime = metrics.updated_at ? new Date(metrics.updated_at).getTime() : 0;
+
+    if (localTime > 0 && remoteTime > 0 && localTime > remoteTime) {
+      // Local admin update is newer than remote row — do not overwrite with stale data
+      lastFetchTime = now;
       return memoryStatus;
     }
 
     // Format wait time: avoid "10h 0m" — use "10 hours" instead
     const totalMins: number = metrics.crowd_wait_minutes ?? 0;
-    let waitTimeVal: string;
-    if (totalMins >= 60) {
-      const h = Math.floor(totalMins / 60);
-      const m = totalMins % 60;
-      waitTimeVal = m > 0 ? `${h}h ${m}m` : `${h} ${h === 1 ? 'hour' : 'hours'}`;
-    } else {
-      waitTimeVal = `${totalMins} mins`;
+    let waitTimeVal: string = memoryStatus.waitTime || '2-3 hours';
+    if (totalMins > 0) {
+      if (totalMins >= 60) {
+        const h = Math.floor(totalMins / 60);
+        const m = totalMins % 60;
+        waitTimeVal = m > 0 ? `${h}h ${m}m` : `${h} ${h === 1 ? 'hour' : 'hours'}`;
+      } else {
+        waitTimeVal = `${totalMins} mins`;
+      }
     }
 
-    const crowdLvl = (metrics.crowd_level?.toLowerCase() || 'moderate') as TirumalaStatus['crowdLevel'];
+    const crowdLvl = (metrics.crowd_level?.toLowerCase() || memoryStatus.crowdLevel || 'moderate') as TirumalaStatus['crowdLevel'];
 
     // Parse darshans: prefer JSON blob, fall back to individual columns
     let updatedDarshans: TirumalaStatus['darshans'] = memoryStatus.darshans;
     if (metrics.darshans_json) {
       try { updatedDarshans = JSON.parse(metrics.darshans_json); } catch {}
-    } else {
+    } else if (metrics.sarva_darshan_wait) {
       updatedDarshans = [
         { name: 'Sarva Darshan (Free)', waitTime: metrics.sarva_darshan_wait || '12-15 hours', peakHours: 'Daily 10 AM - 6 PM' },
         { name: 'Special Entry (₹300)', waitTime: metrics.special_entry_wait || '3-4 hours', peakHours: 'Daily 9 AM - 3 PM' },
@@ -159,7 +172,7 @@ export async function readStatus(): Promise<TirumalaStatus> {
     }
 
     // Preserve updated SSD token status and times if Supabase value is not set or returns null
-    const resolvedSsdStatus = metrics.ssd_token_status 
+    const resolvedSsdStatus = (metrics.ssd_token_status && metrics.ssd_token_status !== '')
       ? (metrics.ssd_token_status as TirumalaStatus['ssdTokenStatus'])
       : (memoryStatus.ssdTokenStatus || 'issuing');
 
@@ -174,18 +187,17 @@ export async function readStatus(): Promise<TirumalaStatus> {
     const resolvedTimingsGuide = metrics.ssd_timings_guide || memoryStatus.ssdTimingsGuide || DEFAULT_STATUS.ssdTimingsGuide;
 
     memoryStatus = {
+      ...DEFAULT_STATUS,                          // apply clean defaults
       ...memoryStatus,                            // retain current updated state
-      ...DEFAULT_STATUS,                          // apply clean defaults for anything undefined
-      ...memoryStatus,                            // re-apply local overrides
       waitTime: waitTimeVal,
       crowdLevel: crowdLvl,
       bestTime: metrics.best_time || memoryStatus.bestTime || '',
       darshans: updatedDarshans,
-      accommodationStatus: (metrics.parking_status?.toLowerCase() === 'full' ? 'full' : 'available') as TirumalaStatus['accommodationStatus'],
+      accommodationStatus: (metrics.parking_status?.toLowerCase() === 'full' ? 'full' : (memoryStatus.accommodationStatus || 'available')) as TirumalaStatus['accommodationStatus'],
       ladduAvailability: (metrics.laddu_availability || memoryStatus.ladduAvailability || 'available') as TirumalaStatus['ladduAvailability'],
       weather: metrics.weather || memoryStatus.weather || DEFAULT_STATUS.weather,
       sevaStatus: metrics.seva_status || memoryStatus.sevaStatus || DEFAULT_STATUS.sevaStatus,
-      notice: metrics.notice || memoryStatus.notice || '',
+      notice: metrics.notice !== undefined && metrics.notice !== null ? metrics.notice : (memoryStatus.notice || ''),
       darshanSpeed: (metrics.darshan_speed || memoryStatus.darshanSpeed || 'normal') as TirumalaStatus['darshanSpeed'],
       ssdTokenStatus: resolvedSsdStatus,
       ssdNextTokenTime: resolvedNextTokenTime,
@@ -193,13 +205,14 @@ export async function readStatus(): Promise<TirumalaStatus> {
       ssdNotice: resolvedNotice,
       ssdTimingsGuide: resolvedTimingsGuide,
       ssdCounters: ssdCounters && ssdCounters.length > 0 ? ssdCounters : memoryStatus.ssdCounters,
-      lastUpdated: metrics.updated_at || new Date().toISOString(),
+      lastUpdated: metrics.updated_at || memoryStatus.lastUpdated || new Date().toISOString(),
     };
     
     lastFetchTime = now;
     await writeLocalStatus(memoryStatus);
     return memoryStatus;
   } catch {
+    lastFetchTime = now;
     return memoryStatus;
   }
 }
@@ -209,7 +222,7 @@ export async function updateStatus(updates: Partial<TirumalaStatus>): Promise<Ti
   const current = memoryStatus;
   const next = { ...current, ...updates, lastUpdated: new Date().toISOString() };
   memoryStatus = next;
-  lastFetchTime = 0; // bust cache so next read picks up fresh
+  lastFetchTime = Date.now(); // keep fresh cache to serve updated state instantly
   
   await writeLocalStatus(next);
 

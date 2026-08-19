@@ -35,6 +35,7 @@ export interface TempleLayoutData {
     | 'annaprasadam-complex'
     | 'botanical-garden'
     | 'hill-waterfall' 
+    | 'dam-reservoir'
     | 'wildlife-safari' 
     | 'heritage-fort' 
     | 'trek-trail' 
@@ -1120,12 +1121,130 @@ export const CURATED_LAYOUTS: Record<string, Partial<TempleLayoutData>> = {
     ]
   },
 
+  'appalayagunta-temple': {
+    placeId: 'appalayagunta-temple',
+    titleEn: 'Sri Prasanna Venkateswara Swamy Temple Precinct Map',
+    titleTe: 'శ్రీ ప్రసన్న వేంకటేశ్వర స్వామి ఆలయ ప్రాంగణ మ్యాప్',
+    layoutType: 'ancient-shrine',
+    centerCoordinates: { lat: 13.5373701, lng: 79.4776129 },
+    routePath: [[430, 290], [270, 275], [145, 255], [270, 205], [150, 130], [270, 85], [395, 120], [395, 160], [270, 250]],
+    pins: [
+      {
+        id: 'parking',
+        nameEn: 'Appalayagunta Temple Parking',
+        nameTe: 'అప్పలాయగుంట పార్కింగ్',
+        category: 'parking',
+        lat: 13.5368,
+        lng: 79.4772,
+        svgX: 430,
+        svgY: 290,
+        descEn: 'Parking area in front of the temple complex.',
+        descTe: 'ఆలయం ఎదురుగా ఉన్న పార్కింగ్ స్థలం.'
+      },
+      {
+        id: 'entry',
+        nameEn: 'Raja Gopuram Entrance',
+        nameTe: 'రాజగోపురం ప్రవేశం',
+        category: 'entry',
+        lat: 13.5371,
+        lng: 79.4774,
+        svgX: 270,
+        svgY: 275,
+        descEn: 'Ancient Dravidian temple entrance gopuram.',
+        descTe: 'ఆలయ ప్రధాన రాజగోపురం.'
+      },
+      {
+        id: 'footwear',
+        nameEn: 'Footwear Counter',
+        nameTe: 'పాదరక్షల కౌంటర్',
+        category: 'footwear',
+        lat: 13.5372,
+        lng: 79.4773,
+        svgX: 145,
+        svgY: 255,
+        descEn: 'Deposit shoes before entering.',
+        descTe: 'చెప్పులు భద్రపరిచే ప్రదేశం.'
+      },
+      {
+        id: 'dhwajasthambham',
+        nameEn: 'Dhwajasthambham Flag Mast',
+        nameTe: 'ధ్వజస్తంభం',
+        category: 'info',
+        lat: 13.5373,
+        lng: 79.4775,
+        svgX: 270,
+        svgY: 205,
+        descEn: 'Sacred temple flag mast in the outer courtyard.',
+        descTe: 'ఆలయ ధ్వజస్తంభం.'
+      },
+      {
+        id: 'anjaneya-shrine',
+        nameEn: 'Sri Anjaneya Swamy Sub-Shrine (Miraculous Healer)',
+        nameTe: 'శ్రీ ఆంజనేయ స్వామి సన్నిధి (వ్యాధి నివారణ)',
+        category: 'info',
+        lat: 13.5374,
+        lng: 79.4774,
+        svgX: 150,
+        svgY: 130,
+        descEn: 'Powerful Hanuman shrine famous for granting relief from chronic diseases and distress.',
+        descTe: 'వ్యాధి నివారణ ప్రసిద్ధి చెందిన శ్రీ హనుమాన్ సన్నిధి.'
+      },
+      {
+        id: 'sanctum',
+        nameEn: 'Sri Prasanna Venkateswara Swamy Garbhalayam (Abhaya Hasta)',
+        nameTe: 'శ్రీ ప్రసన్న వేంకటేశ్వర స్వామి (అభయ హస్తం)',
+        category: 'sanctum',
+        lat: 13.5373701,
+        lng: 79.4776129,
+        svgX: 270,
+        svgY: 85,
+        descEn: 'Presiding deity in unique Abhaya Hasta (blessing) posture.',
+        descTe: 'అభయ హస్త ముద్రలో దర్శనమిచ్చే స్వామివారి మూలవిరాట్టు.'
+      },
+      {
+        id: 'padmavathi-shrine',
+        nameEn: 'Sri Padmavathi Ammavari Shrine',
+        nameTe: 'శ్రీ పద్మావతి అమ్మవారి సన్నిధి',
+        category: 'info',
+        lat: 13.5375,
+        lng: 79.4778,
+        svgX: 395,
+        svgY: 120,
+        descEn: 'Sub-shrine for Sri Padmavathi Devi.',
+        descTe: 'శ్రీ పద్మావతి అమ్మవారి ఆలయం.'
+      },
+      {
+        id: 'laddu',
+        nameEn: 'TTD Prasadam Counter',
+        nameTe: 'టీటీడీ ప్రసాదం కౌంటర్',
+        category: 'laddu',
+        lat: 13.5372,
+        lng: 79.4777,
+        svgX: 395,
+        svgY: 160,
+        descEn: 'Fresh laddu and pulihora prasadam counter.',
+        descTe: 'లడ్డూ మరియు పులిహోర ప్రసాదం కౌంటర్.'
+      }
+    ],
+    routeSteps: [
+      { stepNumber: 1, titleEn: 'Arrival & Temple Parking', titleTe: 'పార్కింగ్ చేరుకోవడం', distance: '0.0 km', timeMins: 0, descEn: 'Park vehicle in front of the temple complex.', descTe: 'ఆలయం ఎదురుగా వాహనాన్ని పార్క్ చేయండి.' },
+      { stepNumber: 2, titleEn: 'Raja Gopuram & Footwear', titleTe: 'రాజగోపురం & పాదరక్షల కేంద్రం', distance: '50m', timeMins: 2, descEn: 'Deposit shoes and enter through the ancient Gopuram.', descTe: 'చెప్పులు విడిచి రాజగోపురం గుండా ప్రవేశించండి.' },
+      { stepNumber: 3, titleEn: 'Dhwajasthambham & Anjaneya Shrine', titleTe: 'ధ్వజస్తంభం & ఆంజనేయ స్వామి సన్నిధి', distance: '80m', timeMins: 5, descEn: 'Offer prayers at the flag mast and visit the miraculous Anjaneya Swamy.', descTe: 'ధ్వజస్తంభ నమస్కారం మరియు హనుమాన్ దర్శనం.' },
+      { stepNumber: 4, titleEn: 'Sri Prasanna Venkateswara Swamy Darshan', titleTe: 'శ్రీ ప్రసన్న వేంకటేశ్వర స్వామి దర్శనం', distance: '100m', timeMins: 15, descEn: 'Receive sanctum darshan of the Lord in Abhaya Hasta posture.', descTe: 'స్వామివారి దివ్య దర్శనం.' },
+      { stepNumber: 5, titleEn: 'Padmavathi Shrine & Prasadam Counter', titleTe: 'పద్మావతి సన్నిధి & ప్రసాదం', distance: '120m', timeMins: 5, descEn: 'Visit Mother Padmavathi and collect TTD prasadam.', descTe: 'అమ్మవారి దర్శనం మరియు ప్రసాదం పొందండి.' }
+    ],
+    emergencyContacts: [
+      { titleEn: 'TTD Appalayagunta Temple Office', titleTe: 'అప్పలాయగుంట ఆలయ విభాగం', number: '08772264555' },
+      { titleEn: 'Emergency Helpline', titleTe: 'అత్యవసర హెల్ప్‌లైన్', number: '112' }
+    ]
+  },
+
   'sree-padmagiri-subramanya': {
     placeId: 'sree-padmagiri-subramanya',
     titleEn: 'Sri Padmagiri Balagnana Dandayudhapani Swamy Temple Precinct Map',
     titleTe: 'శ్రీ పద్మగిరి బాలజ్ఞాన దండాయుధపాణి స్వామి ఆలయ ప్రాంగణ మ్యాప్',
     layoutType: 'ancient-shrine',
-    centerCoordinates: { lat: 13.6062, lng: 79.4312 },
+    centerCoordinates: { lat: 13.5851949, lng: 79.4314015 },
     routePath: [[430, 290], [270, 275], [145, 255], [270, 205], [150, 130], [270, 85], [395, 160], [270, 250]],
     pins: [
       {
@@ -1133,8 +1252,8 @@ export const CURATED_LAYOUTS: Record<string, Partial<TempleLayoutData>> = {
         nameEn: 'Padmagiri Hill Base Parking',
         nameTe: 'పద్మగిరి కొండ దిగువన పార్కింగ్',
         category: 'parking',
-        lat: 13.6056,
-        lng: 79.4305,
+        lat: 13.5846,
+        lng: 79.4308,
         svgX: 430,
         svgY: 290,
         descEn: 'Shaded vehicle parking area at the base of Padmagiri hill.',
@@ -1145,8 +1264,8 @@ export const CURATED_LAYOUTS: Record<string, Partial<TempleLayoutData>> = {
         nameEn: 'Hilltop Entrance Raja Gopuram & Steps',
         nameTe: 'కొండపై రాజగోపురం & మెట్ల మార్గం',
         category: 'entry',
-        lat: 13.6059,
-        lng: 79.4308,
+        lat: 13.5849,
+        lng: 79.4311,
         svgX: 270,
         svgY: 275,
         descEn: 'Sacred entrance archway atop the hill overlooking Thanapalli.',
@@ -1157,8 +1276,8 @@ export const CURATED_LAYOUTS: Record<string, Partial<TempleLayoutData>> = {
         nameEn: 'Footwear Stand',
         nameTe: 'పాదరక్షల స్టాండ్',
         category: 'footwear',
-        lat: 13.6060,
-        lng: 79.4307,
+        lat: 13.5850,
+        lng: 79.4309,
         svgX: 145,
         svgY: 255,
         descEn: 'Shoe custody counter near temple gateway.',
@@ -1169,8 +1288,8 @@ export const CURATED_LAYOUTS: Record<string, Partial<TempleLayoutData>> = {
         nameEn: 'Dhwajasthambham & Mayura (Peacock) Vahanam',
         nameTe: 'ధ్వజస్తంభం & మయూర వాహనం',
         category: 'info',
-        lat: 13.6061,
-        lng: 79.4310,
+        lat: 13.5851,
+        lng: 79.4312,
         svgX: 270,
         svgY: 205,
         descEn: 'Sacred flag mast and Lord Murugan\'s divine Peacock vehicle in the courtyard.',
@@ -1181,8 +1300,8 @@ export const CURATED_LAYOUTS: Record<string, Partial<TempleLayoutData>> = {
         nameEn: 'Shatkona Yantra Peetham & Navagraha Shrine',
         nameTe: 'షట్కోణ యంత్ర పీఠం & నవగ్రహ సన్నిధి',
         category: 'info',
-        lat: 13.6063,
-        lng: 79.4308,
+        lat: 13.5852,
+        lng: 79.4310,
         svgX: 150,
         svgY: 130,
         descEn: 'Mystic hexagonal Shatkona Yantra established by Sri Ganapathi Swamy.',
@@ -1193,8 +1312,8 @@ export const CURATED_LAYOUTS: Record<string, Partial<TempleLayoutData>> = {
         nameEn: 'Sri Balagnana Dandayudhapani Swamy Garbhalayam',
         nameTe: 'శ్రీ బాలజ్ఞాన దండాయుధపాణి స్వామి గర్భాలయం',
         category: 'sanctum',
-        lat: 13.6064,
-        lng: 79.4312,
+        lat: 13.5851949,
+        lng: 79.4314015,
         svgX: 270,
         svgY: 85,
         descEn: 'Lord Murugan worshipped in celibate Balagnana Dandayudhapani posture holding the divine Vel/Danda.',
@@ -1205,8 +1324,8 @@ export const CURATED_LAYOUTS: Record<string, Partial<TempleLayoutData>> = {
         nameEn: 'Vibhuti & Panchamrutham Prasadam Counter',
         nameTe: 'విభూతి & పంచామృతం ప్రసాదం కౌంటర్',
         category: 'laddu',
-        lat: 13.6062,
-        lng: 79.4315,
+        lat: 13.5851,
+        lng: 79.4317,
         svgX: 395,
         svgY: 160,
         descEn: 'Collect consecrated Vibhuti and Palani-style holy Panchamrutham prasadam.',
@@ -1450,112 +1569,6 @@ export const CURATED_LAYOUTS: Record<string, Partial<TempleLayoutData>> = {
     ]
   },
 
-  'appalayagunta-temple': {
-    placeId: 'appalayagunta-temple',
-    titleEn: 'Sri Prasanna Venkateswara Swamy Temple Precinct Map',
-    titleTe: 'శ్రీ ప్రసన్న వేంకటేశ్వర స్వామి ఆలయ ప్రాంగణ మ్యాప్',
-    layoutType: 'ancient-shrine',
-    centerCoordinates: { lat: 13.5463, lng: 79.5226 },
-    routePath: [[430, 290], [270, 275], [145, 255], [270, 205], [150, 130], [270, 85], [395, 120], [395, 160], [270, 250]],
-    pins: [
-      {
-        id: 'parking',
-        nameEn: 'Appalayagunta Temple Parking',
-        nameTe: 'అప్పలాయగుంట పార్కింగ్',
-        category: 'parking',
-        lat: 13.5458,
-        lng: 79.5220,
-        svgX: 430,
-        svgY: 290,
-        descEn: 'Parking area in front of the temple complex.',
-        descTe: 'ఆలయం ఎదురుగా ఉన్న పార్కింగ్ స్థలం.'
-      },
-      {
-        id: 'entry',
-        nameEn: 'Raja Gopuram Entrance',
-        nameTe: 'రాజగోపురం ప్రవేశం',
-        category: 'entry',
-        lat: 13.5460,
-        lng: 79.5223,
-        svgX: 270,
-        svgY: 275,
-        descEn: 'Ancient Dravidian temple entrance gopuram.',
-        descTe: 'ఆలయ ప్రధాన రాజగోపురం.'
-      },
-      {
-        id: 'footwear',
-        nameEn: 'Footwear Counter',
-        nameTe: 'పాదరక్షల కౌంటర్',
-        category: 'footwear',
-        lat: 13.5461,
-        lng: 79.5222,
-        svgX: 145,
-        svgY: 255,
-        descEn: 'Deposit shoes before entering.',
-        descTe: 'చెప్పులు భద్రపరిచే ప్రదేశం.'
-      },
-      {
-        id: 'dhwajasthambham',
-        nameEn: 'Dhwajasthambham Flag Mast',
-        nameTe: 'ధ్వజస్తంభం',
-        category: 'info',
-        lat: 13.5462,
-        lng: 79.5225,
-        svgX: 270,
-        svgY: 205,
-        descEn: 'Sacred temple flag mast in the outer courtyard.',
-        descTe: 'ఆలయ ధ్వజస్తంభం.'
-      },
-      {
-        id: 'anjaneya-shrine',
-        nameEn: 'Sri Anjaneya Swamy Sub-Shrine (Miraculous Healer)',
-        nameTe: 'శ్రీ ఆంజనేయ స్వామి సన్నిధి (వ్యాధి నివారణ)',
-        category: 'info',
-        lat: 13.5464,
-        lng: 79.5223,
-        svgX: 150,
-        svgY: 130,
-        descEn: 'Powerful Hanuman shrine famous for granting relief from chronic diseases and distress.',
-        descTe: 'వ్యాధి నివారణ ప్రసిద్ధి చెందిన శ్రీ హనుమాన్ సన్నిధి.'
-      },
-      {
-        id: 'sanctum',
-        nameEn: 'Sri Prasanna Venkateswara Swamy Garbhalayam (Abhaya Hasta)',
-        nameTe: 'శ్రీ ప్రసన్న వేంకటేశ్వర స్వామి (అభయ హస్తం)',
-        category: 'sanctum',
-        lat: 13.5465,
-        lng: 79.5226,
-        svgX: 270,
-        svgY: 85,
-        descEn: 'Presiding deity in unique Abhaya Hasta (blessing) posture.',
-        descTe: 'అభయ హస్త ముద్రలో దర్శనమిచ్చే స్వామివారి మూలవిరాట్టు.'
-      },
-      {
-        id: 'padmavathi-shrine',
-        nameEn: 'Sri Padmavathi Ammavari Shrine',
-        nameTe: 'శ్రీ పద్మావతి అమ్మవారి సన్నిధి',
-        category: 'info',
-        lat: 13.5464,
-        lng: 79.5229,
-        svgX: 395,
-        svgY: 120,
-        descEn: 'Sub-shrine for Sri Padmavathi Devi.',
-        descTe: 'శ్రీ పద్మావతి అమ్మవారి ఆలయం.'
-      },
-      {
-        id: 'laddu',
-        nameEn: 'TTD Prasadam Counter',
-        nameTe: 'టీటీడీ ప్రసాదం కౌంటర్',
-        category: 'laddu',
-        lat: 13.5462,
-        lng: 79.5228,
-        svgX: 395,
-        svgY: 160,
-        descEn: 'Fresh laddu and pulihora prasadam counter.',
-        descTe: 'లడ్డూ మరియు పులిహోర ప్రసాదాలు.'
-      }
-    ]
-  },
 
   'narayanavanam': {
     placeId: 'narayanavanam',
@@ -2190,7 +2203,7 @@ export const CURATED_LAYOUTS: Record<string, Partial<TempleLayoutData>> = {
     titleEn: 'Sri Parasurameswara Swamy Temple (Gudimallam)',
     titleTe: 'శ్రీ పరశురామేశ్వర స్వామి ఆలయం (గుడిమల్లం)',
     layoutType: 'ancient-shrine',
-    centerCoordinates: { lat: 13.5694, lng: 79.5781 },
+    centerCoordinates: { lat: 13.6037445, lng: 79.5785729 },
     routePath: [[430, 290], [270, 275], [175, 255], [145, 160], [270, 105]],
     pins: [
       {
@@ -2198,8 +2211,8 @@ export const CURATED_LAYOUTS: Record<string, Partial<TempleLayoutData>> = {
         nameEn: 'Approach Parking Area',
         nameTe: 'ఆలయ పార్కింగ్ స్థలం',
         category: 'parking',
-        lat: 13.5685,
-        lng: 79.5786,
+        lat: 13.6028,
+        lng: 79.5790,
         svgX: 430,
         svgY: 290,
         descEn: 'Shaded open parking space for cars, cabs, and two-wheelers.',
@@ -2210,8 +2223,8 @@ export const CURATED_LAYOUTS: Record<string, Partial<TempleLayoutData>> = {
         nameEn: 'Mukha Mandapam & ASI Gate',
         nameTe: 'ముఖ మండపం & ఏఎస్ఐ గేట్',
         category: 'entry',
-        lat: 13.5691,
-        lng: 79.5783,
+        lat: 13.6034,
+        lng: 79.5787,
         svgX: 270,
         svgY: 275,
         descEn: 'Historical stone entrance gateway under ASI protection.',
@@ -2222,8 +2235,8 @@ export const CURATED_LAYOUTS: Record<string, Partial<TempleLayoutData>> = {
         nameEn: 'Footwear Stand',
         nameTe: 'పాదరక్షల స్టాండ్',
         category: 'footwear',
-        lat: 13.5689,
-        lng: 79.5780,
+        lat: 13.6032,
+        lng: 79.5784,
         svgX: 175,
         svgY: 255,
         descEn: 'Designated shoe deposit stand outside courtyard.',
@@ -2234,8 +2247,8 @@ export const CURATED_LAYOUTS: Record<string, Partial<TempleLayoutData>> = {
         nameEn: 'ASI Inscription Pillar',
         nameTe: 'పురావస్తు శాసనాల స్తంభం',
         category: 'info',
-        lat: 13.5696,
-        lng: 79.5778,
+        lat: 13.6039,
+        lng: 79.5782,
         svgX: 145,
         svgY: 160,
         descEn: 'Ancient Chola, Pallava, and Vijayanagara inscriptions detailing temple history.',
@@ -2246,8 +2259,8 @@ export const CURATED_LAYOUTS: Record<string, Partial<TempleLayoutData>> = {
         nameEn: 'Trimurti Parasurameswara Sanctum',
         nameTe: 'త్రిమూర్తి పరశురామేశ్వర గర్భాలయం',
         category: 'sanctum',
-        lat: 13.5694,
-        lng: 79.5781,
+        lat: 13.6037445,
+        lng: 79.5785729,
         svgX: 270,
         svgY: 105,
         descEn: 'World\'s oldest naturalistic Shiva Lingam (3rd Century BCE) carved on single stone with Brahma, Vishnu, and Shiva on a dwarf Yaksha.',
@@ -2556,19 +2569,37 @@ export function getTempleLayout(placeInput: string | PlaceInputContext, fallback
   // ── ACCURATE MULTI-CATEGORY ARCHETYPE CLASSIFICATION ──
   let layoutType: TempleLayoutData['layoutType'] = 'city-shrine';
 
-  // 1. Geological & Botanical Nature Parks (Silathoranam, Udyanavanam)
+  // 1. Dams, Reservoirs, Large Water Projects
   if (
-    category.includes('nature') || 
+    placeId.includes('dam') || 
+    placeId.includes('reservoir') || 
+    nameLower.includes('dam') || 
+    nameLower.includes('reservoir') || 
+    tags.includes('dam') || 
+    tags.includes('reservoir')
+  ) {
+    layoutType = 'dam-reservoir';
+  }
+  // 2. Geological Natural Rock Arches & Monoliths (e.g. Silathoranam)
+  else if (
     tags.includes('geology') || 
     tags.includes('rock') || 
-    tags.includes('garden') || 
     nameLower.includes('silathoranam') || 
-    nameLower.includes('udyanavanam') || 
-    nameLower.includes('rock formation')
+    nameLower.includes('rock formation') ||
+    nameLower.includes('rock arch')
   ) {
     layoutType = 'geo-nature-park';
   }
-  // 2. Shopping, Bazaars, Markets
+  // 3. Botanical Gardens & Flower Parks
+  else if (
+    tags.includes('garden') || 
+    tags.includes('horticulture') || 
+    nameLower.includes('udyanavanam') || 
+    nameLower.includes('flower garden')
+  ) {
+    layoutType = 'botanical-garden';
+  }
+  // 4. Shopping, Bazaars, Markets
   else if (
     category.includes('shopping') || 
     tags.includes('shopping') || 
@@ -2581,7 +2612,7 @@ export function getTempleLayout(placeInput: string | PlaceInputContext, fallback
   ) {
     layoutType = 'shopping-market';
   }
-  // 3. Food & Dining
+  // 5. Food & Dining
   else if (
     category.includes('food') || 
     category.includes('dining') || 
@@ -2592,7 +2623,7 @@ export function getTempleLayout(placeInput: string | PlaceInputContext, fallback
   ) {
     layoutType = 'dining-restaurant';
   }
-  // 4. Museums & Science Centers
+  // 6. Museums & Science Centers
   else if (
     category.includes('museum') || 
     tags.includes('science') || 
@@ -2602,14 +2633,14 @@ export function getTempleLayout(placeInput: string | PlaceInputContext, fallback
   ) {
     layoutType = 'museum-gallery';
   }
-  // 5. Cultural & Theme Parks
+  // 7. Cultural & Theme Parks
   else if (
     nameLower.includes('silparamam') || 
     (category.includes('park') && tags.includes('culture'))
   ) {
     layoutType = 'cultural-park';
   }
-  // 6. Wildlife & Safari
+  // 8. Wildlife & Safari
   else if (
     placeId === 'sv-zoo-park' || 
     category.includes('zoo') || 
@@ -2621,7 +2652,7 @@ export function getTempleLayout(placeInput: string | PlaceInputContext, fallback
   ) {
     layoutType = 'wildlife-safari';
   }
-  // 7. Sacred Footpaths & Treks
+  // 9. Sacred Footpaths & Treks
   else if (
     category.includes('footstep') || 
     category.includes('footpath') || 
@@ -2632,14 +2663,14 @@ export function getTempleLayout(placeInput: string | PlaceInputContext, fallback
   ) {
     layoutType = 'trek-trail';
   }
-  // 8. Waterfalls, Rivers, Dams, Theerthams
+  // 10. Waterfalls, Gorges, Streams
   else if (
-    (category.includes('waterfall') || tags.includes('waterfall') || nameLower.includes('waterfall') || nameLower.includes('falls') || nameLower.includes('kona') || nameLower.includes('dam')) &&
+    (category.includes('waterfall') || tags.includes('waterfall') || nameLower.includes('waterfall') || nameLower.includes('falls') || nameLower.includes('kona')) &&
     !nameLower.includes('temple') && !category.includes('temple')
   ) {
     layoutType = 'hill-waterfall';
   }
-  // 9. Heritage Forts & Palaces
+  // 11. Heritage Forts & Palaces
   else if (
     category.includes('fort') || 
     tags.includes('fort') || 
@@ -2649,7 +2680,7 @@ export function getTempleLayout(placeInput: string | PlaceInputContext, fallback
   ) {
     layoutType = 'heritage-fort';
   }
-  // 10. Spiritual Temples & Shrines
+  // 12. Spiritual Temples & Shrines
   else if (
     placeType === 'spiritual' ||
     category.includes('temple') || 
@@ -2674,7 +2705,7 @@ export function getTempleLayout(placeInput: string | PlaceInputContext, fallback
       layoutType = 'city-shrine';
     }
   } else {
-    layoutType = 'geo-nature-park';
+    layoutType = category.includes('nature') ? 'hill-waterfall' : 'city-shrine';
   }
 
   const baseLat = placeObj?.coordinates?.lat || fallbackCoords?.lat || 13.6296;
@@ -2683,7 +2714,17 @@ export function getTempleLayout(placeInput: string | PlaceInputContext, fallback
   let generatedPins: MapPin[] = [];
   let generatedRoute: [number, number][] = [];
 
-  if (layoutType === 'geo-nature-park') {
+  if (layoutType === 'dam-reservoir') {
+    // 🌊 DAMS, RESERVOIRS & WATER BODIES (Mallimadugu Dam, Kalyani Dam)
+    generatedRoute = [[430, 280], [330, 270], [170, 240], [270, 140], [390, 100]];
+    generatedPins = [
+      { id: 'parking', nameEn: 'Reservoir Viewpoint Parking', nameTe: 'డ్యామ్ పార్కింగ్ స్థలం', category: 'parking', lat: baseLat - 0.0010, lng: baseLng + 0.0008, svgX: 430, svgY: 280, descEn: 'Vehicle parking bay near reservoir viewpoint deck.', descTe: 'డ్యామ్ వ్యూపాయింట్ వద్ద వాహనాల పార్కింగ్ స్థలం.' },
+      { id: 'entry', nameEn: 'Dam Bund Approach Walkway', nameTe: 'డ్యామ్ కట్ట నడక మార్గం', category: 'entry', lat: baseLat - 0.0005, lng: baseLng, svgX: 330, svgY: 270, descEn: 'Paved walkway along the reservoir embankment crest.', descTe: 'డ్యామ్ కట్టపై నడక మార్గం.' },
+      { id: 'spillway', nameEn: 'Siphon Spillway & Barrage Gates', nameTe: 'స్పిల్‌వే & నీటి గేట్లు', category: 'info', lat: baseLat - 0.0002, lng: baseLng - 0.0006, svgX: 170, svgY: 240, descEn: 'Multi-gate spillway and water discharge channels.', descTe: 'నీటి విడుదల గేట్లు మరియు స్పిల్‌వే నిర్మాణం.' },
+      { id: 'sanctum', nameEn: `${name} Water Expanse`, nameTe: `${name} జలాశయం`, category: 'sanctum', lat: baseLat, lng: baseLng, svgX: 270, svgY: 140, descEn: 'Scenic reservoir backwaters nestled against Seshachalam hills.', descTe: 'శేషాచలం కొండల నడుమ విస్తరించిన సుందర జలాశయం.' },
+      { id: 'viewpoint', nameEn: 'Hill View & Photography Deck', nameTe: 'సూర్యాస్తమయ వ్యూ పాయింట్', category: 'info', lat: baseLat + 0.0004, lng: baseLng + 0.0006, svgX: 390, svgY: 100, descEn: 'Elevated scenic platform for photography and landscape views.', descTe: 'ప్రకృతి అందాలు మరియు కొండల దృశ్యాలను వీక్షించే వేదిక.' }
+    ];
+  } else if (layoutType === 'geo-nature-park') {
     // 🌿 GEOLOGICAL & NATURE BOTANICAL PARK (Silathoranam, Udyanavanam)
     generatedRoute = [[430, 290], [270, 275], [160, 190], [270, 100], [380, 140]];
     generatedPins = [

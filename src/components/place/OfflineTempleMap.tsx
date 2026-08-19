@@ -369,8 +369,47 @@ export default function OfflineTempleMap({
               {/* Main Entrance Gateway (South) */}
               <rect x="225" y="262" width="90" height="26" rx="6" fill="#0284C7" stroke="#0369A1" strokeWidth="1.5" />
             </g>
+          ) : layout.layoutType === 'dam-reservoir' ? (
+            /* 2. DAMS, RESERVOIRS & LAKES (Mallimadugu Dam, Kalyani Dam) */
+            <g>
+              {/* Seshachalam Mountain Foothill Backdrop */}
+              <path d="M 20 130 Q 140 40 270 70 Q 400 40 520 130 L 520 320 L 20 320 Z" fill="#F0FDF4" stroke="#86EFAC" strokeWidth="1.5" />
+              <path d="M 40 90 Q 150 20 270 40 Q 390 20 500 90" fill="none" stroke="#22C55E" strokeWidth="2" strokeDasharray="6 4" opacity="0.5" />
+
+              {/* Massive Blue Reservoir Backwaters */}
+              <path d="M 40 140 Q 150 80 270 95 Q 390 80 500 140 Q 480 230 380 220 Q 270 210 160 220 Q 60 230 40 140 Z" fill="url(#waterTankGrad)" stroke="#0284C7" strokeWidth="2.5" />
+
+              {/* Water Surface Ripples */}
+              <path d="M 120 140 Q 160 132 200 140 Q 240 148 280 140 Q 320 132 360 140 Q 400 148 440 140" stroke="#BAE6FD" strokeWidth="1.8" fill="none" opacity="0.8" />
+              <path d="M 150 170 Q 190 162 230 170 Q 270 178 310 170 Q 350 162 390 170" stroke="#BAE6FD" strokeWidth="1.8" fill="none" opacity="0.8" />
+
+              {/* Dam Embankment / Crest Masonry Bund */}
+              <path d="M 90 235 L 450 235 L 440 255 L 100 255 Z" fill="#E2E8F0" stroke="#64748B" strokeWidth="2" />
+              <line x1="100" y1="245" x2="440" y2="245" stroke="#94A3B8" strokeWidth="1.5" strokeDasharray="6 4" />
+
+              {/* Spillway Sluice / Siphon Gates (West) */}
+              <g transform="translate(130, 225)">
+                <rect x="0" y="0" width="70" height="36" rx="4" fill="#CBD5E1" stroke="#475569" strokeWidth="1.5" />
+                <line x1="14" y1="5" x2="14" y2="31" stroke="#0F172A" strokeWidth="2" />
+                <line x1="28" y1="5" x2="28" y2="31" stroke="#0F172A" strokeWidth="2" />
+                <line x1="42" y1="5" x2="42" y2="31" stroke="#0F172A" strokeWidth="2" />
+                <line x1="56" y1="5" x2="56" y2="31" stroke="#0F172A" strokeWidth="2" />
+                {/* Downstream discharge stream */}
+                <path d="M 10 36 Q 35 65 20 85" stroke="#38BDF8" strokeWidth="6" fill="none" opacity="0.7" />
+                <path d="M 40 36 Q 55 65 45 85" stroke="#38BDF8" strokeWidth="6" fill="none" opacity="0.7" />
+              </g>
+
+              {/* Scenic Viewpoint & Photography Deck (East) */}
+              <g transform="translate(365, 85)">
+                <rect x="0" y="0" width="80" height="42" rx="8" fill="#FEF9C3" stroke="#CA8A04" strokeWidth="1.5" />
+                <circle cx="40" cy="21" r="10" fill="#FEF08A" stroke="#B45309" strokeWidth="1" />
+              </g>
+
+              {/* Approach Road & Parking Area (South) */}
+              <rect x="290" y="265" width="100" height="26" rx="6" fill="#0284C7" stroke="#0369A1" strokeWidth="1.5" />
+            </g>
           ) : layout.layoutType === 'geo-nature-park' ? (
-            /* 2. GEOLOGICAL & BOTANICAL PARK (Silathoranam Natural Rock Arch & Park) */
+            /* 3. GEOLOGICAL & BOTANICAL PARK (Silathoranam Natural Rock Arch & Park) */
             <g>
               {/* Botanical Park Base */}
               <rect x="40" y="30" width="460" height="270" rx="16" fill="#F4FBF4" stroke="#86EFAC" strokeWidth="2" />
@@ -652,6 +691,7 @@ export default function OfflineTempleMap({
             const label = lang === 'te' 
               ? (pin.nameTe.length > 14 ? pin.nameTe.split(' ')[0] : pin.nameTe)
               : (pin.category === 'sanctum' ? (
+                  layout.layoutType === 'dam-reservoir' ? 'Reservoir Lake' :
                   layout.layoutType === 'botanical-garden' ? 'Flower Nursery' :
                   layout.layoutType === 'sacred-pushkarini' ? 'Holy Tank' :
                   layout.layoutType === 'geo-nature-park' ? 'Rock Arch' :
@@ -662,7 +702,7 @@ export default function OfflineTempleMap({
                   layout.layoutType === 'hill-waterfall' ? 'Main Falls' :
                   layout.layoutType === 'heritage-fort' ? 'Palace' : 'Sanctum'
                 ) :
-                 pin.category === 'entry' ? 'Entrance' :
+                 pin.category === 'entry' ? (layout.layoutType === 'dam-reservoir' ? 'Dam Bund' : 'Entrance') :
                  pin.category === 'queue' ? (layout.layoutType === 'annaprasadam-complex' ? 'Holding Hall' : 'Queue') :
                  pin.category === 'laddu' ? (layout.layoutType === 'city-shrine' ? 'Prasadam' : 'Prasadam') :
                  pin.category === 'footwear' ? (layout.layoutType === 'sacred-pushkarini' ? 'Footwear' : 'Footwear') :
@@ -670,6 +710,8 @@ export default function OfflineTempleMap({
                  pin.category === 'parking' ? 'Parking' :
                  pin.category === 'medical' ? 'Medical' :
                  pin.category === 'safari' ? 'Safari' :
+                 pin.id.includes('spillway') || pin.id.includes('siphon') || pin.id.includes('barrage') ? 'Spillway' :
+                 pin.id.includes('view') || pin.id.includes('hills') || pin.id.includes('panoramic') ? 'Viewpoint' :
                  pin.id.includes('dhwaja') ? 'Dhwajasthambham' :
                  pin.id.includes('pushkarini') || pin.id.includes('sarovar') || pin.id.includes('tank') || pin.id.includes('kalyani') ? 'Pushkarini' :
                  pin.id.includes('shrine') || pin.id.includes('shiva') || pin.id.includes('sub') || pin.id.includes('varaha') || pin.id.includes('padmavathi') || pin.id.includes('anandavalli') || pin.id.includes('anjaneya') || pin.id.includes('ranganatha') || pin.id.includes('krishna') || pin.id.includes('sundararaja') || pin.id.includes('kamakshi') || pin.id.includes('manikantheswara') ? 'Sub-Shrine' :
