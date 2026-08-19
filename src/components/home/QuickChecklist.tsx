@@ -99,17 +99,15 @@ export function QuickChecklist(props: any) {
             </div>
             {liveStatus.ssdNotice && (
               <span style={{
-                fontSize: '10.5px',
+                fontSize: '11px',
                 fontWeight: 700,
-                color: '#334155',
-                background: '#FFFFFF',
-                border: '1px solid #E2E8F0',
-                padding: '3px 8px',
-                borderRadius: '6px',
-                maxWidth: '130px',
-                overflow: 'hidden',
-                textOverflow: 'ellipsis',
-                whiteSpace: 'nowrap'
+                color: '#991B1B',
+                background: '#FEF2F2',
+                border: '1px solid #FECACA',
+                padding: '4px 10px',
+                borderRadius: '8px',
+                lineHeight: 1.3,
+                textAlign: 'right'
               }}>
                 {liveStatus.ssdNotice}
               </span>
@@ -156,9 +154,20 @@ export function QuickChecklist(props: any) {
 
           {/* Daily timing guide / Custom Admin Info */}
           {liveStatus.ssdTimingsGuide && (
-            <div style={{ borderTop: '1px solid #F1F5F9', paddingTop: '8px', marginTop: '8px', display: 'flex', gap: '5px', alignItems: 'flex-start' }}>
-              <Clock size={11} color="#94A3B8" style={{ marginTop: '2px', flexShrink: 0 }} />
-              <span style={{ fontSize: '10.5px', color: '#64748B', lineHeight: 1.4 }}>
+            <div style={{
+              borderTop: '1px solid #F1F5F9',
+              paddingTop: '10px',
+              marginTop: '8px',
+              display: 'flex',
+              gap: '8px',
+              alignItems: 'flex-start',
+              background: liveStatus.ssdTokenStatus === 'closed-for-day' ? '#FFFBEB' : '#F8FAFC',
+              padding: '10px 12px',
+              borderRadius: '10px',
+              border: `1px solid ${liveStatus.ssdTokenStatus === 'closed-for-day' ? '#FDE68A' : '#E2E8F0'}`
+            }}>
+              <Clock size={13} color={liveStatus.ssdTokenStatus === 'closed-for-day' ? '#B45309' : '#64748B'} style={{ marginTop: '2px', flexShrink: 0 }} />
+              <span style={{ fontSize: '11.5px', color: liveStatus.ssdTokenStatus === 'closed-for-day' ? '#92400E' : '#475569', lineHeight: 1.45, fontWeight: 500 }}>
                 {liveStatus.ssdTimingsGuide}
               </span>
             </div>

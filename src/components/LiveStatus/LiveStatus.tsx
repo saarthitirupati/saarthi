@@ -211,6 +211,13 @@ export default function LiveStatus() {
               </div>
             )}
 
+            {status.ssdTimingsGuide && (
+              <div className={styles.noticeBox} style={{ background: '#FFFBEB', borderColor: '#FDE68A', color: '#92400E' }}>
+                <Ticket size={14} color="#D97706" style={{ flexShrink: 0 }} />
+                <span>{status.ssdTimingsGuide}</span>
+              </div>
+            )}
+
             {/* Footer row */}
             <div className={styles.expandedFooter}>
               <button 

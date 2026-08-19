@@ -67,6 +67,7 @@ async function setup() {
     console.log("✅ Ensured 'live_metrics' table exists with all columns.");
 
     // Enable RLS and public policies
+    await db.query(`GRANT ALL ON live_metrics TO anon, authenticated, service_role;`);
     await db.query(`ALTER TABLE live_metrics ENABLE ROW LEVEL SECURITY;`);
     await db.query(`DROP POLICY IF EXISTS "Allow public read/write" ON live_metrics;`);
     await db.query(`

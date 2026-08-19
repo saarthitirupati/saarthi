@@ -123,6 +123,14 @@ export async function readStatus(): Promise<TirumalaStatus> {
       return memoryStatus;
     }
 
+    // Check timestamp: don't let older db data overwrite fresher local/in-memory update
+    const dbUpdatedAt = metrics.updated_at ? new Date(metrics.updated_at).getTime() : 0;
+    const localUpdatedAt = memoryStatus.lastUpdated ? new Date(memoryStatus.lastUpdated).getTime() : 0;
+    if (dbUpdatedAt > 0 && localUpdatedAt > 0 && dbUpdatedAt < localUpdatedAt) {
+      lastFetchTime = now;
+      return memoryStatus;
+    }
+
     // 1. If full_status_json is present in Supabase, parse it directly for 100% field fidelity
     if (metrics.full_status_json) {
       try {

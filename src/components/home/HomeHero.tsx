@@ -298,9 +298,14 @@ export function HomeHero({ userName, locationName, weatherTemp, liveStatus, acti
   const liveSSD: string = (() => {
     if (ssdTokenStatus === 'issuing') return 'Issuing';
     if (ssdTokenStatus === 'paused') return 'Paused';
-    if (ssdTokenStatus === 'closed-for-day') {
+    if (ssdTokenStatus === 'closed-for-day' || ssdTokenStatus === 'closed') {
       const next = liveStatus?.ssdNextTokenTime;
-      return next ? `Opens ${next}` : 'Closed';
+      if (!next) return 'Closed';
+      const clean = next.trim();
+      if (clean.toLowerCase().startsWith('open') || clean.toLowerCase().startsWith('tomorrow') || clean.toLowerCase().startsWith('at ') || clean.toLowerCase().startsWith('no ')) {
+        return clean;
+      }
+      return `Opens ${clean}`;
     }
     return 'Check Counter';
   })();
@@ -988,16 +993,62 @@ export function HomeHero({ userName, locationName, weatherTemp, liveStatus, acti
               ? { color: '#D97706', bg: '#FEF3C7', badgeBg: '#D97706', badgeText: '#FFFFFF', iconBg: '#FFFFFF', border: '#D97706', label: lang === 'te' ? 'స్లాట్ ఆధారితం' : 'MODERATE', meter: 3 }
               : { color: '#059669', bg: '#D1FAE5', badgeBg: '#059669', badgeText: '#FFFFFF', iconBg: '#FFFFFF', border: '#059669', label: lang === 'te' ? 'వేగంగా కదులుతోంది' : 'LOW CROWD', meter: 2 };
 
-            // 3. SSD Token State (Dynamic Admin Push — always show wait time, never CLOSED)
+            // 3. SSD Token State (Dynamic Admin Push — dynamic status badge and times)
             const ssdHours = getMaxHours(ssdWait);
             
-            const ssdStatus = ssdHours > 7
+            const isSsdClosedStatus = ssdTokenStatus === 'closed-for-day' || ssdTokenStatus === 'closed';
+            const isSsdPausedStatus = ssdTokenStatus === 'paused';
+
+            let resolvedSsdStatus = ssdHours > 7
               ? { color: '#E11D48', bg: '#FFE4E6', badgeBg: '#E11D48', badgeText: '#FFFFFF', iconBg: '#FFFFFF', border: '#E11D48', label: lang === 'te' ? 'అధిక రద్దీ' : 'HEAVY RUSH', meter: 5 }
               : ssdHours > 4
               ? { color: '#EA580C', bg: '#FFEDD5', badgeBg: '#EA580C', badgeText: '#FFFFFF', iconBg: '#FFFFFF', border: '#EA580C', label: lang === 'te' ? 'రద్దీ ఎక్కువ' : 'HIGH', meter: 4 }
               : ssdHours >= 2
               ? { color: '#D97706', bg: '#FEF3C7', badgeBg: '#D97706', badgeText: '#FFFFFF', iconBg: '#FFFFFF', border: '#D97706', label: lang === 'te' ? 'సాధారణ రద్దీ' : 'MODERATE', meter: 3 }
               : { color: '#059669', bg: '#D1FAE5', badgeBg: '#059669', badgeText: '#FFFFFF', iconBg: '#FFFFFF', border: '#059669', label: lang === 'te' ? 'వేగంగా కదులుతోంది' : 'LOW CROWD', meter: 2 };
+
+            let ssdDisplayWait = ssdWait;
+            let isSsdCardClosed = false;
+
+            if (isSsdClosedStatus) {
+              isSsdCardClosed = true;
+              ssdDisplayWait = liveStatus?.ssdNextTokenTime || (lang === 'te' ? 'నేటికి ముగిసింది' : 'Closed for Today');
+              resolvedSsdStatus = {
+                color: '#DC2626',
+                bg: '#FEF2F2',
+                badgeBg: '#DC2626',
+                badgeText: '#FFFFFF',
+                iconBg: '#FFFFFF',
+                border: '#DC2626',
+                label: lang === 'te' ? 'ఈ రోజుకు ముగిసింది' : 'CLOSED FOR TODAY',
+                meter: 5
+              };
+            } else if (isSsdPausedStatus) {
+              isSsdCardClosed = true;
+              ssdDisplayWait = liveStatus?.ssdNextTokenTime ? `Next: ${liveStatus.ssdNextTokenTime}` : (lang === 'te' ? 'నిలిపివేయబడింది' : 'Paused');
+              resolvedSsdStatus = {
+                color: '#D97706',
+                bg: '#FFFBEB',
+                badgeBg: '#D97706',
+                badgeText: '#FFFFFF',
+                iconBg: '#FFFFFF',
+                border: '#D97706',
+                label: lang === 'te' ? 'తాత్కాలిక నిలిపివేత' : 'PAUSED',
+                meter: 3
+              };
+            } else if (ssdTokenStatus === 'issuing') {
+              ssdDisplayWait = liveStatus?.ssdNextTokenTime ? liveStatus.ssdNextTokenTime : ssdWait;
+              resolvedSsdStatus = {
+                color: '#059669',
+                bg: '#D1FAE5',
+                badgeBg: '#059669',
+                badgeText: '#FFFFFF',
+                iconBg: '#FFFFFF',
+                border: '#059669',
+                label: lang === 'te' ? 'ఇప్పుడు జారీ' : 'ISSUING NOW',
+                meter: 1
+              };
+            }
 
             const queueCards = [
               {
@@ -1020,12 +1071,12 @@ export function HomeHero({ userName, locationName, weatherTemp, liveStatus, acti
               },
               {
                 id: 'ssd',
-                icon: <Ticket size={16} color={ssdStatus.color} />,
+                icon: <Ticket size={16} color={resolvedSsdStatus.color} />,
                 title: lang === 'te' ? 'SSD టోకెన్ దర్శనం' : 'SSD Token Darshan',
                 subtitle: lang === 'te' ? 'ఉచిత సమయ స్లాట్ టోకెన్లు' : 'Time-Slotted Free Darshan',
-                wait: ssdWait,
-                ...ssdStatus,
-                isClosed: false
+                wait: ssdDisplayWait,
+                ...resolvedSsdStatus,
+                isClosed: isSsdCardClosed
               }
             ];
 
