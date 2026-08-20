@@ -39,7 +39,7 @@ export default function PrivacyPolicyPage() {
             <h2 style={{ fontSize: '16px', fontWeight: 800, margin: 0, color: '#0F5132' }}>Our Commitment to Pilgrim Privacy</h2>
           </div>
           <p style={{ fontSize: '13.5px', lineHeight: '1.6', color: '#334155', margin: 0 }}>
-            Saarthi (&quot;we&quot;, &quot;our&quot;, or &quot;us&quot;) is committed to protecting your privacy. This Pilgrim Companion application is designed with privacy-first principles to provide helpful, real-time guidance for pilgrims visiting Tirupati, Tirumala, and surrounding sacred shrines.
+            Saarthi Guide (&quot;we&quot;, &quot;our&quot;, or &quot;us&quot;) is committed to protecting your privacy. This Pilgrim Companion application is designed with privacy-first principles to provide helpful, real-time guidance for pilgrims visiting Tirupati, Tirumala, and surrounding sacred shrines.
           </p>
         </div>
 
