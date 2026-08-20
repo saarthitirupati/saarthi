@@ -16,6 +16,11 @@
   user-select: none;
   cursor: pointer;
   -webkit-tap-highlight-color: transparent;
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  will-change: opacity, transform;
 }
 
 /* Ambient Deep Sanctum Atmosphere */
@@ -36,21 +41,22 @@
   width: min(90vw, 380px);
   height: min(90vw, 380px);
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(245, 175, 25, 0.45) 0%, rgba(217, 119, 6, 0.22) 40%, rgba(10, 36, 28, 0.05) 70%, transparent 85%);
-  filter: blur(36px);
+  background: radial-gradient(circle, rgba(245, 175, 25, 0.35) 0%, rgba(217, 119, 6, 0.15) 45%, transparent 75%);
   pointer-events: none;
   z-index: 2;
+  will-change: opacity, transform;
 }
 
 /* Vector Canvas Wrapper */
 .vectorCanvasWrapper {
   position: relative;
-  width: min(92vw, 420px);
+  width: min(92vw, 400px);
   aspect-ratio: 400 / 480;
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: 5;
+  will-change: transform, opacity;
 }
 
 .svgCanvas {
@@ -58,6 +64,7 @@
   height: 100%;
   display: block;
   overflow: visible;
+  shape-rendering: geometricPrecision;
 }
 
 /* Ambient Starlight Particles */

@@ -10,19 +10,19 @@ export default function SplashScreen({ onFinish }: { onFinish: () => void }) {
 
   const handleFinish = useCallback(() => {
     setIsVisible(false);
-    setTimeout(onFinish, 450); // 450ms smooth exit cross-fade
+    setTimeout(onFinish, 350); // 350ms smooth exit cross-fade
   }, [onFinish]);
 
   useEffect(() => {
-    // 🔔 Sacred bronze temple chime when the Sanctum emerges (0.8s)
+    // 🔔 Sacred bronze temple chime (0.2s)
     const soundTimer = setTimeout(() => {
       playTempleBellChime();
-    }, 800);
+    }, 200);
 
-    // ⏱️ Total choreographed sequence: 3.6s animation + 1.3s hold = 4.9s
+    // ⏱️ Fast, smooth choreographed sequence: 2.2s animation + 0.3s hold = 2.5s
     const splashTimer = setTimeout(() => {
       handleFinish();
-    }, 4900);
+    }, 2500);
 
     return () => {
       clearTimeout(soundTimer);
@@ -37,28 +37,27 @@ export default function SplashScreen({ onFinish }: { onFinish: () => void }) {
           className={styles.splashContainer}
           initial={{ opacity: 1 }}
           exit={{ opacity: 0, scale: 1.02 }}
-          transition={{ duration: 0.45, ease: [0.4, 0, 0.2, 1] }}
+          transition={{ duration: 0.35, ease: [0.4, 0, 0.2, 1] }}
           onClick={handleFinish}
         >
-          {/* 🌌 Phase 1: Deep Sanctum Ambient Vignette (0.0s – 0.6s) */}
+          {/* 🌌 Phase 1: Deep Sanctum Ambient Vignette */}
           <div className={styles.sanctumVignette} />
 
-          {/* 🌟 Phase 2: Layered Golden Sanctum Aura (0.4s – 1.4s) */}
+          {/* 🌟 Phase 2: Layered Golden Sanctum Aura */}
           <motion.div
             className={styles.centralGoldenAura}
-            initial={{ opacity: 0, scale: 0.75 }}
+            initial={{ opacity: 0, scale: 0.8 }}
             animate={{ 
-              opacity: [0, 0.4, 0.8, 0.7], 
-              scale: [0.75, 1.02, 1.1, 1.05] 
+              opacity: [0, 0.6, 0.8, 0.7], 
+              scale: [0.8, 1.02, 1.05] 
             }}
             transition={{ 
-              duration: 2.8, 
-              times: [0, 0.25, 0.6, 1], 
+              duration: 1.8, 
               ease: "easeOut" 
             }}
           />
 
-          {/* 🛕 100% PURE VECTOR CANVAS (MATCHING REFERENCE DIVINE ARTWORK) */}
+          {/* 🛕 100% PURE VECTOR CANVAS */}
           <div className={styles.vectorCanvasWrapper}>
             <svg
               viewBox="0 0 400 480"
@@ -66,7 +65,7 @@ export default function SplashScreen({ onFinish }: { onFinish: () => void }) {
               xmlns="http://www.w3.org/2000/svg"
             >
               <defs>
-                {/* 🌟 Divine Sanctum Golden Halo Behind Crown & Head */}
+                {/* 🌟 Divine Sanctum Golden Halo */}
                 <radialGradient id="masterSanctumAura" cx="50%" cy="44%" r="46%">
                   <stop offset="0%" stopColor="#F59E0B" stopOpacity="0.65" />
                   <stop offset="25%" stopColor="#D97706" stopOpacity="0.45" />
@@ -98,40 +97,17 @@ export default function SplashScreen({ onFinish }: { onFinish: () => void }) {
                   <stop offset="45%" stopColor="#DC2626" />
                   <stop offset="100%" stopColor="#991B1B" />
                 </linearGradient>
-
-                {/* Soft Sacred Glow Filter */}
-                <filter id="sacredAuraGlow" x="-30%" y="-30%" width="160%" height="160%">
-                  <feGaussianBlur stdDeviation="3.2" result="blur" />
-                  <feMerge>
-                    <feMergeNode in="blur" />
-                    <feMergeNode in="SourceGraphic" />
-                  </feMerge>
-                </filter>
-
-                {/* Radiant Namam Light Bloom */}
-                <filter id="namamRadiance" x="-50%" y="-50%" width="200%" height="200%">
-                  <feGaussianBlur stdDeviation="4.2" result="blur" />
-                  <feColorMatrix type="matrix" values="
-                    1 0 0 0 0
-                    0 1 0 0 0
-                    0 0 1 0 0
-                    0 0 0 2.2 0" />
-                  <feMerge>
-                    <feMergeNode in="blur" />
-                    <feMergeNode in="SourceGraphic" />
-                  </feMerge>
-                </filter>
               </defs>
 
-              {/* 🌟 1. BACKGROUND SANCTUM HALO & CELESTIAL ORBIT CIRCLE (0.3s - 1.2s) */}
+              {/* 🌟 1. BACKGROUND SANCTUM HALO & CELESTIAL ORBIT CIRCLE */}
               <motion.circle
                 cx="200"
                 cy="210"
                 r="155"
                 fill="url(#masterSanctumAura)"
-                initial={{ opacity: 0, scale: 0.7 }}
+                initial={{ opacity: 0, scale: 0.8 }}
                 animate={{ opacity: 1, scale: 1 }}
-                transition={{ delay: 0.3, duration: 1.2, ease: "easeOut" }}
+                transition={{ delay: 0.1, duration: 0.8, ease: "easeOut" }}
               />
 
               {/* Fine Outer Celestial Compass Orbit Ring */}
@@ -143,14 +119,12 @@ export default function SplashScreen({ onFinish }: { onFinish: () => void }) {
                 strokeWidth="0.8"
                 strokeDasharray="4 4"
                 fill="none"
-                opacity="0.4"
-                initial={{ opacity: 0, rotate: -45 }}
-                animate={{ opacity: 0.45, rotate: 0 }}
-                transition={{ delay: 0.5, duration: 1.5, ease: "easeOut" }}
-                style={{ transformOrigin: '200px 205px' }}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 0.45 }}
+                transition={{ delay: 0.2, duration: 0.8, ease: "easeOut" }}
               />
 
-              {/* ✦ 2. SACRED GEOMETRY SAARTHI MANDALA (TOP CENTER X=200, Y=54) (0.6s - 1.5s) */}
+              {/* ✦ 2. SACRED GEOMETRY SAARTHI MANDALA */}
               <g id="sacred-mandala">
                 {/* Outer Golden Concentric Ring */}
                 <motion.circle
@@ -160,9 +134,10 @@ export default function SplashScreen({ onFinish }: { onFinish: () => void }) {
                   stroke="url(#divineGoldGrad)"
                   strokeWidth="1.3"
                   fill="none"
-                  initial={{ pathLength: 0, opacity: 0 }}
-                  animate={{ pathLength: 1, opacity: 0.95 }}
-                  transition={{ delay: 0.6, duration: 0.8 }}
+                  initial={{ opacity: 0, scale: 0.6 }}
+                  animate={{ opacity: 0.95, scale: 1 }}
+                  transition={{ delay: 0.25, duration: 0.5, ease: "easeOut" }}
+                  style={{ transformOrigin: '200px 54px' }}
                 />
                 <motion.circle
                   cx="200"
@@ -171,11 +146,9 @@ export default function SplashScreen({ onFinish }: { onFinish: () => void }) {
                   stroke="url(#divineGoldGrad)"
                   strokeWidth="0.9"
                   fill="none"
-                  opacity="0.8"
-                  initial={{ scale: 0 }}
-                  animate={{ scale: 1 }}
-                  transition={{ delay: 0.7, duration: 0.6 }}
-                  style={{ transformOrigin: '200px 54px' }}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 0.8 }}
+                  transition={{ delay: 0.3, duration: 0.4 }}
                 />
                 <motion.circle
                   cx="200"
@@ -184,11 +157,9 @@ export default function SplashScreen({ onFinish }: { onFinish: () => void }) {
                   stroke="url(#goldRimGlow)"
                   strokeWidth="0.7"
                   fill="none"
-                  opacity="0.7"
-                  initial={{ scale: 0 }}
-                  animate={{ scale: 1 }}
-                  transition={{ delay: 0.75, duration: 0.5 }}
-                  style={{ transformOrigin: '200px 54px' }}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 0.7 }}
+                  transition={{ delay: 0.35, duration: 0.4 }}
                 />
 
                 {/* 8 Intersecting Sacred Flower-of-Life Arcs */}
@@ -204,9 +175,9 @@ export default function SplashScreen({ onFinish }: { onFinish: () => void }) {
                   stroke="url(#goldRimGlow)"
                   strokeWidth="0.9"
                   fill="none"
-                  initial={{ opacity: 0, rotate: -90 }}
-                  animate={{ opacity: 0.85, rotate: 0 }}
-                  transition={{ delay: 0.8, duration: 0.9, ease: "easeOut" }}
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  animate={{ opacity: 0.85, scale: 1 }}
+                  transition={{ delay: 0.35, duration: 0.5, ease: "easeOut" }}
                   style={{ transformOrigin: '200px 54px' }}
                 />
 
@@ -218,31 +189,22 @@ export default function SplashScreen({ onFinish }: { onFinish: () => void }) {
                   strokeLinecap="round"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 0.9 }}
-                  transition={{ delay: 0.9, duration: 0.6 }}
+                  transition={{ delay: 0.4, duration: 0.4 }}
                 />
 
                 {/* Center Brilliant Diamond Star Burst */}
                 <motion.polygon
                   points="200,40 203.5,54 218,54 203.5,56.5 200,70 196.5,56.5 182,54 196.5,54"
                   fill="url(#goldRimGlow)"
-                  filter="url(#sacredAuraGlow)"
                   initial={{ scale: 0, opacity: 0 }}
                   animate={{ scale: 1, opacity: 1 }}
-                  transition={{ delay: 1.0, duration: 0.5, ease: "easeOut" }}
+                  transition={{ delay: 0.45, duration: 0.4, ease: "easeOut" }}
                   style={{ transformOrigin: '200px 54px' }}
                 />
-                <motion.circle
-                  cx="200"
-                  cy="54"
-                  r="2.8"
-                  fill="#FFFFFF"
-                  initial={{ scale: 0 }}
-                  animate={{ scale: [0, 1.5, 1] }}
-                  transition={{ delay: 1.1, duration: 0.4 }}
-                />
+                <circle cx="200" cy="54" r="2.8" fill="#FFFFFF" />
               </g>
 
-              {/* 👑 3. LORD VENKATESWARA SWAMY MAJESTIC SILHOUETTE (1.1s - 2.4s) */}
+              {/* 👑 3. LORD VENKATESWARA SWAMY MAJESTIC SILHOUETTE */}
               <g id="divine-deity-form">
                 {/* Solid Midnight Silhouette Base */}
                 <motion.path
@@ -256,10 +218,9 @@ export default function SplashScreen({ onFinish }: { onFinish: () => void }) {
                     L 172 190 L 179 164 L 186 140 L 192 118 L 196 100 Z
                   "
                   fill="#010A07"
-                  initial={{ opacity: 0, scale: 0.95 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ delay: 1.1, duration: 0.8, ease: "easeOut" }}
-                  style={{ transformOrigin: '200px 210px' }}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 0.35, duration: 0.5, ease: "easeOut" }}
                 />
 
                 {/* ── TOWERING RAJA KIREETAM (CROWN) ARCHITECTURE ── */}
@@ -270,10 +231,9 @@ export default function SplashScreen({ onFinish }: { onFinish: () => void }) {
                     M 200 84 L 202 88 L 198 88 Z
                   "
                   fill="url(#goldRimGlow)"
-                  filter="url(#sacredAuraGlow)"
-                  initial={{ opacity: 0, y: -8 }}
+                  initial={{ opacity: 0, y: -4 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 1.2, duration: 0.5 }}
+                  transition={{ delay: 0.45, duration: 0.4 }}
                 />
 
                 {/* 2. Stepped Gopuram Tiers with Golden Contours */}
@@ -290,9 +250,9 @@ export default function SplashScreen({ onFinish }: { onFinish: () => void }) {
                   strokeWidth="1.6"
                   strokeLinecap="round"
                   fill="none"
-                  initial={{ pathLength: 0, opacity: 0 }}
-                  animate={{ pathLength: 1, opacity: 0.95 }}
-                  transition={{ delay: 1.3, duration: 0.9, ease: "easeInOut" }}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 0.95 }}
+                  transition={{ delay: 0.5, duration: 0.5, ease: "easeOut" }}
                 />
 
                 {/* Crown Outer Ridge Flares (Rim Lighting) */}
@@ -309,10 +269,9 @@ export default function SplashScreen({ onFinish }: { onFinish: () => void }) {
                   strokeWidth="2.2"
                   strokeLinecap="round"
                   fill="none"
-                  filter="url(#sacredAuraGlow)"
-                  initial={{ pathLength: 0, opacity: 0 }}
-                  animate={{ pathLength: 1, opacity: 1 }}
-                  transition={{ delay: 1.3, duration: 0.8, ease: "easeInOut" }}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 0.5, duration: 0.5 }}
                 />
 
                 {/* Crown Inner Pointed Arch Tracery Panel */}
@@ -328,12 +287,12 @@ export default function SplashScreen({ onFinish }: { onFinish: () => void }) {
                   fill="none"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 0.85 }}
-                  transition={{ delay: 1.5, duration: 0.5 }}
+                  transition={{ delay: 0.55, duration: 0.4 }}
                 />
 
                 {/* ── MAKARA KUNDALAMS (ORNATE HANGING EARRINGS) ── */}
                 {/* Left Earring */}
-                <motion.g initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 1.6, duration: 0.5 }}>
+                <motion.g initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.6, duration: 0.4 }}>
                   <circle cx="156" cy="220" r="8.5" stroke="url(#divineGoldGrad)" strokeWidth="1.5" fill="none" />
                   <circle cx="156" cy="220" r="5" stroke="url(#goldRimGlow)" strokeWidth="1" fill="none" />
                   <circle cx="156" cy="220" r="2.2" fill="#FDE68A" />
@@ -341,7 +300,7 @@ export default function SplashScreen({ onFinish }: { onFinish: () => void }) {
                 </motion.g>
 
                 {/* Right Earring */}
-                <motion.g initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 1.6, duration: 0.5 }}>
+                <motion.g initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.6, duration: 0.4 }}>
                   <circle cx="244" cy="220" r="8.5" stroke="url(#divineGoldGrad)" strokeWidth="1.5" fill="none" />
                   <circle cx="244" cy="220" r="5" stroke="url(#goldRimGlow)" strokeWidth="1" fill="none" />
                   <circle cx="244" cy="220" r="2.2" fill="#FDE68A" />
@@ -359,9 +318,9 @@ export default function SplashScreen({ onFinish }: { onFinish: () => void }) {
                   stroke="url(#goldRimGlow)"
                   strokeWidth="1.4"
                   fill="url(#divineGoldGrad)"
-                  initial={{ opacity: 0, y: -6 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 1.65, duration: 0.5 }}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 0.65, duration: 0.4 }}
                 />
 
                 {/* Right Shoulder Kalasam */}
@@ -374,12 +333,12 @@ export default function SplashScreen({ onFinish }: { onFinish: () => void }) {
                   stroke="url(#goldRimGlow)"
                   strokeWidth="1.4"
                   fill="url(#divineGoldGrad)"
-                  initial={{ opacity: 0, y: -6 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 1.65, duration: 0.5 }}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 0.65, duration: 0.4 }}
                 />
 
-                {/* Broad Shoulder Armor Arcs (Bhujakirti Contours) */}
+                {/* Broad Shoulder Armor Arcs */}
                 <motion.path
                   d="
                     M 166 204
@@ -395,18 +354,17 @@ export default function SplashScreen({ onFinish }: { onFinish: () => void }) {
                   strokeWidth="2.2"
                   strokeLinecap="round"
                   fill="none"
-                  filter="url(#sacredAuraGlow)"
-                  initial={{ pathLength: 0, opacity: 0 }}
-                  animate={{ pathLength: 1, opacity: 0.95 }}
-                  transition={{ delay: 1.7, duration: 0.8, ease: "easeInOut" }}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 0.95 }}
+                  transition={{ delay: 0.7, duration: 0.5 }}
                 />
 
                 {/* Shoulder Medallion Mandalas */}
-                <motion.circle cx="138" cy="266" r="10" stroke="url(#divineGoldGrad)" strokeWidth="1.2" strokeDasharray="3 2" fill="none" initial={{ opacity: 0 }} animate={{ opacity: 0.8 }} transition={{ delay: 1.8, duration: 0.5 }} />
-                <motion.circle cx="262" cy="266" r="10" stroke="url(#divineGoldGrad)" strokeWidth="1.2" strokeDasharray="3 2" fill="none" initial={{ opacity: 0 }} animate={{ opacity: 0.8 }} transition={{ delay: 1.8, duration: 0.5 }} />
+                <circle cx="138" cy="266" r="10" stroke="url(#divineGoldGrad)" strokeWidth="1.2" strokeDasharray="3 2" fill="none" opacity="0.8" />
+                <circle cx="262" cy="266" r="10" stroke="url(#divineGoldGrad)" strokeWidth="1.2" strokeDasharray="3 2" fill="none" opacity="0.8" />
 
-                {/* 🪷 4. RADIANT TIRUMALA NAMAM (Brightest Focal Light) (1.9s - 2.7s) */}
-                <g id="sacred-namam" filter="url(#namamRadiance)">
+                {/* 🪷 4. RADIANT TIRUMALA NAMAM (Focal Light) */}
+                <g id="sacred-namam">
                   {/* Left Pure White U-Arm */}
                   <motion.path
                     d="
@@ -418,7 +376,7 @@ export default function SplashScreen({ onFinish }: { onFinish: () => void }) {
                     fill="#FFFFFF"
                     initial={{ scaleY: 0, opacity: 0 }}
                     animate={{ scaleY: 1, opacity: 1 }}
-                    transition={{ delay: 1.9, duration: 0.6, ease: "easeOut" }}
+                    transition={{ delay: 0.75, duration: 0.45, ease: "easeOut" }}
                     style={{ transformOrigin: '190px 240px' }}
                   />
 
@@ -433,7 +391,7 @@ export default function SplashScreen({ onFinish }: { onFinish: () => void }) {
                     fill="#FFFFFF"
                     initial={{ scaleY: 0, opacity: 0 }}
                     animate={{ scaleY: 1, opacity: 1 }}
-                    transition={{ delay: 1.9, duration: 0.6, ease: "easeOut" }}
+                    transition={{ delay: 0.75, duration: 0.45, ease: "easeOut" }}
                     style={{ transformOrigin: '210px 240px' }}
                   />
 
@@ -443,7 +401,7 @@ export default function SplashScreen({ onFinish }: { onFinish: () => void }) {
                     fill="#FFFFFF"
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
-                    transition={{ delay: 2.05, duration: 0.35 }}
+                    transition={{ delay: 0.85, duration: 0.3 }}
                   />
 
                   {/* Central Radiant Vermilion Srichoornam Tilakam */}
@@ -452,12 +410,12 @@ export default function SplashScreen({ onFinish }: { onFinish: () => void }) {
                     fill="url(#srichoornamRed)"
                     initial={{ scaleY: 0, opacity: 0 }}
                     animate={{ scaleY: 1, opacity: 1 }}
-                    transition={{ delay: 2.0, duration: 0.55, ease: "easeOut" }}
+                    transition={{ delay: 0.8, duration: 0.4, ease: "easeOut" }}
                     style={{ transformOrigin: '200px 200px' }}
                   />
                 </g>
 
-                {/* Chest Necklaces (Kanthabharanam & Salagrama Haaram) */}
+                {/* Chest Necklaces */}
                 <motion.path
                   d="
                     M 166 260 Q 200 274 234 260
@@ -470,22 +428,21 @@ export default function SplashScreen({ onFinish }: { onFinish: () => void }) {
                   fill="none"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 0.75 }}
-                  transition={{ delay: 2.1, duration: 0.6 }}
+                  transition={{ delay: 0.85, duration: 0.4 }}
                 />
 
-                {/* Central Jeweled Pendant (Kousthubham) */}
+                {/* Central Jeweled Pendant */}
                 <motion.polygon
                   points="200,290 206,299 200,308 194,299"
                   fill="url(#goldRimGlow)"
-                  filter="url(#sacredAuraGlow)"
                   initial={{ scale: 0 }}
                   animate={{ scale: 1 }}
-                  transition={{ delay: 2.2, duration: 0.4 }}
+                  transition={{ delay: 0.9, duration: 0.3 }}
                   style={{ transformOrigin: '200px 299px' }}
                 />
               </g>
 
-              {/* 📜 5. MASTER BRAND TYPOGRAPHY (2.3s - 3.1s) */}
+              {/* 📜 5. MASTER BRAND TYPOGRAPHY */}
               <g id="typography">
                 {/* Saarthi Wordmark */}
                 <motion.text
@@ -493,16 +450,15 @@ export default function SplashScreen({ onFinish }: { onFinish: () => void }) {
                   y="370"
                   textAnchor="middle"
                   fill="#FFFDF8"
-                  fontSize="40"
-                  fontWeight="500"
+                  fontSize="38"
+                  fontWeight="600"
                   fontFamily="Cinzel, 'Playfair Display', Georgia, serif"
-                  letterSpacing="0.22em"
-                  style={{ filter: 'drop-shadow(0 4px 16px rgba(254, 243, 199, 0.25))' }}
-                  initial={{ opacity: 0, y: 14 }}
+                  letterSpacing="0.18em"
+                  initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 2.3, duration: 0.8, ease: [0.25, 1, 0.5, 1] }}
+                  transition={{ delay: 0.95, duration: 0.5, ease: "easeOut" }}
                 >
-                  Saarthi
+                  Saarthi Guide
                 </motion.text>
 
                 {/* Subtitle / Tagline */}
@@ -514,16 +470,16 @@ export default function SplashScreen({ onFinish }: { onFinish: () => void }) {
                   fontSize="11.5"
                   fontWeight="600"
                   fontFamily="Inter, system-ui, sans-serif"
-                  letterSpacing="0.24em"
-                  initial={{ opacity: 0, y: 8 }}
+                  letterSpacing="0.22em"
+                  initial={{ opacity: 0, y: 6 }}
                   animate={{ opacity: 0.95, y: 0 }}
-                  transition={{ delay: 2.6, duration: 0.6, ease: "easeOut" }}
+                  transition={{ delay: 1.1, duration: 0.4, ease: "easeOut" }}
                 >
-                  Know Before You Go
+                  Spiritual Pilgrim Companion
                 </motion.text>
               </g>
 
-              {/* 🪷 6. SACRED LOTUS & GOLDEN EMBLEM BEAM (2.8s - 3.5s) */}
+              {/* 🪷 6. SACRED LOTUS & GOLDEN EMBLEM BEAM */}
               <g id="lotus-beam">
                 {/* Left Golden Hairline */}
                 <motion.line
@@ -536,23 +492,20 @@ export default function SplashScreen({ onFinish }: { onFinish: () => void }) {
                   strokeLinecap="round"
                   initial={{ scaleX: 0 }}
                   animate={{ scaleX: 1 }}
-                  transition={{ delay: 2.8, duration: 0.6, ease: "easeOut" }}
+                  transition={{ delay: 1.15, duration: 0.4, ease: "easeOut" }}
                   style={{ transformOrigin: '182px 428px' }}
                 />
-                <motion.circle cx="95" cy="428" r="2.2" fill="#F59E0B" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 2.9, duration: 0.3 }} />
+                <circle cx="95" cy="428" r="2.2" fill="#F59E0B" />
 
-                {/* Central Sacred Lotus Flower (3 Petals) */}
+                {/* Central Sacred Lotus Flower */}
                 <motion.g
                   initial={{ scale: 0, opacity: 0 }}
                   animate={{ scale: 1, opacity: 1 }}
-                  transition={{ delay: 2.9, duration: 0.5, ease: "easeOut" }}
+                  transition={{ delay: 1.2, duration: 0.35, ease: "easeOut" }}
                   style={{ transformOrigin: '200px 422px' }}
                 >
-                  {/* Center Petal */}
                   <path d="M 200 416 Q 204.5 423 200 428 Q 195.5 423 200 416 Z" fill="url(#goldRimGlow)" />
-                  {/* Left Petal */}
                   <path d="M 200 428 Q 189 424 192 418 Q 196.5 422 200 428 Z" fill="url(#divineGoldGrad)" />
-                  {/* Right Petal */}
                   <path d="M 200 428 Q 211 424 208 418 Q 203.5 422 200 428 Z" fill="url(#divineGoldGrad)" />
                 </motion.g>
 
@@ -567,32 +520,20 @@ export default function SplashScreen({ onFinish }: { onFinish: () => void }) {
                   strokeLinecap="round"
                   initial={{ scaleX: 0 }}
                   animate={{ scaleX: 1 }}
-                  transition={{ delay: 2.8, duration: 0.6, ease: "easeOut" }}
+                  transition={{ delay: 1.15, duration: 0.4, ease: "easeOut" }}
                   style={{ transformOrigin: '218px 428px' }}
                 />
-                <motion.circle cx="305" cy="428" r="2.2" fill="#F59E0B" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 2.9, duration: 0.3 }} />
-
-                {/* Glowing Laser Light Glide Across the Lotus */}
-                <motion.circle
-                  cx="95"
-                  cy="428"
-                  r="3.5"
-                  fill="#FFFFFF"
-                  filter="url(#sacredAuraGlow)"
-                  initial={{ cx: 95, opacity: 0 }}
-                  animate={{ cx: [95, 305], opacity: [0, 1, 1, 0] }}
-                  transition={{ delay: 3.1, duration: 0.5, ease: "easeInOut" }}
-                />
+                <circle cx="305" cy="428" r="2.2" fill="#F59E0B" />
               </g>
             </svg>
           </div>
 
-          {/* ⚡ Skip button for returning devotees */}
+          {/* ⚡ Skip button */}
           <motion.button
             className={styles.skipPill}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ delay: 1.2, duration: 0.4 }}
+            transition={{ delay: 0.4, duration: 0.3 }}
             onClick={(e) => {
               e.stopPropagation();
               handleFinish();
