@@ -480,9 +480,8 @@ export default function OfflineTempleMap({
               <rect x="95" y="200" width="85" height="34" rx="6" fill="#F1F5F9" stroke="#64748B" strokeWidth="1.2" />
 
               {/* Parking Plaza (South-East Outside Courtyard) */}
-              <g transform="translate(365, 252)">
-                <rect x="0" y="0" width="95" height="32" rx="8" fill="#F3E8FF" stroke="#9333EA" strokeWidth="1.5" />
-                <text x="47.5" y="20" fontSize="10" fontWeight="800" textAnchor="middle" fill="#6B21A8">PARKING</text>
+              <g transform="translate(365, 248)">
+                <rect x="0" y="0" width="95" height="34" rx="8" fill="#F3E8FF" stroke="#9333EA" strokeWidth="1.5" />
               </g>
 
               {/* Entrance Gopuram Arch */}
@@ -694,10 +693,10 @@ export default function OfflineTempleMap({
             // Smart layout coordinate clamping to ensure badges never overlap borders or cutoff
             const px = Math.max(65, Math.min(475, rawPx));
             let py = rawPy;
-            if (pin.category === 'entry' && rawPy > 240) py = 245;
-            else if (pin.category === 'footwear' && rawPy > 220) py = 222;
-            else if (pin.category === 'parking' && rawPy > 260) py = 265;
-            else if (rawPy > 270) py = 265;
+            if (pin.category === 'entry' && rawPy > 238) py = 238;
+            else if (pin.category === 'footwear' && rawPy > 215) py = 215;
+            else if (pin.category === 'parking' && rawPy > 255) py = 255;
+            else if (rawPy > 255) py = 255;
 
             const label = lang === 'te' 
               ? (pin.nameTe.length > 14 ? pin.nameTe.split(' ')[0] : pin.nameTe)

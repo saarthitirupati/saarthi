@@ -2319,43 +2319,43 @@ export const CURATED_LAYOUTS: Record<string, Partial<TempleLayoutData>> = {
     titleTe: 'శ్రీ కపిలేశ్వర స్వామి ఆలయం & జలపాతం',
     layoutType: 'hill-waterfall',
     centerCoordinates: { lat: 13.6548, lng: 79.4215 },
-    routePath: [[420, 290], [270, 280], [180, 240], [270, 160], [270, 70]],
+    routePath: [[412, 255], [135, 215], [270, 150], [270, 65]],
     pins: [
       {
         id: 'parking',
-        nameEn: 'Approach Road Parking Bay',
+        nameEn: 'Trailhead & Parking Bay',
         nameTe: 'పార్కింగ్ ప్రదేశం',
         category: 'parking',
         lat: 13.6536,
         lng: 79.4205,
-        svgX: 420,
-        svgY: 290,
-        descEn: 'Vehicle parking opposite the temple garden entrance.',
-        descTe: 'ఆలయం సమీపంలో వాహనాల పార్కింగ్.'
+        svgX: 412,
+        svgY: 255,
+        descEn: 'Vehicles drop and starting point of the nature trail.',
+        descTe: 'వాహనాల పార్కింగ్ మరియు ట్రయల్ ప్రారంభం.'
       },
       {
-        id: 'entrance',
-        nameEn: 'Temple Entrance Arch & Gate',
-        nameTe: 'ఆలయ ప్రధాన ముఖద్వారం',
+        id: 'entry',
+        nameEn: 'Entrance Checkpoint & Gateway',
+        nameTe: 'ప్రవేశ ముఖద్వారం',
         category: 'entry',
         lat: 13.6542,
         lng: 79.4210,
         svgX: 270,
-        svgY: 280,
-        descEn: 'Main gateway at the foothills of Tirumala.',
-        descTe: 'తిరుమల కొండల పాదాల వద్ద ప్రధాన ద్వారం.'
+        svgY: 238,
+        descEn: 'Entry checkpoint and ticket counter.',
+        descTe: 'ప్రవేశ ద్వారం మరియు టికెట్ కేంద్రం.'
       },
       {
         id: 'footwear',
-        nameEn: 'Footwear Counter',
+        nameEn: 'Footwear & Rest Stand',
         nameTe: 'పాదరక్షల స్టాండ్',
         category: 'footwear',
         lat: 13.6540,
         lng: 79.4208,
-        svgX: 180,
-        svgY: 240,
-        descEn: 'Free custody stand for shoes.',
-        descTe: 'ఉచిత చెప్పుల కౌంటర్.'
+        svgX: 135,
+        svgY: 215,
+        descEn: 'Rest area and designated footwear stand before the holy pool.',
+        descTe: 'చెప్పులు భద్రపరిచే స్థలం.'
       },
       {
         id: 'sanctum',
@@ -2365,21 +2365,21 @@ export const CURATED_LAYOUTS: Record<string, Partial<TempleLayoutData>> = {
         lat: 13.6548,
         lng: 79.4215,
         svgX: 270,
-        svgY: 160,
-        descEn: 'Ancient self-manifested Shiva Lingam consecrated by Sage Kapila Maharshi.',
-        descTe: 'కపిల మహర్షి తపస్సు చేసిన స్వయంభువు శివలింగం.'
+        svgY: 150,
+        descEn: 'Primary sacred sanctum and viewing area.',
+        descTe: 'ప్రధాన దర్శన ప్రదేశం.'
       },
       {
         id: 'waterfall',
         nameEn: 'Sacred Waterfall Cascade & Holy Kund',
-        nameTe: 'కపిల తీర్థం జలపాతం & కుండం',
+        nameTe: 'పవిత్ర జలపాతం & కుండం',
         category: 'info',
         lat: 13.6554,
         lng: 79.4218,
         svgX: 270,
-        svgY: 70,
-        descEn: 'Sacred mountain waterfall cascading from Tirumala hills directly into the temple theertham pool.',
-        descTe: 'తిరుమల కొండల నుండి ఆలయ పుష్కరిణిలోకి ప్రవహించే పవిత్ర జలపాతం.'
+        svgY: 65,
+        descEn: 'Sacred mountain waterfall cascading into crystal theertham pool.',
+        descTe: 'పవిత్ర తీర్థం మరియు జలపాతం.'
       }
     ]
   },
@@ -2390,55 +2390,55 @@ export const CURATED_LAYOUTS: Record<string, Partial<TempleLayoutData>> = {
     titleTe: 'శ్రీ పరశురామేశ్వర స్వామి ఆలయం (గుడిమల్లం)',
     layoutType: 'ancient-shrine',
     centerCoordinates: { lat: 13.6037445, lng: 79.5785729 },
-    routePath: [[430, 290], [270, 275], [175, 255], [145, 160], [270, 105]],
+    routePath: [[412, 255], [270, 238], [135, 215], [140, 140], [270, 85]],
     pins: [
       {
         id: 'parking',
         nameEn: 'Approach Parking Area',
-        nameTe: 'ఆలయ పార్కింగ్ స్థలం',
+        nameTe: 'పార్కింగ్ స్థలం',
         category: 'parking',
         lat: 13.6028,
         lng: 79.5790,
-        svgX: 430,
-        svgY: 290,
-        descEn: 'Shaded open parking space for cars, cabs, and two-wheelers.',
-        descTe: 'కార్లు మరియు బైకుల కోసం ఉచిత పార్కింగ్ ప్రదేశం.'
+        svgX: 412,
+        svgY: 255,
+        descEn: 'Open parking space for vehicles.',
+        descTe: 'వాహనాల పార్కింగ్ స్థలం.'
       },
       {
         id: 'entrance',
-        nameEn: 'Mukha Mandapam & ASI Gate',
-        nameTe: 'ముఖ మండపం & ఏఎస్ఐ గేట్',
+        nameEn: 'Mukha Mandapam / Gateway',
+        nameTe: 'ముఖ మండపం ద్వారం',
         category: 'entry',
         lat: 13.6034,
         lng: 79.5787,
         svgX: 270,
-        svgY: 275,
+        svgY: 238,
         descEn: 'Historical stone entrance gateway under ASI protection.',
-        descTe: 'పురావస్తు శాఖ సంరక్షణలోని చారిత్రక ప్రవేశ ద్వారం.'
+        descTe: 'ఆలయ ప్రవేశ ద్వారం.'
       },
       {
         id: 'footwear',
-        nameEn: 'Footwear Stand',
+        nameEn: 'Courtyard Footwear Stand',
         nameTe: 'పాదరక్షల స్టాండ్',
         category: 'footwear',
         lat: 13.6032,
         lng: 79.5784,
-        svgX: 175,
-        svgY: 255,
-        descEn: 'Designated shoe deposit stand outside courtyard.',
-        descTe: 'ఆలయ ప్రవేశానికి ముందు చెప్పులు విడిచే స్థలం.'
+        svgX: 135,
+        svgY: 215,
+        descEn: 'Shoe custody counter outside courtyard.',
+        descTe: 'చెప్పులు విడిచే ప్రదేశం.'
       },
       {
         id: 'asi-info',
-        nameEn: 'ASI Inscription Pillar',
-        nameTe: 'పురావస్తు శాసనాల స్తంభం',
+        nameEn: 'Historical Heritage Inscriptions',
+        nameTe: 'పురావస్తు శాసనాలు',
         category: 'info',
         lat: 13.6039,
         lng: 79.5782,
-        svgX: 145,
-        svgY: 160,
-        descEn: 'Ancient Chola, Pallava, and Vijayanagara inscriptions detailing temple history.',
-        descTe: 'చోళ, పల్లవ మరియు విజయనగర రాజుల కాలం నాటి పురాతన శిలా శాసనాలు.'
+        svgX: 140,
+        svgY: 140,
+        descEn: 'Ancient stone inscriptions and carvings detailing heritage.',
+        descTe: 'రాతి శాసనాలు మరియు చారిత్రక వివరాలు.'
       },
       {
         id: 'sanctum',
@@ -2448,80 +2448,9 @@ export const CURATED_LAYOUTS: Record<string, Partial<TempleLayoutData>> = {
         lat: 13.6037445,
         lng: 79.5785729,
         svgX: 270,
-        svgY: 105,
+        svgY: 85,
         descEn: 'World\'s oldest naturalistic Shiva Lingam (3rd Century BCE) carved on single stone with Brahma, Vishnu, and Shiva on a dwarf Yaksha.',
         descTe: 'క్రీ.పూ 3వ శతాబ్దపు ప్రపంచంలోనే అత్యంత పురాతన సహజసిద్ధ శివలింగం.'
-      }
-    ]
-  },
-
-  'gandhi-road': {
-    placeId: 'gandhi-road',
-    titleEn: 'Gandhi Road Shopping & Bazaars',
-    titleTe: 'గాంధీ రోడ్ షాపింగ్ & మార్కెట్ వీధి',
-    layoutType: 'shopping-market',
-    centerCoordinates: { lat: 13.6291, lng: 79.4175 },
-    routePath: [[430, 290], [270, 280], [170, 200], [270, 120], [380, 160]],
-    pins: [
-      {
-        id: 'parking',
-        nameEn: 'Street & Junction Parking Bay',
-        nameTe: 'పార్కింగ్ ప్రదేశం',
-        category: 'parking',
-        lat: 13.6285,
-        lng: 79.4180,
-        svgX: 430,
-        svgY: 290,
-        descEn: 'Two-wheeler and designated side road parking.',
-        descTe: 'బైకులు మరియు వాహనాల పార్కింగ్ స్థలం.'
-      },
-      {
-        id: 'entry',
-        nameEn: 'Gandhi Road Market Entrance',
-        nameTe: 'గాంధీ రోడ్ ప్రవేశం',
-        category: 'entry',
-        lat: 13.6288,
-        lng: 79.4176,
-        svgX: 270,
-        svgY: 280,
-        descEn: 'Main shopping avenue starting from central railway station junction.',
-        descTe: 'రైల్వే స్టేషన్ సమీపంలోని ప్రధాన షాపింగ్ వీధి.'
-      },
-      {
-        id: 'textiles',
-        nameEn: 'Handlooms, Sarees & Textiles Row',
-        nameTe: 'చేనేత చీరలు & వస్త్ర విక్రయ కేంద్రాలు',
-        category: 'info',
-        lat: 13.6292,
-        lng: 79.4170,
-        svgX: 170,
-        svgY: 200,
-        descEn: 'Famous traditional silk sarees, dhotis, and ethnic clothing emporiums.',
-        descTe: 'ప్రసిద్ధ చేనేత పట్టు చీరలు మరియు సంప్రదాయ వస్త్ర దుకాణాలు.'
-      },
-      {
-        id: 'plaza',
-        nameEn: 'Main Shopping Arcades & Handicrafts',
-        nameTe: 'ప్రధాన షాపింగ్ కాంప్లెక్స్ & హస్తకళలు',
-        category: 'sanctum',
-        lat: 13.6295,
-        lng: 79.4175,
-        svgX: 270,
-        svgY: 120,
-        descEn: 'Spiritual souvenirs, wooden toys, brass idols, and local artifacts.',
-        descTe: 'పూజా వస్తువులు, కొండపల్లి బొమ్మలు మరియు ఇత్తడి విగ్రహాల కేంద్రం.'
-      },
-      {
-        id: 'street-food',
-        nameEn: 'Famous Tirupati Street Food & Snacks',
-        nameTe: 'స్ట్రీట్ ఫుడ్ & తిరుపతి స్నాక్స్',
-        category: 'food',
-        lat: 13.6293,
-        lng: 79.4182,
-        svgX: 380,
-        svgY: 160,
-        descEn: 'Hot dosas, filter coffee, sweets, and local savory delicacies.',
-        descTe: 'రుచికరమైన దోసెలు, ఫిల్టర్ కాఫీ మరియు స్వీట్ల కేంద్రం.'
       }
     ]
   }
@@ -2535,19 +2464,14 @@ const GRAND_PUSHKARINI_TEMPLE_IDS = [
   'kanipakam',
   'srinivasa-mangapuram',
   'varahaswamy',
-  'iskcon-tirupati'
+  'iskcon-tirupati',
+  'vedanarayana'
 ];
 
-/**
- * PONYTAIL DYNAMIC PRECINCT BLUEPRINT ENGINE:
- * Automatically computes authentic vector layout, themed backdrop, pin coordinates,
- * and seamless sequential walking route for all 63 places based on place metadata!
- */
 export function getTempleLayout(placeInput: string | PlaceInputContext, fallbackCoords?: { lat: number; lng: number }): TempleLayoutData {
   let placeId = typeof placeInput === 'string' ? placeInput : (placeInput?.id || '');
   placeId = placeId.toLowerCase().trim();
 
-  // Extract metadata
   const placeObj = typeof placeInput === 'object' ? placeInput : null;
   const name = placeObj?.name || placeId.split('-').map(s => s.charAt(0).toUpperCase() + s.slice(1)).join(' ');
   const category = (placeObj?.category || '').toLowerCase();
