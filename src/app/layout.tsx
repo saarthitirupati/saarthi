@@ -16,7 +16,7 @@ export const metadata: Metadata = {
     default: "Saarthi Guide | Real-Time Tirupati & Tirumala Pilgrim Companion",
     template: "%s | Saarthi Guide"
   },
-  description: "Tirupati's trusted pilgrimage companion. Live TTD darshan wait times, SSD token availability, temple timings, dress codes, Sthala Puranas & verified transit guides.",
+  description: "Tirupati and Tirumala trusted pilgrimage companion. Live TTD darshan wait times, SSD token availability, temple timings, dress codes, Sthala Puranas & verified transit guides.",
   keywords: [
     "Tirupati temple timings",
     "Tirumala darshan wait time today",
@@ -85,7 +85,7 @@ export const metadata: Metadata = {
   appleWebApp: {
     capable: true,
     statusBarStyle: "default",
-    title: "Saarthi"
+    title: "Saarthi Guide"
   },
 };
 
@@ -100,7 +100,7 @@ export const viewport: Viewport = {
 const jsonLdSchema = {
   "@context": "https://schema.org",
   "@type": "TouristInformationCenter",
-  "name": "Saarthi",
+  "name": "Saarthi Guide",
   "url": baseUrl,
   "description": "Tirupati & Tirumala pilgrimage guide with real-time darshan wait times, temple timings, dress codes, and local transit information.",
   "areaServed": {
