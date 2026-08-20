@@ -74,6 +74,9 @@ export const metadata: Metadata = {
     icon: [
       { url: "/favicon.ico" },
       { url: "/favicon.png", type: "image/png" },
+      { url: "/icon-48.png", sizes: "48x48", type: "image/png" },
+      { url: "/icon-96.png", sizes: "96x96", type: "image/png" },
+      { url: "/icon-144.png", sizes: "144x144", type: "image/png" },
       { url: "/icon-192.png", sizes: "192x192", type: "image/png" },
       { url: "/icon-512.png", sizes: "512x512", type: "image/png" }
     ],
@@ -102,6 +105,8 @@ const jsonLdSchema = {
   "@type": "TouristInformationCenter",
   "name": "Saarthi Guide",
   "url": baseUrl,
+  "logo": `${baseUrl}/logo.png`,
+  "image": `${baseUrl}/logo.png`,
   "description": "Tirupati & Tirumala pilgrimage guide with real-time darshan wait times, temple timings, dress codes, and local transit information.",
   "areaServed": {
     "@type": "AdministrativeArea",
@@ -126,6 +131,11 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${dmSerifDisplay.variable} ${plusJakartaSans.variable} ${inter.variable} ${notoSansTelugu.variable}`}>
       <head>
+        <link rel="shortcut icon" href="/favicon.ico" />
+        <link rel="icon" type="image/png" sizes="48x48" href="/icon-48.png" />
+        <link rel="icon" type="image/png" sizes="96x96" href="/icon-96.png" />
+        <link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png" />
+        <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
         {/* Google Tag Manager */}
         <script
           id="gtm-script"
