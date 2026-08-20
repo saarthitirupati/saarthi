@@ -14,7 +14,6 @@ export default function Logo({ size = 100, className = '' }: { size?: number; cl
         display: 'inline-block',
         verticalAlign: 'middle',
         objectFit: 'contain',
-        borderRadius: '22%',
       }}
       initial={{ opacity: 0, scale: 0.85 }}
       animate={{ opacity: 1, scale: 1 }}
