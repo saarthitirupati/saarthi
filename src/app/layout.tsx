@@ -41,6 +41,14 @@ export const metadata: Metadata = {
     description: "Know the place before you go. Verified TTD wait times, temple timings, dress codes, Sthala Puranas, and local travel guides for Tirupati & Tirumala.",
     url: baseUrl,
     siteName: "Saarthi Guide",
+    images: [
+      {
+        url: "/logo.png",
+        width: 1200,
+        height: 1200,
+        alt: "Saarthi Guide Brand Logo",
+      },
+    ],
     locale: "en_IN",
     type: "website",
   },
@@ -48,6 +56,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Saarthi Guide | Tirupati & Tirumala Yatra Companion",
     description: "Live TTD darshan wait times, SSD token status, temple guides & local transport info.",
+    images: ["/logo.png"],
   },
   robots: {
     index: true,
@@ -63,14 +72,15 @@ export const metadata: Metadata = {
   manifest: "/manifest.json",
   icons: {
     icon: [
+      { url: "/favicon.ico" },
+      { url: "/favicon.png", type: "image/png" },
       { url: "/icon-192.png", sizes: "192x192", type: "image/png" },
-      { url: "/icon-512.png", sizes: "512x512", type: "image/png" },
-      { url: "/favicon.ico" }
+      { url: "/icon-512.png", sizes: "512x512", type: "image/png" }
     ],
     apple: [
       { url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" }
     ],
-    shortcut: "/icon-192.png"
+    shortcut: "/favicon.ico"
   },
   appleWebApp: {
     capable: true,
