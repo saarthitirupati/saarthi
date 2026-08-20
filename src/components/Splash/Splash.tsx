@@ -206,23 +206,6 @@ export default function SplashScreen({ onFinish }: { onFinish: () => void }) {
 
               {/* 👑 3. LORD VENKATESWARA SWAMY MAJESTIC SILHOUETTE */}
               <g id="divine-deity-form">
-                {/* Solid Midnight Silhouette Base */}
-                <motion.path
-                  d="
-                    M 200 88
-                    L 204 100 L 208 118 L 214 140 L 221 164 L 228 190
-                    L 236 198 L 246 206 L 254 214 L 262 224 L 268 232
-                    L 276 244 L 284 260 L 288 280 L 286 306 L 280 330
-                    L 120 330 L 114 306 L 112 280 L 116 260 L 124 244
-                    L 132 232 L 138 224 L 146 214 L 154 206 L 164 198
-                    L 172 190 L 179 164 L 186 140 L 192 118 L 196 100 Z
-                  "
-                  fill="#010A07"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ delay: 0.35, duration: 0.5, ease: "easeOut" }}
-                />
-
                 {/* ── TOWERING RAJA KIREETAM (CROWN) ARCHITECTURE ── */}
                 {/* 1. Crown Pinnacle Kalasam Spire */}
                 <motion.path
@@ -231,9 +214,9 @@ export default function SplashScreen({ onFinish }: { onFinish: () => void }) {
                     M 200 84 L 202 88 L 198 88 Z
                   "
                   fill="url(#goldRimGlow)"
-                  initial={{ opacity: 0, y: -4 }}
+                  initial={{ opacity: 0, y: -6 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.45, duration: 0.4 }}
+                  transition={{ delay: 0.35, duration: 0.4, ease: "easeOut" }}
                 />
 
                 {/* 2. Stepped Gopuram Tiers with Golden Contours */}
@@ -247,12 +230,12 @@ export default function SplashScreen({ onFinish }: { onFinish: () => void }) {
                     M 174 188 Q 200 180 226 188
                   "
                   stroke="url(#divineGoldGrad)"
-                  strokeWidth="1.6"
+                  strokeWidth="1.8"
                   strokeLinecap="round"
                   fill="none"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 0.95 }}
-                  transition={{ delay: 0.5, duration: 0.5, ease: "easeOut" }}
+                  transition={{ delay: 0.4, duration: 0.5, ease: "easeOut" }}
                 />
 
                 {/* Crown Outer Ridge Flares (Rim Lighting) */}
@@ -266,12 +249,12 @@ export default function SplashScreen({ onFinish }: { onFinish: () => void }) {
                     C 177 176, 173 188, 170 196
                   "
                   stroke="url(#goldRimGlow)"
-                  strokeWidth="2.2"
+                  strokeWidth="2.4"
                   strokeLinecap="round"
                   fill="none"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
-                  transition={{ delay: 0.5, duration: 0.5 }}
+                  transition={{ delay: 0.45, duration: 0.5 }}
                 />
 
                 {/* Crown Inner Pointed Arch Tracery Panel */}
@@ -283,28 +266,28 @@ export default function SplashScreen({ onFinish }: { onFinish: () => void }) {
                     M 197 132 L 200 126 L 203 132
                   "
                   stroke="url(#divineGoldGrad)"
-                  strokeWidth="1.3"
+                  strokeWidth="1.4"
                   fill="none"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 0.85 }}
-                  transition={{ delay: 0.55, duration: 0.4 }}
+                  transition={{ delay: 0.5, duration: 0.4 }}
                 />
 
                 {/* ── MAKARA KUNDALAMS (ORNATE HANGING EARRINGS) ── */}
                 {/* Left Earring */}
-                <motion.g initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.6, duration: 0.4 }}>
-                  <circle cx="156" cy="220" r="8.5" stroke="url(#divineGoldGrad)" strokeWidth="1.5" fill="none" />
-                  <circle cx="156" cy="220" r="5" stroke="url(#goldRimGlow)" strokeWidth="1" fill="none" />
-                  <circle cx="156" cy="220" r="2.2" fill="#FDE68A" />
-                  <path d="M 156 228.5 L 156 240 M 153 240 L 159 240" stroke="url(#divineGoldGrad)" strokeWidth="1.3" strokeLinecap="round" />
+                <motion.g initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.55, duration: 0.4 }} style={{ transformOrigin: '156px 220px' }}>
+                  <circle cx="156" cy="220" r="8.5" stroke="url(#divineGoldGrad)" strokeWidth="1.6" fill="none" />
+                  <circle cx="156" cy="220" r="5" stroke="url(#goldRimGlow)" strokeWidth="1.2" fill="none" />
+                  <circle cx="156" cy="220" r="2.5" fill="#FDE68A" />
+                  <path d="M 156 228.5 L 156 240 M 153 240 L 159 240" stroke="url(#divineGoldGrad)" strokeWidth="1.5" strokeLinecap="round" />
                 </motion.g>
 
                 {/* Right Earring */}
-                <motion.g initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.6, duration: 0.4 }}>
-                  <circle cx="244" cy="220" r="8.5" stroke="url(#divineGoldGrad)" strokeWidth="1.5" fill="none" />
-                  <circle cx="244" cy="220" r="5" stroke="url(#goldRimGlow)" strokeWidth="1" fill="none" />
-                  <circle cx="244" cy="220" r="2.2" fill="#FDE68A" />
-                  <path d="M 244 228.5 L 244 240 M 241 240 L 247 240" stroke="url(#divineGoldGrad)" strokeWidth="1.3" strokeLinecap="round" />
+                <motion.g initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.55, duration: 0.4 }} style={{ transformOrigin: '244px 220px' }}>
+                  <circle cx="244" cy="220" r="8.5" stroke="url(#divineGoldGrad)" strokeWidth="1.6" fill="none" />
+                  <circle cx="244" cy="220" r="5" stroke="url(#goldRimGlow)" strokeWidth="1.2" fill="none" />
+                  <circle cx="244" cy="220" r="2.5" fill="#FDE68A" />
+                  <path d="M 244 228.5 L 244 240 M 241 240 L 247 240" stroke="url(#divineGoldGrad)" strokeWidth="1.5" strokeLinecap="round" />
                 </motion.g>
 
                 {/* ── SHOULDER FINIALS / KALASAMS (BHUJAKIRTI) ── */}
@@ -316,11 +299,11 @@ export default function SplashScreen({ onFinish }: { onFinish: () => void }) {
                     M 128 236 Q 136 232 144 236
                   "
                   stroke="url(#goldRimGlow)"
-                  strokeWidth="1.4"
+                  strokeWidth="1.5"
                   fill="url(#divineGoldGrad)"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
-                  transition={{ delay: 0.65, duration: 0.4 }}
+                  transition={{ delay: 0.6, duration: 0.4 }}
                 />
 
                 {/* Right Shoulder Kalasam */}
@@ -331,14 +314,14 @@ export default function SplashScreen({ onFinish }: { onFinish: () => void }) {
                     M 256 236 Q 264 232 272 236
                   "
                   stroke="url(#goldRimGlow)"
-                  strokeWidth="1.4"
+                  strokeWidth="1.5"
                   fill="url(#divineGoldGrad)"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
-                  transition={{ delay: 0.65, duration: 0.4 }}
+                  transition={{ delay: 0.6, duration: 0.4 }}
                 />
 
-                {/* Broad Shoulder Armor Arcs */}
+                {/* Broad Shoulder Armor Arcs (Bhujakirti Contours) */}
                 <motion.path
                   d="
                     M 166 204
@@ -351,69 +334,61 @@ export default function SplashScreen({ onFinish }: { onFinish: () => void }) {
                     C 276 320, 268 328, 258 334
                   "
                   stroke="url(#divineGoldGrad)"
-                  strokeWidth="2.2"
+                  strokeWidth="2.4"
                   strokeLinecap="round"
                   fill="none"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 0.95 }}
-                  transition={{ delay: 0.7, duration: 0.5 }}
+                  transition={{ delay: 0.65, duration: 0.5 }}
                 />
 
                 {/* Shoulder Medallion Mandalas */}
-                <circle cx="138" cy="266" r="10" stroke="url(#divineGoldGrad)" strokeWidth="1.2" strokeDasharray="3 2" fill="none" opacity="0.8" />
-                <circle cx="262" cy="266" r="10" stroke="url(#divineGoldGrad)" strokeWidth="1.2" strokeDasharray="3 2" fill="none" opacity="0.8" />
+                <circle cx="138" cy="266" r="10" stroke="url(#divineGoldGrad)" strokeWidth="1.3" strokeDasharray="3 2" fill="none" opacity="0.85" />
+                <circle cx="262" cy="266" r="10" stroke="url(#divineGoldGrad)" strokeWidth="1.3" strokeDasharray="3 2" fill="none" opacity="0.85" />
 
-                {/* 🪷 4. RADIANT TIRUMALA NAMAM (Focal Light) */}
-                <g id="sacred-namam">
-                  {/* Left Pure White U-Arm */}
-                  <motion.path
+                {/* 🪷 4. RADIANT SACRED TIRUMALA NAMAM (Brightest Focal Light) */}
+                <motion.g
+                  id="sacred-namam"
+                  initial={{ opacity: 0, scale: 0.85 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ delay: 0.7, duration: 0.5, ease: "easeOut" }}
+                  style={{ transformOrigin: '200px 225px' }}
+                >
+                  {/* Left Pure White Shankha/U-Arm */}
+                  <path
                     d="
-                      M 183 198 
-                      C 186 214, 190 230, 193.5 240 
-                      L 198 240 
-                      C 195 230, 191 214, 189 198 Z
+                      M 181 194 
+                      C 184 212, 189 230, 193 242 
+                      L 199 242 
+                      C 195 230, 190 212, 187 194 Z
                     "
                     fill="#FFFFFF"
-                    initial={{ scaleY: 0, opacity: 0 }}
-                    animate={{ scaleY: 1, opacity: 1 }}
-                    transition={{ delay: 0.75, duration: 0.45, ease: "easeOut" }}
-                    style={{ transformOrigin: '190px 240px' }}
                   />
 
-                  {/* Right Pure White U-Arm */}
-                  <motion.path
+                  {/* Right Pure White Chakra/U-Arm */}
+                  <path
                     d="
-                      M 217 198 
-                      C 214 214, 210 230, 206.5 240 
-                      L 202 240 
-                      C 205 230, 209 214, 211 198 Z
+                      M 219 194 
+                      C 216 212, 211 230, 207 242 
+                      L 201 242 
+                      C 205 230, 210 212, 213 194 Z
                     "
                     fill="#FFFFFF"
-                    initial={{ scaleY: 0, opacity: 0 }}
-                    animate={{ scaleY: 1, opacity: 1 }}
-                    transition={{ delay: 0.75, duration: 0.45, ease: "easeOut" }}
-                    style={{ transformOrigin: '210px 240px' }}
                   />
 
-                  {/* Connecting Curved Base */}
-                  <motion.path
-                    d="M 193.5 240 Q 200 248 206.5 240 Q 200 252 193.5 240 Z"
+                  {/* Connecting White Base */}
+                  <path
+                    d="M 193 242 Q 200 250 207 242 Q 200 254 193 242 Z"
                     fill="#FFFFFF"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ delay: 0.85, duration: 0.3 }}
                   />
 
                   {/* Central Radiant Vermilion Srichoornam Tilakam */}
-                  <motion.path
-                    d="M 198.5 200 L 201.5 200 L 201.5 246 Q 200 250 198.5 246 Z"
+                  <path
+                    d="M 198 196 L 202 196 L 202 248 Q 200 252 198 248 Z"
                     fill="url(#srichoornamRed)"
-                    initial={{ scaleY: 0, opacity: 0 }}
-                    animate={{ scaleY: 1, opacity: 1 }}
-                    transition={{ delay: 0.8, duration: 0.4, ease: "easeOut" }}
-                    style={{ transformOrigin: '200px 200px' }}
                   />
-                </g>
+                  <circle cx="200" cy="196" r="2" fill="#F87171" />
+                </motion.g>
 
                 {/* Chest Necklaces */}
                 <motion.path
@@ -423,12 +398,12 @@ export default function SplashScreen({ onFinish }: { onFinish: () => void }) {
                     M 150 298 Q 200 320 250 298
                   "
                   stroke="url(#divineGoldGrad)"
-                  strokeWidth="1.3"
+                  strokeWidth="1.4"
                   strokeDasharray="3 3"
                   fill="none"
                   initial={{ opacity: 0 }}
-                  animate={{ opacity: 0.75 }}
-                  transition={{ delay: 0.85, duration: 0.4 }}
+                  animate={{ opacity: 0.8 }}
+                  transition={{ delay: 0.8, duration: 0.4 }}
                 />
 
                 {/* Central Jeweled Pendant */}
@@ -437,7 +412,7 @@ export default function SplashScreen({ onFinish }: { onFinish: () => void }) {
                   fill="url(#goldRimGlow)"
                   initial={{ scale: 0 }}
                   animate={{ scale: 1 }}
-                  transition={{ delay: 0.9, duration: 0.3 }}
+                  transition={{ delay: 0.85, duration: 0.3 }}
                   style={{ transformOrigin: '200px 299px' }}
                 />
               </g>
