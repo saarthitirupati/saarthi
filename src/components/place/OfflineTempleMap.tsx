@@ -450,7 +450,7 @@ export default function OfflineTempleMap({
               <circle cx="495" cy="35" r="7" fill="#E2D9C8" stroke="#D97706" strokeWidth="1" />
 
               {/* Inner Sacred Courtyard Pavement */}
-              <rect x="80" y="50" width="380" height="225" rx="12" fill="#F4EFE6" stroke="#92400E" strokeWidth="1.5" />
+              <rect x="75" y="50" width="390" height="210" rx="12" fill="#F4EFE6" stroke="#92400E" strokeWidth="1.5" />
 
               {/* Mukha Mandapam Pillared Hall */}
               <rect x="205" y="112" width="130" height="48" rx="8" fill="#FEF3C7" stroke="#D97706" strokeWidth="1.5" />
@@ -460,7 +460,7 @@ export default function OfflineTempleMap({
               <circle cx="322" cy="148" r="3" fill="#78350F" />
 
               {/* Dhwajasthambham Flag Mast & Deepasthambham in Open Courtyard */}
-              <g transform="translate(270, 205)">
+              <g transform="translate(270, 185)">
                 <circle cx="0" cy="0" r="11" fill="#FEF9C3" stroke="#CA8A04" strokeWidth="1.5" />
                 <circle cx="0" cy="0" r="4.5" fill="#B45309" />
               </g>
@@ -477,12 +477,18 @@ export default function OfflineTempleMap({
               <rect x="355" y="138" width="80" height="44" rx="6" fill="#FEF9C3" stroke="#CA8A04" strokeWidth="1.5" />
 
               {/* Footwear Stand (Western Entrance Side) */}
-              <rect x="105" y="238" width="80" height="34" rx="6" fill="#F1F5F9" stroke="#64748B" strokeWidth="1.2" />
+              <rect x="95" y="200" width="85" height="34" rx="6" fill="#F1F5F9" stroke="#64748B" strokeWidth="1.2" />
+
+              {/* Parking Plaza (South-East Outside Courtyard) */}
+              <g transform="translate(365, 252)">
+                <rect x="0" y="0" width="95" height="32" rx="8" fill="#F3E8FF" stroke="#9333EA" strokeWidth="1.5" />
+                <text x="47.5" y="20" fontSize="10" fontWeight="800" textAnchor="middle" fill="#6B21A8">PARKING</text>
+              </g>
 
               {/* Entrance Gopuram Arch */}
-              <g transform="translate(225, 265)">
-                <rect x="0" y="0" width="90" height="28" rx="6" fill="#D97706" stroke="#78350F" strokeWidth="2" />
-                <polygon points="45,-10 15,0 75,0" fill="#B45309" stroke="#78350F" strokeWidth="1.2" />
+              <g transform="translate(225, 252)">
+                <rect x="0" y="0" width="90" height="26" rx="6" fill="#D97706" stroke="#78350F" strokeWidth="2" />
+                <polygon points="45,-8 15,0 75,0" fill="#B45309" stroke="#78350F" strokeWidth="1.2" />
               </g>
             </g>
           ) : layout.layoutType === 'shopping-market' ? (
@@ -499,11 +505,8 @@ export default function OfflineTempleMap({
               <rect x="70" y="150" width="130" height="80" rx="8" fill="#F1F5F9" stroke="#94A3B8" strokeWidth="1.5" />
 
               {/* Storefront Blocks Right */}
-              <rect x="340" y="60" width="130" height="70" rx="8" fill="#DCFCE7" stroke="#16A34A" strokeWidth="1.5" />
-              <rect x="340" y="150" width="130" height="80" rx="8" fill="#FEE2E2" stroke="#EF4444" strokeWidth="1.5" />
-
-              {/* Street Entrance Archway */}
-              <rect x="220" y="265" width="100" height="28" rx="6" fill="#D97706" stroke="#78350F" strokeWidth="1.5" />
+              <rect x="340" y="60" width="130" height="70" rx="8" fill="#FEF9C3" stroke="#CA8A04" strokeWidth="1.5" />
+              <rect x="340" y="150" width="130" height="80" rx="8" fill="#DCFCE7" stroke="#16A34A" strokeWidth="1.5" />
             </g>
           ) : layout.layoutType === 'dining-restaurant' ? (
             /* 4. DINING & RESTAURANT */
@@ -685,8 +688,16 @@ export default function OfflineTempleMap({
           {layout.pins.map((pin) => {
             const cat = CATEGORY_STYLES[pin.category] || CATEGORY_STYLES.info;
             const isSelected = activePin?.id === pin.id;
-            const px = pin.svgX || 270;
-            const py = pin.svgY || 160;
+            const rawPx = pin.svgX || 270;
+            const rawPy = pin.svgY || 160;
+            
+            // Smart layout coordinate clamping to ensure badges never overlap borders or cutoff
+            const px = Math.max(65, Math.min(475, rawPx));
+            let py = rawPy;
+            if (pin.category === 'entry' && rawPy > 240) py = 245;
+            else if (pin.category === 'footwear' && rawPy > 220) py = 222;
+            else if (pin.category === 'parking' && rawPy > 260) py = 265;
+            else if (rawPy > 270) py = 265;
 
             const label = lang === 'te' 
               ? (pin.nameTe.length > 14 ? pin.nameTe.split(' ')[0] : pin.nameTe)

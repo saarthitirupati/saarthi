@@ -273,6 +273,192 @@ export const CURATED_LAYOUTS: Record<string, Partial<TempleLayoutData>> = {
     ]
   },
 
+  'chandragiri-fort': {
+    placeId: 'chandragiri-fort',
+    titleEn: 'Chandragiri Fort & Raja Mahal Precinct Map',
+    titleTe: 'చంద్రగిరి కోట & రాజమహల్ ప్రాంగణ మ్యాప్',
+    layoutType: 'heritage-fort',
+    centerCoordinates: { lat: 13.6025, lng: 79.3142 },
+    routePath: [[412, 265], [270, 245], [138, 222], [270, 105], [395, 105], [370, 185], [270, 245]],
+    pins: [
+      {
+        id: 'parking',
+        nameEn: 'Fort Parking Bay',
+        nameTe: 'కోట పార్కింగ్ ప్రదేశం',
+        category: 'parking',
+        lat: 13.6018,
+        lng: 79.3148,
+        svgX: 412,
+        svgY: 265,
+        descEn: 'Parking for cars, tourist buses, and 2-wheelers near the entrance.',
+        descTe: 'వాహనాల పార్కింగ్ స్థలం.'
+      },
+      {
+        id: 'entry',
+        nameEn: 'Main Entrance & ASI Ticket Gate',
+        nameTe: 'ప్రధాన ప్రవేశ ముఖద్వారం & టికెట్ కౌంటర్',
+        category: 'entry',
+        lat: 13.6020,
+        lng: 79.3145,
+        svgX: 270,
+        svgY: 245,
+        descEn: 'ASI entry ticket counter, security check, and fort gateway.',
+        descTe: 'ఏఎస్ఐ టికెట్ కౌంటర్ మరియు ప్రవేశ ద్వారం.'
+      },
+      {
+        id: 'footwear',
+        nameEn: 'Museum Cloakroom & Rest Rooms',
+        nameTe: 'క్లోక్‌రూమ్ & సదుపాయాల కేంద్రం',
+        category: 'footwear',
+        lat: 13.6022,
+        lng: 79.3140,
+        svgX: 138,
+        svgY: 222,
+        descEn: 'Free footwear deposit and cloakroom outside Raja Mahal.',
+        descTe: 'ఉచిత క్లోక్‌రూమ్ మరియు లగేజ్ కేంద్రం.'
+      },
+      {
+        id: 'sanctum',
+        nameEn: 'Raja Mahal (3-Storey Palace & Museum)',
+        nameTe: 'రాజమహల్ (చారిత్రక రాజభవనం & మ్యూజియం)',
+        category: 'sanctum',
+        lat: 13.6027,
+        lng: 79.3142,
+        svgX: 270,
+        svgY: 105,
+        descEn: 'Indo-Saracenic 3-storey royal palace housing ancient Vijayanagara bronzes, stone sculptures, and arms.',
+        descTe: 'విజయనగర సామ్రాజ్య చారిత్రక రాజభవనం మరియు ఏఎస్ఐ మ్యూజియం.'
+      },
+      {
+        id: 'rani-mahal',
+        nameEn: 'Rani Mahal (Queen Palace & Gardens)',
+        nameTe: 'రాణి మహల్ & రాయల్ తోటలు',
+        category: 'info',
+        lat: 13.6030,
+        lng: 79.3146,
+        svgX: 395,
+        svgY: 105,
+        descEn: 'Queen’s palace featuring elegant vaulted arches and landscaped gardens.',
+        descTe: 'రాణి మహల్ మరియు ఆకట్టుకునే రాయల్ ఉద్యానవనం.'
+      },
+      {
+        id: 'sound-light',
+        nameEn: 'Sound & Light Show Open Theater',
+        nameTe: 'సౌండ్ & లైట్ షో ఓపెన్ థియేటర్',
+        category: 'info',
+        lat: 13.6024,
+        lng: 79.3144,
+        svgX: 370,
+        svgY: 185,
+        descEn: 'Open amphitheater showcasing evening laser, sound & light historical shows.',
+        descTe: 'సాయంత్రం వేళ విజయవంతంగా సాగే సౌండ్ & లైట్ షో ప్రదర్శన వేదిక.'
+      }
+    ],
+    routeSteps: [
+      { stepNumber: 1, titleEn: 'Fort Arrival & Parking', titleTe: 'కోట పార్కింగ్ చేరుకోవడం', distance: '0.0 km', timeMins: 0, descEn: 'Park vehicle at the visitor plaza.', descTe: 'వాహనాన్ని పార్క్ చేయండి.' },
+      { stepNumber: 2, titleEn: 'ASI Ticket Counter & Gate', titleTe: 'టికెట్ కౌంటర్ & ప్రవేశం', distance: '30m', timeMins: 2, descEn: 'Buy entry ticket and enter fort grounds.', descTe: 'టికెట్ తీసుకుని కోటలోకి ప్రవేశించండి.' },
+      { stepNumber: 3, titleEn: 'Raja Mahal Museum & Royal Artifacts', titleTe: 'రాజమహల్ & మ్యూజియం దర్శనం', distance: '100m', timeMins: 25, descEn: 'Explore the 3-storey palace exhibits.', descTe: 'చారిత్రక రాజభవనం తిలకించండి.' },
+      { stepNumber: 4, titleEn: 'Rani Mahal & Evening Sound & Light Show', titleTe: 'రాణి మహల్ & సౌండ్ షో', distance: '120m', timeMins: 30, descEn: 'Visit Rani Mahal and attend the evening show.', descTe: 'రాణి మహల్ మరియు సౌండ్ షో వీక్షించండి.' }
+    ],
+    emergencyContacts: [
+      { titleEn: 'ASI Chandragiri Office', titleTe: 'ఏఎస్ఐ చంద్రగిరి సమాచార కేంద్రం', number: '08772264555' },
+      { titleEn: 'Emergency Helpline', titleTe: 'అత్యవసర హెల్ప్‌లైన్', number: '112' }
+    ]
+  },
+
+  'horsley-hills': {
+    placeId: 'horsley-hills',
+    titleEn: 'Horsley Hills Precinct & Viewpoint Map',
+    titleTe: 'హార్స్‌లీ హిల్స్ ప్రాంగణం & వ్యూపాయింట్ మ్యాప్',
+    layoutType: 'hill-waterfall',
+    centerCoordinates: { lat: 13.6508, lng: 78.3970 },
+    routePath: [[412, 265], [270, 245], [138, 222], [270, 160], [270, 70], [390, 100], [270, 245]],
+    pins: [
+      {
+        id: 'parking',
+        nameEn: 'Hilltop Visitor Parking Plaza',
+        nameTe: 'హార్స్‌లీ హిల్స్ పార్కింగ్ ప్రదేశం',
+        category: 'parking',
+        lat: 13.6500,
+        lng: 78.3975,
+        svgX: 412,
+        svgY: 265,
+        descEn: 'Dedicated vehicle parking near APTDC Haritha Resort.',
+        descTe: 'హార్స్‌లీ హిల్స్ కొండపై వాహనాల పార్కింగ్ స్థలం.'
+      },
+      {
+        id: 'entry',
+        nameEn: 'Forest Checkpost & Entrance Gate',
+        nameTe: 'అటవీ చెక్‌పోస్ట్ & ప్రవేశ ముఖద్వారం',
+        category: 'entry',
+        lat: 13.6503,
+        lng: 78.3972,
+        svgX: 270,
+        svgY: 245,
+        descEn: 'Forest department entry checkpost and toll booth.',
+        descTe: 'అటవీ విభాగం చెక్‌పోస్ట్ మరియు ప్రవేశ ద్వారం.'
+      },
+      {
+        id: 'footwear',
+        nameEn: 'Visitor Amenities & Restrooms',
+        nameTe: 'సందర్శకుల సదుపాయాల కేంద్రం',
+        category: 'footwear',
+        lat: 13.6505,
+        lng: 78.3968,
+        svgX: 138,
+        svgY: 222,
+        descEn: 'Restroom complex, seating gazebos, and snacks kiosk.',
+        descTe: 'విశ్రాంతి గదులు మరియు తాగునీటి సదుపాయం.'
+      },
+      {
+        id: 'sanctum',
+        nameEn: 'Whispering Winds Viewpoint (4,100 ft)',
+        nameTe: 'విస్పరింగ్ విండ్స్ వ్యూపాయింట్ (4,100 అడుగులు)',
+        category: 'sanctum',
+        lat: 13.6510,
+        lng: 78.3970,
+        svgX: 270,
+        svgY: 160,
+        descEn: 'Highest elevation cliff viewpoint with cool mountain breeze and valley panoramas.',
+        descTe: 'కొండపై చల్లని గాలితో అలరించే విస్పరింగ్ విండ్స్ వ్యూపాయింట్.'
+      },
+      {
+        id: 'info',
+        nameEn: 'Gali Bandalu (Wind Rocks Summit)',
+        nameTe: 'గాలి బండలు పనోరమిక్ శిఖరం',
+        category: 'info',
+        lat: 13.6515,
+        lng: 78.3970,
+        svgX: 270,
+        svgY: 70,
+        descEn: 'Massive rocky cliff edge known for high gusty winds and sunset photography.',
+        descTe: 'సూర్యాస్తమయ దృశ్యాలకు ప్రసిద్ధి చెందిన గాలి బండలు శిఖరం.'
+      },
+      {
+        id: 'resort',
+        nameEn: 'APTDC Haritha Resort & Governor Bungalow',
+        nameTe: 'హరిత రిసార్ట్ & చారిత్రక గవర్నర్ బంగ్లా',
+        category: 'food',
+        lat: 13.6512,
+        lng: 78.3980,
+        svgX: 390,
+        svgY: 100,
+        descEn: '150-year-old British era Governor bungalow, restaurant, and swimming pool.',
+        descTe: 'చారిత్రక గవర్నర్ బంగ్లా మరియు హరిత హోటల్.'
+      }
+    ],
+    routeSteps: [
+      { stepNumber: 1, titleEn: 'Ghat Road Climb & Hilltop Arrival', titleTe: 'ఘాట్ రోడ్డు ప్రయాణం & కొండపైకి చేరుకోవడం', distance: '0.0 km', timeMins: 0, descEn: 'Drive up the 9 km scenic eucalyptus ghat road to Horsley Hills summit.', descTe: 'సుందరమైన యూకలిప్టస్ ఘాట్ రోడ్డు గుండా ప్రయాణించండి.' },
+      { stepNumber: 2, titleEn: 'Forest Checkpost & Parking', titleTe: 'చెక్‌పోస్ట్ ప్రవేశం & పార్కింగ్', distance: '50m', timeMins: 2, descEn: 'Pass the forest gate and park near APTDC Haritha Resort.', descTe: 'వాహనాన్ని పార్క్ చేయండి.' },
+      { stepNumber: 3, titleEn: 'Whispering Winds & Gali Bandalu Viewpoints', titleTe: 'విస్పరింగ్ విండ్స్ & గాలి బండలు సందర్శన', distance: '150m', timeMins: 30, descEn: 'Walk to the cliff top viewpoints for 360-degree Valley panoramas.', descTe: 'విస్పరింగ్ విండ్స్ మరియు గాలి బండల వ్యూపాయింట్ తిలకించండి.' },
+      { stepNumber: 4, titleEn: 'Governor Bungalow & Haritha Dining', titleTe: 'గవర్నర్ బంగ్లా & రిసార్ట్', distance: '100m', timeMins: 20, descEn: 'Visit the heritage bungalow and enjoy fresh refreshments.', descTe: 'చారిత్రక బంగ్లా తిలకించి భోజన సదుపాయం పొందండి.' }
+    ],
+    emergencyContacts: [
+      { titleEn: 'APTDC Horsley Hills Resort', titleTe: 'హరిత రిసార్ట్ సమాచార కేంద్రం', number: '08571279744' },
+      { titleEn: 'Emergency Helpline', titleTe: 'అత్యవసర హెల్ప్‌లైన్', number: '112' }
+    ]
+  },
+
   'jeeva-lingeshwara-temple': {
     placeId: 'jeeva-lingeshwara-temple',
     titleEn: 'Sri Jeeva Lingeshwara Swamy Temple Precinct Map',
@@ -2877,11 +3063,11 @@ export function getTempleLayout(placeInput: string | PlaceInputContext, fallback
     ];
   } else {
     // 10. GRAND TEMPLE
-    generatedRoute = [[415, 268], [270, 270], [140, 250], [270, 195], [140, 120], [270, 85], [400, 105], [370, 185], [270, 270]];
+    generatedRoute = [[412, 265], [270, 245], [138, 222], [270, 185], [270, 85], [400, 105], [370, 185], [270, 245]];
     generatedPins = [
-      { id: 'parking', nameEn: `${name} Parking Bay`, nameTe: 'పార్కింగ్ ప్రదేశం', category: 'parking', lat: baseLat - 0.0012, lng: baseLng + 0.0008, svgX: 415, svgY: 268, descEn: 'Dedicated vehicle parking and taxi drop zone.', descTe: 'వాహనాల పార్కింగ్ స్థలం.' },
-      { id: 'entry', nameEn: 'Raja Gopuram Entrance', nameTe: 'రాజగోపురం ముఖద్వారం', category: 'entry', lat: baseLat - 0.0007, lng: baseLng, svgX: 270, svgY: 270, descEn: 'Main gateway tower facing east.', descTe: 'ఆలయ ప్రధాన ప్రవేశ గోపురం.' },
-      { id: 'footwear', nameEn: 'Free Footwear Counter', nameTe: 'ఉచిత పాదరక్షల కౌంటర్', category: 'footwear', lat: baseLat - 0.0006, lng: baseLng - 0.0005, svgX: 140, svgY: 250, descEn: 'Free shoe keeping counter with token safety.', descTe: 'ఉచిత చెప్పుల కౌంటర్.' },
+      { id: 'parking', nameEn: `${name} Parking Bay`, nameTe: 'పార్కింగ్ ప్రదేశం', category: 'parking', lat: baseLat - 0.0012, lng: baseLng + 0.0008, svgX: 412, svgY: 265, descEn: 'Dedicated vehicle parking and taxi drop zone.', descTe: 'వాహనాల పార్కింగ్ స్థలం.' },
+      { id: 'entry', nameEn: 'Raja Gopuram Entrance', nameTe: 'రాజగోపురం ముఖద్వారం', category: 'entry', lat: baseLat - 0.0007, lng: baseLng, svgX: 270, svgY: 245, descEn: 'Main gateway tower facing east.', descTe: 'ఆలయ ప్రధాన ప్రవేశ గోపురం.' },
+      { id: 'footwear', nameEn: 'Free Footwear Counter', nameTe: 'ఉచిత పాదరక్షల కౌంటర్', category: 'footwear', lat: baseLat - 0.0006, lng: baseLng - 0.0005, svgX: 138, svgY: 222, descEn: 'Free shoe keeping counter with token safety.', descTe: 'ఉచిత చెప్పుల కౌంటర్.' },
       { id: 'sanctum', nameEn: `${name} Sanctum`, nameTe: `${name} గర్భగుడి`, category: 'sanctum', lat: baseLat, lng: baseLng, svgX: 270, svgY: 85, descEn: 'Sacred inner sanctum sanctorum and presiding deity.', descTe: 'ప్రధాన గర్భాలయం మరియు స్వామి/అమ్మవారి దర్శనం.' },
       { id: 'pushkarini', nameEn: 'Sacred Pushkarini Tank', nameTe: 'పుష్కరిణి తీర్థం', category: 'info', lat: baseLat, lng: baseLng + 0.0008, svgX: 400, svgY: 105, descEn: 'Holy temple water tank for holy water sprinkling.', descTe: 'పవిత్ర ఆలయ పుష్కరిణి.' },
       { id: 'laddu', nameEn: 'Prasadam & Laddu Counter', nameTe: 'ప్రసాదం కౌంటర్', category: 'laddu', lat: baseLat - 0.0004, lng: baseLng + 0.0005, svgX: 370, svgY: 185, descEn: 'Sacred laddu, pulihora, and blessed prasadam counter.', descTe: 'స్వామివారి ప్రసాదం కౌంటర్.' }
