@@ -2923,63 +2923,63 @@ export function getTempleLayout(placeInput: string | PlaceInputContext, fallback
     ];
   } else if (layoutType === 'ancient-shrine') {
     // 🏛️ ANCIENT SHRINE (Gudimallam, Appalayagunta)
-    generatedRoute = [[415, 268], [270, 270], [140, 250], [140, 140], [270, 85]];
+    generatedRoute = [[412, 255], [270, 238], [135, 215], [140, 140], [270, 85]];
     generatedPins = [
-      { id: 'parking', nameEn: 'Approach Parking Area', nameTe: 'పార్కింగ్ స్థలం', category: 'parking', lat: baseLat - 0.0010, lng: baseLng + 0.0008, svgX: 415, svgY: 268, descEn: 'Open parking space for vehicles.', descTe: 'వాహనాల పార్కింగ్ స్థలం.' },
-      { id: 'entry', nameEn: 'Mukha Mandapam / Gateway', nameTe: 'ముఖ మండపం ద్వారం', category: 'entry', lat: baseLat - 0.0004, lng: baseLng, svgX: 270, svgY: 270, descEn: 'Historical stone entrance gateway under ASI protection.', descTe: 'ఆలయ ప్రవేశ ద్వారం.' },
-      { id: 'footwear', nameEn: 'Courtyard Footwear Stand', nameTe: 'పాదరక్షల స్టాండ్', category: 'footwear', lat: baseLat - 0.0006, lng: baseLng - 0.0004, svgX: 140, svgY: 250, descEn: 'Shoe custody counter outside courtyard.', descTe: 'చెప్పులు విడిచే ప్రదేశం.' },
+      { id: 'parking', nameEn: 'Approach Parking Area', nameTe: 'పార్కింగ్ స్థలం', category: 'parking', lat: baseLat - 0.0010, lng: baseLng + 0.0008, svgX: 412, svgY: 255, descEn: 'Open parking space for vehicles.', descTe: 'వాహనాల పార్కింగ్ స్థలం.' },
+      { id: 'entry', nameEn: 'Mukha Mandapam / Gateway', nameTe: 'ముఖ మండపం ద్వారం', category: 'entry', lat: baseLat - 0.0004, lng: baseLng, svgX: 270, svgY: 238, descEn: 'Historical stone entrance gateway under ASI protection.', descTe: 'ఆలయ ప్రవేశ ద్వారం.' },
+      { id: 'footwear', nameEn: 'Courtyard Footwear Stand', nameTe: 'పాదరక్షల స్టాండ్', category: 'footwear', lat: baseLat - 0.0006, lng: baseLng - 0.0004, svgX: 135, svgY: 215, descEn: 'Shoe custody counter outside courtyard.', descTe: 'చెప్పులు విడిచే ప్రదేశం.' },
       { id: 'info', nameEn: 'Historical Heritage Inscriptions', nameTe: 'పురావస్తు శాసనాలు', category: 'info', lat: baseLat, lng: baseLng - 0.0006, svgX: 140, svgY: 140, descEn: 'Ancient stone inscriptions and carvings detailing heritage.', descTe: 'రాతి శాసనాలు మరియు చారిత్రక వివరాలు.' },
       { id: 'sanctum', nameEn: `${name} Sanctum`, nameTe: `${name} గర్భాలయం`, category: 'sanctum', lat: baseLat, lng: baseLng, svgX: 270, svgY: 85, descEn: 'Sacred inner sanctum sanctorum and deity idol.', descTe: 'ప్రధాన గర్భాలయం మరియు మూలవిరాట్టు.' }
     ];
   } else if (layoutType === 'trek-trail') {
-    generatedRoute = [[415, 268], [270, 270], [145, 245], [270, 145], [270, 65]];
+    generatedRoute = [[412, 255], [270, 238], [135, 215], [270, 145], [270, 65]];
     generatedPins = [
-      { id: 'parking', nameEn: 'Trailhead Parking Plaza', nameTe: 'పార్కింగ్ ప్రదేశం', category: 'parking', lat: baseLat - 0.0012, lng: baseLng + 0.0008, svgX: 415, svgY: 268, descEn: 'Vehicle parking and taxi drop zone.', descTe: 'వాహనాల పార్కింగ్ స్థలం.' },
-      { id: 'entry', nameEn: `${name} Entrance Gateway`, nameTe: `${name} ప్రారంభ ముఖద్వారం`, category: 'entry', lat: baseLat - 0.0006, lng: baseLng, svgX: 270, svgY: 270, descEn: 'Iconic gateway and starting point of the pedestrian trail.', descTe: 'నడక మార్గ ప్రారంభ ద్వారం.' },
-      { id: 'footwear', nameEn: 'Luggage & Footwear Transfer Depot', nameTe: 'లగేజ్ & పాదరక్షల కేంద్రం', category: 'footwear', lat: baseLat - 0.0004, lng: baseLng - 0.0005, svgX: 145, svgY: 245, descEn: 'Free luggage delivery to the hilltop.', descTe: 'ఉచిత లగేజ్ రవాణా కౌంటర్.' },
+      { id: 'parking', nameEn: 'Trailhead Parking Plaza', nameTe: 'పార్కింగ్ ప్రదేశం', category: 'parking', lat: baseLat - 0.0012, lng: baseLng + 0.0008, svgX: 412, svgY: 255, descEn: 'Vehicle parking and taxi drop zone.', descTe: 'వాహనాల పార్కింగ్ స్థలం.' },
+      { id: 'entry', nameEn: `${name} Entrance Gateway`, nameTe: `${name} ప్రారంభ ముఖద్వారం`, category: 'entry', lat: baseLat - 0.0006, lng: baseLng, svgX: 270, svgY: 238, descEn: 'Iconic gateway and starting point of the pedestrian trail.', descTe: 'నడక మార్గ ప్రారంభ ద్వారం.' },
+      { id: 'footwear', nameEn: 'Luggage & Footwear Transfer Depot', nameTe: 'లగేజ్ & పాదరక్షల కేంద్రం', category: 'footwear', lat: baseLat - 0.0004, lng: baseLng - 0.0005, svgX: 135, svgY: 215, descEn: 'Free luggage delivery to the hilltop.', descTe: 'ఉచిత లగేజ్ రవాణా కౌంటర్.' },
       { id: 'midpoint', nameEn: 'Sacred Rest Mandapam / Waypoint', nameTe: 'విశ్రాంతి మండపం & తాగునీరు', category: 'info', lat: baseLat + 0.0004, lng: baseLng, svgX: 270, svgY: 145, descEn: 'Sheltered resting mandapam and free RO drinking water.', descTe: 'తాగునీరు మరియు విశ్రాంతి ప్రదేశం.' },
       { id: 'sanctum', nameEn: `${name} Summit Terminal`, nameTe: `${name} కొండపై ముగింపు కేంద్రం`, category: 'sanctum', lat: baseLat + 0.0010, lng: baseLng, svgX: 270, svgY: 65, descEn: 'Tirumala summit arrival and continuation to the temple.', descTe: 'కొండపై నడక మార్గం ముగింపు ప్రదేశం.' }
     ];
   } else if (layoutType === 'shopping-market') {
-    generatedRoute = [[415, 268], [270, 270], [170, 200], [270, 120], [380, 160]];
+    generatedRoute = [[412, 255], [270, 238], [170, 200], [270, 120], [380, 160]];
     generatedPins = [
-      { id: 'parking', nameEn: 'Street & Bay Parking', nameTe: 'పార్కింగ్ ప్రదేశం', category: 'parking', lat: baseLat - 0.0010, lng: baseLng + 0.0008, svgX: 415, svgY: 268, descEn: 'Vehicle and two-wheeler parking along market road.', descTe: 'వాహనాల పార్కింగ్ స్థలం.' },
-      { id: 'entry', nameEn: 'Market Avenue Entrance', nameTe: 'మార్కెట్ ప్రవేశం', category: 'entry', lat: baseLat - 0.0005, lng: baseLng, svgX: 270, svgY: 270, descEn: 'Main entrance archway leading into the shopping lane.', descTe: 'షాపింగ్ వీధి ప్రధాన ముఖద్వారం.' },
+      { id: 'parking', nameEn: 'Street & Bay Parking', nameTe: 'పార్కింగ్ ప్రదేశం', category: 'parking', lat: baseLat - 0.0010, lng: baseLng + 0.0008, svgX: 412, svgY: 255, descEn: 'Vehicle and two-wheeler parking along market road.', descTe: 'వాహనాల పార్కింగ్ స్థలం.' },
+      { id: 'entry', nameEn: 'Market Avenue Entrance', nameTe: 'మార్కెట్ ప్రవేశం', category: 'entry', lat: baseLat - 0.0005, lng: baseLng, svgX: 270, svgY: 238, descEn: 'Main entrance archway leading into the shopping lane.', descTe: 'షాపింగ్ వీధి ప్రధాన ముఖద్వారం.' },
       { id: 'textiles', nameEn: 'Textiles & Handlooms Row', nameTe: 'వస్త్ర దుకాణాలు', category: 'info', lat: baseLat - 0.0002, lng: baseLng - 0.0006, svgX: 170, svgY: 200, descEn: 'Traditional sarees, fabrics, and clothing stores.', descTe: 'సంప్రదాయ చేనేత మరియు వస్త్ర దుకాణాలు.' },
       { id: 'plaza', nameEn: `${name} Main Bazaar`, nameTe: `${name} ప్రధాన మార్కెట్`, category: 'sanctum', lat: baseLat, lng: baseLng, svgX: 270, svgY: 120, descEn: 'Primary shopping arcades, souvenirs, and handicraft emporiums.', descTe: 'హస్తకళలు, పూజా వస్తువులు మరియు స్మారక చిహ్నాల కేంద్రం.' },
       { id: 'food', nameEn: 'Local Eateries & Refreshments', nameTe: 'స్ట్రీట్ ఫుడ్ & స్నాక్స్', category: 'food', lat: baseLat + 0.0003, lng: baseLng + 0.0006, svgX: 380, svgY: 160, descEn: 'Famous local street food, sweets, and beverages.', descTe: 'రుచికరమైన స్నాక్స్ మరియు పానీయాలు.' }
     ];
   } else if (layoutType === 'dining-restaurant') {
-    generatedRoute = [[415, 268], [270, 270], [270, 130], [380, 160]];
+    generatedRoute = [[412, 255], [270, 238], [270, 130], [380, 160]];
     generatedPins = [
-      { id: 'parking', nameEn: 'Valet & Customer Parking', nameTe: 'పార్కింగ్ ప్రదేశం', category: 'parking', lat: baseLat - 0.0008, lng: baseLng + 0.0006, svgX: 415, svgY: 268, descEn: 'Dedicated customer car & bike parking.', descTe: 'వినియోగదారుల పార్కింగ్.' },
-      { id: 'entry', nameEn: 'Main Entrance & Lobby', nameTe: 'ప్రవేశ ద్వారం', category: 'entry', lat: baseLat - 0.0003, lng: baseLng, svgX: 270, svgY: 270, descEn: 'Welcoming entrance lobby and host desk.', descTe: 'హోటల్ ప్రవేశ ద్వారం.' },
+      { id: 'parking', nameEn: 'Valet & Customer Parking', nameTe: 'పార్కింగ్ ప్రదేశం', category: 'parking', lat: baseLat - 0.0008, lng: baseLng + 0.0006, svgX: 412, svgY: 255, descEn: 'Dedicated customer car & bike parking.', descTe: 'వినియోగదారుల పార్కింగ్.' },
+      { id: 'entry', nameEn: 'Main Entrance & Lobby', nameTe: 'ప్రవేశ ద్వారం', category: 'entry', lat: baseLat - 0.0003, lng: baseLng, svgX: 270, svgY: 238, descEn: 'Welcoming entrance lobby and host desk.', descTe: 'హోటల్ ప్రవేశ ద్వారం.' },
       { id: 'dining', nameEn: `${name} Dining Hall`, nameTe: `${name} డైనింగ్ హాల్`, category: 'sanctum', lat: baseLat, lng: baseLng, svgX: 270, svgY: 130, descEn: 'Spacious AC dining hall and family seating.', descTe: 'కుటుంబ భోజన శాల.' },
       { id: 'counters', nameEn: 'Culinary & Beverage Counter', nameTe: 'రుచికరమైన వంటకాల విభాగం', category: 'food', lat: baseLat + 0.0002, lng: baseLng + 0.0005, svgX: 380, svgY: 160, descEn: 'Live kitchen, desserts, and beverage service.', descTe: 'లైవ్ కిచెన్ మరియు పానీయాలు.' }
     ];
   } else if (layoutType === 'museum-gallery') {
-    generatedRoute = [[415, 268], [270, 270], [170, 230], [270, 120], [380, 140]];
+    generatedRoute = [[412, 255], [270, 238], [170, 230], [270, 120], [380, 140]];
     generatedPins = [
-      { id: 'parking', nameEn: 'Visitor Parking Plaza', nameTe: 'పార్కింగ్ ప్రదేశం', category: 'parking', lat: baseLat - 0.0010, lng: baseLng + 0.0008, svgX: 415, svgY: 268, descEn: 'Parking for cars and tourist buses.', descTe: 'వాహనాల పార్కింగ్ స్థలం.' },
-      { id: 'entry', nameEn: 'Ticket Desk & Entry Gate', nameTe: 'టికెట్ కౌంటర్ & ప్రవేశం', category: 'entry', lat: baseLat - 0.0005, lng: baseLng, svgX: 270, svgY: 270, descEn: 'Ticket checks, cloakroom, and audio guides.', descTe: 'ప్రవేశ ద్వారం మరియు టికెట్ కౌంటర్.' },
+      { id: 'parking', nameEn: 'Visitor Parking Plaza', nameTe: 'పార్కింగ్ ప్రదేశం', category: 'parking', lat: baseLat - 0.0010, lng: baseLng + 0.0008, svgX: 412, svgY: 255, descEn: 'Parking for cars and tourist buses.', descTe: 'వాహనాల పార్కింగ్ స్థలం.' },
+      { id: 'entry', nameEn: 'Ticket Desk & Entry Gate', nameTe: 'టికెట్ కౌంటర్ & ప్రవేశం', category: 'entry', lat: baseLat - 0.0005, lng: baseLng, svgX: 270, svgY: 238, descEn: 'Ticket checks, cloakroom, and audio guides.', descTe: 'ప్రవేశ ద్వారం మరియు టికెట్ కౌంటర్.' },
       { id: 'orientation', nameEn: 'Orientation & Cloakroom', nameTe: 'క్లోక్‌రూమ్ & గైడ్ విభాగం', category: 'info', lat: baseLat - 0.0002, lng: baseLng - 0.0006, svgX: 170, svgY: 230, descEn: 'Locker custody and introductory information.', descTe: 'లగేజ్ భద్రత మరియు సమాచార విభాగం.' },
       { id: 'gallery', nameEn: `${name} Main Exhibit Gallery`, nameTe: `${name} ప్రధాన ప్రదర్శన శాల`, category: 'sanctum', lat: baseLat, lng: baseLng, svgX: 270, svgY: 120, descEn: 'Core exhibits, historical artifacts, and interactive displays.', descTe: 'చారిత్రక కళాఖండాలు మరియు ప్రదర్శనలు.' },
       { id: 'pavilion', nameEn: 'Interactive Science / Art Pavilion', nameTe: 'ప్రత్యేక పెవిలియన్', category: 'info', lat: baseLat + 0.0004, lng: baseLng + 0.0006, svgX: 380, svgY: 140, descEn: 'Interactive displays, 3D show, and planetarium.', descTe: 'ఇంటరాక్టివ్ ప్రదర్శన శాల.' }
     ];
   } else if (layoutType === 'hill-waterfall') {
-    generatedRoute = [[415, 268], [270, 270], [180, 230], [270, 160], [270, 70]];
+    generatedRoute = [[412, 255], [135, 215], [270, 150], [270, 65]];
     generatedPins = [
-      { id: 'parking', nameEn: 'Trailhead & Parking Bay', nameTe: 'పార్కింగ్ ప్రదేశం', category: 'parking', lat: baseLat - 0.0012, lng: baseLng + 0.0008, svgX: 415, svgY: 268, descEn: 'Vehicles drop and starting point of the nature trail.', descTe: 'వాహనాల పార్కింగ్ మరియు ట్రయల్ ప్రారంభం.' },
-      { id: 'entry', nameEn: 'Entrance Checkpoint & Gateway', nameTe: 'ప్రవేశ ముఖద్వారం', category: 'entry', lat: baseLat - 0.0007, lng: baseLng + 0.0002, svgX: 270, svgY: 270, descEn: 'Entry checkpoint and ticket counter.', descTe: 'ప్రవేశ ద్వారం మరియు టికెట్ కేంద్రం.' },
-      { id: 'footwear', nameEn: 'Footwear & Rest Stand', nameTe: 'పాదరక్షల స్టాండ్', category: 'footwear', lat: baseLat - 0.0005, lng: baseLng - 0.0004, svgX: 180, svgY: 230, descEn: 'Rest area and designated footwear stand before the holy pool.', descTe: 'చెప్పులు భద్రపరిచే స్థలం.' },
-      { id: 'sanctum', nameEn: `${name} Main Sanctum / Landmark`, nameTe: `${name} ప్రధాన క్షేత్రం`, category: 'sanctum', lat: baseLat, lng: baseLng, svgX: 270, svgY: 160, descEn: 'Primary sacred sanctum and viewing area.', descTe: 'ప్రధాన దర్శన ప్రదేశం.' },
-      { id: 'info', nameEn: 'Sacred Waterfall & Kund', nameTe: 'పవిత్ర జలపాతం & కుండం', category: 'info', lat: baseLat + 0.0006, lng: baseLng, svgX: 270, svgY: 70, descEn: 'Sacred mountain waterfall cascading into crystal theertham pool.', descTe: 'పవిత్ర తీర్థం మరియు జలపాతం.' }
+      { id: 'parking', nameEn: 'Trailhead & Parking Bay', nameTe: 'పార్కింగ్ ప్రదేశం', category: 'parking', lat: baseLat - 0.0012, lng: baseLng + 0.0008, svgX: 412, svgY: 255, descEn: 'Vehicles drop and starting point of the nature trail.', descTe: 'వాహనాల పార్కింగ్ మరియు ట్రయల్ ప్రారంభం.' },
+      { id: 'entry', nameEn: 'Entrance Checkpoint & Gateway', nameTe: 'ప్రవేశ ముఖద్వారం', category: 'entry', lat: baseLat - 0.0007, lng: baseLng + 0.0002, svgX: 270, svgY: 238, descEn: 'Entry checkpoint and ticket counter.', descTe: 'ప్రవేశ ద్వారం మరియు టికెట్ కేంద్రం.' },
+      { id: 'footwear', nameEn: 'Footwear & Rest Stand', nameTe: 'పాదరక్షల స్టాండ్', category: 'footwear', lat: baseLat - 0.0005, lng: baseLng - 0.0004, svgX: 135, svgY: 215, descEn: 'Rest area and designated footwear stand before the holy pool.', descTe: 'చెప్పులు భద్రపరిచే స్థలం.' },
+      { id: 'sanctum', nameEn: `${name} Main Sanctum / Landmark`, nameTe: `${name} ప్రధాన క్షేత్రం`, category: 'sanctum', lat: baseLat, lng: baseLng, svgX: 270, svgY: 150, descEn: 'Primary sacred sanctum and viewing area.', descTe: 'ప్రధాన దర్శన ప్రదేశం.' },
+      { id: 'info', nameEn: 'Sacred Waterfall & Kund', nameTe: 'పవిత్ర జలపాతం & కుండం', category: 'info', lat: baseLat + 0.0006, lng: baseLng, svgX: 270, svgY: 65, descEn: 'Sacred mountain waterfall cascading into crystal theertham pool.', descTe: 'పవిత్ర తీర్థం మరియు జలపాతం.' }
     ];
   } else if (layoutType === 'wildlife-safari') {
-    generatedRoute = [[415, 268], [270, 270], [210, 240], [140, 180], [270, 130], [395, 100]];
+    generatedRoute = [[412, 255], [270, 238], [210, 240], [140, 180], [270, 130], [395, 100]];
     generatedPins = [
-      { id: 'parking', nameEn: 'Visitor Parking Bay', nameTe: 'సందర్శకుల పార్కింగ్', category: 'parking', lat: baseLat - 0.0010, lng: baseLng + 0.0008, svgX: 415, svgY: 268, descEn: 'Shaded 4-wheeler and 2-wheeler parking.', descTe: 'కార్లు మరియు బైకుల పార్కింగ్ ప్రదేశం.' },
-      { id: 'entry', nameEn: 'Main Entrance & Tickets', nameTe: 'ప్రధాన ప్రవేశ ద్వారం', category: 'entry', lat: baseLat - 0.0005, lng: baseLng, svgX: 270, svgY: 270, descEn: 'Entry gates, cart bookings, and cloakroom.', descTe: 'ప్రవేశ ద్వారం మరియు బ్యాటరీ కార్ల బుకింగ్.' },
+      { id: 'parking', nameEn: 'Visitor Parking Bay', nameTe: 'సందర్శకుల పార్కింగ్', category: 'parking', lat: baseLat - 0.0010, lng: baseLng + 0.0008, svgX: 412, svgY: 255, descEn: 'Shaded 4-wheeler and 2-wheeler parking.', descTe: 'కార్లు మరియు బైకుల పార్కింగ్ ప్రదేశం.' },
+      { id: 'entry', nameEn: 'Main Entrance & Tickets', nameTe: 'ప్రధాన ప్రవేశ ద్వారం', category: 'entry', lat: baseLat - 0.0005, lng: baseLng, svgX: 270, svgY: 238, descEn: 'Entry gates, cart bookings, and cloakroom.', descTe: 'ప్రవేశ ద్వారం మరియు బ్యాటరీ కార్ల బుకింగ్.' },
       { id: 'safari-carts', nameEn: 'Battery Vehicle Station', nameTe: 'బ్యాటరీ వాహనాల స్టేషన్', category: 'safari', lat: baseLat - 0.0003, lng: baseLng - 0.0005, svgX: 210, svgY: 240, descEn: 'Eco-friendly battery cart boarding and departure.', descTe: 'బ్యాటరీ వాహనాలు ఎక్కే కేంద్రం.' },
       { id: 'herbivore', nameEn: 'Herbivore & Deer Valley', nameTe: 'శాకాహార జంతువుల ఆవరణ', category: 'safari', lat: baseLat, lng: baseLng - 0.0008, svgX: 140, svgY: 180, descEn: 'Natural woodland reserve for spotted deer and blackbucks.', descTe: 'జింకలు, దుప్పుల సహజ ఆవరణ.' },
       { id: 'aviary', nameEn: 'Walk-Through Aviary Dome', nameTe: 'పక్షుల శాల (ఏవియరీ)', category: 'info', lat: baseLat + 0.0004, lng: baseLng, svgX: 270, svgY: 130, descEn: 'Exotic bird sanctuary and photography deck.', descTe: 'రంగురంగుల పక్షుల కేంద్రం.' },
