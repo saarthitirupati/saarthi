@@ -64,7 +64,7 @@ export function DesktopHeader({ weather, temperature }: DesktopHeaderProps) {
         <div className={styles.leftBrand}>
           <Link href="/" className={styles.logoWrapper}>
             <Logo size={36} />
-            <span className={styles.brandName}>Saarthi</span>
+            <span className={styles.brandName}>Saarthi Guide</span>
           </Link>
           <div 
             className={styles.locationBadge} 

@@ -13,8 +13,8 @@ const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://saarthiguide.in';
 export const metadata: Metadata = {
   metadataBase: new URL(baseUrl),
   title: {
-    default: "Saarthi | Real-Time Tirupati & Tirumala Pilgrim Companion",
-    template: "%s | Saarthi"
+    default: "Saarthi Guide | Real-Time Tirupati & Tirumala Pilgrim Companion",
+    template: "%s | Saarthi Guide"
   },
   description: "Tirupati's trusted pilgrimage companion. Live TTD darshan wait times, SSD token availability, temple timings, dress codes, Sthala Puranas & verified transit guides.",
   keywords: [
@@ -30,23 +30,23 @@ export const metadata: Metadata = {
     "తిరుమల దర్శనం సమయాలు",
     "తిరుపతి ఆలయాలు"
   ],
-  authors: [{ name: "Saarthi Team" }],
-  creator: "Saarthi",
-  publisher: "Saarthi",
+  authors: [{ name: "Saarthi Guide Team" }],
+  creator: "Saarthi Guide",
+  publisher: "Saarthi Guide",
   alternates: {
     canonical: baseUrl,
   },
   openGraph: {
-    title: "Saarthi | Real-Time Tirupati & Tirumala Pilgrim Companion",
+    title: "Saarthi Guide | Real-Time Tirupati & Tirumala Pilgrim Companion",
     description: "Know the place before you go. Verified TTD wait times, temple timings, dress codes, Sthala Puranas, and local travel guides for Tirupati & Tirumala.",
     url: baseUrl,
-    siteName: "Saarthi",
+    siteName: "Saarthi Guide",
     locale: "en_IN",
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Saarthi | Tirupati & Tirumala Yatra Companion",
+    title: "Saarthi Guide | Tirupati & Tirumala Yatra Companion",
     description: "Live TTD darshan wait times, SSD token status, temple guides & local transport info.",
   },
   robots: {
