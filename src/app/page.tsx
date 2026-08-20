@@ -12,8 +12,7 @@ import {
   HomeHero,
   RecommendationCard,
   DailyContent,
-  QuickChecklist,
-  JourneyOverviewPanel
+  QuickChecklist
 } from '@/components/home';
 import styles from './Home.module.css';
 
@@ -560,11 +559,6 @@ export default function HomePage() {
             {/* Real-time SSD Free Token Quota, Slots & Counters Checklist */}
             <QuickChecklist {...home.checklist} liveStatus={home.status.liveStatus} />
           </div>
-        </div>
-
-        {/* ROW 2: FULL-WIDTH JOURNEY OVERVIEW PANEL */}
-        <div className={styles.secondRowGrid} style={{ marginTop: '24px' }}>
-          <JourneyOverviewPanel />
         </div>
       </div>
     </div>
