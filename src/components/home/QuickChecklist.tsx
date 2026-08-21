@@ -47,10 +47,11 @@ export function QuickChecklist(props: any) {
         <div
           style={{
             background: '#FFFFFF',
-            border: '1px solid rgba(15, 23, 42, 0.06)',
+            border: '1px solid rgba(15, 23, 42, 0.08)',
             borderRadius: '18px',
             padding: '14px 14px',
-            boxShadow: '0 6px 20px -4px rgba(15, 23, 42, 0.04), 0 2px 6px rgba(15, 23, 42, 0.02)'
+            boxShadow: '0 6px 20px -4px rgba(15, 23, 42, 0.04), 0 2px 6px rgba(15, 23, 42, 0.02)',
+            fontFamily: 'var(--font-sans, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Inter, sans-serif)'
           }}
         >
           {/* Header row */}
