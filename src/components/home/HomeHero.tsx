@@ -987,80 +987,43 @@ export function HomeHero({ userName, locationName, weatherTemp, liveStatus, acti
               return Math.max(...matches.map(Number));
             };
 
-            // 1. Sarva State (🔴 Heavy: #E11D48, fill: #FFE4E6)
+            // 1. Sarva State (Normal, Moderate, High, Extreme)
             const sarvaHours = getMaxHours(sarvaWait);
-            const isSarvaHeavy = sarvaHours >= 12 || sarvaWait.includes('24') || sarvaWait.includes('30');
-            const sarvaStatus = isSarvaHeavy
-              ? { color: '#E11D48', bg: '#FFE4E6', badgeBg: '#E11D48', badgeText: '#FFFFFF', iconBg: '#FFFFFF', border: '#E11D48', label: lang === 'te' ? 'అధిక రద్దీ' : 'HEAVY RUSH', meter: 5 }
+            const isSarvaExtreme = sarvaHours >= 12 || sarvaWait.includes('24') || sarvaWait.includes('30');
+            const sarvaStatus = isSarvaExtreme
+              ? { color: '#E11D48', bg: '#FFE4E6', badgeBg: '#E11D48', badgeText: '#FFFFFF', iconBg: '#FFFFFF', border: '#E11D48', label: lang === 'te' ? 'తీవ్రమైన రద్దీ' : 'EXTREME', meter: 5 }
               : sarvaHours > 6
               ? { color: '#EA580C', bg: '#FFEDD5', badgeBg: '#EA580C', badgeText: '#FFFFFF', iconBg: '#FFFFFF', border: '#EA580C', label: lang === 'te' ? 'రద్దీ ఎక్కువ' : 'HIGH', meter: 4 }
               : sarvaHours > 2
-              ? { color: '#D97706', bg: '#FEF3C7', badgeBg: '#D97706', badgeText: '#FFFFFF', iconBg: '#FFFFFF', border: '#D97706', label: lang === 'te' ? 'సాధారణ రద్దీ' : 'MODERATE', meter: 3 }
-              : { color: '#059669', bg: '#D1FAE5', badgeBg: '#059669', badgeText: '#FFFFFF', iconBg: '#FFFFFF', border: '#059669', label: lang === 'te' ? 'తక్కువ రద్దీ' : 'LOW CROWD', meter: 2 };
+              ? { color: '#D97706', bg: '#FEF3C7', badgeBg: '#D97706', badgeText: '#FFFFFF', iconBg: '#FFFFFF', border: '#D97706', label: lang === 'te' ? 'మితమైన రద్దీ' : 'MODERATE', meter: 3 }
+              : { color: '#059669', bg: '#D1FAE5', badgeBg: '#059669', badgeText: '#FFFFFF', iconBg: '#FFFFFF', border: '#059669', label: lang === 'te' ? 'సాధారణం' : 'NORMAL', meter: 1 };
 
-            // 2. Special Entry State (🟡 Moderate: #D97706, fill: #FEF3C7)
+            // 2. Special Entry State (Normal, Moderate, High, Extreme)
             const specialHours = getMaxHours(specialWait);
             const specialStatus = specialHours > 7
-              ? { color: '#E11D48', bg: '#FFE4E6', badgeBg: '#E11D48', badgeText: '#FFFFFF', iconBg: '#FFFFFF', border: '#E11D48', label: lang === 'te' ? 'అధిక రద్దీ' : 'HEAVY RUSH', meter: 5 }
-              : specialHours > 6
+              ? { color: '#E11D48', bg: '#FFE4E6', badgeBg: '#E11D48', badgeText: '#FFFFFF', iconBg: '#FFFFFF', border: '#E11D48', label: lang === 'te' ? 'తీవ్రమైన రద్దీ' : 'EXTREME', meter: 5 }
+              : specialHours > 4
               ? { color: '#EA580C', bg: '#FFEDD5', badgeBg: '#EA580C', badgeText: '#FFFFFF', iconBg: '#FFFFFF', border: '#EA580C', label: lang === 'te' ? 'రద్దీ ఎక్కువ' : 'HIGH', meter: 4 }
               : specialHours >= 2
-              ? { color: '#D97706', bg: '#FEF3C7', badgeBg: '#D97706', badgeText: '#FFFFFF', iconBg: '#FFFFFF', border: '#D97706', label: lang === 'te' ? 'స్లాట్ ఆధారితం' : 'MODERATE', meter: 3 }
-              : { color: '#059669', bg: '#D1FAE5', badgeBg: '#059669', badgeText: '#FFFFFF', iconBg: '#FFFFFF', border: '#059669', label: lang === 'te' ? 'వేగంగా కదులుతోంది' : 'LOW CROWD', meter: 2 };
+              ? { color: '#D97706', bg: '#FEF3C7', badgeBg: '#D97706', badgeText: '#FFFFFF', iconBg: '#FFFFFF', border: '#D97706', label: lang === 'te' ? 'మితమైన రద్దీ' : 'MODERATE', meter: 3 }
+              : { color: '#059669', bg: '#D1FAE5', badgeBg: '#059669', badgeText: '#FFFFFF', iconBg: '#FFFFFF', border: '#059669', label: lang === 'te' ? 'సాధారణం' : 'NORMAL', meter: 1 };
 
-            // 3. SSD Token State (Dynamic Admin Push — dynamic status badge and times)
+            // 3. SSD Token State (Standardized: Normal, Moderate, High, Extreme)
             const ssdHours = getMaxHours(ssdWait);
-            
-            const isSsdClosedStatus = ssdTokenStatus === 'closed-for-day' || ssdTokenStatus === 'closed';
-            const isSsdPausedStatus = ssdTokenStatus === 'paused';
-
-            let resolvedSsdStatus = ssdHours > 7
-              ? { color: '#E11D48', bg: '#FFE4E6', badgeBg: '#E11D48', badgeText: '#FFFFFF', iconBg: '#FFFFFF', border: '#E11D48', label: lang === 'te' ? 'అధిక రద్దీ' : 'HEAVY RUSH', meter: 5 }
-              : ssdHours > 4
-              ? { color: '#EA580C', bg: '#FFEDD5', badgeBg: '#EA580C', badgeText: '#FFFFFF', iconBg: '#FFFFFF', border: '#EA580C', label: lang === 'te' ? 'రద్దీ ఎక్కువ' : 'HIGH', meter: 4 }
-              : ssdHours >= 2
-              ? { color: '#D97706', bg: '#FEF3C7', badgeBg: '#D97706', badgeText: '#FFFFFF', iconBg: '#FFFFFF', border: '#D97706', label: lang === 'te' ? 'సాధారణ రద్దీ' : 'MODERATE', meter: 3 }
-              : { color: '#059669', bg: '#D1FAE5', badgeBg: '#059669', badgeText: '#FFFFFF', iconBg: '#FFFFFF', border: '#059669', label: lang === 'te' ? 'వేగంగా కదులుతోంది' : 'LOW CROWD', meter: 2 };
+            const isSsdExtreme = /cancel|full|heavy|rush|crowd|closed|stop/i.test(ssdWait) || ssdTokenStatus === 'closed-for-day' || ssdTokenStatus === 'closed';
 
             let ssdDisplayWait = ssdWait;
-            let isSsdCardClosed = false;
-
-            if (isSsdClosedStatus) {
-              isSsdCardClosed = true;
-              resolvedSsdStatus = {
-                color: '#DC2626',
-                bg: '#FEF2F2',
-                badgeBg: '#DC2626',
-                badgeText: '#FFFFFF',
-                iconBg: '#FFFFFF',
-                border: '#DC2626',
-                label: lang === 'te' ? 'ఈ రోజుకు ముగిసింది' : 'CLOSED FOR TODAY',
-                meter: 5
-              };
-            } else if (isSsdPausedStatus) {
-              isSsdCardClosed = true;
-              resolvedSsdStatus = {
-                color: '#D97706',
-                bg: '#FFFBEB',
-                badgeBg: '#D97706',
-                badgeText: '#FFFFFF',
-                iconBg: '#FFFFFF',
-                border: '#D97706',
-                label: lang === 'te' ? 'తాత్కాలిక నిలిపివేత' : 'PAUSED',
-                meter: 3
-              };
-            } else if (ssdTokenStatus === 'issuing') {
-              resolvedSsdStatus = {
-                color: '#059669',
-                bg: '#D1FAE5',
-                badgeBg: '#059669',
-                badgeText: '#FFFFFF',
-                iconBg: '#FFFFFF',
-                border: '#059669',
-                label: lang === 'te' ? 'ఇప్పుడు జారీ' : 'ISSUING NOW',
-                meter: 1
-              };
+            if (/cancel|full|closed/i.test(ssdWait)) {
+              ssdDisplayWait = '8–10 hrs';
             }
+
+            const resolvedSsdStatus = (ssdHours > 7 || isSsdExtreme)
+              ? { color: '#E11D48', bg: '#FFE4E6', badgeBg: '#E11D48', badgeText: '#FFFFFF', iconBg: '#FFFFFF', border: '#E11D48', label: lang === 'te' ? 'తీవ్రమైన రద్దీ' : 'EXTREME', meter: 5 }
+              : ssdHours > 4
+              ? { color: '#EA580C', bg: '#FFEDD5', badgeBg: '#EA580C', badgeText: '#FFFFFF', iconBg: '#FFFFFF', border: '#EA580C', label: lang === 'te' ? 'రద్దీ ఎక్కువ' : 'HIGH', meter: 4 }
+              : (ssdHours >= 2 || ssdTokenStatus === 'paused')
+              ? { color: '#D97706', bg: '#FEF3C7', badgeBg: '#D97706', badgeText: '#FFFFFF', iconBg: '#FFFFFF', border: '#D97706', label: lang === 'te' ? 'మితమైన రద్దీ' : 'MODERATE', meter: 3 }
+              : { color: '#059669', bg: '#D1FAE5', badgeBg: '#059669', badgeText: '#FFFFFF', iconBg: '#FFFFFF', border: '#059669', label: lang === 'te' ? 'సాధారణం' : 'NORMAL', meter: 1 };
 
             const queueCards = [
               {
@@ -1088,7 +1051,7 @@ export function HomeHero({ userName, locationName, weatherTemp, liveStatus, acti
                 subtitle: lang === 'te' ? 'ఉచిత సమయ స్లాట్ టోకెన్లు' : 'Time-Slotted Free Darshan',
                 wait: ssdDisplayWait,
                 ...resolvedSsdStatus,
-                isClosed: isSsdCardClosed
+                isClosed: false
               }
             ];
 
@@ -1139,7 +1102,7 @@ export function HomeHero({ userName, locationName, weatherTemp, liveStatus, acti
                 {/* Right Wait Time & Status Meter */}
                 <div style={{ textAlign: 'right', display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '4px', position: 'relative', zIndex: 2 }}>
                   <div style={{
-                    fontSize: card.isClosed ? '14px' : '17px',
+                    fontSize: '17px',
                     fontWeight: 900,
                     color: card.color,
                     letterSpacing: '-0.02em',
@@ -1150,22 +1113,20 @@ export function HomeHero({ userName, locationName, weatherTemp, liveStatus, acti
 
                   <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
                     {/* 5-Step Consistent Visual Crowd Meter */}
-                    {!card.isClosed && (
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '2px', marginRight: '2px' }}>
-                        {[1, 2, 3, 4, 5].map((seg) => (
-                          <span
-                            key={seg}
-                            style={{
-                              width: '4px',
-                              height: '7px',
-                              borderRadius: '1px',
-                              backgroundColor: seg <= card.meter ? card.color : 'rgba(15, 23, 42, 0.18)',
-                              boxShadow: seg <= card.meter ? `0 0 4px ${card.color}` : 'none'
-                            }}
-                          />
-                        ))}
-                      </div>
-                    )}
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '2px', marginRight: '2px' }}>
+                      {[1, 2, 3, 4, 5].map((seg) => (
+                        <span
+                          key={seg}
+                          style={{
+                            width: '4px',
+                            height: '7px',
+                            borderRadius: '1px',
+                            backgroundColor: seg <= card.meter ? card.color : 'rgba(15, 23, 42, 0.18)',
+                            boxShadow: seg <= card.meter ? `0 0 4px ${card.color}` : 'none'
+                          }}
+                        />
+                      ))}
+                    </div>
 
                     {/* Status Pill */}
                     <span style={{
