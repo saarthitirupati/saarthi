@@ -2453,6 +2453,90 @@ export const CURATED_LAYOUTS: Record<string, Partial<TempleLayoutData>> = {
         descTe: 'క్రీ.పూ 3వ శతాబ్దపు ప్రపంచంలోనే అత్యంత పురాతన సహజసిద్ధ శివలింగం.'
       }
     ]
+  },
+  'mamanduru-forest': {
+    placeId: 'mamanduru-forest',
+    titleEn: 'Mamanduru Eco-Tourism & Forest Trail Map',
+    titleTe: 'మామండూరు ఎకో-టూరిజం & అటవీ మార్గం',
+    layoutType: 'geo-nature-park',
+    centerCoordinates: { lat: 13.750691, lng: 79.466337 },
+    defaultZoom: 16,
+    compassBearingDeg: 0,
+    sanctumNameEn: 'Seshachalam Forest Trail & Canopy Walk',
+    sanctumNameTe: 'శేషాచలం అటవీ మార్గం & ప్రకృతి విహారం',
+    routePath: [[430, 290], [270, 275], [160, 190], [270, 100], [380, 140]],
+    pins: [
+      {
+        id: 'parking',
+        nameEn: 'Highway Parking & Checkpost Bay',
+        nameTe: 'పార్కింగ్ & అటవీ చెక్‌పోస్ట్',
+        category: 'parking',
+        lat: 13.7495,
+        lng: 79.4670,
+        svgX: 430,
+        svgY: 290,
+        descEn: 'Designated vehicle parking near Kadapa Highway forest checkpost.',
+        descTe: 'హైవే సమీపంలోని వాహనాల పార్కింగ్ స్థలం.'
+      },
+      {
+        id: 'entry',
+        nameEn: 'Forest Reception & Eco-Park Gateway',
+        nameTe: 'ఎకో-టూరిజం ప్రవేశ ద్వారం & టికెట్ కౌంటర్',
+        category: 'entry',
+        lat: 13.7500,
+        lng: 79.4663,
+        svgX: 270,
+        svgY: 275,
+        descEn: 'Forest Department reception, entry passes (₹50), and eco-guide counter.',
+        descTe: 'అటవీ శాఖ సమాచార కేంద్రం మరియు ప్రవేశ ద్వారం.'
+      },
+      {
+        id: 'cottages',
+        nameEn: '1865 British Forest Wooden Cottages',
+        nameTe: '1865 నాటి చారిత్రక రెస్ట్ హౌస్ & కాటేజీలు',
+        category: 'info',
+        lat: 13.7504,
+        lng: 79.4658,
+        svgX: 160,
+        svgY: 190,
+        descEn: 'Colonial-era wooden forest rest houses built in 1865 surrounded by Red Sanders trees.',
+        descTe: '1865 నాటి బ్రిటీష్ కాలపు చెక్క రెస్ట్ హౌస్ మరియు ఎర్రచందనం వనం.'
+      },
+      {
+        id: 'trail',
+        nameEn: 'Peacock Trailhead & Jungle Trekking Route',
+        nameTe: 'నెమలి ట్రెక్కింగ్ మార్గం ప్రారంభం',
+        category: 'safari',
+        lat: 13.7510,
+        lng: 79.4660,
+        svgX: 270,
+        svgY: 100,
+        descEn: 'Scenic jungle trek trail with perennial streams and rare biodiversity.',
+        descTe: 'అటవీ వాగులు మరియు పక్షులతో కూడిన సుందరమైన ట్రెక్కింగ్ మార్గం.'
+      },
+      {
+        id: 'watchtower',
+        nameEn: 'Canopy Walk & Forest Watch Tower',
+        nameTe: 'వాచ్ టవర్ & వ్యూ పాయింట్',
+        category: 'info',
+        lat: 13.7515,
+        lng: 79.4668,
+        svgX: 380,
+        svgY: 140,
+        descEn: 'Elevated wooden watch tower overlooking Seshachalam hills and forest valley.',
+        descTe: 'శేషాచలం అడవి అందాలను తిలకించే వాచ్ టవర్ మరియు వ్యూ పాయింట్.'
+      }
+    ],
+    routeSteps: [
+      { stepNumber: 1, titleEn: 'Arrival & Forest Checkpost Parking', titleTe: 'పార్కింగ్ చేరుకోవడం', distance: '0.0 km', timeMins: 0, descEn: 'Park vehicle at the visitor area near Mamanduru Forest Checkpost.', descTe: 'వాహనాన్ని పార్క్ చేసి ఎకో పార్క్ వైపు నడవండి.' },
+      { stepNumber: 2, titleEn: 'Forest Reception & Entry Passes', titleTe: 'ప్రవేశ టికెట్ కౌంటర్', distance: '40m', timeMins: 2, descEn: 'Collect Forest Department entry ticket (₹50) at reception.', descTe: 'అటవీ శాఖ ప్రవేశ టికెట్ తీసుకుని లోపలికి వెళ్ళండి.' },
+      { stepNumber: 3, titleEn: '1865 Heritage British Wooden Rest House', titleTe: 'చారిత్రక రెస్ట్ హౌస్ సందర్శన', distance: '80m', timeMins: 15, descEn: 'Explore the 1865 wooden rest house and Red Sanders botanical nursery.', descTe: '1865 నాటి చెక్క రెస్ట్ హౌస్ మరియు ఎర్రచందనం మొక్కలను చూడండి.' },
+      { stepNumber: 4, titleEn: 'Peacock Jungle Trek Trail & Watch Tower', titleTe: 'అటవీ ట్రెక్ & వాచ్ టవర్', distance: '120m', timeMins: 25, descEn: 'Hike along the stream-side canopy trail and ascend the panoramic watch tower.', descTe: 'అటవీ నడక మార్గం గుండా వాచ్ టవర్ వద్దకు చేరుకుని ప్రకృతి అందాలను ఆస్వాదించండి.' }
+    ],
+    emergencyContacts: [
+      { titleEn: 'AP Forest Department Wildlife Division (Tirupati)', titleTe: 'అటవీ శాఖ కంట్రోల్ రూమ్', number: '18004255909' },
+      { titleEn: 'Emergency Toll-Free Helpline', titleTe: 'అత్యవసర హెల్ప్‌లైన్', number: '112' }
+    ]
   }
 };
 
@@ -2478,6 +2562,29 @@ export function getTempleLayout(placeInput: string | PlaceInputContext, fallback
   const placeType = (placeObj?.placeType || '').toLowerCase();
   const tags = (placeObj?.tags || []).map(t => t.toLowerCase());
   const nameLower = name.toLowerCase();
+
+  // 0. Mamanduru Eco-Tourism & Forest
+  if (
+    placeId.includes('mamanduru') ||
+    nameLower.includes('mamanduru')
+  ) {
+    const curated = CURATED_LAYOUTS['mamanduru-forest']!;
+    return {
+      placeId,
+      titleEn: `${name} Trail Map`,
+      titleTe: `${name} అటవీ మార్గం`,
+      layoutType: 'geo-nature-park',
+      centerCoordinates: fallbackCoords || { lat: 13.750691, lng: 79.466337 },
+      defaultZoom: 16,
+      compassBearingDeg: 0,
+      sanctumNameEn: curated.sanctumNameEn || 'Seshachalam Forest Trail & Canopy Walk',
+      sanctumNameTe: curated.sanctumNameTe || 'శేషాచలం అటవీ మార్గం & ప్రకృతి విహారం',
+      routePath: curated.routePath || [[430, 290], [270, 275], [160, 190], [270, 100], [380, 140]],
+      pins: (curated.pins as MapPin[]) || [],
+      routeSteps: curated.routeSteps || [],
+      emergencyContacts: curated.emergencyContacts || []
+    };
+  }
 
   // 1. Matrusri Tarigonda Vengamamba Annaprasadam Complex
   if (
@@ -2814,8 +2921,24 @@ export function getTempleLayout(placeInput: string | PlaceInputContext, fallback
     } else {
       layoutType = 'city-shrine';
     }
+  } else if (
+    placeType === 'nature' || 
+    category.includes('nature') || 
+    category.includes('day trip') ||
+    tags.includes('nature') ||
+    tags.includes('forest') ||
+    tags.includes('wildlife') ||
+    tags.includes('trekking') ||
+    nameLower.includes('forest') ||
+    nameLower.includes('eco-tourism') ||
+    nameLower.includes('valley') ||
+    nameLower.includes('hills') ||
+    nameLower.includes('peak') ||
+    nameLower.includes('view')
+  ) {
+    layoutType = 'geo-nature-park';
   } else {
-    layoutType = category.includes('nature') ? 'hill-waterfall' : 'city-shrine';
+    layoutType = 'city-shrine';
   }
 
   const baseLat = placeObj?.coordinates?.lat || fallbackCoords?.lat || 13.6296;
