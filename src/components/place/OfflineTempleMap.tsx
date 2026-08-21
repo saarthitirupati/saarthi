@@ -690,13 +690,9 @@ export default function OfflineTempleMap({
             const rawPx = pin.svgX || 270;
             const rawPy = pin.svgY || 160;
             
-            // Smart layout coordinate clamping to ensure badges never overlap borders or cutoff
-            const px = Math.max(65, Math.min(475, rawPx));
-            let py = rawPy;
-            if (pin.category === 'entry' && rawPy > 238) py = 238;
-            else if (pin.category === 'footwear' && rawPy > 215) py = 215;
-            else if (pin.category === 'parking' && rawPy > 255) py = 255;
-            else if (rawPy > 255) py = 255;
+            // Direct precise pin rendering matching layout svgX and svgY
+            const px = Math.max(50, Math.min(490, rawPx));
+            const py = Math.max(35, Math.min(300, rawPy));
 
             const label = lang === 'te' 
               ? (pin.nameTe.length > 14 ? pin.nameTe.split(' ')[0] : pin.nameTe)

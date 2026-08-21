@@ -465,7 +465,7 @@ export const CURATED_LAYOUTS: Record<string, Partial<TempleLayoutData>> = {
     titleTe: 'శ్రీ జీవ లింగేశ్వర స్వామి ఆలయ ప్రాంగణ మ్యాప్',
     layoutType: 'ancient-shrine',
     centerCoordinates: { lat: 13.6581, lng: 79.4292 },
-    routePath: [[420, 268], [270, 270], [140, 250], [270, 195], [140, 120], [270, 70], [400, 150], [270, 270]],
+    routePath: [[420, 268], [140, 250], [270, 270], [270, 195], [140, 120], [270, 70], [400, 150], [270, 270]],
     pins: [
       {
         id: 'parking',
