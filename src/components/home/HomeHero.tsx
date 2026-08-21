@@ -1008,14 +1008,9 @@ export function HomeHero({ userName, locationName, weatherTemp, liveStatus, acti
               ? { color: '#D97706', bg: '#FEF3C7', badgeBg: '#D97706', badgeText: '#FFFFFF', iconBg: '#FFFFFF', border: '#D97706', label: lang === 'te' ? 'మితమైన రద్దీ' : 'MODERATE', meter: 3 }
               : { color: '#059669', bg: '#D1FAE5', badgeBg: '#059669', badgeText: '#FFFFFF', iconBg: '#FFFFFF', border: '#059669', label: lang === 'te' ? 'సాధారణం' : 'NORMAL', meter: 1 };
 
-            // 3. SSD Token State (Standardized: Normal, Moderate, High, Extreme)
+            // 3. SSD Token State (Dynamic Admin Text & Unified Crowd Pill)
             const ssdHours = getMaxHours(ssdWait);
             const isSsdExtreme = /cancel|full|heavy|rush|crowd|closed|stop/i.test(ssdWait) || ssdTokenStatus === 'closed-for-day' || ssdTokenStatus === 'closed';
-
-            let ssdDisplayWait = ssdWait;
-            if (/cancel|full|closed/i.test(ssdWait)) {
-              ssdDisplayWait = '8–10 hrs';
-            }
 
             const resolvedSsdStatus = (ssdHours > 7 || isSsdExtreme)
               ? { color: '#E11D48', bg: '#FFE4E6', badgeBg: '#E11D48', badgeText: '#FFFFFF', iconBg: '#FFFFFF', border: '#E11D48', label: lang === 'te' ? 'తీవ్రమైన రద్దీ' : 'EXTREME', meter: 5 }
@@ -1049,7 +1044,7 @@ export function HomeHero({ userName, locationName, weatherTemp, liveStatus, acti
                 icon: <Ticket size={16} color={resolvedSsdStatus.color} />,
                 title: lang === 'te' ? 'SSD టోకెన్ దర్శనం' : 'SSD Token Darshan',
                 subtitle: lang === 'te' ? 'ఉచిత సమయ స్లాట్ టోకెన్లు' : 'Time-Slotted Free Darshan',
-                wait: ssdDisplayWait,
+                wait: ssdWait,
                 ...resolvedSsdStatus,
                 isClosed: false
               }
