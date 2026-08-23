@@ -648,21 +648,48 @@ export default function OfflineTempleMap({
               <rect x="105" y="228" width="80" height="32" rx="6" fill="#F1F5F9" stroke="#64748B" strokeWidth="1.2" />
             </g>
           ) : layout.layoutType === 'hill-waterfall' ? (
-            /* 8. HILL & WATERFALL (Kapila Theertham, Talakona, Kailasakona) */
+            /* 8. HILL & WATERFALL (Talakona, Kailasakona, Narayanavanam Waterfalls, Kapila Theertham) */
             <g>
-              <path d="M 30 140 Q 150 40 270 50 Q 390 40 510 140 L 510 310 L 30 310 Z" fill="#F5F3EF" stroke="#CBD5E1" strokeWidth="2" />
+              {/* Seshachalam Forest Cliff Gorge & Rock Hills */}
+              <path d="M 30 130 Q 140 30 270 45 Q 400 30 510 130 L 510 310 L 30 310 Z" fill="#F0FDF4" stroke="#86EFAC" strokeWidth="1.8" />
+              
+              {/* Mountain Cliff Rock Ledges */}
+              <path d="M 60 90 Q 180 20 270 35 Q 360 20 480 90" fill="none" stroke="#22C55E" strokeWidth="2" strokeDasharray="6 4" opacity="0.6" />
+              <path d="M 120 70 Q 200 45 270 45 Q 340 45 420 70" fill="none" stroke="#15803D" strokeWidth="2.5" />
+
+              {/* Cascading Waterfalls (Top Cliff to Lower Pool) */}
               <g transform="translate(245, 30)">
-                <path d="M 25 0 Q 20 40 25 80" stroke="#0284C7" strokeWidth="16" strokeLinecap="round" opacity="0.6" />
-                <path d="M 25 0 Q 30 40 25 80" stroke="#BAE6FD" strokeWidth="8" strokeLinecap="round" />
+                <path d="M 25 0 Q 15 45 25 90" stroke="#0284C7" strokeWidth="20" strokeLinecap="round" opacity="0.7" />
+                <path d="M 25 0 Q 30 45 25 90" stroke="#38BDF8" strokeWidth="12" strokeLinecap="round" opacity="0.9" />
+                <path d="M 25 0 Q 22 45 25 90" stroke="#FFFFFF" strokeWidth="5" strokeLinecap="round" opacity="0.8" />
+                {/* Water splash mist circles */}
+                <circle cx="25" cy="90" r="14" fill="#BAE6FD" opacity="0.6" />
+                <circle cx="15" cy="85" r="8" fill="#FFFFFF" opacity="0.7" />
+                <circle cx="35" cy="85" r="8" fill="#FFFFFF" opacity="0.7" />
               </g>
-              <g transform="translate(210, 50)">
-                <rect x="0" y="0" width="120" height="40" rx="8" fill="#BAE6FD" stroke="#0284C7" strokeWidth="1.5" />
-                <rect x="4" y="4" width="112" height="32" rx="6" fill="url(#waterTankGrad)" />
+
+              {/* Natural Theertham Pool (Kund) at Gorge Bottom */}
+              <g transform="translate(195, 110)">
+                <ellipse cx="75" cy="30" rx="75" ry="28" fill="url(#waterTankGrad)" stroke="#0284C7" strokeWidth="2" />
+                {/* Water surface ripples */}
+                <ellipse cx="75" cy="30" rx="55" ry="18" fill="none" stroke="#BAE6FD" strokeWidth="1.5" strokeDasharray="6 4" />
+                <ellipse cx="75" cy="30" rx="30" ry="10" fill="none" stroke="#FFFFFF" strokeWidth="1.2" opacity="0.8" />
               </g>
-              <g transform="translate(225, 135)">
-                <circle cx="45" cy="45" r="42" fill="url(#sanctumGlow)" />
-                <rect x="10" y="10" width="70" height="65" rx="8" fill="#FEF3C7" stroke="#D97706" strokeWidth="2" />
-                <polygon points="45,15 20,60 70,60" fill="url(#goldVimana)" stroke="#92400E" strokeWidth="1.2" />
+
+              {/* Scenic Viewpoint & Wooden Observation Deck (North-East) */}
+              <g transform="translate(365, 80)">
+                <rect x="0" y="0" width="80" height="42" rx="8" fill="#FEF9C3" stroke="#CA8A04" strokeWidth="1.5" />
+                <circle cx="40" cy="21" r="10" fill="#FEF08A" stroke="#B45309" strokeWidth="1" />
+              </g>
+
+              {/* Forest Rest Shelter & Changing Rooms (South-West) */}
+              <rect x="95" y="195" width="80" height="36" rx="6" fill="#F1F5F9" stroke="#64748B" strokeWidth="1.2" />
+
+              {/* Forest Eco-Tourism Trailhead Gate (South Center) */}
+              <g transform="translate(225, 238)">
+                <rect x="0" y="0" width="90" height="26" rx="6" fill="#15803D" stroke="#14532D" strokeWidth="1.5" />
+                <line x1="20" y1="0" x2="20" y2="26" stroke="#BBF7D0" strokeWidth="1.5" />
+                <line x1="70" y1="0" x2="70" y2="26" stroke="#BBF7D0" strokeWidth="1.5" />
               </g>
             </g>
           ) : layout.layoutType === 'wildlife-safari' ? (
@@ -754,17 +781,20 @@ export default function OfflineTempleMap({
                   layout.layoutType === 'dining-restaurant' ? 'Dining Hall' :
                   layout.layoutType === 'museum-gallery' ? 'Exhibits' :
                   layout.layoutType === 'trek-trail' ? 'Summit' :
-                  layout.layoutType === 'hill-waterfall' ? 'Main Falls' :
+                  layout.layoutType === 'hill-waterfall' ? 'Theertham Pool' :
                   layout.layoutType === 'heritage-fort' ? 'Raja Mahal' : 'Sanctum'
                 ) :
-                 pin.category === 'entry' ? (layout.layoutType === 'dam-reservoir' ? 'Dam Bund' : (layout.layoutType === 'heritage-fort' ? 'Fort Gate' : 'Entrance')) :
+                 pin.category === 'entry' ? (layout.layoutType === 'dam-reservoir' ? 'Dam Bund' : (layout.layoutType === 'heritage-fort' ? 'Fort Gate' : (layout.layoutType === 'hill-waterfall' || layout.layoutType === 'geo-nature-park' ? 'Trailhead' : 'Entrance'))) :
                  pin.category === 'queue' ? (layout.layoutType === 'annaprasadam-complex' ? 'Holding Hall' : 'Queue') :
                  pin.category === 'laddu' ? (layout.layoutType === 'city-shrine' ? 'Prasadam' : 'Prasadam') :
-                 pin.category === 'footwear' ? (layout.layoutType === 'sacred-pushkarini' ? 'Footwear' : 'Footwear') :
+                 pin.category === 'footwear' ? (layout.layoutType === 'sacred-pushkarini' ? 'Footwear' : (layout.layoutType === 'hill-waterfall' ? 'Rest Shelter' : 'Footwear')) :
                  pin.category === 'food' ? (layout.layoutType === 'annaprasadam-complex' ? 'Dining Halls' : (layout.layoutType === 'shopping-market' ? 'Street Food' : 'Food / Dining')) :
                  pin.category === 'parking' ? 'Parking' :
                  pin.category === 'medical' ? 'Medical' :
                  pin.category === 'safari' ? 'Safari' :
+                 pin.id.includes('falls') || pin.id.includes('waterfall') ? 'Main Falls' :
+                 pin.id.includes('pool') || pin.id.includes('kund') ? 'Theertham Pool' :
+                 pin.id.includes('shelter') || pin.id.includes('changing') ? 'Rest Shelter' :
                  pin.id.includes('raja') || pin.id.includes('palace') ? 'Raja Mahal' :
                  pin.id.includes('rani') ? 'Rani Mahal' :
                  pin.id.includes('sound') || pin.id.includes('laser') ? 'Sound Show' :

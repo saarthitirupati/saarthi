@@ -1756,6 +1756,100 @@ export const CURATED_LAYOUTS: Record<string, Partial<TempleLayoutData>> = {
   },
 
 
+  'narayanavanam-waterfalls': {
+    placeId: 'narayanavanam-waterfalls',
+    titleEn: 'Narayanavanam Waterfalls Precinct Map',
+    titleTe: 'నారాయణవనం జలపాతం ప్రాంగణ మ్యాప్',
+    layoutType: 'hill-waterfall',
+    centerCoordinates: { lat: 13.4350, lng: 79.6200 },
+    routePath: [[420, 265], [135, 215], [270, 250], [270, 135], [270, 70], [385, 95]],
+    pins: [
+      {
+        id: 'parking',
+        nameEn: 'Trailhead Parking Bay',
+        nameTe: 'పార్కింగ్ ప్రదేశం',
+        category: 'parking',
+        lat: 13.4340,
+        lng: 79.6208,
+        svgX: 420,
+        svgY: 265,
+        descEn: 'Parking for cars and bikes at the forest valley entrance.',
+        descTe: 'వాహనాల పార్కింగ్ స్థలం.'
+      },
+      {
+        id: 'shelter',
+        nameEn: 'Rest Shelter & Changing Rooms',
+        nameTe: 'విశ్రాంతి గది & సదుపాయాలు',
+        category: 'info',
+        lat: 13.4344,
+        lng: 79.6195,
+        svgX: 135,
+        svgY: 215,
+        descEn: 'Forest rest shelter, washrooms, and dress changing rooms.',
+        descTe: 'సందర్శకుల విశ్రాంతి మరియు బట్టలు మార్చుకునే గదులు.'
+      },
+      {
+        id: 'entry',
+        nameEn: 'Forest Trailhead Checkpost',
+        nameTe: 'అటవీ మార్గం ప్రవేశ ద్వారం',
+        category: 'entry',
+        lat: 13.4346,
+        lng: 79.6202,
+        svgX: 270,
+        svgY: 250,
+        descEn: 'Forest department entry checkpoint and trail start.',
+        descTe: 'అటవీ విభాగం ప్రవేశం మరియు ట్రయల్ ప్రారంభం.'
+      },
+      {
+        id: 'pool',
+        nameEn: 'Natural Theertham Pool (Kund)',
+        nameTe: 'సహజ తీర్థం మరియు కుండం',
+        category: 'sanctum',
+        lat: 13.4352,
+        lng: 79.6200,
+        svgX: 270,
+        svgY: 135,
+        descEn: 'Clear natural plunge pool formed by sacred cascading waters.',
+        descTe: 'జలపాతం కింద ఏర్పడిన సహజ స్నాన ఘట్టం.'
+      },
+      {
+        id: 'falls',
+        nameEn: 'Main Waterfalls Cascade',
+        nameTe: 'ప్రధాన జలపాతం',
+        category: 'info',
+        lat: 13.4356,
+        lng: 79.6200,
+        svgX: 270,
+        svgY: 70,
+        descEn: 'Perennial sacred waterfalls originating from the Seshachalam forest hill range.',
+        descTe: 'కొండల పైనుంచి దూకే మనోహరమైన జలపాతం.'
+      },
+      {
+        id: 'viewpoint',
+        nameEn: 'Canopy Observation Deck',
+        nameTe: 'వ్యూ పాయింట్ & అబ్జర్వేషన్ డెక్',
+        category: 'info',
+        lat: 13.4354,
+        lng: 79.6206,
+        svgX: 385,
+        svgY: 95,
+        descEn: 'Scenic photography viewpoint overlooking the waterfalls and forest valley.',
+        descTe: 'జలపాతం మరియు పచ్చని లోయను చూసే సుందరమైన వ్యూ పాయింట్.'
+      }
+    ],
+    routeSteps: [
+      { stepNumber: 1, titleEn: 'Arrival & Forest Parking', titleTe: 'పార్కింగ్ చేరుకోవడం', distance: '0.0 km', timeMins: 0, descEn: 'Park vehicle at the trailhead.', descTe: 'వాహనాన్ని పార్క్ చేయండి.' },
+      { stepNumber: 2, titleEn: 'Forest Checkpoint & Trail Entry', titleTe: 'ట్రయల్ ప్రవేశం', distance: '30m', timeMins: 2, descEn: 'Pass forest entry gate and follow the shaded pathway.', descTe: 'అటవీ మార్గంలోకి అడుగుపెట్టండి.' },
+      { stepNumber: 3, titleEn: 'Rest Shelter & Changing Sheds', titleTe: 'విశ్రాంతి కేంద్రం', distance: '50m', timeMins: 3, descEn: 'Rest area and visitor facilities.', descTe: 'విశ్రాంతి సదుపాయాలు ఉపయోగించుకోండి.' },
+      { stepNumber: 4, titleEn: 'Natural Theertham Pool & Waterfalls', titleTe: 'జలపాతం & తీర్థ స్నానం', distance: '120m', timeMins: 15, descEn: 'Reach the pristine waterfalls and pool.', descTe: 'పవిత్ర జలపాతం చేరుకోండి.' },
+      { stepNumber: 5, titleEn: 'Canopy Viewpoint & Photography', titleTe: 'వ్యూ పాయింట్ దర్శనం', distance: '80m', timeMins: 10, descEn: 'Enjoy panoramic views of the green gorge.', descTe: 'ప్రకృతి అందాలను వీక్షించండి.' }
+    ],
+    emergencyContacts: [
+      { titleEn: 'Forest Range Office', titleTe: 'అటవీ రేంజ్ కార్యాలయం', number: '08772264555' },
+      { titleEn: 'Emergency Helpline', titleTe: 'అత్యవసర హెల్ప్‌లైన్', number: '112' }
+    ]
+  },
+
   'narayanavanam': {
     placeId: 'narayanavanam',
     titleEn: 'Sri Kalyana Venkateswara Swamy Temple (Divine Wedding Site)',
@@ -2609,6 +2703,30 @@ export function getTempleLayout(placeInput: string | PlaceInputContext, fallback
     };
   }
 
+  // 0.2 Narayanavanam Waterfalls (Kailasanatha Kona)
+  if (
+    placeId.includes('narayanavanam-waterfall') ||
+    placeId.includes('narayanavanam-fall') ||
+    (placeId.includes('narayanavanam') && (nameLower.includes('waterfall') || nameLower.includes('falls') || nameLower.includes('kona')))
+  ) {
+    const curated = CURATED_LAYOUTS['narayanavanam-waterfalls']!;
+    return {
+      placeId,
+      titleEn: `${name} Precinct Map`,
+      titleTe: `${name} ప్రాంగణ మ్యాప్`,
+      layoutType: 'hill-waterfall',
+      centerCoordinates: fallbackCoords || { lat: 13.4350, lng: 79.6200 },
+      defaultZoom: 16,
+      compassBearingDeg: 0,
+      sanctumNameEn: curated.sanctumNameEn || 'Natural Theertham Pool (Kund)',
+      sanctumNameTe: curated.sanctumNameTe || 'సహజ తీర్థం మరియు కుండం',
+      routePath: curated.routePath || [[420, 265], [135, 215], [270, 250], [270, 135], [270, 70], [385, 95]],
+      pins: (curated.pins as MapPin[]) || [],
+      routeSteps: curated.routeSteps || [],
+      emergencyContacts: curated.emergencyContacts || []
+    };
+  }
+
   // 1. Matrusri Tarigonda Vengamamba Annaprasadam Complex
   if (
     placeId.includes('annaprasadam') || 
@@ -3113,13 +3231,14 @@ export function getTempleLayout(placeInput: string | PlaceInputContext, fallback
       { id: 'pavilion', nameEn: 'Interactive Science / Art Pavilion', nameTe: 'ప్రత్యేక పెవిలియన్', category: 'info', lat: baseLat + 0.0004, lng: baseLng + 0.0006, svgX: 380, svgY: 140, descEn: 'Interactive displays, 3D show, and planetarium.', descTe: 'ఇంటరాక్టివ్ ప్రదర్శన శాల.' }
     ];
   } else if (layoutType === 'hill-waterfall') {
-    generatedRoute = [[412, 255], [135, 215], [270, 150], [270, 65]];
+    generatedRoute = [[420, 265], [135, 215], [270, 250], [270, 135], [270, 70], [385, 95]];
     generatedPins = [
-      { id: 'parking', nameEn: 'Trailhead & Parking Bay', nameTe: 'పార్కింగ్ ప్రదేశం', category: 'parking', lat: baseLat - 0.0012, lng: baseLng + 0.0008, svgX: 412, svgY: 255, descEn: 'Vehicles drop and starting point of the nature trail.', descTe: 'వాహనాల పార్కింగ్ మరియు ట్రయల్ ప్రారంభం.' },
-      { id: 'entry', nameEn: 'Entrance Checkpoint & Gateway', nameTe: 'ప్రవేశ ముఖద్వారం', category: 'entry', lat: baseLat - 0.0007, lng: baseLng + 0.0002, svgX: 270, svgY: 238, descEn: 'Entry checkpoint and ticket counter.', descTe: 'ప్రవేశ ద్వారం మరియు టికెట్ కేంద్రం.' },
-      { id: 'footwear', nameEn: 'Footwear & Rest Stand', nameTe: 'పాదరక్షల స్టాండ్', category: 'footwear', lat: baseLat - 0.0005, lng: baseLng - 0.0004, svgX: 135, svgY: 215, descEn: 'Rest area and designated footwear stand before the holy pool.', descTe: 'చెప్పులు భద్రపరిచే స్థలం.' },
-      { id: 'sanctum', nameEn: `${name} Main Sanctum / Landmark`, nameTe: `${name} ప్రధాన క్షేత్రం`, category: 'sanctum', lat: baseLat, lng: baseLng, svgX: 270, svgY: 150, descEn: 'Primary sacred sanctum and viewing area.', descTe: 'ప్రధాన దర్శన ప్రదేశం.' },
-      { id: 'info', nameEn: 'Sacred Waterfall & Kund', nameTe: 'పవిత్ర జలపాతం & కుండం', category: 'info', lat: baseLat + 0.0006, lng: baseLng, svgX: 270, svgY: 65, descEn: 'Sacred mountain waterfall cascading into crystal theertham pool.', descTe: 'పవిత్ర తీర్థం మరియు జలపాతం.' }
+      { id: 'parking', nameEn: 'Trailhead & Parking Bay', nameTe: 'పార్కింగ్ ప్రదేశం', category: 'parking', lat: baseLat - 0.0012, lng: baseLng + 0.0008, svgX: 420, svgY: 265, descEn: 'Vehicle parking and starting point of the forest nature trail.', descTe: 'వాహనాల పార్కింగ్ మరియు ట్రయల్ ప్రారంభం.' },
+      { id: 'shelter', nameEn: 'Rest Shelter & Changing Sheds', nameTe: 'విశ్రాంతి గది & సదుపాయాలు', category: 'info', lat: baseLat - 0.0005, lng: baseLng - 0.0004, svgX: 135, svgY: 215, descEn: 'Forest rest shelter, washrooms, and dress changing facilities.', descTe: 'సందర్శకుల విశ్రాంతి మరియు బట్టలు మార్చుకునే గదులు.' },
+      { id: 'entry', nameEn: 'Nature Trailhead Checkpoint', nameTe: 'అటవీ మార్గం ప్రవేశ ద్వారం', category: 'entry', lat: baseLat - 0.0007, lng: baseLng + 0.0002, svgX: 270, svgY: 250, descEn: 'Eco-tourism checkpost and entrance gateway.', descTe: 'అటవీ విభాగం ప్రవేశం మరియు ట్రయల్ ప్రారంభం.' },
+      { id: 'pool', nameEn: `${name} Theertham Pool (Kund)`, nameTe: `${name} సహజ తీర్థం`, category: 'sanctum', lat: baseLat, lng: baseLng, svgX: 270, svgY: 135, descEn: 'Natural plunge pool formed by sacred cascading waters.', descTe: 'జలపాతం కింద ఏర్పడిన సహజ స్నాన ఘట్టం.' },
+      { id: 'falls', nameEn: 'Main Waterfalls Cascade', nameTe: 'ప్రధాన జలపాతం', category: 'info', lat: baseLat + 0.0006, lng: baseLng, svgX: 270, svgY: 70, descEn: 'Perennial sacred waterfalls cascading down the forest cliff ledge.', descTe: 'కొండల పైనుంచి దూకే మనోహరమైన జలపాతం.' },
+      { id: 'viewpoint', nameEn: 'Observation Deck & Viewpoint', nameTe: 'వ్యూ పాయింట్', category: 'info', lat: baseLat + 0.0004, lng: baseLng + 0.0006, svgX: 385, svgY: 95, descEn: 'Scenic photography viewpoint overlooking the gorge.', descTe: 'జలపాతం మరియు పచ్చని లోయను చూసే వ్యూ పాయింట్.' }
     ];
   } else if (layoutType === 'wildlife-safari') {
     generatedRoute = [[412, 255], [270, 238], [210, 240], [140, 180], [270, 130], [395, 100]];
