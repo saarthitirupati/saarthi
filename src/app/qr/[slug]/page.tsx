@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import { useParams, useRouter, useSearchParams } from 'next/navigation';
-import { Car, Sparkles, MapPin, ArrowRight, ShieldCheck } from 'lucide-react';
+import { Sparkles, MapPin, ArrowRight, ShieldCheck } from 'lucide-react';
 
 export default function QRScanTransitionPage() {
   const params = useParams();
@@ -220,41 +220,11 @@ export default function QRScanTransitionPage() {
           fontSize: '13px',
           fontWeight: 700,
           color: '#B45309',
-          marginBottom: '18px',
+          marginBottom: '26px',
           letterSpacing: '0.2px'
         }}>
           శ్రీ వేంకటేశ్వర స్వామి దివ్య క్షేత్రానికి స్వాగతం
         </p>
-
-        {/* Clean Verified Vehicle / Decal Partner Badge */}
-        <div style={{
-          display: 'inline-flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          gap: '8px',
-          padding: '8px 16px',
-          borderRadius: '14px',
-          backgroundColor: '#F8FAFC',
-          border: '1px solid #E2E8F0',
-          fontSize: '12.5px',
-          color: '#475569',
-          marginBottom: '26px',
-          maxWidth: '100%',
-          boxSizing: 'border-box'
-        }}>
-          <span style={{
-            width: '7px',
-            height: '7px',
-            borderRadius: '50%',
-            backgroundColor: '#10B981',
-            boxShadow: '0 0 6px #10B981',
-            display: 'inline-block'
-          }} />
-          <Car size={14} color="#059669" style={{ flexShrink: 0 }} />
-          <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-            Connected via <strong style={{ color: '#0F172A', fontWeight: 700 }}>{campaignName}</strong>
-          </span>
-        </div>
 
         {/* Sleek Golden Progress Section */}
         <div style={{
