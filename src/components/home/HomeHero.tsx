@@ -882,38 +882,87 @@ export function HomeHero({ userName, locationName, weatherTemp, liveStatus, acti
               return Math.max(...matches.map(Number));
             };
 
+            // Helper to get luminous sacred status styling
+            const getStatusStyle = (type: 'extreme' | 'high' | 'moderate' | 'normal') => {
+              if (type === 'extreme') {
+                return {
+                  color: '#E11D48',
+                  waitColor: '#BE123C',
+                  bg: 'linear-gradient(135deg, #FFF1F2 0%, #FFE4E6 55%, #FECDD3 100%)',
+                  border: 'rgba(225, 29, 72, 0.35)',
+                  badgeBg: '#E11D48',
+                  badgeText: '#FFFFFF',
+                  iconBg: '#FFFFFF',
+                  iconBorder: '#F43F5E',
+                  shadow: '0 4px 16px rgba(225, 29, 72, 0.08), 0 1px 3px rgba(0, 0, 0, 0.04)',
+                  label: lang === 'te' ? 'తీవ్రమైన రద్దీ' : 'EXTREME',
+                  meter: 5
+                };
+              }
+              if (type === 'high') {
+                return {
+                  color: '#D97706',
+                  waitColor: '#B45309',
+                  bg: 'linear-gradient(135deg, #FFFDF5 0%, #FEF9C3 50%, #FEF08A 100%)',
+                  border: 'rgba(217, 119, 6, 0.35)',
+                  badgeBg: '#D97706',
+                  badgeText: '#FFFFFF',
+                  iconBg: '#FFFFFF',
+                  iconBorder: '#FACC15',
+                  shadow: '0 4px 16px rgba(234, 179, 8, 0.14), 0 1px 3px rgba(0, 0, 0, 0.04)',
+                  label: lang === 'te' ? 'రద్దీ ఎక్కువ' : 'HIGH',
+                  meter: 4
+                };
+              }
+              if (type === 'moderate') {
+                return {
+                  color: '#D97706',
+                  waitColor: '#92400E',
+                  bg: 'linear-gradient(135deg, #FFFDF8 0%, #FEF9C3 60%, #FDE68A 100%)',
+                  border: 'rgba(202, 138, 4, 0.3)',
+                  badgeBg: '#CA8A04',
+                  badgeText: '#FFFFFF',
+                  iconBg: '#FFFFFF',
+                  iconBorder: '#FDE047',
+                  shadow: '0 4px 14px rgba(234, 179, 8, 0.1), 0 1px 3px rgba(0, 0, 0, 0.04)',
+                  label: lang === 'te' ? 'మితమైన రద్దీ' : 'MODERATE',
+                  meter: 3
+                };
+              }
+              return {
+                color: '#059669',
+                waitColor: '#047857',
+                bg: 'linear-gradient(135deg, #F0FDF4 0%, #DCFCE7 65%, #BBF7D0 100%)',
+                border: 'rgba(5, 150, 105, 0.3)',
+                badgeBg: '#059669',
+                badgeText: '#FFFFFF',
+                iconBg: '#FFFFFF',
+                iconBorder: '#34D399',
+                shadow: '0 4px 14px rgba(5, 150, 105, 0.08), 0 1px 3px rgba(0, 0, 0, 0.04)',
+                label: lang === 'te' ? 'సాధారణం' : 'NORMAL',
+                meter: 1
+              };
+            };
+
             // 1. Sarva State (Normal, Moderate, High, Extreme)
             const sarvaHours = getMaxHours(sarvaWait);
             const isSarvaExtreme = sarvaHours >= 12 || sarvaWait.includes('24') || sarvaWait.includes('30');
-            const sarvaStatus = isSarvaExtreme
-              ? { color: '#E11D48', bg: '#FFE4E6', badgeBg: '#E11D48', badgeText: '#FFFFFF', iconBg: '#FFFFFF', border: '#E11D48', label: lang === 'te' ? 'తీవ్రమైన రద్దీ' : 'EXTREME', meter: 5 }
-              : sarvaHours > 6
-              ? { color: '#EA580C', bg: '#FFEDD5', badgeBg: '#EA580C', badgeText: '#FFFFFF', iconBg: '#FFFFFF', border: '#EA580C', label: lang === 'te' ? 'రద్దీ ఎక్కువ' : 'HIGH', meter: 4 }
-              : sarvaHours > 2
-              ? { color: '#D97706', bg: '#FEF3C7', badgeBg: '#D97706', badgeText: '#FFFFFF', iconBg: '#FFFFFF', border: '#D97706', label: lang === 'te' ? 'మితమైన రద్దీ' : 'MODERATE', meter: 3 }
-              : { color: '#059669', bg: '#D1FAE5', badgeBg: '#059669', badgeText: '#FFFFFF', iconBg: '#FFFFFF', border: '#059669', label: lang === 'te' ? 'సాధారణం' : 'NORMAL', meter: 1 };
+            const sarvaStatus = getStatusStyle(
+              isSarvaExtreme ? 'extreme' : sarvaHours > 6 ? 'high' : sarvaHours > 2 ? 'moderate' : 'normal'
+            );
 
             // 2. Special Entry State (Normal, Moderate, High, Extreme)
             const specialHours = getMaxHours(specialWait);
-            const specialStatus = specialHours > 7
-              ? { color: '#E11D48', bg: '#FFE4E6', badgeBg: '#E11D48', badgeText: '#FFFFFF', iconBg: '#FFFFFF', border: '#E11D48', label: lang === 'te' ? 'తీవ్రమైన రద్దీ' : 'EXTREME', meter: 5 }
-              : specialHours > 4
-              ? { color: '#EA580C', bg: '#FFEDD5', badgeBg: '#EA580C', badgeText: '#FFFFFF', iconBg: '#FFFFFF', border: '#EA580C', label: lang === 'te' ? 'రద్దీ ఎక్కువ' : 'HIGH', meter: 4 }
-              : specialHours >= 2
-              ? { color: '#D97706', bg: '#FEF3C7', badgeBg: '#D97706', badgeText: '#FFFFFF', iconBg: '#FFFFFF', border: '#D97706', label: lang === 'te' ? 'మితమైన రద్దీ' : 'MODERATE', meter: 3 }
-              : { color: '#059669', bg: '#D1FAE5', badgeBg: '#059669', badgeText: '#FFFFFF', iconBg: '#FFFFFF', border: '#059669', label: lang === 'te' ? 'సాధారణం' : 'NORMAL', meter: 1 };
+            const specialStatus = getStatusStyle(
+              specialHours > 7 ? 'extreme' : specialHours > 4 ? 'high' : specialHours >= 2 ? 'moderate' : 'normal'
+            );
 
             // 3. SSD Token State (Dynamic Admin Text & Unified Crowd Pill)
             const ssdHours = getMaxHours(ssdWait);
             const isSsdExtreme = /cancel|full|heavy|rush|crowd|closed|stop/i.test(ssdWait) || ssdTokenStatus === 'closed-for-day' || ssdTokenStatus === 'closed';
-
-            const resolvedSsdStatus = (ssdHours > 7 || isSsdExtreme)
-              ? { color: '#E11D48', bg: '#FFE4E6', badgeBg: '#E11D48', badgeText: '#FFFFFF', iconBg: '#FFFFFF', border: '#E11D48', label: lang === 'te' ? 'తీవ్రమైన రద్దీ' : 'EXTREME', meter: 5 }
-              : ssdHours > 4
-              ? { color: '#EA580C', bg: '#FFEDD5', badgeBg: '#EA580C', badgeText: '#FFFFFF', iconBg: '#FFFFFF', border: '#EA580C', label: lang === 'te' ? 'రద్దీ ఎక్కువ' : 'HIGH', meter: 4 }
-              : (ssdHours >= 2 || ssdTokenStatus === 'paused')
-              ? { color: '#D97706', bg: '#FEF3C7', badgeBg: '#D97706', badgeText: '#FFFFFF', iconBg: '#FFFFFF', border: '#D97706', label: lang === 'te' ? 'మితమైన రద్దీ' : 'MODERATE', meter: 3 }
-              : { color: '#059669', bg: '#D1FAE5', badgeBg: '#059669', badgeText: '#FFFFFF', iconBg: '#FFFFFF', border: '#059669', label: lang === 'te' ? 'సాధారణం' : 'NORMAL', meter: 1 };
+            const resolvedSsdStatus = getStatusStyle(
+              (ssdHours > 7 || isSsdExtreme) ? 'extreme' : ssdHours > 4 ? 'high' : (ssdHours >= 2 || ssdTokenStatus === 'paused') ? 'moderate' : 'normal'
+            );
 
             const queueCards = [
               {
@@ -954,7 +1003,7 @@ export function HomeHero({ userName, locationName, weatherTemp, liveStatus, acti
                 href={card.href}
                 style={{
                   background: card.bg,
-                  border: '1.5px solid #0F172A',
+                  border: `1.5px solid ${card.border}`,
                   borderLeft: `6px solid ${card.color}`,
                   borderRadius: '14px',
                   padding: '12px 14px',
@@ -962,7 +1011,7 @@ export function HomeHero({ userName, locationName, weatherTemp, liveStatus, acti
                   alignItems: 'center',
                   justifyContent: 'space-between',
                   minHeight: '54px',
-                  boxShadow: '0 4px 12px rgba(15, 23, 42, 0.06)',
+                  boxShadow: card.shadow,
                   position: 'relative',
                   overflow: 'hidden',
                   textDecoration: 'none',
@@ -979,7 +1028,7 @@ export function HomeHero({ userName, locationName, weatherTemp, liveStatus, acti
                     height: '34px',
                     borderRadius: '10px',
                     backgroundColor: card.iconBg,
-                    border: `1.5px solid ${card.color}`,
+                    border: `1.5px solid ${card.iconBorder}`,
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
@@ -1003,7 +1052,7 @@ export function HomeHero({ userName, locationName, weatherTemp, liveStatus, acti
                   <div style={{
                     fontSize: '17px',
                     fontWeight: 900,
-                    color: card.color,
+                    color: card.waitColor,
                     letterSpacing: '-0.02em',
                     fontVariantNumeric: 'tabular-nums'
                   }}>
@@ -1032,7 +1081,7 @@ export function HomeHero({ userName, locationName, weatherTemp, liveStatus, acti
                       fontSize: '9.5px',
                       fontWeight: 800,
                       color: card.badgeText,
-                      backgroundColor: card.badgeBg,
+                      background: card.badgeBg,
                       border: `1px solid ${card.border}`,
                       padding: '2.5px 8px',
                       borderRadius: '6px',
