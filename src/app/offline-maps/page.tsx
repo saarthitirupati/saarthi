@@ -7,7 +7,7 @@ import {
   Search, Sparkles, Shield, Eye, X, HardDrive, Smartphone, RefreshCw
 } from 'lucide-react';
 import styles from './OfflineMaps.module.css';
-import { TEMPLE_LAYOUTS, TempleLayoutData } from '@/data/templeLayouts';
+import { CURATED_LAYOUTS, getTempleLayout, TempleLayoutData } from '@/data/templeLayouts';
 import { PLACES } from '@/data/places';
 import { useLanguage } from '@/lib/useLanguage';
 import OfflineTempleMap from '@/components/place/OfflineTempleMap';
@@ -21,9 +21,9 @@ export default function OfflineMapsDirectoryPage() {
   const [bulkProgress, setBulkProgress] = useState({ current: 0, total: 0 });
   const [selectedPreviewId, setSelectedPreviewId] = useState<string | null>(null);
 
-  // Convert dictionary into array of layouts
+  // Convert curated layout dictionary into complete layout objects
   const allLayouts = useMemo(() => {
-    return Object.values(TEMPLE_LAYOUTS);
+    return Object.keys(CURATED_LAYOUTS).map((id) => getTempleLayout(id));
   }, []);
 
   // Inspect localStorage for cached maps on mount
