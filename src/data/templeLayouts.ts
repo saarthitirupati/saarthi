@@ -1850,6 +1850,218 @@ export const CURATED_LAYOUTS: Record<string, Partial<TempleLayoutData>> = {
     ]
   },
 
+  'moolasthana-yellamma-chandragiri': {
+    placeId: 'moolasthana-yellamma-chandragiri',
+    titleEn: 'Sri Moolasthana Yellamma Temple Precinct Map',
+    titleTe: 'శ్రీ మూలస్థాన ఎల్లమ్మ ఆలయ ప్రాంగణ మ్యాప్',
+    layoutType: 'ancient-shrine',
+    centerCoordinates: { lat: 13.5843325, lng: 79.3158065 },
+    routePath: [[430, 290], [270, 275], [145, 255], [270, 205], [150, 130], [270, 85], [395, 120], [395, 160], [270, 250]],
+    pins: [
+      {
+        id: 'parking',
+        nameEn: 'Yellamma Temple Parking',
+        nameTe: 'ఆలయ పార్కింగ్',
+        category: 'parking',
+        lat: 13.5838,
+        lng: 79.3155,
+        svgX: 430,
+        svgY: 290,
+        descEn: 'Vehicle parking space near the main temple arch.',
+        descTe: 'ఆలయ ముఖద్వారం వద్ద పార్కింగ్.'
+      },
+      {
+        id: 'entry',
+        nameEn: 'Temple Entrance Arch & Gopuram',
+        nameTe: 'ఆలయ ప్రవేశ ముఖద్వారం',
+        category: 'entry',
+        lat: 13.5840,
+        lng: 79.3157,
+        svgX: 270,
+        svgY: 275,
+        descEn: 'Main entrance arch to the sacred Shakti temple.',
+        descTe: 'శ్రీ ఎల్లమ్మ ఆలయ ప్రధాన ప్రవేశం.'
+      },
+      {
+        id: 'footwear',
+        nameEn: 'Free Footwear Stand',
+        nameTe: 'ఉచిత పాదరక్షల స్టాండ్',
+        category: 'footwear',
+        lat: 13.5841,
+        lng: 79.3154,
+        svgX: 145,
+        svgY: 255,
+        descEn: 'Designated shoe stand before entering inner courtyard.',
+        descTe: 'ఉచిత చెప్పుల కౌంటర్.'
+      },
+      {
+        id: 'dhwajasthambham',
+        nameEn: 'Dhwajasthambham & Trisulam',
+        nameTe: 'ధ్వజస్తంభం & త్రిశూలం',
+        category: 'info',
+        lat: 13.5842,
+        lng: 79.5826,
+        svgX: 270,
+        svgY: 205,
+        descEn: 'Sacred flag mast and consecrated divine Trisulam of Goddess Shakti.',
+        descTe: 'పవిత్ర ధ్వజస్తంభం మరియు శక్త్యాయుధం.'
+      },
+      {
+        id: 'neem-tree',
+        nameEn: 'Sacred Consecrated Neem Tree',
+        nameTe: 'పవిత్ర వేపవృక్ష ప్రదక్షిణ',
+        category: 'info',
+        lat: 13.5843,
+        lng: 79.3156,
+        svgX: 150,
+        svgY: 130,
+        descEn: 'Centuries-old holy neem tree where Sage Agastya consecrated Mother Yellamma for healing.',
+        descTe: 'అగస్త్య మహర్షి ప్రతిష్టించిన దివ్య వేపచెట్టు మరియు ప్రదక్షిణ స్థలం.'
+      },
+      {
+        id: 'sanctum',
+        nameEn: 'Sri Moolasthana Yellamma Devi Sanctum',
+        nameTe: 'శ్రీ మూలస్థాన ఎల్లమ్మ దేవి మూలవిరాట్',
+        category: 'sanctum',
+        lat: 13.5844,
+        lng: 79.3158,
+        svgX: 270,
+        svgY: 85,
+        descEn: 'Powerful ancient Moolasthana Shakti shrine renowned for healing and protection.',
+        descTe: 'ఆరోగ్యం, రక్షణ ప్రసాదించే మూలస్థాన ఎల్లమ్మ అమ్మవారి దివ్య గర్భాలయం.'
+      },
+      {
+        id: 'ashta-lakshmi',
+        nameEn: 'Ashta Lakshmi & Navagraha Shrine',
+        nameTe: 'అష్టలక్ష్మి & నవగ్రహ సన్నిధి',
+        category: 'info',
+        lat: 13.5845,
+        lng: 79.3160,
+        svgX: 395,
+        svgY: 120,
+        descEn: 'Sub-shrine for Ashta Lakshmis and Navagraha deities.',
+        descTe: 'అష్టలక్ష్మి మరియు నవగ్రహ మండపం.'
+      },
+      {
+        id: 'prasadam',
+        nameEn: 'Kumkuma & Teertham Counter',
+        nameTe: 'కుంకుమ & ప్రసాదం కౌంటర్',
+        category: 'laddu',
+        lat: 13.5841,
+        lng: 79.3159,
+        svgX: 395,
+        svgY: 160,
+        descEn: 'Blessed turmeric, kumkum, and temple prasadam.',
+        descTe: 'అమ్మవారి కుంకుమ మరియు ప్రసాద వితరణ.'
+      }
+    ],
+    routeSteps: [
+      { stepNumber: 1, titleEn: 'Arrival & Parking', titleTe: 'పార్కింగ్ చేరుకోవడం', distance: '0.0 km', timeMins: 0, descEn: 'Park vehicle near Chandragiri bus stand.', descTe: 'వాహనాన్ని పార్క్ చేయండి.' },
+      { stepNumber: 2, titleEn: 'Entrance & Footwear', titleTe: 'ప్రవేశం & పాదరక్షలు', distance: '30m', timeMins: 2, descEn: 'Leave footwear and enter main gate.', descTe: 'చెప్పులు విడిచి ప్రవేశించండి.' },
+      { stepNumber: 3, titleEn: 'Sacred Neem Tree Pradakshina', titleTe: 'వేపచెట్టు ప్రదక్షిణ', distance: '50m', timeMins: 5, descEn: 'Perform pradakshina around the holy neem tree.', descTe: 'పవిత్ర వేపచెట్టుకు ప్రదక్షిణ చేయండి.' },
+      { stepNumber: 4, titleEn: 'Moolasthana Yellamma Devi Darshan', titleTe: 'శ్రీ ఎల్లమ్మ దర్శనం', distance: '80m', timeMins: 15, descEn: 'Seek blessings of Mother Yellamma in the sanctum.', descTe: 'అమ్మవారి మూలవిరాట్ దర్శనం చేసుకోండి.' },
+      { stepNumber: 5, titleEn: 'Kumkum & Prasadam Collection', titleTe: 'కుంకుమ ప్రసాదం', distance: '60m', timeMins: 5, descEn: 'Receive blessed kumkuma prasadam.', descTe: 'కుంకుమ ప్రసాదం స్వీకరించండి.' }
+    ],
+    emergencyContacts: [
+      { titleEn: 'Yellamma Temple Information Office', titleTe: 'ఎల్లమ్మ ఆలయ సమాచార విభాగం', number: '08772264555' },
+      { titleEn: 'Emergency Helpline', titleTe: 'అత్యవసర హెల్ప్‌లైన్', number: '112' }
+    ]
+  },
+
+  'kailasa-kona': {
+    placeId: 'kailasa-kona',
+    titleEn: 'Kailasa Kona Falls Precinct Map',
+    titleTe: 'కైలాస కోన జలపాతం ప్రాంగణ మ్యాప్',
+    layoutType: 'hill-waterfall',
+    centerCoordinates: { lat: 13.3882826, lng: 79.6330908 },
+    routePath: [[420, 265], [135, 215], [270, 250], [270, 135], [270, 70], [385, 95]],
+    pins: [
+      {
+        id: 'parking',
+        nameEn: 'Trailhead Parking Bay',
+        nameTe: 'పార్కింగ్ ప్రదేశం',
+        category: 'parking',
+        lat: 13.3875,
+        lng: 79.6335,
+        svgX: 420,
+        svgY: 265,
+        descEn: 'Parking for cars, tourist cabs, and 2-wheelers at Puttur road trailhead.',
+        descTe: 'వాహనాల పార్కింగ్ స్థలం.'
+      },
+      {
+        id: 'shelter',
+        nameEn: 'Rest Shelter & Changing Sheds',
+        nameTe: 'విశ్రాంతి కేంద్రం & బట్టలు మార్చుకునే గదులు',
+        category: 'info',
+        lat: 13.3878,
+        lng: 79.6325,
+        svgX: 135,
+        svgY: 215,
+        descEn: 'Forest rest shelter and separate dress changing sheds for men and women.',
+        descTe: 'విశ్రాంతి కేంద్రం మరియు డ్రెస్సింగ్ రూములు.'
+      },
+      {
+        id: 'entry',
+        nameEn: 'Forest Entry & Ticket Checkpoint',
+        nameTe: 'అటవీ ముఖద్వారం & టికెట్ కౌంటర్',
+        category: 'entry',
+        lat: 13.3880,
+        lng: 79.6330,
+        svgX: 270,
+        svgY: 250,
+        descEn: 'Forest department entry ticket gate and starting point of the gorge path.',
+        descTe: 'ప్రవేశ ద్వారం మరియు టికెట్ కేంద్రం.'
+      },
+      {
+        id: 'pool',
+        nameEn: 'Kailasanatheswara Holy Kund (Theertham)',
+        nameTe: 'కైలాసనాథ పవిత్ర తీర్థ కుండం',
+        category: 'sanctum',
+        lat: 13.3883,
+        lng: 79.6331,
+        svgX: 270,
+        svgY: 135,
+        descEn: 'Sacred crystal mineral water plunge pool where Lord Shiva meditated after the divine wedding.',
+        descTe: 'శివుడు తపస్సు చేసిన పవిత్ర ఖనిజ జలాల స్నాన ఘట్టం.'
+      },
+      {
+        id: 'falls',
+        nameEn: 'Kailasa Kona Main Waterfalls (40 ft)',
+        nameTe: 'కైలాస కోన ప్రధాన జలపాతం',
+        category: 'info',
+        lat: 13.3886,
+        lng: 79.6331,
+        svgX: 270,
+        svgY: 70,
+        descEn: 'Perennial 40-foot mountain waterfall rich in medicinal minerals.',
+        descTe: '40 అడుగుల ఎత్తు నుండి జాలువారే ఔషధ జలపాతం.'
+      },
+      {
+        id: 'viewpoint',
+        nameEn: 'Scenic Rock Viewpoint & Shiva Sannidhi',
+        nameTe: 'వ్యూ పాయింట్ & శివ సన్నిధి',
+        category: 'info',
+        lat: 13.3885,
+        lng: 79.6338,
+        svgX: 385,
+        svgY: 95,
+        descEn: 'Small cave shrine of Lord Shiva and panoramic view of the rocky waterfall gorge.',
+        descTe: 'శివుని సన్నిధి మరియు జలపాత లోయ దృశ్యం.'
+      }
+    ],
+    routeSteps: [
+      { stepNumber: 1, titleEn: 'Arrival & Parking', titleTe: 'పార్కింగ్ చేరుకోవడం', distance: '0.0 km', timeMins: 0, descEn: 'Park vehicle at the Puttur highway entry.', descTe: 'వాహనాన్ని పార్క్ చేయండి.' },
+      { stepNumber: 2, titleEn: 'Forest Ticket Gate & Pathway', titleTe: 'టికెట్ కౌంటర్ & ప్రవేశం', distance: '30m', timeMins: 2, descEn: 'Get entry ticket and take the shaded hill path.', descTe: 'టికెట్ తీసుకుని అటవీ మార్గంలోకి వెళ్లండి.' },
+      { stepNumber: 3, titleEn: 'Rest Shelter & Changing Facilities', titleTe: 'విశ్రాంతి గది', distance: '50m', timeMins: 3, descEn: 'Visitor changing facilities.', descTe: 'విశ్రాంతి సదుపాయాలు.' },
+      { stepNumber: 4, titleEn: 'Kailasa Kona Theertham & Waterfalls', titleTe: 'జలపాతం & తీర్థ స్నానం', distance: '120m', timeMins: 15, descEn: 'Take a refreshing dip in the crystal waterfall pool.', descTe: 'ఔషధ జలపాత స్నానం ఆస్వాదించండి.' },
+      { stepNumber: 5, titleEn: 'Shiva Cave Shrine & Viewpoint', titleTe: 'శివ సన్నిధి & వ్యూ పాయింట్', distance: '60m', timeMins: 10, descEn: 'Offer prayers at the ancient Shiva shrine.', descTe: 'శివలింగాన్ని దర్శించి ప్రకృతిని ఆస్వాదించండి.' }
+    ],
+    emergencyContacts: [
+      { titleEn: 'Kailasa Kona Tourism Helpdesk', titleTe: 'కైలాస కోన సమాచార కేంద్రం', number: '08772264555' },
+      { titleEn: 'Emergency Helpline', titleTe: 'అత్యవసర హెల్ప్‌లైన్', number: '112' }
+    ]
+  },
+
   'narayanavanam': {
     placeId: 'narayanavanam',
     titleEn: 'Sri Kalyana Venkateswara Swamy Temple (Divine Wedding Site)',
@@ -2680,10 +2892,35 @@ export function getTempleLayout(placeInput: string | PlaceInputContext, fallback
     };
   }
 
-  // 0.1 Chandragiri Fort & Raja Mahal
+  // 0.1 Sri Moolasthana Yellamma Temple (Chandragiri)
   if (
-    placeId.includes('chandragiri') ||
-    nameLower.includes('chandragiri')
+    placeId.includes('yellamma') ||
+    placeId.includes('moolasthana') ||
+    nameLower.includes('yellamma') ||
+    nameLower.includes('moolasthana')
+  ) {
+    const curated = CURATED_LAYOUTS['moolasthana-yellamma-chandragiri']!;
+    return {
+      placeId,
+      titleEn: `${name} Precinct Map`,
+      titleTe: `${name} ప్రాంగణ మ్యాప్`,
+      layoutType: 'ancient-shrine',
+      centerCoordinates: fallbackCoords || { lat: 13.5843325, lng: 79.3158065 },
+      defaultZoom: 17,
+      compassBearingDeg: 0,
+      sanctumNameEn: curated.sanctumNameEn || 'Sri Moolasthana Yellamma Devi Sanctum',
+      sanctumNameTe: curated.sanctumNameTe || 'శ్రీ మూలస్థాన ఎల్లమ్మ దేవి మూలవిరాట్',
+      routePath: curated.routePath || [[430, 290], [270, 275], [145, 255], [270, 205], [150, 130], [270, 85], [395, 120], [395, 160], [270, 250]],
+      pins: (curated.pins as MapPin[]) || [],
+      routeSteps: curated.routeSteps || [],
+      emergencyContacts: curated.emergencyContacts || []
+    };
+  }
+
+  // 0.2 Chandragiri Fort & Raja Mahal (Heritage Fort)
+  if (
+    (placeId.includes('chandragiri') || nameLower.includes('chandragiri')) &&
+    (placeId.includes('fort') || nameLower.includes('fort') || placeId.includes('mahal') || nameLower.includes('mahal') || placeId.includes('palace') || nameLower.includes('palace') || placeId === 'chandragiri-fort')
   ) {
     const curated = CURATED_LAYOUTS['chandragiri-fort']!;
     return {
@@ -2703,11 +2940,36 @@ export function getTempleLayout(placeInput: string | PlaceInputContext, fallback
     };
   }
 
-  // 0.2 Narayanavanam Waterfalls (Kailasanatha Kona)
+  // 0.3 Kailasa Kona Falls
+  if (
+    placeId.includes('kailasa-kona') ||
+    placeId.includes('kailasakona') ||
+    nameLower.includes('kailasa kona') ||
+    nameLower.includes('kailasakona')
+  ) {
+    const curated = CURATED_LAYOUTS['kailasa-kona']!;
+    return {
+      placeId,
+      titleEn: `${name} Precinct Map`,
+      titleTe: `${name} ప్రాంగణ మ్యాప్`,
+      layoutType: 'hill-waterfall',
+      centerCoordinates: fallbackCoords || { lat: 13.3882826, lng: 79.6330908 },
+      defaultZoom: 16,
+      compassBearingDeg: 0,
+      sanctumNameEn: curated.sanctumNameEn || 'Kailasanatheswara Holy Kund (Theertham)',
+      sanctumNameTe: curated.sanctumNameTe || 'కైలాసనాథ పవిత్ర తీర్థ కుండం',
+      routePath: curated.routePath || [[420, 265], [135, 215], [270, 250], [270, 135], [270, 70], [385, 95]],
+      pins: (curated.pins as MapPin[]) || [],
+      routeSteps: curated.routeSteps || [],
+      emergencyContacts: curated.emergencyContacts || []
+    };
+  }
+
+  // 0.4 Narayanavanam Waterfalls
   if (
     placeId.includes('narayanavanam-waterfall') ||
     placeId.includes('narayanavanam-fall') ||
-    (placeId.includes('narayanavanam') && (nameLower.includes('waterfall') || nameLower.includes('falls') || nameLower.includes('kona')))
+    (placeId.includes('narayanavanam') && (nameLower.includes('waterfall') || nameLower.includes('falls')))
   ) {
     const curated = CURATED_LAYOUTS['narayanavanam-waterfalls']!;
     return {
