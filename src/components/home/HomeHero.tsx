@@ -888,13 +888,13 @@ export function HomeHero({ userName, locationName, weatherTemp, liveStatus, acti
                 return {
                   color: '#E11D48',
                   waitColor: '#BE123C',
-                  bg: 'linear-gradient(135deg, #FFF1F2 0%, #FFE4E6 55%, #FECDD3 100%)',
-                  border: 'rgba(225, 29, 72, 0.35)',
+                  bg: 'linear-gradient(135deg, #FFFFFF 0%, #FFF5F5 100%)',
+                  border: '#FECDD3',
                   badgeBg: '#E11D48',
                   badgeText: '#FFFFFF',
-                  iconBg: '#FFFFFF',
+                  iconBg: '#FFE4E6',
                   iconBorder: '#F43F5E',
-                  shadow: '0 4px 16px rgba(225, 29, 72, 0.08), 0 1px 3px rgba(0, 0, 0, 0.04)',
+                  shadow: '0 4px 14px rgba(225, 29, 72, 0.08), 0 1px 3px rgba(0, 0, 0, 0.03)',
                   label: lang === 'te' ? 'తీవ్రమైన రద్దీ' : 'EXTREME',
                   meter: 5
                 };
@@ -903,13 +903,13 @@ export function HomeHero({ userName, locationName, weatherTemp, liveStatus, acti
                 return {
                   color: '#D97706',
                   waitColor: '#B45309',
-                  bg: 'linear-gradient(135deg, #FFFDF5 0%, #FEF9C3 50%, #FEF08A 100%)',
-                  border: 'rgba(217, 119, 6, 0.35)',
+                  bg: 'linear-gradient(135deg, #FFFFFF 0%, #FFFDF5 50%, #FEF9C3 100%)',
+                  border: '#FDE68A',
                   badgeBg: '#D97706',
                   badgeText: '#FFFFFF',
-                  iconBg: '#FFFFFF',
+                  iconBg: '#FEF3C7',
                   iconBorder: '#FACC15',
-                  shadow: '0 4px 16px rgba(234, 179, 8, 0.14), 0 1px 3px rgba(0, 0, 0, 0.04)',
+                  shadow: '0 4px 14px rgba(217, 119, 6, 0.09), 0 1px 3px rgba(0, 0, 0, 0.03)',
                   label: lang === 'te' ? 'రద్దీ ఎక్కువ' : 'HIGH',
                   meter: 4
                 };
@@ -918,13 +918,13 @@ export function HomeHero({ userName, locationName, weatherTemp, liveStatus, acti
                 return {
                   color: '#D97706',
                   waitColor: '#92400E',
-                  bg: 'linear-gradient(135deg, #FFFDF8 0%, #FEF9C3 60%, #FDE68A 100%)',
-                  border: 'rgba(202, 138, 4, 0.3)',
+                  bg: 'linear-gradient(135deg, #FFFFFF 0%, #FFFDF8 50%, #FEF9C3 100%)',
+                  border: '#FEF08A',
                   badgeBg: '#CA8A04',
                   badgeText: '#FFFFFF',
-                  iconBg: '#FFFFFF',
+                  iconBg: '#FEF9C3',
                   iconBorder: '#FDE047',
-                  shadow: '0 4px 14px rgba(234, 179, 8, 0.1), 0 1px 3px rgba(0, 0, 0, 0.04)',
+                  shadow: '0 4px 14px rgba(202, 138, 4, 0.08), 0 1px 3px rgba(0, 0, 0, 0.03)',
                   label: lang === 'te' ? 'మితమైన రద్దీ' : 'MODERATE',
                   meter: 3
                 };
@@ -932,13 +932,13 @@ export function HomeHero({ userName, locationName, weatherTemp, liveStatus, acti
               return {
                 color: '#059669',
                 waitColor: '#047857',
-                bg: 'linear-gradient(135deg, #F0FDF4 0%, #DCFCE7 65%, #BBF7D0 100%)',
-                border: 'rgba(5, 150, 105, 0.3)',
+                bg: 'linear-gradient(135deg, #FFFFFF 0%, #F0FDF4 100%)',
+                border: '#A7F3D0',
                 badgeBg: '#059669',
                 badgeText: '#FFFFFF',
-                iconBg: '#FFFFFF',
+                iconBg: '#D1FAE5',
                 iconBorder: '#34D399',
-                shadow: '0 4px 14px rgba(5, 150, 105, 0.08), 0 1px 3px rgba(0, 0, 0, 0.04)',
+                shadow: '0 4px 14px rgba(5, 150, 105, 0.08), 0 1px 3px rgba(0, 0, 0, 0.03)',
                 label: lang === 'te' ? 'సాధారణం' : 'NORMAL',
                 meter: 1
               };
@@ -1004,9 +1004,8 @@ export function HomeHero({ userName, locationName, weatherTemp, liveStatus, acti
                 style={{
                   background: card.bg,
                   border: `1.5px solid ${card.border}`,
-                  borderLeft: `6px solid ${card.color}`,
                   borderRadius: '14px',
-                  padding: '12px 14px',
+                  padding: '12px 14px 12px 18px',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'space-between',
@@ -1021,6 +1020,16 @@ export function HomeHero({ userName, locationName, weatherTemp, liveStatus, acti
                 }}
                 className="darshan-home-card"
               >
+                {/* Clean Vertical Indicator Strip (Eliminating corner glitches) */}
+                <div style={{
+                  position: 'absolute',
+                  left: 0,
+                  top: 0,
+                  bottom: 0,
+                  width: '5px',
+                  backgroundColor: card.color
+                }} />
+
                 {/* Left Info with Icon Accent */}
                 <div style={{ display: 'flex', alignItems: 'center', gap: '12px', position: 'relative', zIndex: 2 }}>
                   <div style={{
@@ -1032,7 +1041,7 @@ export function HomeHero({ userName, locationName, weatherTemp, liveStatus, acti
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    boxShadow: '0 2px 6px rgba(0, 0, 0, 0.05)',
+                    boxShadow: '0 2px 6px rgba(0, 0, 0, 0.04)',
                     flexShrink: 0
                   }}>
                     {card.icon}
@@ -1041,7 +1050,7 @@ export function HomeHero({ userName, locationName, weatherTemp, liveStatus, acti
                     <div style={{ fontSize: '14.5px', fontWeight: 800, color: '#0F172A', letterSpacing: '-0.01em', lineHeight: '1.2' }}>
                       {card.title}
                     </div>
-                    <div style={{ fontSize: '11px', color: card.isClosed ? '#92400E' : '#334155', fontWeight: 600, marginTop: '2px' }}>
+                    <div style={{ fontSize: '11px', color: card.isClosed ? '#92400E' : '#475569', fontWeight: 600, marginTop: '2px' }}>
                       {card.subtitle}
                     </div>
                   </div>
@@ -1087,7 +1096,7 @@ export function HomeHero({ userName, locationName, weatherTemp, liveStatus, acti
                       borderRadius: '6px',
                       letterSpacing: '0.04em',
                       whiteSpace: 'nowrap',
-                      boxShadow: '0 1px 3px rgba(0, 0, 0, 0.1)'
+                      boxShadow: '0 1px 3px rgba(0, 0, 0, 0.08)'
                     }}>
                       {card.label}
                     </span>
