@@ -584,8 +584,57 @@ export default function OfflineTempleMap({
                 <polygon points="45,-8 15,0 75,0" fill="#B45309" stroke="#78350F" strokeWidth="1.2" />
               </g>
             </g>
+          ) : layout.layoutType === 'heritage-fort' ? (
+            /* 7. HERITAGE FORT & PALACE (Chandragiri Fort & Raja Mahal) */
+            <g>
+              {/* Outer Fort Rampart Stone Walls & Bastions */}
+              <rect x="35" y="25" width="470" height="285" rx="16" fill="#FBF8F2" stroke="#78350F" strokeWidth="2.5" />
+              {/* Fort Corner Circular Bastions / Watch Towers */}
+              <circle cx="45" cy="35" r="14" fill="#D97706" stroke="#78350F" strokeWidth="1.5" />
+              <circle cx="495" cy="35" r="14" fill="#D97706" stroke="#78350F" strokeWidth="1.5" />
+              <circle cx="45" cy="295" r="14" fill="#D97706" stroke="#78350F" strokeWidth="1.5" />
+              <circle cx="495" cy="295" r="14" fill="#D97706" stroke="#78350F" strokeWidth="1.5" />
+
+              {/* Inner Palace Royal Courtyard Lawn */}
+              <rect x="75" y="55" width="390" height="185" rx="12" fill="#F4FBF4" stroke="#86EFAC" strokeWidth="1.5" />
+
+              {/* Raja Mahal (3-Storey Indo-Saracenic Palace) North Center */}
+              <g transform="translate(205, 45)">
+                <rect x="0" y="0" width="130" height="75" rx="8" fill="#FEF3C7" stroke="#B45309" strokeWidth="2" />
+                {/* 3 Arched Palace Balconies */}
+                <rect x="15" y="25" width="26" height="35" rx="13" fill="#FDE047" stroke="#78350F" strokeWidth="1.2" />
+                <rect x="52" y="18" width="26" height="42" rx="13" fill="#FDE047" stroke="#78350F" strokeWidth="1.2" />
+                <rect x="89" y="25" width="26" height="35" rx="13" fill="#FDE047" stroke="#78350F" strokeWidth="1.2" />
+                {/* Central Royal Dome */}
+                <path d="M 50 18 Q 65 -2 80 18 Z" fill="#D97706" stroke="#78350F" strokeWidth="1.5" />
+                <circle cx="65" cy="-3" r="2.5" fill="#FEF08A" />
+              </g>
+
+              {/* Rani Mahal & Queen's Gardens (North-East) */}
+              <g transform="translate(365, 60)">
+                <rect x="0" y="0" width="80" height="55" rx="8" fill="#FEF9C3" stroke="#CA8A04" strokeWidth="1.5" />
+                <circle cx="40" cy="28" r="12" fill="#DCFCE7" stroke="#16A34A" strokeWidth="1.2" />
+                <circle cx="40" cy="28" r="4" fill="#15803D" />
+              </g>
+
+              {/* Sound & Light Show Open-Air Amphitheater (South-East) */}
+              <g transform="translate(345, 150)">
+                <path d="M 0 35 A 40 40 0 0 1 70 35" fill="none" stroke="#6366F1" strokeWidth="4" strokeDasharray="4 3" />
+                <path d="M 10 35 A 30 30 0 0 1 60 35" fill="none" stroke="#818CF8" strokeWidth="3" />
+                <rect x="25" y="38" width="20" height="10" rx="3" fill="#C7D2FE" stroke="#4338CA" strokeWidth="1" />
+              </g>
+
+              {/* Cloakroom & ASI Museum Ticket Facility (South-West) */}
+              <rect x="95" y="195" width="80" height="36" rx="6" fill="#F1F5F9" stroke="#64748B" strokeWidth="1.2" />
+
+              {/* Fort Royal Gateway Arch (South Center) */}
+              <g transform="translate(225, 238)">
+                <rect x="0" y="0" width="90" height="26" rx="6" fill="#78350F" stroke="#451A03" strokeWidth="1.5" />
+                <path d="M 30 26 L 30 10 Q 45 2 60 10 L 60 26 Z" fill="#FBF8F2" stroke="#451A03" strokeWidth="1.2" />
+              </g>
+            </g>
           ) : layout.layoutType === 'trek-trail' ? (
-            /* 7. SACRED FOOTPATH & TREK (Srivari Mettu, Alipiri Mettu) */
+            /* 8. SACRED FOOTPATH & TREK (Srivari Mettu, Alipiri Mettu) */
             <g>
               <path d="M 20 180 Q 150 70 270 90 Q 390 60 520 160 L 520 320 L 20 320 Z" fill="#F4F8F4" stroke="#CBD5E1" strokeWidth="1.5" />
               {/* Stepped mountain path */}
@@ -706,9 +755,9 @@ export default function OfflineTempleMap({
                   layout.layoutType === 'museum-gallery' ? 'Exhibits' :
                   layout.layoutType === 'trek-trail' ? 'Summit' :
                   layout.layoutType === 'hill-waterfall' ? 'Main Falls' :
-                  layout.layoutType === 'heritage-fort' ? 'Palace' : 'Sanctum'
+                  layout.layoutType === 'heritage-fort' ? 'Raja Mahal' : 'Sanctum'
                 ) :
-                 pin.category === 'entry' ? (layout.layoutType === 'dam-reservoir' ? 'Dam Bund' : 'Entrance') :
+                 pin.category === 'entry' ? (layout.layoutType === 'dam-reservoir' ? 'Dam Bund' : (layout.layoutType === 'heritage-fort' ? 'Fort Gate' : 'Entrance')) :
                  pin.category === 'queue' ? (layout.layoutType === 'annaprasadam-complex' ? 'Holding Hall' : 'Queue') :
                  pin.category === 'laddu' ? (layout.layoutType === 'city-shrine' ? 'Prasadam' : 'Prasadam') :
                  pin.category === 'footwear' ? (layout.layoutType === 'sacred-pushkarini' ? 'Footwear' : 'Footwear') :
@@ -716,6 +765,11 @@ export default function OfflineTempleMap({
                  pin.category === 'parking' ? 'Parking' :
                  pin.category === 'medical' ? 'Medical' :
                  pin.category === 'safari' ? 'Safari' :
+                 pin.id.includes('raja') || pin.id.includes('palace') ? 'Raja Mahal' :
+                 pin.id.includes('rani') ? 'Rani Mahal' :
+                 pin.id.includes('sound') || pin.id.includes('laser') ? 'Sound Show' :
+                 pin.id.includes('cloakroom') || pin.id.includes('locker') ? 'Cloakroom' :
+                 pin.id.includes('museum') ? 'Museum' :
                  pin.id.includes('spillway') || pin.id.includes('siphon') || pin.id.includes('barrage') ? 'Spillway' :
                  pin.id.includes('view') || pin.id.includes('hills') || pin.id.includes('panoramic') ? 'Viewpoint' :
                  pin.id.includes('dhwaja') ? 'Dhwajasthambham' :
@@ -739,6 +793,7 @@ export default function OfflineTempleMap({
                  layout.layoutType === 'shopping-market' ? 'Textiles' :
                  layout.layoutType === 'museum-gallery' ? 'Pavilion' :
                  layout.layoutType === 'wildlife-safari' ? 'Aviary' :
+                 layout.layoutType === 'heritage-fort' ? 'Palace' :
                  layout.layoutType === 'city-shrine' ? 'Dhwajasthambham' : 'Courtyard');
 
             const badgeWidth = Math.max(74, Math.min(125, label.length * 6.2 + 28));

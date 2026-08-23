@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 import { supabase } from '@/lib/supabase';
 import { DEFAULT_FUEL_RATES, FuelRates } from '@/services/decision/trip.estimator';
 
-let inMemoryRates: FuelRates = { ...DEFAULT_FUEL_RATES };
+const inMemoryRates: FuelRates = { ...DEFAULT_FUEL_RATES };
 
 export async function GET() {
   try {

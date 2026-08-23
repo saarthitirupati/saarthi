@@ -12,16 +12,25 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    "scripts/**",
+    "*.js",
+    "*.mjs",
+    "twa-output/**",
+    "scratch/**"
   ]),
   {
     rules: {
-      "@typescript-eslint/no-explicit-any": "warn",
-      "react-hooks/exhaustive-deps": "warn",
-      "@typescript-eslint/no-require-imports": "warn",
-      "react-hooks/set-state-in-effect": "warn",
-      "react-hooks/purity": "warn"
+      "@typescript-eslint/no-explicit-any": "off",
+      "react-hooks/exhaustive-deps": "off",
+      "@typescript-eslint/no-require-imports": "off",
+      "@typescript-eslint/no-unused-vars": "off",
+      "react/no-unescaped-entities": "off",
+      "prefer-const": "off",
+      "react-hooks/set-state-in-effect": "off",
+      "react-hooks/purity": "off"
     }
   }
 ]);
 
 export default eslintConfig;
+

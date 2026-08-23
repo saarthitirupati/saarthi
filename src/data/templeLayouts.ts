@@ -279,86 +279,86 @@ export const CURATED_LAYOUTS: Record<string, Partial<TempleLayoutData>> = {
     titleTe: 'చంద్రగిరి కోట & రాజమహల్ ప్రాంగణ మ్యాప్',
     layoutType: 'heritage-fort',
     centerCoordinates: { lat: 13.6025, lng: 79.3142 },
-    routePath: [[412, 265], [270, 245], [138, 222], [270, 105], [395, 105], [370, 185], [270, 245]],
+    routePath: [[420, 265], [135, 215], [270, 250], [270, 85], [405, 95], [385, 175], [270, 250]],
     pins: [
       {
         id: 'parking',
-        nameEn: 'Fort Parking Bay',
+        nameEn: 'Fort Visitor Parking Bay',
         nameTe: 'కోట పార్కింగ్ ప్రదేశం',
         category: 'parking',
         lat: 13.6018,
         lng: 79.3148,
-        svgX: 412,
+        svgX: 420,
         svgY: 265,
-        descEn: 'Parking for cars, tourist buses, and 2-wheelers near the entrance.',
+        descEn: 'Parking for cars, tourist buses, and 2-wheelers near the fort entrance.',
         descTe: 'వాహనాల పార్కింగ్ స్థలం.'
       },
       {
+        id: 'cloakroom',
+        nameEn: 'Museum Cloakroom & Facilities',
+        nameTe: 'క్లోక్‌రూమ్ & సదుపాయాల కేంద్రం',
+        category: 'info',
+        lat: 13.6022,
+        lng: 79.3140,
+        svgX: 135,
+        svgY: 215,
+        descEn: 'Free luggage deposit, cloakroom, and visitor washrooms.',
+        descTe: 'లగేజ్ భద్రతా విభాగం మరియు సందర్శకుల సదుపాయాలు.'
+      },
+      {
         id: 'entry',
-        nameEn: 'Main Entrance & ASI Ticket Gate',
+        nameEn: 'ASI Fort Gateway & Ticket Counter',
         nameTe: 'ప్రధాన ప్రవేశ ముఖద్వారం & టికెట్ కౌంటర్',
         category: 'entry',
         lat: 13.6020,
         lng: 79.3145,
         svgX: 270,
-        svgY: 245,
-        descEn: 'ASI entry ticket counter, security check, and fort gateway.',
-        descTe: 'ఏఎస్ఐ టికెట్ కౌంటర్ మరియు ప్రవేశ ద్వారం.'
+        svgY: 250,
+        descEn: 'ASI entry ticket counter, security check, and royal fort gateway.',
+        descTe: 'ఏఎస్ఐ టికెట్ కౌంటర్ మరియు కోట ప్రవేశ ద్వారం.'
       },
       {
-        id: 'footwear',
-        nameEn: 'Museum Cloakroom & Rest Rooms',
-        nameTe: 'క్లోక్‌రూమ్ & సదుపాయాల కేంద్రం',
-        category: 'footwear',
-        lat: 13.6022,
-        lng: 79.3140,
-        svgX: 138,
-        svgY: 222,
-        descEn: 'Free footwear deposit and cloakroom outside Raja Mahal.',
-        descTe: 'ఉచిత క్లోక్‌రూమ్ మరియు లగేజ్ కేంద్రం.'
-      },
-      {
-        id: 'sanctum',
-        nameEn: 'Raja Mahal (3-Storey Palace & Museum)',
+        id: 'raja-mahal',
+        nameEn: 'Raja Mahal Palace & ASI Museum',
         nameTe: 'రాజమహల్ (చారిత్రక రాజభవనం & మ్యూజియం)',
         category: 'sanctum',
         lat: 13.6027,
         lng: 79.3142,
         svgX: 270,
-        svgY: 105,
+        svgY: 85,
         descEn: 'Indo-Saracenic 3-storey royal palace housing ancient Vijayanagara bronzes, stone sculptures, and arms.',
         descTe: 'విజయనగర సామ్రాజ్య చారిత్రక రాజభవనం మరియు ఏఎస్ఐ మ్యూజియం.'
       },
       {
         id: 'rani-mahal',
-        nameEn: 'Rani Mahal (Queen Palace & Gardens)',
+        nameEn: 'Rani Mahal Palace & Royal Gardens',
         nameTe: 'రాణి మహల్ & రాయల్ తోటలు',
         category: 'info',
         lat: 13.6030,
         lng: 79.3146,
-        svgX: 395,
-        svgY: 105,
-        descEn: 'Queen’s palace featuring elegant vaulted arches and landscaped gardens.',
+        svgX: 405,
+        svgY: 95,
+        descEn: 'Queen’s palace featuring vaulted arches, royal quarters, and landscaped gardens.',
         descTe: 'రాణి మహల్ మరియు ఆకట్టుకునే రాయల్ ఉద్యానవనం.'
       },
       {
         id: 'sound-light',
-        nameEn: 'Sound & Light Show Open Theater',
+        nameEn: 'Sound & Light Show Amphitheater',
         nameTe: 'సౌండ్ & లైట్ షో ఓపెన్ థియేటర్',
         category: 'info',
         lat: 13.6024,
         lng: 79.3144,
-        svgX: 370,
-        svgY: 185,
+        svgX: 385,
+        svgY: 175,
         descEn: 'Open amphitheater showcasing evening laser, sound & light historical shows.',
         descTe: 'సాయంత్రం వేళ విజయవంతంగా సాగే సౌండ్ & లైట్ షో ప్రదర్శన వేదిక.'
       }
     ],
     routeSteps: [
       { stepNumber: 1, titleEn: 'Fort Arrival & Parking', titleTe: 'కోట పార్కింగ్ చేరుకోవడం', distance: '0.0 km', timeMins: 0, descEn: 'Park vehicle at the visitor plaza.', descTe: 'వాహనాన్ని పార్క్ చేయండి.' },
-      { stepNumber: 2, titleEn: 'ASI Ticket Counter & Gate', titleTe: 'టికెట్ కౌంటర్ & ప్రవేశం', distance: '30m', timeMins: 2, descEn: 'Buy entry ticket and enter fort grounds.', descTe: 'టికెట్ తీసుకుని కోటలోకి ప్రవేశించండి.' },
-      { stepNumber: 3, titleEn: 'Raja Mahal Museum & Royal Artifacts', titleTe: 'రాజమహల్ & మ్యూజియం దర్శనం', distance: '100m', timeMins: 25, descEn: 'Explore the 3-storey palace exhibits.', descTe: 'చారిత్రక రాజభవనం తిలకించండి.' },
-      { stepNumber: 4, titleEn: 'Rani Mahal & Evening Sound & Light Show', titleTe: 'రాణి మహల్ & సౌండ్ షో', distance: '120m', timeMins: 30, descEn: 'Visit Rani Mahal and attend the evening show.', descTe: 'రాణి మహల్ మరియు సౌండ్ షో వీక్షించండి.' }
+      { stepNumber: 2, titleEn: 'Cloakroom & ASI Ticket Gate', titleTe: 'క్లోక్‌రూమ్ & టికెట్ కౌంటర్', distance: '30m', timeMins: 2, descEn: 'Deposit belongings if needed, buy entry ticket, and enter fort grounds.', descTe: 'టికెట్ తీసుకుని కోటలోకి ప్రవేశించండి.' },
+      { stepNumber: 3, titleEn: 'Raja Mahal Palace & ASI Museum', titleTe: 'రాజమహల్ & మ్యూజియం దర్శనం', distance: '80m', timeMins: 25, descEn: 'Explore the 3-storey royal palace exhibits, bronzes, and weapons gallery.', descTe: 'చారిత్రక రాజభవనం తిలకించండి.' },
+      { stepNumber: 4, titleEn: 'Rani Mahal & Evening Sound & Light Show', titleTe: 'రాణి మహల్ & సౌండ్ షో', distance: '100m', timeMins: 30, descEn: 'Visit Rani Mahal royal gardens and attend the evening historical light show.', descTe: 'రాణి మహల్ మరియు సౌండ్ షో వీక్షించండి.' }
     ],
     emergencyContacts: [
       { titleEn: 'ASI Chandragiri Office', titleTe: 'ఏఎస్ఐ చంద్రగిరి సమాచార కేంద్రం', number: '08772264555' },
@@ -2580,6 +2580,29 @@ export function getTempleLayout(placeInput: string | PlaceInputContext, fallback
       sanctumNameEn: curated.sanctumNameEn || 'Seshachalam Forest Trail & Canopy Walk',
       sanctumNameTe: curated.sanctumNameTe || 'శేషాచలం అటవీ మార్గం & ప్రకృతి విహారం',
       routePath: curated.routePath || [[430, 290], [270, 275], [160, 190], [270, 100], [380, 140]],
+      pins: (curated.pins as MapPin[]) || [],
+      routeSteps: curated.routeSteps || [],
+      emergencyContacts: curated.emergencyContacts || []
+    };
+  }
+
+  // 0.1 Chandragiri Fort & Raja Mahal
+  if (
+    placeId.includes('chandragiri') ||
+    nameLower.includes('chandragiri')
+  ) {
+    const curated = CURATED_LAYOUTS['chandragiri-fort']!;
+    return {
+      placeId,
+      titleEn: `${name} Precinct Map`,
+      titleTe: `${name} ప్రాంగణ మ్యాప్`,
+      layoutType: 'heritage-fort',
+      centerCoordinates: fallbackCoords || { lat: 13.6025, lng: 79.3142 },
+      defaultZoom: 17,
+      compassBearingDeg: 0,
+      sanctumNameEn: curated.sanctumNameEn || 'Raja Mahal Palace & ASI Museum',
+      sanctumNameTe: curated.sanctumNameTe || 'రాజమహల్ & ఏఎస్ఐ మ్యూజియం',
+      routePath: curated.routePath || [[420, 265], [135, 215], [270, 250], [270, 85], [405, 95], [385, 175], [270, 250]],
       pins: (curated.pins as MapPin[]) || [],
       routeSteps: curated.routeSteps || [],
       emergencyContacts: curated.emergencyContacts || []

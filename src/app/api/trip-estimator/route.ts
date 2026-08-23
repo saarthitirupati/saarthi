@@ -47,7 +47,7 @@ export async function GET(request: Request) {
     }
 
     // Fetch live fuel prices from Supabase if available
-    let fuelRates: Partial<FuelRates> = {};
+    const fuelRates: Partial<FuelRates> = {};
     try {
       const { data } = await supabase.from('fuel_prices').select('fuel_type, price');
       if (data && data.length > 0) {
