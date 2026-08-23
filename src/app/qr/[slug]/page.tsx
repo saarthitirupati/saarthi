@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import { useParams, useRouter, useSearchParams } from 'next/navigation';
-import { Car, Sparkles, MapPin, ArrowRight, ShieldCheck, Clock, Map, UtensilsCrossed } from 'lucide-react';
+import { Car, Sparkles, MapPin, ArrowRight, ShieldCheck } from 'lucide-react';
 
 export default function QRScanTransitionPage() {
   const params = useParams();
@@ -11,7 +11,7 @@ export default function QRScanTransitionPage() {
   const slug = params?.slug as string;
   const direct = searchParams?.get('direct') === '1';
 
-  const [campaignName, setCampaignName] = useState<string>('Tirupati Cab Decal');
+  const [campaignName, setCampaignName] = useState<string>('Tirupati Cab Partner');
   const [destination, setDestination] = useState<string>('/');
   const [loading, setLoading] = useState(true);
   const [progress, setProgress] = useState(15);
@@ -102,64 +102,51 @@ export default function QRScanTransitionPage() {
   return (
     <div style={{
       minHeight: '100vh',
-      backgroundColor: '#070E1A',
-      color: '#F8FAFC',
+      backgroundColor: '#FAF8F4',
+      backgroundImage: 'radial-gradient(at 50% 0%, #FFFDF8 0%, #F5EFE4 100%)',
+      color: '#1E293B',
       display: 'flex',
       flexDirection: 'column',
       alignItems: 'center',
       justifyContent: 'center',
-      padding: '20px 16px',
+      padding: '24px 16px',
       fontFamily: 'var(--font-sans, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif)',
       textAlign: 'center',
       position: 'relative',
       overflow: 'hidden'
     }}>
-      {/* Sacred Radiant Ambience Background Glows */}
+      {/* Divine Golden Ambient Aura */}
       <div style={{
         position: 'absolute',
-        top: '15%',
+        top: '12%',
         left: '50%',
         transform: 'translate(-50%, -50%)',
-        width: '380px',
-        height: '380px',
-        background: 'radial-gradient(circle, rgba(16, 185, 129, 0.22) 0%, rgba(245, 158, 11, 0.08) 50%, rgba(7, 14, 26, 0) 75%)',
+        width: '450px',
+        height: '450px',
+        background: 'radial-gradient(circle, rgba(245, 158, 11, 0.16) 0%, rgba(16, 185, 129, 0.08) 45%, rgba(250, 248, 244, 0) 70%)',
         borderRadius: '50%',
         pointerEvents: 'none',
-        filter: 'blur(32px)'
-      }} />
-      <div style={{
-        position: 'absolute',
-        bottom: '10%',
-        left: '50%',
-        transform: 'translateX(-50%)',
-        width: '320px',
-        height: '240px',
-        background: 'radial-gradient(circle, rgba(6, 95, 70, 0.18) 0%, rgba(7, 14, 26, 0) 70%)',
-        borderRadius: '50%',
-        pointerEvents: 'none',
-        filter: 'blur(40px)'
+        filter: 'blur(36px)'
       }} />
 
-      {/* Main Glassmorphism Welcome Card */}
+      {/* Main Royal Sacred Card */}
       <div style={{
-        maxWidth: '390px',
+        maxWidth: '385px',
         width: '100%',
-        background: 'linear-gradient(180deg, rgba(26, 38, 57, 0.85) 0%, rgba(15, 23, 42, 0.95) 100%)',
-        backdropFilter: 'blur(20px)',
-        WebkitBackdropFilter: 'blur(20px)',
-        border: '1px solid rgba(255, 255, 255, 0.12)',
+        backgroundColor: '#FFFFFF',
+        border: '1px solid rgba(217, 119, 6, 0.22)',
         borderRadius: '28px',
-        padding: '32px 22px 26px 22px',
-        boxShadow: '0 25px 60px -15px rgba(0, 0, 0, 0.7), inset 0 1px 0 rgba(255, 255, 255, 0.15)',
+        padding: '36px 24px 28px 24px',
+        boxShadow: '0 20px 45px -10px rgba(180, 83, 9, 0.12), 0 8px 20px -6px rgba(0, 0, 0, 0.06)',
         position: 'relative',
         zIndex: 1,
         animation: 'cardEnter 0.5s cubic-bezier(0.16, 1, 0.3, 1)'
       }}>
-        {/* Official Saarthi Logo with Halo */}
+        {/* Sacred Golden Logo Emblem */}
         <div style={{
           position: 'relative',
-          width: '76px',
-          height: '76px',
+          width: '78px',
+          height: '78px',
           margin: '0 auto 16px auto',
           display: 'flex',
           alignItems: 'center',
@@ -167,24 +154,24 @@ export default function QRScanTransitionPage() {
         }}>
           <div style={{
             position: 'absolute',
-            inset: '-4px',
-            borderRadius: '24px',
-            background: 'linear-gradient(135deg, rgba(16, 185, 129, 0.4), rgba(245, 158, 11, 0.3))',
-            filter: 'blur(8px)',
-            opacity: 0.85
+            inset: '-6px',
+            borderRadius: '28px',
+            background: 'radial-gradient(circle, rgba(245, 158, 11, 0.4) 0%, rgba(16, 185, 129, 0.2) 70%)',
+            filter: 'blur(10px)',
+            opacity: 0.8
           }} />
           <div style={{
             position: 'relative',
             width: '100%',
             height: '100%',
             borderRadius: '22px',
-            background: 'linear-gradient(145deg, #0d281e 0%, #064e3b 100%)',
-            border: '1.5px solid rgba(52, 211, 153, 0.4)',
+            background: '#FFFFFF',
+            border: '1.5px solid rgba(217, 119, 6, 0.3)',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            boxShadow: '0 12px 28px -6px rgba(5, 150, 105, 0.45)',
-            padding: '10px'
+            boxShadow: '0 10px 25px -4px rgba(180, 83, 9, 0.18)',
+            padding: '8px'
           }}>
             <img 
               src="/assets/logo.png" 
@@ -192,138 +179,87 @@ export default function QRScanTransitionPage() {
               style={{
                 width: '100%',
                 height: '100%',
-                objectFit: 'contain',
-                filter: 'drop-shadow(0 2px 6px rgba(0,0,0,0.3))'
+                objectFit: 'contain'
               }}
             />
           </div>
         </div>
 
-        {/* Brand Tagline */}
+        {/* Sacred Sub-title Tag */}
         <div style={{
           display: 'inline-flex',
           alignItems: 'center',
           gap: '6px',
-          padding: '4px 12px',
+          padding: '4px 14px',
           borderRadius: '999px',
-          backgroundColor: 'rgba(16, 185, 129, 0.12)',
-          border: '1px solid rgba(52, 211, 153, 0.25)',
-          fontSize: '11.5px',
-          fontWeight: 700,
-          color: '#34D399',
-          letterSpacing: '0.6px',
+          backgroundColor: '#FEF3C7',
+          border: '1px solid #FDE68A',
+          fontSize: '11px',
+          fontWeight: 800,
+          color: '#B45309',
+          letterSpacing: '0.8px',
           textTransform: 'uppercase',
-          marginBottom: '10px'
+          marginBottom: '12px'
         }}>
-          <Sparkles size={12} color="#FBBF24" />
+          <Sparkles size={12} color="#D97706" />
           <span>SAARTHI PILGRIM GUIDE</span>
         </div>
 
-        {/* Welcome Greeting */}
+        {/* Warm Welcome Greeting */}
         <h1 style={{
-          fontSize: '23px',
-          fontWeight: 800,
-          color: '#FFFFFF',
+          fontSize: '24px',
+          fontWeight: 900,
+          color: '#1E293B',
           marginBottom: '4px',
           lineHeight: '1.25',
-          letterSpacing: '-0.3px'
+          letterSpacing: '-0.4px'
         }}>
           Namaste &amp; Welcome! 🙏
         </h1>
         <p style={{
-          fontSize: '12.5px',
-          fontWeight: 600,
-          color: '#FDE68A',
-          marginBottom: '14px',
+          fontSize: '13px',
+          fontWeight: 700,
+          color: '#B45309',
+          marginBottom: '18px',
           letterSpacing: '0.2px'
         }}>
           శ్రీ వేంకటేశ్వర స్వామి దివ్య క్షేత్రానికి స్వాగతం
         </p>
 
-        {/* Verified Cab Decal Partner Pill */}
+        {/* Clean Verified Vehicle / Decal Partner Badge */}
         <div style={{
           display: 'inline-flex',
           alignItems: 'center',
           justifyContent: 'center',
-          gap: '7px',
-          padding: '6px 14px',
-          borderRadius: '12px',
-          backgroundColor: 'rgba(30, 41, 59, 0.65)',
-          border: '1px solid rgba(148, 163, 184, 0.15)',
-          fontSize: '12px',
-          color: '#94A3B8',
-          marginBottom: '20px',
+          gap: '8px',
+          padding: '8px 16px',
+          borderRadius: '14px',
+          backgroundColor: '#F8FAFC',
+          border: '1px solid #E2E8F0',
+          fontSize: '12.5px',
+          color: '#475569',
+          marginBottom: '26px',
           maxWidth: '100%',
           boxSizing: 'border-box'
         }}>
           <span style={{
-            width: '6px',
-            height: '6px',
+            width: '7px',
+            height: '7px',
             borderRadius: '50%',
             backgroundColor: '#10B981',
-            boxShadow: '0 0 8px #10B981',
+            boxShadow: '0 0 6px #10B981',
             display: 'inline-block'
           }} />
-          <Car size={13} color="#38BDF8" style={{ flexShrink: 0 }} />
+          <Car size={14} color="#059669" style={{ flexShrink: 0 }} />
           <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-            Connected via <strong style={{ color: '#F1F5F9', fontWeight: 600 }}>{campaignName}</strong>
+            Connected via <strong style={{ color: '#0F172A', fontWeight: 700 }}>{campaignName}</strong>
           </span>
         </div>
 
-        {/* Pilgrim Value Features Mini Cards */}
+        {/* Sleek Golden Progress Section */}
         <div style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(3, 1fr)',
-          gap: '8px',
-          marginBottom: '22px'
-        }}>
-          <div style={{
-            backgroundColor: 'rgba(15, 23, 42, 0.65)',
-            border: '1px solid rgba(255, 255, 255, 0.06)',
-            borderRadius: '14px',
-            padding: '10px 6px',
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            gap: '5px'
-          }}>
-            <Clock size={16} color="#F59E0B" />
-            <span style={{ fontSize: '11px', fontWeight: 600, color: '#E2E8F0', lineHeight: '1.2' }}>Live Queue &amp; Tokens</span>
-          </div>
-
-          <div style={{
-            backgroundColor: 'rgba(15, 23, 42, 0.65)',
-            border: '1px solid rgba(255, 255, 255, 0.06)',
-            borderRadius: '14px',
-            padding: '10px 6px',
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            gap: '5px'
-          }}>
-            <Map size={16} color="#34D399" />
-            <span style={{ fontSize: '11px', fontWeight: 600, color: '#E2E8F0', lineHeight: '1.2' }}>Offline Precinct Maps</span>
-          </div>
-
-          <div style={{
-            backgroundColor: 'rgba(15, 23, 42, 0.65)',
-            border: '1px solid rgba(255, 255, 255, 0.06)',
-            borderRadius: '14px',
-            padding: '10px 6px',
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            gap: '5px'
-          }}>
-            <UtensilsCrossed size={16} color="#38BDF8" />
-            <span style={{ fontSize: '11px', fontWeight: 600, color: '#E2E8F0', lineHeight: '1.2' }}>Free Meals &amp; Lockers</span>
-          </div>
-        </div>
-
-        {/* Progress & Launch Button */}
-        <div style={{
-          backgroundColor: 'rgba(15, 23, 42, 0.8)',
-          border: '1px solid rgba(52, 211, 153, 0.2)',
+          backgroundColor: '#FBF9F5',
+          border: '1px solid rgba(217, 119, 6, 0.15)',
           borderRadius: '16px',
           padding: '14px 16px',
           marginBottom: '16px'
@@ -335,42 +271,42 @@ export default function QRScanTransitionPage() {
             marginBottom: '8px',
             fontSize: '12px'
           }}>
-            <span style={{ color: '#E2E8F0', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '6px' }}>
+            <span style={{ color: '#475569', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '6px' }}>
               <span style={{
                 display: 'inline-block',
                 width: '12px',
                 height: '12px',
                 borderRadius: '50%',
-                border: '2px solid #10B981',
+                border: '2px solid #D97706',
                 borderTopColor: 'transparent',
                 animation: 'spin 0.7s linear infinite'
               }} />
               Opening Live Guide...
             </span>
-            <span style={{ color: '#34D399', fontWeight: 700, fontVariantNumeric: 'tabular-nums' }}>
+            <span style={{ color: '#B45309', fontWeight: 800, fontVariantNumeric: 'tabular-nums' }}>
               {progress}%
             </span>
           </div>
 
-          {/* Smooth Gradient Progress Bar */}
+          {/* Smooth Royal Gold to Emerald Progress Bar */}
           <div style={{
             width: '100%',
             height: '6px',
-            backgroundColor: 'rgba(255, 255, 255, 0.1)',
+            backgroundColor: '#E2E8F0',
             borderRadius: '999px',
             overflow: 'hidden'
           }}>
             <div style={{
               width: `${progress}%`,
               height: '100%',
-              background: 'linear-gradient(90deg, #059669 0%, #10B981 70%, #F59E0B 100%)',
+              background: 'linear-gradient(90deg, #D97706 0%, #F59E0B 50%, #059669 100%)',
               borderRadius: '999px',
               transition: 'width 0.4s cubic-bezier(0.4, 0, 0.2, 1)'
             }} />
           </div>
         </div>
 
-        {/* Instant Launch Action Button */}
+        {/* Elegant Gold CTA Button */}
         <button
           onClick={handleImmediateRedirect}
           style={{
@@ -379,43 +315,43 @@ export default function QRScanTransitionPage() {
             alignItems: 'center',
             justifyContent: 'center',
             gap: '8px',
-            padding: '12px 18px',
-            borderRadius: '14px',
-            background: 'linear-gradient(135deg, #10B981 0%, #059669 100%)',
+            padding: '13px 20px',
+            borderRadius: '16px',
+            background: 'linear-gradient(135deg, #059669 0%, #047857 100%)',
             color: '#FFFFFF',
             border: 'none',
-            fontSize: '13.5px',
-            fontWeight: 700,
+            fontSize: '14px',
+            fontWeight: 800,
             cursor: 'pointer',
-            boxShadow: '0 8px 20px -4px rgba(16, 185, 129, 0.4)',
+            boxShadow: '0 10px 22px -5px rgba(5, 150, 105, 0.4)',
             transition: 'all 0.2s ease',
             outline: 'none'
           }}
           onMouseDown={(e) => (e.currentTarget.style.transform = 'scale(0.98)')}
           onMouseUp={(e) => (e.currentTarget.style.transform = 'scale(1)')}
         >
-          <span>Open Guide Now</span>
-          <ArrowRight size={15} />
+          <span>Enter Live Guide Now</span>
+          <ArrowRight size={16} />
         </button>
       </div>
 
-      {/* Trust & Assistance Footer */}
+      {/* Trust & Spiritual Heritage Footer */}
       <div style={{
-        marginTop: '20px',
+        marginTop: '22px',
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
         gap: '6px',
-        fontSize: '11.5px',
+        fontSize: '12px',
         color: '#64748B'
       }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-          <ShieldCheck size={14} color="#10B981" />
-          <span style={{ color: '#94A3B8', fontWeight: 500 }}>Verified Tirupati &amp; Tirumala Assistance</span>
+          <ShieldCheck size={15} color="#059669" />
+          <span style={{ color: '#334155', fontWeight: 600 }}>Verified Tirupati &amp; Tirumala Assistance</span>
         </div>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '11px', color: '#64748B' }}>
-          <MapPin size={11} color="#64748B" />
-          <span>100% Free Pilgrim Guide • No Sign-up Required</span>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '11.5px', color: '#64748B' }}>
+          <MapPin size={12} color="#D97706" />
+          <span>100% Free • Live Darshan, Tokens &amp; Precinct Maps</span>
         </div>
       </div>
 
@@ -424,11 +360,10 @@ export default function QRScanTransitionPage() {
           to { transform: rotate(360deg); }
         }
         @keyframes cardEnter {
-          from { opacity: 0; transform: translateY(16px) scale(0.97); }
+          from { opacity: 0; transform: translateY(14px) scale(0.98); }
           to { opacity: 1; transform: translateY(0) scale(1); }
         }
       `}</style>
     </div>
   );
 }
-
