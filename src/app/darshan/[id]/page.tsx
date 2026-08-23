@@ -215,314 +215,314 @@ export default function DarshanDetailsPage() {
         </div>
       )}
 
-      {/* ── 2. PSYCHOLOGY-FIRST HERO CARD (INSPIRED BY USER DESIGN) ── */}
-      <section className={styles.heroStatusCard}>
-        
-        {/* Header: Icon + Title + Status Pill */}
-        <div className={styles.cardHeaderRow}>
-          <div className={styles.cardTitleWrap}>
-            <div className={styles.cardTypeIcon} style={{ color: themeColor, backgroundColor: `${themeColor}12` }}>
-              <Ticket size={18} />
-            </div>
-            <h2 className={`${styles.cardMainHeading} ${lang === 'te' ? styles.teluguFont : ''}`}>
-              {lang === 'te' ? (data.teluguTitle || data.title) : data.title}
-            </h2>
-          </div>
-          <span 
-            className={styles.statusPill}
-            style={{
-              backgroundColor: id === 'ssd-token' && ssdTokenStatus === 'closed-for-day' ? '#FEE2E2' : '#DCFCE7',
-              color: id === 'ssd-token' && ssdTokenStatus === 'closed-for-day' ? '#DC2626' : '#15803D'
-            }}
-          >
-            {id === 'ssd-token' 
-              ? (ssdTokenStatus === 'closed-for-day' ? 'Closed for Day' : ssdTokenStatus === 'paused' ? 'Paused' : 'Issuing Now')
-              : `${crowdLevel} WAIT`}
-          </span>
-        </div>
+      {/* ── 2 & 3. RESPONSIVE DUAL-COLUMN LAYOUT ── */}
+      <main className={styles.mainLayoutGrid}>
 
-        {/* Highlight Banner (Next Release / Key Metric) */}
-        <div className={styles.highlightActionBanner}>
-          <div className={styles.clockIconWrap}>
-            <Clock size={18} color="#DC2626" />
-          </div>
-          <div className={styles.highlightBannerContent}>
-            <span className={styles.highlightLabel}>
-              {id === 'ssd-token' ? 'Next Release / Issuing Time' : id === 'special-entry' ? 'Reporting Time Window' : 'Current Estimated Wait'}
-            </span>
-            <span className={styles.highlightValue}>
-              {id === 'ssd-token' 
-                ? (ssdNextTokenTime || '2:00 AM') 
-                : id === 'special-entry' 
-                ? '30 Mins Before Slot Time' 
-                : (liveWaitTime || data.waitTime)}
-            </span>
-          </div>
-        </div>
-
-        {/* Anxiety Relief Subtext */}
-        <p className={styles.guidanceSubtext}>
-          {id === 'ssd-token'
-            ? 'Daily quota completed — next token release time indicated above'
-            : id === 'special-entry'
-            ? 'Report directly to ATC Car Parking entry with your original Aadhaar and printout'
-            : 'Direct walk-in available 24/7 via Vaikuntam Queue Complex II'}
-        </p>
-
-        {/* Collection Centres / Landmark Spots */}
-        {data.tokenLocations && data.tokenLocations.length > 0 && (
-          <div className={styles.collectionCentresBlock}>
-            <span className={styles.centresHeading}>Collection Centres</span>
-            <div className={styles.centresList}>
-              {data.tokenLocations.map((loc, idx) => (
-                <div key={idx} className={styles.centreItem}>
-                  <MapPin size={14} className={styles.centrePinIcon} />
-                  <div className={styles.centreText}>
-                    <strong className={styles.centreName}>{loc.name.split(' Complex')[0]}</strong>
-                    <span className={styles.centreLandmark}> • {loc.landmark.replace('Directly opposite ', 'Opp. ').replace('Opposite ', 'Opp. ').split('(')[0].trim()}</span>
-                  </div>
+        {/* ── LEFT COLUMN: HERO STATUS CARD ── */}
+        <div className={styles.leftColumn}>
+          <section className={styles.heroStatusCard}>
+            
+            {/* Header: Icon + Title + Status Pill */}
+            <div className={styles.cardHeaderRow}>
+              <div className={styles.cardTitleWrap}>
+                <div className={styles.cardTypeIcon} style={{ color: themeColor, backgroundColor: `${themeColor}12` }}>
+                  <Ticket size={18} />
                 </div>
-              ))}
+                <h2 className={`${styles.cardMainHeading} ${lang === 'te' ? styles.teluguFont : ''}`}>
+                  {lang === 'te' ? (data.teluguTitle || data.title) : data.title}
+                </h2>
+              </div>
+              <span 
+                className={styles.statusPill}
+                style={{
+                  backgroundColor: id === 'ssd-token' && ssdTokenStatus === 'closed-for-day' ? '#FEE2E2' : '#DCFCE7',
+                  color: id === 'ssd-token' && ssdTokenStatus === 'closed-for-day' ? '#DC2626' : '#15803D'
+                }}
+              >
+                {id === 'ssd-token' 
+                  ? (ssdTokenStatus === 'closed-for-day' ? 'Closed for Day' : ssdTokenStatus === 'paused' ? 'Paused' : 'Issuing Now')
+                  : `${crowdLevel} WAIT`}
+              </span>
             </div>
-          </div>
-        )}
 
-        {/* Ground Truth Notice Box */}
-        <div className={styles.groundNoticeBox}>
-          <Clock size={16} className={styles.groundNoticeIcon} />
-          <div className={styles.groundNoticeText}>
-            {ssdNotice ? (
-              <span>{ssdNotice}</span>
-            ) : id === 'ssd-token' ? (
-              <span>* 🔹 SSD Tokens – Current Status* Quota Opens @ 2:00 AM daily across all Tirupati centers until quota exhausts.</span>
-            ) : id === 'special-entry' ? (
-              <span>* 🔹 ₹300 Special Entry* Strict biometric check at Supatham/ATC gate. Only original IDs accepted.</span>
-            ) : (
-              <span>* 🔹 Sarva Darshan* Free meals, hot beverages, and drinking water served continuously in all compartments.</span>
+            {/* Highlight Banner (Next Release / Key Metric) */}
+            <div className={styles.highlightActionBanner}>
+              <div className={styles.clockIconWrap}>
+                <Clock size={18} color="#DC2626" />
+              </div>
+              <div className={styles.highlightBannerContent}>
+                <span className={styles.highlightLabel}>
+                  {id === 'ssd-token' ? 'Next Release / Issuing Time' : id === 'special-entry' ? 'Reporting Time Window' : 'Current Estimated Wait'}
+                </span>
+                <span className={styles.highlightValue}>
+                  {id === 'ssd-token' 
+                    ? (ssdNextTokenTime || '2:00 AM') 
+                    : id === 'special-entry' 
+                    ? '30 Mins Before Slot Time' 
+                    : (liveWaitTime || data.waitTime)}
+                </span>
+              </div>
+            </div>
+
+            {/* Anxiety Relief Subtext */}
+            <p className={styles.guidanceSubtext}>
+              {id === 'ssd-token'
+                ? 'Daily quota completed — next token release time indicated above'
+                : id === 'special-entry'
+                ? 'Report directly to ATC Car Parking entry with your original Aadhaar and printout'
+                : 'Direct walk-in available 24/7 via Vaikuntam Queue Complex II'}
+            </p>
+
+            {/* Collection Centres / Landmark Spots */}
+            {data.tokenLocations && data.tokenLocations.length > 0 && (
+              <div className={styles.collectionCentresBlock}>
+                <span className={styles.centresHeading}>Collection Centres</span>
+                <div className={styles.centresList}>
+                  {data.tokenLocations.map((loc, idx) => (
+                    <div key={idx} className={styles.centreItem}>
+                      <MapPin size={14} className={styles.centrePinIcon} />
+                      <div className={styles.centreText}>
+                        <strong className={styles.centreName}>{loc.name.split(' Complex')[0]}</strong>
+                        <span className={styles.centreLandmark}> • {loc.landmark.replace('Directly opposite ', 'Opp. ').replace('Opposite ', 'Opp. ').split('(')[0].trim()}</span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
             )}
-          </div>
-        </div>
 
-      </section>
-
-      {/* ── 3. INTERACTIVE MINIMAL ACCORDIONS ── */}
-      <div className={styles.accordionGroup}>
-
-        {/* ── ACCORDION 1: JOURNEY ROADMAP (5 STEPS) ── */}
-        <div className={styles.minimalAccordionCard}>
-          <button 
-            onClick={() => toggleSection('roadmap')} 
-            className={styles.accordionHeader}
-            aria-expanded={openSections.roadmap}
-          >
-            <div className={styles.accordionHeaderLeft}>
-              <div className={styles.sectionIconBadge} style={{ backgroundColor: `${themeColor}12`, color: themeColor }}>
-                <Navigation size={17} />
-              </div>
-              <div>
-                <h3 className={styles.accordionHeading}>Step-by-Step Darshan Flow</h3>
-                <span className={styles.accordionSubheading}>What happens upon arrival</span>
-              </div>
-            </div>
-            <div className={styles.accordionHeaderRight}>
-              <span className={styles.miniPillBadge}>{data.journeySteps.length} Steps</span>
-              <ChevronDown 
-                size={17} 
-                className={`${styles.chevron} ${openSections.roadmap ? styles.chevronRotated : ''}`} 
-              />
-            </div>
-          </button>
-
-          {openSections.roadmap && (
-            <div className={styles.accordionBody}>
-              <div className={styles.stepsTimeline}>
-                {data.journeySteps.map((step) => {
-                  const isSelected = activeStep === step.step;
-                  return (
-                    <div 
-                      key={step.step}
-                      className={`${styles.stepNode} ${isSelected ? styles.stepNodeActive : ''}`}
-                      onClick={() => setActiveStep(step.step)}
-                    >
-                      <div className={styles.stepBulletWrap}>
-                        <div className={`${styles.stepBullet} ${isSelected ? styles.stepBulletActive : ''}`}>
-                          {getStepIcon(step.step)}
-                        </div>
-                        {step.step < data.journeySteps.length && <div className={styles.stepConnectorLine} />}
-                      </div>
-                      <div className={styles.stepContent}>
-                        <div className={styles.stepHeader}>
-                          <span className={styles.stepNumberTag}>STEP {step.step}</span>
-                          <h4 className={styles.stepTitle}>{step.title}</h4>
-                        </div>
-                        <p className={styles.stepDesc}>{step.desc}</p>
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
-          )}
-        </div>
-
-        {/* ── ACCORDION 2: DRESS CODE & RULES ── */}
-        <div className={styles.minimalAccordionCard}>
-          <button 
-            onClick={() => toggleSection('dress')} 
-            className={styles.accordionHeader}
-            aria-expanded={openSections.dress}
-          >
-            <div className={styles.accordionHeaderLeft}>
-              <div className={styles.sectionIconBadge} style={{ backgroundColor: '#F0FDF4', color: '#16A34A' }}>
-                <Shirt size={17} />
-              </div>
-              <div>
-                <h3 className={styles.accordionHeading}>Dress Code &amp; Requirements</h3>
-                <span className={styles.accordionSubheading}>Avoid gate inspection rejections</span>
-              </div>
-            </div>
-            <div className={styles.accordionHeaderRight}>
-              <span className={styles.miniPillBadge} style={{ background: '#DCFCE7', color: '#166534' }}>Rules</span>
-              <ChevronDown 
-                size={17} 
-                className={`${styles.chevron} ${openSections.dress ? styles.chevronRotated : ''}`} 
-              />
-            </div>
-          </button>
-
-          {openSections.dress && (
-            <div className={styles.accordionBody}>
-              <div className={styles.rulesSplitGrid}>
-                {/* Permitted */}
-                <div className={styles.ruleBoxAllowed}>
-                  <div className={styles.ruleBoxTitle}>
-                    <CheckCircle2 size={15} color="#16A34A" />
-                    <span>Allowed Attire</span>
-                  </div>
-                  <div className={styles.ruleTags}>
-                    {data.dressCodeRules.allowed.map((rule, idx) => (
-                      <span key={idx} className={styles.allowedChip}>
-                        <Check size={11} /> {rule}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Prohibited */}
-                <div className={styles.ruleBoxProhibited}>
-                  <div className={styles.ruleBoxTitle}>
-                    <XCircle size={15} color="#DC2626" />
-                    <span>Strictly Prohibited</span>
-                  </div>
-                  <div className={styles.ruleTags}>
-                    {data.dressCodeRules.prohibited.map((rule, idx) => (
-                      <span key={idx} className={styles.prohibitedChip}>
-                        <XCircle size={11} /> {rule}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-              </div>
-
-              {/* ID Alert */}
-              <div className={styles.miniGuidanceNote}>
-                <Lock size={15} color="#D97706" />
-                <span><strong>Locker Notice:</strong> Deposit mobile phones and footwear at free stalls before queue entry.</span>
-              </div>
-            </div>
-          )}
-        </div>
-
-        {/* ── ACCORDION 3: QUEUE AMENITIES ── */}
-        <div className={styles.minimalAccordionCard}>
-          <button 
-            onClick={() => toggleSection('amenities')} 
-            className={styles.accordionHeader}
-            aria-expanded={openSections.amenities}
-          >
-            <div className={styles.accordionHeaderLeft}>
-              <div className={styles.sectionIconBadge} style={{ backgroundColor: '#FEF3C7', color: '#D97706' }}>
-                <Sparkles size={17} />
-              </div>
-              <div>
-                <h3 className={styles.accordionHeading}>Queue Amenities (Free)</h3>
-                <span className={styles.accordionSubheading}>Services available inside halls</span>
-              </div>
-            </div>
-            <div className={styles.accordionHeaderRight}>
-              <span className={styles.miniPillBadge}>{data.facilities.length} Free</span>
-              <ChevronDown 
-                size={17} 
-                className={`${styles.chevron} ${openSections.amenities ? styles.chevronRotated : ''}`} 
-              />
-            </div>
-          </button>
-
-          {openSections.amenities && (
-            <div className={styles.accordionBody}>
-              <div className={styles.amenitiesGrid}>
-                {data.facilities.map((fac, idx) => {
-                  const visual = getFacilityVisual(fac.type);
-                  return (
-                    <div key={idx} className={styles.amenityCard}>
-                      <div className={styles.amenityIconWrap} style={{ backgroundColor: visual.bg, color: visual.color }}>
-                        {visual.icon}
-                      </div>
-                      <div className={styles.amenityDetails}>
-                        <strong className={styles.amenityName}>{visual.label}</strong>
-                        <span className={styles.amenityNote}>{fac.notes}</span>
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
-          )}
-        </div>
-
-        {/* ── ACCORDION 4: WHY THIS WAIT TIME & PRO-TIPS ── */}
-        <div className={styles.minimalAccordionCard}>
-          <button 
-            onClick={() => toggleSection('whyWait')} 
-            className={styles.accordionHeader}
-            aria-expanded={openSections.whyWait}
-          >
-            <div className={styles.accordionHeaderLeft}>
-              <div className={styles.sectionIconBadge} style={{ backgroundColor: '#FEF3C7', color: '#D97706' }}>
-                <Lightbulb size={17} />
-              </div>
-              <div>
-                <h3 className={styles.accordionHeading}>Why This Wait Time?</h3>
-                <span className={styles.accordionSubheading}>Explainable insights &amp; tips</span>
-              </div>
-            </div>
-            <div className={styles.accordionHeaderRight}>
-              <span className={styles.miniPillBadge} style={{ background: '#FEF3C7', color: '#92400E' }}>Insight</span>
-              <ChevronDown 
-                size={17} 
-                className={`${styles.chevron} ${openSections.whyWait ? styles.chevronRotated : ''}`} 
-              />
-            </div>
-          </button>
-
-          {openSections.whyWait && (
-            <div className={styles.accordionBody}>
-              <div className={styles.explainabilityBox}>
-                <p className={styles.explainabilityText}>
-                  {data.whyWaitTimeExplanation || data.description}
-                </p>
-                {data.bestTimeToVisit && (
-                  <div className={styles.bestTimeStrip}>
-                    <Sparkles size={14} color="#D97706" />
-                    <span><strong>Pro-Tip:</strong> {data.bestTimeToVisit}</span>
-                  </div>
+            {/* Ground Truth Notice Box */}
+            <div className={styles.groundNoticeBox}>
+              <Clock size={16} className={styles.groundNoticeIcon} />
+              <div className={styles.groundNoticeText}>
+                {ssdNotice ? (
+                  <span>{ssdNotice}</span>
+                ) : id === 'ssd-token' ? (
+                  <span>* 🔹 SSD Tokens – Current Status* Quota Opens @ 2:00 AM daily across all Tirupati centers until quota exhausts.</span>
+                ) : id === 'special-entry' ? (
+                  <span>* 🔹 ₹300 Special Entry* Strict biometric check at Supatham/ATC gate. Only original IDs accepted.</span>
+                ) : (
+                  <span>* 🔹 Sarva Darshan* Free meals, hot beverages, and drinking water served continuously in all compartments.</span>
                 )}
               </div>
             </div>
-          )}
+
+          </section>
         </div>
 
-      </div>
+        {/* ── RIGHT COLUMN: ACCORDIONS & DETAILS ── */}
+        <div className={styles.rightColumn}>
+          <div className={styles.accordionGroup}>
+
+            {/* ── ACCORDION 1: JOURNEY ROADMAP (5 STEPS) ── */}
+            <div className={styles.minimalAccordionCard}>
+              <button 
+                onClick={() => toggleSection('roadmap')} 
+                className={styles.accordionHeader}
+                aria-expanded={openSections.roadmap}
+              >
+                <div className={styles.accordionHeaderLeft}>
+                  <div className={styles.sectionIconBadge} style={{ backgroundColor: `${themeColor}12`, color: themeColor }}>
+                    <Navigation size={17} />
+                  </div>
+                  <div>
+                    <h3 className={styles.accordionHeading}>Step-by-Step Darshan Flow</h3>
+                    <span className={styles.accordionSubheading}>What happens upon arrival</span>
+                  </div>
+                </div>
+                <div className={styles.accordionHeaderRight}>
+                  <span className={styles.miniPillBadge}>{data.journeySteps.length} Steps</span>
+                  <ChevronDown 
+                    size={17} 
+                    className={`${styles.chevron} ${openSections.roadmap ? styles.chevronRotated : ''}`} 
+                  />
+                </div>
+              </button>
+
+              {openSections.roadmap && (
+                <div className={styles.accordionBody}>
+                  <div className={styles.stepsTimeline}>
+                    {data.journeySteps.map((step) => {
+                      const isSelected = activeStep === step.step;
+                      return (
+                        <div 
+                          key={step.step}
+                          className={`${styles.stepNode} ${isSelected ? styles.stepNodeActive : ''}`}
+                          onClick={() => setActiveStep(step.step)}
+                        >
+                          <div className={styles.stepBulletWrap}>
+                            <div className={`${styles.stepBullet} ${isSelected ? styles.stepBulletActive : ''}`}>
+                              {getStepIcon(step.step)}
+                            </div>
+                            {step.step < data.journeySteps.length && <div className={styles.stepConnectorLine} />}
+                          </div>
+                          <div className={styles.stepContent}>
+                            <div className={styles.stepHeader}>
+                              <span className={styles.stepNumberTag}>STEP {step.step}</span>
+                              <h4 className={styles.stepTitle}>{step.title}</h4>
+                            </div>
+                            <p className={styles.stepDesc}>{step.desc}</p>
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* ── ACCORDION 2: DRESS CODE & ENTRY PROTOCOL ── */}
+            <div className={styles.minimalAccordionCard}>
+              <button 
+                onClick={() => toggleSection('dress')} 
+                className={styles.accordionHeader}
+                aria-expanded={openSections.dress}
+              >
+                <div className={styles.accordionHeaderLeft}>
+                  <div className={styles.sectionIconBadge} style={{ backgroundColor: '#F0FDF4', color: '#16A34A' }}>
+                    <Shirt size={17} />
+                  </div>
+                  <div>
+                    <h3 className={styles.accordionHeading}>Dress Code &amp; Guidelines</h3>
+                    <span className={styles.accordionSubheading}>Mandatory TTD traditional attire</span>
+                  </div>
+                </div>
+                <div className={styles.accordionHeaderRight}>
+                  <span className={styles.miniPillBadge}>Strict</span>
+                  <ChevronDown 
+                    size={17} 
+                    className={`${styles.chevron} ${openSections.dress ? styles.chevronRotated : ''}`} 
+                  />
+                </div>
+              </button>
+
+              {openSections.dress && (
+                <div className={styles.accordionBody}>
+                  <div className={styles.rulesSplitGrid}>
+                    <div className={styles.ruleBoxAllowed}>
+                      <span className={styles.ruleBoxTitle}>
+                        <CheckCircle2 size={15} /> Permitted Traditional Attire
+                      </span>
+                      <div className={styles.ruleTags}>
+                        {data.dressCodeRules.allowed.map((rule, idx) => (
+                          <span key={idx} className={styles.allowedChip}>✓ {rule}</span>
+                        ))}
+                      </div>
+                    </div>
+                    
+                    <div className={styles.ruleBoxProhibited}>
+                      <span className={styles.ruleBoxTitle}>
+                        <XCircle size={15} /> Prohibited Clothing &amp; Items
+                      </span>
+                      <div className={styles.ruleTags}>
+                        {data.dressCodeRules.prohibited.map((rule, idx) => (
+                          <span key={idx} className={styles.prohibitedChip}>✕ {rule}</span>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className={styles.miniGuidanceNote}>
+                    <ShieldAlert size={14} color="#D97706" style={{ flexShrink: 0 }} />
+                    <span>Electronic devices, mobile phones, smartwatches &amp; footwear must be deposited in free lockers before VQC entry.</span>
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* ── ACCORDION 3: COMPARTMENT AMENITIES (FREE SERVICES) ── */}
+            <div className={styles.minimalAccordionCard}>
+              <button 
+                onClick={() => toggleSection('amenities')} 
+                className={styles.accordionHeader}
+                aria-expanded={openSections.amenities}
+              >
+                <div className={styles.accordionHeaderLeft}>
+                  <div className={styles.sectionIconBadge} style={{ backgroundColor: '#EFF6FF', color: '#2563EB' }}>
+                    <UtensilsCrossed size={17} />
+                  </div>
+                  <div>
+                    <h3 className={styles.accordionHeading}>Queue Facilities &amp; Care</h3>
+                    <span className={styles.accordionSubheading}>Free amenities inside waiting halls</span>
+                  </div>
+                </div>
+                <div className={styles.accordionHeaderRight}>
+                  <span className={styles.miniPillBadge}>{data.facilities.length} Free</span>
+                  <ChevronDown 
+                    size={17} 
+                    className={`${styles.chevron} ${openSections.amenities ? styles.chevronRotated : ''}`} 
+                  />
+                </div>
+              </button>
+
+              {openSections.amenities && (
+                <div className={styles.accordionBody}>
+                  <div className={styles.amenitiesGrid}>
+                    {data.facilities.map((fac, idx) => {
+                      const visual = getFacilityVisual(fac.type);
+                      return (
+                        <div key={idx} className={styles.amenityCard}>
+                          <div className={styles.amenityIconWrap} style={{ backgroundColor: visual.bg, color: visual.color }}>
+                            {visual.icon}
+                          </div>
+                          <div className={styles.amenityDetails}>
+                            <strong className={styles.amenityName}>{visual.label}</strong>
+                            <span className={styles.amenityNote}>{fac.notes}</span>
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* ── ACCORDION 4: WHY THIS WAIT TIME & PRO-TIPS ── */}
+            <div className={styles.minimalAccordionCard}>
+              <button 
+                onClick={() => toggleSection('whyWait')} 
+                className={styles.accordionHeader}
+                aria-expanded={openSections.whyWait}
+              >
+                <div className={styles.accordionHeaderLeft}>
+                  <div className={styles.sectionIconBadge} style={{ backgroundColor: '#FEF3C7', color: '#D97706' }}>
+                    <Lightbulb size={17} />
+                  </div>
+                  <div>
+                    <h3 className={styles.accordionHeading}>Why This Wait Time?</h3>
+                    <span className={styles.accordionSubheading}>Explainable insights &amp; tips</span>
+                  </div>
+                </div>
+                <div className={styles.accordionHeaderRight}>
+                  <span className={styles.miniPillBadge} style={{ background: '#FEF3C7', color: '#92400E' }}>Insight</span>
+                  <ChevronDown 
+                    size={17} 
+                    className={`${styles.chevron} ${openSections.whyWait ? styles.chevronRotated : ''}`} 
+                  />
+                </div>
+              </button>
+
+              {openSections.whyWait && (
+                <div className={styles.accordionBody}>
+                  <div className={styles.explainabilityBox}>
+                    <p className={styles.explainabilityText}>
+                      {data.whyWaitTimeExplanation || data.description}
+                    </p>
+                    {data.bestTimeToVisit && (
+                      <div className={styles.bestTimeStrip}>
+                        <Sparkles size={14} color="#D97706" />
+                        <span><strong>Pro-Tip:</strong> {data.bestTimeToVisit}</span>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              )}
+            </div>
+
+          </div>
+        </div>
+
+      </main>
 
       {/* ── 4. STICKY BOTTOM BUTTON ── */}
       <footer className={styles.bottomBarWrap}>
@@ -534,7 +534,6 @@ export default function DarshanDetailsPage() {
     </div>
   );
 }
-
 
 
 
