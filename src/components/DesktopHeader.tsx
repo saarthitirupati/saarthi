@@ -38,6 +38,7 @@ export function DesktopHeader({ weather, temperature }: DesktopHeaderProps) {
   const navLinks = [
     { href: '/', label: lang === 'te' ? 'హోమ్' : 'Home', icon: Home },
     { href: '/route', label: lang === 'te' ? 'యాత్రా మార్గం' : 'Live Route & GPS', icon: Navigation },
+    { href: '/offline-maps', label: lang === 'te' ? 'ఆఫ్‌లైన్ మ్యాప్‌లు' : 'Offline Maps', icon: Compass },
     { href: '/essentials', label: lang === 'te' ? 'అవసరాలు' : 'Essentials', icon: Layers },
     { href: '/explore', label: lang === 'te' ? 'అన్వేషించు' : 'Explore', icon: Compass },
     { href: '/festivals', label: lang === 'te' ? 'ఉత్సవాలు' : 'Festivals', icon: Calendar },

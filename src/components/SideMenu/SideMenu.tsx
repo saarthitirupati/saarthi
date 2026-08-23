@@ -11,6 +11,7 @@ const TEXTS = {
     menu: 'Menu',
     home: 'Home',
     explore: 'Explore Places',
+    offlineMaps: 'Offline Precinct Maps',
     tripEstimator: 'Trip Estimator & Fares',
     smartPlanner: 'Smart Trip Planner',
     liveUpdates: 'Live Tirumala Updates',
@@ -24,6 +25,7 @@ const TEXTS = {
     menu: 'మెనూ',
     home: 'హోమ్',
     explore: 'ప్రదేశాలు అన్వేషించండి',
+    offlineMaps: 'ఆఫ్‌లైన్ ఆలయ మ్యాప్‌లు',
     tripEstimator: 'యాత్ర అంచనా & ఛార్జీలు',
     smartPlanner: 'స్మార్ట్ యాత్ర ప్లానర్',
     liveUpdates: 'తిరుమల లైవ్ అప్డేట్స్',
@@ -47,6 +49,7 @@ export default function SideMenu({ isOpen, onClose }: SideMenuProps) {
   const menuItems = [
     { name: t.home, icon: Home, href: '/' },
     { name: t.explore, icon: Compass, href: '/explore' },
+    { name: t.offlineMaps, icon: Compass, href: '/offline-maps' },
     { name: t.tripEstimator, icon: Compass, href: '/trip-estimator' },
     { name: t.smartPlanner, icon: Compass, href: '/planner' },
     { name: t.festivals, icon: Calendar, href: '/festivals' },
