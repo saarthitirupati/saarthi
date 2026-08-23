@@ -35,6 +35,7 @@ export interface TempleLayoutData {
     | 'annaprasadam-complex'
     | 'botanical-garden'
     | 'hill-waterfall' 
+    | 'hilltop-peak'
     | 'dam-reservoir'
     | 'wildlife-safari' 
     | 'heritage-fort' 
