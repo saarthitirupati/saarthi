@@ -15,15 +15,27 @@ import OfflineTempleMap from '@/components/place/OfflineTempleMap';
 export default function OfflineMapsDirectoryPage() {
   const lang = useLanguage();
   const [searchQuery, setSearchQuery] = useState('');
-  const [activeCategory, setActiveCategory] = useState<'all' | 'tirumala' | 'tirupati' | 'kshethram' | 'nature'>('all');
+  const [activeCategory, setActiveCategory] = useState<'all' | 'tirumala' | 'tirupati' | 'kshethram' | 'nature' | 'food'>('all');
   const [cachedMapIds, setCachedMapIds] = useState<Set<string>>(new Set());
   const [isBulkCaching, setIsBulkCaching] = useState(false);
   const [bulkProgress, setBulkProgress] = useState({ current: 0, total: 0 });
   const [selectedPreviewId, setSelectedPreviewId] = useState<string | null>(null);
 
-  // Convert curated layout dictionary into complete layout objects
+  // Convert all 73 places into complete layout objects
   const allLayouts = useMemo(() => {
-    return Object.keys(CURATED_LAYOUTS).map((id) => getTempleLayout(id));
+    return PLACES.map((p) => getTempleLayout(p));
+  }, []);
+
+  // Category counts calculated dynamically from PLACES
+  const categoryCounts = useMemo(() => {
+    return {
+      all: PLACES.length,
+      tirumala: PLACES.filter(p => p.category === 'Tirumala Spot' || (p.location && p.location.toLowerCase().includes('tirumala')) || p.id.includes('tirumala')).length,
+      tirupati: PLACES.filter(p => p.category === 'Core Temple' || p.category === 'Tirupati City' || p.category === 'Footsteps').length,
+      kshethram: PLACES.filter(p => p.category === 'Day Trip' || p.category === 'Historical' || p.category === 'Temples' || p.category === 'Hidden Gem').length,
+      nature: PLACES.filter(p => p.category === 'Nature' || p.category === 'Parks & Leisure').length,
+      food: PLACES.filter(p => p.category === 'Food' || p.category === 'Essential Facility').length,
+    };
   }, []);
 
   // Inspect localStorage for cached maps on mount
@@ -65,7 +77,7 @@ export default function OfflineMapsDirectoryPage() {
       }
       setBulkProgress({ current: i + 1, total });
       // Small tick delay for visual smoothness
-      await new Promise(r => setTimeout(r, 40));
+      await new Promise(r => setTimeout(r, 20));
     }
 
     refreshCachedStatus();
@@ -75,33 +87,25 @@ export default function OfflineMapsDirectoryPage() {
   // Filter layouts based on search query and category
   const filteredLayouts = useMemo(() => {
     return allLayouts.filter((layout) => {
+      const place = PLACES.find(p => p.id === layout.placeId);
+      if (!place) return false;
+
       // Category filter
       if (activeCategory === 'tirumala') {
-        const isTirumala = [
-          'venkateswara', 'swami-pushkarini', 'tarigonda-vengamamba-annaprasadam', 
-          'srivari-udyanavanam', 'silathoranam', 'sv-museum', 'srivari-padalu-spot',
-          'japali-hanuman', 'papavinasam', 'akasa-ganga', 'venugopala-swamy-tirumala'
-        ].includes(layout.placeId);
+        const isTirumala = place.category === 'Tirumala Spot' || (place.location && place.location.toLowerCase().includes('tirumala')) || place.id.includes('tirumala');
         if (!isTirumala) return false;
       } else if (activeCategory === 'tirupati') {
-        const isTirupati = [
-          'padmavathi', 'govindaraja', 'kapila-theertham', 'alipiri-mettu',
-          'srivari-mettu', 'kodandarama-temple', 'jeeva-lingeshwara-temple'
-        ].includes(layout.placeId);
+        const isTirupati = place.category === 'Core Temple' || place.category === 'Tirupati City' || place.category === 'Footsteps';
         if (!isTirupati) return false;
       } else if (activeCategory === 'kshethram') {
-        const isKshethram = [
-          'srikalahasti', 'kanipakam', 'srinivasa-mangapuram', 'appalayagunta-temple',
-          'sree-padmagiri-subramanya', 'vakula-matha', 'agastheeshwara', 'narayanavanam',
-          'moolasthana-yellamma-chandragiri', 'bonthalamma-temple', 'mogili-temple',
-          'panchamukha-anjaneya-temple', 'parasareswara-temple-gudimallam'
-        ].includes(layout.placeId);
+        const isKshethram = place.category === 'Day Trip' || place.category === 'Historical' || place.category === 'Temples' || place.category === 'Hidden Gem';
         if (!isKshethram) return false;
       } else if (activeCategory === 'nature') {
-        const isNature = [
-          'chandragiri-fort', 'talakona', 'kailasa-kona', 'horsley-hills'
-        ].includes(layout.placeId) || layout.layoutType === 'hill-waterfall' || layout.layoutType === 'heritage-fort';
+        const isNature = place.category === 'Nature' || place.category === 'Parks & Leisure';
         if (!isNature) return false;
+      } else if (activeCategory === 'food') {
+        const isFood = place.category === 'Food' || place.category === 'Essential Facility';
+        if (!isFood) return false;
       }
 
       // Query filter
@@ -110,7 +114,9 @@ export default function OfflineMapsDirectoryPage() {
       return (
         layout.titleEn.toLowerCase().includes(q) ||
         layout.titleTe.toLowerCase().includes(q) ||
-        layout.placeId.toLowerCase().includes(q)
+        layout.placeId.toLowerCase().includes(q) ||
+        place.name.toLowerCase().includes(q) ||
+        (place.location && place.location.toLowerCase().includes(q))
       );
     });
   }, [allLayouts, searchQuery, activeCategory]);
@@ -161,7 +167,7 @@ export default function OfflineMapsDirectoryPage() {
                 <h4 className={styles.bulkTitle}>
                   {allCached 
                     ? (lang === 'te' ? 'అన్ని మ్యాప్‌లు మీ పరికరంలో సేవ్ చేయబడ్డాయి' : 'All Precinct Maps Pre-Cached in Device')
-                    : (lang === 'te' ? 'ఒకే ట్యాప్‌తో అన్ని మ్యాప్‌లు సేవ్ చేయండి' : 'Pre-Cache All 35+ Precinct Maps in 1-Tap')}
+                    : (lang === 'te' ? `ఒకే ట్యాప్‌తో మొత్తం ${allLayouts.length} మ్యాప్‌లు సేవ్ చేయండి` : `Pre-Cache All ${allLayouts.length} Places in 1-Tap`)}
                 </h4>
                 <p className={styles.bulkDesc}>
                   {lang === 'te'
@@ -226,11 +232,12 @@ export default function OfflineMapsDirectoryPage() {
         {/* Category Tabs */}
         <div className={styles.filterTabs}>
           {[
-            { id: 'all', labelEn: 'All Maps', labelTe: 'అన్ని మ్యాప్‌లు', count: allLayouts.length },
-            { id: 'tirumala', labelEn: 'Tirumala Hill', labelTe: 'తిరుమల కొండపై', count: 11 },
-            { id: 'tirupati', labelEn: 'Tirupati City & Base', labelTe: 'తిరుపతి నగరం', count: 7 },
-            { id: 'kshethram', labelEn: 'Chittoor Kshethrams', labelTe: 'పరిసర క్షేత్రాలు', count: 13 },
-            { id: 'nature', labelEn: 'Waterfalls & Heritage', labelTe: 'జలపాతాలు & కోటలు', count: 4 },
+            { id: 'all', labelEn: 'All Places', labelTe: 'అన్ని ప్రదేశాలు', count: categoryCounts.all },
+            { id: 'tirumala', labelEn: 'Tirumala Hill', labelTe: 'తిరుమల కొండపై', count: categoryCounts.tirumala },
+            { id: 'tirupati', labelEn: 'Tirupati Base', labelTe: 'తిరుపతి నగరం', count: categoryCounts.tirupati },
+            { id: 'kshethram', labelEn: 'Chittoor Kshethrams', labelTe: 'పరిసర క్షేత్రాలు', count: categoryCounts.kshethram },
+            { id: 'nature', labelEn: 'Nature & Parks', labelTe: 'జలపాతాలు & పార్కులు', count: categoryCounts.nature },
+            { id: 'food', labelEn: 'Food & Annaprasadam', labelTe: 'భోజనం & అన్నప్రసాదం', count: categoryCounts.food },
           ].map((tab) => (
             <button
               key={tab.id}

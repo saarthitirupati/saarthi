@@ -116,8 +116,7 @@ export default function OfflineTempleMap({
   isTemple = true,
   coordinates 
 }: OfflineTempleMapProps) {
-  const isCurated = React.useMemo(() => hasCuratedTempleLayout(place || placeId), [place, placeId]);
-  const layout = React.useMemo(() => (isCurated ? getTempleLayout(place || placeId, coordinates) : null), [isCurated, place, placeId, coordinates]);
+  const layout = React.useMemo(() => getTempleLayout(place || placeId, coordinates), [place, placeId, coordinates]);
   const [activePin, setActivePin] = useState<MapPin | null>(null);
   const [isCached, setIsCached] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
@@ -131,16 +130,15 @@ export default function OfflineTempleMap({
 
   // Check LocalStorage cache status
   useEffect(() => {
-    if (!isCurated) return;
     try {
       const cached = localStorage.getItem(`saarthi_offline_map_${placeId}`);
       setIsCached(!!cached);
     } catch {
       // safe fallback
     }
-  }, [isCurated, placeId]);
+  }, [placeId]);
 
-  if (!isCurated || !layout) {
+  if (!layout) {
     return null;
   }
 

@@ -2861,12 +2861,7 @@ const GRAND_PUSHKARINI_TEMPLE_IDS = [
 
 export function hasCuratedTempleLayout(placeInput: string | PlaceInputContext): boolean {
   if (!placeInput) return false;
-  const placeId = typeof placeInput === 'string' ? placeInput.toLowerCase().trim() : (placeInput?.id || '').toLowerCase().trim();
-  if (CURATED_LAYOUTS[placeId]) return true;
-  if (placeId === 'narayanavanam-falls' && CURATED_LAYOUTS['narayanavanam-waterfalls']) return true;
-  if (placeId === 'kailasakona' && CURATED_LAYOUTS['kailasa-kona']) return true;
-  if (placeId === 'moolasthana-yellamma' && CURATED_LAYOUTS['moolasthana-yellamma-chandragiri']) return true;
-  return false;
+  return true;
 }
 
 export function getTempleLayout(placeInput: string | PlaceInputContext, fallbackCoords?: { lat: number; lng: number }): TempleLayoutData {
