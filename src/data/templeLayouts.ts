@@ -2869,123 +2869,136 @@ export function getTempleLayout(placeInput: string | PlaceInputContext, fallback
   const tags = (placeObj?.tags || []).map(t => t.toLowerCase());
   const nameLower = name.toLowerCase();
 
-  // 0. Mamanduru Eco-Tourism & Forest
-  if (
-    placeId.includes('mamanduru') ||
-    nameLower.includes('mamanduru')
-  ) {
-    const curated = CURATED_LAYOUTS['mamanduru-forest']!;
+  // ── 0. DIRECT CURATED LAYOUT RESOLUTION (Highest Accuracy) ──
+  // Check exact placeId or mapped aliases in CURATED_LAYOUTS
+  const curatedKey = 
+    CURATED_LAYOUTS[placeId] ? placeId :
+    placeId === 'narayanavanam-falls' ? 'narayanavanam-waterfalls' :
+    placeId === 'kailasakona' ? 'kailasa-kona' :
+    placeId === 'moolasthana-yellamma' ? 'moolasthana-yellamma-chandragiri' :
+    null;
+
+  if (curatedKey && CURATED_LAYOUTS[curatedKey]) {
+    const curated = CURATED_LAYOUTS[curatedKey]!;
     return {
       placeId,
-      titleEn: `${name} Trail Map`,
-      titleTe: `${name} అటవీ మార్గం`,
-      layoutType: 'geo-nature-park',
-      centerCoordinates: fallbackCoords || { lat: 13.750691, lng: 79.466337 },
-      defaultZoom: 16,
-      compassBearingDeg: 0,
-      sanctumNameEn: curated.sanctumNameEn || 'Seshachalam Forest Trail & Canopy Walk',
-      sanctumNameTe: curated.sanctumNameTe || 'శేషాచలం అటవీ మార్గం & ప్రకృతి విహారం',
-      routePath: curated.routePath || [[430, 290], [270, 275], [160, 190], [270, 100], [380, 140]],
+      titleEn: curated.titleEn || `${name} Precinct Map`,
+      titleTe: curated.titleTe || `${name} ప్రాంగణ మ్యాప్`,
+      layoutType: curated.layoutType || 'city-shrine',
+      centerCoordinates: curated.centerCoordinates || fallbackCoords || { lat: 13.6288, lng: 79.4192 },
+      defaultZoom: curated.defaultZoom || 17,
+      compassBearingDeg: curated.compassBearingDeg || 0,
+      sanctumNameEn: curated.sanctumNameEn || `${name} Center`,
+      sanctumNameTe: curated.sanctumNameTe || `${name} ప్రధాన ప్రదేశం`,
+      routePath: curated.routePath || [],
       pins: (curated.pins as MapPin[]) || [],
       routeSteps: curated.routeSteps || [],
       emergencyContacts: curated.emergencyContacts || []
     };
   }
 
-  // 0.1 Sri Moolasthana Yellamma Temple (Chandragiri)
-  if (
-    placeId.includes('yellamma') ||
-    placeId.includes('moolasthana') ||
-    nameLower.includes('yellamma') ||
-    nameLower.includes('moolasthana')
-  ) {
-    const curated = CURATED_LAYOUTS['moolasthana-yellamma-chandragiri']!;
+  // ── SPECIAL LANDMARKS / GALLERIES / PARKS ──
+
+  // 0.1 Shilparamam Arts & Crafts Village
+  if (placeId.includes('silparamam') || nameLower.includes('shilparamam') || nameLower.includes('silparamam')) {
+    const baseLat = fallbackCoords?.lat || 13.6166;
+    const baseLng = fallbackCoords?.lng || 79.4312;
+    return {
+      placeId,
+      titleEn: `${name} Arts & Crafts Village Map`,
+      titleTe: `${name} శిల్పారామం మ్యాప్`,
+      layoutType: 'shopping-market',
+      centerCoordinates: { lat: baseLat, lng: baseLng },
+      defaultZoom: 16,
+      compassBearingDeg: 0,
+      sanctumNameEn: 'Shilparamam Central Crafts Bazaar & Amphitheater',
+      sanctumNameTe: 'శిల్పారామం హస్తకళల కేంద్రం & యాంఫీథియేటర్',
+      routePath: [[420, 265], [270, 250], [150, 190], [270, 120], [390, 160], [270, 250]],
+      pins: [
+        { id: 'parking', nameEn: 'Visitor Parking Plaza', nameTe: 'సందర్శకుల పార్కింగ్', category: 'parking', lat: baseLat - 0.0010, lng: baseLng + 0.0008, svgX: 420, svgY: 265, descEn: 'Ample parking for cars and tourist buses.', descTe: 'వాహనాల పార్కింగ్ స్థలం.' },
+        { id: 'entry', nameEn: 'Main Entrance Arch & Ticket Counter', nameTe: 'ప్రవేశ ద్వారం & టికెట్ కౌంటర్', category: 'entry', lat: baseLat - 0.0005, lng: baseLng, svgX: 270, svgY: 250, descEn: 'Decorative village arch and entry ticket counter.', descTe: 'శిల్పారామం ప్రధాన ప్రవేశం.' },
+        { id: 'crafts', nameEn: 'Artisan Crafts & Handlooms Stalls', nameTe: 'హస్తకళలు & చేనేత దుకాణాలు', category: 'info', lat: baseLat - 0.0002, lng: baseLng - 0.0006, svgX: 150, svgY: 190, descEn: 'Traditional Kalamkari, woodcarving, and terracotta crafts.', descTe: 'సంప్రదాయ హస్తకళల ప్రదర్శన మరియు విక్రయ శాలలు.' },
+        { id: 'amphitheater', nameEn: 'Open-Air Cultural Amphitheater', nameTe: 'కళావేదిక & యాంఫీథియేటర్', category: 'sanctum', lat: baseLat, lng: baseLng, svgX: 270, svgY: 120, descEn: 'Live Kuchipudi classical dance and folk music performances.', descTe: 'సంస్కృతిక నృత్య, సంగీత ప్రదర్శనల వేదిక.' },
+        { id: 'food-court', nameEn: 'Traditional Food Court & Boating Lake', nameTe: 'ఫుడ్ కోర్ట్ & బోటింగ్ సరస్సు', category: 'food', lat: baseLat + 0.0003, lng: baseLng + 0.0006, svgX: 390, svgY: 160, descEn: 'Authentic Rayalaseema delicacies and recreational paddle boating.', descTe: 'స్థానిక వంటకాలు మరియు బోటింగ్.' }
+      ],
+      routeSteps: [
+        { stepNumber: 1, titleEn: 'Arrival & Parking', titleTe: 'పార్కింగ్', distance: '0.0 km', timeMins: 0, descEn: 'Park vehicle at Shilparamam entrance.', descTe: 'వాహనాన్ని పార్క్ చేయండి.' },
+        { stepNumber: 2, titleEn: 'Entry & Artisan Village Walk', titleTe: 'హస్తకళల వీధి', distance: '50m', timeMins: 15, descEn: 'Explore handcrafted artisan workshops.', descTe: 'చేతివృత్తుల వారి కళాఖండాలను వీక్షించండి.' },
+        { stepNumber: 3, titleEn: 'Cultural Amphitheater & Gardens', titleTe: 'కళావేదిక', distance: '80m', timeMins: 20, descEn: 'Enjoy the central lawns and performance stage.', descTe: 'కళా ప్రదర్శనలను ఆస్వాదించండి.' }
+      ],
+      emergencyContacts: [
+        { titleEn: 'Shilparamam Helpdesk', titleTe: 'శిల్పారామం సమాచార విభాగం', number: '08772264555' },
+        { titleEn: 'Emergency Helpline', titleTe: 'అత్యవసర హెల్ప్‌లైన్', number: '112' }
+      ]
+    };
+  }
+
+  // 0.2 Sri Venkateswara Dhyana Vignan Mandiram & Museum
+  if (placeId.includes('dhyana-vignan') || nameLower.includes('dhyana vignan') || nameLower.includes('dhyanavignan')) {
+    const baseLat = fallbackCoords?.lat || 13.6515;
+    const baseLng = fallbackCoords?.lng || 79.4082;
     return {
       placeId,
       titleEn: `${name} Precinct Map`,
       titleTe: `${name} ప్రాంగణ మ్యాప్`,
-      layoutType: 'ancient-shrine',
-      centerCoordinates: fallbackCoords || { lat: 13.5843325, lng: 79.3158065 },
+      layoutType: 'museum-gallery',
+      centerCoordinates: { lat: baseLat, lng: baseLng },
       defaultZoom: 17,
       compassBearingDeg: 0,
-      sanctumNameEn: curated.sanctumNameEn || 'Sri Moolasthana Yellamma Devi Sanctum',
-      sanctumNameTe: curated.sanctumNameTe || 'శ్రీ మూలస్థాన ఎల్లమ్మ దేవి మూలవిరాట్',
-      routePath: curated.routePath || [[430, 290], [270, 275], [145, 255], [270, 205], [150, 130], [270, 85], [395, 120], [395, 160], [270, 250]],
-      pins: (curated.pins as MapPin[]) || [],
-      routeSteps: curated.routeSteps || [],
-      emergencyContacts: curated.emergencyContacts || []
+      sanctumNameEn: 'Central Meditation & Vedic Philosophy Hall',
+      sanctumNameTe: 'ధ్యాన మందిరం & వేద విజ్ఞాన వేదిక',
+      routePath: [[412, 255], [270, 238], [170, 230], [270, 120], [380, 140]],
+      pins: [
+        { id: 'parking', nameEn: 'Alipiri Road Visitor Parking', nameTe: 'సందర్శకుల పార్కింగ్', category: 'parking', lat: baseLat - 0.0008, lng: baseLng + 0.0006, svgX: 412, svgY: 255, descEn: 'Vehicle parking near Alipiri gateway.', descTe: 'వాహనాల పార్కింగ్ స్థలం.' },
+        { id: 'entry', nameEn: 'Mandiram Entrance & Reception', nameTe: 'ప్రవేశ ద్వారం & రిసెప్షన్', category: 'entry', lat: baseLat - 0.0004, lng: baseLng, svgX: 270, svgY: 238, descEn: 'Welcoming foyer and free entry check.', descTe: 'ప్రవేశ ద్వారం.' },
+        { id: 'exhibits', nameEn: 'Vedic Sculpture & Gita Exhibition', nameTe: 'భగవద్గీత శిల్ప ప్రదర్శన', category: 'info', lat: baseLat - 0.0002, lng: baseLng - 0.0005, svgX: 170, svgY: 230, descEn: 'Vedic philosophical dioramas and sacred art.', descTe: 'వేద మరియు గీతా తాత్విక కళాఖండాలు.' },
+        { id: 'dhyana-hall', nameEn: 'Tranquil Meditation Sanctuary', nameTe: 'ప్రశాంత ధ్యాన మందిరం', category: 'sanctum', lat: baseLat, lng: baseLng, svgX: 270, svgY: 120, descEn: 'Silent air-cooled circular hall for peaceful meditation and Om chanting.', descTe: 'నిశ్శబ్ద ధ్యాన మందిరం.' },
+        { id: 'library', nameEn: 'Spiritual Book Store & Publications', nameTe: 'ఆధ్యాత్మిక గ్రంథాలయం', category: 'info', lat: baseLat + 0.0003, lng: baseLng + 0.0005, svgX: 380, svgY: 140, descEn: 'TTD spiritual books, stotras, and CDs counter.', descTe: 'టిటిడి పుస్తకాల కౌంటర్.' }
+      ],
+      routeSteps: [
+        { stepNumber: 1, titleEn: 'Arrival & Reception', titleTe: 'ప్రవేశం', distance: '0.0 km', timeMins: 0, descEn: 'Enter the peaceful Alipiri premises.', descTe: 'మందిరంలోకి ప్రవేశించండి.' },
+        { stepNumber: 2, titleEn: 'Vedic Dioramas Walk', titleTe: 'ప్రదర్శన శాల', distance: '40m', timeMins: 10, descEn: 'View the sacred Bhagavad Gita exhibits.', descTe: 'తాత్విక శిల్పాలను చూడండి.' },
+        { stepNumber: 3, titleEn: 'Silent Meditation Session', titleTe: 'ధ్యానం', distance: '60m', timeMins: 20, descEn: 'Experience deep peace in the Dhyana hall.', descTe: 'ధ్యానంలో నిమగ్నం అవ్వండి.' }
+      ],
+      emergencyContacts: [
+        { titleEn: 'Dhyana Mandiram Office', titleTe: 'ధ్యాన మందిరం కార్యాలయం', number: '08772264555' },
+        { titleEn: 'Emergency Helpline', titleTe: 'అత్యవసర హెల్ప్‌లైన్', number: '112' }
+      ]
     };
   }
 
-  // 0.2 Chandragiri Fort & Raja Mahal (Heritage Fort)
-  if (
-    (placeId.includes('chandragiri') || nameLower.includes('chandragiri')) &&
-    (placeId.includes('fort') || nameLower.includes('fort') || placeId.includes('mahal') || nameLower.includes('mahal') || placeId.includes('palace') || nameLower.includes('palace') || placeId === 'chandragiri-fort')
-  ) {
-    const curated = CURATED_LAYOUTS['chandragiri-fort']!;
+  // 0.3 Papavinasam & Akasa Ganga Theerthams (Holy Waterfalls / Pushkarini)
+  if (placeId.includes('papavinasam') || placeId.includes('akasaganga')) {
+    const isAkasaGanga = placeId.includes('akasaganga');
+    const baseLat = fallbackCoords?.lat || (isAkasaGanga ? 13.7020 : 13.7225);
+    const baseLng = fallbackCoords?.lng || (isAkasaGanga ? 79.3360 : 79.3390);
     return {
       placeId,
-      titleEn: `${name} Precinct Map`,
-      titleTe: `${name} ప్రాంగణ మ్యాప్`,
-      layoutType: 'heritage-fort',
-      centerCoordinates: fallbackCoords || { lat: 13.6025, lng: 79.3142 },
+      titleEn: `${name} Sacred Theertham Map`,
+      titleTe: `${name} పవిత్ర తీర్థం మ్యాప్`,
+      layoutType: 'sacred-pushkarini',
+      centerCoordinates: { lat: baseLat, lng: baseLng },
       defaultZoom: 17,
       compassBearingDeg: 0,
-      sanctumNameEn: curated.sanctumNameEn || 'Raja Mahal Palace & ASI Museum',
-      sanctumNameTe: curated.sanctumNameTe || 'రాజమహల్ & ఏఎస్ఐ మ్యూజియం',
-      routePath: curated.routePath || [[420, 265], [135, 215], [270, 250], [270, 85], [405, 95], [385, 175], [270, 250]],
-      pins: (curated.pins as MapPin[]) || [],
-      routeSteps: curated.routeSteps || [],
-      emergencyContacts: curated.emergencyContacts || []
-    };
-  }
-
-  // 0.3 Kailasa Kona Falls
-  if (
-    placeId.includes('kailasa-kona') ||
-    placeId.includes('kailasakona') ||
-    nameLower.includes('kailasa kona') ||
-    nameLower.includes('kailasakona')
-  ) {
-    const curated = CURATED_LAYOUTS['kailasa-kona']!;
-    return {
-      placeId,
-      titleEn: `${name} Precinct Map`,
-      titleTe: `${name} ప్రాంగణ మ్యాప్`,
-      layoutType: 'hill-waterfall',
-      centerCoordinates: fallbackCoords || { lat: 13.3882826, lng: 79.6330908 },
-      defaultZoom: 16,
-      compassBearingDeg: 0,
-      sanctumNameEn: curated.sanctumNameEn || 'Kailasanatheswara Holy Kund (Theertham)',
-      sanctumNameTe: curated.sanctumNameTe || 'కైలాసనాథ పవిత్ర తీర్థ కుండం',
-      routePath: curated.routePath || [[420, 265], [135, 215], [270, 250], [270, 135], [270, 70], [385, 95]],
-      pins: (curated.pins as MapPin[]) || [],
-      routeSteps: curated.routeSteps || [],
-      emergencyContacts: curated.emergencyContacts || []
-    };
-  }
-
-  // 0.4 Narayanavanam Waterfalls
-  if (
-    placeId.includes('narayanavanam-waterfall') ||
-    placeId.includes('narayanavanam-fall') ||
-    (placeId.includes('narayanavanam') && (nameLower.includes('waterfall') || nameLower.includes('falls')))
-  ) {
-    const curated = CURATED_LAYOUTS['narayanavanam-waterfalls']!;
-    return {
-      placeId,
-      titleEn: `${name} Precinct Map`,
-      titleTe: `${name} ప్రాంగణ మ్యాప్`,
-      layoutType: 'hill-waterfall',
-      centerCoordinates: fallbackCoords || { lat: 13.4350, lng: 79.6200 },
-      defaultZoom: 16,
-      compassBearingDeg: 0,
-      sanctumNameEn: curated.sanctumNameEn || 'Natural Theertham Pool (Kund)',
-      sanctumNameTe: curated.sanctumNameTe || 'సహజ తీర్థం మరియు కుండం',
-      routePath: curated.routePath || [[420, 265], [135, 215], [270, 250], [270, 135], [270, 70], [385, 95]],
-      pins: (curated.pins as MapPin[]) || [],
-      routeSteps: curated.routeSteps || [],
-      emergencyContacts: curated.emergencyContacts || []
+      sanctumNameEn: `${name} Holy Snana Ghats`,
+      sanctumNameTe: `${name} పవిత్ర స్నాన ఘట్టం`,
+      routePath: [[420, 265], [135, 215], [270, 250], [270, 135], [380, 140]],
+      pins: [
+        { id: 'parking', nameEn: 'Theertham Bus & Taxi Stand', nameTe: 'పార్కింగ్ ప్రదేశం', category: 'parking', lat: baseLat - 0.0010, lng: baseLng + 0.0008, svgX: 420, svgY: 265, descEn: 'Free bus stop and tourist taxi parking bay.', descTe: 'ఉచిత బస్సు స్టాప్ మరియు పార్కింగ్.' },
+        { id: 'footwear', nameEn: 'Footwear & Changing Sheds', nameTe: 'పాదరక్షలు & డ్రెస్సింగ్ గదులు', category: 'footwear', lat: baseLat - 0.0005, lng: baseLng - 0.0004, svgX: 135, svgY: 215, descEn: 'Separate dress changing rooms for men and women.', descTe: 'బట్టలు మార్చుకునే గదులు.' },
+        { id: 'entry', nameEn: 'Ghat Steps Entrance', nameTe: 'తీర్థ ప్రవేశ మెట్లు', category: 'entry', lat: baseLat - 0.0006, lng: baseLng, svgX: 270, svgY: 250, descEn: 'Stone steps leading down to the holy holy water source.', descTe: 'స్నాన ఘట్టం వైపు మెట్లు.' },
+        { id: 'theertham-snanam', nameEn: `${name} Sacred Bathing Kund`, nameTe: `${name} పవిత్ర స్నాన ఘట్టం`, category: 'sanctum', lat: baseLat, lng: baseLng, svgX: 270, svgY: 135, descEn: 'Holy mineral spring waters believed to absolve sins and sanctify the soul.', descTe: 'పాపాలను హరించే దివ్య తీర్థ స్నాన స్థలం.' },
+        { id: 'shrine', nameEn: isAkasaGanga ? 'Sri Anjaneya Devi Sannidhi' : 'Sri Ganga Devi & Shiva Sannidhi', nameTe: 'అమ్మవారి సన్నిధి', category: 'info', lat: baseLat + 0.0003, lng: baseLng + 0.0005, svgX: 380, svgY: 140, descEn: 'Sub-shrine honoring the sacred waters.', descTe: 'పవిత్ర సన్నిధి దర్శనం.' }
+      ],
+      routeSteps: [
+        { stepNumber: 1, titleEn: 'Arrival via TTD Free Bus', titleTe: 'చేరుకోవడం', distance: '0.0 km', timeMins: 0, descEn: 'Arrive at theertham bus terminus.', descTe: 'బస్సు స్టాండ్ వద్ద దిగండి.' },
+        { stepNumber: 2, titleEn: 'Footwear & Steps Descent', titleTe: 'మెట్లు దిగడం', distance: '40m', timeMins: 3, descEn: 'Leave shoes and descend shaded steps.', descTe: 'మెట్లు దిగి స్నాన ఘట్టానికి వెళ్ళండి.' },
+        { stepNumber: 3, titleEn: 'Sacred Theertham Snanam', titleTe: 'తీర్థ స్నానం', distance: '60m', timeMins: 15, descEn: 'Take holy holy water bath.', descTe: 'పవిత్ర తీర్థ స్నానం ఆచరించండి.' }
+      ],
+      emergencyContacts: [
+        { titleEn: 'TTD Theertham Helpdesk', titleTe: 'టిటిడి తీర్థ సమాచార విభాగం', number: '08772264555' },
+        { titleEn: 'Emergency Helpline', titleTe: 'అత్యవసర హెల్ప్‌లైన్', number: '112' }
+      ]
     };
   }
 
@@ -3153,38 +3166,7 @@ export function getTempleLayout(placeInput: string | PlaceInputContext, fallback
     };
   }
 
-  // Check other curated layouts
-  const curatedKey = Object.keys(CURATED_LAYOUTS).find(k => {
-    if (k === 'venkateswara') {
-      return placeId === 'venkateswara' || placeId === 'tirumala' || placeId === 'tirumala-temple' || placeId === 'tirumala-srivari-temple';
-    }
-    return k === placeId || placeId === k || (k.includes('-') && (placeId.includes(k) || k.includes(placeId)));
-  });
-  if (curatedKey && CURATED_LAYOUTS[curatedKey]) {
-    const curated = CURATED_LAYOUTS[curatedKey];
-    return {
-      placeId,
-      titleEn: curated.titleEn || `${name} Precinct Map`,
-      titleTe: curated.titleTe || `${name} ప్రాంగణ మ్యాప్`,
-      layoutType: curated.layoutType || 'grand-temple',
-      centerCoordinates: curated.centerCoordinates || fallbackCoords || { lat: 13.6833, lng: 79.3473 },
-      defaultZoom: curated.defaultZoom || 17,
-      compassBearingDeg: curated.compassBearingDeg || 0,
-      sanctumNameEn: curated.sanctumNameEn || `${name} Sanctum`,
-      sanctumNameTe: curated.sanctumNameTe || `${name} గర్భాలయం`,
-      routePath: curated.routePath || [[430, 290], [270, 275], [145, 255], [270, 205], [150, 130], [270, 85], [395, 120], [395, 160], [270, 250]],
-      pins: (curated.pins as MapPin[]) || [],
-      routeSteps: curated.routeSteps || [
-        { stepNumber: 1, titleEn: 'Arrival & Parking Bay', titleTe: 'పార్కింగ్ చేరుకోవడం', distance: '0.0 km', timeMins: 0, descEn: 'Park vehicle and proceed to the main entrance.', descTe: 'వాహనాన్ని పార్క్ చేయండి.' },
-        { stepNumber: 2, titleEn: 'Entrance & Exploration', titleTe: 'ప్రవేశం & సందర్శన', distance: '50m', timeMins: 2, descEn: 'Walk through the main walkway.', descTe: 'ప్రధాన మార్గం గుండా వెళ్ళండి.' },
-        { stepNumber: 3, titleEn: 'Main Landmark & Blessings', titleTe: 'ప్రధాన కేంద్రం & దర్శనం', distance: '120m', timeMins: 10, descEn: 'Visit key highlights and view points.', descTe: 'కీలక ప్రదేశాలను సందర్శించండి.' }
-      ],
-      emergencyContacts: curated.emergencyContacts || [
-        { titleEn: 'Tourism / Information Desk', titleTe: 'సమాచార విభాగం', number: '08772264555' },
-        { titleEn: 'Emergency Helpline', titleTe: 'అత్యవసర హెల్ప్‌లైన్', number: '112' }
-      ]
-    };
-  }
+
 
   // ── ACCURATE MULTI-CATEGORY ARCHETYPE CLASSIFICATION ──
   let layoutType: TempleLayoutData['layoutType'] = 'city-shrine';
