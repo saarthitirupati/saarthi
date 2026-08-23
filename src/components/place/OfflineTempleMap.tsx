@@ -163,6 +163,11 @@ export default function OfflineTempleMap({
     return layout.routePath.map((pt, i) => `${i === 0 ? 'M' : 'L'} ${pt[0]} ${pt[1]}`).join(' ');
   }, [layout.routePath]);
 
+  // Prettymaps GPS Coordinates formatting
+  const displayLat = coordinates?.lat || place?.coordinates?.lat || layout.centerCoordinates?.lat || 13.6288;
+  const displayLng = coordinates?.lng || place?.coordinates?.lng || layout.centerCoordinates?.lng || 79.4192;
+  const coordString = `${displayLat.toFixed(4)}° N, ${displayLng.toFixed(4)}° E`;
+
   return (
     <div className={styles.container}>
       {/* Header */}
@@ -308,6 +313,10 @@ export default function OfflineTempleMap({
           <rect width="540" height="340" fill="url(#groundGrad)" />
           <rect width="540" height="340" fill="url(#topographyContours)" />
           <rect width="540" height="340" fill="url(#stonePavement)" />
+
+          {/* Prettymaps Signature Concentric Perimeter Rings */}
+          <circle cx="270" cy="170" r="162" fill="none" stroke="rgba(180, 83, 9, 0.12)" strokeWidth="1.5" />
+          <circle cx="270" cy="170" r="166" fill="none" stroke="rgba(180, 83, 9, 0.06)" strokeWidth="0.8" strokeDasharray="3 3" />
 
           {/* ═══════════════════════════════════════════════════
               ARCHITECTURAL BACKDROPS MATCHING SPECIFIC CATEGORIES
@@ -1026,6 +1035,35 @@ export default function OfflineTempleMap({
               </g>
             );
           })}
+
+          {/* ═══════════════════════════════════════════════════
+              PRETTYMAPS MINIMALIST CARTOGRAPHIC GPS FOOTER
+              ═══════════════════════════════════════════════════ */}
+          <g transform="translate(270, 324)">
+            <rect 
+              x="-115" 
+              y="-11" 
+              width="230" 
+              height="20" 
+              rx="10" 
+              fill="rgba(255, 255, 255, 0.94)" 
+              stroke="rgba(180, 83, 9, 0.25)" 
+              strokeWidth="1" 
+              filter="url(#pinShadow)" 
+            />
+            <circle cx="-98" cy="-1" r="3" fill="#D97706" />
+            <text 
+              x="6" 
+              y="2.5" 
+              fontSize="8.5" 
+              fontWeight="800" 
+              textAnchor="middle" 
+              fill="#78350F" 
+              letterSpacing="0.4px"
+            >
+              {coordString} • PRETTYMAPS
+            </text>
+          </g>
         </svg>
       </div>
 
