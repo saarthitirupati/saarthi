@@ -11,7 +11,7 @@ import {
   Compass
 } from 'lucide-react';
 import styles from './OfflineTempleMap.module.css';
-import { getTempleLayout, MapPin } from '@/data/templeLayouts';
+import { getTempleLayout, hasCuratedTempleLayout, MapPin } from '@/data/templeLayouts';
 
 interface OfflineTempleMapProps {
   placeId: string;
@@ -116,27 +116,33 @@ export default function OfflineTempleMap({
   isTemple = true,
   coordinates 
 }: OfflineTempleMapProps) {
-  const layout = React.useMemo(() => getTempleLayout(place || placeId, coordinates), [place, placeId, coordinates]);
-  const [activePin, setActivePin] = useState<MapPin>(layout.pins[0] || null);
+  const isCurated = React.useMemo(() => hasCuratedTempleLayout(place || placeId), [place, placeId]);
+  const layout = React.useMemo(() => (isCurated ? getTempleLayout(place || placeId, coordinates) : null), [isCurated, place, placeId, coordinates]);
+  const [activePin, setActivePin] = useState<MapPin | null>(null);
   const [isCached, setIsCached] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
 
   // Update active pin when layout changes
   useEffect(() => {
-    if (layout.pins && layout.pins.length > 0) {
+    if (layout?.pins && layout.pins.length > 0) {
       setActivePin(layout.pins[0]);
     }
   }, [layout]);
 
   // Check LocalStorage cache status
   useEffect(() => {
+    if (!isCurated) return;
     try {
       const cached = localStorage.getItem(`saarthi_offline_map_${placeId}`);
       setIsCached(!!cached);
     } catch {
       // safe fallback
     }
-  }, [placeId]);
+  }, [isCurated, placeId]);
+
+  if (!isCurated || !layout) {
+    return null;
+  }
 
   // Save for Offline Action
   const handleSaveOffline = () => {
@@ -518,6 +524,56 @@ export default function OfflineTempleMap({
               {/* Park Entrance Arch */}
               <rect x="220" y="262" width="100" height="28" rx="6" fill="#15803D" stroke="#14532D" strokeWidth="1.5" />
             </g>
+          ) : layout.layoutType === 'hilltop-peak' ? (
+            /* 3B. MOUNTAIN SUMMIT & DIVINE FOOTPRINTS SHRINE (Srivari Paadaalu, Narayanagiri Peak) */
+            <g>
+              {/* Mountain Summit Base Contour */}
+              <rect x="40" y="30" width="460" height="270" rx="16" fill="#FFFDF8" stroke="#D97706" strokeWidth="2" strokeDasharray="8 3" />
+              
+              {/* Summit Plateau Topography Contours */}
+              <ellipse cx="270" cy="120" rx="190" ry="85" fill="#FEF9C3" stroke="#F59E0B" strokeWidth="1.2" opacity="0.6" />
+              <ellipse cx="270" cy="105" rx="130" ry="60" fill="#FEF3C7" stroke="#D97706" strokeWidth="1.5" />
+              
+              {/* Mountain Peak Ridge Lines */}
+              <path d="M 60 160 Q 150 110 270 85 Q 390 110 480 160" fill="none" stroke="#E2D9C8" strokeWidth="2" strokeDasharray="6 3" />
+              
+              {/* Stone Steps Ascent Walkway */}
+              <path d="M 270 270 L 270 170 Q 270 135 270 100" fill="none" stroke="#CBD5E1" strokeWidth="22" strokeLinecap="round" />
+              <path d="M 270 270 L 270 170 Q 270 135 270 100" fill="none" stroke="#94A3B8" strokeWidth="14" strokeDasharray="4 4" />
+
+              {/* Sri Padala Mandapam (Sacred Divine Footprints Sanctum) */}
+              <g transform="translate(225, 45)">
+                <circle cx="45" cy="45" r="46" fill="url(#sanctumGlow)" />
+                <rect x="8" y="10" width="74" height="66" rx="8" fill="#FEF3C7" stroke="#D97706" strokeWidth="2" />
+                <polygon points="45,12 18,55 72,55" fill="url(#goldVimana)" stroke="#92400E" strokeWidth="1.5" />
+                
+                {/* Sacred Divine Footprints (Two Paadaalu with Shankha-Chakra) */}
+                <ellipse cx="38" cy="45" rx="4.5" ry="8" fill="#78350F" />
+                <ellipse cx="52" cy="45" rx="4.5" ry="8" fill="#78350F" />
+                <circle cx="38" cy="35" r="1.5" fill="#F59E0B" />
+                <circle cx="52" cy="35" r="1.5" fill="#F59E0B" />
+              </g>
+
+              {/* 360° Seshachalam Mountain Viewpoint Deck (North-West) */}
+              <g transform="translate(100, 95)">
+                <rect x="0" y="0" width="85" height="50" rx="8" fill="#DCFCE7" stroke="#16A34A" strokeWidth="1.5" />
+                {/* Observation Deck Railing & Telescope */}
+                <circle cx="42" cy="25" r="12" fill="#BBF7D0" stroke="#15803D" strokeWidth="1" />
+                <line x1="32" y1="25" x2="52" y2="25" stroke="#15803D" strokeWidth="2" />
+              </g>
+
+              {/* Harathi & Theertham Counter Pavilion (North-East) */}
+              <rect x="355" y="130" width="75" height="42" rx="8" fill="#FEF9C3" stroke="#CA8A04" strokeWidth="1.5" />
+
+              {/* Footwear Stand (South-West) */}
+              <rect x="95" y="235" width="85" height="34" rx="6" fill="#F1F5F9" stroke="#64748B" strokeWidth="1.2" />
+
+              {/* Hilltop Peak Entrance Arch (South) */}
+              <g transform="translate(225, 260)">
+                <rect x="0" y="0" width="90" height="26" rx="6" fill="#D97706" stroke="#78350F" strokeWidth="2" />
+                <polygon points="45,-8 15,0 75,0" fill="#B45309" stroke="#78350F" strokeWidth="1.2" />
+              </g>
+            </g>
           ) : layout.layoutType === 'city-shrine' ? (
             /* 2. CITY & VILLAGE SHRINE (Sri Jagannatha, Veshalamma, Gangamma, Bedi Anjaneya) */
             <g>
@@ -552,13 +608,8 @@ export default function OfflineTempleMap({
               {/* Kumkum & Prasadam Counter Pavilion (Eastern Courtyard) */}
               <rect x="355" y="138" width="80" height="44" rx="6" fill="#FEF9C3" stroke="#CA8A04" strokeWidth="1.5" />
 
-              {/* Footwear Stand (Western Entrance Side) */}
-              <rect x="95" y="200" width="85" height="34" rx="6" fill="#F1F5F9" stroke="#64748B" strokeWidth="1.2" />
-
-              {/* Parking Plaza (South-East Outside Courtyard) */}
-              <g transform="translate(365, 248)">
-                <rect x="0" y="0" width="95" height="34" rx="8" fill="#F3E8FF" stroke="#9333EA" strokeWidth="1.5" />
-              </g>
+              {/* Footwear Stand (South-East Entrance Side) */}
+              <rect x="340" y="248" width="80" height="30" rx="6" fill="#F1F5F9" stroke="#64748B" strokeWidth="1.2" />
 
               {/* Entrance Gopuram Arch */}
               <g transform="translate(225, 252)">
@@ -651,8 +702,8 @@ export default function OfflineTempleMap({
               {/* Prasadam & Vibhuti Counter (North-East) */}
               <rect x="365" y="130" width="70" height="40" rx="6" fill="#FEF9C3" stroke="#CA8A04" strokeWidth="1.5" />
 
-              {/* Footwear Stand (South-West) */}
-              <rect x="105" y="232" width="75" height="32" rx="6" fill="#F1F5F9" stroke="#64748B" strokeWidth="1.2" />
+              {/* Footwear Stand (South-East) */}
+              <rect x="340" y="248" width="80" height="30" rx="6" fill="#F1F5F9" stroke="#64748B" strokeWidth="1.2" />
 
               {/* Entrance Gopuram / Archway (South) */}
               <g transform="translate(225, 258)">
@@ -899,62 +950,67 @@ export default function OfflineTempleMap({
             const px = Math.max(50, Math.min(490, rawPx));
             const py = Math.max(35, Math.min(300, rawPy));
 
-            const label = lang === 'te' 
-              ? (pin.nameTe.length > 14 ? pin.nameTe.split(' ')[0] : pin.nameTe)
-              : (pin.category === 'sanctum' ? (
-                  layout.layoutType === 'dam-reservoir' ? 'Reservoir Lake' :
-                  layout.layoutType === 'botanical-garden' ? 'Flower Nursery' :
-                  layout.layoutType === 'sacred-pushkarini' ? 'Holy Tank' :
-                  layout.layoutType === 'geo-nature-park' ? 'Rock Arch' :
-                  layout.layoutType === 'shopping-market' ? 'Main Bazaar' :
-                  layout.layoutType === 'dining-restaurant' ? 'Dining Hall' :
-                  layout.layoutType === 'museum-gallery' ? 'Exhibits' :
-                  layout.layoutType === 'trek-trail' ? 'Summit' :
-                  layout.layoutType === 'hill-waterfall' ? 'Theertham Pool' :
-                  layout.layoutType === 'heritage-fort' ? 'Raja Mahal' : 'Sanctum'
-                ) :
-                 pin.category === 'entry' ? (layout.layoutType === 'dam-reservoir' ? 'Dam Bund' : (layout.layoutType === 'heritage-fort' ? 'Fort Gate' : (layout.layoutType === 'hill-waterfall' || layout.layoutType === 'geo-nature-park' ? 'Trailhead' : 'Entrance'))) :
-                 pin.category === 'queue' ? (layout.layoutType === 'annaprasadam-complex' ? 'Holding Hall' : 'Queue') :
-                 pin.category === 'laddu' ? (layout.layoutType === 'city-shrine' ? 'Prasadam' : 'Prasadam') :
-                 pin.category === 'footwear' ? (layout.layoutType === 'sacred-pushkarini' ? 'Footwear' : (layout.layoutType === 'hill-waterfall' ? 'Rest Shelter' : 'Footwear')) :
-                 pin.category === 'food' ? (layout.layoutType === 'annaprasadam-complex' ? 'Dining Halls' : (layout.layoutType === 'shopping-market' ? 'Street Food' : 'Food / Dining')) :
-                 pin.category === 'parking' ? 'Parking' :
-                 pin.category === 'medical' ? 'Medical' :
-                 pin.category === 'safari' ? 'Safari' :
-                 pin.id.includes('falls') || pin.id.includes('waterfall') ? 'Main Falls' :
-                 pin.id.includes('pool') || pin.id.includes('kund') ? 'Theertham Pool' :
-                 pin.id.includes('shelter') || pin.id.includes('changing') ? 'Rest Shelter' :
-                 pin.id.includes('raja') || pin.id.includes('palace') ? 'Raja Mahal' :
-                 pin.id.includes('rani') ? 'Rani Mahal' :
-                 pin.id.includes('sound') || pin.id.includes('laser') ? 'Sound Show' :
-                 pin.id.includes('cloakroom') || pin.id.includes('locker') ? 'Cloakroom' :
-                 pin.id.includes('museum') ? 'Museum' :
-                 pin.id.includes('spillway') || pin.id.includes('siphon') || pin.id.includes('barrage') ? 'Spillway' :
-                 pin.id.includes('view') || pin.id.includes('hills') || pin.id.includes('panoramic') ? 'Viewpoint' :
-                 pin.id.includes('dhwaja') ? 'Dhwajasthambham' :
-                 pin.id.includes('pushkarini') || pin.id.includes('sarovar') || pin.id.includes('tank') || pin.id.includes('kalyani') ? 'Pushkarini' :
-                 pin.id.includes('shrine') || pin.id.includes('shiva') || pin.id.includes('sub') || pin.id.includes('varaha') || pin.id.includes('padmavathi') || pin.id.includes('anandavalli') || pin.id.includes('anjaneya') || pin.id.includes('ranganatha') || pin.id.includes('krishna') || pin.id.includes('sundararaja') || pin.id.includes('kamakshi') || pin.id.includes('manikantheswara') ? 'Sub-Shrine' :
-                 pin.id.includes('sangam') || pin.id.includes('ghat') ? 'River Ghats' :
-                 pin.id.includes('view') || pin.id.includes('hills') || pin.id.includes('panoramic') ? 'Viewpoint' :
-                 pin.id.includes('topiary') ? 'Topiary Walk' :
-                 pin.id.includes('garland') ? 'Garland Pavilion' :
-                 pin.id.includes('kitchen') ? 'Mega Kitchen' :
-                 pin.id.includes('donor') ? 'Donor Desk' :
-                 pin.id.includes('way') ? 'Temple Walkway' :
-                 pin.id.includes('token') ? 'Token Counter' :
-                 pin.id.includes('rest') || pin.id.includes('mandapam') || pin.id.includes('midpoint') ? 'Rest Mandapam' :
-                 pin.id.includes('yantra') || pin.id.includes('peetham') ? 'Yantra Peetham' :
-                 pin.id.includes('inscription') ? 'Inscriptions' :
-                 layout.layoutType === 'ancient-shrine' ? 'Courtyard' :
-                 layout.layoutType === 'botanical-garden' ? 'Gardens' :
-                 layout.layoutType === 'trek-trail' ? 'Waypoint' :
-                 layout.layoutType === 'hill-waterfall' ? 'Viewpoint' :
-                 layout.layoutType === 'shopping-market' ? 'Textiles' :
-                 layout.layoutType === 'museum-gallery' ? 'Pavilion' :
-                 layout.layoutType === 'wildlife-safari' ? 'Aviary' :
-                 layout.layoutType === 'heritage-fort' ? 'Palace' :
-                 layout.layoutType === 'city-shrine' ? 'Dhwajasthambham' : 'Courtyard');
+            const getBadgeLabel = (p: MapPin): string => {
+              if (lang === 'te') {
+                if (p.category === 'sanctum') return 'గర్భాలయం';
+                if (p.category === 'entry') return 'ప్రవేశం';
+                if (p.category === 'footwear') return 'పాదరక్షలు';
+                if (p.category === 'parking') return 'పార్కింగ్';
+                if (p.category === 'laddu') return 'ప్రసాదం';
+                if (p.category === 'queue') return 'క్యూ లైన్';
+                if (p.id.includes('dhwaja')) return 'ధ్వజస్తంభం';
+                if (p.id.includes('pushkarini') || p.id.includes('tank')) return 'పుష్కరిణి';
+                if (p.id.includes('theertham') || p.id.includes('kund')) return 'తీర్థం';
+                if (p.id.includes('anjaneya') || p.id.includes('hanuman')) return 'ఆంజనేయ సన్నిధి';
+                if (p.id.includes('padmavathi') || p.id.includes('ammavaru')) return 'అమ్మవారి సన్నిధి';
+                if (p.id.includes('ranganatha')) return 'రంగనాథ సన్నిధి';
+                if (p.id.includes('sundararaja')) return 'సుందరరాజ సన్నిధి';
+                if (p.id.includes('andal') || p.id.includes('godadevi')) return 'ఆండాళ్ సన్నిధి';
+                if (p.id.includes('shiva') || p.id.includes('linga')) return 'శివ సన్నిధి';
+                if (p.id.includes('vinayaka') || p.id.includes('ganesha')) return 'వినాయక సన్నిధి';
+                if (!p.nameTe) return 'విభాగం';
+                const cleanTe = p.nameTe.split('(')[0].split(' - ')[0].trim();
+                const wordsTe = cleanTe.split(' ');
+                return wordsTe.length > 2 ? wordsTe.slice(0, 2).join(' ') : cleanTe;
+              }
+              if (p.category === 'sanctum') return 'Sanctum';
+              if (p.category === 'entry') return 'Entrance';
+              if (p.category === 'footwear') return 'Footwear';
+              if (p.category === 'parking') return 'Parking';
+              if (p.category === 'laddu') return 'Prasadam';
+              if (p.category === 'queue') return 'Queue Line';
+              if (p.category === 'medical') return 'Medical / Clinic';
+              if (p.category === 'safari') return 'Safari Station';
+              if (p.id.includes('neem') || p.id.includes('tree') || p.id.includes('vriksha')) return 'Sacred Tree';
+              if (p.id.includes('dhwaja')) return 'Dhwajasthambham';
+              if (p.id.includes('pushkarini') || p.id.includes('tank')) return 'Pushkarini';
+              if (p.id.includes('falls') || p.id.includes('waterfall')) return 'Waterfalls';
+              if (p.id.includes('pool') || p.id.includes('kund') || p.id.includes('theertham')) return 'Theertham';
+              if (p.id.includes('view') || p.id.includes('deck') || p.id.includes('panoramic')) return 'Viewpoint';
+              if (p.id.includes('anjaneya') || p.id.includes('hanuman')) return 'Anjaneya Shrine';
+              if (p.id.includes('padmavathi') || p.id.includes('thayar') || p.id.includes('ammavaru')) return 'Padmavathi Shrine';
+              if (p.id.includes('ranganatha')) return 'Ranganatha Shrine';
+              if (p.id.includes('sundararaja')) return 'Sundararaja Shrine';
+              if (p.id.includes('andal') || p.id.includes('godadevi')) return 'Andal Shrine';
+              if (p.id.includes('garuda')) return 'Garuda Shrine';
+              if (p.id.includes('narasimha')) return 'Narasimha Shrine';
+              if (p.id.includes('subramanya') || p.id.includes('murugan')) return 'Subramanya Shrine';
+              if (p.id.includes('shiva') || p.id.includes('linga')) return 'Shiva Sannidhi';
+              if (p.id.includes('vinayaka') || p.id.includes('ganesha')) return 'Vinayaka Shrine';
+              if (p.id.includes('hall') || p.id.includes('mandapam')) return 'Mandapam';
+              if (p.category === 'food') {
+                const nameLower = (p.nameEn || '').toLowerCase();
+                if (nameLower.includes('anna') || nameLower.includes('meal') || nameLower.includes('dining')) return 'Annaprasadam';
+                if (nameLower.includes('prasadam') || nameLower.includes('theertham')) return 'Prasadam';
+                return 'Refreshments';
+              }
+              if (!p.nameEn) return 'Point';
+              const cleanEn = p.nameEn.split('(')[0].split('&')[0].split(' - ')[0].trim();
+              const wordsEn = cleanEn.split(' ');
+              return wordsEn.length > 2 ? wordsEn.slice(0, 2).join(' ') : cleanEn;
+            };
 
+            const label = getBadgeLabel(pin);
             const badgeWidth = Math.max(78, Math.min(130, label.length * 6.5 + 32));
             const badgeX = -badgeWidth / 2;
 
@@ -1061,7 +1117,7 @@ export default function OfflineTempleMap({
               fill="#78350F" 
               letterSpacing="0.4px"
             >
-              {coordString} • PRETTYMAPS
+              {coordString} • GPS Waypoint
             </text>
           </g>
         </svg>

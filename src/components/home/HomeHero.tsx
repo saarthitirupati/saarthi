@@ -10,6 +10,7 @@ import { detectCoordinates, isCoordinateOnTirumalaHill } from '@/lib/location';
 import { playTempleBellChime } from '@/lib/audioBell';
 import { getPanchangamData } from '@/lib/panchangam';
 import { getDayTempleGuidance } from '@/lib/dailyGuidance';
+import { LocationPickerModal, LocationPill } from '@/components/common/LocationPickerModal';
 
 const TEXTS: Record<string, any> = {
   en: {
@@ -661,26 +662,10 @@ export function HomeHero({ userName, locationName, weatherTemp, liveStatus, acti
 
             {/* Right — Location Badge & Notification Bell */}
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-              <div 
-                onClick={() => setIsLocationModalOpen(true)}
-                style={{
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  gap: '4px',
-                  backgroundColor: '#FEF3C7',
-                  border: '1px solid #FDE68A',
-                  color: '#B45309',
-                  padding: '4px 10px',
-                  borderRadius: '16px',
-                  fontSize: '12px',
-                  fontWeight: 700,
-                  cursor: 'pointer'
-                }}
-              >
-                <MapPin size={12} color="#B45309" />
-                <span>{selectedLocation}</span>
-                <ChevronDown size={11} style={{ opacity: 0.7 }} />
-              </div>
+              <LocationPill 
+                locationName={selectedLocation} 
+                onClick={() => setIsLocationModalOpen(true)} 
+              />
 
               <Link href="/alerts" aria-label="Notifications" style={{
                 width: '36px', height: '36px', flexShrink: 0,
@@ -708,103 +693,13 @@ export function HomeHero({ userName, locationName, weatherTemp, liveStatus, acti
             </div>
           </div>
 
-          {/* DYNAMIC REGION SELECTOR MODAL */}
-          {isLocationModalOpen && (
-            <div style={{
-              position: 'fixed',
-              top: 0, left: 0, right: 0, bottom: 0,
-              backgroundColor: 'rgba(15, 23, 42, 0.65)',
-              backdropFilter: 'blur(6px)',
-              zIndex: 9999,
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              padding: '16px'
-            }}>
-              <div style={{
-                background: '#FFFFFF',
-                borderRadius: '24px',
-                width: '100%',
-                maxWidth: '380px',
-                padding: '20px',
-                boxShadow: '0 20px 40px rgba(0,0,0,0.25)',
-                animation: 'fadeIn 0.2s ease-out'
-              }}>
-                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '16px' }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                    <MapPin size={18} color="#0F5132" />
-                    <h3 style={{ fontSize: '17px', fontWeight: 800, color: '#0F172A', margin: 0 }}>Select Active Region</h3>
-                  </div>
-                  <button 
-                    onClick={() => setIsLocationModalOpen(false)}
-                    style={{ background: '#F1F5F9', border: 'none', borderRadius: '50%', width: '28px', height: '28px', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
-                  >
-                    ✕
-                  </button>
-                </div>
-
-                <button
-                  onClick={handleAutoDetectLocation}
-                  disabled={isLocating}
-                  style={{
-                    width: '100%',
-                    padding: '12px 14px',
-                    borderRadius: '16px',
-                    background: '#ECFDF5',
-                    border: '1.5px solid #A7F3D0',
-                    color: '#047857',
-                    fontWeight: 800,
-                    fontSize: '13.5px',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    gap: '8px',
-                    cursor: 'pointer',
-                    marginBottom: '14px',
-                    transition: 'all 0.2s'
-                  }}
-                >
-                  <Navigation size={16} className={isLocating ? 'animate-spin' : ''} />
-                  <span>{isLocating ? 'Acquiring GPS...' : 'Auto-Detect Live GPS Location'}</span>
-                </button>
-
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                  {[
-                    { id: 'Tirupati', label: 'Tirupati City & Foothills', sub: 'Alipiri, Railway Station, Bus Stand' },
-                    { id: 'Tirumala', label: 'Tirumala Hill', sub: 'Sanctum, Mada Streets, Ghat Top' },
-                    { id: 'Renigunta', label: 'Renigunta & Suburbs', sub: 'Airport, Railway Junction' }
-                  ].map((reg) => (
-                    <div
-                      key={reg.id}
-                      onClick={() => {
-                        setSelectedLocation(reg.id);
-                        if (typeof window !== 'undefined') localStorage.setItem('saarthi_user_region', reg.id);
-                        setIsLocationModalOpen(false);
-                      }}
-                      style={{
-                        padding: '12px 14px',
-                        borderRadius: '14px',
-                        border: selectedLocation === reg.id ? '2px solid #0F5132' : '1px solid #E2E8F0',
-                        background: selectedLocation === reg.id ? '#F0FDF4' : '#FAFAFA',
-                        cursor: 'pointer',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'space-between'
-                      }}
-                    >
-                      <div>
-                        <p style={{ fontSize: '13.5px', fontWeight: 800, color: '#0F172A', margin: 0 }}>{reg.label}</p>
-                        <p style={{ fontSize: '11.5px', color: '#64748B', margin: '2px 0 0 0', fontWeight: 500 }}>{reg.sub}</p>
-                      </div>
-                      {selectedLocation === reg.id && (
-                        <div style={{ width: '20px', height: '20px', borderRadius: '50%', background: '#0F5132', color: '#FFFFFF', fontSize: '12px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 800 }}>✓</div>
-                      )}
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-          )}
+          {/* DYNAMIC REGION / STARTING LOCATION SELECTOR MODAL */}
+          <LocationPickerModal
+            isOpen={isLocationModalOpen}
+            onClose={() => setIsLocationModalOpen(false)}
+            selectedLocationName={selectedLocation}
+            onSelectLocation={(name) => setSelectedLocation(name)}
+          />
 
           {/* Refined golden accent line */}
           <div style={{
@@ -1023,6 +918,7 @@ export function HomeHero({ userName, locationName, weatherTemp, liveStatus, acti
             const queueCards = [
               {
                 id: 'sarva',
+                href: '/darshan/sarva-darshan',
                 icon: <Users size={16} color={sarvaStatus.color} />,
                 title: lang === 'te' ? 'సర్వదర్శనం' : 'Sarva Darshan',
                 subtitle: lang === 'te' ? 'ఉచిత సాధారణ దర్శనం' : 'Free General Queue',
@@ -1032,6 +928,7 @@ export function HomeHero({ userName, locationName, weatherTemp, liveStatus, acti
               },
               {
                 id: 'special',
+                href: '/darshan/special-entry',
                 icon: <Zap size={16} color={specialStatus.color} />,
                 title: lang === 'te' ? '₹300 ప్రత్యేక ప్రవేశం' : '₹300 Special Entry',
                 subtitle: lang === 'te' ? 'ఆన్‌లైన్ బుకింగ్ స్లాట్' : 'Online Booked Slot',
@@ -1041,6 +938,7 @@ export function HomeHero({ userName, locationName, weatherTemp, liveStatus, acti
               },
               {
                 id: 'ssd',
+                href: '/darshan/ssd-token',
                 icon: <Ticket size={16} color={resolvedSsdStatus.color} />,
                 title: lang === 'te' ? 'SSD టోకెన్ దర్శనం' : 'SSD Token Darshan',
                 subtitle: lang === 'te' ? 'ఉచిత సమయ స్లాట్ టోకెన్లు' : 'Time-Slotted Free Darshan',
@@ -1051,8 +949,9 @@ export function HomeHero({ userName, locationName, weatherTemp, liveStatus, acti
             ];
 
             return queueCards.map((card) => (
-              <div
+              <Link
                 key={card.id}
+                href={card.href}
                 style={{
                   background: card.bg,
                   border: '1.5px solid #0F172A',
@@ -1065,8 +964,13 @@ export function HomeHero({ userName, locationName, weatherTemp, liveStatus, acti
                   minHeight: '54px',
                   boxShadow: '0 4px 12px rgba(15, 23, 42, 0.06)',
                   position: 'relative',
-                  overflow: 'hidden'
+                  overflow: 'hidden',
+                  textDecoration: 'none',
+                  color: 'inherit',
+                  cursor: 'pointer',
+                  transition: 'transform 0.18s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.18s ease'
                 }}
+                className="darshan-home-card"
               >
                 {/* Left Info with Icon Accent */}
                 <div style={{ display: 'flex', alignItems: 'center', gap: '12px', position: 'relative', zIndex: 2 }}>
@@ -1140,7 +1044,7 @@ export function HomeHero({ userName, locationName, weatherTemp, liveStatus, acti
                     </span>
                   </div>
                 </div>
-              </div>
+              </Link>
             ));
 
           })()}

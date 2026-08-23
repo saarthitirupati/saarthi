@@ -1,10 +1,10 @@
 {
-  "waitTime": "24-27 hours",
+  "waitTime": "8 Hours ",
   "bestTime": "",
   "crowdLevel": "high",
   "sevaStatus": "All sevas open",
   "notice": "",
-  "lastUpdated": "2026-08-19T06:48:00.000Z",
+  "lastUpdated": "2026-08-23T02:50:57.665+00:00",
   "darshanSpeed": "normal",
   "accommodationStatus": "available",
   "ladduAvailability": "available",
@@ -12,17 +12,17 @@
   "darshans": [
     {
       "name": "Sarva Darshan (Free)",
-      "waitTime": "24-27 hours",
+      "waitTime": "8 Hours ",
       "peakHours": "Daily 10 AM - 6 PM"
     },
     {
       "name": "Special Entry (₹300)",
-      "waitTime": "2 hours",
+      "waitTime": "3 - 5 Hours ",
       "peakHours": "Daily 9 AM - 3 PM"
     },
     {
       "name": "Divya Darshan (Footpath)",
-      "waitTime": "3-7  hours",
+      "waitTime": "4-6  Hours ",
       "peakHours": "Daily 8 AM - 4 PM"
     },
     {
@@ -32,7 +32,7 @@
     }
   ],
   "ssdTokenStatus": "closed-for-day",
-  "ssdNextTokenTime": "No SSD tokens issued today",
+  "ssdNextTokenTime": "12:05 AM",
   "ssdTokenSlots": [
     {
       "slotTime": "5:00 AM - 7:00 AM",
@@ -66,7 +66,7 @@
     }
   ],
   "ssdNotice": "",
-  "ssdTimingsGuide": "Due to heavy rush, TTD has cancelled the issuance of Wednesday SSD tokens. Consequently, there will be no Slotted Sarva Darshan (SSD) on Thursday. However, SSD tokens for Friday's Darshan will be issued on Thursday.",
+  "ssdTimingsGuide": "\n*🔹 SSD Tokens – Current Status*\n Quota Completed @ 1:35 AM\n*🔹 Srivari Mettu Divya Darshan Tokens* Quota Completed @ 2:09 AM",
   "ssdCounters": [
     {
       "name": "Vishnu Nivasam Counter",

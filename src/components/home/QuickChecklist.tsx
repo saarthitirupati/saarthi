@@ -1,5 +1,6 @@
 import React from 'react';
-import { Clock, MapPin, Ticket, Flag, CheckCircle2, ArrowRight, Circle, Compass } from 'lucide-react';
+import Link from 'next/link';
+import { Clock, MapPin, Ticket, Flag, CheckCircle2, ArrowRight, Circle, Compass, ChevronRight } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useLanguage } from '@/lib/useLanguage';
 
@@ -44,14 +45,19 @@ export function QuickChecklist(props: any) {
           SSD TOKEN CARD (SOFT ELEVATION, HARMONIOUS TOKENS)
           ═══════════════════════════════════════════════════ */}
       <div style={{ padding: '0 14px 2px 14px' }}>
-        <div
+        <Link
+          href="/darshan/ssd-token"
           style={{
+            display: 'block',
+            textDecoration: 'none',
+            color: 'inherit',
             background: '#FFFFFF',
             border: '1px solid rgba(15, 23, 42, 0.08)',
             borderRadius: '18px',
             padding: '14px 14px',
             boxShadow: '0 6px 20px -4px rgba(15, 23, 42, 0.04), 0 2px 6px rgba(15, 23, 42, 0.02)',
-            fontFamily: 'var(--font-sans, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Inter, sans-serif)'
+            fontFamily: 'var(--font-sans, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Inter, sans-serif)',
+            transition: 'transform 0.15s ease, box-shadow 0.15s ease'
           }}
         >
           {/* Header row */}
@@ -62,17 +68,20 @@ export function QuickChecklist(props: any) {
               </div>
               <span style={{ fontSize: '13px', fontWeight: 800, color: '#0F172A' }}>{t.ssdStatus}</span>
             </div>
-            <span style={{
-              fontSize: '10.5px',
-              fontWeight: 800,
-              padding: '3px 10px',
-              borderRadius: '16px',
-              background: liveStatus.ssdTokenStatus === 'issuing' ? '#DCFCE7' : liveStatus.ssdTokenStatus === 'paused' ? '#FEF3C7' : '#FEE2E2',
-              color: liveStatus.ssdTokenStatus === 'issuing' ? '#166534' : liveStatus.ssdTokenStatus === 'paused' ? '#B45309' : '#DC2626',
-              border: `1px solid ${liveStatus.ssdTokenStatus === 'issuing' ? '#86EFAC' : liveStatus.ssdTokenStatus === 'paused' ? '#FDE68A' : '#FECACA'}`
-            }}>
-              {liveStatus.ssdTokenStatus === 'issuing' ? t.issuingNow : liveStatus.ssdTokenStatus === 'paused' ? t.paused : t.closed}
-            </span>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+              <span style={{
+                fontSize: '10.5px',
+                fontWeight: 800,
+                padding: '3px 10px',
+                borderRadius: '16px',
+                background: liveStatus.ssdTokenStatus === 'issuing' ? '#DCFCE7' : liveStatus.ssdTokenStatus === 'paused' ? '#FEF3C7' : '#FEE2E2',
+                color: liveStatus.ssdTokenStatus === 'issuing' ? '#166534' : liveStatus.ssdTokenStatus === 'paused' ? '#B45309' : '#DC2626',
+                border: `1px solid ${liveStatus.ssdTokenStatus === 'issuing' ? '#86EFAC' : liveStatus.ssdTokenStatus === 'paused' ? '#FDE68A' : '#FECACA'}`
+              }}>
+                {liveStatus.ssdTokenStatus === 'issuing' ? t.issuingNow : liveStatus.ssdTokenStatus === 'paused' ? t.paused : t.closed}
+              </span>
+              <ChevronRight size={14} color="#94A3B8" />
+            </div>
           </div>
 
           {/* DYNAMIC ISSUING TIME BOX */}
@@ -173,7 +182,7 @@ export function QuickChecklist(props: any) {
               </span>
             </div>
           )}
-        </div>
+        </Link>
       </div>
     </>
   );

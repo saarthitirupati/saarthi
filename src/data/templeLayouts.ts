@@ -161,7 +161,7 @@ export const CURATED_LAYOUTS: Record<string, Partial<TempleLayoutData>> = {
     titleTe: 'శ్రీ పద్మావతి అమ్మవారి ఆలయం (తిరుచానూరు) ప్రాంగణ మ్యాప్',
     layoutType: 'grand-temple',
     centerCoordinates: { lat: 13.6068, lng: 79.4475 },
-    routePath: [[430, 290], [270, 275], [145, 255], [270, 205], [150, 130], [270, 90], [412, 105], [370, 190], [270, 275]],
+    routePath: [[430, 290], [375, 265], [270, 275], [270, 195], [150, 130], [270, 90], [412, 105], [370, 190], [430, 290]],
     pins: [
       {
         id: 'parking',
@@ -176,6 +176,18 @@ export const CURATED_LAYOUTS: Record<string, Partial<TempleLayoutData>> = {
         descTe: 'వాహనాల పార్కింగ్ స్థలం.'
       },
       {
+        id: 'footwear',
+        nameEn: 'Free Footwear & Baggage Counter',
+        nameTe: 'ఉచిత పాదరక్షల & లగేజ్ కేంద్రం',
+        category: 'footwear',
+        lat: 13.6064,
+        lng: 79.4468,
+        svgX: 375,
+        svgY: 265,
+        descEn: 'Safe custody token counter for shoes and phones.',
+        descTe: 'చెప్పులు భద్రపరిచే కేంద్రం.'
+      },
+      {
         id: 'entry',
         nameEn: 'Eastern Raja Gopuram Main Entrance',
         nameTe: 'తూర్పు రాజగోపురం ప్రధాన ప్రవేశం',
@@ -188,18 +200,6 @@ export const CURATED_LAYOUTS: Record<string, Partial<TempleLayoutData>> = {
         descTe: 'ఏడు అంతస్తుల రాజగోపురం మరియు క్యూ కాంప్లెక్స్.'
       },
       {
-        id: 'footwear',
-        nameEn: 'Free Footwear & Baggage Counter',
-        nameTe: 'ఉచిత పాదరక్షల & లగేజ్ కేంద్రం',
-        category: 'footwear',
-        lat: 13.6064,
-        lng: 79.4468,
-        svgX: 145,
-        svgY: 255,
-        descEn: 'Safe custody token counter for shoes and phones.',
-        descTe: 'చెప్పులు భద్రపరిచే కేంద్రం.'
-      },
-      {
         id: 'dhwajasthambham',
         nameEn: 'Dhwajasthambham & Balipeetham',
         nameTe: 'ధ్వజస్తంభం & బలిపీఠం',
@@ -207,7 +207,7 @@ export const CURATED_LAYOUTS: Record<string, Partial<TempleLayoutData>> = {
         lat: 13.6067,
         lng: 79.4474,
         svgX: 270,
-        svgY: 205,
+        svgY: 195,
         descEn: 'Sacred golden flag mast facing Mother Padmavathi sanctum.',
         descTe: 'ఆలయ అంతర ప్రాంగణంలోని పవిత్ర ధ్వజస్తంభం.'
       },
@@ -465,7 +465,7 @@ export const CURATED_LAYOUTS: Record<string, Partial<TempleLayoutData>> = {
     titleTe: 'శ్రీ జీవ లింగేశ్వర స్వామి ఆలయ ప్రాంగణ మ్యాప్',
     layoutType: 'ancient-shrine',
     centerCoordinates: { lat: 13.6581, lng: 79.4292 },
-    routePath: [[420, 268], [140, 250], [270, 270], [270, 195], [140, 120], [270, 70], [400, 150], [270, 270]],
+    routePath: [[430, 290], [375, 265], [270, 275], [270, 195], [145, 125], [270, 85], [395, 140], [430, 290]],
     pins: [
       {
         id: 'parking',
@@ -474,10 +474,22 @@ export const CURATED_LAYOUTS: Record<string, Partial<TempleLayoutData>> = {
         category: 'parking',
         lat: 13.6577,
         lng: 79.4288,
-        svgX: 420,
-        svgY: 268,
+        svgX: 430,
+        svgY: 290,
         descEn: 'Open vehicle and auto parking area in Mangalam village.',
         descTe: 'వాహనాలు మరియు ఆటోల పార్కింగ్ స్థలం.'
+      },
+      {
+        id: 'footwear',
+        nameEn: 'Footwear Stand',
+        nameTe: 'పాదరక్షల స్టాండ్',
+        category: 'footwear',
+        lat: 13.6580,
+        lng: 79.4289,
+        svgX: 375,
+        svgY: 265,
+        descEn: 'Shoe custody counter near the courtyard entrance.',
+        descTe: 'పాదరక్షలు విడిచే ప్రదేశం.'
       },
       {
         id: 'entry',
@@ -487,21 +499,9 @@ export const CURATED_LAYOUTS: Record<string, Partial<TempleLayoutData>> = {
         lat: 13.6579,
         lng: 79.4290,
         svgX: 270,
-        svgY: 270,
+        svgY: 275,
         descEn: 'Stone archway and entrance facing the Tirumala hill slopes.',
         descTe: 'ఆలయ ప్రధాన ప్రవేశ ద్వారం.'
-      },
-      {
-        id: 'footwear',
-        nameEn: 'Footwear Stand',
-        nameTe: 'పాదరక్షల స్టాండ్',
-        category: 'footwear',
-        lat: 13.6580,
-        lng: 79.4289,
-        svgX: 140,
-        svgY: 250,
-        descEn: 'Shoe custody counter near the courtyard entrance.',
-        descTe: 'పాదరక్షలు విడిచే ప్రదేశం.'
       },
       {
         id: 'dhwajasthambham',
@@ -522,8 +522,8 @@ export const CURATED_LAYOUTS: Record<string, Partial<TempleLayoutData>> = {
         category: 'info',
         lat: 13.6583,
         lng: 79.4289,
-        svgX: 140,
-        svgY: 120,
+        svgX: 145,
+        svgY: 125,
         descEn: 'Dedicated shrines for Goddess Parvathi, Lord Ganesha, and Navagrahas for Dosha Parihara.',
         descTe: 'పార్వతీ దేవి మరియు నవగ్రహ ఉపాలయాలు.'
       },
@@ -535,7 +535,7 @@ export const CURATED_LAYOUTS: Record<string, Partial<TempleLayoutData>> = {
         lat: 13.6582,
         lng: 79.4292,
         svgX: 270,
-        svgY: 70,
+        svgY: 85,
         descEn: 'Consecrated living Shiva Lingam revered for granting peace of mind, health, and spiritual upliftment.',
         descTe: 'ప్రశాంత ఆధ్యాత్మిక వాతావరణంలో దర్శనమిచ్చే జీవ లింగేశ్వర స్వామి మూలవిరాట్టు.'
       },
@@ -546,8 +546,8 @@ export const CURATED_LAYOUTS: Record<string, Partial<TempleLayoutData>> = {
         category: 'laddu',
         lat: 13.6580,
         lng: 79.4294,
-        svgX: 400,
-        svgY: 150,
+        svgX: 395,
+        svgY: 140,
         descEn: 'Obtain Rudrabhishekam seva tokens, sacred Bilva leaves, and blessed Vibhuti theertham.',
         descTe: 'రుద్రాభిషేక పూజ టోకెన్లు మరియు పవిత్ర విభూతి ప్రసాదం స్వీకరించే స్థలం.'
       }
@@ -571,7 +571,7 @@ export const CURATED_LAYOUTS: Record<string, Partial<TempleLayoutData>> = {
     titleTe: 'శ్రీ పంచముఖ ఆంజనేయ స్వామి ఆలయ ప్రాంగణ మ్యాప్',
     layoutType: 'city-shrine',
     centerCoordinates: { lat: 13.6311, lng: 79.4149 },
-    routePath: [[430, 290], [270, 275], [145, 255], [270, 205], [150, 130], [270, 85], [395, 160], [270, 275]],
+    routePath: [[430, 290], [375, 265], [270, 275], [270, 195], [150, 130], [270, 85], [395, 160], [430, 290]],
     pins: [
       {
         id: 'parking',
@@ -586,6 +586,18 @@ export const CURATED_LAYOUTS: Record<string, Partial<TempleLayoutData>> = {
         descTe: 'వాహనాలు మరియు ఆటోల పార్కింగ్ స్థలం.'
       },
       {
+        id: 'footwear',
+        nameEn: 'Footwear Stand',
+        nameTe: 'పాదరక్షల స్టాండ్',
+        category: 'footwear',
+        lat: 13.6309,
+        lng: 79.4146,
+        svgX: 375,
+        svgY: 265,
+        descEn: 'Designated shoe keeping stand near the entrance gate.',
+        descTe: 'పాదరక్షలు విడిచే ప్రదేశం.'
+      },
+      {
         id: 'entry',
         nameEn: 'Temple Entrance Mukhadwaram',
         nameTe: 'ఆలయ ప్రవేశ ముఖద్వారం',
@@ -598,18 +610,6 @@ export const CURATED_LAYOUTS: Record<string, Partial<TempleLayoutData>> = {
         descTe: 'ఆలయ ప్రధాన ప్రవేశ ద్వారం.'
       },
       {
-        id: 'footwear',
-        nameEn: 'Footwear Stand',
-        nameTe: 'పాదరక్షల స్టాండ్',
-        category: 'footwear',
-        lat: 13.6309,
-        lng: 79.4146,
-        svgX: 145,
-        svgY: 255,
-        descEn: 'Designated shoe keeping stand near the entrance gate.',
-        descTe: 'పాదరక్షలు విడిచే ప్రదేశం.'
-      },
-      {
         id: 'dhwajasthambham',
         nameEn: 'Dhwajasthambham & Deepasthambham',
         nameTe: 'ధ్వజస్తంభం & దీపస్తంభం',
@@ -617,7 +617,7 @@ export const CURATED_LAYOUTS: Record<string, Partial<TempleLayoutData>> = {
         lat: 13.6311,
         lng: 79.4148,
         svgX: 270,
-        svgY: 205,
+        svgY: 195,
         descEn: 'Sacred flag mast and brass lamp pillar in the front courtyard.',
         descTe: 'పవిత్ర ధ్వజస్తంభం మరియు దీపారాధన స్తంభం.'
       },
@@ -677,7 +677,7 @@ export const CURATED_LAYOUTS: Record<string, Partial<TempleLayoutData>> = {
     titleTe: 'శ్రీ బొంతలమ్మ తల్లి ఆలయ ప్రాంగణ మ్యాప్',
     layoutType: 'city-shrine',
     centerCoordinates: { lat: 13.6459, lng: 79.4404 },
-    routePath: [[430, 290], [270, 275], [145, 255], [270, 205], [150, 130], [270, 85], [395, 160], [270, 275]],
+    routePath: [[430, 290], [375, 265], [270, 275], [270, 195], [150, 130], [270, 85], [395, 160], [430, 290]],
     pins: [
       {
         id: 'parking',
@@ -692,6 +692,18 @@ export const CURATED_LAYOUTS: Record<string, Partial<TempleLayoutData>> = {
         descTe: 'ద్విచక్ర వాహనాలు మరియు కార్ల పార్కింగ్ స్థలం.'
       },
       {
+        id: 'footwear',
+        nameEn: 'Footwear Stand',
+        nameTe: 'పాదరక్షల స్టాండ్',
+        category: 'footwear',
+        lat: 13.6458,
+        lng: 79.4401,
+        svgX: 375,
+        svgY: 265,
+        descEn: 'Designated shoe keeping stand near the entrance gate.',
+        descTe: 'పాదరక్షలు విడిచే ప్రదేశం.'
+      },
+      {
         id: 'entry',
         nameEn: 'Temple Entrance Mukhadwaram',
         nameTe: 'ఆలయ ప్రవేశ ముఖద్వారం',
@@ -704,18 +716,6 @@ export const CURATED_LAYOUTS: Record<string, Partial<TempleLayoutData>> = {
         descTe: 'గ్రామదేవత ఆలయ ప్రధాన ప్రవేశ ద్వారం.'
       },
       {
-        id: 'footwear',
-        nameEn: 'Footwear Stand',
-        nameTe: 'పాదరక్షల స్టాండ్',
-        category: 'footwear',
-        lat: 13.6458,
-        lng: 79.4401,
-        svgX: 145,
-        svgY: 255,
-        descEn: 'Designated shoe keeping stand near the entrance gate.',
-        descTe: 'పాదరక్షలు విడిచే ప్రదేశం.'
-      },
-      {
         id: 'dhwajasthambham',
         nameEn: 'Dhwajasthambham & Trisulam Deepasthambham',
         nameTe: 'ధ్వజస్తంభం & త్రిశూల దీపస్తంభం',
@@ -723,7 +723,7 @@ export const CURATED_LAYOUTS: Record<string, Partial<TempleLayoutData>> = {
         lat: 13.6459,
         lng: 79.4403,
         svgX: 270,
-        svgY: 205,
+        svgY: 195,
         descEn: 'Sacred flag mast, trident (Trisula), and brass lamp pillar in the central courtyard.',
         descTe: 'పవిత్ర ధ్వజస్తంభం, త్రిశూలం మరియు దీపారాధన స్తంభం.'
       },
@@ -783,7 +783,7 @@ export const CURATED_LAYOUTS: Record<string, Partial<TempleLayoutData>> = {
     titleTe: 'శ్రీ మొగిలీశ్వర స్వామి ఆలయ ప్రాంగణ మ్యాప్',
     layoutType: 'ancient-shrine',
     centerCoordinates: { lat: 13.2081, lng: 78.8950 },
-    routePath: [[430, 290], [270, 275], [145, 255], [270, 205], [150, 130], [270, 85], [395, 160], [270, 275]],
+    routePath: [[430, 290], [375, 265], [270, 275], [270, 195], [150, 130], [270, 85], [395, 160], [430, 290]],
     pins: [
       {
         id: 'parking',
@@ -798,6 +798,18 @@ export const CURATED_LAYOUTS: Record<string, Partial<TempleLayoutData>> = {
         descTe: 'చెన్నై-బెంగళూరు హైవే వద్ద ఉన్న పార్కింగ్ స్థలం.'
       },
       {
+        id: 'footwear',
+        nameEn: 'Footwear Stand',
+        nameTe: 'పాదరక్షల స్టాండ్',
+        category: 'footwear',
+        lat: 13.2079,
+        lng: 78.8946,
+        svgX: 375,
+        svgY: 265,
+        descEn: 'Shoe custody counter near temple entrance.',
+        descTe: 'చెప్పులు భద్రపరిచే ప్రదేశం.'
+      },
+      {
         id: 'entry',
         nameEn: 'Eastern Raja Gopuram Entrance',
         nameTe: 'తూర్పు రాజగోపురం ప్రవేశం',
@@ -810,18 +822,6 @@ export const CURATED_LAYOUTS: Record<string, Partial<TempleLayoutData>> = {
         descTe: 'ఆలయ ప్రధాన ప్రవేశ గోపురం.'
       },
       {
-        id: 'footwear',
-        nameEn: 'Footwear Stand',
-        nameTe: 'పాదరక్షల స్టాండ్',
-        category: 'footwear',
-        lat: 13.2079,
-        lng: 78.8946,
-        svgX: 145,
-        svgY: 255,
-        descEn: 'Shoe custody counter near temple entrance.',
-        descTe: 'చెప్పులు భద్రపరిచే ప్రదేశం.'
-      },
-      {
         id: 'dhwajasthambham',
         nameEn: 'Dhwajasthambham & Gomukha Nandi Spring',
         nameTe: 'ధ్వజస్తంభం & గోముఖ నంది జలధార',
@@ -829,7 +829,7 @@ export const CURATED_LAYOUTS: Record<string, Partial<TempleLayoutData>> = {
         lat: 13.2080,
         lng: 78.8949,
         svgX: 270,
-        svgY: 205,
+        svgY: 195,
         descEn: 'Sacred Nandi bull idol where cold perennial water constantly trickles from beneath its feet year-round.',
         descTe: 'నంది పాదాల నుండి నిరంతరం ప్రవహించే పవిత్ర జీవ జలధార.'
       },
@@ -889,7 +889,7 @@ export const CURATED_LAYOUTS: Record<string, Partial<TempleLayoutData>> = {
     titleTe: 'శ్రీ వరసిద్ధి వినాయక స్వామి ఆలయం (కాణిపాకం) ప్రాంగణ మ్యాప్',
     layoutType: 'grand-temple',
     centerCoordinates: { lat: 13.2796, lng: 79.0347 },
-    routePath: [[430, 290], [270, 275], [145, 255], [270, 205], [150, 130], [270, 90], [415, 105], [370, 190], [270, 275]],
+    routePath: [[430, 290], [375, 265], [270, 275], [270, 195], [150, 130], [270, 90], [415, 105], [370, 190], [430, 290]],
     pins: [
       {
         id: 'parking',
@@ -904,6 +904,18 @@ export const CURATED_LAYOUTS: Record<string, Partial<TempleLayoutData>> = {
         descTe: 'వాహనాలు మరియు బస్సుల పార్కింగ్ సముదాయం.'
       },
       {
+        id: 'footwear',
+        nameEn: 'Free Footwear & Baggage Counter',
+        nameTe: 'ఉచిత పాదరక్షల కేంద్రం',
+        category: 'footwear',
+        lat: 13.2792,
+        lng: 79.0342,
+        svgX: 375,
+        svgY: 265,
+        descEn: 'Free token custody counter for footwear and electronic items.',
+        descTe: 'పాదరక్షలు భద్రపరిచే ఉచిత కౌంటర్.'
+      },
+      {
         id: 'entry',
         nameEn: 'Raja Gopuram & Covered Queue Entrance',
         nameTe: 'రాజగోపురం & క్యూ కాంప్లెక్స్ ప్రవేశం',
@@ -916,18 +928,6 @@ export const CURATED_LAYOUTS: Record<string, Partial<TempleLayoutData>> = {
         descTe: 'విజయనగర శైలి రాజగోపురం మరియు దర్శన ప్రవేశ ద్వారం.'
       },
       {
-        id: 'footwear',
-        nameEn: 'Free Footwear & Baggage Counter',
-        nameTe: 'ఉచిత పాదరక్షల కేంద్రం',
-        category: 'footwear',
-        lat: 13.2792,
-        lng: 79.0342,
-        svgX: 145,
-        svgY: 255,
-        descEn: 'Free token custody counter for footwear and electronic items.',
-        descTe: 'పాదరక్షలు భద్రపరిచే ఉచిత కౌంటర్.'
-      },
-      {
         id: 'dhwajasthambham',
         nameEn: 'Dhwajasthambham & Mushika (Mouse) Vahanam',
         nameTe: 'ధ్వజస్తంభం & మూషిక వాహనం',
@@ -935,7 +935,7 @@ export const CURATED_LAYOUTS: Record<string, Partial<TempleLayoutData>> = {
         lat: 13.2795,
         lng: 79.0346,
         svgX: 270,
-        svgY: 205,
+        svgY: 195,
         descEn: 'Sacred golden flag mast and Lord Ganesha\'s Mushika vehicle in the inner courtyard.',
         descTe: 'పవిత్ర ధ్వజస్తంభం మరియు మూషిక వాహన దర్శనం.'
       },
@@ -1005,9 +1005,9 @@ export const CURATED_LAYOUTS: Record<string, Partial<TempleLayoutData>> = {
     placeId: 'srivari-padalu-spot',
     titleEn: 'Srivari Paadaalu (Narayanagiri Peak) Precinct Map',
     titleTe: 'శ్రీవారి పాదాలు (నారాయణగిరి శిఖరం) ప్రాంగణ మ్యాప్',
-    layoutType: 'geo-nature-park',
+    layoutType: 'hilltop-peak',
     centerCoordinates: { lat: 13.6790, lng: 79.3331 },
-    routePath: [[430, 290], [270, 275], [145, 255], [150, 130], [270, 90], [380, 160], [270, 275]],
+    routePath: [[430, 290], [270, 275], [145, 255], [150, 130], [270, 90], [380, 160], [430, 290]],
     pins: [
       {
         id: 'parking',
@@ -1073,7 +1073,7 @@ export const CURATED_LAYOUTS: Record<string, Partial<TempleLayoutData>> = {
         id: 'theertham-prasadam',
         nameEn: 'Harathi, Theertham & Kumkum Prasadam Counter',
         nameTe: 'హారతి, తీర్థం & కుంకుమ ప్రసాదం',
-        category: 'food',
+        category: 'laddu',
         lat: 13.6790,
         lng: 79.3335,
         svgX: 380,
@@ -1195,7 +1195,7 @@ export const CURATED_LAYOUTS: Record<string, Partial<TempleLayoutData>> = {
     titleTe: 'శ్రీ కల్యాణ వేంకటేశ్వర స్వామి ఆలయ ప్రాంగణ మ్యాప్',
     layoutType: 'ancient-shrine',
     centerCoordinates: { lat: 13.6108, lng: 79.3277 },
-    routePath: [[430, 290], [270, 275], [145, 255], [270, 205], [150, 130], [270, 85], [395, 120], [395, 160], [270, 250]],
+    routePath: [[430, 290], [375, 265], [270, 275], [270, 195], [150, 130], [270, 85], [395, 120], [395, 160], [430, 290]],
     pins: [
       {
         id: 'parking',
@@ -1210,6 +1210,18 @@ export const CURATED_LAYOUTS: Record<string, Partial<TempleLayoutData>> = {
         descTe: 'రాజగోపురం ఎదురుగా ఉన్న వాహనాల పార్కింగ్ స్థలం.'
       },
       {
+        id: 'footwear',
+        nameEn: 'Free Footwear & Baggage Counter',
+        nameTe: 'ఉచిత పాదరక్షల భద్రతా కేంద్రం',
+        category: 'footwear',
+        lat: 13.6106,
+        lng: 79.3273,
+        svgX: 375,
+        svgY: 265,
+        descEn: 'Deposit shoes before entering the holy temple prakaram.',
+        descTe: 'ఆలయ ప్రాంగణంలోకి ప్రవేశించే ముందు చెప్పులు భద్రపరిచే కౌంటర్.'
+      },
+      {
         id: 'entry',
         nameEn: 'Eastern Raja Gopuram Main Entrance',
         nameTe: 'తూర్పు రాజగోపురం ప్రధాన ప్రవేశం',
@@ -1222,18 +1234,6 @@ export const CURATED_LAYOUTS: Record<string, Partial<TempleLayoutData>> = {
         descTe: 'భవ్యం మరియు పురాతనమైన 5 అంతస్తుల రాజగోపురం.'
       },
       {
-        id: 'footwear',
-        nameEn: 'Free Footwear & Baggage Counter',
-        nameTe: 'ఉచిత పాదరక్షల భద్రతా కేంద్రం',
-        category: 'footwear',
-        lat: 13.6106,
-        lng: 79.3273,
-        svgX: 145,
-        svgY: 255,
-        descEn: 'Deposit shoes before entering the holy temple prakaram.',
-        descTe: 'ఆలయ ప్రాంగణంలోకి ప్రవేశించే ముందు చెప్పులు భద్రపరిచే కౌంటర్.'
-      },
-      {
         id: 'dhwajasthambham',
         nameEn: 'Dhwajasthambham & Balipeetham Flag Mast',
         nameTe: 'ధ్వజస్తంభం & బలిపీఠం',
@@ -1241,7 +1241,7 @@ export const CURATED_LAYOUTS: Record<string, Partial<TempleLayoutData>> = {
         lat: 13.6107,
         lng: 79.3276,
         svgX: 270,
-        svgY: 205,
+        svgY: 195,
         descEn: 'Golden flag mast offering sashtanga namaskaram before sanctum darshan.',
         descTe: 'ధ్వజస్తంభానికి సాష్టాంగ నమస్కారం ఆచరించే స్థలం.'
       },
@@ -1313,7 +1313,7 @@ export const CURATED_LAYOUTS: Record<string, Partial<TempleLayoutData>> = {
     titleTe: 'శ్రీ ప్రసన్న వేంకటేశ్వర స్వామి ఆలయ ప్రాంగణ మ్యాప్',
     layoutType: 'ancient-shrine',
     centerCoordinates: { lat: 13.5373701, lng: 79.4776129 },
-    routePath: [[430, 290], [270, 275], [145, 255], [270, 205], [150, 130], [270, 85], [395, 120], [395, 160], [270, 250]],
+    routePath: [[430, 290], [375, 265], [270, 275], [270, 195], [150, 130], [270, 85], [395, 120], [395, 160], [430, 290]],
     pins: [
       {
         id: 'parking',
@@ -1328,6 +1328,18 @@ export const CURATED_LAYOUTS: Record<string, Partial<TempleLayoutData>> = {
         descTe: 'ఆలయం ఎదురుగా ఉన్న పార్కింగ్ స్థలం.'
       },
       {
+        id: 'footwear',
+        nameEn: 'Footwear Counter',
+        nameTe: 'పాదరక్షల కౌంటర్',
+        category: 'footwear',
+        lat: 13.5372,
+        lng: 79.4773,
+        svgX: 375,
+        svgY: 265,
+        descEn: 'Deposit shoes before entering.',
+        descTe: 'చెప్పులు భద్రపరిచే ప్రదేశం.'
+      },
+      {
         id: 'entry',
         nameEn: 'Raja Gopuram Entrance',
         nameTe: 'రాజగోపురం ప్రవేశం',
@@ -1340,18 +1352,6 @@ export const CURATED_LAYOUTS: Record<string, Partial<TempleLayoutData>> = {
         descTe: 'ఆలయ ప్రధాన రాజగోపురం.'
       },
       {
-        id: 'footwear',
-        nameEn: 'Footwear Counter',
-        nameTe: 'పాదరక్షల కౌంటర్',
-        category: 'footwear',
-        lat: 13.5372,
-        lng: 79.4773,
-        svgX: 145,
-        svgY: 255,
-        descEn: 'Deposit shoes before entering.',
-        descTe: 'చెప్పులు భద్రపరిచే ప్రదేశం.'
-      },
-      {
         id: 'dhwajasthambham',
         nameEn: 'Dhwajasthambham Flag Mast',
         nameTe: 'ధ్వజస్తంభం',
@@ -1359,7 +1359,7 @@ export const CURATED_LAYOUTS: Record<string, Partial<TempleLayoutData>> = {
         lat: 13.5373,
         lng: 79.4775,
         svgX: 270,
-        svgY: 205,
+        svgY: 195,
         descEn: 'Sacred temple flag mast in the outer courtyard.',
         descTe: 'ఆలయ ధ్వజస్తంభం.'
       },
@@ -1431,7 +1431,7 @@ export const CURATED_LAYOUTS: Record<string, Partial<TempleLayoutData>> = {
     titleTe: 'శ్రీ పద్మగిరి బాలజ్ఞాన దండాయుధపాణి స్వామి ఆలయ ప్రాంగణ మ్యాప్',
     layoutType: 'ancient-shrine',
     centerCoordinates: { lat: 13.5851949, lng: 79.4314015 },
-    routePath: [[430, 290], [270, 275], [145, 255], [270, 205], [150, 130], [270, 85], [395, 160], [270, 250]],
+    routePath: [[430, 290], [375, 265], [270, 275], [270, 195], [145, 125], [270, 85], [395, 140], [430, 290]],
     pins: [
       {
         id: 'parking',
@@ -1446,6 +1446,18 @@ export const CURATED_LAYOUTS: Record<string, Partial<TempleLayoutData>> = {
         descTe: 'కొండ దిగువన ఉన్న వాహనాల పార్కింగ్ స్థలం.'
       },
       {
+        id: 'footwear',
+        nameEn: 'Footwear Stand',
+        nameTe: 'పాదరక్షల స్టాండ్',
+        category: 'footwear',
+        lat: 13.5850,
+        lng: 79.4309,
+        svgX: 375,
+        svgY: 265,
+        descEn: 'Shoe custody counter near temple gateway.',
+        descTe: 'చెప్పులు భద్రపరిచే ప్రదేశం.'
+      },
+      {
         id: 'entry',
         nameEn: 'Hilltop Entrance Raja Gopuram & Steps',
         nameTe: 'కొండపై రాజగోపురం & మెట్ల మార్గం',
@@ -1458,18 +1470,6 @@ export const CURATED_LAYOUTS: Record<string, Partial<TempleLayoutData>> = {
         descTe: 'కొండపై ఆలయ ప్రధాన ప్రవేశ ద్వారం.'
       },
       {
-        id: 'footwear',
-        nameEn: 'Footwear Stand',
-        nameTe: 'పాదరక్షల స్టాండ్',
-        category: 'footwear',
-        lat: 13.5850,
-        lng: 79.4309,
-        svgX: 145,
-        svgY: 255,
-        descEn: 'Shoe custody counter near temple gateway.',
-        descTe: 'చెప్పులు భద్రపరిచే ప్రదేశం.'
-      },
-      {
         id: 'dhwajasthambham',
         nameEn: 'Dhwajasthambham & Mayura (Peacock) Vahanam',
         nameTe: 'ధ్వజస్తంభం & మయూర వాహనం',
@@ -1477,7 +1477,7 @@ export const CURATED_LAYOUTS: Record<string, Partial<TempleLayoutData>> = {
         lat: 13.5851,
         lng: 79.4312,
         svgX: 270,
-        svgY: 205,
+        svgY: 195,
         descEn: 'Sacred flag mast and Lord Murugan\'s divine Peacock vehicle in the courtyard.',
         descTe: 'మయూర వాహన మండపం మరియు పవిత్ర ధ్వజస్తంభం.'
       },
@@ -1488,8 +1488,8 @@ export const CURATED_LAYOUTS: Record<string, Partial<TempleLayoutData>> = {
         category: 'info',
         lat: 13.5852,
         lng: 79.4310,
-        svgX: 150,
-        svgY: 130,
+        svgX: 145,
+        svgY: 125,
         descEn: 'Mystic hexagonal Shatkona Yantra established by Sri Ganapathi Swamy.',
         descTe: 'శ్రీ గణపతి స్వామి స్థాపించిన మహిమాన్విత షట్కోణ యంత్ర పీఠం.'
       },
@@ -1513,7 +1513,7 @@ export const CURATED_LAYOUTS: Record<string, Partial<TempleLayoutData>> = {
         lat: 13.5851,
         lng: 79.4317,
         svgX: 395,
-        svgY: 160,
+        svgY: 140,
         descEn: 'Collect consecrated Vibhuti and Palani-style holy Panchamrutham prasadam.',
         descTe: 'పవిత్ర విభూతి మరియు పంచామృత ప్రసాదం.'
       }
@@ -1537,7 +1537,7 @@ export const CURATED_LAYOUTS: Record<string, Partial<TempleLayoutData>> = {
     titleTe: 'శ్రీ వకుళమాత ఆలయం (పేరూరు బండ) ప్రాంగణ మ్యాప్',
     layoutType: 'ancient-shrine',
     centerCoordinates: { lat: 13.5995, lng: 79.3691 },
-    routePath: [[430, 290], [270, 275], [145, 255], [270, 205], [150, 130], [270, 85], [395, 160], [270, 250]],
+    routePath: [[430, 290], [375, 265], [270, 275], [270, 195], [150, 130], [270, 85], [395, 160], [430, 290]],
     pins: [
       {
         id: 'parking',
@@ -1552,6 +1552,18 @@ export const CURATED_LAYOUTS: Record<string, Partial<TempleLayoutData>> = {
         descTe: 'కొండ దిగువన మరియు పైభాగంలో ఉన్న పార్కింగ్ స్థలం.'
       },
       {
+        id: 'footwear',
+        nameEn: 'Footwear Custody Stand',
+        nameTe: 'పాదరక్షల భద్రతా స్టాండ్',
+        category: 'footwear',
+        lat: 13.5994,
+        lng: 79.3687,
+        svgX: 375,
+        svgY: 265,
+        descEn: 'Shoe custody counter near temple gateway.',
+        descTe: 'చెప్పులు భద్రపరిచే ప్రదేశం.'
+      },
+      {
         id: 'entry',
         nameEn: 'Hilltop Raja Gopuram Entrance',
         nameTe: 'కొండపై రాజగోపురం ప్రధాన ప్రవేశం',
@@ -1564,18 +1576,6 @@ export const CURATED_LAYOUTS: Record<string, Partial<TempleLayoutData>> = {
         descTe: 'అందమైన లోయ దృశ్యాలతో కూడిన రాజగోపురం.'
       },
       {
-        id: 'footwear',
-        nameEn: 'Footwear Custody Stand',
-        nameTe: 'పాదరక్షల భద్రతా స్టాండ్',
-        category: 'footwear',
-        lat: 13.5994,
-        lng: 79.3687,
-        svgX: 145,
-        svgY: 255,
-        descEn: 'Shoe custody counter near temple gateway.',
-        descTe: 'చెప్పులు భద్రపరిచే ప్రదేశం.'
-      },
-      {
         id: 'dhwajasthambham',
         nameEn: 'Dhwajasthambham Flag Mast',
         nameTe: 'ధ్వజస్తంభం',
@@ -1583,7 +1583,7 @@ export const CURATED_LAYOUTS: Record<string, Partial<TempleLayoutData>> = {
         lat: 13.5995,
         lng: 79.3690,
         svgX: 270,
-        svgY: 205,
+        svgY: 195,
         descEn: 'Sacred flag mast facing the mother deity.',
         descTe: 'ఆలయ ప్రాంగణంలోని పవిత్ర ధ్వజస్తంభం.'
       },
@@ -1643,7 +1643,7 @@ export const CURATED_LAYOUTS: Record<string, Partial<TempleLayoutData>> = {
     titleTe: 'శ్రీ అగస్త్యేశ్వర స్వామి ఆలయం (ముక్కోటి) ప్రాంగణ మ్యాప్',
     layoutType: 'ancient-shrine',
     centerCoordinates: { lat: 13.5968, lng: 79.3411 },
-    routePath: [[430, 290], [270, 275], [145, 255], [270, 205], [150, 130], [270, 85], [395, 120], [395, 160], [270, 250]],
+    routePath: [[430, 290], [375, 265], [270, 275], [270, 195], [150, 130], [270, 85], [395, 120], [395, 160], [430, 290]],
     pins: [
       {
         id: 'parking',
@@ -1658,6 +1658,18 @@ export const CURATED_LAYOUTS: Record<string, Partial<TempleLayoutData>> = {
         descTe: 'స్వర్ణముఖి నది సమీపంలోని వాహనాల పార్కింగ్ ప్రదేశం.'
       },
       {
+        id: 'footwear',
+        nameEn: 'Footwear Stand',
+        nameTe: 'పాదరక్షల స్టాండ్',
+        category: 'footwear',
+        lat: 13.5966,
+        lng: 79.3407,
+        svgX: 375,
+        svgY: 265,
+        descEn: 'Shoe custody counter near temple entrance.',
+        descTe: 'చెప్పులు భద్రపరిచే ప్రదేశం.'
+      },
+      {
         id: 'entry',
         nameEn: 'Eastern Raja Gopuram Main Entrance',
         nameTe: 'తూర్పు రాజగోపురం ప్రధాన ప్రవేశం',
@@ -1670,18 +1682,6 @@ export const CURATED_LAYOUTS: Record<string, Partial<TempleLayoutData>> = {
         descTe: 'అగస్త్య మహర్షి స్థాపించిన ప్రాచీన ఆలయ ముఖద్వారం.'
       },
       {
-        id: 'footwear',
-        nameEn: 'Footwear Stand',
-        nameTe: 'పాదరక్షల స్టాండ్',
-        category: 'footwear',
-        lat: 13.5966,
-        lng: 79.3407,
-        svgX: 145,
-        svgY: 255,
-        descEn: 'Shoe custody counter near temple entrance.',
-        descTe: 'చెప్పులు భద్రపరిచే ప్రదేశం.'
-      },
-      {
         id: 'dhwajasthambham',
         nameEn: 'Dhwajasthambham & Nandi Mandapam',
         nameTe: 'ధ్వజస్తంభం & నంది మండపం',
@@ -1689,7 +1689,7 @@ export const CURATED_LAYOUTS: Record<string, Partial<TempleLayoutData>> = {
         lat: 13.5967,
         lng: 79.3410,
         svgX: 270,
-        svgY: 205,
+        svgY: 195,
         descEn: 'Sacred stone Nandi facing the Shiva sanctum and golden flag mast.',
         descTe: 'శివుని అభిముఖంగా ఉన్న పవిత్ర నందీశ్వరుడు మరియు ధ్వజస్తంభం.'
       },
@@ -1856,7 +1856,7 @@ export const CURATED_LAYOUTS: Record<string, Partial<TempleLayoutData>> = {
     titleTe: 'శ్రీ మూలస్థాన ఎల్లమ్మ ఆలయ ప్రాంగణ మ్యాప్',
     layoutType: 'ancient-shrine',
     centerCoordinates: { lat: 13.5843325, lng: 79.3158065 },
-    routePath: [[430, 290], [270, 275], [145, 255], [270, 205], [150, 130], [270, 85], [395, 120], [395, 160], [270, 250]],
+    routePath: [[430, 290], [375, 265], [270, 275], [270, 195], [150, 130], [270, 85], [395, 120], [395, 160], [430, 290]],
     pins: [
       {
         id: 'parking',
@@ -1871,6 +1871,18 @@ export const CURATED_LAYOUTS: Record<string, Partial<TempleLayoutData>> = {
         descTe: 'ఆలయ ముఖద్వారం వద్ద పార్కింగ్.'
       },
       {
+        id: 'footwear',
+        nameEn: 'Free Footwear Stand',
+        nameTe: 'ఉచిత పాదరక్షల స్టాండ్',
+        category: 'footwear',
+        lat: 13.5841,
+        lng: 79.3154,
+        svgX: 375,
+        svgY: 265,
+        descEn: 'Designated shoe stand before entering inner courtyard.',
+        descTe: 'ఉచిత చెప్పుల కౌంటర్.'
+      },
+      {
         id: 'entry',
         nameEn: 'Temple Entrance Arch & Gopuram',
         nameTe: 'ఆలయ ప్రవేశ ముఖద్వారం',
@@ -1883,18 +1895,6 @@ export const CURATED_LAYOUTS: Record<string, Partial<TempleLayoutData>> = {
         descTe: 'శ్రీ ఎల్లమ్మ ఆలయ ప్రధాన ప్రవేశం.'
       },
       {
-        id: 'footwear',
-        nameEn: 'Free Footwear Stand',
-        nameTe: 'ఉచిత పాదరక్షల స్టాండ్',
-        category: 'footwear',
-        lat: 13.5841,
-        lng: 79.3154,
-        svgX: 145,
-        svgY: 255,
-        descEn: 'Designated shoe stand before entering inner courtyard.',
-        descTe: 'ఉచిత చెప్పుల కౌంటర్.'
-      },
-      {
         id: 'dhwajasthambham',
         nameEn: 'Dhwajasthambham & Trisulam',
         nameTe: 'ధ్వజస్తంభం & త్రిశూలం',
@@ -1902,7 +1902,7 @@ export const CURATED_LAYOUTS: Record<string, Partial<TempleLayoutData>> = {
         lat: 13.5842,
         lng: 79.5826,
         svgX: 270,
-        svgY: 205,
+        svgY: 195,
         descEn: 'Sacred flag mast and consecrated divine Trisulam of Goddess Shakti.',
         descTe: 'పవిత్ర ధ్వజస్తంభం మరియు శక్త్యాయుధం.'
       },
@@ -2068,7 +2068,7 @@ export const CURATED_LAYOUTS: Record<string, Partial<TempleLayoutData>> = {
     titleTe: 'శ్రీ కల్యాణ వేంకటేశ్వర స్వామి ఆలయం (నారాయణవనం కల్యాణ వేదిక)',
     layoutType: 'ancient-shrine',
     centerCoordinates: { lat: 13.4184, lng: 79.5828 },
-    routePath: [[430, 290], [270, 275], [145, 255], [270, 205], [150, 130], [270, 85], [395, 120], [395, 160], [270, 250]],
+    routePath: [[430, 290], [375, 265], [270, 275], [270, 195], [150, 130], [270, 85], [395, 120], [395, 160], [430, 290]],
     pins: [
       {
         id: 'parking',
@@ -2083,6 +2083,18 @@ export const CURATED_LAYOUTS: Record<string, Partial<TempleLayoutData>> = {
         descTe: 'ఆలయ రాజగోపురం ఎదురుగా ఉన్న పార్కింగ్.'
       },
       {
+        id: 'footwear',
+        nameEn: 'Footwear Counter',
+        nameTe: 'పాదరక్షల కౌంటర్',
+        category: 'footwear',
+        lat: 13.4181,
+        lng: 79.5822,
+        svgX: 375,
+        svgY: 265,
+        descEn: 'Shoe custody counter.',
+        descTe: 'చెప్పులు భద్రపరిచే ప్రదేశం.'
+      },
+      {
         id: 'entry',
         nameEn: 'Vijayanagara Raja Gopuram Gateway',
         nameTe: 'విజయనగర రాజగోపురం ప్రవేశం',
@@ -2095,18 +2107,6 @@ export const CURATED_LAYOUTS: Record<string, Partial<TempleLayoutData>> = {
         descTe: 'ఆకాశరాజు నిర్మించిన చారిత్రక రాజగోపురం.'
       },
       {
-        id: 'footwear',
-        nameEn: 'Footwear Counter',
-        nameTe: 'పాదరక్షల కౌంటర్',
-        category: 'footwear',
-        lat: 13.4181,
-        lng: 79.5822,
-        svgX: 145,
-        svgY: 255,
-        descEn: 'Shoe custody counter.',
-        descTe: 'చెప్పులు భద్రపరిచే ప్రదేశం.'
-      },
-      {
         id: 'dhwajasthambham',
         nameEn: 'Dhwajasthambham & Kalyanotsava Mandapam',
         nameTe: 'ధ్వజస్తంభం & కల్యాణోత్సవ మండపం',
@@ -2114,7 +2114,7 @@ export const CURATED_LAYOUTS: Record<string, Partial<TempleLayoutData>> = {
         lat: 13.4182,
         lng: 79.5826,
         svgX: 270,
-        svgY: 205,
+        svgY: 195,
         descEn: 'Grand carved stone mandapam where Lord Venkateswara married Goddess Padmavathi.',
         descTe: 'శ్రీవారి కల్యాణం జరిగిన పవిత్ర కల్యాణ మండపం.'
       },
@@ -2857,6 +2857,16 @@ const GRAND_PUSHKARINI_TEMPLE_IDS = [
   'iskcon-tirupati',
   'vedanarayana'
 ];
+
+export function hasCuratedTempleLayout(placeInput: string | PlaceInputContext): boolean {
+  if (!placeInput) return false;
+  const placeId = typeof placeInput === 'string' ? placeInput.toLowerCase().trim() : (placeInput?.id || '').toLowerCase().trim();
+  if (CURATED_LAYOUTS[placeId]) return true;
+  if (placeId === 'narayanavanam-falls' && CURATED_LAYOUTS['narayanavanam-waterfalls']) return true;
+  if (placeId === 'kailasakona' && CURATED_LAYOUTS['kailasa-kona']) return true;
+  if (placeId === 'moolasthana-yellamma' && CURATED_LAYOUTS['moolasthana-yellamma-chandragiri']) return true;
+  return false;
+}
 
 export function getTempleLayout(placeInput: string | PlaceInputContext, fallbackCoords?: { lat: number; lng: number }): TempleLayoutData {
   let placeId = typeof placeInput === 'string' ? placeInput : (placeInput?.id || '');

@@ -1,14 +1,16 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { MapPin, Navigation } from 'lucide-react';
+import { MapPin, Navigation, Compass } from 'lucide-react';
 import { useTrip } from '@/components/TripContext';
 import styles from './LocationPrompt.module.css';
 import { useState } from 'react';
+import { LocationPickerModal } from '@/components/common/LocationPickerModal';
 
 export default function LocationPrompt() {
   const { setUserLocation, setLocationPermission } = useTrip();
   const [isRequesting, setIsRequesting] = useState(false);
+  const [isPickerOpen, setIsPickerOpen] = useState(false);
 
   const handleAllowLocation = () => {
     setIsRequesting(true);
@@ -127,6 +129,28 @@ export default function LocationPrompt() {
           </motion.button>
 
           <button 
+            type="button"
+            onClick={() => setIsPickerOpen(true)}
+            style={{
+              background: '#FFFBEB',
+              border: '1px solid #FDE68A',
+              color: '#92400E',
+              padding: '10px 16px',
+              borderRadius: '14px',
+              fontSize: '13px',
+              fontWeight: 700,
+              cursor: 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: '6px'
+            }}
+          >
+            <MapPin size={14} color="#B45309" />
+            <span>Select Starting City / Hub</span>
+          </button>
+
+          <button 
             className={styles.notNowBtn} 
             onClick={handleNotNow}
             disabled={isRequesting}
@@ -135,6 +159,12 @@ export default function LocationPrompt() {
           </button>
         </div>
       </motion.div>
+
+      {/* Location Picker Modal */}
+      <LocationPickerModal
+        isOpen={isPickerOpen}
+        onClose={() => setIsPickerOpen(false)}
+      />
     </div>
   );
 }

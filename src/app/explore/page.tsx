@@ -11,6 +11,7 @@ import { calculateDrivingDistance, TIRUPATI_CENTER, isWithinTirupatiRegion } fro
 import { useTrip } from '@/components/TripContext';
 import { useRealtimePlaces } from '@/lib/useRealtimePlaces';
 import { useLanguage } from '@/lib/useLanguage';
+import { LocationPickerModal, LocationPill } from '@/components/common/LocationPickerModal';
 
 const FILTERS_DATA = [
   { key: 'All', labelEn: 'All', labelTe: 'అన్నీ' },
@@ -34,7 +35,8 @@ function ExploreContent() {
   const [searchQuery, setSearchQuery] = useState(initialQuery);
   const [activeFilter, setActiveFilter] = useState('All');
   const [locationError, setLocationError] = useState(false);
-  const { userLocation, setUserLocation, setLocationPermission } = useTrip();
+  const [isLocationModalOpen, setIsLocationModalOpen] = useState(false);
+  const { userLocation, setUserLocation, setLocationPermission, locationName } = useTrip();
 
   // Cross-collection search results from Supabase
   const [crossResults, setCrossResults] = useState<{ stories: any[]; encyclopedia: any[] }>({ stories: [], encyclopedia: [] });
@@ -377,10 +379,19 @@ function ExploreContent() {
               <h2 className={styles.curatedTitle} style={{ display: 'flex', alignItems: 'center', gap: '6px', margin: 0 }}>
                 {lang === 'te' ? 'సమీపంలోని ప్రదేశాలు' : 'Nearby'} <MapPin size={18} style={{ color: '#2F6144' }} />
               </h2>
-              <span style={{ fontSize: '11px', color: '#059669', fontWeight: 800, background: '#DCFCE7', padding: '2px 8px', borderRadius: '12px' }}>
-                {userLocation ? (lang === 'te' ? 'లైవ్ GPS దూరం' : 'Live GPS Distance') : (lang === 'te' ? 'దగ్గరివి మొదట' : 'Nearest First')}
-              </span>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <LocationPill 
+                  locationName={locationName || (userLocation ? 'GPS' : 'Tirupati')}
+                  onClick={() => setIsLocationModalOpen(true)}
+                  style={{ fontSize: '11px', padding: '3px 9px' }}
+                />
+              </div>
             </div>
+            
+            <LocationPickerModal
+              isOpen={isLocationModalOpen}
+              onClose={() => setIsLocationModalOpen(false)}
+            />
             <div className={styles.horizontalScroll}>
               {filteredPlaces.slice(0, 10).map((place) => {
                 const dist = Number((place as any).computedDistance || 0);
