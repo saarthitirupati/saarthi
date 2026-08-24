@@ -117,22 +117,11 @@ export default function ClientLayout({
     }
   }, [pathname]);
 
-  // Unregister any stale service workers to prevent cached Next.js chunks errors
+  // Register service worker for offline support
   useEffect(() => {
     if (typeof window !== 'undefined' && 'serviceWorker' in navigator) {
-      navigator.serviceWorker.getRegistrations().then((registrations) => {
-        let unregisteredAny = false;
-        const promises = registrations.map((registration) =>
-          registration.unregister().then((success) => {
-            if (success) unregisteredAny = true;
-          })
-        );
-        Promise.all(promises).then(() => {
-          if (unregisteredAny) {
-            console.log('Unregistered stale service workers to fix cache issues.');
-            window.location.reload();
-          }
-        });
+      navigator.serviceWorker.register('/sw.js').catch(() => {
+        // Silent fail — offline support is best-effort
       });
     }
   }, []);
