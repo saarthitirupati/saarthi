@@ -22,14 +22,14 @@ export const GITA_SHLOKAS: GitaShloka[] = [
     verse: 47,
     referenceEn: 'Bhagavad Gita • Chapter 2, Verse 47',
     referenceTe: 'శ్రీమద్భగవద్గీత • సాంఖ్య యోగం (2.47)',
-    themeEn: 'Selfless Action & Surrender',
+    themeEn: 'Selfless Duty & Peace',
     themeTe: 'నిష్కామ కర్మ & కర్తవ్య నిర్వహణ',
     shlokaSanskrit: 'कर्मण्येवाधिकारस्ते मा फलेषु कदाचन।\nमा कर्मफलहेतुर्भूर्मा ते सङ्गोऽस्त्वकर्मणि॥',
     shlokaTelugu: 'కర్మణ్యేవాధికారస్తే మా ఫలేషు కదాచన ।\nమా కర్మఫలహేతుర్భూర్మా తే సఙ్గోఽస్త్వకర్మణి ॥',
     transliteration: 'karmaṇy-evādhikāras te mā phaleṣu kadācana |\nmā karma-phala-hetur bhūr mā te saṅgo \'stv akarmaṇi ||',
-    meaningEn: 'You have a right to perform your prescribed duty, but you are not entitled to the fruits of action. Never consider yourself the cause of the results of your activities, and never be attached to not doing your duty.',
-    meaningTe: 'కర్మలను ఆచరించుట యందే నీకు అధికారము కలదు, వాని ఫలితములపై ఎన్నడూ లేదు. కర్మఫలమునకు నీవు కారణము కాకుము, అలాగని కర్మలను చేయకుండుట యందునూ ఆసక్తి కలిగి ఉండకుము.',
-    pilgrimReflectionEn: 'When waiting in queue lines or planning your journey, do your best with sincere effort and leave the timing and outcome peacefully in the Lord\'s hands. Freedom from anxiety begins when you release attachment to immediate results.',
+    meaningEn: 'You have a right to perform your prescribed duty, but never to the fruits of action. Never consider yourself the cause of results, nor be attached to inaction.',
+    meaningTe: 'కర్మలను ఆచరించుట యందే నీకు అధికారము కలదు, ఫలితములపై ఎన్నడూ లేదు. కర్మఫలమునకు నీవు కారణము కాకుము, అలాగని కర్మలు చేయకుండుట యందునూ ఆసక్తి చూపకుము.',
+    pilgrimReflectionEn: 'When waiting in queue lines or planning your journey, do your best with sincere devotion and leave the timing and outcome peacefully to Lord Srinivasa.',
     pilgrimReflectionTe: 'దర్శనం క్యూలలో లేదా యాత్రలో ఉన్నప్పుడు సమయం మరియు ఫలితం గురించి ఆందోళన చెందక, మనసును భగవంతునిపై ఉంచి ప్రశాంతంగా వేచి ఉండండి.'
   },
   {
@@ -43,8 +43,8 @@ export const GITA_SHLOKAS: GitaShloka[] = [
     shlokaSanskrit: 'उद्धरेदात्मनात्मानं नात्मानमवसादयेत्।\nआत्मैव ह्यात्मनो बन्धुरात्मैव रिपुरात्मनः॥',
     shlokaTelugu: 'ఉద్ధరేదాత్మనాత్మానం నాత్మానమవసాదయేత్ ।\nఆత్మైవ హ్యాత్మనో బంధురాత్మైవ రిపురాత్మనః ॥',
     transliteration: 'uddhared ātmanātmānaṁ nātmānam avasādayet |\nātmaiva hy ātmano bandhur ātmaiva ripur ātmanaḥ ||',
-    meaningEn: 'Elevate yourself through the power of your mind, and do not degrade yourself. For the mind is the greatest friend of the self, and the mind is also the greatest enemy.',
-    meaningTe: 'తన మనస్సు ద్వారా తనను తాను ఉద్ధరించుకోవాలి గాని పతనం చేసుకోకూడదు. ఎందుకంటే మనిషికి తన మనస్సే బంధువు, ఆ మనస్సే శత్రువు కూడా.',
+    meaningEn: 'Elevate yourself through the power of your mind, and do not degrade yourself. For the mind is the greatest friend of the self, and the mind is also its greatest foe.',
+    meaningTe: 'తన మనస్సు ద్వారా తనను తాను ఉద్ధరించుకోవాలి గాని పతనం చేసుకోకూడదు. ఎందుకంటే మనిషికి తన మనస్సే మిత్రుడు, ఆ మనస్సే శత్రువు కూడా.',
     pilgrimReflectionEn: 'During travel and long waiting hours, keep your thoughts serene. A disciplined, patient mind turns ordinary waiting into deep spiritual meditation.',
     pilgrimReflectionTe: 'ప్రయాణ అలసట మరియు రద్దీలో మనస్సును ప్రశాంతంగా ఉంచుకుంటే ప్రతి క్షణం ధ్యానంలా మారుతుంది.'
   },
@@ -59,7 +59,7 @@ export const GITA_SHLOKAS: GitaShloka[] = [
     shlokaSanskrit: 'अनन्याश्चिन्तयन्तो मां ये जनाः पर्युपासते।\nतेषां नित्याभियुक्तानां योगक्षेमं वहाम्यहम्॥',
     shlokaTelugu: 'అనన్యాశ్చిన్తయన్తో మాం యే జనాః పర్యుపాసతే ।\nతేషాం నిత్యాభియుక్తానాం యోగక్షేమం వహామ్యహమ్ ॥',
     transliteration: 'ananyāś cintayanto māṁ ye janāḥ paryupāsate |\nteṣāṁ nityābhiyuktānāṁ yoga-kṣemaṁ vahāmy aham ||',
-    meaningEn: 'For those who always worship Me with exclusive devotion, meditating on My transcendental form—to them I carry what they lack, and I preserve what they have.',
+    meaningEn: 'For those who always worship Me with exclusive devotion, meditating on My transcendental form—to them I carry what they lack, and preserve what they have.',
     meaningTe: 'ఏకాగ్ర చిత్తముతో నన్నే ధ్యానించుచు, నిరంతరము నన్ను సేవించు భక్తుల యోగక్షేమములను నేనే స్వయముగా వహింతును.',
     pilgrimReflectionEn: 'Travel with complete faith. When you surrender your worries to Lord Srinivasa, the Divine takes care of your every need throughout the sacred pilgrimage.',
     pilgrimReflectionTe: 'నిండు నమ్మకంతో శ్రీవారిని స్మరించండి; మీ యాత్రను, సమస్త బాధ్యతలను భగవంతుడే స్వయంగా నడిపిస్తాడు.'
@@ -75,7 +75,7 @@ export const GITA_SHLOKAS: GitaShloka[] = [
     shlokaSanskrit: 'यस्मान्नोद्विजते लोको लोकान्नोद्विजते च यः।\nहर्षामर्षभयोद्वेगैर्मुक्तो यः स च मे प्रियः॥',
     shlokaTelugu: 'యస్మాన్నోద్విజతే లోకో లోకాన్నోద్విజతే చ యః ।\nహర్షామర్షభయోద్వేగైర్ముక్తో యః స చ మే ప్రియః ॥',
     transliteration: 'yasmān nodvijate loko lokān nodvijate ca yaḥ |\nharṣāmarṣa-bhayodvegair mukto yaḥ sa ca me priyaḥ ||',
-    meaningEn: 'He by whom no one is put into difficulty and who is not disturbed by anyone, who is free from joy, anger, fear and anxiety, is very dear to Me.',
+    meaningEn: 'He by whom no one is disturbed and who is not disturbed by the world, who is free from excessive excitement, impatience, fear, and agitation, is very dear to Me.',
     meaningTe: 'ఎవరి వలన లోకము కలత చెందదో, లోకము వలన ఎవరు కలత చెందరు, సంతోషము, అసూయ, భయము, ఆందోళనల నుండి విముక్తుడైనవాడు నాకు అత్యంత ప్రియమైన భక్తుడు.',
     pilgrimReflectionEn: 'Treat fellow pilgrims in the compartments with kindness and patience. Avoid agitation or rush; maintaining inner sweetness brings you closest to Govinda.',
     pilgrimReflectionTe: 'తోటి భక్తుల పట్ల సహనంతో, దయతో వ్యవహరించండి; ప్రశాంతంగా ఉండేవారే భగవంతునికి ప్రీతిపాత్రులు.'
@@ -87,14 +87,14 @@ export const GITA_SHLOKAS: GitaShloka[] = [
     referenceEn: 'Bhagavad Gita • Chapter 18, Verse 66',
     referenceTe: 'శ్రీమద్భగవద్గీత • మోక్షసంన్యాస యోగం (18.66)',
     themeEn: 'Ultimate Surrender (Charama Shloka)',
-    themeTe: 'చరమ శ్లోకం & సంపూర్ణ శరణాగతి',
+    themeTe: 'చరమ శ్లోకం • సంపూర్ణ శరణాగతి',
     shlokaSanskrit: 'सर्वधर्मान्परित्यज्य मामेकं शरणं व्रज।\nअहं त्वां सर्वपापेभ्यो मोक्षयिष्यामि मा शुचः॥',
     shlokaTelugu: 'సర్వధర్మాన్పరిత్యజ్య మామేకం శరణం వ్రజ ।\nఅహం త్వాం సర్వపాపేభ్యో మోక్షయిష్యామి మా శుచః ॥',
     transliteration: 'sarva-dharmān parityajya mām ekaṁ śaraṇaṁ vraja |\nahaṁ tvāṁ sarva-pāpebhyo mokṣayiṣyāmi mā śucaḥ ||',
-    meaningEn: 'Abandon all varieties of dharmas and simply surrender unto Me alone. I shall liberate you from all sinful reactions. Do not fear or grieve.',
-    meaningTe: 'సమస్త ధర్మములను నా యందు సమర్పించి, నన్ను ఒక్కడినే శరణు వేడుము. నేను నిన్ను సమస్త పాపముల నుండి విముక్తుడిని చేతును, శోకింపకుము.',
-    pilgrimReflectionEn: 'As you stand before the Sanctum of Venkateswara, offer all your burdens, doubts, and ego at His lotus feet. In total surrender lies eternal peace.',
-    pilgrimReflectionTe: 'శ్రీవారి సన్నిధిలో మీ భారాలను, అహంకారాన్ని సమర్పించి నమస్కరించండి; సంపూర్ణ శరణాగతియే పరమ శాంతికి మార్గం.'
+    meaningEn: 'Abandon all varieties of dharma and take refuge in Me alone. I shall free you from all sins. Do not grieve.',
+    meaningTe: 'సర్వ ధర్మములను సమర్పించి, నన్ను ఒక్కడినే శరణు వేడుము. నేను నిన్ను సమస్త పాపముల నుండి విముక్తుడిని చేస్తాను. శోకింపకుము.',
+    pilgrimReflectionEn: 'As you stand before Lord Venkateswara\'s sanctum, offer your burdens, doubts, and ego at His lotus feet. In complete surrender, the heart finds lasting peace.',
+    pilgrimReflectionTe: 'శ్రీ వేంకటేశ్వర స్వామివారి సన్నిధిలో మీ భారాలు, సందేహాలు, అహంకారాన్ని స్వామి పాదపద్మాలకు సమర్పించండి; సంపూర్ణ శరణాగతిలో హృదయానికి శాశ్వత శాంతి లభిస్తుంది.'
   },
   {
     id: 'gita-2-70',
@@ -107,7 +107,7 @@ export const GITA_SHLOKAS: GitaShloka[] = [
     shlokaSanskrit: 'आपूर्यमाणमचलप्रतिष्ठं समुद्रमापः प्रविशन्ति यद्वत्।\nतद्वत्कामा यं प्रविशन्ति सर्वे स शान्तिमाप्नोति न कामकामी॥',
     shlokaTelugu: 'ఆపూర్యమాణమచలప్రతిష్ఠం సముద్రమాపః ప్రవిశన్తి యద్వత్ ।\nతద్వత్కామా యం ప్రవిశన్తి సర్వే స శాన్తిమాప్నోతి న కామకామీ ॥',
     transliteration: 'āpūryamāṇam acala-pratiṣṭhaṁ samudram āpaḥ praviśanti yadvat |\ntadvat kāmā yaṁ praviśanti sarve sa śāntim āpnoti na kāma-kāmī ||',
-    meaningEn: 'As the ocean remains calm and undisturbed though many rivers continuously flow into it, so a person undisturbed by the incessant flow of desires attains peace.',
+    meaningEn: 'As the ocean remains tranquil and undisturbed though many rivers continuously flow into it, so a person undisturbed by the incessant flow of desires attains peace.',
     meaningTe: 'అన్నివైపుల నుండి నదులు వచ్చి కలిసినా సముద్రము ఎలా నిశ్చలంగా ఉంటుందో, అలాగే కోరికలు మనస్సులోకి ప్రవేశించినా చలించని వాడే నిజమైన శాంతిని పొందుతాడు.',
     pilgrimReflectionEn: 'Let external noises, delays, or crowds wash past you like waves. Anchor your core in peace like the deep ocean.',
     pilgrimReflectionTe: 'బయటి రద్దీ, శబ్దాలు మనస్సును తాకినా, సముద్రంలా నిశ్చలమైన భక్తితో శాంతంగా ఉండండి.'
@@ -123,7 +123,7 @@ export const GITA_SHLOKAS: GitaShloka[] = [
     shlokaSanskrit: 'रसोऽहमप्सु कौन्तेय प्रभास्मि शशिसूर्ययोः।\nप्रणवः सर्ववेदेषु शब्दः खे पौरुषं नृषु॥',
     shlokaTelugu: 'రసోఽహమప్సు కౌన్తేయ ప్రభాస్మి శశిసూర్యయోః ।\nప్రణవః సర్వవేదేషు శబ్దః ఖే పౌరుషం నృషు ॥',
     transliteration: 'raso \'ham apsu kaunteya prabhāsmi śaśi-sūryayoḥ |\npraṇavaḥ sarva-vedeṣu śabdaḥ khe pauruṣaṁ nṛṣu ||',
-    meaningEn: 'O son of Kunti, I am the taste of water, the radiance of the sun and moon, the sacred syllable Om in all the Vedas, sound in the ether, and ability in man.',
+    meaningEn: 'O Arjuna, I am the taste in water, the radiance in the sun and moon, the sacred syllable Om in all the Vedas, sound in the ether, and ability in humanity.',
     meaningTe: 'ఓ అర్జునా! నీటి యందలి రుచిని నేనే, సూర్యచంద్రుల యందలి కాంతిని నేనే, సర్వవేదముల యందలి ప్రణవ నాదము (ఓంకారం) నేనే, ఆకాశమున శబ్దమును నేనే.',
     pilgrimReflectionEn: 'When sipping Pushkarini water or watching the sunrise over Seshachalam hills, feel the living presence of Lord Govinda in every breath of nature.',
     pilgrimReflectionTe: 'పుష్కరిణి తీర్థం సేవించినా, శేషాచల కొండల్లో సూర్యోదయం చూసినా ప్రకృతిలోని ప్రతి అణువులోనూ శ్రీవారి దివ్యత్వాన్ని అనుభవించండి.'
@@ -139,7 +139,7 @@ export const GITA_SHLOKAS: GitaShloka[] = [
     shlokaSanskrit: 'यद्यद्विभूतिमत्सत्त्वं श्रीमदूर्जितमेव वा।\nतत्तदेवावगच्छ त्वं मम तेजोंऽशसम्भवम्॥',
     shlokaTelugu: 'యద్యద్విభూతిమత్సత్త్వం శ్రీమదూర్జితమేవ వా ।\nతత్తదేవావగచ్ఛ త్వం మమ తేజోంఽశసమ్భవమ్ ॥',
     transliteration: 'yad yad vibhūtimat sattvaṁ śrīmad ūrjitam eva vā |\ntat tad evāvagaccha tvaṁ mama tejo-\'ṁśa-sambhavam ||',
-    meaningEn: 'Know that whatever is glorious, beautiful, or mighty in this world springs from but a spark of My divine splendor.',
+    meaningEn: 'Know that whatever is glorious, beautiful, or mighty in this creation springs from but a spark of My divine splendor.',
     meaningTe: 'ఈ సృష్టిలో మహిమాన్వితమైనది, కాంతివంతమైనది, శక్తివంతమైనది ఏదైననూ నా దివ్య తేజస్సు యొక్క అంశతోనే ఉద్భవించినదని తెలుసుకో.',
     pilgrimReflectionEn: 'The majestic Gopurams, ancient granite pillars, and golden vimanam at Tirumala are sacred reflections of the Lord\'s infinite cosmic beauty.',
     pilgrimReflectionTe: 'తిరుమల ఆలయ రాజగోపురాలు, ఆనంద నిలయ బంగారు శిఖరం భగవంతుని దివ్య తేజస్సుకు ప్రతీకలు.'
