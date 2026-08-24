@@ -2,6 +2,7 @@ import React, { useState, useMemo } from 'react';
 import { Sparkles, Flame, Share2, Compass } from 'lucide-react';
 import { getTodaysCompanion, TodaysCompanionData } from '@/data/dailySpiritualEngine';
 import { ShareableQuoteCardModal } from './ShareableQuoteCardModal';
+import { DailyGitaCard } from './DailyGitaCard';
 import { useLanguage } from '@/lib/useLanguage';
 
 const TEXTS = {
@@ -163,6 +164,11 @@ export function DailyContent(props: any) {
         <p style={{ fontSize: '11.5px', color: '#475569', margin: 0, lineHeight: '1.4' }}>
           {companionData.significance.description}
         </p>
+      </div>
+
+      {/* ── DAILY BHAGAVAD GITA SHLOKA CARD ── */}
+      <div style={{ marginBottom: '10px' }}>
+        <DailyGitaCard variant={variant} />
       </div>
 
       {/* ── HABIT FOOTER ── */}
