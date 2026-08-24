@@ -429,9 +429,41 @@
 
 /* 💻 Small Desktop (1024px – 1279px) */
 @media (min-width: 1024px) {
+  .header {
+    display: none;
+  }
+
+  .stickyControls {
+    position: static;
+    top: auto;
+    background: transparent;
+    border-bottom: none;
+    padding: 16px 0 10px;
+    align-items: flex-start;
+  }
+
   .searchBar {
     max-width: 720px;
     padding: 12px 18px;
+    background: #FFFFFF;
+  }
+
+  .filterList {
+    display: none;
+  }
+
+  .sidebarFilter {
+    display: block;
+    width: 240px;
+    flex-shrink: 0;
+    background: #FFFFFF;
+    border: 1px solid #E2E8F0;
+    border-radius: 20px;
+    padding: 20px;
+    position: sticky;
+    top: 90px;
+    height: fit-content;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.03);
   }
 
   .horizontalScroll {
@@ -456,17 +488,9 @@
 /* 🖥 Desktop (1280px – 1439px) with Left Sidebar */
 @media (min-width: 1280px) {
   .sidebarFilter {
-    display: block;
     width: 260px;
-    flex-shrink: 0;
-    background: #FFFFFF;
-    border: 1px solid #E2E8F0;
-    border-radius: 20px;
     padding: 22px;
-    position: sticky;
-    top: 130px;
-    height: fit-content;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.03);
+    top: 100px;
   }
 
   .horizontalScroll {

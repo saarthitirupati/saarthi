@@ -209,15 +209,17 @@ function ExploreContent() {
         const directInterestMatch = pInterests.some(i => i.includes(f));
 
         if (f === 'temple' || f === 'temples' || f === 'spiritual') {
-          matchesFilter = directTypeMatch || directCatMatch || directTagMatch || directInterestMatch || pType === 'spiritual' || pCat.includes('temple');
+          matchesFilter = directTypeMatch || directCatMatch || directTagMatch || directInterestMatch || pType === 'spiritual' || pCat.includes('temple') || pCat.includes('spiritual');
         } else if (f === 'culture') {
-          matchesFilter = directTypeMatch || directCatMatch || directTagMatch || directInterestMatch || pType === 'spiritual' || pType === 'historical' || pCat.includes('heritage') || pCat.includes('culture');
-        } else if (f === 'water' || f === 'nature') {
-          matchesFilter = directTypeMatch || directCatMatch || directTagMatch || pCat.includes('waterfall') || pCat.includes('theertham') || pCat.includes('nature') || pTags.some(t => t.includes('water') || t.includes('theertham') || t.includes('nature'));
+          matchesFilter = directTypeMatch || directCatMatch || directTagMatch || directInterestMatch || pCat.includes('culture') || pCat.includes('museum') || pCat.includes('science') || pTags.some(t => t.includes('museum') || t.includes('culture') || t.includes('science'));
+        } else if (f === 'water' || f === 'theerthams') {
+          matchesFilter = pCat.includes('waterfall') || pCat.includes('theertham') || pTags.some(t => t.includes('water') || t.includes('theertham') || t.includes('waterfall') || t.includes('pushkarini'));
+        } else if (f === 'nature') {
+          matchesFilter = pType === 'nature' || pCat.includes('nature') || pCat.includes('park') || pCat.includes('forest') || pTags.some(t => t.includes('nature') || t.includes('viewpoint') || t.includes('hills') || t.includes('falls') || t.includes('waterfall') || t.includes('dam'));
         } else if (f === 'historical' || f === 'history' || f === 'heritage') {
-          matchesFilter = directTypeMatch || pType === 'historical' || pCat.includes('history') || pCat.includes('heritage') || pCat.includes('core temple') || pTags.some(t => t.includes('history') || t.includes('heritage'));
-        } else if (f === 'hidden') {
-          matchesFilter = directTypeMatch || place.isHiddenGem || pCat.includes('hidden') || pTags.some(t => t.includes('hidden'));
+          matchesFilter = pType === 'historical' || pCat.includes('history') || pCat.includes('heritage') || pCat.includes('fort') || pTags.some(t => t.includes('history') || t.includes('heritage') || t.includes('fort') || t.includes('ancient') || t.includes('archaeological'));
+        } else if (f === 'hidden' || f === 'hidden gems') {
+          matchesFilter = place.isHiddenGem || pType === 'hidden' || pCat.includes('hidden') || pTags.some(t => ['hidden', 'hidden gem', 'peaceful', 'serene', 'off-beat', 'offbeat', 'untouched', 'quiet'].includes(t));
         } else {
           matchesFilter = directTypeMatch || directCatMatch || directTagMatch || directInterestMatch;
         }
@@ -272,6 +274,47 @@ function ExploreContent() {
       })
       .slice(0, 10);
   }, [filteredPlaces]);
+
+  const categoryCounts = useMemo(() => {
+    const rawSource = places.length > 0 ? places : PLACES;
+    const counts: Record<string, number> = {
+      All: rawSource.length,
+      Nearby: rawSource.length,
+      Spiritual: 0,
+      Nature: 0,
+      Water: 0,
+      Historical: 0,
+      Hidden: 0,
+      Culture: 0,
+    };
+
+    rawSource.forEach((place: Place) => {
+      const pType = (place.placeType || '').toLowerCase();
+      const pCat = (place.category || '').toLowerCase();
+      const pTags = (place.tags || []).map(t => String(t).toLowerCase());
+
+      if (pType === 'spiritual' || pCat.includes('temple') || pCat.includes('spiritual')) {
+        counts.Spiritual++;
+      }
+      if (pType === 'nature' || pCat.includes('nature') || pCat.includes('park') || pTags.some(t => t.includes('nature') || t.includes('viewpoint') || t.includes('hills') || t.includes('falls') || t.includes('waterfall') || t.includes('dam'))) {
+        counts.Nature++;
+      }
+      if (pCat.includes('waterfall') || pCat.includes('theertham') || pTags.some(t => t.includes('water') || t.includes('theertham') || t.includes('waterfall') || t.includes('pushkarini'))) {
+        counts.Water++;
+      }
+      if (pType === 'historical' || pCat.includes('history') || pCat.includes('heritage') || pCat.includes('fort') || pTags.some(t => t.includes('history') || t.includes('heritage') || t.includes('fort') || t.includes('ancient') || t.includes('archaeological'))) {
+        counts.Historical++;
+      }
+      if (place.isHiddenGem || pType === 'hidden' || pCat.includes('hidden') || pTags.some(t => ['hidden', 'hidden gem', 'peaceful', 'serene', 'off-beat', 'offbeat', 'untouched', 'quiet'].includes(t))) {
+        counts.Hidden++;
+      }
+      if (pCat.includes('culture') || pCat.includes('museum') || pCat.includes('science') || pTags.some(t => t.includes('museum') || t.includes('culture') || t.includes('science') || t.includes('heritage'))) {
+        counts.Culture++;
+      }
+    });
+
+    return counts;
+  }, [places]);
 
   return (
     <main className={styles.main}>
@@ -330,30 +373,45 @@ function ExploreContent() {
                 {lang === 'te' ? 'వర్గాలు' : 'Categories'}
               </label>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
-                {FILTERS_DATA.map((filter) => (
-                  <button
-                    key={filter.key}
-                    onClick={() => handleFilterClick(filter.key)}
-                    style={{
-                      padding: '8px 12px',
-                      borderRadius: '10px',
-                      border: 'none',
-                      background: activeFilter === filter.key ? '#ECFDF5' : 'transparent',
-                      color: activeFilter === filter.key ? '#059669' : '#334155',
-                      fontWeight: activeFilter === filter.key ? 800 : 600,
-                      fontSize: '13px',
-                      textAlign: 'left',
-                      cursor: 'pointer',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'space-between',
-                      transition: 'all 0.15s'
-                    }}
-                  >
-                    <span>{lang === 'te' ? filter.labelTe : filter.labelEn}</span>
-                    {activeFilter === filter.key && <span style={{ color: '#059669', fontWeight: 800 }}>✓</span>}
-                  </button>
-                ))}
+                {FILTERS_DATA.map((filter) => {
+                  const count = categoryCounts[filter.key];
+                  const isActive = activeFilter === filter.key;
+                  return (
+                    <button
+                      key={filter.key}
+                      onClick={() => handleFilterClick(filter.key)}
+                      style={{
+                        padding: '9px 12px',
+                        borderRadius: '10px',
+                        border: isActive ? '1px solid #A7F3D0' : '1px solid transparent',
+                        background: isActive ? '#ECFDF5' : 'transparent',
+                        color: isActive ? '#059669' : '#334155',
+                        fontWeight: isActive ? 800 : 600,
+                        fontSize: '13px',
+                        textAlign: 'left',
+                        cursor: 'pointer',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'space-between',
+                        transition: 'all 0.15s'
+                      }}
+                    >
+                      <span>{lang === 'te' ? filter.labelTe : filter.labelEn}</span>
+                      {count !== undefined && count > 0 && (
+                        <span style={{
+                          fontSize: '11px',
+                          fontWeight: 800,
+                          color: isActive ? '#047857' : '#64748B',
+                          background: isActive ? '#D1FAE5' : '#F1F5F9',
+                          padding: '1.5px 7px',
+                          borderRadius: '8px'
+                        }}>
+                          {count}
+                        </span>
+                      )}
+                    </button>
+                  );
+                })}
               </div>
             </div>
           </aside>
