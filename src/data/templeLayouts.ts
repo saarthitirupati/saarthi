@@ -41,6 +41,7 @@ export interface TempleLayoutData {
     | 'heritage-fort' 
     | 'trek-trail' 
     | 'geo-nature-park'
+    | 'forest-eco-reserve'
     | 'shopping-market'
     | 'dining-restaurant'
     | 'museum-gallery'
@@ -466,7 +467,7 @@ export const CURATED_LAYOUTS: Record<string, Partial<TempleLayoutData>> = {
     titleTe: 'శ్రీ జీవ లింగేశ్వర స్వామి ఆలయ ప్రాంగణ మ్యాప్',
     layoutType: 'ancient-shrine',
     centerCoordinates: { lat: 13.6581, lng: 79.4292 },
-    routePath: [[430, 290], [375, 265], [270, 275], [270, 195], [145, 125], [270, 85], [395, 140], [430, 290]],
+    routePath: [[430, 285], [135, 250], [270, 270], [270, 190], [270, 85], [145, 125], [395, 140], [430, 285]],
     pins: [
       {
         id: 'parking',
@@ -476,7 +477,7 @@ export const CURATED_LAYOUTS: Record<string, Partial<TempleLayoutData>> = {
         lat: 13.6577,
         lng: 79.4288,
         svgX: 430,
-        svgY: 290,
+        svgY: 285,
         descEn: 'Open vehicle and auto parking area in Mangalam village.',
         descTe: 'వాహనాలు మరియు ఆటోల పార్కింగ్ స్థలం.'
       },
@@ -487,8 +488,8 @@ export const CURATED_LAYOUTS: Record<string, Partial<TempleLayoutData>> = {
         category: 'footwear',
         lat: 13.6580,
         lng: 79.4289,
-        svgX: 375,
-        svgY: 265,
+        svgX: 135,
+        svgY: 250,
         descEn: 'Shoe custody counter near the courtyard entrance.',
         descTe: 'పాదరక్షలు విడిచే ప్రదేశం.'
       },
@@ -500,7 +501,7 @@ export const CURATED_LAYOUTS: Record<string, Partial<TempleLayoutData>> = {
         lat: 13.6579,
         lng: 79.4290,
         svgX: 270,
-        svgY: 275,
+        svgY: 270,
         descEn: 'Stone archway and entrance facing the Tirumala hill slopes.',
         descTe: 'ఆలయ ప్రధాన ప్రవేశ ద్వారం.'
       },
@@ -2312,6 +2313,115 @@ export const CURATED_LAYOUTS: Record<string, Partial<TempleLayoutData>> = {
     ]
   },
 
+  'bhu-varaha': {
+    placeId: 'bhu-varaha',
+    titleEn: 'Sri Bhu Varaha Swamy Temple Precinct Map',
+    titleTe: 'శ్రీ భూ వరాహ స్వామి ఆలయ ప్రాంగణ మ్యాప్',
+    layoutType: 'sacred-pushkarini',
+    centerCoordinates: { lat: 13.6841, lng: 79.3475 },
+    defaultZoom: 17,
+    compassBearingDeg: 0,
+    sanctumNameEn: 'Sri Bhu Varaha Swamy Garbhalayam & Pushkarini Bank',
+    sanctumNameTe: 'శ్రీ భూ వరాహ స్వామి గర్భాలయం & పుష్కరిణి తీరం',
+    routePath: [[430, 280], [130, 255], [270, 270], [270, 190], [150, 85], [270, 140], [390, 160], [430, 280]],
+    pins: [
+      {
+        id: 'parking',
+        nameEn: 'Tirumala Central Parking / Ring Road',
+        nameTe: 'తిరుమల సెంట్రల్ పార్కింగ్',
+        category: 'parking',
+        lat: 13.6828,
+        lng: 79.3475,
+        svgX: 430,
+        svgY: 280,
+        descEn: 'Designated parking near CRO and Bata Gangamma square; pedestrian walk to Pushkarini.',
+        descTe: 'సి.ఆర్.ఓ సమీప పార్కింగ్ స్థలం.'
+      },
+      {
+        id: 'footwear',
+        nameEn: 'Pushkarini Bank Footwear Stand',
+        nameTe: 'పాదరక్షల కేంద్రం',
+        category: 'footwear',
+        lat: 13.6833,
+        lng: 79.3474,
+        svgX: 130,
+        svgY: 255,
+        descEn: 'Free footwear custody counter near Pushkarini north bank.',
+        descTe: 'పాదరక్షలు విడిచే ఉచిత కౌంటర్.'
+      },
+      {
+        id: 'entry',
+        nameEn: 'Varahaswamy Mukhadwaram Entry',
+        nameTe: 'ఆలయ ప్రవేశ ముఖద్వారం',
+        category: 'entry',
+        lat: 13.6835,
+        lng: 79.3476,
+        svgX: 270,
+        svgY: 270,
+        descEn: 'Main temple entrance facing Swami Pushkarini holy lake.',
+        descTe: 'స్వామి పుష్కరిణి ఎదురుగా ఉన్న ప్రధాన ప్రవేశ ద్వారం.'
+      },
+      {
+        id: 'dhwajasthambham',
+        nameEn: 'Dhwajasthambham & Bali Peetham',
+        nameTe: 'ధ్వజస్తంభం & బలిపీఠం',
+        category: 'info',
+        lat: 13.6838,
+        lng: 79.3476,
+        svgX: 270,
+        svgY: 190,
+        descEn: 'Sacred brass flag mast inside the inner temple courtyard.',
+        descTe: 'పవిత్ర ధ్వజస్తంభం.'
+      },
+      {
+        id: 'sanctum',
+        nameEn: 'Sri Adi Bhu Varaha Swamy Sanctum',
+        nameTe: 'శ్రీ భూ వరాహ స్వామి గర్భాలయం',
+        category: 'sanctum',
+        lat: 13.6841,
+        lng: 79.3476,
+        svgX: 150,
+        svgY: 85,
+        descEn: 'Ancient presiding deity Sri Bhu Varaha Swamy with Mother Earth (Bhudevi) on His lap. Traditional first darshan of Tirumala.',
+        descTe: 'భూదేవి సమేత శ్రీ ఆది వరాహ స్వామి మూలవిరాట్టు దర్శనం. తిరుమల సంప్రదాయం ప్రకారం మొదటి దర్శనం.'
+      },
+      {
+        id: 'pushkarini',
+        nameEn: 'Swami Pushkarini Holy Teertham',
+        nameTe: 'స్వామి పుష్కరిణి తీర్థం',
+        category: 'info',
+        lat: 13.6837,
+        lng: 79.3480,
+        svgX: 270,
+        svgY: 140,
+        descEn: 'Sacred Pushkarini water tank adjacent to the shrine for holy prokshana.',
+        descTe: 'ఆలయం పక్కనే ఉన్న పవిత్ర స్వామి పుష్కరిణి కోనేరు.'
+      },
+      {
+        id: 'temple-way',
+        nameEn: 'Pathway to Sri Vari Temple',
+        nameTe: 'శ్రీవారి ప్రధాన ఆలయ మార్గం',
+        category: 'laddu',
+        lat: 13.6835,
+        lng: 79.3485,
+        svgX: 390,
+        svgY: 160,
+        descEn: 'Connecting stone walkway leading to Srivari Temple Mahadwaram after Varahaswamy darshan.',
+        descTe: 'వరాహస్వామి దర్శనం అనంతరం శ్రీవారి ఆలయం వైపు వెళ్ళే మార్గం.'
+      }
+    ],
+    routeSteps: [
+      { stepNumber: 1, titleEn: 'Pushkarini Approach & Footwear', titleTe: 'పాదరక్షలు విడవడం', distance: '0.0 km', timeMins: 0, descEn: 'Deposit footwear at the north bank counter of Swami Pushkarini.', descTe: 'పుష్కరిణి కౌంటర్ వద్ద పాదరక్షలు భద్రపరచండి.' },
+      { stepNumber: 2, titleEn: 'Mukhadwaram Entry & Courtyard', titleTe: 'ఆలయ ప్రవేశం', distance: '30m', timeMins: 2, descEn: 'Enter through the Mukhadwaram into the temple courtyard.', descTe: 'ముఖద్వారం గుండా ఆలయ ప్రాంగణంలోకి ప్రవేశించండి.' },
+      { stepNumber: 3, titleEn: 'Sri Adi Bhu Varaha Swamy Darshan', titleTe: 'శ్రీ భూ వరాహ స్వామి దర్శనం', distance: '50m', timeMins: 10, descEn: 'Have the sacred darshan of Lord Varaha Swamy with Bhudevi (essential first darshan of Tirumala).', descTe: 'ఆది వరాహ స్వామి మూలవిరాట్టును దర్శించుకోండి.' },
+      { stepNumber: 4, titleEn: 'Swami Pushkarini Prokshana & Srivari Temple', titleTe: 'పుష్కరిణి తీర్థం & శ్రీవారి ఆలయం', distance: '60m', timeMins: 5, descEn: 'Take holy Pushkarini theertha prokshana and proceed along the eastern walkway to Sri Venkateswara Temple.', descTe: 'పుష్కరిణి తీర్థ ప్రోక్షణ చేసుకుని శ్రీవారి ప్రధాన ఆలయం వైపు సాగండి.' }
+    ],
+    emergencyContacts: [
+      { titleEn: 'TTD Central Information Center (Tirumala)', titleTe: 'తిరుమల సమాచార కేంద్రం', number: '08772277777' },
+      { titleEn: 'Emergency Helpline', titleTe: 'అత్యవసర హెల్ప్‌లైన్', number: '112' }
+    ]
+  },
+
   'swami-pushkarini': {
     placeId: 'swami-pushkarini',
     titleEn: 'Swami Pushkarini Holy Lake & Stepped Ghats',
@@ -2765,7 +2875,7 @@ export const CURATED_LAYOUTS: Record<string, Partial<TempleLayoutData>> = {
     placeId: 'mamanduru-forest',
     titleEn: 'Mamanduru Eco-Tourism & Forest Trail Map',
     titleTe: 'మామండూరు ఎకో-టూరిజం & అటవీ మార్గం',
-    layoutType: 'geo-nature-park',
+    layoutType: 'forest-eco-reserve',
     centerCoordinates: { lat: 13.750691, lng: 79.466337 },
     defaultZoom: 16,
     compassBearingDeg: 0,
@@ -2775,7 +2885,7 @@ export const CURATED_LAYOUTS: Record<string, Partial<TempleLayoutData>> = {
     pins: [
       {
         id: 'parking',
-        nameEn: 'Highway Parking & Checkpost Bay',
+        nameEn: 'Eco-Park Parking Bay',
         nameTe: 'పార్కింగ్ & అటవీ చెక్‌పోస్ట్',
         category: 'parking',
         lat: 13.7495,
@@ -2787,7 +2897,7 @@ export const CURATED_LAYOUTS: Record<string, Partial<TempleLayoutData>> = {
       },
       {
         id: 'entry',
-        nameEn: 'Forest Reception & Eco-Park Gateway',
+        nameEn: 'Forest Reception & Entry Gate',
         nameTe: 'ఎకో-టూరిజం ప్రవేశ ద్వారం & టికెట్ కౌంటర్',
         category: 'entry',
         lat: 13.7500,
@@ -2799,7 +2909,7 @@ export const CURATED_LAYOUTS: Record<string, Partial<TempleLayoutData>> = {
       },
       {
         id: 'cottages',
-        nameEn: '1865 British Forest Wooden Cottages',
+        nameEn: '1865 British Wooden Rest House',
         nameTe: '1865 నాటి చారిత్రక రెస్ట్ హౌస్ & కాటేజీలు',
         category: 'info',
         lat: 13.7504,
@@ -2811,9 +2921,9 @@ export const CURATED_LAYOUTS: Record<string, Partial<TempleLayoutData>> = {
       },
       {
         id: 'trail',
-        nameEn: 'Peacock Trailhead & Jungle Trekking Route',
+        nameEn: 'Peacock Trail & Jungle Trek',
         nameTe: 'నెమలి ట్రెక్కింగ్ మార్గం ప్రారంభం',
-        category: 'safari',
+        category: 'info',
         lat: 13.7510,
         lng: 79.4660,
         svgX: 270,
@@ -2823,7 +2933,7 @@ export const CURATED_LAYOUTS: Record<string, Partial<TempleLayoutData>> = {
       },
       {
         id: 'watchtower',
-        nameEn: 'Canopy Walk & Forest Watch Tower',
+        nameEn: 'Canopy Walk & Watch Tower',
         nameTe: 'వాచ్ టవర్ & వ్యూ పాయింట్',
         category: 'info',
         lat: 13.7515,
@@ -2879,6 +2989,7 @@ export function getTempleLayout(placeInput: string | PlaceInputContext, fallback
   // Check exact placeId or mapped aliases in CURATED_LAYOUTS
   const curatedKey = 
     CURATED_LAYOUTS[placeId] ? placeId :
+    placeId === 'varahaswamy' || placeId === 'bhu-varahaswamy' || placeId === 'varaha-swamy' ? 'bhu-varaha' :
     placeId === 'narayanavanam-falls' ? 'narayanavanam-waterfalls' :
     placeId === 'kailasakona' ? 'kailasa-kona' :
     placeId === 'moolasthana-yellamma' ? 'moolasthana-yellamma-chandragiri' :

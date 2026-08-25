@@ -5,6 +5,7 @@
 
 import { TIRUPATI_CENTER } from '@/utils/location';
 import { readStatus } from '@/lib/statusDb';
+import { FESTIVALS_2026 } from '@/data/festivals';
 
 export interface RawSignals {
   gps: { lat: number; lng: number };
@@ -34,6 +35,10 @@ export async function collectRawSignals(query: {
   const parsedLng = Number(query.lng);
   const lat = (!isNaN(parsedLat) && parsedLat !== 0) ? parsedLat : TIRUPATI_CENTER.lat;
   const lng = (!isNaN(parsedLng) && parsedLng !== 0) ? parsedLng : TIRUPATI_CENTER.lng;
+
+  // Active festival check for today in IST
+  const todayStr = new Intl.DateTimeFormat('en-CA', { timeZone: 'Asia/Kolkata' }).format(now);
+  const todayFestival = FESTIVALS_2026.find(f => f.date === todayStr);
 
   // Live weather & crowd signals from statusDb
   let weather: 'sunny' | 'rain' | 'cloudy' | 'heatwave' = 'sunny';
@@ -79,7 +84,7 @@ export async function collectRawSignals(query: {
     dayOfWeek,
     timeHour,
     weather,
-    activeFestival: null,
+    activeFestival: todayFestival?.name || null,
     liveCrowdStatus,
     roadClosures: [],
     parkingStatus: {

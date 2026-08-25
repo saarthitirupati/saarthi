@@ -277,9 +277,11 @@ function ExploreContent() {
 
   const categoryCounts = useMemo(() => {
     const rawSource = places.length > 0 ? places : PLACES;
+    const isLocalUser = userLocation && isWithinTirupatiRegion(userLocation.lat, userLocation.lng);
+    const effectiveLocation = isLocalUser ? userLocation! : TIRUPATI_CENTER;
     const counts: Record<string, number> = {
       All: rawSource.length,
-      Nearby: rawSource.length,
+      Nearby: 0,
       Spiritual: 0,
       Nature: 0,
       Water: 0,
@@ -291,30 +293,24 @@ function ExploreContent() {
     rawSource.forEach((place: Place) => {
       const pType = (place.placeType || '').toLowerCase();
       const pCat = (place.category || '').toLowerCase();
-      const pTags = (place.tags || []).map(t => String(t).toLowerCase());
 
-      if (pType === 'spiritual' || pCat.includes('temple') || pCat.includes('spiritual')) {
-        counts.Spiritual++;
-      }
-      if (pType === 'nature' || pCat.includes('nature') || pCat.includes('park') || pTags.some(t => t.includes('nature') || t.includes('viewpoint') || t.includes('hills') || t.includes('falls') || t.includes('waterfall') || t.includes('dam'))) {
-        counts.Nature++;
-      }
-      if (pCat.includes('waterfall') || pCat.includes('theertham') || pTags.some(t => t.includes('water') || t.includes('theertham') || t.includes('waterfall') || t.includes('pushkarini'))) {
-        counts.Water++;
-      }
-      if (pType === 'historical' || pCat.includes('history') || pCat.includes('heritage') || pCat.includes('fort') || pTags.some(t => t.includes('history') || t.includes('heritage') || t.includes('fort') || t.includes('ancient') || t.includes('archaeological'))) {
-        counts.Historical++;
-      }
-      if (place.isHiddenGem || pType === 'hidden' || pCat.includes('hidden') || pTags.some(t => ['hidden', 'hidden gem', 'peaceful', 'serene', 'off-beat', 'offbeat', 'untouched', 'quiet'].includes(t))) {
-        counts.Hidden++;
-      }
-      if (pCat.includes('culture') || pCat.includes('museum') || pCat.includes('science') || pTags.some(t => t.includes('museum') || t.includes('culture') || t.includes('science') || t.includes('heritage'))) {
-        counts.Culture++;
-      }
+      // Nearby: places within 15 km
+      const lat = place.coordinates?.lat || TIRUPATI_CENTER.lat;
+      const lng = place.coordinates?.lng || TIRUPATI_CENTER.lng;
+      const dist = calculateDrivingDistance(effectiveLocation.lat, effectiveLocation.lng, lat, lng, false);
+      if (dist <= 15) counts.Nearby++;
+
+      // Primary placeType-based counting (tight, accurate)
+      if (pType === 'spiritual' || pCat.includes('temple')) counts.Spiritual++;
+      if (pType === 'nature') counts.Nature++;
+      if (pType === 'water') counts.Water++;
+      if (pType === 'historical' || pCat.includes('fort')) counts.Historical++;
+      if (pType === 'culture' || pType === 'leisure') counts.Culture++;
+      if (place.isHiddenGem || pType === 'hidden') counts.Hidden++;
     });
 
     return counts;
-  }, [places]);
+  }, [places, userLocation]);
 
   return (
     <main className={styles.main}>

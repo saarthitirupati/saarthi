@@ -522,6 +522,98 @@ export default function OfflineTempleMap({
               {/* Park Entrance Arch */}
               <rect x="220" y="262" width="100" height="28" rx="6" fill="#15803D" stroke="#14532D" strokeWidth="1.5" />
             </g>
+          ) : layout.layoutType === 'forest-eco-reserve' ? (
+            /* 3B. DENSE ECO-TOURISM FOREST RESERVE (Mamanduru Forest & Nature Trails) */
+            <g>
+              {/* Forest Base Ground */}
+              <rect x="35" y="25" width="470" height="285" rx="16" fill="#F2FAF4" stroke="#16A34A" strokeWidth="2" />
+
+              {/* Seshachalam Hill Valley Curves & Tree Groves */}
+              <circle cx="80" cy="75" r="26" fill="#DCFCE7" stroke="#22C55E" strokeWidth="1.2" />
+              <circle cx="105" cy="95" r="20" fill="#BBF7D0" stroke="#16A34A" strokeWidth="1.2" />
+              <circle cx="455" cy="75" r="26" fill="#DCFCE7" stroke="#22C55E" strokeWidth="1.2" />
+              <circle cx="430" cy="95" r="20" fill="#BBF7D0" stroke="#16A34A" strokeWidth="1.2" />
+
+              {/* Natural Forest Trees & Red Sanders Clusters */}
+              <use href="#treeCluster" x="75" y="70" />
+              <use href="#treeCluster" x="445" y="70" />
+              <use href="#palmCluster" x="65" y="235" />
+              <use href="#treeCluster" x="465" y="235" />
+
+              {/* Crystal Perennial Forest Stream / Brook flowing through valley */}
+              <path 
+                d="M 40 145 Q 160 120 270 140 Q 380 160 500 135" 
+                fill="none" 
+                stroke="#BAE6FD" 
+                strokeWidth="20" 
+                strokeLinecap="round" 
+                opacity="0.65" 
+              />
+              <path 
+                d="M 40 145 Q 160 120 270 140 Q 380 160 500 135" 
+                fill="none" 
+                stroke="#38BDF8" 
+                strokeWidth="10" 
+                strokeLinecap="round" 
+              />
+              <path 
+                d="M 50 145 Q 160 122 270 140 Q 380 158 490 135" 
+                fill="none" 
+                stroke="#FFFFFF" 
+                strokeWidth="2" 
+                strokeDasharray="8 6" 
+                opacity="0.9" 
+              />
+
+              {/* Wooden Jungle Trek Walkway */}
+              <path 
+                d="M 270 270 Q 160 230 160 190 Q 160 120 270 100 Q 380 100 380 140" 
+                fill="none" 
+                stroke="#CBD5E1" 
+                strokeWidth="16" 
+                strokeLinecap="round" 
+                strokeLinejoin="round" 
+              />
+              <path 
+                d="M 270 270 Q 160 230 160 190 Q 160 120 270 100 Q 380 100 380 140" 
+                fill="none" 
+                stroke="#E2E8F0" 
+                strokeWidth="10" 
+                strokeDasharray="4 3" 
+                strokeLinecap="round" 
+              />
+
+              {/* 1865 British Colonial Wooden Heritage Bungalow / Cottages (West) */}
+              <g transform="translate(115, 160)">
+                <rect x="0" y="10" width="80" height="50" rx="6" fill="#FEF3C7" stroke="#92400E" strokeWidth="1.5" />
+                {/* Triangular Wooden Gabled Roof */}
+                <polygon points="40,-4 -4,12 84,12" fill="#78350F" stroke="#451A03" strokeWidth="1.2" />
+                {/* Wooden Verandah Pillars */}
+                <line x1="12" y1="12" x2="12" y2="60" stroke="#B45309" strokeWidth="2" />
+                <line x1="68" y1="12" x2="68" y2="60" stroke="#B45309" strokeWidth="2" />
+                <line x1="40" y1="12" x2="40" y2="60" stroke="#B45309" strokeWidth="2" />
+                <rect x="32" y="32" width="16" height="28" rx="2" fill="#92400E" />
+              </g>
+
+              {/* Canopy Walk & Elevated Watch Tower Observation Deck (North-East) */}
+              <g transform="translate(340, 110)">
+                <rect x="0" y="0" width="85" height="50" rx="8" fill="#FEF9C3" stroke="#CA8A04" strokeWidth="1.5" />
+                {/* Watch Tower Stilt Legs */}
+                <circle cx="42" cy="25" r="14" fill="#BBF7D0" stroke="#15803D" strokeWidth="1.2" />
+                <circle cx="42" cy="25" r="6" fill="#15803D" />
+                {/* Canopy Bridge Railing */}
+                <line x1="10" y1="25" x2="75" y2="25" stroke="#CA8A04" strokeWidth="2" strokeDasharray="3 2" />
+              </g>
+
+              {/* Peacock Trailhead Canopy Arch (North Center) */}
+              <g transform="translate(225, 75)">
+                <rect x="0" y="0" width="90" height="30" rx="6" fill="#DCFCE7" stroke="#16A34A" strokeWidth="1.5" />
+                <circle cx="45" cy="15" r="8" fill="#22C55E" stroke="#15803D" strokeWidth="1" />
+              </g>
+
+              {/* AP Forest Department Eco Gateway Arch (South Center) */}
+              <rect x="215" y="262" width="110" height="28" rx="6" fill="#15803D" stroke="#14532D" strokeWidth="1.5" />
+            </g>
           ) : layout.layoutType === 'hilltop-peak' ? (
             /* 3B. MOUNTAIN SUMMIT & DIVINE FOOTPRINTS SHRINE (Srivari Paadaalu, Narayanagiri Peak) */
             <g>
@@ -606,8 +698,8 @@ export default function OfflineTempleMap({
               {/* Kumkum & Prasadam Counter Pavilion (Eastern Courtyard) */}
               <rect x="355" y="138" width="80" height="44" rx="6" fill="#FEF9C3" stroke="#CA8A04" strokeWidth="1.5" />
 
-              {/* Footwear Stand (South-East Entrance Side) */}
-              <rect x="340" y="248" width="80" height="30" rx="6" fill="#F1F5F9" stroke="#64748B" strokeWidth="1.2" />
+              {/* Footwear Stand (South-West Entrance Side) */}
+              <rect x="95" y="235" width="80" height="30" rx="6" fill="#F1F5F9" stroke="#64748B" strokeWidth="1.2" />
 
               {/* Entrance Gopuram Arch */}
               <g transform="translate(225, 252)">
@@ -700,8 +792,8 @@ export default function OfflineTempleMap({
               {/* Prasadam & Vibhuti Counter (North-East) */}
               <rect x="365" y="130" width="70" height="40" rx="6" fill="#FEF9C3" stroke="#CA8A04" strokeWidth="1.5" />
 
-              {/* Footwear Stand (South-East) */}
-              <rect x="340" y="248" width="80" height="30" rx="6" fill="#F1F5F9" stroke="#64748B" strokeWidth="1.2" />
+              {/* Footwear Stand (South-West Entrance Side) */}
+              <rect x="95" y="235" width="80" height="30" rx="6" fill="#F1F5F9" stroke="#64748B" strokeWidth="1.2" />
 
               {/* Entrance Gopuram / Archway (South) */}
               <g transform="translate(225, 258)">
@@ -956,6 +1048,9 @@ export default function OfflineTempleMap({
                 if (p.category === 'parking') return 'పార్కింగ్';
                 if (p.category === 'laddu') return 'ప్రసాదం';
                 if (p.category === 'queue') return 'క్యూ లైన్';
+                if (p.id.includes('cottage') || p.id.includes('resthouse') || (p.nameEn || '').toLowerCase().includes('cottage') || (p.nameEn || '').toLowerCase().includes('rest house')) return 'రెస్ట్ హౌస్';
+                if (p.id.includes('trail') || p.id.includes('trek') || (p.nameEn || '').toLowerCase().includes('trek') || (p.nameEn || '').toLowerCase().includes('trail')) return 'ట్రెక్కింగ్ మార్గం';
+                if (p.id.includes('watchtower') || p.id.includes('canopy') || (p.nameEn || '').toLowerCase().includes('canopy') || (p.nameEn || '').toLowerCase().includes('watch tower')) return 'వాచ్ టవర్';
                 if (p.id.includes('dhwaja')) return 'ధ్వజస్తంభం';
                 if (p.id.includes('pushkarini') || p.id.includes('tank')) return 'పుష్కరిణి';
                 if (p.id.includes('theertham') || p.id.includes('kund')) return 'తీర్థం';
@@ -978,6 +1073,9 @@ export default function OfflineTempleMap({
               if (p.category === 'laddu') return 'Prasadam';
               if (p.category === 'queue') return 'Queue Line';
               if (p.category === 'medical') return 'Medical / Clinic';
+              if (p.id.includes('cottage') || p.id.includes('resthouse') || (p.nameEn || '').toLowerCase().includes('cottage') || (p.nameEn || '').toLowerCase().includes('rest house')) return 'British Cottages';
+              if (p.id.includes('trail') || p.id.includes('trek') || (p.nameEn || '').toLowerCase().includes('trek') || (p.nameEn || '').toLowerCase().includes('trail')) return 'Jungle Trek';
+              if (p.id.includes('watchtower') || p.id.includes('canopy') || (p.nameEn || '').toLowerCase().includes('canopy') || (p.nameEn || '').toLowerCase().includes('watch tower')) return 'Canopy Walk';
               if (p.category === 'safari') return 'Safari Station';
               if (p.id.includes('neem') || p.id.includes('tree') || p.id.includes('vriksha')) return 'Sacred Tree';
               if (p.id.includes('dhwaja')) return 'Dhwajasthambham';
