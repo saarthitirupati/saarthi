@@ -42,6 +42,7 @@ export interface TempleLayoutData {
     | 'trek-trail' 
     | 'geo-nature-park'
     | 'forest-eco-reserve'
+    | 'pancha-mukha-shrine'
     | 'shopping-market'
     | 'dining-restaurant'
     | 'museum-gallery'
@@ -571,9 +572,9 @@ export const CURATED_LAYOUTS: Record<string, Partial<TempleLayoutData>> = {
     placeId: 'panchamukha-anjaneya-temple',
     titleEn: 'Sri Pancha Mukha Anjaneya Swamy Temple Precinct Map',
     titleTe: 'శ్రీ పంచముఖ ఆంజనేయ స్వామి ఆలయ ప్రాంగణ మ్యాప్',
-    layoutType: 'city-shrine',
+    layoutType: 'pancha-mukha-shrine',
     centerCoordinates: { lat: 13.6311, lng: 79.4149 },
-    routePath: [[430, 290], [375, 265], [270, 275], [270, 195], [150, 130], [270, 85], [395, 160], [430, 290]],
+    routePath: [[370, 280], [270, 270], [135, 245], [270, 195], [160, 120], [270, 75], [395, 150], [370, 280]],
     pins: [
       {
         id: 'parking',
@@ -582,8 +583,8 @@ export const CURATED_LAYOUTS: Record<string, Partial<TempleLayoutData>> = {
         category: 'parking',
         lat: 13.6308,
         lng: 79.4145,
-        svgX: 430,
-        svgY: 290,
+        svgX: 370,
+        svgY: 280,
         descEn: 'Street parking along Balaji Nagar lane for two-wheelers and autos.',
         descTe: 'వాహనాలు మరియు ఆటోల పార్కింగ్ స్థలం.'
       },
@@ -594,8 +595,8 @@ export const CURATED_LAYOUTS: Record<string, Partial<TempleLayoutData>> = {
         category: 'footwear',
         lat: 13.6309,
         lng: 79.4146,
-        svgX: 375,
-        svgY: 265,
+        svgX: 135,
+        svgY: 245,
         descEn: 'Designated shoe keeping stand near the entrance gate.',
         descTe: 'పాదరక్షలు విడిచే ప్రదేశం.'
       },
@@ -607,7 +608,7 @@ export const CURATED_LAYOUTS: Record<string, Partial<TempleLayoutData>> = {
         lat: 13.6310,
         lng: 79.4147,
         svgX: 270,
-        svgY: 275,
+        svgY: 270,
         descEn: 'Main temple entrance leading into the sacred Hanuman mandapam.',
         descTe: 'ఆలయ ప్రధాన ప్రవేశ ద్వారం.'
       },
@@ -630,8 +631,8 @@ export const CURATED_LAYOUTS: Record<string, Partial<TempleLayoutData>> = {
         category: 'info',
         lat: 13.6313,
         lng: 79.4147,
-        svgX: 150,
-        svgY: 130,
+        svgX: 160,
+        svgY: 120,
         descEn: 'Revered sanctum of Lord Sri Rama, Sita Devi, and Lakshmana Swamy worshipped with devotion.',
         descTe: 'శ్రీ సీతారామ లక్ష్మణుల పవిత్ర సన్నిధి.'
       },
@@ -643,7 +644,7 @@ export const CURATED_LAYOUTS: Record<string, Partial<TempleLayoutData>> = {
         lat: 13.6312,
         lng: 79.4149,
         svgX: 270,
-        svgY: 85,
+        svgY: 75,
         descEn: 'Mighty 5-faced Lord Hanuman idol (Hanuman, Narasimha, Garuda, Varaha, Hayagriva) adorned with Sindhooram and Vadamala.',
         descTe: 'సింధూర అలంకరణ, వడమాలతో దర్శనమిచ్చే పంచముఖ ఆంజనేయ స్వామి మూలవిరాట్టు.'
       },
@@ -655,7 +656,7 @@ export const CURATED_LAYOUTS: Record<string, Partial<TempleLayoutData>> = {
         lat: 13.6310,
         lng: 79.4151,
         svgX: 395,
-        svgY: 160,
+        svgY: 150,
         descEn: 'Collect blessed Sindhooram, holy theertham, sweet laddu, and sanctified Vada prasadam.',
         descTe: 'స్వామివారి దివ్య సింధూరం, తీర్థం మరియు ప్రసాదం స్వీకరించే స్థలం.'
       }

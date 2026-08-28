@@ -664,6 +664,72 @@ export default function OfflineTempleMap({
                 <polygon points="45,-8 15,0 75,0" fill="#B45309" stroke="#78350F" strokeWidth="1.2" />
               </g>
             </g>
+          ) : layout.layoutType === 'pancha-mukha-shrine' ? (
+            /* PANCHA MUKHA SHRINE — Small neighborhood Hanuman temple with 5-face radial design */
+            <g>
+              {/* Outer Boundary Wall — compact neighborhood temple */}
+              <rect x="55" y="30" width="430" height="265" rx="14" fill="#FFF9F0" stroke="#C2410C" strokeWidth="2" strokeDasharray="6 3" />
+
+              {/* Inner Sacred Prakaram */}
+              <rect x="85" y="50" width="370" height="220" rx="10" fill="#FEF7ED" stroke="#9A3412" strokeWidth="1.5" />
+
+              {/* Garbhagriha — Inner Sanctum Square */}
+              <g transform="translate(235, 40)">
+                <rect x="0" y="0" width="70" height="65" rx="8" fill="#FEF3C7" stroke="#C2410C" strokeWidth="2" />
+                {/* Vimana Tower */}
+                <polygon points="35,5 10,55 60,55" fill="url(#goldVimana)" stroke="#9A3412" strokeWidth="1.2" />
+                <circle cx="35" cy="3" r="3.5" fill="#FDE047" stroke="#78350F" />
+              </g>
+
+              {/* 5 Radial Rays — Pancha Mukha (5 faces of Hanuman) */}
+              <g opacity="0.25">
+                {/* Anjaneya (North) */}
+                <line x1="270" y1="72" x2="270" y2="35" stroke="#EA580C" strokeWidth="2.5" />
+                {/* Narasimha (North-East) */}
+                <line x1="270" y1="72" x2="340" y2="42" stroke="#EA580C" strokeWidth="2" />
+                {/* Garuda (East) */}
+                <line x1="270" y1="72" x2="350" y2="72" stroke="#EA580C" strokeWidth="2" />
+                {/* Varaha (West) */}
+                <line x1="270" y1="72" x2="190" y2="72" stroke="#EA580C" strokeWidth="2" />
+                {/* Hayagriva (North-West) */}
+                <line x1="270" y1="72" x2="200" y2="42" stroke="#EA580C" strokeWidth="2" />
+              </g>
+
+              {/* Sindhooram Glow around Sanctum */}
+              <circle cx="270" cy="72" r="42" fill="url(#sanctumGlow)" />
+
+              {/* Maha Mandapam — Assembly Hall (front of sanctum) */}
+              <rect x="215" y="120" width="110" height="50" rx="8" fill="#FEF9C3" stroke="#CA8A04" strokeWidth="1.5" />
+              {/* Mandapam Pillars */}
+              <circle cx="228" cy="132" r="3" fill="#78350F" />
+              <circle cx="312" cy="132" r="3" fill="#78350F" />
+              <circle cx="228" cy="158" r="3" fill="#78350F" />
+              <circle cx="312" cy="158" r="3" fill="#78350F" />
+
+              {/* Dhwajasthambham spot */}
+              <g transform="translate(270, 190)">
+                <circle cx="0" cy="0" r="10" fill="#FEF9C3" stroke="#CA8A04" strokeWidth="1.5" />
+                <circle cx="0" cy="0" r="4" fill="#B45309" />
+              </g>
+
+              {/* Sita Rama Sub-Shrine (North-West) */}
+              <rect x="105" y="95" width="95" height="50" rx="8" fill="#FEF3C7" stroke="#D97706" strokeWidth="1.2" />
+
+              {/* Prasadam Counter (East) */}
+              <rect x="350" y="128" width="80" height="44" rx="6" fill="#FEF9C3" stroke="#CA8A04" strokeWidth="1.5" />
+
+              {/* Footwear Stand (South-West) */}
+              <rect x="95" y="230" width="80" height="30" rx="6" fill="#F1F5F9" stroke="#64748B" strokeWidth="1.2" />
+
+              {/* Parking Area (South-East) */}
+              <circle cx="370" cy="280" r="22" fill="#F1F5F9" stroke="#64748B" strokeWidth="1.2" />
+
+              {/* Entrance Arch (South Center) */}
+              <g transform="translate(225, 255)">
+                <rect x="0" y="0" width="90" height="24" rx="6" fill="#C2410C" stroke="#7C2D12" strokeWidth="2" />
+                <polygon points="45,-7 15,0 75,0" fill="#9A3412" stroke="#7C2D12" strokeWidth="1.2" />
+              </g>
+            </g>
           ) : layout.layoutType === 'city-shrine' ? (
             /* 2. CITY & VILLAGE SHRINE (Sri Jagannatha, Veshalamma, Gangamma, Bedi Anjaneya) */
             <g>
