@@ -681,20 +681,6 @@ export default function OfflineTempleMap({
                 <circle cx="35" cy="3" r="3.5" fill="#FDE047" stroke="#78350F" />
               </g>
 
-              {/* 5 Radial Rays — Pancha Mukha (5 faces of Hanuman) */}
-              <g opacity="0.25">
-                {/* Anjaneya (North) */}
-                <line x1="270" y1="72" x2="270" y2="35" stroke="#EA580C" strokeWidth="2.5" />
-                {/* Narasimha (North-East) */}
-                <line x1="270" y1="72" x2="340" y2="42" stroke="#EA580C" strokeWidth="2" />
-                {/* Garuda (East) */}
-                <line x1="270" y1="72" x2="350" y2="72" stroke="#EA580C" strokeWidth="2" />
-                {/* Varaha (West) */}
-                <line x1="270" y1="72" x2="190" y2="72" stroke="#EA580C" strokeWidth="2" />
-                {/* Hayagriva (North-West) */}
-                <line x1="270" y1="72" x2="200" y2="42" stroke="#EA580C" strokeWidth="2" />
-              </g>
-
               {/* Sindhooram Glow around Sanctum */}
               <circle cx="270" cy="72" r="42" fill="url(#sanctumGlow)" />
 
