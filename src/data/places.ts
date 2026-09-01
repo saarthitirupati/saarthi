@@ -1600,7 +1600,6 @@ export const PLACES: Place[] = [
     },
     relatedPlaces: ['nagala-falls', 'surutupalli', 'narayanavanam', 'appalayagunta-temple']
   },
-  { id: 'tallapaka-temple', name: 'Sri Chennakesava Swamy Temple', category: 'Historical', placeType: 'spiritual', location: 'Tallapaka', distanceKms: 95, durationMins: 90, budgetLevel: 'medium', entryFeeNum: 0, interests: ['history', 'music'], openFrom: 6, openTo: 20, isMustVisit: false, description: 'Birthplace of poet-saint Annamacharya.', history: 'Dedicated to Chennakesava Swamy.', timings: '6:00 AM - 8:00 PM', entryFee: 'Free', address: 'Tallapaka, Kadapa', rating: 4.6, reviewCount: 1800, image: '/assets/temples/tallapaka.png', coordinates: { lat: 14.2372, lng: 79.1558 }, tags: ['Saint', 'Music'], bestTime: 'Morning', practicalInfo: { dressCode: 'Modest', food: 'Limited', parking: 'Available' }, travelEstimates: { 'tirupati': '2 hours' } },
   {
     id: 'kattaputtalamma-temple',
     name: 'Sri Sri Sri Kattaputtalamma Temple',
