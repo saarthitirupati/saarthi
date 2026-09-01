@@ -57,10 +57,11 @@ export const TIRUMALA_CENTER = { lat: 13.68323, lng: 79.34731 };
 export const TIRUPATI_CENTER = { lat: 13.6288, lng: 79.4192 };
 
 /**
- * Helper to check if a location is within the local Tirupati pilgrimage region (<= 80 km).
+ * Helper to check if a location is within the local Tirupati-Tirumala pilgrimage cluster (<= 22 km).
+ * Outside of 22 km, calculations automatically use Tirupati Center to provide standard reference travel times.
  */
 export function isWithinTirupatiRegion(lat: number, lng: number): boolean {
-  return calculateDistance(lat, lng, TIRUPATI_CENTER.lat, TIRUPATI_CENTER.lng) <= 80;
+  return calculateDistance(lat, lng, TIRUPATI_CENTER.lat, TIRUPATI_CENTER.lng) <= 22 || isCoordinateOnTirumalaHill(lat, lng);
 }
 
 /**

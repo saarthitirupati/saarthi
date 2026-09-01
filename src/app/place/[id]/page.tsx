@@ -91,18 +91,20 @@ export default function PlaceDetails() {
     });
   }, [place, allPlaces]);
 
-  // Distance from user (if local within 80km) or from Tirupati Center
+  // Distance from user (if local within 22km cluster) or from Tirupati Center
   const isLocalUser = userLocation && isWithinTirupatiRegion(userLocation.lat, userLocation.lng);
   const effectiveLocation = isLocalUser ? userLocation! : TIRUPATI_CENTER;
 
-  const isTirumala = place.category === 'Tirumala Spot' || (place.coordinates ? isCoordinateOnTirumalaHill(place.coordinates.lat, place.coordinates.lng) : false);
+  const isDestOnHill = place.category === 'Tirumala Spot' || (place.coordinates ? isCoordinateOnTirumalaHill(place.coordinates.lat, place.coordinates.lng) : false);
+  const isOriginOnHill = isCoordinateOnTirumalaHill(effectiveLocation.lat, effectiveLocation.lng);
+  const isGhatTrip = isDestOnHill !== isOriginOnHill;
 
   const drivingDistance = useMemo(() => {
     if (!place.coordinates) return place.distanceKms || 5;
-    return calculateDrivingDistance(effectiveLocation.lat, effectiveLocation.lng, place.coordinates.lat, place.coordinates.lng, isTirumala);
-  }, [place, effectiveLocation, isTirumala]);
+    return calculateDrivingDistance(effectiveLocation.lat, effectiveLocation.lng, place.coordinates.lat, place.coordinates.lng, isDestOnHill);
+  }, [place, effectiveLocation, isDestOnHill]);
 
-  const driveTimeMins = useMemo(() => estimateDriveDuration(drivingDistance, isTirumala), [drivingDistance, isTirumala]);
+  const driveTimeMins = useMemo(() => estimateDriveDuration(drivingDistance, isGhatTrip), [drivingDistance, isGhatTrip]);
   const formattedDriveTime = useMemo(() => formatTravelTime(driveTimeMins, lang), [driveTimeMins, lang]);
 
   // Dynamic Facilities Evaluation Hook (Executed unconditionally with all hooks)
