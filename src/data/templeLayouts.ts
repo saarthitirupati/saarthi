@@ -2955,6 +2955,128 @@ export const CURATED_LAYOUTS: Record<string, Partial<TempleLayoutData>> = {
       { titleEn: 'AP Forest Department Wildlife Division (Tirupati)', titleTe: 'అటవీ శాఖ కంట్రోల్ రూమ్', number: '18004255909' },
       { titleEn: 'Emergency Toll-Free Helpline', titleTe: 'అత్యవసర హెల్ప్‌లైన్', number: '112' }
     ]
+  },
+  'pakala-subramanya': {
+    placeId: 'pakala-subramanya',
+    titleEn: 'Sri Kalyana Subramanya Swamy Temple & 54-Ft Murugan Statue (Pakala)',
+    titleTe: 'శ్రీ కళ్యాణ సుబ్రమణ్య స్వామి ఆలయం & 54 అడుగుల మురుగన్ విగ్రహం (పాకాల ఆనందగిరి)',
+    layoutType: 'ancient-shrine',
+    centerCoordinates: { lat: 13.4452161, lng: 79.1008506 },
+    defaultZoom: 17,
+    compassBearingDeg: 0,
+    sanctumNameEn: 'Sri Valli Devasena Sametha Kalyana Subramanya Garbhalayam',
+    sanctumNameTe: 'శ్రీ వల్లీ దేవసేన సమేత కళ్యాణ సుబ్రమణ్య స్వామి గర్భాలయం',
+    routePath: [[430, 290], [375, 265], [270, 275], [270, 195], [145, 125], [270, 85], [395, 140], [395, 220], [430, 290]],
+    pins: [
+      {
+        id: 'parking',
+        nameEn: 'Anandagiri Foothills Parking & Shaded Base',
+        nameTe: 'ఆనందగిరి కొండ దిగువన పార్కింగ్',
+        category: 'parking',
+        lat: 13.4446,
+        lng: 79.1002,
+        svgX: 430,
+        svgY: 290,
+        descEn: 'Designated parking for cars, tourist buses, and two-wheelers with refreshment stalls.',
+        descTe: 'వాహనాల పార్కింగ్ ప్రదేశం మరియు దుకాణాలు.'
+      },
+      {
+        id: 'footwear',
+        nameEn: 'Free Footwear & Baggage Counter',
+        nameTe: 'పాదరక్షల స్టాండ్ & బ్యాగేజ్ కౌంటర్',
+        category: 'footwear',
+        lat: 13.4449,
+        lng: 79.1004,
+        svgX: 375,
+        svgY: 265,
+        descEn: 'Safe custody counter for footwear before ascending the hillock steps.',
+        descTe: 'చెప్పులు భద్రపరిచే ఉచిత కౌంటర్.'
+      },
+      {
+        id: 'entry',
+        nameEn: 'Shaded Steps Pathway & Entrance Arch',
+        nameTe: 'నీడ ఉన్న మెట్ల మార్గం & ప్రవేశ తోరణం',
+        category: 'entry',
+        lat: 13.4450,
+        lng: 79.1006,
+        svgX: 270,
+        svgY: 275,
+        descEn: 'Concrete steps equipped with handrails and continuous overhead shade canopy.',
+        descTe: 'రక్షిత రెయిలింగ్‌లు మరియు నీడ షెల్టర్లతో కూడిన మెట్ల మార్గం.'
+      },
+      {
+        id: 'dhwajasthambham',
+        nameEn: 'Dhwajasthambham & Peacock (Mayura) Mandapam',
+        nameTe: 'ధ్వజస్తంభం & మయూర వాహన మండపం',
+        category: 'info',
+        lat: 13.4451,
+        lng: 79.1007,
+        svgX: 270,
+        svgY: 195,
+        descEn: 'Sacred flag mast and Lord Murugan\'s divine Peacock vahana in the open courtyard.',
+        descTe: 'పవిత్ర ధ్వజస్తంభం మరియు మయూర వాహన సన్నిధి.'
+      },
+      {
+        id: 'statue-54ft',
+        nameEn: 'Monumental 54-Foot Lord Murugan Statue with Sacred Vel',
+        nameTe: '54 అడుగుల దివ్య మురుగన్ విగ్రహం (వేల్ ఆయుధం)',
+        category: 'info',
+        lat: 13.4453,
+        lng: 79.1006,
+        svgX: 145,
+        svgY: 125,
+        descEn: 'One of AP\'s tallest Murugan statues (54 ft), sculpted by 14 traditional Sthapathis over 11 months.',
+        descTe: '14 మంది శిల్పులు 11 నెలల పాటు చెక్కిన ఆంధ్రప్రదేశ్‌లోనే అత్యంత ఎత్తైన 54 అడుగుల మురుగన్ విగ్రహం.'
+      },
+      {
+        id: 'sanctum',
+        nameEn: 'Sri Valli Devasena Kalyana Subramanya Garbhalayam',
+        nameTe: 'శ్రీ వల్లీ దేవసేన కళ్యాణ సుబ్రమణ్య స్వామి గర్భాలయం',
+        category: 'sanctum',
+        lat: 13.4452161,
+        lng: 79.1008506,
+        svgX: 270,
+        svgY: 85,
+        descEn: 'Presiding deities Lord Kalyana Subramanya with Goddess Valli and Goddess Devasena. Revered for Kuja Dosham & marriage blessings.',
+        descTe: 'కుజ దోష నివారణ, కళ్యాణ యోగం మరియు సంతాన ప్రాప్తి ప్రసాదించే దివ్య మూలవిరాట్టు దర్శనం.'
+      },
+      {
+        id: 'laddu',
+        nameEn: 'Traditional Laddoo, Vada & Pulihora Prasadam Counter',
+        nameTe: 'లడ్డూ, వడ & పులిహోర ప్రసాదం కౌంటర్',
+        category: 'laddu',
+        lat: 13.4452,
+        lng: 79.1011,
+        svgX: 395,
+        svgY: 140,
+        descEn: 'Collect freshly prepared temple prasadam and special puja tickets.',
+        descTe: 'స్వామివారి పవిత్ర ప్రసాదాలు మరియు పూజా టికెట్ల కౌంటర్.'
+      },
+      {
+        id: 'ttd-pac',
+        nameEn: 'TTD Pilgrim Amenities Complex (PAC) & Rest Rooms',
+        nameTe: 'టీటీడీ యాత్రికుల సౌకర్యాల సముదాయం (పీఏసీ)',
+        category: 'info',
+        lat: 13.4448,
+        lng: 79.1012,
+        svgX: 395,
+        svgY: 220,
+        descEn: 'TTD-supported pilgrim amenities complex offering RO drinking water, clean restrooms, and rest halls.',
+        descTe: 'తాగునీరు, విశ్రాంతి గదులు మరియు మరుగుదొడ్ల సౌకర్యం.'
+      }
+    ],
+    routeSteps: [
+      { stepNumber: 1, titleEn: 'Anandagiri Hill Base Arrival & Parking', titleTe: 'ఆనందగిరి కొండ దిగువకు చేరుకోవడం', distance: '0.0 km', timeMins: 0, descEn: 'Park vehicle at the base of Anandagiri hillock in Utlavaripalli.', descTe: 'వాహనాన్ని పార్క్ చేయండి.' },
+      { stepNumber: 2, titleEn: 'Footwear Deposit & Shaded Steps Ascent', titleTe: 'చెప్పులు విడిచి మెట్లు ఎక్కడం', distance: '50m', timeMins: 4, descEn: 'Deposit footwear at the free counter and climb the shaded steps with handrails.', descTe: 'చెప్పులు విడిచి నీడ ఉన్న మెట్ల గుండా కొండపైకి చేరుకోండి.' },
+      { stepNumber: 3, titleEn: 'Monumental 54-Ft Lord Murugan Statue Darshan', titleTe: '54 అడుగుల మురుగన్ విగ్రహ దర్శనం', distance: '60m', timeMins: 10, descEn: 'Marvel at the grand 54-foot statue of Lord Subramanya holding his sacred Vel.', descTe: 'మహిమాన్విత 54 అడుగుల మురుగన్ విగ్రహాన్ని దర్శించి ప్రార్థించండి.' },
+      { stepNumber: 4, titleEn: 'Sri Kalyana Subramanya Swamy Sanctum Darshan', titleTe: 'శ్రీ కళ్యాణ సుబ్రమణ్య స్వామి గర్భాలయ దర్శనం', distance: '40m', timeMins: 15, descEn: 'Offer prayers at the sanctum sanctorum for Kuja Dosha Nivarana and marriage blessings.', descTe: 'కుజ దోష నివారణ మరియు కళ్యాణ యోగం కోసం స్వామివారిని దర్శించుకోండి.' },
+      { stepNumber: 5, titleEn: 'Prasadam Collection & TTD PAC Complex', titleTe: 'ప్రసాదం & టీటీడీ పీఏసీ సౌకర్యాలు', distance: '50m', timeMins: 5, descEn: 'Collect delicious temple Laddoo/Vada prasadam and use the TTD amenities hall.', descTe: 'లడ్డూ, వడ ప్రసాదాలు స్వీకరించి విశ్రాంతి తీసుకోండి.' }
+    ],
+    emergencyContacts: [
+      { titleEn: 'Temple Trust Office (Pakala Anandagiri)', titleTe: 'ఆలయ ట్రస్ట్ కార్యాలయం', number: '08572282450' },
+      { titleEn: 'APSRTC Pakala Bus Station', titleTe: 'ఆర్టీసీ బస్ స్టేషన్ పాకాల', number: '08572282422' },
+      { titleEn: 'Emergency Helpline', titleTe: 'అత్యవసర హెల్ప్‌లైన్', number: '112' }
+    ]
   }
 };
 

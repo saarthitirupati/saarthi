@@ -2957,6 +2957,90 @@ export const PLACES: Place[] = [
     },
     travelEstimates: { 'railway-station': '20 mins (8.5 km)', 'bus-stand': '18 mins (7.5 km)' },
     relatedPlaces: ['kapila-theertham', 'agastheeshwara', 'gudimallam-temple']
+  },
+  {
+    id: 'pakala-subramanya',
+    name: 'Sri Valli Devasena Sametha Kalyana Subramanya Swamy Temple',
+    teluguName: 'శ్రీ వల్లీ దేవసేన సమేత కళ్యాణ సుబ్రమణ్య స్వామి ఆలయం (పాకాల ఆనందగిరి)',
+    category: 'Temples',
+    placeType: 'spiritual',
+    location: 'Anandagiri, Pakala',
+    distanceKms: 42,
+    durationMins: 90,
+    budgetLevel: 'budget',
+    entryFeeNum: 0,
+    interests: ['spiritual', 'culture', 'history', 'architecture'],
+    openFrom: 6,
+    openTo: 20.5,
+    isMustVisit: true,
+    description: 'The Sri Valli Devasena Sametha Kalyana Subramanya Swamy Temple, popularly known as Pakala Subramanya Swamy Temple, is located atop the sacred Anandagiri hillock in Utlavaripalli near Pakala (Tirupati/Chittoor district). The temple is celebrated for its majestic 54-foot monumental statue of Lord Murugan holding his sacred Vel, sculpted over 11 months by 14 traditional Sthapathis at a cost of over ₹40 Lakhs. Revered as a powerful kshethram for mitigating Kuja Dosham, Naga Dosham, and blessing couples with marriage (Kalyana Yogam) and progeny (Santhana Praapthi).',
+    shortIntro: 'Iconic hilltop Subramanya Swamy temple in Pakala featuring a monumental 54-foot Murugan statue, revered for Kuja & Naga Dosha Nivarana and marriage blessings.',
+    whyVisit: 'Home to Andhra Pradesh\'s iconic 54-foot monumental Lord Murugan statue holding the sacred Vel. Celebrated pilgrimage destination for Kuja Dosham removal, marriage blessings, and Santhana Praapthi with full TTD Pilgrim Amenities support and scenic hilltop tranquility.',
+    history: 'Local sthala purana traces the site to the sacred Anandagiri hillock, historically revered as a meditative hermitage where ancient Rishis (sages) performed rigorous penance. The presiding deity, Lord Kalyana Subramanya Swamy, is enshrined with his consorts Goddess Valli and Goddess Devasena. The monumental 54-foot statue was consecrated following a grand Kumbhabhishekam, making it one of the tallest Murugan landmarks in Andhra Pradesh.',
+    timings: 'Morning: 6:00 AM – 11:30 AM | Evening: 4:00 PM – 8:30 PM (Morning Abhishekam: 6:30 AM – 9:00 AM; Evening Aarti: 6:30 PM – 7:30 PM)',
+    entryFee: 'Free entry for all devotees (Special Pooja, Kalyanotsavam & Abhishekam tickets available at the trust office desk)',
+    address: 'Anandagiri Hillock, Utlavaripalli, Pakala, Tirupati District, Andhra Pradesh – 517112',
+    rating: 4.8,
+    reviewCount: 380,
+    image: 'https://res.cloudinary.com/kniegqlj/image/upload/v1788273681/oardefault_a2ej7b.jpg',
+    images: [
+      'https://res.cloudinary.com/kniegqlj/image/upload/v1788273681/oardefault_a2ej7b.jpg'
+    ],
+    coordinates: { lat: 13.4452161, lng: 79.1008506 },
+    tags: ['Subramanya Swamy', 'Pakala', 'Anandagiri', '54ft Murugan Statue', 'Kalyana Subramanya', 'Kuja Dosham', 'Naga Dosham', 'Hill Temple'],
+    bestTime: 'Tuesdays (Mangalavaram), Subramanya Shashti, Skanda Shashti, Karthika Masam, Nagula Chavithi, and Maha Shivaratri',
+    breakTimings: [{ from: '11:30', to: '16:00' }],
+    spiritualInfo: {
+      god: 'Lord Kalyana Subramanya Swamy (with Goddess Valli & Goddess Devasena)',
+      knownFor: 'Kuja Dosha Nivarana, Marriage Blessings (Kalyana Yogam), Santhana Praapthi & Naga Dosha Puja',
+      mantra: 'Om Saravanabhavaya Namaha | Om Subramanyaya Namaha | Om Skandaya Namaha',
+      devoteeTips: [
+        'Visit on Tuesdays (Mangalavaram) during morning Abhishekam (6:30 AM – 9:00 AM) for powerful Kuja Dosha remedies',
+        'Shaded steps with handrails lead from the foothills parking area to the hilltop sanctum and 54-ft statue',
+        'Special tickets for Kalyanotsavam, Abhishekam, and Naga Dosha Nivarana can be booked directly at the temple office desk (Phone: 08572-282450)',
+        'Traditional Laddoo, Vada, and Pulihora prasadam counters are available near the main complex',
+        'Located just 1.5 km from Pakala Junction Railway Station with 24/7 auto-rickshaw connectivity'
+      ]
+    },
+    practicalInfo: {
+      dressCode: 'Strict traditional wear (Dhoti/Kurta for men, Saree/Chudidar for women).',
+      food: 'Prasadam counters (Laddoo, Vada) and foothill refresh stalls',
+      parking: 'Dedicated parking spaces at foothills for two-wheelers and cars'
+    },
+    facilities: {
+      wheelchair: 'Concrete steps equipped with handrails and continuous shade overhead shelters',
+      drinkingWater: 'Dedicated RO drinking water kiosks available',
+      toilets: 'Clean public restrooms available with TTD Pilgrim Amenities Complex (PAC) support',
+      parking: 'Dedicated parking spaces at foothills for two-wheelers and cars',
+      food: 'Prasadam counters (Laddoo, Vada) and foothill refresh stalls'
+    },
+    travelEstimates: {
+      'pakala-junction': '5-10 mins (1.5 km)',
+      'tirupati': '50-60 mins (42 km via APSRTC bus or car)',
+      'chittoor': '40 mins (30 km via NH/State highway)'
+    },
+    rituals: {
+      daily: [
+        'Suprabhatam & Sanctum Cleaning (6:00 AM)',
+        'Morning Abhishekam (Milk, Panchamrutam & Archana) (6:30 AM – 9:00 AM)',
+        'Sarva Darshan (9:00 AM – 11:30 AM)',
+        'Afternoon Closure / Rest (11:30 AM – 4:00 PM)',
+        'Evening Reopening (4:00 PM)',
+        'Evening Archana & Maha Mangala Harathi (6:30 PM – 7:30 PM)',
+        'Temple Closure (8:30 PM)'
+      ],
+      weekly: [
+        'Special Tuesday (Mangalavaram) Abhishekam & Kuja Dosha Nivarana Puja'
+      ],
+      annual: [
+        'Subramanya Shashti Brahmotsavam',
+        'Skanda Shashti Utsavam',
+        'Nagula Chavithi Special Naga Puja',
+        'Karthika Masam Deepotsavam',
+        'Maha Shivaratri Jagaran & Abhishekam'
+      ]
+    },
+    relatedPlaces: ['sree-padmagiri-subramanya', 'kanipakam', 'chandragiri-fort', 'srikalahasti']
   }
 ];
 
