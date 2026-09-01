@@ -157,7 +157,47 @@ export async function getOsrmRoadRoute(
   }
 
   const fallbackDist = calculateDrivingDistance(lat1, lon1, lat2, lon2);
-  const fallbackTime = Math.max(3, Math.round(fallbackDist * 2.2));
+  const fallbackTime = estimateDriveDuration(fallbackDist);
   return { distanceKm: fallbackDist, durationMins: fallbackTime, source: 'fallback' };
+}
+
+/**
+ * Intelligent Drive Duration Estimator
+ * Models city traffic (30 km/h), suburban transitions (40 km/h), regional highways (50-60 km/h), and Ghat roads.
+ */
+export function estimateDriveDuration(distanceKm: number, isTirumalaRoute: boolean = false): number {
+  if (isTirumalaRoute) {
+    return Math.max(5, Math.round(distanceKm * 2.1));
+  }
+  if (distanceKm <= 5) {
+    return Math.max(2, Math.round(distanceKm * 2.0)); // City streets
+  }
+  if (distanceKm <= 20) {
+    return Math.max(5, Math.round(5 * 2.0 + (distanceKm - 5) * 1.5)); // Arterial roads
+  }
+  // Regional state/national highways for distant kshetras (Nagalapuram, Penchalakona, Kanipakam)
+  return Math.max(15, Math.round(5 * 2.0 + 15 * 1.5 + (distanceKm - 20) * 1.15));
+}
+
+/**
+ * Formats minutes cleanly into hours and minutes (e.g. 1 hr 15 mins, 45 mins, 2 hrs)
+ */
+export function formatTravelTime(minutes: number, lang: string = 'en'): string {
+  const mins = Math.max(1, Math.round(minutes));
+  if (mins < 60) {
+    return lang === 'te' ? `${mins} ని.` : `${mins} mins`;
+  }
+  const hours = Math.floor(mins / 60);
+  const remainingMins = mins % 60;
+  if (remainingMins === 0) {
+    if (lang === 'te') {
+      return `${hours} గం.`;
+    }
+    return hours === 1 ? '1 hr' : `${hours} hrs`;
+  }
+  if (lang === 'te') {
+    return `${hours} గం. ${remainingMins} ని.`;
+  }
+  return `${hours} hr${hours > 1 ? 's' : ''} ${remainingMins} mins`;
 }
 

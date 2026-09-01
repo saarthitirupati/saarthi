@@ -13,7 +13,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { PLACES, Place, getPlaceGuideData } from '@/data/places';
 import { useTrip } from '@/components/TripContext';
 import { useRealtimePlaces } from '@/lib/useRealtimePlaces';
-import { calculateDrivingDistance, isCoordinateOnTirumalaHill, isWithinTirupatiRegion, TIRUPATI_CENTER } from '@/utils/location';
+import { calculateDrivingDistance, isCoordinateOnTirumalaHill, isWithinTirupatiRegion, TIRUPATI_CENTER, formatTravelTime, estimateDriveDuration } from '@/utils/location';
 import { findNearestPlaceCandidates } from '@/lib/location';
 import { useLanguage } from '@/lib/useLanguage';
 import OfflineTempleMap from '@/components/place/OfflineTempleMap';
@@ -95,13 +95,15 @@ export default function PlaceDetails() {
   const isLocalUser = userLocation && isWithinTirupatiRegion(userLocation.lat, userLocation.lng);
   const effectiveLocation = isLocalUser ? userLocation! : TIRUPATI_CENTER;
 
+  const isTirumala = place.category === 'Tirumala Spot' || (place.coordinates ? isCoordinateOnTirumalaHill(place.coordinates.lat, place.coordinates.lng) : false);
+
   const drivingDistance = useMemo(() => {
     if (!place.coordinates) return place.distanceKms || 5;
-    const isTirumala = place.category === 'Tirumala Spot' || isCoordinateOnTirumalaHill(place.coordinates.lat, place.coordinates.lng);
     return calculateDrivingDistance(effectiveLocation.lat, effectiveLocation.lng, place.coordinates.lat, place.coordinates.lng, isTirumala);
-  }, [place, effectiveLocation]);
+  }, [place, effectiveLocation, isTirumala]);
 
-  const driveTimeMins = Math.max(3, Math.round(drivingDistance * 1.8));
+  const driveTimeMins = useMemo(() => estimateDriveDuration(drivingDistance, isTirumala), [drivingDistance, isTirumala]);
+  const formattedDriveTime = useMemo(() => formatTravelTime(driveTimeMins, lang), [driveTimeMins, lang]);
 
   // Dynamic Facilities Evaluation Hook (Executed unconditionally with all hooks)
   const evaluatedFacilities = useMemo(() => {
@@ -466,8 +468,8 @@ export default function PlaceDetails() {
         <Navigation size={18} color="#FFFFFF" fill="#FFFFFF" />
         <span style={{ color: '#FFFFFF' }}>
           {lang === 'te' 
-            ? (isTemple ? `దర్శన మార్గం ప్రారంభించండి (${driveTimeMins} ని.)` : `మార్గం ప్రారంభించండి (${driveTimeMins} ని.)`) 
-            : `Start Navigation (${driveTimeMins} mins)`}
+            ? (isTemple ? `దర్శన మార్గం ప్రారంభించండి (${formattedDriveTime})` : `మార్గం ప్రారంభించండి (${formattedDriveTime})`) 
+            : `Start Navigation (${formattedDriveTime})`}
         </span>
       </button>
 
@@ -1106,7 +1108,7 @@ export default function PlaceDetails() {
             textShadow: '0 1px 4px rgba(0, 0, 0, 0.8)'
           }}>
             <MapPin size={14} color="#CBD5E1" />
-            <span>{place.location} • ~{driveTimeMins} mins {isLocalUser ? 'from you' : 'from Tirupati'} ({drivingDistance.toFixed(1)} km)</span>
+            <span>{place.location} • ~{formattedDriveTime} {isLocalUser ? (lang === 'te' ? 'మీ నుండి' : 'from you') : (lang === 'te' ? 'తిరుపతి నుండి' : 'from Tirupati')} ({drivingDistance.toFixed(1)} km)</span>
           </div>
         </div>
       </div>

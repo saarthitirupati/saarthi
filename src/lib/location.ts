@@ -4,6 +4,8 @@ import {
   getOsrmRoadRoute, 
   isCoordinateOnTirumalaHill,
   isWithinTirupatiRegion,
+  formatTravelTime,
+  estimateDriveDuration,
   ALIPIRI_GATE,
   TIRUMALA_CENTER,
   TIRUPATI_CENTER
@@ -15,6 +17,8 @@ export {
   getOsrmRoadRoute, 
   isCoordinateOnTirumalaHill,
   isWithinTirupatiRegion,
+  formatTravelTime,
+  estimateDriveDuration,
   ALIPIRI_GATE,
   TIRUMALA_CENTER,
   TIRUPATI_CENTER

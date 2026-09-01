@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 import { useTrip } from '@/components/TripContext';
-import { calculateDrivingDistance, TIRUPATI_CENTER, isWithinTirupatiRegion } from '@/utils/location';
+import { calculateDrivingDistance, TIRUPATI_CENTER, isWithinTirupatiRegion, formatTravelTime, estimateDriveDuration } from '@/utils/location';
 
 export function useFeaturedPlaces(places: any[], liveStatus: any, weatherTemp: string) {
   const { userLocation } = useTrip();
@@ -62,9 +62,7 @@ export function useFeaturedPlaces(places: any[], liveStatus: any, weatherTemp: s
             score += 20;
           }
         }
-      }
 
-      if (isOpenNow) {
         if (currentHour >= 5 && currentHour < 12) {
           if (p.placeType === 'spiritual') score += 25;
         } else if (currentHour >= 12 && currentHour < 16) {
@@ -88,7 +86,7 @@ export function useFeaturedPlaces(places: any[], liveStatus: any, weatherTemp: s
     }
 
     return bestMatch || places[0];
-  }, [places, userLocation, weatherTemp, liveStatus]);
+  }, [places, userLocation, weatherTemp, liveStatus, effectiveOrigin]);
 
   const featuredPlaceDistance = useMemo(() => {
     if (!featuredPlace?.coordinates) return '10 mins away';
@@ -106,8 +104,9 @@ export function useFeaturedPlaces(places: any[], liveStatus: any, weatherTemp: s
       const walkMins = Math.max(1, Math.round(distKm * 12));
       return `${walkMins} min walk (${distKm} km)`;
     } else {
-      const driveMins = Math.max(1, Math.round(distKm * 1.8));
-      return `${driveMins} mins ${isLocalUser ? 'from you' : 'from Tirupati'} (${distKm} km)`;
+      const driveMins = estimateDriveDuration(distKm, isTirumalaSpot);
+      const formattedTime = formatTravelTime(driveMins);
+      return `${formattedTime} ${isLocalUser ? 'from you' : 'from Tirupati'} (${distKm} km)`;
     }
   }, [featuredPlace, effectiveOrigin, isLocalUser]);
 
