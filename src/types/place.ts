@@ -112,6 +112,9 @@ export interface PlaceEmergencyInfo {
 export interface Place {
   id: string;
   name: string;
+  nameTe?: string;
+  teluguName?: string;
+  teluguTitle?: string;
   category: string;
   placeType: PlaceType;
   location: string;
