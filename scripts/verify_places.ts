@@ -76,7 +76,8 @@ export function runLocationVerification() {
     'veshalamma-temple': { lat: 13.6296781, lng: 79.4130316 },
     'jagannatha-temple': { lat: 13.6349956, lng: 79.4041733 },
     'pakala-subramanya': { lat: 13.4452161, lng: 79.1008506 },
-    'penchalakona-narasimha': { lat: 14.3364684, lng: 79.4103894 }
+    'penchalakona-narasimha': { lat: 14.3364684, lng: 79.4103894 },
+    'nagalapuram-temple': { lat: 13.3876691, lng: 79.7965048 }
   };
 
   for (const place of rawPlaces) {

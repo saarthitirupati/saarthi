@@ -1515,7 +1515,89 @@ export const PLACES: Place[] = [
     travelEstimates: { 'tirupati': '30 mins' },
     relatedPlaces: ['narayanavanam', 'srinivasa-mangapuram', 'padmavathi']
   },
-  { id: 'nagalapuram-temple', name: 'Sri Vedanarayana Swamy Temple', category: 'Day Trip', placeType: 'spiritual', location: 'Nagalapuram', distanceKms: 65, durationMins: 120, budgetLevel: 'medium', entryFeeNum: 0, interests: ['spiritual', 'miracle'], openFrom: 6, openTo: 20, isMustVisit: false, description: 'Dedicated to Matsya (fish) avatar.', history: 'Surya Pooja miracle happens here annually.', timings: '6:00 AM - 8:00 PM', entryFee: 'Free', address: 'Nagalapuram', rating: 4.7, reviewCount: 5400, image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRvX2oIbXys6aYldf4d4AyU_GvPobiME1iNNjHDYOJnpA&s=10', images: ['https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRvX2oIbXys6aYldf4d4AyU_GvPobiME1iNNjHDYOJnpA&s=10'], coordinates: { lat: 13.3876691, lng: 79.7965048 }, tags: ['Matsya', 'Sun Miracle'], bestTime: 'March (Surya Puja)', practicalInfo: { dressCode: 'Traditional', food: 'Limited', parking: 'Available' }, travelEstimates: { 'tirupati': '1.5 hours' } },
+  {
+    id: 'nagalapuram-temple',
+    name: 'Sri Veda Narayana Swamy Temple',
+    teluguName: 'శ్రీ వేదనారాయణ స్వామి ఆలయం (నాగలాపురం మత్స్యావతారం)',
+    category: 'Temples',
+    placeType: 'spiritual',
+    location: 'Nagalapuram, Tirupati District',
+    distanceKms: 65,
+    durationMins: 120,
+    budgetLevel: 'budget',
+    entryFeeNum: 0,
+    interests: ['spiritual', 'history', 'architecture', 'miracle', 'culture'],
+    openFrom: 6,
+    openTo: 20,
+    isMustVisit: true,
+    description: 'The Sri Veda Narayana Swamy Temple in Nagalapuram is a rare and majestic 16th-century temple constructed by the Vijayanagara Emperor Sri Krishnadevaraya in honor of his mother, Nagala Devi (Nagamba). Dedicated to Lord Vishnu in his first cosmic incarnation as Matsya (the divine fish avatar), the temple marks the sacred site where Lord Vishnu defeated the demon Somakasura to rescue the stolen Vedas and return them to Lord Brahma. The west-facing Moola Virat depicts Vishnu in a half-human, half-fish form holding the Sudarshana Chakra in Prayoga (active battle) posture alongside Goddess Sridevi and Goddess Bhudevi. Managed by TTD, the temple is an astronomical and architectural marvel renowned for the annual Surya Puja Mahotsavam where the setting sun’s rays illuminate the deity from feet to forehead across three consecutive days.',
+    shortIntro: 'Rare 16th-century Vijayanagara Matsya Avatar temple in Nagalapuram built by Sri Krishnadevaraya, world-famous for the annual Surya Puja solar phenomenon.',
+    whyVisit: 'One of India\'s exceptionally rare temples dedicated exclusively to Lord Vishnu\'s Matsya Avatar. Marvel at the 630-foot Surya Puja solar alignment, Vijayanagara stone architecture with sculpted Dasavatharam pillars, and shrines for Vedavalli Thayar and Lakshmi Varaha Swamy under TTD administration.',
+    history: 'Originally known as Harigandapuram, the sacred sthalam was rebuilt into an architectural masterpiece in the 16th century by Vijayanagara Emperor Sri Krishnadevaraya, who named the town Nagambapuram (now Nagalapuram) after his beloved mother Nagamba. According to Sthala Puranam, when the demon Somakasura stole the sacred Vedas and concealed them in the depths of the cosmic ocean, Lord Vishnu assumed the Matsya Avatar, vanquished the demon, retrieved the Vedas, and handed them back to Brahma at this serene location.',
+    timings: '6:00 AM – 1:00 PM, 4:00 PM – 8:00 PM (Continuous complex open 6:00 AM – 8:00 PM; Surya Puja during sunset 6:00 PM – 6:15 PM in March)',
+    entryFee: 'Free general entry for all pilgrims (Special Seva tickets available at TTD counter)',
+    address: 'Sri Veda Narayana Swamy Temple, Nagalapuram, Tirupati District, Andhra Pradesh – 517589',
+    rating: 4.8,
+    reviewCount: 5600,
+    image: 'https://res.cloudinary.com/kniegqlj/image/upload/v1788275358/temple_A4a0aldt_202601031832510_a0bgn0.webp',
+    images: [
+      'https://res.cloudinary.com/kniegqlj/image/upload/v1788275358/temple_A4a0aldt_202601031832510_a0bgn0.webp'
+    ],
+    coordinates: { lat: 13.3876691, lng: 79.7965048 },
+    tags: ['Matsya Avatar', 'Vedanarayana', 'Nagalapuram', 'Surya Puja', 'Sri Krishnadevaraya', 'Vijayanagara', 'TTD Temple', 'Prayoga Chakra'],
+    bestTime: 'Phalguna Sukla Dwadasi to Chaturdasi (March Surya Puja Mahotsavam), Matsya Jayanti, and Vaikunta Ekadasi',
+    breakTimings: [{ from: '13:00', to: '16:00' }],
+    spiritualInfo: {
+      god: 'Lord Matsya Narayana Swamy (with Sridevi & Bhudevi, Vedavalli Thayar)',
+      knownFor: 'First Avatar of Vishnu (Matsya), Surya Puja Solar Miracle, Prayoga Chakra, Skin Ailments Relief & Education Focus',
+      mantra: 'Om Matsya Rupaya Namaha | Om Namo Bhagavate Vasudevaya',
+      devoteeTips: [
+        'Witness the annual Surya Puja in March (Phalguna month) when setting sun rays travel 630 feet through the gopurams to light the deity\'s feet (Day 1), navel (Day 2), and crown (Day 3)',
+        'Notice the rare three sets of Dwara Palakas: Vishwaksena & Tapasa (1st door), Jaya & Vijaya (2nd door), and Manikandan & Sandhya (3rd door)',
+        'The Lord holds the Sudarshana Chakra in Prayoga posture (poised for action) rather than static rest',
+        'Visit the adjacent standalone shrine of Vedavalli Thayar, Lakshmi Varaha Perumal, Bhumi Narasimha, and Veera Anjaneya',
+        'Free TTD laddu and holy prasadam distributed to all visiting devotees'
+      ]
+    },
+    practicalInfo: {
+      dressCode: 'Strict traditional Indian attire recommended (Dhoti/Kurta for men, Saree/Chudidar for women).',
+      food: 'TTD Prasadam counter and local eateries near Nagalapuram bus stand',
+      parking: 'Ample shaded parking available in front of the outer Rajagopuram'
+    },
+    facilities: {
+      wheelchair: 'Paved stone courtyards and ramp access through the main gopuram',
+      drinkingWater: 'Free purified RO drinking water kiosks available',
+      toilets: 'TTD public restrooms available near temple gardens',
+      parking: 'Spacious car and tourist bus parking near temple entrance',
+      locker: 'Footwear custody counter and mobile storage desks at outer gopuram',
+      food: 'TTD prasadam distribution and temple canteens nearby'
+    },
+    travelEstimates: {
+      'tirupati': '1.5 hrs (65 km via Puttur / Nagari)',
+      'chennai': '2 hrs (75-90 km via Uthukottai)',
+      'nagari': '30 mins (25 km)'
+    },
+    rituals: {
+      daily: [
+        'Suprabhatam & Temple Opening (6:00 AM)',
+        'Morning Nitya Pooja & Sahasranama Archana (6:30 AM – 8:00 AM)',
+        'Morning Sarva Darshan (8:00 AM – 1:00 PM)',
+        'Afternoon Closure / Rest (1:00 PM – 4:00 PM)',
+        'Evening Reopening & Archana (4:00 PM – 6:30 PM)',
+        'Sayana Harathi & Temple Closure (8:00 PM)'
+      ],
+      weekly: [
+        'Special Friday Thayar Thirumanjanam & Saturday Abhishekam'
+      ],
+      annual: [
+        'Surya Puja Mahotsavam (3-Day Solar Illumination in March)',
+        'Matsya Jayanti Celebrations (March/April)',
+        'Annual Brahmotsavam (May/June)',
+        'Vaikunta Ekadasi & Ratha Saptami'
+      ]
+    },
+    relatedPlaces: ['nagala-falls', 'surutupalli', 'narayanavanam', 'appalayagunta-temple']
+  },
   { id: 'tallapaka-temple', name: 'Sri Chennakesava Swamy Temple', category: 'Historical', placeType: 'spiritual', location: 'Tallapaka', distanceKms: 95, durationMins: 90, budgetLevel: 'medium', entryFeeNum: 0, interests: ['history', 'music'], openFrom: 6, openTo: 20, isMustVisit: false, description: 'Birthplace of poet-saint Annamacharya.', history: 'Dedicated to Chennakesava Swamy.', timings: '6:00 AM - 8:00 PM', entryFee: 'Free', address: 'Tallapaka, Kadapa', rating: 4.6, reviewCount: 1800, image: '/assets/temples/tallapaka.png', coordinates: { lat: 14.2372, lng: 79.1558 }, tags: ['Saint', 'Music'], bestTime: 'Morning', practicalInfo: { dressCode: 'Modest', food: 'Limited', parking: 'Available' }, travelEstimates: { 'tirupati': '2 hours' } },
   {
     id: 'kattaputtalamma-temple',

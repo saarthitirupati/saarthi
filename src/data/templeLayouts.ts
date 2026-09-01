@@ -3199,6 +3199,129 @@ export const CURATED_LAYOUTS: Record<string, Partial<TempleLayoutData>> = {
       { titleEn: 'APSRTC Rapur Depot', titleTe: 'ఆర్టీసీ రాపూరు డిపో', number: '08612345123' },
       { titleEn: 'Emergency Helpline', titleTe: 'అత్యవసర హెల్ప్‌లైన్', number: '112' }
     ]
+  },
+  'nagalapuram-temple': {
+    placeId: 'nagalapuram-temple',
+    titleEn: 'Sri Veda Narayana Swamy Temple Precinct Map (Nagalapuram)',
+    titleTe: 'శ్రీ వేదనారాయణ స్వామి ఆలయ ప్రాంగణ మ్యాప్ (నాగలాపురం)',
+    layoutType: 'ancient-shrine',
+    centerCoordinates: { lat: 13.3876691, lng: 79.7965048 },
+    defaultZoom: 17,
+    compassBearingDeg: 0,
+    sanctumNameEn: 'Sri Matsya Veda Narayana Swamy Garbhalayam',
+    sanctumNameTe: 'శ్రీ మత్స్య వేదనారాయణ స్వామి గర్భాలయం',
+    routePath: [[430, 290], [375, 265], [270, 275], [270, 195], [145, 125], [270, 85], [395, 140], [395, 220], [430, 290]],
+    pins: [
+      {
+        id: 'parking',
+        nameEn: 'Outer Courtyard & Temple Parking Bay',
+        nameTe: 'ఆలయ ప్రాంగణం బయట పార్కింగ్ స్థలం',
+        category: 'parking',
+        lat: 13.3870,
+        lng: 79.7960,
+        svgX: 430,
+        svgY: 290,
+        descEn: 'Spacious vehicle parking area in front of the outer Rajagopuram.',
+        descTe: 'వాహనాల పార్కింగ్ ప్రదేశం.'
+      },
+      {
+        id: 'footwear',
+        nameEn: 'Free Footwear Stand & Luggage Cloakroom',
+        nameTe: 'పాదరక్షల స్టాండ్ & క్లాక్‌రూమ్',
+        category: 'footwear',
+        lat: 13.3873,
+        lng: 79.7962,
+        svgX: 375,
+        svgY: 265,
+        descEn: 'Free TTD footwear deposit counter before the main gopuram.',
+        descTe: 'ఉచిత చెప్పుల కౌంటర్.'
+      },
+      {
+        id: 'entry',
+        nameEn: '16th-Century Vijayanagara Rajagopuram Entrance',
+        nameTe: 'శ్రీకృష్ణదేవరాయల కాలం నాటి రాజగోపురం',
+        category: 'entry',
+        lat: 13.3874,
+        lng: 79.7963,
+        svgX: 270,
+        svgY: 275,
+        descEn: 'Massive stone gopuram constructed by Sri Krishnadevaraya featuring sculpted Dasavatharam motifs.',
+        descTe: 'దశావతార శిల్పాలతో అలరారే చారిత్రక రాజగోపురం.'
+      },
+      {
+        id: 'surya-path',
+        nameEn: '630-Foot Surya Puja Solar Axis & Mandapam',
+        nameTe: '630 అడుగుల సూర్య పూజా మార్గం & మహా మండపం',
+        category: 'info',
+        lat: 13.3875,
+        lng: 79.7964,
+        svgX: 270,
+        svgY: 195,
+        descEn: 'Astronomical axis where setting sun rays travel 630 ft through multiple stone doorways to illuminate the deity in March.',
+        descTe: 'ప్రతి ఏటా మార్చిలో సూర్యకిరణాలు నేరుగా స్వామివారిని తాకే అద్భుత ఖగోళ వాస్తు మార్గం.'
+      },
+      {
+        id: 'thayar',
+        nameEn: 'Sri Vedavalli Thayar Sannidhi',
+        nameTe: 'శ్రీ వేదవల్లి తాయారు సన్నిధి',
+        category: 'info',
+        lat: 13.3876,
+        lng: 79.7967,
+        svgX: 395,
+        svgY: 140,
+        descEn: 'Standalone shrine dedicated to Goddess Vedavalli Thayar in peaceful seated posture.',
+        descTe: 'శ్రీ వేదవల్లి తాయారు అమ్మవారి ప్రత్యేక ఆలయం.'
+      },
+      {
+        id: 'sanctum',
+        nameEn: 'Sri Matsya Veda Narayana Swamy Garbhalayam',
+        nameTe: 'శ్రీ మత్స్య వేదనారాయణ స్వామి గర్భాలయం',
+        category: 'sanctum',
+        lat: 13.3876691,
+        lng: 79.7965048,
+        svgX: 270,
+        svgY: 85,
+        descEn: 'Presiding deity in Matsya Avatar (half-human, half-fish) holding Sudarshana Chakra in Prayoga stance with Sridevi & Bhudevi.',
+        descTe: 'ప్రయోగ చక్రంతో శోభిల్లే అరుదైన మత్స్యావతార శ్రీ వేదనారాయణ స్వామి దివ్య దర్శనం.'
+      },
+      {
+        id: 'varaha-narasimha',
+        nameEn: 'Sri Lakshmi Varaha & Bhumi Narasimha Shrines',
+        nameTe: 'శ్రీ లక్ష్మీ వరాహ & భూమి నరసింహ స్వామి ఉపాలయాలు',
+        category: 'info',
+        lat: 13.3877,
+        lng: 79.7962,
+        svgX: 145,
+        svgY: 125,
+        descEn: 'Sacred subsidiary shrines for Lord Varaha, Lord Narasimha, Venugopala Swamy, and Veera Anjaneya.',
+        descTe: 'వరాహ, నరసింహ, వేణుగోపాల మరియు వీరాంజనేయ స్వామి ఉపాలయాలు.'
+      },
+      {
+        id: 'laddu',
+        nameEn: 'TTD Free Prasadam & Seva Counter',
+        nameTe: 'టీటీడీ ప్రసాదం & పూజా టికెట్ కౌంటర్',
+        category: 'laddu',
+        lat: 13.3874,
+        lng: 79.7967,
+        svgX: 395,
+        svgY: 220,
+        descEn: 'Collect consecrated TTD laddu prasadam and book special Archanas and Sevas.',
+        descTe: 'టీటీడీ లడ్డూ ప్రసాదం మరియు పూజా టికెట్ల కేంద్రం.'
+      }
+    ],
+    routeSteps: [
+      { stepNumber: 1, titleEn: 'Nagalapuram Outer Gopuram Arrival & Parking', titleTe: 'నాగలాపురం చేరుకోవడం & పార్కింగ్', distance: '0.0 km', timeMins: 0, descEn: 'Park vehicle in the spacious outer courtyard.', descTe: 'వాహనాన్ని పార్క్ చేయండి.' },
+      { stepNumber: 2, titleEn: 'Footwear Stand & Rajagopuram Entry', titleTe: 'చెప్పులు విడిచి రాజగోపురం ప్రవేశం', distance: '40m', timeMins: 3, descEn: 'Deposit footwear and enter through the 16th-century Vijayanagara Gopuram.', descTe: 'పాదరక్షలు విడిచి రాజగోపురం గుండా ప్రవేశించండి.' },
+      { stepNumber: 3, titleEn: 'Surya Puja Mandapam & Dasavatharam Pillars', titleTe: 'సూర్య పూజ మండపం & దశావతార స్తంభాలు', distance: '60m', timeMins: 8, descEn: 'Admire the 630-ft solar alignment corridor and intricately carved stone pillars.', descTe: 'చారిత్రక సూర్యపూజ మార్గం మరియు రాతి శిల్పాలను వీక్షించండి.' },
+      { stepNumber: 4, titleEn: 'Sri Matsya Veda Narayana Swamy Darshan', titleTe: 'శ్రీ మత్స్య వేదనారాయణ స్వామి మూలవిరాట్టు దర్శనం', distance: '50m', timeMins: 15, descEn: 'Receive the divine blessings of Lord Vishnu in His first incarnation as Matsya with Prayoga Chakra.', descTe: 'మత్స్యావతార స్వామివారి దివ్య దర్శనం మరియు ఆశీస్సులు పొందండి.' },
+      { stepNumber: 5, titleEn: 'Sri Vedavalli Thayar & Sub-Shrines Pradakshina', titleTe: 'శ్రీ వేదవల్లి తాయారు & ఉపాలయాల దర్శనం', distance: '80m', timeMins: 12, descEn: 'Offer prayers at Vedavalli Thayar, Lakshmi Varaha, and Narasimha shrines.', descTe: 'వేదవల్లి తాయారు మరియు ఇతర సన్నిధులను దర్శించండి.' },
+      { stepNumber: 6, titleEn: 'TTD Prasadam Collection', titleTe: 'టీటీడీ ప్రసాదం స్వీకరణ', distance: '40m', timeMins: 5, descEn: 'Collect consecrated TTD laddu and holy theertham prasadam.', descTe: 'పవిత్ర లడ్డూ ప్రసాదాన్ని స్వీకరించండి.' }
+    ],
+    emergencyContacts: [
+      { titleEn: 'TTD Temple Information Center (Nagalapuram)', titleTe: 'టీటీడీ ఆలయ సమాచార కేంద్రం', number: '08772277777' },
+      { titleEn: 'APSRTC Nagalapuram Bus Stand', titleTe: 'ఆర్టీసీ నాగలాపురం బస్ స్టాండ్', number: '08577222123' },
+      { titleEn: 'Emergency Helpline', titleTe: 'అత్యవసర హెల్ప్‌లైన్', number: '112' }
+    ]
   }
 };
 
@@ -3211,7 +3334,8 @@ const GRAND_PUSHKARINI_TEMPLE_IDS = [
   'srinivasa-mangapuram',
   'varahaswamy',
   'iskcon-tirupati',
-  'vedanarayana'
+  'vedanarayana',
+  'nagalapuram-temple'
 ];
 
 export function hasCuratedTempleLayout(placeInput: string | PlaceInputContext): boolean {
@@ -3235,6 +3359,7 @@ export function getTempleLayout(placeInput: string | PlaceInputContext, fallback
   const curatedKey = 
     CURATED_LAYOUTS[placeId] ? placeId :
     placeId === 'varahaswamy' || placeId === 'bhu-varahaswamy' || placeId === 'varaha-swamy' ? 'bhu-varaha' :
+    placeId === 'vedanarayana' || placeId === 'vedanarayana-swamy' ? 'nagalapuram-temple' :
     placeId === 'narayanavanam-falls' ? 'narayanavanam-waterfalls' :
     placeId === 'kailasakona' ? 'kailasa-kona' :
     placeId === 'moolasthana-yellamma' ? 'moolasthana-yellamma-chandragiri' :
