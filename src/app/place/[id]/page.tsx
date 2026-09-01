@@ -468,8 +468,18 @@ export default function PlaceDetails() {
         <Navigation size={18} color="#FFFFFF" fill="#FFFFFF" />
         <span style={{ color: '#FFFFFF' }}>
           {lang === 'te' 
-            ? (isTemple ? `దర్శన మార్గం ప్రారంభించండి (${formattedDriveTime})` : `మార్గం ప్రారంభించండి (${formattedDriveTime})`) 
-            : `Start Navigation (${formattedDriveTime})`}
+            ? (isTemple ? 'దర్శన మార్గం ప్రారంభించండి' : 'మార్గం ప్రారంభించండి') 
+            : 'Start Navigation'}
+        </span>
+        <span style={{
+          backgroundColor: 'rgba(255, 255, 255, 0.18)',
+          padding: '2px 8px',
+          borderRadius: '12px',
+          fontSize: '12px',
+          fontWeight: 700,
+          color: '#FFFFFF'
+        }}>
+          {formattedDriveTime}
         </span>
       </button>
 

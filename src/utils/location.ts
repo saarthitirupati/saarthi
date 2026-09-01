@@ -183,7 +183,10 @@ export function estimateDriveDuration(distanceKm: number, isTirumalaRoute: boole
  * Formats minutes cleanly into hours and minutes (e.g. 1 hr 15 mins, 45 mins, 2 hrs)
  */
 export function formatTravelTime(minutes: number, lang: string = 'en'): string {
-  const mins = Math.max(1, Math.round(minutes));
+  let mins = Math.max(1, Math.round(minutes));
+  if (mins >= 30) {
+    mins = Math.round(mins / 5) * 5;
+  }
   if (mins < 60) {
     return lang === 'te' ? `${mins} ని.` : `${mins} mins`;
   }
