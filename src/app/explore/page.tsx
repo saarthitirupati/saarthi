@@ -243,9 +243,8 @@ function ExploreContent() {
       return { ...p, computedDistance: dist } as any;
     });
 
-    if (activeFilter === 'Nearby') {
-      result.sort((a: any, b: any) => (a.computedDistance ?? 999) - (b.computedDistance ?? 999));
-    }
+    // Always sort by proximity (nearest to farthest)
+    result.sort((a: any, b: any) => (a.computedDistance ?? 999) - (b.computedDistance ?? 999));
 
     return result;
   }, [searchQuery, activeFilter, places, userLocation, isAlternativeQuery, isTirupatiQuery]);
