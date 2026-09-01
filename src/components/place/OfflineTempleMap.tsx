@@ -138,6 +138,12 @@ export default function OfflineTempleMap({
     }
   }, [placeId]);
 
+  // Convert array of [x, y] waypoints into SVG polyline path string
+  const routePathString = React.useMemo(() => {
+    if (!layout?.routePath || layout.routePath.length === 0) return '';
+    return layout.routePath.map((pt, i) => `${i === 0 ? 'M' : 'L'} ${pt[0]} ${pt[1]}`).join(' ');
+  }, [layout?.routePath]);
+
   if (!layout) {
     return null;
   }
@@ -160,12 +166,6 @@ export default function OfflineTempleMap({
       setIsCached(true);
     }
   };
-
-  // Convert array of [x, y] waypoints into SVG polyline path string
-  const routePathString = React.useMemo(() => {
-    if (!layout.routePath || layout.routePath.length === 0) return '';
-    return layout.routePath.map((pt, i) => `${i === 0 ? 'M' : 'L'} ${pt[0]} ${pt[1]}`).join(' ');
-  }, [layout.routePath]);
 
   // Prettymaps GPS Coordinates formatting
   const displayLat = coordinates?.lat || place?.coordinates?.lat || layout.centerCoordinates?.lat || 13.6288;
