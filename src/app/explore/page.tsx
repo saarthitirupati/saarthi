@@ -7,7 +7,7 @@ import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { useSearchParams } from 'next/navigation';
 import styles from './Explore.module.css';
-import { calculateDrivingDistance, TIRUPATI_CENTER, isWithinTirupatiRegion } from '@/utils/location';
+import { calculateDrivingDistance, TIRUPATI_CENTER, isWithinTirupatiRegion, formatTravelTime, estimateDriveDuration } from '@/utils/location';
 import { useTrip } from '@/components/TripContext';
 import { useRealtimePlaces } from '@/lib/useRealtimePlaces';
 import { useLanguage } from '@/lib/useLanguage';
@@ -250,6 +250,12 @@ function ExploreContent() {
     return result;
   }, [searchQuery, activeFilter, places, userLocation, isAlternativeQuery, isTirupatiQuery]);
 
+  const nearbyPlaces = useMemo(() => {
+    return [...filteredPlaces]
+      .sort((a: any, b: any) => (a.computedDistance ?? 999) - (b.computedDistance ?? 999))
+      .slice(0, 10);
+  }, [filteredPlaces]);
+
   const mustVisit = useMemo(() => {
     return filteredPlaces
       .filter((p: Place) => p.isMustVisit || (p.rating && p.rating >= 4.5) || (p as any).importanceLevel === 'iconic')
@@ -447,15 +453,20 @@ function ExploreContent() {
               onClose={() => setIsLocationModalOpen(false)}
             />
             <div className={styles.horizontalScroll}>
-              {filteredPlaces.slice(0, 10).map((place) => {
+              {nearbyPlaces.map((place) => {
                 const dist = Number((place as any).computedDistance || 0);
+                const locStr = String(place.location || '').toLowerCase();
+                const isTirumala = locStr.includes('tirumala') || locStr.includes('narayanagiri') || String(place.category || '').toLowerCase().includes('tirumala');
+                const driveMins = estimateDriveDuration(dist, isTirumala);
+                const timeFormatted = formatTravelTime(driveMins, lang);
+
                 let travelStr = '';
                 if (dist <= 1.5) {
                   travelStr = lang === 'te' ? `${Math.max(1, Math.round(dist * 12))} నిమిషాలు • నడకదారి` : `${Math.max(1, Math.round(dist * 12))} mins • Walk`;
                 } else if (dist <= 8.0) {
-                  travelStr = lang === 'te' ? `${Math.max(2, Math.round(dist * 2.5))} నిమిషాలు • బైక్/ఆటో` : `${Math.max(2, Math.round(dist * 2.5))} mins • Bike`;
+                  travelStr = lang === 'te' ? `${timeFormatted} • బైక్/ఆటో` : `${timeFormatted} • Bike`;
                 } else {
-                  travelStr = lang === 'te' ? `${Math.max(5, Math.round(dist * 2.0))} నిమిషాలు • బస్సు/కారు` : `${Math.max(5, Math.round(dist * 2.0))} mins • Bus/Car`;
+                  travelStr = lang === 'te' ? `${timeFormatted} • బస్సు/కారు` : `${timeFormatted} • Bus/Car`;
                 }
 
                 return (
