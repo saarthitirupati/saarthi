@@ -3077,6 +3077,128 @@ export const CURATED_LAYOUTS: Record<string, Partial<TempleLayoutData>> = {
       { titleEn: 'APSRTC Pakala Bus Station', titleTe: 'ఆర్టీసీ బస్ స్టేషన్ పాకాల', number: '08572282422' },
       { titleEn: 'Emergency Helpline', titleTe: 'అత్యవసర హెల్ప్‌లైన్', number: '112' }
     ]
+  },
+  'penchalakona-narasimha': {
+    placeId: 'penchalakona-narasimha',
+    titleEn: 'Sri Penusila Lakshmi Narasimha Swamy Devasthanam & Waterfalls',
+    titleTe: 'శ్రీ పెనుశిల లక్ష్మీ నరసింహ స్వామి దేవస్థానం & జలపాతం (పెంచలకోన)',
+    layoutType: 'hill-waterfall',
+    centerCoordinates: { lat: 14.3364684, lng: 79.4103894 },
+    defaultZoom: 17,
+    compassBearingDeg: 0,
+    sanctumNameEn: 'Swayambhu Sri Shantha Lakshmi Narasimha Swamy Garbhalayam',
+    sanctumNameTe: 'స్వయంభూ శ్రీ శాంత లక్ష్మీ నరసింహ స్వామి గర్భాలయం',
+    routePath: [[430, 290], [145, 125], [375, 265], [270, 275], [270, 195], [270, 85], [395, 140], [395, 220], [430, 290]],
+    pins: [
+      {
+        id: 'parking',
+        nameEn: 'Penchalakona Foothills Parking & Bus Terminal',
+        nameTe: 'పెంచలకోన పార్కింగ్ & బస్ బే',
+        category: 'parking',
+        lat: 14.3358,
+        lng: 79.4098,
+        svgX: 430,
+        svgY: 290,
+        descEn: 'Expansive parking area for RTC buses, tourist vehicles, and private cars with shade trees.',
+        descTe: 'ఆర్టీసీ బస్సులు మరియు ప్రైవేట్ వాహనాల పార్కింగ్ ప్రదేశం.'
+      },
+      {
+        id: 'waterfalls',
+        nameEn: 'Sacred Kona Waterfalls & Snana Ghats',
+        nameTe: 'పవిత్ర కోన జలపాతం & స్నాన ఘట్టాలు',
+        category: 'info',
+        lat: 14.3368,
+        lng: 79.4096,
+        svgX: 145,
+        svgY: 125,
+        descEn: 'Medicinal mountain stream originating from Vedagiri hills where pilgrims take a holy cleansing dip.',
+        descTe: 'వేదగిరి కొండల ఔషధ మూలికల గుండా ప్రవహించే పవిత్ర జలపాతం.'
+      },
+      {
+        id: 'footwear',
+        nameEn: 'Free Footwear & Cloakroom Counter',
+        nameTe: 'పాదరక్షల స్టాండ్ & క్లాక్‌రూమ్',
+        category: 'footwear',
+        lat: 14.3361,
+        lng: 79.4101,
+        svgX: 375,
+        svgY: 265,
+        descEn: 'Safe custody counters for shoes, luggage, and mobile phones near temple entrance.',
+        descTe: 'చెప్పులు మరియు లగేజ్ భద్రపరిచే కౌంటర్.'
+      },
+      {
+        id: 'entry',
+        nameEn: 'Temple Gateway & Mukha Mandapam',
+        nameTe: 'ఆలయ రాజగోపురం & ముఖ మండపం',
+        category: 'entry',
+        lat: 14.3362,
+        lng: 79.4103,
+        svgX: 270,
+        svgY: 275,
+        descEn: 'Main entrance archway leading to the ancient stone mandapam.',
+        descTe: 'ఆలయ ప్రధాన ప్రవేశ ద్వారం.'
+      },
+      {
+        id: 'dhwajasthambham',
+        nameEn: 'Dhwajasthambham & Garuda Sannidhi',
+        nameTe: 'ధ్వజస్తంభం & గరుడ సన్నిధి',
+        category: 'info',
+        lat: 14.3363,
+        lng: 79.4104,
+        svgX: 270,
+        svgY: 195,
+        descEn: 'Sacred brass-clad flag mast and Lord Garuda\'s shrine facing the sanctum.',
+        descTe: 'పవిత్ర ధ్వజస్తంభం మరియు గరుత్మంతుని సన్నిధి.'
+      },
+      {
+        id: 'sanctum',
+        nameEn: 'Swayambhu Rock Garbhalayam (Sri Shantha Narasimha)',
+        nameTe: 'స్వయంభూ శిలా గర్భాలయం (శాంత నరసింహ స్వామి)',
+        category: 'sanctum',
+        lat: 14.3364684,
+        lng: 79.4103894,
+        svgX: 270,
+        svgY: 85,
+        descEn: 'Ancient self-manifested rock formation where Goddess Chenchu Lakshmi embraced and calmed Lord Narasimha.',
+        descTe: 'చెంచు లక్ష్మి ఆలింగనంతో శాంతించిన స్వయంభూ శ్రీ లక్ష్మీ నరసింహ స్వామి దివ్య దర్శనం.'
+      },
+      {
+        id: 'annadanam',
+        nameEn: 'Free Nitya Annadana Satram (12:30 PM – 2:30 PM)',
+        nameTe: 'నిత్య అన్నదాన సత్రం (మధ్యాహ్నం 12:30 - 2:30)',
+        category: 'food',
+        lat: 14.3365,
+        lng: 79.4108,
+        svgX: 395,
+        svgY: 140,
+        descEn: 'Devasthanam dining hall providing free, nutritious hot meals daily to all visiting devotees.',
+        descTe: 'భక్తులందరికీ ఉచిత రుచికరమైన నిత్య అన్నప్రసాద వితరణ.'
+      },
+      {
+        id: 'cottages',
+        nameEn: 'TTD / Endowments Choultries & Guest Cottages',
+        nameTe: 'టీటీడీ & దేవాదాయ ధర్మసత్రాలు',
+        category: 'info',
+        lat: 14.3359,
+        lng: 79.4109,
+        svgX: 395,
+        svgY: 220,
+        descEn: 'Comfortable AC and non-AC budget accommodation rooms for overnight pilgrims.',
+        descTe: 'యాత్రికుల బస కోసం సౌకర్యవంతమైన గదులు మరియు సత్రాలు.'
+      }
+    ],
+    routeSteps: [
+      { stepNumber: 1, titleEn: 'Penchalakona Foothills Arrival & Parking', titleTe: 'పెంచలకోన చేరుకోవడం & పార్కింగ్', distance: '0.0 km', timeMins: 0, descEn: 'Park vehicle at the base near the bus bay.', descTe: 'వాహనాన్ని పార్క్ చేయండి.' },
+      { stepNumber: 2, titleEn: 'Holy Cleansing Dip in Kona Waterfalls', titleTe: 'పవిత్ర కోన జలపాతంలో స్నానం', distance: '80m', timeMins: 15, descEn: 'Take a refreshing holy dip in the therapeutic mountain stream waters.', descTe: 'ఔషధ గుణాలు గల పవిత్ర జలపాతంలో స్నానం చేయండి.' },
+      { stepNumber: 3, titleEn: 'Footwear Custody & Mukha Mandapam Entry', titleTe: 'చెప్పులు విడిచి మండపం ప్రవేశం', distance: '60m', timeMins: 3, descEn: 'Deposit footwear at the counter and proceed through the gateway.', descTe: 'పాదరక్షలు విడిచి ఆలయ ముఖమండపంలోకి ప్రవేశించండి.' },
+      { stepNumber: 4, titleEn: 'Swayambhu Sri Lakshmi Narasimha Darshan', titleTe: 'స్వయంభూ శ్రీ లక్ష్మీ నరసింహ స్వామి దర్శనం', distance: '40m', timeMins: 20, descEn: 'Offer prayers at the self-manifested rock sanctum for peace, protection, and family prosperity.', descTe: 'శాంత నరసింహ స్వామిని దర్శించి ప్రత్యేక పూజలు చేయండి.' },
+      { stepNumber: 5, titleEn: 'Free Nitya Annadanam & Prasadam Counter', titleTe: 'నిత్య అన్నదానం & ప్రసాద స్వీకరణ', distance: '60m', timeMins: 15, descEn: 'Receive sanctified Laddoo prasadam and partake in the free Nitya Annadanam meal.', descTe: 'లడ్డూ ప్రసాదం స్వీకరించి నిత్య అన్నదాన ప్రసాదాన్ని ఆరగించండి.' }
+    ],
+    emergencyContacts: [
+      { titleEn: 'Devasthanam Executive Officer (Penchalakona)', titleTe: 'దేవస్థానం కార్యనిర్వాహక అధికారి', number: '08612345678' },
+      { titleEn: 'APSRTC Rapur Depot', titleTe: 'ఆర్టీసీ రాపూరు డిపో', number: '08612345123' },
+      { titleEn: 'Emergency Helpline', titleTe: 'అత్యవసర హెల్ప్‌లైన్', number: '112' }
+    ]
   }
 };
 

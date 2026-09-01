@@ -3041,6 +3041,94 @@ export const PLACES: Place[] = [
       ]
     },
     relatedPlaces: ['sree-padmagiri-subramanya', 'kanipakam', 'chandragiri-fort', 'srikalahasti']
+  },
+  {
+    id: 'penchalakona-narasimha',
+    name: 'Sri Penusila Lakshmi Narasimha Swamy Devasthanam',
+    teluguName: 'శ్రీ పెనుశిల లక్ష్మీ నరసింహ స్వామి దేవస్థానం (పెంచలకోన)',
+    category: 'Temples',
+    placeType: 'spiritual',
+    location: 'Penchalakona, Rapur Mandal',
+    distanceKms: 115,
+    durationMins: 180,
+    budgetLevel: 'budget',
+    entryFeeNum: 0,
+    interests: ['spiritual', 'culture', 'nature', 'waterfalls', 'history'],
+    openFrom: 6,
+    openTo: 20,
+    isMustVisit: true,
+    description: 'Sri Penusila Lakshmi Narasimha Swamy Devasthanam in Penchalakona is an ancient, self-manifested (Swayambhu) Nava Narasimha Kshetram set amidst the scenic, medicinal mountain ranges of the Eastern Ghats in SPSR Nellore District. According to Sthala Puranam, after slaying the demon Hiranyakashipu, Lord Narasimha roamed these hills in a fierce (Ugra) state until Goddess Lakshmi assumed the form of Chenchu Lakshmi and embraced Him (Penu Vesukonuta) beneath a massive rock boulder (Sila), turning Him into Shantha Narasimha. The temple complex is renowned for its therapeutic mountain waterfalls, Kanva Maharshi Tapovanam, daily Nitya Annadanam, and powerful blessings for childless couples and devotees seeking peace and protection.',
+    shortIntro: 'Ancient Swayambhu Nava Narasimha Kshetram in the Eastern Ghats near Rapur featuring medicinal waterfalls, Kanva Tapovanam, and peaceful Shantha Narasimha darshan.',
+    whyVisit: 'Renowned Swayambhu Nava Narasimha temple nestled amidst medicinal waterfall streams and the scenic Vedagiri forest. Pilgrims revere the holy dip in Kona waterfalls, free daily Nitya Annadanam (12:30 PM – 2:30 PM), childless couples\' blessings (Santhana Praapthi), and tranquil hilltop spirituality.',
+    history: 'According to ancient Sthala Puranam, the sacred mountain was the hermitage (Tapovanam) of Sage Kanva (Kandeya Maharshi) who performed rigorous penance along the sacred Kanva Yeru (now Kandaleru river). The deity is a self-manifested rock formation where two massive stones intertwine into a lion’s head form. Historical records note that the sanctum sanctorum dates back over 670 years, and the annual 5-day Brahmotsavam starting on Vaisakha Suddha Ekadashi attracts lakhs of pilgrims across Rayalaseema and coastal Andhra.',
+    timings: 'Morning: 6:00 AM – 12:30 PM | Evening: 3:00 PM – 8:00 PM (Nitya Abhishekam: 6:30 AM – 7:30 AM; Kalyanotsavam: 10:00 AM – 12:00 PM; Nitya Annadanam: 12:30 PM – 2:30 PM)',
+    entryFee: 'Free entry for all devotees (Special Darshan, Kalyanotsavam & Sahasranamarchana tickets available at the devasthanam office)',
+    address: 'Penchalakona Village, Rapur Mandal, SPSR Nellore District, Andhra Pradesh – 524414',
+    rating: 4.8,
+    reviewCount: 520,
+    image: 'https://res.cloudinary.com/kniegqlj/image/upload/v1788274171/https_3A_2F_2Fsubstack-post-media.s3.amazonaws.com_2Fpublic_2Fimages_2F8b6a30eb-0124-4d49-a4fd-13d0bb7629af_1134x638_gwix4m.jpg',
+    images: [
+      'https://res.cloudinary.com/kniegqlj/image/upload/v1788274171/https_3A_2F_2Fsubstack-post-media.s3.amazonaws.com_2Fpublic_2Fimages_2F8b6a30eb-0124-4d49-a4fd-13d0bb7629af_1134x638_gwix4m.jpg'
+    ],
+    coordinates: { lat: 14.3364684, lng: 79.4103894 },
+    tags: ['Penchalakona', 'Narasimha Swamy', 'Swayambhu', 'Nava Narasimha', 'Waterfalls', 'Kanva Maharshi', 'Chenchu Lakshmi', 'Eastern Ghats'],
+    bestTime: 'Saturdays, Swati Nakshatra days, Narasimha Jayanti, Vaisakha Brahmotsavam, and Karthika Masam',
+    breakTimings: [{ from: '12:30', to: '15:00' }],
+    spiritualInfo: {
+      god: 'Lord Lakshmi Narasimha Swamy (with Goddess Chenchu Lakshmi & Adi Lakshmi)',
+      knownFor: 'Swayambhu Rock Darshan, Shantha Narasimha Blessings, Santhana Praapthi, and Medicinal Waterfall Bath',
+      mantra: 'Om Namo Bhagavate Narasimhaya | Ugram Veeram Maha Vishnum Jvalantam Sarvatomukham',
+      devoteeTips: [
+        'Take a holy dip in the crystal mountain waters of Kona Waterfalls before taking Darshan for spiritual and physical refreshment',
+        'Free Nitya Annadanam (hot meals, sambar, curd rice, sweet) is served daily from 12:30 PM to 2:30 PM at the Annadana Satram',
+        'Childless couples traditionally perform pradakshinas and participate in Nitya Kalyanotsavam for Santhana Praapthi blessings',
+        'TTD and Endowments Choultries as well as private trust cottages are available at the base for overnight stay (₹400 – ₹1,500/night)',
+        'Direct APSRTC buses run regularly from Nellore, Rapur, Rajampet, and Tirupati'
+      ]
+    },
+    practicalInfo: {
+      dressCode: 'Traditional or modest attire (Dhoti/Kurta or Shirt/Trouser for men, Saree/Chudidar for women).',
+      food: 'Free Nitya Annadanam (12:30 PM – 2:30 PM), Devasthanam Prasadam counters, and foothill eateries',
+      parking: 'Expansive parking spaces at foothills for buses, cars, and two-wheelers'
+    },
+    facilities: {
+      wheelchair: 'Concrete pathways and ramp lines for elderly devotees to reach the sanctum area easily',
+      drinkingWater: 'Purified RO drinking water taps available throughout the complex',
+      toilets: 'Clean public restrooms and bathing ghats near the waterfall stream',
+      parking: 'Expansive parking spaces at foothills for buses, cars, and two-wheelers',
+      locker: 'Safe custody counters for mobile phones, bags, and footwear near the entrance',
+      food: 'Free Nitya Annadanam Satram (12:30 PM – 2:30 PM) and Laddoo/Pulihora prasadam counters'
+    },
+    travelEstimates: {
+      'nellore': '1.5 hrs (75 km via Podalakur → Rapur)',
+      'tirupati': '2.5 hrs (115 km via Venkatagiri → Rapur)',
+      'rajampet': '1.5 hrs (65 km via Chitvel → Rapur)',
+      'gudur': '1.5 hrs (65 km via Sydapuram → Rapur)'
+    },
+    rituals: {
+      daily: [
+        'Suprabhatam & Temple Opening (6:00 AM – 6:30 AM)',
+        'Nitya Abhishekam (Milk, Honey, Sandalwood & Herbal Waters) (6:30 AM – 7:30 AM)',
+        'Alankaram & Morning Harathi (7:30 AM – 8:30 AM)',
+        'Sarva Darshan (8:30 AM – 12:30 PM)',
+        'Nitya Kalyanotsavam & Sahasranama Archana (10:00 AM – 12:00 PM)',
+        'Free Nitya Annadanam at Satram (12:30 PM – 2:30 PM)',
+        'Sanctum Afternoon Repose / Closure (12:30 PM – 3:00 PM)',
+        'Evening Darshan & Archanas (3:00 PM – 7:30 PM)',
+        'Ekanta Seva & Night Closure (7:30 PM – 8:00 PM)'
+      ],
+      weekly: [
+        'Special Saturday Maha Abhishekam & Annadanam'
+      ],
+      annual: [
+        'Vaisakha Suddha Ekadashi Brahmotsavam (5-Day Grand Festival)',
+        'Narasimha Jayanti & Swati Nakshatra Utsavam',
+        'Vaikunta Ekadasi Uttara Dwara Darshanam',
+        'Karthika Masam Deepotsavam & Giri Pradakshina',
+        'Maha Shivaratri Special Abhishekam'
+      ]
+    },
+    relatedPlaces: ['talakona', 'kailasa-kona', 'srikalahasti', 'parasareswara-temple-gudimallam']
   }
 ];
 
