@@ -16,6 +16,7 @@ import { useRealtimePlaces } from '@/lib/useRealtimePlaces';
 import { calculateDrivingDistance, isCoordinateOnTirumalaHill, isWithinTirupatiRegion, TIRUPATI_CENTER, formatTravelTime, estimateDriveDuration } from '@/utils/location';
 import { findNearestPlaceCandidates } from '@/lib/location';
 import { useLanguage } from '@/lib/useLanguage';
+import { getFestivalCrowdIntelligence } from '@/utils/festivalCrowd';
 import OfflineTempleMap from '@/components/place/OfflineTempleMap';
 
 export default function PlaceDetails() {
@@ -106,6 +107,9 @@ export default function PlaceDetails() {
 
   const driveTimeMins = useMemo(() => estimateDriveDuration(drivingDistance, isGhatTrip), [drivingDistance, isGhatTrip]);
   const formattedDriveTime = useMemo(() => formatTravelTime(driveTimeMins, lang), [driveTimeMins, lang]);
+
+  // Dynamic Festival Crowd Intelligence Hook
+  const festivalCrowd = useMemo(() => getFestivalCrowdIntelligence(place.id), [place.id]);
 
   // Dynamic Facilities Evaluation Hook (Executed unconditionally with all hooks)
   const evaluatedFacilities = useMemo(() => {
@@ -398,38 +402,77 @@ export default function PlaceDetails() {
     </div>
   );
 
-  // 3. SAARTHI SUGGESTS
+  // 3. SAARTHI SUGGESTS (With Dynamic Festival Crowd Intelligence)
   const saarthiSuggestsNode = (
     <div style={{
-      backgroundColor: '#FFFFFF',
-      border: '1.5px solid rgba(200, 155, 60, 0.35)',
-      background: 'linear-gradient(135deg, #FFFFFF 0%, #FFFDF7 100%)',
+      backgroundColor: festivalCrowd.hasImpact 
+        ? (festivalCrowd.isFestivalActive ? '#FFFBEB' : '#F8FAFC')
+        : '#FFFFFF',
+      border: festivalCrowd.hasImpact
+        ? (festivalCrowd.isFestivalActive ? '1.5px solid #F59E0B' : '1.5px solid #93C5FD')
+        : '1.5px solid rgba(200, 155, 60, 0.35)',
+      background: festivalCrowd.hasImpact
+        ? (festivalCrowd.isFestivalActive 
+            ? 'linear-gradient(135deg, #FFFDF7 0%, #FEF3C7 100%)' 
+            : 'linear-gradient(135deg, #FFFFFF 0%, #F0F9FF 100%)')
+        : 'linear-gradient(135deg, #FFFFFF 0%, #FFFDF7 100%)',
       borderRadius: '20px',
       padding: '16px 18px',
-      boxShadow: '0 8px 24px -4px rgba(200, 155, 60, 0.1)'
+      boxShadow: festivalCrowd.isFestivalActive 
+        ? '0 8px 24px -4px rgba(245, 158, 11, 0.18)' 
+        : '0 8px 24px -4px rgba(200, 155, 60, 0.1)'
     }}>
-      <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
-        <div style={{ width: '26px', height: '26px', borderRadius: '8px', background: '#FEF9C3', border: '1px solid #FDE047', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-          <Sparkles size={14} color="#CA8A04" />
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '8px', flexWrap: 'wrap', gap: '6px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <div style={{
+            width: '26px',
+            height: '26px',
+            borderRadius: '8px',
+            background: festivalCrowd.isFestivalActive ? '#FDE68A' : '#FEF9C3',
+            border: festivalCrowd.isFestivalActive ? '1px solid #F59E0B' : '1px solid #FDE047',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center'
+          }}>
+            {festivalCrowd.isFestivalActive ? <Flame size={14} color="#B45309" /> : <Sparkles size={14} color="#CA8A04" />}
+          </div>
+          <span style={{ fontSize: '13px', fontWeight: 800, color: festivalCrowd.isFestivalActive ? '#92400E' : '#854D0E', letterSpacing: '0.2px' }}>
+            {festivalCrowd.hasImpact 
+              ? (lang === 'te' ? festivalCrowd.alertTitleTe : festivalCrowd.alertTitleEn)
+              : (lang === 'te' ? 'సారథి సూచన' : 'Saarthi Suggests')}
+          </span>
         </div>
-        <span style={{ fontSize: '13px', fontWeight: 800, color: '#854D0E', letterSpacing: '0.2px' }}>
-          {lang === 'te' ? 'సారథి సూచన' : 'Saarthi Suggests'}
-        </span>
+
+        {festivalCrowd.hasImpact && (
+          <span style={{
+            fontSize: '11px',
+            fontWeight: 800,
+            color: festivalCrowd.isFestivalActive ? '#92400E' : '#1D4ED8',
+            backgroundColor: festivalCrowd.isFestivalActive ? '#FEF3C7' : '#DBEAFE',
+            padding: '2px 8px',
+            borderRadius: '10px',
+            border: festivalCrowd.isFestivalActive ? '1px solid #FCD34D' : '1px solid #BFDBFE'
+          }}>
+            {lang === 'te' ? festivalCrowd.badgeTextTe : festivalCrowd.badgeTextEn}
+          </span>
+        )}
       </div>
 
       <p style={{ fontSize: '13px', color: '#1E293B', fontWeight: 700, lineHeight: 1.45, margin: '0 0 10px' }}>
-        {lang === 'te' 
-          ? (place.id === 'govindaraja'
-              ? 'ఉదయం 7:30 లోపు లేదా సాయంత్రం 5:30 (ఊంజల్ సేవ / కల్యాణోత్సవం) వేళల్లో దర్శనం అత్యంత శ్రేయస్కరం. తక్కువ నిరీక్షణ సమయం (15–25 నిమిషాలు).'
+        {festivalCrowd.hasImpact
+          ? (lang === 'te' ? festivalCrowd.alertMessageTe : festivalCrowd.alertMessageEn)
+          : (lang === 'te' 
+              ? (place.id === 'govindaraja'
+                  ? 'ఉదయం 7:30 లోపు లేదా సాయంత్రం 5:30 (ఊంజల్ సేవ / కల్యాణోత్సవం) వేళల్లో దర్శనం అత్యంత శ్రేయస్కరం. తక్కువ నిరీక్షణ సమయం (15–25 నిమిషాలు).'
+                  : (place.id === 'sv-zoo-park'
+                      ? 'ఉదయం 9:00 - 11:30 మధ్య జంతువులు చురుగ్గా ఉంటాయి. సఫారీ రైడ్ కోసం ముందుగా టికెట్లు తీసుకోండి.'
+                      : (isTemple ? 'ఉదయం వేళల్లో దర్శనం ప్రశాంతంగా ఉంటుంది. తక్కువ క్యూ సమయం (15–25 నిమిషాలు).' : 'ఉదయం లేదా సాయంత్రం వేళల్లో సందర్శించడం ఆహ్లాదకరంగా ఉంటుంది.')))
               : (place.id === 'sv-zoo-park'
-                  ? 'ఉదయం 9:00 - 11:30 మధ్య జంతువులు చురుగ్గా ఉంటాయి. సఫారీ రైడ్ కోసం ముందుగా టికెట్లు తీసుకోండి.'
-                  : (isTemple ? 'ఉదయం వేళల్లో దర్శనం ప్రశాంతంగా ఉంటుంది. తక్కువ క్యూ సమయం (15–25 నిమిషాలు).' : 'ఉదయం లేదా సాయంత్రం వేళల్లో సందర్శించడం ఆహ్లాదకరంగా ఉంటుంది.')))
-          : (place.id === 'sv-zoo-park'
-              ? 'Visit between 9:00 AM - 11:30 AM when animals are most active in open enclosures. Battery vehicles and safari available.'
-              : saarthiTip)}
+                  ? 'Visit between 9:00 AM - 11:30 AM when animals are most active in open enclosures. Battery vehicles and safari available.'
+                  : saarthiTip))}
       </p>
 
-      <div style={{ display: 'flex', alignItems: 'center', gap: '12px', fontSize: '11.5px', color: '#64748B', borderTop: '1px solid #F1F5F9', paddingTop: '8px' }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: '12px', fontSize: '11.5px', color: '#64748B', borderTop: '1px solid rgba(0,0,0,0.06)', paddingTop: '8px', flexWrap: 'wrap' }}>
         <span style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
           <Clock size={13} color="#64748B" />
           {lang === 'te' ? 'సమయం:' : 'Visit:'} <strong>{lang === 'te' ? (place.durationMins ? `${place.durationMins} నిమి.` : '45 నిమిషాలు') : (place.durationMins ? `${place.durationMins} mins` : (guide.duration || '45 mins'))}</strong>
@@ -437,7 +480,7 @@ export default function PlaceDetails() {
         <span>•</span>
         <span style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
           <Zap size={13} color="#CA8A04" />
-          {lang === 'te' ? 'మంచి సమయం:' : 'Best:'} <strong>{lang === 'te' ? 'ఉదయం వేళలు' : (guide.bestTime?.split('(')[0] || 'Morning')}</strong>
+          {lang === 'te' ? 'మంచి సమయం:' : 'Best:'} <strong>{festivalCrowd.hasImpact ? festivalCrowd.recommendedTime : (lang === 'te' ? 'ఉదయం వేళలు' : (guide.bestTime?.split('(')[0] || 'Morning'))}</strong>
         </span>
       </div>
     </div>
@@ -1070,6 +1113,23 @@ export default function PlaceDetails() {
               <Star size={12} fill="#CA8A04" color="#CA8A04" />
               <span>{place.rating || 4.8}</span>
             </span>
+
+            {festivalCrowd.hasImpact && (
+              <span style={{
+                fontSize: '11px',
+                fontWeight: 800,
+                backgroundColor: festivalCrowd.isFestivalActive 
+                  ? (festivalCrowd.isDirectCenter ? 'rgba(239, 68, 68, 0.45)' : 'rgba(245, 158, 11, 0.45)')
+                  : 'rgba(59, 130, 246, 0.35)',
+                color: '#FFFFFF',
+                padding: '3px 9px',
+                borderRadius: '6px',
+                border: `1px solid ${festivalCrowd.isFestivalActive ? (festivalCrowd.isDirectCenter ? '#FCA5A5' : '#FDE047') : '#93C5FD'}`,
+                boxShadow: '0 2px 8px rgba(0, 0, 0, 0.25)'
+              }}>
+                {lang === 'te' ? festivalCrowd.badgeTextTe : festivalCrowd.badgeTextEn}
+              </span>
+            )}
 
             {place.isTemporarilyClosed ? (
               <span style={{

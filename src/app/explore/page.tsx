@@ -12,6 +12,7 @@ import { useTrip } from '@/components/TripContext';
 import { useRealtimePlaces } from '@/lib/useRealtimePlaces';
 import { useLanguage } from '@/lib/useLanguage';
 import { LocationPickerModal, LocationPill } from '@/components/common/LocationPickerModal';
+import { getFestivalCrowdIntelligence } from '@/utils/festivalCrowd';
 
 const FILTERS_DATA = [
   { key: 'All', labelEn: 'All', labelTe: 'అన్నీ' },
@@ -609,7 +610,10 @@ function ExploreContent() {
         <div className={styles.templeList}>
           {filteredPlaces.length > 0 ? (
             filteredPlaces.map((place: Place, index: number) => {
-              const explainableReason = place.oneReasonToVisit || place.spiritualInfo?.knownFor || place.whyVisit?.split('.')[0];
+              const festCrowd = getFestivalCrowdIntelligence(place.id);
+              const explainableReason = festCrowd.hasImpact && festCrowd.isFestivalActive
+                ? (lang === 'te' ? `🔥 ${festCrowd.alertTitleTe}` : `🔥 ${festCrowd.alertTitleEn}`)
+                : (place.oneReasonToVisit || place.spiritualInfo?.knownFor || place.whyVisit?.split('.')[0]);
               const crowd = place.saarthiIntelligence?.crowdLevel;
 
               return (
@@ -642,17 +646,17 @@ function ExploreContent() {
                           display: 'inline-flex',
                           alignItems: 'center',
                           gap: '5px',
-                          backgroundColor: '#FEF9C3',
-                          color: '#854D0E',
+                          backgroundColor: festCrowd.hasImpact && festCrowd.isFestivalActive ? '#FEF2F2' : '#FEF9C3',
+                          color: festCrowd.hasImpact && festCrowd.isFestivalActive ? '#991B1B' : '#854D0E',
                           fontSize: '11px',
                           fontWeight: 700,
                           borderRadius: '6px',
                           padding: '2.5px 7px',
                           margin: '4px 0 6px 0',
-                          border: '1px solid rgba(234, 179, 8, 0.25)',
+                          border: `1px solid ${festCrowd.hasImpact && festCrowd.isFestivalActive ? 'rgba(239, 68, 68, 0.35)' : 'rgba(234, 179, 8, 0.25)'}`,
                           lineHeight: 1.3
                         }}>
-                          <Sparkles size={11} color="#CA8A04" style={{ flexShrink: 0 }} />
+                          <Sparkles size={11} color={festCrowd.hasImpact && festCrowd.isFestivalActive ? '#DC2626' : '#CA8A04'} style={{ flexShrink: 0 }} />
                           <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', maxWidth: '300px' }}>
                             {explainableReason}
                           </span>
@@ -673,7 +677,31 @@ function ExploreContent() {
                           <span className={styles.tag}>{place.distanceKms} km from Tirupati</span>
                         )}
 
-                        {crowd && (
+                        {festCrowd.hasImpact && festCrowd.isFestivalActive ? (
+                          <span className={styles.tag} style={{
+                            backgroundColor: '#FEE2E2',
+                            color: '#991B1B',
+                            fontWeight: 800,
+                            display: 'inline-flex',
+                            alignItems: 'center',
+                            gap: '4px',
+                            border: '1px solid #FCA5A5'
+                          }}>
+                            {lang === 'te' ? festCrowd.badgeTextTe : festCrowd.badgeTextEn}
+                          </span>
+                        ) : festCrowd.hasImpact && festCrowd.isUpcoming ? (
+                          <span className={styles.tag} style={{
+                            backgroundColor: '#EFF6FF',
+                            color: '#1D4ED8',
+                            fontWeight: 800,
+                            display: 'inline-flex',
+                            alignItems: 'center',
+                            gap: '4px',
+                            border: '1px solid #BFDBFE'
+                          }}>
+                            {lang === 'te' ? festCrowd.badgeTextTe : festCrowd.badgeTextEn}
+                          </span>
+                        ) : crowd ? (
                           <span className={styles.tag} style={{
                             backgroundColor: crowd === 'High' ? '#FEE2E2' : '#DCFCE7',
                             color: crowd === 'High' ? '#991B1B' : '#166534',
@@ -684,7 +712,7 @@ function ExploreContent() {
                           }}>
                             ● {crowd} {lang === 'te' ? 'రద్దీ' : 'Crowd'}
                           </span>
-                        )}
+                        ) : null}
 
                         {(place.tags || []).slice(0, 3).map((tag: string) => (
                           <span key={tag} className={styles.tag}>{tag}</span>
