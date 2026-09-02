@@ -7,7 +7,7 @@ import {
   ArrowLeft, Heart, Share2, Star, MapPin, Clock, Shirt, 
   Camera, Navigation, Sparkles, CheckCircle2, 
   ChevronDown, ChevronUp, Droplets, Utensils, Lock,
-  Bus, Car, Shield, Check, Zap, BookOpen, Flame, Landmark
+  Bus, Car, Shield, Check, Zap, BookOpen, Flame, Landmark, Fuel
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { PLACES, Place, getPlaceGuideData } from '@/data/places';
@@ -527,6 +527,31 @@ export default function PlaceDetails() {
           {formattedDriveTime}
         </span>
       </button>
+
+      {/* Fuel & Trip Cost Estimator Link */}
+      <Link
+        href={`/trip-estimator?destId=${place.id}`}
+        style={{
+          width: '100%',
+          backgroundColor: '#F8FAFC',
+          color: '#1E293B',
+          border: '1px solid rgba(15, 23, 42, 0.1)',
+          borderRadius: '14px',
+          padding: '11px 16px',
+          fontSize: '13px',
+          fontWeight: 700,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          gap: '8px',
+          textDecoration: 'none',
+          boxShadow: '0 2px 6px rgba(0,0,0,0.02)',
+          transition: 'background 0.15s ease'
+        }}
+      >
+        <Fuel size={15} color="#059669" />
+        <span>{lang === 'te' ? 'ఇంధనం & ప్రయాణ ఖర్చు అంచనా (బైక్ / కారు)' : 'Estimate Fuel & Trip Cost (Bike / Car)'}</span>
+      </Link>
 
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
         <button
