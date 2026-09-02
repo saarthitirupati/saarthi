@@ -211,7 +211,7 @@ export async function calculateTripEstimates(params: {
   const carEstimate: TransportEstimate = {
     mode: 'car',
     title: 'Personal Car (Petrol)',
-    vehicleType: 'Hatchback / Sedan (Petrol)',
+    vehicleType: 'Hatchback / Sedan (Petrol 16 km/L)',
     fuelType: 'Petrol',
     distanceKm: carDist,
     travelTimeMins: carTimeMins,
@@ -228,9 +228,41 @@ export async function calculateTripEstimates(params: {
     recommendationStatus: liveParkingStatus === 'full' ? 'not_recommended' : liveTrafficStatus === 'heavy' ? 'warning' : 'recommended',
     recommendationTag: liveParkingStatus === 'full' ? 'Parking Constrained on Hill' : 'Comfortable Family Drive',
     reasons: [
-      `Fuel: ~${carLiters} L @ ₹${currentFuelRates.petrol}/L (₹${carFuelCost})`,
+      `Fuel: ~${carLiters} L Petrol @ ₹${currentFuelRates.petrol}/L (₹${carFuelCost})`,
       `Cost per person: ₹${Math.round(carTotal / safePassengers)} (${safePassengers} pilgrim${safePassengers > 1 ? 's' : ''})`,
       isTirumalaRoute ? 'Tirumala Hill descent minimum time is 28 mins for safety' : 'Ideal for family & luggage'
+    ]
+  };
+
+  // 3b. CAR (Diesel Hatchback / Sedan)
+  const carDieselMileage = customMileage.carDiesel || VEHICLE_PRESETS.car_diesel.mileage;
+  const carDieselLiters = Number(((carDist / carDieselMileage) * carGhatMult).toFixed(2));
+  const carDieselFuelCost = Math.round(carDieselLiters * currentFuelRates.diesel);
+  const carDieselTotal = carDieselFuelCost + carToll + carParking;
+
+  const carDieselEstimate: TransportEstimate = {
+    mode: 'car',
+    title: 'Personal Car (Diesel)',
+    vehicleType: 'Hatchback / Sedan (Diesel 20 km/L)',
+    fuelType: 'Diesel',
+    distanceKm: carDist,
+    travelTimeMins: carTimeMins,
+    fuelUsedLiters: carDieselLiters,
+    fuelUsedUnit: 'L',
+    fuelCost: carDieselFuelCost,
+    tollCost: carToll,
+    parkingCost: carParking,
+    fareMin: carDieselTotal,
+    fareMax: carDieselTotal,
+    totalCostMin: carDieselTotal,
+    totalCostMax: carDieselTotal,
+    costPerPerson: Math.round(carDieselTotal / safePassengers),
+    recommendationStatus: liveParkingStatus === 'full' ? 'not_recommended' : 'recommended',
+    recommendationTag: 'High Fuel Efficiency (20 km/L)',
+    reasons: [
+      `Fuel: ~${carDieselLiters} L Diesel @ ₹${currentFuelRates.diesel}/L (₹${carDieselFuelCost})`,
+      `High efficiency: Save ~25% on fuel compared to petrol`,
+      isTirumalaRoute ? 'High torque diesel engine handles ghat road curves effortlessly' : 'Economical for long-distance highway travel'
     ]
   };
 
@@ -381,6 +413,7 @@ export async function calculateTripEstimates(params: {
   const estimates: Record<string, TransportEstimate> = {
     bike: bikeEstimate,
     car: carEstimate,
+    car_diesel: carDieselEstimate,
     suv: suvEstimate,
     ev: evEstimate,
     bus: busEstimate,

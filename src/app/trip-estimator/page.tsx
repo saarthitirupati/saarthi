@@ -94,6 +94,11 @@ function TripEstimatorContent() {
     );
   }, []);
 
+  // Auto-request live location on mount
+  useEffect(() => {
+    handleGetLiveLocation();
+  }, [handleGetLiveLocation]);
+
   // Fetch Live Fuel Rates on Mount
   useEffect(() => {
     async function loadFuelRates() {
@@ -170,7 +175,7 @@ function TripEstimatorContent() {
     const entries = Object.entries(estimateResult.estimates);
     if (activeTab === 'all') return entries;
     if (activeTab === 'bike') return entries.filter(([k]) => k === 'bike');
-    if (activeTab === 'car') return entries.filter(([k]) => k === 'car' || k === 'suv');
+    if (activeTab === 'car') return entries.filter(([k]) => k === 'car' || k === 'car_diesel' || k === 'suv');
     if (activeTab === 'ev') return entries.filter(([k]) => k === 'ev');
     if (activeTab === 'bus') return entries.filter(([k]) => k === 'bus' || k === 'auto');
     if (activeTab === 'walk') return entries.filter(([k]) => k === 'walk');
@@ -436,6 +441,7 @@ function TripEstimatorContent() {
                         {key === 'walk' && <Footprints size={22} color="#16A34A" />}
                         {key === 'bike' && <Bike size={22} color="#E9801D" />}
                         {key === 'car' && <Car size={22} color="#2563EB" />}
+                        {key === 'car_diesel' && <Car size={22} color="#0284C7" />}
                         {key === 'suv' && <Car size={22} color="#7C3AED" />}
                         {key === 'ev' && <Zap size={22} color="#059669" />}
                         {key === 'auto' && <Zap size={22} color="#D97706" />}
