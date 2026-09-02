@@ -3,9 +3,9 @@
     "relation": ["delegate_permission/common.handle_all_urls"],
     "target": {
       "namespace": "android_app",
-      "package_name": "in.saarthiguide.app",
+      "package_name": "in.saarthiguide.travel",
       "sha256_cert_fingerprints": [
-        "F0:54:9A:71:2B:9A:6A:CF:83:18:0C:F1:EC:1A:38:AA:6F:AE:74:25:66:3F:5D:48:69:D2:AF:B3:D7:BE:46:3C"
+        "B5:FC:C2:E3:35:3F:1C:56:30:01:A7:A9:93:4C:D8:B4:19:8E:87:C9:DE:49:86:0D:17:E2:77:97:6D:B3:4B:95"
       ]
     }
   }
