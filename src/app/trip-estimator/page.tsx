@@ -197,93 +197,6 @@ function TripEstimatorContent() {
 
       <main className={styles.content}>
         
-        {/* LIVE FUEL TICKER BAR */}
-        <div style={{
-          backgroundColor: '#FFFFFF',
-          border: '1px solid rgba(15, 23, 42, 0.08)',
-          borderRadius: '16px',
-          padding: '12px 16px',
-          marginBottom: '16px',
-          boxShadow: '0 2px 8px rgba(0,0,0,0.03)',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          flexWrap: 'wrap',
-          gap: '10px'
-        }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '10px', flexWrap: 'wrap' }}>
-            <span style={{
-              backgroundColor: '#FEF3C7',
-              color: '#92400E',
-              fontSize: '11px',
-              fontWeight: 800,
-              padding: '4px 8px',
-              borderRadius: '6px',
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: '5px'
-            }}>
-              <Fuel size={12} /> {fuelSource}
-            </span>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '13px' }}>
-              <span style={{ color: '#475569', fontWeight: 600 }}>Petrol: <strong style={{ color: '#059669', fontWeight: 800 }}>₹{fuelRates.petrol}/L</strong></span>
-              <span style={{ color: '#CBD5E1' }}>•</span>
-              <span style={{ color: '#475569', fontWeight: 600 }}>Diesel: <strong style={{ color: '#059669', fontWeight: 800 }}>₹{fuelRates.diesel}/L</strong></span>
-            </div>
-          </div>
-
-          <button
-            onClick={() => setIsCustomFuelOpen(!isCustomFuelOpen)}
-            style={{
-              background: 'none',
-              border: '1px solid #CBD5E1',
-              borderRadius: '8px',
-              padding: '4px 10px',
-              fontSize: '11.5px',
-              fontWeight: 700,
-              color: '#475569',
-              cursor: 'pointer'
-            }}
-          >
-            {isCustomFuelOpen ? 'Hide' : 'Edit Rate'}
-          </button>
-        </div>
-
-        {/* CUSTOM FUEL DRAWER */}
-        {isCustomFuelOpen && (
-          <div style={{
-            backgroundColor: '#F8FAFC',
-            border: '1px dashed #CBD5E1',
-            borderRadius: '14px',
-            padding: '14px 16px',
-            marginBottom: '16px',
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(130px, 1fr))',
-            gap: '12px'
-          }}>
-            <div>
-              <label style={{ fontSize: '11px', fontWeight: 700, color: '#475569', display: 'block', marginBottom: '4px' }}>Petrol (₹/L)</label>
-              <input
-                type="number"
-                step="0.1"
-                value={fuelRates.petrol}
-                onChange={e => setFuelRates(prev => ({ ...prev, petrol: parseFloat(e.target.value) || 108.49 }))}
-                style={{ width: '100%', padding: '6px 8px', borderRadius: '6px', border: '1px solid #CBD5E1', fontSize: '13px', fontWeight: 700 }}
-              />
-            </div>
-            <div>
-              <label style={{ fontSize: '11px', fontWeight: 700, color: '#475569', display: 'block', marginBottom: '4px' }}>Diesel (₹/L)</label>
-              <input
-                type="number"
-                step="0.1"
-                value={fuelRates.diesel}
-                onChange={e => setFuelRates(prev => ({ ...prev, diesel: parseFloat(e.target.value) || 100.28 }))}
-                style={{ width: '100%', padding: '6px 8px', borderRadius: '6px', border: '1px solid #CBD5E1', fontSize: '13px', fontWeight: 700 }}
-              />
-            </div>
-          </div>
-        )}
-        
         {/* ROUTE SELECTOR CARD */}
         <div className={styles.card}>
           <div className={styles.routeSelector}>
@@ -387,34 +300,6 @@ function TripEstimatorContent() {
                   <option key={p.id} value={p.id}>{p.name}</option>
                 ))}
               </select>
-            </div>
-
-            {/* PILGRIMS & ROUND TRIP OPTIONS */}
-            <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap', alignItems: 'center', marginTop: '6px' }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                <label className={styles.label} style={{ margin: 0 }}>
-                  <Users size={14} style={{ display: 'inline', verticalAlign: 'middle', marginRight: 4 }} />
-                  {lang === 'te' ? 'భక్తులు:' : 'Pilgrims:'}
-                </label>
-                <select
-                  value={passengers}
-                  onChange={e => setPassengers(Number(e.target.value))}
-                  style={{ padding: '6px 12px', borderRadius: '8px', border: '1px solid #CBD5E1', fontSize: '13px', fontWeight: 700 }}
-                >
-                  {[1, 2, 3, 4, 5, 6, 7, 8].map(n => (
-                    <option key={n} value={n}>{n} Pilgrim{n > 1 ? 's' : ''}</option>
-                  ))}
-                </select>
-              </div>
-
-              <label style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '13px', fontWeight: 700, color: '#0F172A', cursor: 'pointer' }}>
-                <input
-                  type="checkbox"
-                  checked={isRoundTrip}
-                  onChange={e => setIsRoundTrip(e.target.checked)}
-                />
-                {lang === 'te' ? 'రౌండ్ ట్రిప్ (రాను-పోను)' : 'Round Trip (Both Ways)'}
-              </label>
             </div>
 
           </div>
