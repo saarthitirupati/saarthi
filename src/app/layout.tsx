@@ -8,25 +8,34 @@ const plusJakartaSans = { variable: "--font-heading" };
 const inter = { variable: "--font-body" };
 const notoSansTelugu = { variable: "--font-telugu" };
 
-const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://saarthiguide.in';
+const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.saarthiguide.in';
 
 export const metadata: Metadata = {
   metadataBase: new URL(baseUrl),
   title: {
-    default: "Saarthi Guide | Real-Time Tirupati & Tirumala Pilgrim Companion",
+    default: "Saarthi: Tirumala & Tirupati Pilgrim Guide | Live Darshan, SSD Tokens & Maps",
     template: "%s | Saarthi Guide"
   },
-  description: "Tirupati and Tirumala trusted pilgrimage companion. Live TTD darshan wait times, SSD token availability, temple timings, dress codes, Sthala Puranas & verified transit guides.",
+  description: "Saarthi is the #1 trusted pilgrimage guide for Tirupati and Tirumala. Real-time TTD darshan wait times, free SSD token counter status, 74+ offline temple precinct maps, ghat road speed rules & daily Bhagavad Gita.",
   keywords: [
-    "Tirupati temple timings",
+    "tirumala saarthi",
+    "saarthi tirupati",
+    "saarthi tirumala",
+    "tirupati saarthi",
+    "tirumala saarthi tirupati",
+    "saarthi guide",
+    "saarthi guide tirupati",
+    "saarthi app tirupati",
     "Tirumala darshan wait time today",
-    "Srivari Padalu Tirumala",
+    "Tirupati temple timings",
     "TTD SSD tokens status",
     "Kapila Theertham Tirupati",
-    "Tirupati local temples guide",
+    "Srivari Padalu Tirumala",
     "Sri Venkateswara Swamy Temple",
     "Padmavathi Ammavari Temple Tiruchanur",
     "Tirupati yatra companion",
+    "తిరుమల సారథి",
+    "సారథి తిరుపతి",
     "తిరుమల దర్శనం సమయాలు",
     "తిరుపతి ఆలయాలు"
   ],
@@ -37,8 +46,8 @@ export const metadata: Metadata = {
     canonical: baseUrl,
   },
   openGraph: {
-    title: "Saarthi Guide | Real-Time Tirupati & Tirumala Pilgrim Companion",
-    description: "Know the place before you go. Verified TTD wait times, temple timings, dress codes, Sthala Puranas, and local travel guides for Tirupati & Tirumala.",
+    title: "Saarthi: Tirumala & Tirupati Pilgrim Guide | Live Darshan & Offline Maps",
+    description: "Saarthi — Your trusted divine companion for Tirupati & Tirumala. Verified TTD wait times, free SSD tokens, temple timings, dress codes, Sthala Puranas, and 100% offline precinct maps.",
     url: baseUrl,
     siteName: "Saarthi Guide",
     images: [
@@ -46,7 +55,7 @@ export const metadata: Metadata = {
         url: "/logo.png",
         width: 1200,
         height: 1200,
-        alt: "Saarthi Guide Brand Logo",
+        alt: "Saarthi: Tirupati & Tirumala Pilgrim Guide",
       },
     ],
     locale: "en_IN",
@@ -54,8 +63,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Saarthi Guide | Tirupati & Tirumala Yatra Companion",
-    description: "Live TTD darshan wait times, SSD token status, temple guides & local transport info.",
+    title: "Saarthi: Tirumala & Tirupati Pilgrim Guide",
+    description: "Live TTD darshan wait times, free SSD token counters, offline maps & temple guides for Tirupati & Tirumala.",
     images: ["/logo.png"],
   },
   robots: {
@@ -102,22 +111,52 @@ export const viewport: Viewport = {
 
 const jsonLdSchema = {
   "@context": "https://schema.org",
-  "@type": "TouristInformationCenter",
-  "name": "Saarthi Guide",
-  "url": baseUrl,
-  "logo": `${baseUrl}/logo.png`,
-  "image": `${baseUrl}/logo.png`,
-  "description": "Tirupati & Tirumala pilgrimage guide with real-time darshan wait times, temple timings, dress codes, and local transit information.",
-  "areaServed": {
-    "@type": "AdministrativeArea",
-    "name": "Tirupati & Tirumala, Andhra Pradesh, India"
-  },
-  "knowsAbout": [
-    "Sri Venkateswara Swamy Temple Tirumala",
-    "Srivari Padalu",
-    "Kapila Theertham",
-    "TTD Darshan Wait Times",
-    "Tirupati Temples & Heritage"
+  "@graph": [
+    {
+      "@type": "WebSite",
+      "@id": `${baseUrl}/#website`,
+      "url": baseUrl,
+      "name": "Saarthi Guide",
+      "alternateName": [
+        "Saarthi",
+        "Saarthi Tirupati",
+        "Tirumala Saarthi",
+        "Tirupati Saarthi",
+        "Tirumala Saarthi Tirupati",
+        "Saarthi App",
+        "సారథి తిరుపతి",
+        "తిరుమల సారథి"
+      ],
+      "description": "The official digital companion for Tirupati & Tirumala pilgrims. 100% offline temple precinct maps, live TTD darshan waiting times, and authentic Sthala Puranas.",
+      "publisher": {
+        "@type": "Organization",
+        "name": "Saarthi Guide",
+        "url": baseUrl,
+        "logo": `${baseUrl}/logo.png`
+      }
+    },
+    {
+      "@type": "TouristInformationCenter",
+      "@id": `${baseUrl}/#center`,
+      "name": "Saarthi: Tirupati & Tirumala Pilgrim Guide",
+      "url": baseUrl,
+      "logo": `${baseUrl}/logo.png`,
+      "image": `${baseUrl}/logo.png`,
+      "description": "Tirupati & Tirumala pilgrimage guide with real-time darshan wait times, temple timings, dress codes, free SSD tokens, and 100% offline precinct maps.",
+      "areaServed": {
+        "@type": "AdministrativeArea",
+        "name": "Tirupati & Tirumala, Andhra Pradesh, India"
+      },
+      "knowsAbout": [
+        "Sri Venkateswara Swamy Temple Tirumala",
+        "Srivari Padalu",
+        "Kapila Theertham",
+        "TTD Darshan Wait Times",
+        "Tirupati Temples & Heritage",
+        "SSD Token Counters",
+        "Tirumala Ghat Road Rules"
+      ]
+    }
   ]
 };
 

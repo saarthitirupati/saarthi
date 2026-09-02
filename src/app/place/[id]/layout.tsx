@@ -23,21 +23,32 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
   }) || PLACES[0];
 
   const guide = getPlaceGuideData(place);
-  const title = `${place.name} - Darshan Timings, History & Map | Saarthi Guide`;
-  const description = place.shortIntro || place.description?.slice(0, 160) || `${place.name} in Tirupati/Tirumala: Authentic timings, dress code, Sthala Puranam, and offline precinct vector map.`;
+  const locationContext = place.category === 'Tirumala Spot' ? 'Tirumala' : 'Tirupati';
+  const title = `${place.name} ${locationContext} - Darshan Timings & Map | Saarthi Guide`;
+  const description = `${place.name} in ${locationContext}: Complete guide by Saarthi. Authentic darshan timings, Sthala Puranam, dress code, free SSD token details, and 100% offline precinct vector map.`;
   const canonicalUrl = `${baseUrl}/place/${place.id}`;
   const placeImage = place.image || `${baseUrl}/logo.png`;
 
   const placeKeywords = [
-    place.name,
-    place.nameTe || '',
+    // Saarthi Brand + Place Combinations
+    `${place.name} saarthi`,
+    `${place.name} saarthi guide`,
+    `${place.name} tirupati saarthi`,
+    `${place.name} tirumala saarthi`,
+    `${place.name} darshan saarthi`,
+    `${place.name} timings saarthi`,
+    `${place.nameTe || place.name} సారథి`,
+    `${place.nameTe || place.name} తిరుపతి సారథి`,
+    // Location + Intent Queries
+    `${place.name} ${locationContext}`,
     `${place.name} timings`,
-    `${place.name} darshan`,
-    `${place.name} history`,
-    `${place.name} entry fee`,
-    `${place.name} dress code`,
-    'Tirupati temple guide',
-    'Tirumala pilgrimage',
+    `${place.name} darshan timings`,
+    `${place.name} history sthala puranam`,
+    `${place.name} entry ticket cost`,
+    `${place.name} dress code rules`,
+    'Tirupati Saarthi Guide',
+    'Tirumala Saarthi Guide',
+    'Saarthi Pilgrim Companion',
     ...(place.tags || []),
   ].filter(Boolean);
 
