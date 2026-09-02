@@ -8,30 +8,36 @@ import {
   CheckCircle2, AlertTriangle, Mountain, MapPin, Fuel, 
   RefreshCw, Users, Shield, Sliders, ChevronRight, Info,
   Navigation, Locate, Compass, Clock, IndianRupee, Sparkles,
-  ShieldCheck, CircleParking, Milestone, ShieldAlert
+  ShieldCheck, CircleParking, Milestone, ShieldAlert, ExternalLink
 } from 'lucide-react';
 import styles from './TripEstimator.module.css';
 import { PLACES, Place } from '@/data/places';
 import { useRealtimePlaces } from '@/lib/useRealtimePlaces';
-import { TripEstimateResult, TransportEstimate, FuelRates, VEHICLE_PRESETS } from '@/services/decision/trip.estimator';
+import { 
+  calculateTripEstimates, 
+  TripEstimateResult, 
+  TransportEstimate, 
+  FuelRates, 
+  DEFAULT_FUEL_RATES 
+} from '@/services/decision/trip.estimator';
 import { useLanguage } from '@/lib/useLanguage';
 
-const MAJOR_HUBS = [
-  { id: 'renigunta-junction', name: 'Tirupati Central / Railway Station' },
-  { id: 'central-bus-station', name: 'APSRTC Central Bus Station (CBS)' },
-  { id: 'alipiri-checkpoint', name: 'Alipiri Toll Gate / Ghat Road Entry' },
-  { id: 'alipiri-gateway', name: 'Alipiri Gateway (Mettu Footpath Entry)' },
-  { id: 'srinivasam', name: 'Srinivasam Complex (Opp. RTC Bus Stand)' },
-  { id: 'vishnu-nivasam', name: 'Vishnu Nivasam (Opp. Railway Station)' },
-  { id: 'tirupati-airport', name: 'Tirupati International Airport (TIR)' },
-  { id: 'tirumala-bus-stand', name: 'Tirumala CRO / Central Bus Stand' },
-];
+const MAJOR_HUBS: Record<string, { name: string; lat: number; lng: number }> = {
+  'renigunta-junction': { name: 'Tirupati Central / Railway Station', lat: 13.6288, lng: 79.4192 },
+  'central-bus-station': { name: 'APSRTC Central Bus Station (CBS)', lat: 13.6335, lng: 79.4215 },
+  'alipiri-checkpoint': { name: 'Alipiri Toll Gate / Ghat Road Entry', lat: 13.6470, lng: 79.4058 },
+  'alipiri-gateway': { name: 'Alipiri Gateway (Mettu Footpath Entry)', lat: 13.6470, lng: 79.4058 },
+  'srinivasam': { name: 'Srinivasam Complex (Opp. RTC Bus Stand)', lat: 13.6320, lng: 79.4225 },
+  'vishnu-nivasam': { name: 'Vishnu Nivasam (Opp. Railway Station)', lat: 13.6292, lng: 79.4185 },
+  'tirupati-airport': { name: 'Tirupati International Airport (TIR)', lat: 13.6324, lng: 79.5434 },
+  'tirumala-bus-stand': { name: 'Tirumala CRO / Central Bus Stand', lat: 13.6820, lng: 79.3490 },
+};
 
 function TripEstimatorContent() {
   const searchParams = useSearchParams();
   const lang = useLanguage();
   const { places } = useRealtimePlaces(PLACES);
-  const placesList = places.length > 0 ? places : PLACES;
+  const placesList = useMemo(() => (places.length > 0 ? places : PLACES), [places]);
 
   const initialDest = searchParams?.get('destId') || 'venkateswara';
   const initialOrigin = searchParams?.get('originId') || 'renigunta-junction';
@@ -53,21 +59,15 @@ function TripEstimatorContent() {
   const [carMileage, setCarMileage] = useState<number>(16);
 
   // Live Fuel Rates
-  const [fuelRates, setFuelRates] = useState<FuelRates>({
-    petrol: 108.49,
-    diesel: 100.28,
-    cng: 88.50,
-    evKwh: 8.50
-  });
+  const [fuelRates, setFuelRates] = useState<FuelRates>(DEFAULT_FUEL_RATES);
   const [fuelSource, setFuelSource] = useState<string>('IndianAPI (Live)');
   const [isCustomFuelOpen, setIsCustomFuelOpen] = useState<boolean>(false);
 
-  const [loading, setLoading] = useState<boolean>(true);
   const [estimateResult, setEstimateResult] = useState<TripEstimateResult | null>(null);
 
   // Geolocation Handler
   const handleGetLiveLocation = useCallback(() => {
-    if (!navigator.geolocation) {
+    if (typeof window === 'undefined' || !navigator.geolocation) {
       setGpsError('Geolocation is not supported by your browser');
       return;
     }
@@ -86,7 +86,7 @@ function TripEstimatorContent() {
       },
       (err) => {
         console.warn('Geolocation error:', err);
-        setGpsError('GPS permission denied or unavailable. Using default starting hub.');
+        setGpsError('GPS location access denied or timed out. Using default starting hub.');
         setUseLiveGps(false);
         setGpsLoading(false);
       },
@@ -113,48 +113,57 @@ function TripEstimatorContent() {
     loadFuelRates();
   }, []);
 
-  // Fetch estimates
-  const fetchEstimates = useCallback(async () => {
-    try {
-      setLoading(true);
-      const payload: any = {
-        destId,
-        passengers,
-        isRoundTrip,
-        customMileage: { bike: bikeMileage, car: carMileage },
-        fuelRates
-      };
-
-      if (useLiveGps && userGpsCoords) {
-        payload.originLat = userGpsCoords.lat;
-        payload.originLng = userGpsCoords.lng;
-        payload.originName = 'Your Live Location (GPS)';
-      } else {
-        payload.originId = originId;
-      }
-
-      const res = await fetch('/api/trip-estimator', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload)
-      });
-
-      if (res.ok) {
-        const json = await res.json();
-        if (json.success) {
-          setEstimateResult(json.data);
-        }
-      }
-    } catch (e) {
-      console.error('Failed to fetch trip estimates', e);
-    } finally {
-      setLoading(false);
-    }
-  }, [originId, destId, passengers, isRoundTrip, bikeMileage, carMileage, fuelRates, useLiveGps, userGpsCoords]);
-
+  // Resolve coordinates & calculate estimates immediately
   useEffect(() => {
-    fetchEstimates();
-  }, [fetchEstimates]);
+    let oLat = 13.6288;
+    let oLng = 79.4192;
+    let oName = 'Tirupati Central / Railway Station';
+
+    if (useLiveGps && userGpsCoords) {
+      oLat = userGpsCoords.lat;
+      oLng = userGpsCoords.lng;
+      oName = 'Your Live Location (GPS)';
+    } else if (MAJOR_HUBS[originId]) {
+      oLat = MAJOR_HUBS[originId].lat;
+      oLng = MAJOR_HUBS[originId].lng;
+      oName = MAJOR_HUBS[originId].name;
+    } else {
+      const foundOrigin = placesList.find(p => p.id === originId);
+      if (foundOrigin && foundOrigin.coordinates) {
+        oLat = foundOrigin.coordinates.lat;
+        oLng = foundOrigin.coordinates.lng;
+        oName = foundOrigin.name;
+      }
+    }
+
+    let dLat = 13.6780;
+    let dLng = 79.3510;
+    let dName = 'Srivari Venkateswara Temple';
+
+    const foundDest = placesList.find(p => p.id === destId);
+    if (foundDest && foundDest.coordinates) {
+      dLat = foundDest.coordinates.lat;
+      dLng = foundDest.coordinates.lng;
+      dName = foundDest.name;
+    }
+
+    // Run direct calculation (instant 0ms)
+    calculateTripEstimates({
+      originLat: oLat,
+      originLng: oLng,
+      destLat: dLat,
+      destLng: dLng,
+      originName: oName,
+      destName: dName,
+      passengers,
+      isRoundTrip,
+      customMileage: { bike: bikeMileage, car: carMileage },
+      fuelRates
+    }).then(res => {
+      setEstimateResult(res);
+    }).catch(() => {});
+
+  }, [originId, destId, passengers, isRoundTrip, bikeMileage, carMileage, fuelRates, useLiveGps, userGpsCoords, placesList]);
 
   const filteredEstimates = useMemo(() => {
     if (!estimateResult) return [];
@@ -167,6 +176,12 @@ function TripEstimatorContent() {
     if (activeTab === 'walk') return entries.filter(([k]) => k === 'walk');
     return entries;
   }, [estimateResult, activeTab]);
+
+  // Destination coordinates for Google Maps navigation
+  const destinationCoords = useMemo(() => {
+    const found = placesList.find(p => p.id === destId);
+    return found?.coordinates || { lat: 13.6832, lng: 79.3473 };
+  }, [destId, placesList]);
 
   return (
     <div className={styles.container}>
@@ -196,27 +211,25 @@ function TripEstimatorContent() {
           flexWrap: 'wrap',
           gap: '10px'
         }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '10px', flexWrap: 'wrap' }}>
             <span style={{
               backgroundColor: '#FEF3C7',
               color: '#92400E',
               fontSize: '11px',
               fontWeight: 800,
-              padding: '3px 8px',
+              padding: '4px 8px',
               borderRadius: '6px',
               display: 'inline-flex',
               alignItems: 'center',
-              gap: '4px'
+              gap: '5px'
             }}>
               <Fuel size={12} /> {fuelSource}
             </span>
-            <span style={{ fontSize: '12px', fontWeight: 700, color: '#0F172A' }}>
-              Petrol: <strong style={{ color: '#059669' }}>₹{fuelRates.petrol}/L</strong>
-            </span>
-            <span style={{ color: '#CBD5E1' }}>•</span>
-            <span style={{ fontSize: '12px', fontWeight: 700, color: '#0F172A' }}>
-              Diesel: <strong style={{ color: '#059669' }}>₹{fuelRates.diesel}/L</strong>
-            </span>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '13px' }}>
+              <span style={{ color: '#475569', fontWeight: 600 }}>Petrol: <strong style={{ color: '#059669', fontWeight: 800 }}>₹{fuelRates.petrol}/L</strong></span>
+              <span style={{ color: '#CBD5E1' }}>•</span>
+              <span style={{ color: '#475569', fontWeight: 600 }}>Diesel: <strong style={{ color: '#059669', fontWeight: 800 }}>₹{fuelRates.diesel}/L</strong></span>
+            </div>
           </div>
 
           <button
@@ -226,7 +239,7 @@ function TripEstimatorContent() {
               border: '1px solid #CBD5E1',
               borderRadius: '8px',
               padding: '4px 10px',
-              fontSize: '11px',
+              fontSize: '11.5px',
               fontWeight: 700,
               color: '#475569',
               cursor: 'pointer'
@@ -340,8 +353,8 @@ function TripEstimatorContent() {
                   }}
                 >
                   <optgroup label="Popular Starting Hubs & Stations">
-                    {MAJOR_HUBS.map(h => (
-                      <option key={h.id} value={h.id}>{h.name}</option>
+                    {Object.entries(MAJOR_HUBS).map(([id, hub]) => (
+                      <option key={id} value={id}>{hub.name}</option>
                     ))}
                   </optgroup>
                   <optgroup label="All Temples & Pilgrimage Sites">
@@ -410,7 +423,7 @@ function TripEstimatorContent() {
         {/* DISTANCE & ROUTE HEADER */}
         {estimateResult && (
           <div style={{ background: 'linear-gradient(135deg, #1E1B18 0%, #2A2521 100%)', color: '#FFFFFF', borderRadius: '20px', padding: '20px', marginBottom: '20px', boxShadow: '0 10px 25px rgba(0,0,0,0.1)' }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '10px' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '12px' }}>
               <div>
                 <span style={{ fontSize: '11px', color: '#C89B3C', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.5px', display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
                   {estimateResult.isTirumalaRoute ? (
@@ -430,9 +443,38 @@ function TripEstimatorContent() {
                 </h2>
               </div>
               <div style={{ textAlign: 'right' }}>
-                <span style={{ fontSize: '24px', fontWeight: 800, color: '#E9801D' }}>{estimateResult.distanceKm} km</span>
+                <span style={{ fontSize: '26px', fontWeight: 900, color: '#E9801D', letterSpacing: '-0.5px' }}>{estimateResult.distanceKm} km</span>
                 <span style={{ fontSize: '11px', color: 'rgba(255,255,255,0.6)', display: 'block' }}>{isRoundTrip ? 'Total Round-trip' : 'One-way Drive'}</span>
               </div>
+            </div>
+
+            {/* Google Maps External Action */}
+            <div style={{ marginTop: '14px', paddingTop: '12px', borderTop: '1px solid rgba(255,255,255,0.1)', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '10px' }}>
+              <span style={{ fontSize: '11.5px', color: 'rgba(255,255,255,0.7)' }}>
+                Need live turn-by-turn road navigation?
+              </span>
+              <a
+                href={`https://www.google.com/maps/dir/?api=1&destination=${destinationCoords.lat},${destinationCoords.lng}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '6px',
+                  backgroundColor: 'rgba(255, 255, 255, 0.12)',
+                  color: '#FFFFFF',
+                  padding: '6px 12px',
+                  borderRadius: '10px',
+                  fontSize: '12px',
+                  fontWeight: 700,
+                  textDecoration: 'none',
+                  border: '1px solid rgba(255, 255, 255, 0.15)'
+                }}
+              >
+                <Navigation size={13} color="#38BDF8" />
+                <span>Open in Google Maps</span>
+                <ExternalLink size={11} />
+              </a>
             </div>
           </div>
         )}
@@ -477,12 +519,7 @@ function TripEstimatorContent() {
         </div>
 
         {/* MODE COMPARISON CARDS */}
-        {loading ? (
-          <div style={{ textAlign: 'center', padding: '40px 0', color: '#64748B' }}>
-            <RefreshCw size={24} className="animate-spin" style={{ margin: '0 auto 12px auto' }} />
-            <div>Calculating road distance & live fuel rates...</div>
-          </div>
-        ) : estimateResult ? (
+        {estimateResult && (
           <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
             {filteredEstimates.map(([key, est]) => {
               const isBest = est.recommendationStatus === 'best';
@@ -612,7 +649,7 @@ function TripEstimatorContent() {
               );
             })}
           </div>
-        ) : null}
+        )}
 
       </main>
     </div>
