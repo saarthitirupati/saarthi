@@ -2,7 +2,7 @@ import { MetadataRoute } from 'next';
 import { PLACES } from '@/data/places';
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://saarthiguide.in';
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.saarthiguide.in';
 
   const staticPages: MetadataRoute.Sitemap = [
     {
@@ -13,6 +13,18 @@ export default function sitemap(): MetadataRoute.Sitemap {
     },
     {
       url: `${baseUrl}/explore`,
+      lastModified: new Date(),
+      changeFrequency: 'daily',
+      priority: 0.9,
+    },
+    {
+      url: `${baseUrl}/festivals`,
+      lastModified: new Date(),
+      changeFrequency: 'daily',
+      priority: 0.9,
+    },
+    {
+      url: `${baseUrl}/essentials`,
       lastModified: new Date(),
       changeFrequency: 'daily',
       priority: 0.9,
@@ -30,7 +42,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.8,
     },
     {
-      url: `${baseUrl}/onboarding`,
+      url: `${baseUrl}/privacy`,
       lastModified: new Date(),
       changeFrequency: 'monthly',
       priority: 0.5,
@@ -41,7 +53,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     url: `${baseUrl}/place/${place.id}`,
     lastModified: new Date(),
     changeFrequency: 'weekly',
-    priority: place.isMustVisit ? 0.9 : 0.7,
+    priority: place.isMustVisit ? 0.95 : 0.8,
   }));
 
   return [...staticPages, ...placePages];
