@@ -151,11 +151,11 @@ export async function calculateTripEstimates(params: {
     caloriesBurned: calories,
     stepCount: steps,
     recommendationStatus: walkRec,
-    recommendationTag: walkDist <= 1.5 ? '⭐ Saarthi Suggests (Zero Cost)' : walkDist > 4.0 ? '❌ Too Far to Walk' : 'Healthy Option',
+    recommendationTag: walkDist <= 1.5 ? 'Saarthi Suggests (Zero Cost)' : walkDist > 4.0 ? 'Not Recommended for Long Distance' : 'Healthy Walking Route',
     reasons: [
       `Burns ~${calories} kcal & ${steps.toLocaleString()} steps`,
       'Zero fuel or ticket cost',
-      walkDist > 3.0 ? 'Consider vehicle transport for comfort' : 'Ideal for nearby pilgrimage spots'
+      walkDist > 3.0 ? 'Consider vehicle transport for comfortable travel' : 'Ideal for nearby pilgrimage spots'
     ]
   };
 
@@ -188,7 +188,7 @@ export async function calculateTripEstimates(params: {
     totalCostMax: bikeTotal,
     costPerPerson: Math.round(bikeTotal / Math.min(2, safePassengers)),
     recommendationStatus: liveParkingStatus === 'full' ? 'best' : 'recommended',
-    recommendationTag: liveParkingStatus === 'full' ? '⭐ Saarthi Suggests (Easy Parking)' : 'Fast & Economical',
+    recommendationTag: liveParkingStatus === 'full' ? 'Saarthi Suggests (Easy Parking)' : 'Fast & Economical',
     reasons: [
       `Uses ~${bikeLiters} L petrol @ ₹${currentFuelRates.petrol}/L`,
       'Two-wheelers are exempt from toll charges',
@@ -226,7 +226,7 @@ export async function calculateTripEstimates(params: {
     totalCostMax: carTotal,
     costPerPerson: Math.round(carTotal / safePassengers),
     recommendationStatus: liveParkingStatus === 'full' ? 'not_recommended' : liveTrafficStatus === 'heavy' ? 'warning' : 'recommended',
-    recommendationTag: liveParkingStatus === 'full' ? '❌ Parking Full on Hill' : 'Comfortable Family Drive',
+    recommendationTag: liveParkingStatus === 'full' ? 'Parking Constrained on Hill' : 'Comfortable Family Drive',
     reasons: [
       `Fuel: ~${carLiters} L @ ₹${currentFuelRates.petrol}/L (₹${carFuelCost})`,
       `Cost per person: ₹${Math.round(carTotal / safePassengers)} (${safePassengers} pilgrim${safePassengers > 1 ? 's' : ''})`,
@@ -263,7 +263,7 @@ export async function calculateTripEstimates(params: {
     totalCostMax: suvTotal,
     costPerPerson: Math.round(suvTotal / safePassengers),
     recommendationStatus: safePassengers >= 5 ? 'best' : 'recommended',
-    recommendationTag: safePassengers >= 5 ? '⭐ Saarthi Suggests (Best for Groups)' : 'Spacious Group Travel',
+    recommendationTag: safePassengers >= 5 ? 'Saarthi Suggests (Best for Groups)' : 'Spacious Group Travel',
     reasons: [
       `Uses ~${suvLiters} L Diesel @ ₹${currentFuelRates.diesel}/L (₹${suvFuelCost})`,
       `Economical for groups: only ₹${Math.round(suvTotal / safePassengers)}/person`,
@@ -296,7 +296,7 @@ export async function calculateTripEstimates(params: {
     totalCostMax: evTotal,
     costPerPerson: Math.round(evTotal / safePassengers),
     recommendationStatus: 'best',
-    recommendationTag: '🌱 Eco-Friendly & Lowest Cost',
+    recommendationTag: 'Eco-Friendly & Lowest Cost',
     reasons: [
       `Power consumption: ~${evEnergyKwh} kWh (~₹${evCost} @ ₹1.20/km)`,
       'Zero emissions on sacred hill routes',
@@ -332,7 +332,7 @@ export async function calculateTripEstimates(params: {
     totalCostMax: autoMax,
     costPerPerson: Math.round(autoMin / Math.min(3, safePassengers)),
     recommendationStatus: isTirumalaRoute ? 'not_recommended' : 'recommended',
-    recommendationTag: isTirumalaRoute ? '❌ Autos Prohibited on Tirumala Ghat Road' : `Estimated Fare: ₹${autoMin}–₹${autoMax}`,
+    recommendationTag: isTirumalaRoute ? 'Autos Prohibited on Tirumala Ghat Road' : `Estimated Fare: ₹${autoMin}–₹${autoMax}`,
     reasons: [
       isTirumalaRoute ? 'Auto rickshaws are strictly not permitted on Tirumala Ghat Road' : 'Base fare ₹30 (first 2km) + ₹15/km thereafter',
       'No parking hassle — drops right at temple gate',
@@ -370,7 +370,7 @@ export async function calculateTripEstimates(params: {
       nearestStop: isTirumalaRoute ? 'Alipiri Bus Depot / Railway Station Bus Stand' : 'Nearest APSRTC Stop (200m)'
     },
     recommendationStatus: isTirumalaRoute || liveParkingStatus === 'full' ? 'best' : 'recommended',
-    recommendationTag: '⭐ Saarthi Suggests (Best Value & Zero Parking Stress)',
+    recommendationTag: 'Saarthi Suggests (Best Value & Zero Parking Stress)',
     reasons: [
       `₹${busTicketPrice}/passenger (${safePassengers} passenger${safePassengers > 1 ? 's' : ''})`,
       'Dedicated bus lane up Tirumala ghat road (bypasses car traffic)',

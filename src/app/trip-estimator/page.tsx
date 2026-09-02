@@ -1,18 +1,31 @@
 'use client';
 
-import { useState, useEffect, useMemo, Suspense } from 'react';
+import { useState, useEffect, useMemo, Suspense, useCallback } from 'react';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import { 
-  ArrowLeft, Car, Bike, Zap, Bus, Footprints, Flame, Sparkles, 
+  ArrowLeft, Car, Bike, Zap, Bus, Footprints, 
   CheckCircle2, AlertTriangle, Mountain, MapPin, Fuel, 
-  RefreshCw, Users, Shield, Sliders, ChevronRight, Info
+  RefreshCw, Users, Shield, Sliders, ChevronRight, Info,
+  Navigation, Locate, Compass, Clock, IndianRupee, Sparkles,
+  ShieldCheck, CircleParking, Milestone, ShieldAlert
 } from 'lucide-react';
 import styles from './TripEstimator.module.css';
 import { PLACES, Place } from '@/data/places';
 import { useRealtimePlaces } from '@/lib/useRealtimePlaces';
 import { TripEstimateResult, TransportEstimate, FuelRates, VEHICLE_PRESETS } from '@/services/decision/trip.estimator';
 import { useLanguage } from '@/lib/useLanguage';
+
+const MAJOR_HUBS = [
+  { id: 'renigunta-junction', name: 'Tirupati Central / Railway Station' },
+  { id: 'central-bus-station', name: 'APSRTC Central Bus Station (CBS)' },
+  { id: 'alipiri-checkpoint', name: 'Alipiri Toll Gate / Ghat Road Entry' },
+  { id: 'alipiri-gateway', name: 'Alipiri Gateway (Mettu Footpath Entry)' },
+  { id: 'srinivasam', name: 'Srinivasam Complex (Opp. RTC Bus Stand)' },
+  { id: 'vishnu-nivasam', name: 'Vishnu Nivasam (Opp. Railway Station)' },
+  { id: 'tirupati-airport', name: 'Tirupati International Airport (TIR)' },
+  { id: 'tirumala-bus-stand', name: 'Tirumala CRO / Central Bus Stand' },
+];
 
 function TripEstimatorContent() {
   const searchParams = useSearchParams();
@@ -23,11 +36,17 @@ function TripEstimatorContent() {
   const initialDest = searchParams?.get('destId') || 'venkateswara';
   const initialOrigin = searchParams?.get('originId') || 'renigunta-junction';
 
+  // State
+  const [useLiveGps, setUseLiveGps] = useState<boolean>(false);
+  const [userGpsCoords, setUserGpsCoords] = useState<{ lat: number; lng: number } | null>(null);
+  const [gpsLoading, setGpsLoading] = useState<boolean>(false);
+  const [gpsError, setGpsError] = useState<string | null>(null);
+
   const [originId, setOriginId] = useState<string>(initialOrigin);
   const [destId, setDestId] = useState<string>(initialDest);
   const [passengers, setPassengers] = useState<number>(1);
   const [isRoundTrip, setIsRoundTrip] = useState<boolean>(false);
-  const [activeTab, setActiveTab] = useState<'all' | 'bike' | 'car' | 'ev' | 'bus'>('all');
+  const [activeTab, setActiveTab] = useState<'all' | 'bike' | 'car' | 'ev' | 'bus' | 'walk'>('all');
 
   // Custom mileage overrides
   const [bikeMileage, setBikeMileage] = useState<number>(52);
@@ -45,6 +64,35 @@ function TripEstimatorContent() {
 
   const [loading, setLoading] = useState<boolean>(true);
   const [estimateResult, setEstimateResult] = useState<TripEstimateResult | null>(null);
+
+  // Geolocation Handler
+  const handleGetLiveLocation = useCallback(() => {
+    if (!navigator.geolocation) {
+      setGpsError('Geolocation is not supported by your browser');
+      return;
+    }
+
+    setGpsLoading(true);
+    setGpsError(null);
+
+    navigator.geolocation.getCurrentPosition(
+      (pos) => {
+        setUserGpsCoords({
+          lat: pos.coords.latitude,
+          lng: pos.coords.longitude
+        });
+        setUseLiveGps(true);
+        setGpsLoading(false);
+      },
+      (err) => {
+        console.warn('Geolocation error:', err);
+        setGpsError('GPS permission denied or unavailable. Using default starting hub.');
+        setUseLiveGps(false);
+        setGpsLoading(false);
+      },
+      { enableHighAccuracy: true, timeout: 8000, maximumAge: 30000 }
+    );
+  }, []);
 
   // Fetch Live Fuel Rates on Mount
   useEffect(() => {
@@ -66,20 +114,29 @@ function TripEstimatorContent() {
   }, []);
 
   // Fetch estimates
-  const fetchEstimates = async () => {
+  const fetchEstimates = useCallback(async () => {
     try {
       setLoading(true);
+      const payload: any = {
+        destId,
+        passengers,
+        isRoundTrip,
+        customMileage: { bike: bikeMileage, car: carMileage },
+        fuelRates
+      };
+
+      if (useLiveGps && userGpsCoords) {
+        payload.originLat = userGpsCoords.lat;
+        payload.originLng = userGpsCoords.lng;
+        payload.originName = 'Your Live Location (GPS)';
+      } else {
+        payload.originId = originId;
+      }
+
       const res = await fetch('/api/trip-estimator', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          originId,
-          destId,
-          passengers,
-          isRoundTrip,
-          customMileage: { bike: bikeMileage, car: carMileage },
-          fuelRates
-        })
+        body: JSON.stringify(payload)
       });
 
       if (res.ok) {
@@ -93,11 +150,11 @@ function TripEstimatorContent() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [originId, destId, passengers, isRoundTrip, bikeMileage, carMileage, fuelRates, useLiveGps, userGpsCoords]);
 
   useEffect(() => {
     fetchEstimates();
-  }, [originId, destId, passengers, isRoundTrip, bikeMileage, carMileage, fuelRates]);
+  }, [fetchEstimates]);
 
   const filteredEstimates = useMemo(() => {
     if (!estimateResult) return [];
@@ -106,7 +163,8 @@ function TripEstimatorContent() {
     if (activeTab === 'bike') return entries.filter(([k]) => k === 'bike');
     if (activeTab === 'car') return entries.filter(([k]) => k === 'car' || k === 'suv');
     if (activeTab === 'ev') return entries.filter(([k]) => k === 'ev');
-    if (activeTab === 'bus') return entries.filter(([k]) => k === 'bus' || k === 'auto' || k === 'walk');
+    if (activeTab === 'bus') return entries.filter(([k]) => k === 'bus' || k === 'auto');
+    if (activeTab === 'walk') return entries.filter(([k]) => k === 'walk');
     return entries;
   }, [estimateResult, activeTab]);
 
@@ -178,7 +236,7 @@ function TripEstimatorContent() {
           </button>
         </div>
 
-        {/* CUSTOM FUEL MODAL / DRAWER */}
+        {/* CUSTOM FUEL DRAWER */}
         {isCustomFuelOpen && (
           <div style={{
             backgroundColor: '#F8FAFC',
@@ -217,25 +275,92 @@ function TripEstimatorContent() {
         <div className={styles.card}>
           <div className={styles.routeSelector}>
             
+            {/* ORIGIN SELECTOR + LIVE GPS BUTTON */}
             <div className={styles.fieldGroup}>
-              <label className={styles.label}>
-                {lang === 'te' ? 'ప్రారంభ స్థానం (Origin)' : 'Origin (Starting Point)'}
-              </label>
-              <select
-                className={styles.select}
-                value={originId}
-                onChange={e => setOriginId(e.target.value)}
-              >
-                <option value="renigunta-junction">Tirupati Central / Railway Station</option>
-                <option value="alipiri-checkpoint">Alipiri Toll Gate / Ghat Road Entry</option>
-                <option value="srinivasam">Srinivasam Complex (RTC Bus Stand)</option>
-                <option value="vishnu-nivasam">Vishnu Nivasam (Railway Station)</option>
-                {placesList.map(p => (
-                  <option key={p.id} value={p.id}>{p.name}</option>
-                ))}
-              </select>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '6px' }}>
+                <label className={styles.label} style={{ margin: 0 }}>
+                  {lang === 'te' ? 'ప్రారంభ స్థానం (Origin)' : 'Starting Point'}
+                </label>
+                
+                <button
+                  type="button"
+                  onClick={useLiveGps ? () => setUseLiveGps(false) : handleGetLiveLocation}
+                  disabled={gpsLoading}
+                  style={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '5px',
+                    padding: '4px 10px',
+                    borderRadius: '8px',
+                    fontSize: '11.5px',
+                    fontWeight: 700,
+                    border: useLiveGps ? '1px solid #10B981' : '1px solid #CBD5E1',
+                    backgroundColor: useLiveGps ? '#ECFDF5' : '#F8FAFC',
+                    color: useLiveGps ? '#059669' : '#475569',
+                    cursor: 'pointer',
+                    transition: 'all 0.2s'
+                  }}
+                >
+                  <Locate size={13} className={gpsLoading ? 'animate-spin' : ''} color={useLiveGps ? '#10B981' : '#64748B'} />
+                  <span>{gpsLoading ? 'Locating...' : useLiveGps ? 'Live GPS Active' : 'Use My GPS'}</span>
+                </button>
+              </div>
+
+              {useLiveGps ? (
+                <div style={{
+                  padding: '10px 14px',
+                  backgroundColor: '#ECFDF5',
+                  border: '1px solid #A7F3D0',
+                  borderRadius: '10px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  gap: '8px'
+                }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                    <div style={{ width: '8px', height: '8px', borderRadius: '50%', backgroundColor: '#10B981' }} />
+                    <span style={{ fontSize: '13.5px', fontWeight: 700, color: '#065F46' }}>
+                      Your Live Location (GPS Coordinates Detected)
+                    </span>
+                  </div>
+                  <button
+                    onClick={() => setUseLiveGps(false)}
+                    style={{ background: 'none', border: 'none', color: '#047857', fontSize: '11px', fontWeight: 700, cursor: 'pointer', textDecoration: 'underline' }}
+                  >
+                    Change
+                  </button>
+                </div>
+              ) : (
+                <select
+                  className={styles.select}
+                  value={originId}
+                  onChange={e => {
+                    setOriginId(e.target.value);
+                    setUseLiveGps(false);
+                  }}
+                >
+                  <optgroup label="Popular Starting Hubs & Stations">
+                    {MAJOR_HUBS.map(h => (
+                      <option key={h.id} value={h.id}>{h.name}</option>
+                    ))}
+                  </optgroup>
+                  <optgroup label="All Temples & Pilgrimage Sites">
+                    {placesList.map(p => (
+                      <option key={p.id} value={p.id}>{p.name}</option>
+                    ))}
+                  </optgroup>
+                </select>
+              )}
+
+              {gpsError && (
+                <div style={{ fontSize: '11px', color: '#DC2626', marginTop: '4px', display: 'flex', alignItems: 'center', gap: '4px' }}>
+                  <AlertTriangle size={11} />
+                  <span>{gpsError}</span>
+                </div>
+              )}
             </div>
 
+            {/* DESTINATION SELECTOR */}
             <div className={styles.fieldGroup}>
               <label className={styles.label}>
                 {lang === 'te' ? 'గమ్యస్థానం (Destination)' : 'Destination Temple / Spot'}
@@ -251,6 +376,7 @@ function TripEstimatorContent() {
               </select>
             </div>
 
+            {/* PILGRIMS & ROUND TRIP OPTIONS */}
             <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap', alignItems: 'center', marginTop: '6px' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                 <label className={styles.label} style={{ margin: 0 }}>
@@ -286,10 +412,18 @@ function TripEstimatorContent() {
           <div style={{ background: 'linear-gradient(135deg, #1E1B18 0%, #2A2521 100%)', color: '#FFFFFF', borderRadius: '20px', padding: '20px', marginBottom: '20px', boxShadow: '0 10px 25px rgba(0,0,0,0.1)' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '10px' }}>
               <div>
-                <span style={{ fontSize: '11px', color: '#C89B3C', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.5px' }}>
-                  {estimateResult.isTirumalaRoute
-                    ? <><Mountain size={12} style={{ display: 'inline', verticalAlign: 'middle', marginRight: 3 }} /> Tirumala Hill Ghat Route (+820m Climb)</>
-                    : <><MapPin size={12} style={{ display: 'inline', verticalAlign: 'middle', marginRight: 3 }} /> Regional Plains Highway Route</>}
+                <span style={{ fontSize: '11px', color: '#C89B3C', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.5px', display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
+                  {estimateResult.isTirumalaRoute ? (
+                    <>
+                      <Mountain size={13} color="#C89B3C" />
+                      Tirumala Hill Ghat Route (+820m Elevation Climb)
+                    </>
+                  ) : (
+                    <>
+                      <Navigation size={13} color="#C89B3C" />
+                      Regional Plains Highway Route
+                    </>
+                  )}
                 </span>
                 <h2 style={{ fontSize: '18px', fontWeight: 800, margin: '4px 0 0 0', color: '#FFFFFF' }}>
                   {estimateResult.originName} → {estimateResult.destinationName}
@@ -306,37 +440,47 @@ function TripEstimatorContent() {
         {/* VEHICLE CATEGORY FILTER TABS */}
         <div style={{ display: 'flex', gap: '8px', overflowX: 'auto', paddingBottom: '12px', marginBottom: '8px' }}>
           {[
-            { id: 'all', label: 'All Modes' },
-            { id: 'bike', label: '🏍️ Bike / Scooter' },
-            { id: 'car', label: '🚗 Car & SUV' },
-            { id: 'ev', label: '⚡ Electric EV' },
-            { id: 'bus', label: '🚌 Bus & Auto' }
-          ].map(tab => (
-            <button
-              key={tab.id}
-              onClick={() => setActiveTab(tab.id as any)}
-              style={{
-                backgroundColor: activeTab === tab.id ? '#0F5132' : '#FFFFFF',
-                color: activeTab === tab.id ? '#FFFFFF' : '#0F172A',
-                border: activeTab === tab.id ? 'none' : '1px solid rgba(15, 23, 42, 0.1)',
-                padding: '8px 14px',
-                borderRadius: '12px',
-                fontSize: '12.5px',
-                fontWeight: 700,
-                whiteSpace: 'nowrap',
-                cursor: 'pointer',
-                boxShadow: activeTab === tab.id ? '0 4px 12px rgba(15, 81, 50, 0.25)' : 'none'
-              }}
-            >
-              {tab.label}
-            </button>
-          ))}
+            { id: 'all', label: 'All Modes', Icon: Compass },
+            { id: 'bike', label: 'Motorcycle', Icon: Bike },
+            { id: 'car', label: 'Car & SUV', Icon: Car },
+            { id: 'ev', label: 'Electric EV', Icon: Zap },
+            { id: 'bus', label: 'Bus & Auto', Icon: Bus },
+            { id: 'walk', label: 'Walking', Icon: Footprints }
+          ].map(tab => {
+            const TabIcon = tab.Icon;
+            const isSelected = activeTab === tab.id;
+            return (
+              <button
+                key={tab.id}
+                onClick={() => setActiveTab(tab.id as any)}
+                style={{
+                  backgroundColor: isSelected ? '#0F5132' : '#FFFFFF',
+                  color: isSelected ? '#FFFFFF' : '#0F172A',
+                  border: isSelected ? 'none' : '1px solid rgba(15, 23, 42, 0.1)',
+                  padding: '8px 14px',
+                  borderRadius: '12px',
+                  fontSize: '12.5px',
+                  fontWeight: 700,
+                  whiteSpace: 'nowrap',
+                  cursor: 'pointer',
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '6px',
+                  boxShadow: isSelected ? '0 4px 12px rgba(15, 81, 50, 0.25)' : 'none'
+                }}
+              >
+                <TabIcon size={14} color={isSelected ? '#FFFFFF' : '#64748B'} />
+                <span>{tab.label}</span>
+              </button>
+            );
+          })}
         </div>
 
         {/* MODE COMPARISON CARDS */}
         {loading ? (
           <div style={{ textAlign: 'center', padding: '40px 0', color: '#64748B' }}>
-            Calculating vehicle physics & live fuel rates...
+            <RefreshCw size={24} className="animate-spin" style={{ margin: '0 auto 12px auto' }} />
+            <div>Calculating road distance & live fuel rates...</div>
           </div>
         ) : estimateResult ? (
           <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
@@ -357,18 +501,29 @@ function TripEstimatorContent() {
                 >
                   <div className={styles.estimateHeader}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                      {key === 'walk' && <Footprints size={22} color="#16A34A" />}
-                      {key === 'bike' && <Bike size={22} color="#E9801D" />}
-                      {key === 'car' && <Car size={22} color="#2563EB" />}
-                      {key === 'suv' && <Car size={22} color="#7C3AED" />}
-                      {key === 'ev' && <Zap size={22} color="#059669" />}
-                      {key === 'auto' && <Zap size={22} color="#D97706" />}
-                      {key === 'bus' && <Bus size={22} color="#059669" />}
+                      <div style={{
+                        padding: '10px',
+                        borderRadius: '12px',
+                        backgroundColor: key === 'walk' ? 'rgba(22, 163, 74, 0.1)' :
+                                         key === 'bike' ? 'rgba(233, 128, 29, 0.1)' :
+                                         key === 'ev' ? 'rgba(5, 150, 105, 0.1)' :
+                                         key === 'bus' ? 'rgba(16, 185, 129, 0.1)' :
+                                         key === 'auto' ? 'rgba(217, 119, 6, 0.1)' :
+                                         'rgba(37, 99, 235, 0.1)'
+                      }}>
+                        {key === 'walk' && <Footprints size={22} color="#16A34A" />}
+                        {key === 'bike' && <Bike size={22} color="#E9801D" />}
+                        {key === 'car' && <Car size={22} color="#2563EB" />}
+                        {key === 'suv' && <Car size={22} color="#7C3AED" />}
+                        {key === 'ev' && <Zap size={22} color="#059669" />}
+                        {key === 'auto' && <Zap size={22} color="#D97706" />}
+                        {key === 'bus' && <Bus size={22} color="#059669" />}
+                      </div>
 
                       <div>
                         <h3 style={{ fontSize: '15.5px', fontWeight: 800, color: '#0F172A', margin: 0 }}>{est.title}</h3>
-                        <span style={{ fontSize: '11.5px', color: '#64748B' }}>
-                          ~{est.travelTimeMins} mins • {est.distanceKm} km {est.fuelType ? `• ${est.fuelType}` : ''}
+                        <span style={{ fontSize: '11.5px', color: '#64748B', display: 'flex', alignItems: 'center', gap: '4px', marginTop: '2px' }}>
+                          <Clock size={11} /> ~{est.travelTimeMins} mins • {est.distanceKm} km {est.fuelType ? `• ${est.fuelType}` : ''}
                         </span>
                       </div>
                     </div>
@@ -392,9 +547,15 @@ function TripEstimatorContent() {
                     </div>
                   </div>
 
-                  <div style={{ margin: '8px 0' }}>
-                    <span className={`${styles.tagBadge} ${isBest ? styles.tagBest : isWarn ? styles.tagWarning : styles.tagRec}`}>
-                      {est.recommendationTag}
+                  <div style={{ margin: '10px 0' }}>
+                    <span 
+                      className={`${styles.tagBadge} ${isBest ? styles.tagBest : isWarn ? styles.tagWarning : styles.tagRec}`}
+                      style={{ display: 'inline-flex', alignItems: 'center', gap: '5px' }}
+                    >
+                      {isBest && <ShieldCheck size={13} color="#15803D" />}
+                      {isWarn && <ShieldAlert size={13} color="#B91C1C" />}
+                      {!isBest && !isWarn && <Sparkles size={13} color="#B45309" />}
+                      <span>{est.recommendationTag}</span>
                     </span>
                   </div>
 
@@ -402,7 +563,7 @@ function TripEstimatorContent() {
                     {est.reasons.map((r, i) => (
                       <li key={i} className={styles.reasonItem}>
                         <CheckCircle2 size={13} color={isBest ? '#16A34A' : '#64748B'} />
-                        {r}
+                        <span>{r}</span>
                       </li>
                     ))}
                   </ul>
@@ -415,20 +576,36 @@ function TripEstimatorContent() {
                       backgroundColor: 'rgba(15, 23, 42, 0.03)',
                       borderRadius: '10px',
                       display: 'flex',
-                      gap: '12px',
+                      gap: '14px',
                       fontSize: '11.5px',
                       color: '#475569',
                       flexWrap: 'wrap'
                     }}>
-                      {est.fuelCost > 0 && <span>⛽ Fuel: <strong>₹{est.fuelCost}</strong></span>}
-                      {est.tollCost > 0 && <span>🛣️ Tolls: <strong>₹{est.tollCost}</strong></span>}
-                      {est.parkingCost > 0 && <span>🅿️ Parking: <strong>₹{est.parkingCost}</strong></span>}
+                      {est.fuelCost > 0 && (
+                        <span style={{ display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
+                          <Fuel size={12} color="#059669" />
+                          Fuel: <strong>₹{est.fuelCost}</strong>
+                        </span>
+                      )}
+                      {est.tollCost > 0 && (
+                        <span style={{ display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
+                          <Milestone size={12} color="#2563EB" />
+                          Tolls: <strong>₹{est.tollCost}</strong>
+                        </span>
+                      )}
+                      {est.parkingCost > 0 && (
+                        <span style={{ display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
+                          <CircleParking size={12} color="#7C3AED" />
+                          Parking: <strong>₹{est.parkingCost}</strong>
+                        </span>
+                      )}
                     </div>
                   )}
 
                   {est.busDetails && (
-                    <div style={{ marginTop: '10px', background: '#DCFCE7', padding: '8px 12px', borderRadius: '10px', fontSize: '12px', color: '#15803D', fontWeight: 600 }}>
-                      <Bus size={14} style={{ display: 'inline', verticalAlign: 'middle', marginRight: 4 }} />{est.busDetails.busNumber} • {est.busDetails.frequency}
+                    <div style={{ marginTop: '10px', background: '#DCFCE7', padding: '8px 12px', borderRadius: '10px', fontSize: '12px', color: '#15803D', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '6px' }}>
+                      <Bus size={14} />
+                      <span>{est.busDetails.busNumber} • {est.busDetails.frequency}</span>
                     </div>
                   )}
                 </div>
