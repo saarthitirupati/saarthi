@@ -1,17 +1,25 @@
 import { NextResponse } from 'next/server';
 import { readCampaignsAsync, addCampaignAsync, getGrowthHubMetricsAsync, readScansAsync } from '@/lib/adminDb';
 
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
 export async function GET() {
   try {
     const campaigns = await readCampaignsAsync();
     const metrics = await getGrowthHubMetricsAsync();
-    const scans = (await readScansAsync()).slice(0, 50); // recent 50 scans
+    const scans = await readScansAsync(50); // recent 50 scans
 
     return NextResponse.json({
       success: true,
       campaigns,
       metrics,
       recentScans: scans,
+      serverTime: new Date().toISOString(),
+    }, {
+      headers: {
+        'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate, max-age=0',
+      }
     });
   } catch (error: any) {
     return NextResponse.json(

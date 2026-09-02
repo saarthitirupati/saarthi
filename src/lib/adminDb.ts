@@ -544,12 +544,13 @@ export function updateCampaign(id: string, updates: Partial<MarketingCampaign>):
   return updated;
 }
 
-export async function readScansAsync(): Promise<MarketingScan[]> {
+export async function readScansAsync(limit: number = 100): Promise<MarketingScan[]> {
   try {
     const { data, error } = await supabase
       .from('marketing_scans')
       .select('*')
-      .order('created_at', { ascending: false });
+      .order('created_at', { ascending: false })
+      .limit(limit);
 
     if (!error && data) {
       return data.map((s: any) => ({
@@ -630,46 +631,119 @@ export function logMarketingScan(scanData: Omit<MarketingScan, 'id' | 'timestamp
 
 export async function getGrowthHubMetricsAsync() {
   const campaigns = await readCampaignsAsync();
-  const scans = await readScansAsync();
   const now = new Date();
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
   const todayStr = now.toISOString().split('T')[0];
+  const todayMidnightIso = today.toISOString();
 
-  const totalScans = scans.length;
-  const todayScans = scans.filter(s => s.timestamp && s.timestamp.startsWith(todayStr)).length;
+  let totalScans = 0;
+  let todayScans = 0;
+  let allScanRows: any[] = [];
+
+  try {
+    // 1. Fetch exact total count from Supabase
+    const totRes = await supabase.from('marketing_scans').select('*', { count: 'exact', head: true });
+    if (totRes.count !== null && totRes.count !== undefined) {
+      totalScans = totRes.count;
+    }
+
+    // 2. Fetch exact today's count from Supabase
+    const tdRes = await supabase.from('marketing_scans').select('*', { count: 'exact', head: true }).gte('created_at', todayMidnightIso);
+    if (tdRes.count !== null && tdRes.count !== undefined) {
+      todayScans = tdRes.count;
+    }
+
+    // 3. Fetch up to 10,000 scan events for accurate campaign distribution
+    const { data: scanData } = await supabase
+      .from('marketing_scans')
+      .select('campaign_id, campaign_slug, device, os, browser, referer, created_at')
+      .order('created_at', { ascending: false })
+      .limit(10000);
+
+    if (scanData) {
+      allScanRows = scanData;
+      if (totalScans === 0) totalScans = scanData.length;
+    }
+  } catch (err) {
+    console.error('Error fetching Supabase growth metrics:', err);
+  }
+
+  // Fallback to local files if Supabase was completely empty
+  if (allScanRows.length === 0) {
+    const localScans = readScans();
+    totalScans = Math.max(totalScans, localScans.length);
+    todayScans = Math.max(todayScans, localScans.filter(s => s.timestamp && s.timestamp.startsWith(todayStr)).length);
+    allScanRows = localScans.map(s => ({
+      campaign_id: s.campaignId,
+      campaign_slug: s.campaignSlug,
+      device: s.device,
+      os: s.os,
+      browser: s.browser,
+      referer: s.referer,
+      created_at: s.timestamp,
+    }));
+  }
 
   const campaignScanMap: Record<string, number> = {};
   const campaignTodayMap: Record<string, number> = {};
+  const deviceBreakdown: Record<string, number> = { 'Android': 0, 'iOS': 0, 'Desktop': 0, 'Other': 0 };
+  const osBreakdown: Record<string, number> = {};
+  const browserBreakdown: Record<string, number> = {};
 
-  scans.forEach(s => {
-    if (s.campaignId) {
-      campaignScanMap[s.campaignId] = (campaignScanMap[s.campaignId] || 0) + 1;
-      if (s.timestamp && s.timestamp.startsWith(todayStr)) {
-        campaignTodayMap[s.campaignId] = (campaignTodayMap[s.campaignId] || 0) + 1;
-      }
+  allScanRows.forEach(s => {
+    const cid = (s.campaign_id || '').toLowerCase().trim();
+    const cslug = (s.campaign_slug || '').toLowerCase().trim();
+    const isToday = s.created_at && (s.created_at.startsWith(todayStr) || s.created_at >= todayMidnightIso);
+
+    if (cid) {
+      campaignScanMap[cid] = (campaignScanMap[cid] || 0) + 1;
+      if (isToday) campaignTodayMap[cid] = (campaignTodayMap[cid] || 0) + 1;
     }
-    if (s.campaignSlug) {
-      campaignScanMap[s.campaignSlug] = (campaignScanMap[s.campaignSlug] || 0) + 1;
-      if (s.timestamp && s.timestamp.startsWith(todayStr)) {
-        campaignTodayMap[s.campaignSlug] = (campaignTodayMap[s.campaignSlug] || 0) + 1;
-      }
+    if (cslug && cslug !== cid) {
+      campaignScanMap[cslug] = (campaignScanMap[cslug] || 0) + 1;
+      if (isToday) campaignTodayMap[cslug] = (campaignTodayMap[cslug] || 0) + 1;
     }
+
+    // Devices
+    const dev = s.device || (s.os === 'iOS' ? 'iPhone' : s.os === 'Android' ? 'Android Mobile' : 'Desktop');
+    if (dev.toLowerCase().includes('android')) deviceBreakdown['Android']++;
+    else if (dev.toLowerCase().includes('iphone') || dev.toLowerCase().includes('ios') || dev.toLowerCase().includes('ipad')) deviceBreakdown['iOS']++;
+    else if (dev.toLowerCase().includes('desktop') || dev.toLowerCase().includes('mac') || dev.toLowerCase().includes('windows')) deviceBreakdown['Desktop']++;
+    else deviceBreakdown['Other']++;
+
+    // OS
+    const osName = s.os || 'Unknown';
+    osBreakdown[osName] = (osBreakdown[osName] || 0) + 1;
+
+    // Browser
+    const brName = s.browser || 'Browser';
+    browserBreakdown[brName] = (browserBreakdown[brName] || 0) + 1;
   });
 
   let topCampaign: MarketingCampaign | null = null;
   let maxScans = -1;
 
   campaigns.forEach(c => {
-    const countById = campaignScanMap[c.id] || 0;
-    const countBySlug = campaignScanMap[c.slug] || 0;
+    const cId = c.id.toLowerCase();
+    const cSlug = c.slug.toLowerCase();
+    const countById = campaignScanMap[cId] || 0;
+    const countBySlug = campaignScanMap[cSlug] || 0;
     const actualCnt = Math.max(countById, countBySlug);
+
     campaignScanMap[c.id] = actualCnt;
     campaignScanMap[c.slug] = actualCnt;
+    campaignScanMap[cId] = actualCnt;
+    campaignScanMap[cSlug] = actualCnt;
 
-    const todayById = campaignTodayMap[c.id] || 0;
-    const todayBySlug = campaignTodayMap[c.slug] || 0;
+    const todayById = campaignTodayMap[cId] || 0;
+    const todayBySlug = campaignTodayMap[cSlug] || 0;
     const actualToday = Math.max(todayById, todayBySlug);
+
     campaignTodayMap[c.id] = actualToday;
     campaignTodayMap[c.slug] = actualToday;
+    campaignTodayMap[cId] = actualToday;
+    campaignTodayMap[cSlug] = actualToday;
 
     if (actualCnt > maxScans) {
       maxScans = actualCnt;
@@ -689,6 +763,9 @@ export async function getGrowthHubMetricsAsync() {
     } : null,
     campaignScanMap,
     campaignTodayMap,
+    deviceBreakdown,
+    osBreakdown,
+    browserBreakdown,
   };
 }
 
