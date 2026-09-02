@@ -1,8 +1,14 @@
 import { NextResponse } from 'next/server';
+import fs from 'fs';
+import path from 'path';
 import { supabase } from '@/lib/supabase';
 import { PLACES } from '@/data/places';
 
 export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
+const DATA_DIR = path.join(process.cwd(), 'data');
+const FEEDBACK_FILE = path.join(DATA_DIR, 'feedback.json');
 
 export interface FeedbackRecord {
   id: string;
@@ -13,14 +19,29 @@ export interface FeedbackRecord {
   createdAt: string;
 }
 
-// In-memory feedback store fallback for production serverless persistence
-let inMemoryFeedback: FeedbackRecord[] = [
-  { id: 'fb-1', placeId: 'govindaraja', placeName: 'Sri Govindaraja Swamy Temple', isPositive: true, comment: 'Locker counters were super fast and clean. Thanks Saarthi!', createdAt: new Date(Date.now() - 5 * 60 * 1000).toLocaleString() },
-  { id: 'fb-2', placeId: 'kapila-theertham', placeName: 'Kapila Theertham', isPositive: true, comment: 'Great recommendation during rainy weather.', createdAt: new Date(Date.now() - 12 * 60 * 1000).toLocaleString() },
-  { id: 'fb-3', placeId: 'annaprasadam', placeName: 'Matrusri Annaprasadam Complex', isPositive: true, comment: 'Free meal timing guidance was 100% accurate.', createdAt: new Date(Date.now() - 45 * 60 * 1000).toLocaleString() },
-  { id: 'fb-4', placeId: 'chandragiri', placeName: 'Chandragiri Fort', isPositive: false, comment: 'Light show starts 30 mins later in winter schedule.', createdAt: new Date(Date.now() - 2 * 3600 * 1000).toLocaleString() },
-  { id: 'fb-5', placeId: 'srinivasam', placeName: 'Srinivasam SSD Counter', isPositive: true, comment: 'SSD token availability status saved me 4 hours of waiting.', createdAt: new Date(Date.now() - 3 * 3600 * 1000).toLocaleString() }
-];
+function ensureDir() {
+  if (!fs.existsSync(DATA_DIR)) {
+    fs.mkdirSync(DATA_DIR, { recursive: true });
+  }
+}
+
+function readLocalFeedback(): FeedbackRecord[] {
+  ensureDir();
+  if (!fs.existsSync(FEEDBACK_FILE)) return [];
+  try {
+    const data = JSON.parse(fs.readFileSync(FEEDBACK_FILE, 'utf-8'));
+    return Array.isArray(data) ? data : [];
+  } catch {
+    return [];
+  }
+}
+
+function writeLocalFeedback(feedback: FeedbackRecord[]): void {
+  try {
+    ensureDir();
+    fs.writeFileSync(FEEDBACK_FILE, JSON.stringify(feedback, null, 2));
+  } catch {}
+}
 
 const deletedFeedbackIds = new Set<string>();
 
@@ -29,7 +50,7 @@ export async function GET() {
     const placesMap = new Map(PLACES.map(p => [p.id, p.name]));
     let dbFormatted: FeedbackRecord[] = [];
 
-    // Query Supabase feedback table
+    // 1. Query Supabase feedback table
     try {
       const { data: dbData, error } = await supabase
         .from('feedback')
@@ -54,19 +75,31 @@ export async function GET() {
       console.warn('Supabase feedback fetch notice:', sbErr);
     }
 
-    // Merge in-memory and database records
+    // 2. Read local file storage
+    const localRecords = readLocalFeedback();
+
+    // 3. Merge records
     const mergedMap = new Map<string, FeedbackRecord>();
-    for (const item of [...inMemoryFeedback, ...dbFormatted]) {
+    for (const item of [...dbFormatted, ...localRecords]) {
       const sid = String(item.id);
       if (item && !deletedFeedbackIds.has(sid) && !mergedMap.has(sid)) {
         mergedMap.set(sid, item);
       }
     }
 
-    return NextResponse.json(Array.from(mergedMap.values()));
+    const result = Array.from(mergedMap.values());
+    return NextResponse.json(result, {
+      headers: {
+        'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate, max-age=0',
+      }
+    });
   } catch (err: any) {
     console.error('Failed to fetch feedback:', err);
-    return NextResponse.json(inMemoryFeedback.filter(f => !deletedFeedbackIds.has(String(f.id))));
+    return NextResponse.json(readLocalFeedback().filter(f => !deletedFeedbackIds.has(String(f.id))), {
+      headers: {
+        'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate, max-age=0',
+      }
+    });
   }
 }
 
@@ -90,7 +123,11 @@ export async function POST(request: Request) {
     };
 
     deletedFeedbackIds.delete(newItem.id);
-    inMemoryFeedback = [newItem, ...inMemoryFeedback];
+
+    // Save to local file storage
+    const local = readLocalFeedback();
+    local.unshift(newItem);
+    writeLocalFeedback(local);
 
     // Try Supabase insert
     try {
@@ -125,7 +162,10 @@ export async function DELETE(request: Request) {
 
     const sid = String(id);
     deletedFeedbackIds.add(sid);
-    inMemoryFeedback = inMemoryFeedback.filter(f => String(f.id) !== sid);
+
+    // Remove from local file storage
+    const local = readLocalFeedback().filter(f => String(f.id) !== sid);
+    writeLocalFeedback(local);
 
     try {
       await supabase.from('feedback').delete().eq('id', id);

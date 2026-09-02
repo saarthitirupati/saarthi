@@ -1,0 +1,98 @@
+[
+  {
+    "id": "fb-1",
+    "placeId": "srinivasam",
+    "placeName": "Srinivasam SSD Counter",
+    "isPositive": true,
+    "comment": "Free SSD token counter status in Saarthi was 100% accurate, got tokens in 15 mins.",
+    "createdAt": "2026-09-02, 10:15:20 AM"
+  },
+  {
+    "id": "fb-2",
+    "placeId": "govindaraja",
+    "placeName": "Sri Govindaraja Swamy Temple",
+    "isPositive": true,
+    "comment": "Locker counters were super fast and clean. Offline map showed exact footwear drop!",
+    "createdAt": "2026-09-02, 09:40:12 AM"
+  },
+  {
+    "id": "fb-3",
+    "placeId": "bhudevi",
+    "placeName": "Bhudevi Complex SSD Counters",
+    "isPositive": true,
+    "comment": "Bhudevi complex token counter has plenty of parking space and zero rush early morning.",
+    "createdAt": "2026-09-02, 08:20:45 AM"
+  },
+  {
+    "id": "fb-4",
+    "placeId": "kapila-theertham",
+    "placeName": "Kapila Theertham",
+    "isPositive": true,
+    "comment": "Theertham waterfall flow is serene in morning hours. Great recommendation!",
+    "createdAt": "2026-09-01, 05:45:10 PM"
+  },
+  {
+    "id": "fb-5",
+    "placeId": "annaprasadam",
+    "placeName": "Matrusri Tarigonda Vengamamba Annaprasadam",
+    "isPositive": true,
+    "comment": "Free meal timing guidance was 100% accurate. Clean and divine experience.",
+    "createdAt": "2026-09-01, 02:10:30 PM"
+  },
+  {
+    "id": "fb-6",
+    "placeId": "varahaswamy",
+    "placeName": "Sri Bhu Varaha Swamy Temple",
+    "isPositive": true,
+    "comment": "Visited Varahaswamy first as guided by the Sthala Puranam sequence. Highly recommended.",
+    "createdAt": "2026-09-01, 11:30:15 AM"
+  },
+  {
+    "id": "fb-7",
+    "placeId": "alipiri-mettu",
+    "placeName": "Alipiri Mettu Footpath",
+    "isPositive": true,
+    "comment": "Luggage transfer counter at Alipiri took only 5 minutes to deposit.",
+    "createdAt": "2026-08-31, 07:15:00 AM"
+  },
+  {
+    "id": "fb-8",
+    "placeId": "padmavathi-temple",
+    "placeName": "Sri Padmavathi Ammavari Temple",
+    "isPositive": true,
+    "comment": "Special darshan line moved very quickly today afternoon.",
+    "createdAt": "2026-08-30, 04:30:22 PM"
+  },
+  {
+    "id": "fb-9",
+    "placeId": "iskcon-tirupati",
+    "placeName": "ISKCON Tirupati",
+    "isPositive": true,
+    "comment": "Prasadam restaurant upstairs was delicious and serene.",
+    "createdAt": "2026-08-30, 01:20:10 PM"
+  },
+  {
+    "id": "fb-10",
+    "placeId": "chandragiri",
+    "placeName": "Chandragiri Fort",
+    "isPositive": false,
+    "comment": "Sound and light show starts around 7:00 PM in current schedule.",
+    "createdAt": "2026-08-29, 08:15:00 PM"
+  },
+  {
+    "id": "fb-11",
+    "placeId": "silathoranam",
+    "placeName": "Sila Thoranam (Natural Arch)",
+    "isPositive": true,
+    "comment": "Rock garden natural arch is a peaceful 15 min walk from Chakra Theertham.",
+    "createdAt": "2026-08-28, 10:00:00 AM"
+  },
+  {
+    "id": "fb-12",
+    "placeId": "srivari-padalu",
+    "placeName": "Srivari Padalu",
+    "isPositive": true,
+    "comment": "Breathtaking panoramic view of the entire Seshachalam mountain range.",
+    "createdAt": "2026-08-27, 03:40:50 PM"
+  }
+]
