@@ -119,13 +119,45 @@ export default function ClientLayout({
     }
   }, [pathname]);
 
-  // Register service worker for offline support
+  // Register service worker + subscribe to push notifications
   useEffect(() => {
-    if (typeof window !== 'undefined' && 'serviceWorker' in navigator) {
-      navigator.serviceWorker.register('/sw.js').catch(() => {
-        // Silent fail — offline support is best-effort
-      });
-    }
+    if (typeof window === 'undefined' || !('serviceWorker' in navigator)) return;
+    navigator.serviceWorker.register('/sw.js').then(async (reg) => {
+      // Only subscribe if Notification API is available and user hasn't denied
+      if (!('Notification' in window) || Notification.permission === 'denied') return;
+      // Ask permission if not yet granted
+      if (Notification.permission === 'default') {
+        const perm = await Notification.requestPermission();
+        if (perm !== 'granted') return;
+      }
+      // Subscribe to push
+      const vapidKey = process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY || 'BG66lKYjVyCTBCyVvgT0qpmwpFaJ414JqzVUVNZ14KRQlcC5UdqDUOp9USQElQ2r7vO6P4fzYlX3oFRuu4oR5V8';
+      if (!vapidKey) return;
+      try {
+        let sub = await reg.pushManager.getSubscription();
+        if (!sub) {
+          const padding = '='.repeat((4 - (vapidKey.length % 4)) % 4);
+          const base64 = (vapidKey + padding).replace(/-/g, '+').replace(/_/g, '/');
+          const rawData = window.atob(base64);
+          const outputArray = new Uint8Array(rawData.length);
+          for (let i = 0; i < rawData.length; ++i) {
+            outputArray[i] = rawData.charCodeAt(i);
+          }
+          sub = await reg.pushManager.subscribe({
+            userVisibleOnly: true,
+            applicationServerKey: outputArray,
+          });
+        }
+        // Send subscription to our backend
+        await fetch('/api/push/subscribe', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(sub.toJSON()),
+        });
+      } catch {
+        // Push not supported or user declined — silent fail
+      }
+    }).catch(() => {});
   }, []);
 
 

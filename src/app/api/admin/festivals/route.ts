@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { supabase } from '@/lib/supabase';
 import { isAuthorizedAdmin } from '@/lib/authGuard';
+import { pushNotifyAll } from '@/lib/pushNotify';
 
 const DEFAULT_FESTIVALS = [
   {
@@ -100,6 +101,14 @@ export async function POST(req: Request) {
 
     const { data, error } = await supabase.from('festivals').insert([doc]).select();
     if (error) throw error;
+
+    // Notify users about new festival
+    pushNotifyAll({
+      title: `🪔 ${doc.name}`,
+      body: doc.description || `Upcoming festival at Tirumala — ${doc.date}`,
+      url: '/festivals',
+      tag: 'festival-new',
+    }).catch(() => {});
 
     return NextResponse.json({ festival: data[0] }, { status: 201 });
   } catch (e: any) {

@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { supabase } from '@/lib/supabase';
 import { isAuthorizedAdmin } from '@/lib/authGuard';
+import { pushNotifyAll } from '@/lib/pushNotify';
 
 export async function POST(req: Request) {
   try {
@@ -39,6 +40,16 @@ export async function POST(req: Request) {
       .eq('id', 1);
 
     if (error) throw error;
+
+    // Push notification when crowd drops to low
+    if (crowd_level && crowd_level.toLowerCase() === 'low') {
+      pushNotifyAll({
+        title: '🟢 Low Crowd at Tirumala!',
+        body: 'Crowd is low right now — great time for darshan.',
+        url: '/',
+        tag: 'crowd-low',
+      }).catch(() => {});
+    }
 
     return NextResponse.json({ success: true });
   } catch (error: any) {

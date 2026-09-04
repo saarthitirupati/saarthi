@@ -115,3 +115,44 @@ self.addEventListener('fetch', (event) => {
     })
   );
 });
+
+// ── Push Notifications ──────────────────────────────────────────────────────
+
+self.addEventListener('push', (event) => {
+  if (!event.data) return;
+  try {
+    const payload = event.data.json();
+    const options = {
+      body: payload.body || '',
+      icon: payload.icon || '/icon-192.png',
+      badge: '/icon-192.png',
+      tag: payload.tag || 'saarthi-alert',
+      data: { url: payload.url || '/' },
+      vibrate: [200, 100, 200],
+      requireInteraction: true,
+    };
+    event.waitUntil(self.registration.showNotification(payload.title || 'Saarthi', options));
+  } catch (e) {
+    // If not JSON, show raw text
+    const text = event.data.text();
+    event.waitUntil(self.registration.showNotification('Saarthi', { body: text, icon: '/icon-192.png' }));
+  }
+});
+
+self.addEventListener('notificationclick', (event) => {
+  event.notification.close();
+  const url = event.notification.data?.url || '/';
+  event.waitUntil(
+    self.clients.matchAll({ type: 'window', includeUncontrolled: true }).then((clientList) => {
+      // Focus existing window if open
+      for (const client of clientList) {
+        if (client.url.includes(self.location.origin) && 'focus' in client) {
+          client.navigate(url);
+          return client.focus();
+        }
+      }
+      // Otherwise open new window
+      return self.clients.openWindow(url);
+    })
+  );
+});
