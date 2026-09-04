@@ -32,6 +32,14 @@ const nextConfig: NextConfig = {
         headers: [
           { key: 'Cache-Control', value: 'no-store, max-age=0' }
         ]
+      },
+      {
+        source: '/.well-known/assetlinks.json',
+        headers: [
+          { key: 'Content-Type', value: 'application/json' },
+          { key: 'Cache-Control', value: 'no-cache, no-store, must-revalidate, max-age=0, s-maxage=0' },
+          { key: 'Access-Control-Allow-Origin', value: '*' }
+        ]
       }
     ];
   },
