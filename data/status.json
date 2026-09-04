@@ -4,7 +4,7 @@
   "crowdLevel": "high",
   "sevaStatus": "All sevas open",
   "notice": "",
-  "lastUpdated": "2026-08-23T02:50:57.665+00:00",
+  "lastUpdated": "2026-09-04T13:57:02.024+00:00",
   "darshanSpeed": "normal",
   "accommodationStatus": "available",
   "ladduAvailability": "available",
@@ -32,7 +32,7 @@
     }
   ],
   "ssdTokenStatus": "closed-for-day",
-  "ssdNextTokenTime": "12:05 AM",
+  "ssdNextTokenTime": "8:30 AM",
   "ssdTokenSlots": [
     {
       "slotTime": "5:00 AM - 7:00 AM",
@@ -46,8 +46,8 @@
     },
     {
       "slotTime": "9:00 AM - 11:00 AM",
-      "status": "filling",
-      "tokensLeft": "~200 remaining"
+      "status": "closed",
+      "tokensLeft": "Full"
     },
     {
       "slotTime": "11:00 AM - 1:00 PM",
@@ -56,17 +56,17 @@
     },
     {
       "slotTime": "2:00 PM - 4:00 PM",
-      "status": "filling",
-      "tokensLeft": "~200 remaining"
+      "status": "closed",
+      "tokensLeft": "Full"
     },
     {
       "slotTime": "4:00 PM - 6:00 PM",
-      "status": "filling",
-      "tokensLeft": "~200 remaining"
+      "status": "closed",
+      "tokensLeft": "Full"
     }
   ],
-  "ssdNotice": "",
-  "ssdTimingsGuide": "\n*🔹 SSD Tokens – Current Status*\n Quota Completed @ 1:35 AM\n*🔹 Srivari Mettu Divya Darshan Tokens* Quota Completed @ 2:09 AM",
+  "ssdNotice": "SSD & DD Tokens are COMPLETED ",
+  "ssdTimingsGuide": "",
   "ssdCounters": [
     {
       "name": "Vishnu Nivasam Counter",
