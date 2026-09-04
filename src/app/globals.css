@@ -6,9 +6,9 @@
      ========================================= */
 
   /* --- Font Stacks --- */
-  --font-telugu: 'Noto Sans Telugu', 'Gautami', 'Vani', -apple-system, BlinkMacSystemFont, sans-serif;
-  --font-heading: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  --font-body: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-telugu: 'Noto Sans Telugu', 'Tiro Telugu', 'Gautami', 'Vani', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-heading: 'Plus Jakarta Sans', var(--font-telugu), system-ui, sans-serif;
+  --font-body: 'Inter', var(--font-telugu), system-ui, sans-serif;
 
   /* --- Core Palette --- */
   --bg-canvas: #FAF8F5;
@@ -262,6 +262,46 @@ h1, h2, h3, h4, h5, h6 {
   font-weight: var(--font-weight-bold);
   letter-spacing: var(--letter-spacing-tight);
   color: var(--color-text-primary);
+}
+
+/* ==========================================================================
+   TELUGU TYPOGRAPHY & LIGATURE SHAPING ENGINE
+   ========================================================================== */
+
+/* Universal font smoothing & shaping for Telugu script */
+:lang(te),
+html[lang="te"],
+[lang="te"],
+.telugu-text {
+  font-family: var(--font-telugu) !important;
+  letter-spacing: 0 !important;
+  word-spacing: normal !important;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  font-feature-settings: "kern" 1, "liga" 1, "calt" 1;
+}
+
+/* Headings in Telugu must never have negative letter-spacing, uppercase transform, or choked line-height */
+html[lang="te"] h1,
+html[lang="te"] h2,
+html[lang="te"] h3,
+html[lang="te"] h4,
+html[lang="te"] h5,
+html[lang="te"] h6 {
+  letter-spacing: 0 !important;
+  line-height: 1.45 !important;
+  font-weight: 700 !important;
+  text-transform: none !important;
+  font-family: var(--font-telugu) !important;
+}
+
+html[lang="te"] p,
+html[lang="te"] span,
+html[lang="te"] div,
+html[lang="te"] a,
+html[lang="te"] button {
+  letter-spacing: 0 !important;
+  text-transform: none !important;
 }
 
 p {

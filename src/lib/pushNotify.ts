@@ -1,14 +1,22 @@
-// @ts-ignore
+// @ts-expect-error web-push does not have TypeScript declaration files
 import webpush from 'web-push';
 import { supabase } from '@/lib/supabase';
 
-const VAPID_PUBLIC = process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY || 'BG66lKYjVyCTBCyVvgT0qpmwpFaJ414JqzVUVNZ14KRQlcC5UdqDUOp9USQElQ2r7vO6P4fzYlX3oFRuu4oR5V8';
-const VAPID_PRIVATE = process.env.VAPID_PRIVATE_KEY || 'tdwjaJ5ZfrrPFNPyzsni4CZGLWwmftF7nl0LfUYAkDg';
+const VAPID_PUBLIC = process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY;
+const VAPID_PRIVATE = process.env.VAPID_PRIVATE_KEY;
 
-if (VAPID_PUBLIC && VAPID_PRIVATE) {
+let vapidConfigured = false;
+function ensureVapid(): boolean {
+  if (vapidConfigured) return true;
+  if (!VAPID_PUBLIC || !VAPID_PRIVATE) return false;
   try {
     webpush.setVapidDetails('mailto:saarthiguide9@gmail.com', VAPID_PUBLIC, VAPID_PRIVATE);
-  } catch {}
+    vapidConfigured = true;
+    return true;
+  } catch (err) {
+    console.error('Failed to set VAPID details:', err);
+    return false;
+  }
 }
 
 interface PushPayload {
@@ -24,7 +32,7 @@ interface PushPayload {
  * Silently removes expired/invalid subscriptions.
  */
 export async function pushNotifyAll(payload: PushPayload) {
-  if (!VAPID_PUBLIC || !VAPID_PRIVATE) return;
+  if (!ensureVapid()) return;
 
   const { data: subs, error } = await supabase
     .from('push_subscriptions')

@@ -35,14 +35,17 @@ export function useLanguage(): AppLang {
     const saved = localStorage.getItem('saarthi_user_language');
     if (saved === 'te') {
       setLang('te');
+      document.documentElement.lang = 'te';
     } else if (saved === 'en') {
       setLang('en');
+      document.documentElement.lang = 'en';
     }
 
     const handleLanguageChange = (e: Event) => {
       const customEvent = e as CustomEvent<AppLang>;
       if (customEvent?.detail === 'te' || customEvent?.detail === 'en') {
         setLang(customEvent.detail);
+        document.documentElement.lang = customEvent.detail;
       }
     };
 

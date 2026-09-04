@@ -820,10 +820,24 @@ export function HomeHero({ userName, locationName, weatherTemp, liveStatus, acti
 
             {/* Personalized Greeting */}
             <div style={{ marginBottom: '12px' }}>
-              <h1 style={{ fontSize: '20px', fontWeight: 800, color: '#0F172A', margin: 0, letterSpacing: '-0.02em' }}>
+              <h1 style={{ 
+                fontSize: lang === 'te' ? '21px' : '20px', 
+                fontWeight: lang === 'te' ? 700 : 800, 
+                color: '#0F172A', 
+                margin: 0, 
+                letterSpacing: lang === 'te' ? 'normal' : '-0.02em',
+                lineHeight: lang === 'te' ? 1.4 : 1.2
+              }}>
                 <span>{getGreetingPrefix()}</span>, <span className="notranslate">{userName || 'Pilgrim'}</span>
               </h1>
-              <p style={{ fontSize: '12px', color: '#0F5132', margin: '2px 0 0 0', fontWeight: 700, lineHeight: '1.3' }}>
+              <p style={{ 
+                fontSize: lang === 'te' ? '12.5px' : '12px', 
+                color: '#0F5132', 
+                margin: '3px 0 0 0', 
+                fontWeight: lang === 'te' ? 600 : 700, 
+                lineHeight: lang === 'te' ? 1.5 : 1.3,
+                letterSpacing: 'normal'
+              }}>
                 {t.tagline}
               </p>
             </div>
@@ -870,7 +884,14 @@ export function HomeHero({ userName, locationName, weatherTemp, liveStatus, acti
               <Flame size={16} color="#D97706" />
             </div>
             <div>
-              <div style={{ fontSize: '13px', fontWeight: 900, letterSpacing: '0.8px', textTransform: 'uppercase', color: '#0F172A', lineHeight: '1.2' }}>
+              <div style={{
+                fontSize: lang === 'te' ? '13.5px' : '13px',
+                fontWeight: lang === 'te' ? 700 : 900,
+                letterSpacing: lang === 'te' ? 'normal' : '0.8px',
+                textTransform: lang === 'te' ? 'none' : 'uppercase',
+                color: '#0F172A',
+                lineHeight: lang === 'te' ? 1.4 : '1.2'
+              }}>
                 {lang === 'te' ? 'శ్రీవారి ప్రత్యక్ష దర్శన స్థితి' : 'LIVE TEMPLE PULSE'}
               </div>
               <div style={{ fontSize: '10.5px', color: '#059669', fontWeight: 700, display: 'flex', alignItems: 'center', gap: '4px', marginTop: '1px' }}>
@@ -1075,10 +1096,23 @@ export function HomeHero({ userName, locationName, weatherTemp, liveStatus, acti
                     {card.icon}
                   </div>
                   <div>
-                    <div style={{ fontSize: '14.5px', fontWeight: 800, color: '#0F172A', letterSpacing: '-0.01em', lineHeight: '1.2' }}>
+                    <div style={{
+                      fontSize: lang === 'te' ? '15px' : '14.5px',
+                      fontWeight: lang === 'te' ? 700 : 800,
+                      color: '#0F172A',
+                      letterSpacing: lang === 'te' ? 'normal' : '-0.01em',
+                      lineHeight: lang === 'te' ? 1.4 : '1.2'
+                    }}>
                       {card.title}
                     </div>
-                    <div style={{ fontSize: '11px', color: card.isClosed ? '#92400E' : '#475569', fontWeight: 600, marginTop: '2px' }}>
+                    <div style={{
+                      fontSize: '11px',
+                      color: card.isClosed ? '#92400E' : '#475569',
+                      fontWeight: 600,
+                      marginTop: '2px',
+                      lineHeight: lang === 'te' ? 1.4 : '1.2',
+                      letterSpacing: 'normal'
+                    }}>
                       {card.subtitle}
                     </div>
                   </div>
@@ -1116,13 +1150,13 @@ export function HomeHero({ userName, locationName, weatherTemp, liveStatus, acti
                     {/* Status Pill */}
                     <span style={{
                       fontSize: '9.5px',
-                      fontWeight: 800,
+                      fontWeight: lang === 'te' ? 700 : 800,
                       color: card.badgeText,
                       background: card.badgeBg,
                       border: `1px solid ${card.border}`,
                       padding: '2.5px 8px',
                       borderRadius: '6px',
-                      letterSpacing: '0.04em',
+                      letterSpacing: lang === 'te' ? 'normal' : '0.04em',
                       whiteSpace: 'nowrap',
                       boxShadow: '0 1px 3px rgba(0, 0, 0, 0.08)'
                     }}>
@@ -1286,24 +1320,55 @@ export function HomeHero({ userName, locationName, weatherTemp, liveStatus, acti
             }}>
               {/* Header with Devotional Cue */}
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '6px' }}>
-                <div style={{ fontSize: '10.5px', fontWeight: 900, color: '#0F5132', textTransform: 'uppercase', letterSpacing: '0.6px', display: 'flex', alignItems: 'center', gap: '5px' }}>
+                <div style={{
+                  fontSize: '10.5px',
+                  fontWeight: lang === 'te' ? 700 : 900,
+                  color: '#0F5132',
+                  textTransform: lang === 'te' ? 'none' : 'uppercase',
+                  letterSpacing: lang === 'te' ? 'normal' : '0.6px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '5px'
+                }}>
                   <Sparkles size={13} color="#0F5132" />
                   <span>{lang === 'te' ? 'సారథి సూచన' : 'SAARTHI GUIDANCE'}</span>
                 </div>
-                <span style={{ fontSize: '10.5px', color: '#92400E', fontWeight: 700, fontStyle: 'italic' }}>
+                <span style={{
+                  fontSize: '10.5px',
+                  color: '#92400E',
+                  fontWeight: 700,
+                  fontStyle: lang === 'te' ? 'normal' : 'italic',
+                  letterSpacing: 'normal'
+                }}>
                   {lang === 'te' ? '“శాంతితో శ్రీవారిని దర్శించండి”' : '“In calm faith, seek Srivari”'}
                 </span>
               </div>
               
               {/* Warm Companion Recommendation */}
-              <div style={{ fontSize: '14.5px', fontWeight: 900, color: '#0F172A', lineHeight: '1.35', marginBottom: '9px', letterSpacing: '-0.01em' }}>
+              <div style={{
+                fontSize: lang === 'te' ? '14px' : '14.5px',
+                fontWeight: lang === 'te' ? 700 : 900,
+                color: '#0F172A',
+                lineHeight: lang === 'te' ? 1.45 : '1.35',
+                marginBottom: '9px',
+                letterSpacing: lang === 'te' ? 'normal' : '-0.01em'
+              }}>
                 {guidanceHeadline}
               </div>
 
               {/* Rationale Checklist */}
               <div style={{ display: 'flex', flexDirection: 'column', gap: '5px', marginBottom: '10px' }}>
                 {customReasons.map((point, i) => (
-                  <div key={i} style={{ fontSize: '11.5px', color: '#334155', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '6px' }}>
+                  <div key={i} style={{
+                    fontSize: '11.5px',
+                    color: '#334155',
+                    fontWeight: 600,
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '6px',
+                    lineHeight: lang === 'te' ? 1.4 : 1.2,
+                    letterSpacing: 'normal'
+                  }}>
                     <Check size={12} color="#10B981" strokeWidth={2.5} style={{ flexShrink: 0 }} />
                     <span>{point}</span>
                   </div>
@@ -1321,8 +1386,9 @@ export function HomeHero({ userName, locationName, weatherTemp, liveStatus, acti
                 padding: '6px 11px',
                 borderRadius: '10px',
                 fontSize: '11px',
-                fontWeight: 900,
-                letterSpacing: '0.02em',
+                fontWeight: lang === 'te' ? 700 : 900,
+                letterSpacing: lang === 'te' ? 'normal' : '0.02em',
+                lineHeight: lang === 'te' ? 1.4 : 1.2,
                 marginBottom: '7px'
               }}>
                 <Zap size={13} color="#D97706" fill="#D97706" style={{ flexShrink: 0 }} />
