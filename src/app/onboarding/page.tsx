@@ -142,6 +142,10 @@ export default function OnboardingPage() {
   const finish = () => {
     const defaultName = selectedLanguage === 'te' ? 'యాత్రికులు' : 'Traveler';
     const finalName = name.trim() || defaultName;
+    const isApp = window.matchMedia('(display-mode: standalone)').matches;
+    localStorage.setItem(isApp ? 'hasSeenOnboarding_app' : 'hasSeenOnboarding', 'true');
+    localStorage.setItem(isApp ? 'saarthi_user_name_app' : 'saarthi_user_name', finalName);
+    // Also set the base keys so home page greeting works everywhere
     localStorage.setItem('hasSeenOnboarding', 'true');
     localStorage.setItem('saarthi_user_name', finalName);
     localStorage.setItem('saarthi_user_language', selectedLanguage);

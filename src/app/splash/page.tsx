@@ -10,7 +10,8 @@ export default function SplashPage() {
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      const hasSeenOnboarding = localStorage.getItem('hasSeenOnboarding');
+      const isApp = window.matchMedia('(display-mode: standalone)').matches;
+      const hasSeenOnboarding = localStorage.getItem(isApp ? 'hasSeenOnboarding_app' : 'hasSeenOnboarding');
       if (!hasSeenOnboarding) {
         router.push('/onboarding');
       } else {

@@ -17,7 +17,8 @@ export function useHomeData(): HomeData {
   // Basic mounting state
   useEffect(() => {
     setMounted(true);
-    const savedName = localStorage.getItem('saarthi_user_name');
+    const isApp = window.matchMedia('(display-mode: standalone)').matches;
+    const savedName = localStorage.getItem(isApp ? 'saarthi_user_name_app' : 'saarthi_user_name') || localStorage.getItem('saarthi_user_name');
     if (savedName) setUserName(savedName);
   }, []);
 

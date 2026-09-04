@@ -36,8 +36,10 @@ function LayoutContent({
   const alertsHook = useAlerts();
 
   useEffect(() => {
-    const hasSeenOnboarding = localStorage.getItem('hasSeenOnboarding');
-    const hasName = localStorage.getItem('saarthi_user_name');
+    const isApp = window.matchMedia('(display-mode: standalone)').matches;
+    const obKey = isApp ? 'hasSeenOnboarding_app' : 'hasSeenOnboarding';
+    const hasSeenOnboarding = localStorage.getItem(obKey);
+    const hasName = localStorage.getItem(isApp ? 'saarthi_user_name_app' : 'saarthi_user_name');
     setNeedsOnboarding(!hasSeenOnboarding || !hasName);
   }, [pathname]);
 
