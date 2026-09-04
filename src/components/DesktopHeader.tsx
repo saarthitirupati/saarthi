@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { useLanguage } from '@/lib/useLanguage';
+import { useLanguage, setAppLanguage } from '@/lib/useLanguage';
 import { 
   Sun, Bell, Navigation, 
-  Home, Layers, Compass, Calendar
+  Home, Layers, Compass, Calendar, Languages
 } from 'lucide-react';
 import Logo from '@/components/Logo/Logo';
 import { useTrip } from '@/components/TripContext';
@@ -81,6 +81,31 @@ export function DesktopHeader({ weather, temperature }: DesktopHeaderProps) {
             <Sun size={15} />
             <span>{displayWeather}</span>
           </div>
+
+          <button
+            type="button"
+            onClick={() => setAppLanguage(lang === 'en' ? 'te' : 'en')}
+            aria-label={lang === 'en' ? 'Switch to Telugu' : 'Switch to English'}
+            title={lang === 'en' ? 'తెలుగులోకి మార్చండి' : 'Switch to English'}
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '5px',
+              padding: '5px 11px',
+              borderRadius: '9999px',
+              border: '1px solid #E2E8F0',
+              background: '#F8FAFC',
+              color: '#0F5132',
+              fontSize: '12px',
+              fontWeight: 700,
+              cursor: 'pointer',
+              userSelect: 'none',
+              transition: 'all 0.15s ease',
+            }}
+          >
+            <Languages size={14} color="#0F5132" strokeWidth={2} />
+            <span>{lang === 'en' ? 'తెలుగు' : 'English'}</span>
+          </button>
 
           <Link href="/alerts" className={styles.notifButton} aria-label="Notifications">
             <Bell size={18} />

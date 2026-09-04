@@ -1,10 +1,10 @@
 'use client';
 
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Home, Compass, Calendar, Award, Info, ChevronRight } from 'lucide-react';
+import { X, Home, Compass, Calendar, Award, Info, ChevronRight, Languages } from 'lucide-react';
 import Link from 'next/link';
 import styles from './SideMenu.module.css';
-import { useLanguage } from '@/lib/useLanguage';
+import { useLanguage, setAppLanguage } from '@/lib/useLanguage';
 
 const TEXTS = {
   en: {
@@ -103,6 +103,59 @@ export default function SideMenu({ isOpen, onClose }: SideMenuProps) {
                 </motion.div>
               ))}
             </nav>
+
+            {/* Language Selection Row */}
+            <div style={{
+              margin: '12px 16px 4px 16px',
+              padding: '10px 14px',
+              background: '#F8FAFC',
+              borderRadius: '12px',
+              border: '1px solid #E2E8F0',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between'
+            }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#334155', fontSize: '13px', fontWeight: 600 }}>
+                <Languages size={17} color="#0F5132" />
+                <span>{lang === 'te' ? 'భాష' : 'Language'}</span>
+              </div>
+              <div style={{ display: 'flex', gap: '6px' }}>
+                <button
+                  type="button"
+                  onClick={() => { setAppLanguage('en'); onClose(); }}
+                  style={{
+                    padding: '4px 10px',
+                    borderRadius: '8px',
+                    border: 'none',
+                    fontSize: '12px',
+                    fontWeight: 700,
+                    cursor: 'pointer',
+                    background: lang === 'en' ? '#0F5132' : '#FFFFFF',
+                    color: lang === 'en' ? '#FFFFFF' : '#64748B',
+                    boxShadow: lang === 'en' ? '0 1px 3px rgba(15,81,50,0.25)' : 'none',
+                  }}
+                >
+                  English
+                </button>
+                <button
+                  type="button"
+                  onClick={() => { setAppLanguage('te'); onClose(); }}
+                  style={{
+                    padding: '4px 10px',
+                    borderRadius: '8px',
+                    border: 'none',
+                    fontSize: '12px',
+                    fontWeight: 700,
+                    cursor: 'pointer',
+                    background: lang === 'te' ? '#0F5132' : '#FFFFFF',
+                    color: lang === 'te' ? '#FFFFFF' : '#64748B',
+                    boxShadow: lang === 'te' ? '0 1px 3px rgba(15,81,50,0.25)' : 'none',
+                  }}
+                >
+                  తెలుగు
+                </button>
+              </div>
+            </div>
 
             <div className={styles.footer}>
               <div className={styles.spiritualTip}>

@@ -1,10 +1,10 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Menu, Bell, MapPin, Sun, Sparkles, Ticket, Car, Gift, CloudRain, Bus, Clock, Route, Users, Zap, Check, ChevronDown, Navigation, Flame, Moon } from 'lucide-react';
+import { Menu, Bell, MapPin, Sun, Sparkles, Ticket, Car, Gift, CloudRain, Bus, Clock, Route, Users, Zap, Check, ChevronDown, Navigation, Flame, Moon, Languages } from 'lucide-react';
 import Link from 'next/link';
 import Logo from '@/components/Logo/Logo';
-import { useLanguage } from '@/lib/useLanguage';
+import { useLanguage, setAppLanguage } from '@/lib/useLanguage';
 import { useTrip } from '@/components/TripContext';
 import { detectCoordinates, isCoordinateOnTirumalaHill } from '@/lib/location';
 import { playTempleBellChime } from '@/lib/audioBell';
@@ -660,12 +660,40 @@ export function HomeHero({ userName, locationName, weatherTemp, liveStatus, acti
               </span>
             </Link>
 
-            {/* Right — Location Badge & Notification Bell */}
-            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            {/* Right — Location Badge, Language Toggle & Notification Bell */}
+            <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
               <LocationPill 
                 locationName={selectedLocation} 
                 onClick={() => setIsLocationModalOpen(true)} 
               />
+
+              {/* Language Switcher */}
+              <button
+                type="button"
+                onClick={() => setAppLanguage(lang === 'en' ? 'te' : 'en')}
+                aria-label={lang === 'en' ? 'Switch to Telugu (తెలుగు)' : 'Switch to English'}
+                title={lang === 'en' ? 'తెలుగులోకి మార్చండి' : 'Switch to English'}
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '4px',
+                  padding: '5px 9px',
+                  borderRadius: '9999px',
+                  border: '1px solid #E2E8F0',
+                  background: '#F8FAFC',
+                  color: '#0F5132',
+                  fontSize: '11.5px',
+                  fontWeight: 700,
+                  cursor: 'pointer',
+                  userSelect: 'none',
+                  boxShadow: '0 1px 2px rgba(0,0,0,0.04)',
+                  transition: 'all 0.15s ease',
+                  WebkitTapHighlightColor: 'transparent',
+                }}
+              >
+                <Languages size={13} color="#0F5132" strokeWidth={2.2} />
+                <span>{lang === 'en' ? 'తెలుగు' : 'English'}</span>
+              </button>
 
               <Link href="/alerts" aria-label="Notifications" style={{
                 width: '36px', height: '36px', flexShrink: 0,
