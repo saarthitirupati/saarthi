@@ -25,7 +25,7 @@ async function fixSplash() {
     });
 
     const logoSize = Math.round(d.size * 0.7);
-    const resizedLogo = await sharp(path.join(__dirname, '..', 'public', 'icon-512.png'))
+    const resizedLogo = await sharp(path.join(__dirname, '..', 'public', 'assets', 'logo.png'))
       .resize(logoSize, logoSize, { fit: 'contain', background: { r: 250, g: 248, b: 245, alpha: 0 } })
       .toBuffer();
 
