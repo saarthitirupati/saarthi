@@ -40,7 +40,7 @@
   --shadow-pulse: 0 12px 32px -4px rgba(15, 23, 42, 0.25);
 
   /* --- Layout & Navigation Metrics --- */
-  --layout-padding-bottom: calc(94px + env(safe-area-inset-bottom, 14px));
+  --layout-padding-bottom: calc(106px + env(safe-area-inset-bottom, 14px));
 
   /* --- Primary/Secondary Mappings for Legacy compatibility --- */
   --primary: var(--color-emerald);

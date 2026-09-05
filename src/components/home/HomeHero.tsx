@@ -638,8 +638,8 @@ export function HomeHero({ userName, locationName, weatherTemp, liveStatus, acti
         }}>
           <div style={{
             maxWidth: '100%',
-            padding: '0 12px 0 7px',
-            height: '56px',
+            padding: '0 14px 0 10px',
+            height: '68px',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
@@ -647,10 +647,10 @@ export function HomeHero({ userName, locationName, weatherTemp, liveStatus, acti
           }}>
 
             {/* Left — Official Saarthi Brand Lockup */}
-            <Link href="/" style={{ display: 'flex', alignItems: 'center', gap: '6px', textDecoration: 'none', flexShrink: 0 }}>
-              <Logo size={29} />
+            <Link href="/" style={{ display: 'flex', alignItems: 'center', gap: '8px', textDecoration: 'none', flexShrink: 0 }}>
+              <Logo size={34} />
               <span className="notranslate" style={{
-                fontSize: '20px',
+                fontSize: '22px',
                 fontWeight: 900,
                 color: '#0F5132',
                 letterSpacing: '-0.02em',
@@ -663,11 +663,11 @@ export function HomeHero({ userName, locationName, weatherTemp, liveStatus, acti
             </Link>
 
             {/* Right — Location Badge, Language Toggle & Notification Bell */}
-            <div style={{ display: 'flex', alignItems: 'center', gap: '5px', flexShrink: 0 }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '6px', flexShrink: 0 }}>
               <LocationPill 
                 locationName={selectedLocation} 
                 onClick={() => setIsLocationModalOpen(true)} 
-                style={{ padding: '4px 8px', fontSize: '11px', gap: '3px' }}
+                style={{ padding: '5px 10px', fontSize: '12.5px', gap: '4px' }}
               />
 
               {/* Language Switcher */}
@@ -679,13 +679,13 @@ export function HomeHero({ userName, locationName, weatherTemp, liveStatus, acti
                 style={{
                   display: 'inline-flex',
                   alignItems: 'center',
-                  gap: '3px',
-                  padding: '4px 7px',
+                  gap: '4px',
+                  padding: '5px 9px',
                   borderRadius: '9999px',
                   border: '1px solid #E2E8F0',
                   background: '#F8FAFC',
                   color: '#0F5132',
-                  fontSize: '11px',
+                  fontSize: '12px',
                   fontWeight: 700,
                   cursor: 'pointer',
                   userSelect: 'none',
@@ -696,26 +696,26 @@ export function HomeHero({ userName, locationName, weatherTemp, liveStatus, acti
                   flexShrink: 0,
                 }}
               >
-                <Languages size={12} color="#0F5132" strokeWidth={2.2} />
+                <Languages size={14} color="#0F5132" strokeWidth={2.2} />
                 <span>{lang === 'en' ? 'తెలుగు' : 'English'}</span>
               </button>
 
               <Link href="/alerts" aria-label="Notifications" style={{
-                width: '32px', height: '32px', flexShrink: 0,
+                width: '38px', height: '38px', flexShrink: 0,
                 display: 'flex', alignItems: 'center', justifyContent: 'center',
                 textDecoration: 'none', position: 'relative'
               }}>
-                <Bell size={18} color="#0F5132" strokeWidth={1.8} />
+                <Bell size={22} color="#0F5132" strokeWidth={1.8} />
                 {(activeAlertsCount ?? 0) > 0 && (
                   <span style={{
                     position: 'absolute',
                     top: '2px', right: '2px',
-                    minWidth: '14px', height: '14px',
-                    borderRadius: '7px',
+                    minWidth: '16px', height: '16px',
+                    borderRadius: '8px',
                     background: '#DC2626',
                     border: '1.5px solid #FFFFFF',
                     color: '#FFFFFF',
-                    fontSize: '8px', fontWeight: 800,
+                    fontSize: '9px', fontWeight: 800,
                     display: 'flex', alignItems: 'center', justifyContent: 'center',
                     letterSpacing: '-0.02em',
                   }}>
