@@ -1,0 +1,9 @@
+﻿*.apk
+*.aab
+*.keystore
+*.jks
+android-app/.gradle/
+android-app/build/
+android-app/app/build/
+android-app/local.properties
+android-app/app/saarthi-release.keystore

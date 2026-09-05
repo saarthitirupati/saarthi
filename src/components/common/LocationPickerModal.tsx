@@ -557,24 +557,26 @@ export function LocationPill({
       style={{
         display: 'inline-flex',
         alignItems: 'center',
-        gap: '5px',
+        gap: '4px',
         backgroundColor: '#FEF3C7',
         border: '1px solid #FDE68A',
         color: '#92400E',
-        padding: '5px 12px',
+        padding: '4px 10px',
         borderRadius: '9999px',
-        fontSize: '12.5px',
+        fontSize: '12px',
         fontWeight: 800,
         cursor: 'pointer',
         boxShadow: '0 1px 2px rgba(180, 83, 9, 0.08)',
         userSelect: 'none',
+        whiteSpace: 'nowrap',
+        flexShrink: 0,
         transition: 'all 0.15s ease',
         ...style
       }}
     >
-      <MapPin size={13} color="#B45309" strokeWidth={2.2} />
+      <MapPin size={12} color="#B45309" strokeWidth={2.2} />
       <span style={{ color: '#92400E', letterSpacing: '-0.01em' }}>{locationName || 'Tirupati'}</span>
-      <span style={{ color: '#B45309', fontSize: '10px', display: 'flex', alignItems: 'center', opacity: 0.85 }}>▼</span>
+      <span style={{ color: '#B45309', fontSize: '9px', display: 'flex', alignItems: 'center', opacity: 0.85 }}>▼</span>
     </div>
   );
 }

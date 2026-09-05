@@ -45,3 +45,13 @@ scratch/
 scratch_*
 *.log
 twa-output/
+
+# android binaries & keys
+*.apk
+*.aab
+*.keystore
+*.jks
+android-app/**/.gradle/
+android-app/**/build/
+android-app/local.properties
+android-app/app/saarthi-release.keystore

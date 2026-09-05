@@ -638,33 +638,36 @@ export function HomeHero({ userName, locationName, weatherTemp, liveStatus, acti
         }}>
           <div style={{
             maxWidth: '100%',
-            padding: '0 16px',
-            height: '60px',
+            padding: '0 12px 0 7px',
+            height: '56px',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
+            gap: '8px',
           }}>
 
             {/* Left — Official Saarthi Brand Lockup */}
-            <Link href="/" style={{ display: 'flex', alignItems: 'center', gap: '8px', textDecoration: 'none' }}>
-              <Logo size={34} />
+            <Link href="/" style={{ display: 'flex', alignItems: 'center', gap: '6px', textDecoration: 'none', flexShrink: 0 }}>
+              <Logo size={29} />
               <span className="notranslate" style={{
-                fontSize: '22px',
+                fontSize: '20px',
                 fontWeight: 900,
                 color: '#0F5132',
                 letterSpacing: '-0.02em',
                 lineHeight: 1,
-                fontFamily: 'Georgia, "Times New Roman", serif'
+                fontFamily: 'Georgia, "Times New Roman", serif',
+                whiteSpace: 'nowrap',
               }}>
                 Saarthi
               </span>
             </Link>
 
             {/* Right — Location Badge, Language Toggle & Notification Bell */}
-            <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '5px', flexShrink: 0 }}>
               <LocationPill 
                 locationName={selectedLocation} 
                 onClick={() => setIsLocationModalOpen(true)} 
+                style={{ padding: '4px 8px', fontSize: '11px', gap: '3px' }}
               />
 
               {/* Language Switcher */}
@@ -676,37 +679,39 @@ export function HomeHero({ userName, locationName, weatherTemp, liveStatus, acti
                 style={{
                   display: 'inline-flex',
                   alignItems: 'center',
-                  gap: '4px',
-                  padding: '5px 9px',
+                  gap: '3px',
+                  padding: '4px 7px',
                   borderRadius: '9999px',
                   border: '1px solid #E2E8F0',
                   background: '#F8FAFC',
                   color: '#0F5132',
-                  fontSize: '11.5px',
+                  fontSize: '11px',
                   fontWeight: 700,
                   cursor: 'pointer',
                   userSelect: 'none',
                   boxShadow: '0 1px 2px rgba(0,0,0,0.04)',
                   transition: 'all 0.15s ease',
                   WebkitTapHighlightColor: 'transparent',
+                  whiteSpace: 'nowrap',
+                  flexShrink: 0,
                 }}
               >
-                <Languages size={13} color="#0F5132" strokeWidth={2.2} />
+                <Languages size={12} color="#0F5132" strokeWidth={2.2} />
                 <span>{lang === 'en' ? 'తెలుగు' : 'English'}</span>
               </button>
 
               <Link href="/alerts" aria-label="Notifications" style={{
-                width: '36px', height: '36px', flexShrink: 0,
+                width: '32px', height: '32px', flexShrink: 0,
                 display: 'flex', alignItems: 'center', justifyContent: 'center',
                 textDecoration: 'none', position: 'relative'
               }}>
-                <Bell size={20} color="#0F5132" strokeWidth={1.8} />
+                <Bell size={18} color="#0F5132" strokeWidth={1.8} />
                 {(activeAlertsCount ?? 0) > 0 && (
                   <span style={{
                     position: 'absolute',
-                    top: '3px', right: '3px',
-                    minWidth: '15px', height: '15px',
-                    borderRadius: '8px',
+                    top: '2px', right: '2px',
+                    minWidth: '14px', height: '14px',
+                    borderRadius: '7px',
                     background: '#DC2626',
                     border: '1.5px solid #FFFFFF',
                     color: '#FFFFFF',
