@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Menu, Bell, MapPin, Sun, Sparkles, Ticket, Car, Gift, CloudRain, Bus, Clock, Route, Users, Zap, Check, ChevronDown, Navigation, Flame, Moon, Languages, RotateCcw, Share2, X, Volume2, VolumeX, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Menu, Bell, MapPin, Sun, Sparkles, Ticket, Car, Gift, CloudRain, Bus, Clock, Route, Users, Zap, Check, ChevronDown, Navigation, Flame, Moon, Languages, RotateCcw, Share2, X, Volume2, VolumeX, ChevronLeft, ChevronRight, Pause } from 'lucide-react';
 import Link from 'next/link';
 import Logo from '@/components/Logo/Logo';
 import { useLanguage, setAppLanguage } from '@/lib/useLanguage';
@@ -1568,8 +1568,8 @@ _ఓం నమో వేంకటేశాయ • శ్రీ పద్మా�
                               }}>
                                 <span>✦</span>
                                 <span>{isBrowsingOtherBead 
-                                  ? (lang === 'te' ? `నామ పఠనం #${activeBead} / 108` : `Browsing Nama #${activeBead} / 108`)
-                                  : (lang === 'te' ? `శ్రీవారి నామం #${activeBead} / 108` : `Bead #${activeBead} of 108`)}</span>
+                                  ? (lang === 'te' ? `నామ పఠనం #${activeBead} / 108` : `Browsing Bead #${activeBead} of 108`)
+                                  : (lang === 'te' ? `శ్రీవారి నామం #${activeBead} / 108` : `BEAD #${activeBead} OF 108`)}</span>
                                 <span>✦</span>
                               </div>
 
@@ -1725,6 +1725,31 @@ _ఓం నమో వేంకటేశాయ • శ్రీ పద్మా�
                             </div>
                           </div>
 
+                          {/* 💭 Devotional Guidance Instruction (First Principle: Read -> Chant -> Advance) */}
+                          <div style={{
+                            marginBottom: '10px',
+                            padding: '8px 12px',
+                            borderRadius: '12px',
+                            background: 'rgba(245, 158, 11, 0.08)',
+                            border: '1px dashed rgba(245, 158, 11, 0.3)',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            gap: '6px'
+                          }}>
+                            <span style={{ fontSize: '13px' }}>💭</span>
+                            <span style={{
+                              fontSize: '12px',
+                              fontWeight: 700,
+                              color: '#FDE68A',
+                              letterSpacing: '0.01em'
+                            }}>
+                              {lang === 'te' 
+                                ? 'ఈ నామాన్ని మౌనంగా లేదా బిగ్గరగా 1-3 సార్లు జపించండి' 
+                                : 'Chant this nama silently (or aloud, 1-3 times)'}
+                            </span>
+                          </div>
+
                           {/* 10-Second Cadence Meditative Chant Action */}
                           <div style={{ marginBottom: '12px' }}>
                             {isBrowsingOtherBead ? (
@@ -1815,18 +1840,18 @@ _ఓం నమో వేంకటేశాయ • శ్రీ పద్మా�
                                   transition: 'all 0.15s ease'
                                 }}
                               >
-                                <span style={{ fontSize: '16px' }}>📿</span>
+                                <span style={{ fontSize: '15px' }}>🔶</span>
                                 <span>
                                   {chantCount < 108 
-                                    ? (lang === 'te' ? `నామ జపం చేయండి (#${chantCount}/108)` : `Chant Bead #${chantCount} (2/108)`)
-                                    : (lang === 'te' ? '108వ నామ జపం చేయండి (మాల సంపూర్ణం)' : 'Chant Bead #108 (Complete Mala)')}
+                                    ? (lang === 'te' ? 'సిద్ధం - తదుపరి నామం ➡️' : 'Ready - Next Bead ➡️')
+                                    : (lang === 'te' ? '🎉 108 మాల సంపూర్ణం - దివ్య అనుగ్రహం ✨' : '🎉 Complete 108 Mala ✨')}
                                 </span>
-                                <Sparkles size={16} color="#78350F" />
+                                <span style={{ fontSize: '15px' }}>🔶</span>
                               </button>
                             )}
                           </div>
 
-                          {/* Sanctum Footer Controls */}
+                          {/* Sanctum Footer Controls: Share | Pause | Reset */}
                           <div style={{
                             display: 'flex',
                             alignItems: 'center',
@@ -1835,12 +1860,60 @@ _ఓం నమో వేంకటేశాయ • శ్రీ పద్మా�
                             paddingTop: '10px'
                           }}>
                             <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                              <button
+                                type="button"
+                                onClick={handleShareBlessing}
+                                disabled={isSharingJapa}
+                                style={{
+                                  display: 'inline-flex',
+                                  alignItems: 'center',
+                                  gap: '5px',
+                                  background: 'linear-gradient(135deg, rgba(16, 185, 129, 0.18) 0%, rgba(5, 150, 105, 0.28) 100%)',
+                                  border: '1px solid rgba(52, 211, 153, 0.45)',
+                                  borderRadius: '10px',
+                                  padding: '5px 10px',
+                                  color: '#A7F3D0',
+                                  fontSize: '11.5px',
+                                  fontWeight: 700,
+                                  cursor: isSharingJapa ? 'wait' : 'pointer',
+                                  opacity: isSharingJapa ? 0.75 : 1
+                                }}
+                              >
+                                <Share2 size={12} color="#A7F3D0" />
+                                <span>{isSharingJapa ? (lang === 'te' ? 'కార్డ్...' : 'Card...') : (lang === 'te' ? '📱 కార్డ్ షేర్' : '📱 Share Card')}</span>
+                              </button>
+
+                              <button
+                                type="button"
+                                onClick={handleCloseBlessing}
+                                title={lang === 'te' ? 'జపం పాజ్ చేయండి' : 'Pause Japa'}
+                                style={{
+                                  background: 'rgba(255, 255, 255, 0.08)',
+                                  border: '1px solid rgba(255, 255, 255, 0.15)',
+                                  color: '#CBD5E1',
+                                  cursor: 'pointer',
+                                  display: 'inline-flex',
+                                  alignItems: 'center',
+                                  gap: '4px',
+                                  padding: '5px 10px',
+                                  borderRadius: '10px',
+                                  fontSize: '11.5px',
+                                  fontWeight: 600
+                                }}
+                              >
+                                <Pause size={12} />
+                                <span>{lang === 'te' ? '⏸️ పాజ్' : '⏸️ Pause'}</span>
+                              </button>
+                            </div>
+
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
                               {completedMalas > 0 && (
-                                <span style={{ fontSize: '10.5px', color: '#86EFAC', fontWeight: 700 }}>
-                                  {lang === 'te' ? `పూర్తయినవి: ${completedMalas}` : `Completed: ${completedMalas}`}
+                                <span style={{ fontSize: '10px', color: '#86EFAC', fontWeight: 700 }}>
+                                  {lang === 'te' ? `పూర్తి: ${completedMalas}` : `Malas: ${completedMalas}`}
                                 </span>
                               )}
                               <button
+                                type="button"
                                 onClick={handleResetMala}
                                 title={lang === 'te' ? 'మాల రీసెట్ చేయండి' : 'Reset Mala to 1'}
                                 style={{
@@ -1851,39 +1924,15 @@ _ఓం నమో వేంకటేశాయ • శ్రీ పద్మా�
                                   display: 'inline-flex',
                                   alignItems: 'center',
                                   gap: '3px',
-                                  padding: '2px 6px',
+                                  padding: '3px 6px',
                                   borderRadius: '4px',
                                   fontSize: '11px'
                                 }}
                               >
                                 <RotateCcw size={11} />
-                                <span>{lang === 'te' ? 'మాల రీసెట్' : 'Reset Mala'}</span>
+                                <span>{lang === 'te' ? '🔄 రీసెట్' : '🔄 Reset'}</span>
                               </button>
                             </div>
-
-                            <button
-                              type="button"
-                              onClick={handleShareBlessing}
-                              disabled={isSharingJapa}
-                              style={{
-                                display: 'inline-flex',
-                                alignItems: 'center',
-                                gap: '6px',
-                                background: 'linear-gradient(135deg, rgba(16, 185, 129, 0.18) 0%, rgba(5, 150, 105, 0.28) 100%)',
-                                border: '1px solid rgba(52, 211, 153, 0.45)',
-                                borderRadius: '12px',
-                                padding: '6px 12px',
-                                color: '#A7F3D0',
-                                fontSize: '12px',
-                                fontWeight: 700,
-                                cursor: isSharingJapa ? 'wait' : 'pointer',
-                                transition: 'background 0.15s ease',
-                                opacity: isSharingJapa ? 0.75 : 1
-                              }}
-                            >
-                              <Share2 size={13} color="#A7F3D0" />
-                              <span>{isSharingJapa ? (lang === 'te' ? 'కార్డ్ తయారవుతోంది...' : 'Generating...') : (lang === 'te' ? 'వాట్సాప్ కార్డ్ షేర్ చేయండి' : 'Share WhatsApp Card')}</span>
-                            </button>
                           </div>
                         </div>
                       );
