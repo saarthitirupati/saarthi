@@ -23,6 +23,11 @@ import { getPanchangamData } from '@/lib/panchangam';
 import { getDayTempleGuidance } from '@/lib/dailyGuidance';
 import { getGovindaNamaForBead } from '@/data/govindaNamas';
 import { LocationPickerModal, LocationPill } from '@/components/common/LocationPickerModal';
+import { 
+  generateTodayInTirumalaCard, 
+  generateJapaCard, 
+  shareOrDownloadCard 
+} from '@/lib/shareCardGenerator';
 
 const TEXTS: Record<string, any> = {
   en: {
@@ -445,48 +450,129 @@ export function HomeHero({ userName, locationName, weatherTemp, liveStatus, acti
     return 'Normal Movement · Steady Flow';
   })();
 
+  const [isSharingPulse, setIsSharingPulse] = useState(false);
+  const [isSharingJapa, setIsSharingJapa] = useState(false);
+
   const handleShareTodayPulse = async (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
 
-    const sarvaWait = getDarshanWait('sarva');
-    const specialWait = getDarshanWait('special');
-    const ssdWait = getDarshanWait('ssd');
-    const dayName = new Date().toLocaleDateString(lang === 'te' ? 'te-IN' : 'en-US', { weekday: 'long' });
+    if (isSharingPulse) return;
+    setIsSharingPulse(true);
 
-    const siteUrl = typeof window !== 'undefined' ? window.location.origin : 'https://www.saarthiguide.in';
+    try {
+      const sarvaWait = getDarshanWait('sarva');
+      const specialWait = getDarshanWait('special');
+      const ssdWait = getDarshanWait('ssd');
+      const dayName = new Date().toLocaleDateString(lang === 'te' ? 'te-IN' : 'en-US', { weekday: 'long' });
+      const todayDateStr = new Date().toLocaleDateString(lang === 'te' ? 'te-IN' : 'en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+      const siteUrl = typeof window !== 'undefined' ? window.location.origin : 'https://www.saarthiguide.in';
 
-    const shareText = lang === 'te'
-      ? `🛕 *నేటి తిరుమల దర్శనం & రద్దీ సమాచారం (${dayName})*\n\n` +
-        `• సర్వదర్శనం (ఉచితం): *${sarvaWait}*\n` +
-        `• ₹300 ప్రత్యేక ప్రవేశం: *${specialWait}*\n` +
-        `• ఉచిత SSD టోకెన్లు: *${ssdWait}*\n` +
-        `• రద్దీ స్థితి: *${whyThatNowText}*\n` +
-        `• ఘాట్ రోడ్లు: *ప్రస్తుతం తెరిచి ఉన్నాయి*\n\n` +
-        `సారథి గైడ్‌లో లైవ్ అప్‌డేట్స్ చూడండి 👇\n${siteUrl}`
-      : `🛕 *Live Tirumala Darshan & Crowd Update (${dayName})*\n\n` +
-        `• Sarva Darshan (Free): *${sarvaWait}*\n` +
-        `• ₹300 Special Entry: *${specialWait}*\n` +
-        `• Free SSD Tokens: *${ssdWait}*\n` +
-        `• Crowd Status: *${whyThatNowText}*\n` +
-        `• Ghat Roads: *Open & Operational*\n\n` +
-        `Check live updates on Saarthi Guide 👇\n${siteUrl}`;
+      // Status style helpers matching UI
+      const getMaxHours = (text: string): number => {
+        const matches = text.match(/\d+/g);
+        if (!matches || matches.length === 0) return 0;
+        return Math.max(...matches.map(Number));
+      };
+      const sarvaHours = getMaxHours(sarvaWait);
+      const isSarvaExtreme = sarvaHours >= 12 || sarvaWait.includes('24') || sarvaWait.includes('30');
+      const sarvaLabel = isSarvaExtreme ? (lang === 'te' ? 'తీవ్రమైన రద్దీ' : 'EXTREME') : sarvaHours > 6 ? (lang === 'te' ? 'రద్దీ ఎక్కువ' : 'HIGH') : (lang === 'te' ? 'మితమైన రద్దీ' : 'MODERATE');
+      const sarvaColor = isSarvaExtreme ? '#E11D48' : sarvaHours > 6 ? '#D97706' : '#CA8A04';
+      const sarvaMeter = isSarvaExtreme ? 5 : sarvaHours > 6 ? 4 : 3;
 
-    if (typeof navigator !== 'undefined' && navigator.share) {
-      try {
-        await navigator.share({
-          title: lang === 'te' ? 'నేటి తిరుమల దర్శనం అప్‌డేట్' : 'Today in Tirumala Live Update',
-          text: shareText,
-          url: siteUrl
-        });
-        return;
-      } catch (err: any) {
-        if (err.name === 'AbortError') return;
+      const specialHours = getMaxHours(specialWait);
+      const specialLabel = specialHours > 7 ? (lang === 'te' ? 'తీవ్రమైన రద్దీ' : 'EXTREME') : specialHours > 4 ? (lang === 'te' ? 'రద్దీ ఎక్కువ' : 'HIGH') : (lang === 'te' ? 'మితమైన రద్దీ' : 'MODERATE');
+      const specialColor = specialHours > 7 ? '#E11D48' : specialHours > 4 ? '#D97706' : '#CA8A04';
+      const specialMeter = specialHours > 7 ? 5 : specialHours > 4 ? 4 : 3;
+
+      const ssdHours = getMaxHours(ssdWait);
+      const isSsdExtreme = /cancel|full|heavy|rush|crowd|closed|stop/i.test(ssdWait) || ssdTokenStatus === 'closed-for-day' || ssdTokenStatus === 'closed';
+      const ssdLabel = (ssdHours > 7 || isSsdExtreme) ? (lang === 'te' ? 'తీవ్రమైన రద్దీ' : 'EXTREME') : ssdHours > 4 ? (lang === 'te' ? 'రద్దీ ఎక్కువ' : 'HIGH') : (lang === 'te' ? 'మితమైన రద్దీ' : 'MODERATE');
+      const ssdColor = (ssdHours > 7 || isSsdExtreme) ? '#E11D48' : ssdHours > 4 ? '#D97706' : '#CA8A04';
+      const ssdMeter = (ssdHours > 7 || isSsdExtreme) ? 5 : ssdHours > 4 ? 4 : 3;
+
+      const queues = [
+        {
+          name: lang === 'te' ? 'సర్వదర్శనం' : 'Sarva Darshan',
+          subtitle: lang === 'te' ? 'ఉచిత సాధారణ దర్శనం' : 'Free General Queue',
+          wait: sarvaWait,
+          label: sarvaLabel,
+          meter: sarvaMeter,
+          color: sarvaColor,
+          bg: '#FFE4E6'
+        },
+        {
+          name: lang === 'te' ? '₹300 ప్రత్యేక ప్రవేశం' : '₹300 Special Entry',
+          subtitle: lang === 'te' ? 'ఆన్‌లైన్ బుకింగ్ స్లాట్' : 'Online Booked Slot',
+          wait: specialWait,
+          label: specialLabel,
+          meter: specialMeter,
+          color: specialColor,
+          bg: '#FEF3C7'
+        },
+        {
+          name: lang === 'te' ? 'SSD టోకెన్ దర్శనం' : 'SSD Token Darshan',
+          subtitle: lang === 'te' ? 'ఉచిత సమయ స్లాట్ టోకెన్లు' : 'Time-Slotted Free Darshan',
+          wait: ssdWait,
+          label: ssdLabel,
+          meter: ssdMeter,
+          color: ssdColor,
+          bg: '#FFE4E6'
+        }
+      ];
+
+      const shareText = lang === 'te'
+        ? `🛕 *నేటి తిరుమల దర్శనం & రద్దీ సమాచారం (${dayName})*\n\n` +
+          `• సర్వదర్శనం (ఉచితం): *${sarvaWait}* [${sarvaLabel}]\n` +
+          `• ₹300 ప్రత్యేక ప్రవేశం: *${specialWait}* [${specialLabel}]\n` +
+          `• ఉచిత SSD టోకెన్లు: *${ssdWait}* [${ssdLabel}]\n` +
+          `• రద్దీ స్థితి: *${whyThatNowText}*\n` +
+          `• ఘాట్ రోడ్లు: *ప్రస్తుతం తెరిచి ఉన్నాయి*\n\n` +
+          `సారథి గైడ్‌లో లైవ్ అప్‌డేట్స్ చూడండి 👇\n${siteUrl}`
+        : `🛕 *Live Tirumala Darshan & Crowd Update (${dayName})*\n\n` +
+          `• Sarva Darshan (Free): *${sarvaWait}* [${sarvaLabel}]\n` +
+          `• ₹300 Special Entry: *${specialWait}* [${specialLabel}]\n` +
+          `• Free SSD Tokens: *${ssdWait}* [${ssdLabel}]\n` +
+          `• Crowd Status: *${whyThatNowText}*\n` +
+          `• Ghat Roads: *Open & Operational*\n\n` +
+          `Check live updates on Saarthi Guide 👇\n${siteUrl}`;
+
+      // Generate visual shareable card
+      const cardBlob = await generateTodayInTirumalaCard({
+        dateStr: todayDateStr,
+        dayName,
+        statusHeadline: whyThatNowText,
+        queues,
+        weatherTemp: weatherTemp || '26°C',
+        ghatsOpen: true,
+        lang
+      });
+
+      if (cardBlob) {
+        await shareOrDownloadCard(
+          cardBlob,
+          `Saarthi-Today-In-Tirumala-${new Date().toISOString().slice(0,10)}.png`,
+          lang === 'te' ? 'నేటి తిరుమల దర్శనం అప్‌డేట్' : 'Today in Tirumala Live Update',
+          shareText,
+          siteUrl
+        );
+      } else {
+        // Fallback to text if canvas fails
+        if (typeof navigator !== 'undefined' && navigator.share) {
+          await navigator.share({
+            title: lang === 'te' ? 'నేటి తిరుమల దర్శనం అప్‌డేట్' : 'Today in Tirumala Live Update',
+            text: shareText,
+            url: siteUrl
+          });
+        } else {
+          window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(shareText)}`, '_blank');
+        }
       }
+    } catch {
+      // Graceful fallback
+    } finally {
+      setIsSharingPulse(false);
     }
-
-    const whatsappUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(shareText)}`;
-    window.open(whatsappUrl, '_blank');
   };
 
   const getSaarthiDecisionScenario = () => {
@@ -870,12 +956,21 @@ export function HomeHero({ userName, locationName, weatherTemp, liveStatus, acti
     triggerBeadHaptic(false);
   };
 
-  const handleShareBlessing = (e?: React.MouseEvent) => {
+  const handleShareBlessing = async (e?: React.MouseEvent) => {
     if (e) e.stopPropagation();
-    const currentNama = getGovindaNamaForBead(chantCount);
-    const text = `✨ 📿 *శ్రీ వేంకటేశ్వర 108 దివ్య నామ జప మాల* 📿 ✨
+    if (isSharingJapa) return;
+    setIsSharingJapa(true);
+
+    try {
+      const activeBead = previewBead !== null ? previewBead : chantCount;
+      const currentNama = getGovindaNamaForBead(activeBead);
+      const isMilestone = activeBead === 27 || activeBead === 54 || activeBead === 81;
+      const cardType: 'bead' | 'milestone' = isMilestone ? 'milestone' : 'bead';
+      const siteUrl = 'https://saarthiguide.in';
+
+      const text = `✨ 📿 *శ్రీ వేంకటేశ్వర 108 దివ్య నామ జప మాల* 📿 ✨
 ━━━━━━━━━━━━━━━━━━━━━━━━
-🌸 *నామం #${chantCount}/108:*
+🌸 *నామం #${activeBead}/108:*
 *${currentNama.namaTe}*
 _(${currentNama.namaEn})_
 
@@ -884,20 +979,49 @@ _(${currentNama.namaEn})_
 
 🕊️ _${currentNama.blessingEn}_
 ━━━━━━━━━━━━━━━━━━━━━━━━
-🪔 *మాల ప్రగతి:* ${chantCount}/108 నామ జపం పూర్తయింది${completedMalas > 0 ? ` | సంపూర్ణ మాలలు: ${completedMalas}` : ''}
+🪔 *మాల ప్రగతి:* ${activeBead}/108 నామ జపం పూర్తయింది${completedMalas > 0 ? ` | సంపూర్ణ మాలలు: ${completedMalas}` : ''}
 🙏 మీరూ శ్రీవారి 108 నామ జప సాధన చేయండి:
-👉 https://saarthitirupati.in
+👉 ${siteUrl}
 ━━━━━━━━━━━━━━━━━━━━━━━━
 _ఓం నమో వేంకటేశాయ • సర్వే జనాః సుఖినో భవంతు_`;
-    
-    if (typeof window !== 'undefined') {
-      window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(text)}`, '_blank');
+
+      const blob = await generateJapaCard({
+        type: cardType,
+        beadNumber: activeBead,
+        namaTe: currentNama.namaTe,
+        namaEn: currentNama.namaEn,
+        blessingTe: currentNama.blessingTe,
+        blessingEn: currentNama.blessingEn,
+        completedMalas,
+        lang
+      });
+
+      if (blob) {
+        await shareOrDownloadCard(
+          blob,
+          `Saarthi-Japa-Bead-${activeBead}.png`,
+          `శ్రీ వేంకటేశ్వర నామ జపం #${activeBead}`,
+          text,
+          siteUrl
+        );
+      } else {
+        window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(text)}`, '_blank');
+      }
+    } catch {
+      // Ignored
+    } finally {
+      setIsSharingJapa(false);
     }
   };
 
-  const handleShareMalaPoorthi = (e?: React.MouseEvent) => {
+  const handleShareMalaPoorthi = async (e?: React.MouseEvent) => {
     if (e) e.stopPropagation();
-    const text = `🎉 📿 *శ్రీ వేంకటేశ్వర 108 జప మాల సంపూర్ణం!* 📿 🎉
+    if (isSharingJapa) return;
+    setIsSharingJapa(true);
+
+    try {
+      const siteUrl = 'https://saarthiguide.in';
+      const text = `🎉 📿 *శ్రీ వేంకటేశ్వర 108 జప మాల సంపూర్ణం!* 📿 🎉
 ━━━━━━━━━━━━━━━━━━━━━━━━
 స్వామివారి దివ్య కృపతో ఈరోజు *108 దివ్య నామాల సంపూర్ణ జప మాల* విజయవంతంగా పూర్తి చేయడమైనది! 🪔
 
@@ -910,12 +1034,37 @@ _("Chanting the 108 divine names of Lord Srinivasa brings peace, protection, and
 🏆 *పూర్తయిన మాలలు:* ${completedMalas} (${completedMalas * 108} దివ్య జపాలు)
 ━━━━━━━━━━━━━━━━━━━━━━━━
 🙏 మీరూ శ్రీవారి 108 జప మాల సాధన చేయండి:
-👉 https://saarthitirupati.in
+👉 ${siteUrl}
 ━━━━━━━━━━━━━━━━━━━━━━━━
 _ఓం నమో వేంకటేశాయ • శ్రీ పద్మావతీ సమేత శ్రీనివాసాయ నమః_`;
-    
-    if (typeof window !== 'undefined') {
-      window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(text)}`, '_blank');
+
+      const lastNama = getGovindaNamaForBead(108);
+      const blob = await generateJapaCard({
+        type: 'poorthi',
+        beadNumber: 108,
+        namaTe: lastNama.namaTe,
+        namaEn: lastNama.namaEn,
+        blessingTe: 'స్వామివారి సంపూర్ణ ఆశీస్సులు, సకల పాప నివారణ, కుటుంబంలో నిరంతర ఆనందం వర్ధిల్లుగాక!',
+        blessingEn: 'May Lord Venkateswara shower eternal grace, supreme fulfillment, vibrant health, and boundless peace upon your family!',
+        completedMalas,
+        lang
+      });
+
+      if (blob) {
+        await shareOrDownloadCard(
+          blob,
+          `Saarthi-108-Mala-Poorthi.png`,
+          'శ్రీ వేంకటేశ్వర 108 జప మాల సంపూర్ణం!',
+          text,
+          siteUrl
+        );
+      } else {
+        window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(text)}`, '_blank');
+      }
+    } catch {
+      // Ignored
+    } finally {
+      setIsSharingJapa(false);
     }
   };
 
@@ -1336,6 +1485,7 @@ _ఓం నమో వేంకటేశాయ • శ్రీ పద్మా�
                         <button
                           type="button"
                           onClick={handleShareMalaPoorthi}
+                          disabled={isSharingJapa}
                           style={{
                             width: '100%',
                             padding: '12px',
@@ -1349,12 +1499,13 @@ _ఓం నమో వేంకటేశాయ • శ్రీ పద్మా�
                             alignItems: 'center',
                             justifyContent: 'center',
                             gap: '7px',
-                            cursor: 'pointer',
-                            transition: 'background 0.15s ease'
+                            cursor: isSharingJapa ? 'wait' : 'pointer',
+                            transition: 'background 0.15s ease',
+                            opacity: isSharingJapa ? 0.75 : 1
                           }}
                         >
                           <Share2 size={15} color="#86EFAC" />
-                          <span>{lang === 'te' ? 'వాట్సాప్‌లో ఈ శుభవార్తను షేర్ చేయండి' : 'Share 108 Mala Poorthi on WhatsApp'}</span>
+                          <span>{isSharingJapa ? (lang === 'te' ? 'కార్డ్ తయారవుతోంది...' : 'Generating Card...') : (lang === 'te' ? 'వాట్సాప్‌లో ఈ శుభవార్త కార్డ్ షేర్ చేయండి' : 'Share 108 Mala Card on WhatsApp')}</span>
                         </button>
                       </div>
                     </div>
@@ -1713,6 +1864,7 @@ _ఓం నమో వేంకటేశాయ • శ్రీ పద్మా�
                             <button
                               type="button"
                               onClick={handleShareBlessing}
+                              disabled={isSharingJapa}
                               style={{
                                 display: 'inline-flex',
                                 alignItems: 'center',
@@ -1724,12 +1876,13 @@ _ఓం నమో వేంకటేశాయ • శ్రీ పద్మా�
                                 color: '#A7F3D0',
                                 fontSize: '12px',
                                 fontWeight: 700,
-                                cursor: 'pointer',
-                                transition: 'background 0.15s ease'
+                                cursor: isSharingJapa ? 'wait' : 'pointer',
+                                transition: 'background 0.15s ease',
+                                opacity: isSharingJapa ? 0.75 : 1
                               }}
                             >
                               <Share2 size={13} color="#A7F3D0" />
-                              <span>{lang === 'te' ? 'వాట్సాప్‌లో షేర్ చేయండి' : 'Share on WhatsApp'}</span>
+                              <span>{isSharingJapa ? (lang === 'te' ? 'కార్డ్ తయారవుతోంది...' : 'Generating...') : (lang === 'te' ? 'వాట్సాప్ కార్డ్ షేర్ చేయండి' : 'Share WhatsApp Card')}</span>
                             </button>
                           </div>
                         </div>
@@ -2190,25 +2343,27 @@ _ఓం నమో వేంకటేశాయ • శ్రీ పద్మా�
           {/* 1-Tap Share to Family button */}
           <button
             onClick={handleShareTodayPulse}
+            disabled={isSharingPulse}
             style={{
               display: 'inline-flex',
               alignItems: 'center',
               gap: '5px',
-              backgroundColor: '#F0FDF4',
+              backgroundColor: isSharingPulse ? '#DCFCE7' : '#F0FDF4',
               border: '1.5px solid #16A34A',
               padding: '4px 10px',
               borderRadius: '10px',
               fontSize: '11px',
               fontWeight: 700,
               color: '#166534',
-              cursor: 'pointer',
+              cursor: isSharingPulse ? 'wait' : 'pointer',
               boxShadow: '0 1px 3px rgba(22, 163, 74, 0.12)',
-              transition: 'all 0.15s ease'
+              transition: 'all 0.15s ease',
+              opacity: isSharingPulse ? 0.75 : 1
             }}
             aria-label="Share live updates on WhatsApp"
           >
             <Share2 size={12} color="#166534" />
-            <span>{lang === 'te' ? 'కుటుంబానికి షేర్ చేయండి' : 'Share to Family'}</span>
+            <span>{isSharingPulse ? (lang === 'te' ? 'కార్డ్ తయారవుతోంది...' : 'Generating Card...') : (lang === 'te' ? 'కుటుంబానికి షేర్ చేయండి' : 'Share to Family')}</span>
           </button>
         </div>
 
