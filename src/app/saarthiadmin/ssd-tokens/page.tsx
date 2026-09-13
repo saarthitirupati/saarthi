@@ -211,6 +211,36 @@ export default function AdminSsdTokensPage() {
         </div>
       </div>
 
+      {/* Autonomous Push Notification Preview & Connection */}
+      <div className={styles.dataQualitySection} style={{ marginBottom: '24px', backgroundColor: '#F0FDF4', border: '1px solid #BBF7D0' }}>
+        <h3 className={styles.sectionTitle} style={{ color: '#166534', margin: '0 0 6px 0' }}>
+          🤖 Connected Autonomous 5:00 AM Push Alert
+        </h3>
+        <p style={{ fontSize: '12px', color: '#15803D', margin: '0 0 10px 0' }}>
+          The autonomous engine broadcasts this message to subscribers at 5:00 AM IST without requiring any manual clicks. It updates dynamically with your panel settings above:
+        </p>
+        <div style={{
+          backgroundColor: '#FFFFFF',
+          borderRadius: '8px',
+          padding: '12px 14px',
+          border: '1px solid #86EFAC',
+          fontSize: '13px',
+          color: '#0F172A',
+          lineHeight: 1.4
+        }}>
+          <div style={{ fontWeight: 800, color: '#166534', marginBottom: '2px' }}>
+            {ssdTokenStatus === 'closed-for-day' 
+              ? '⚠️ Today’s SSD Token Quota Closed'
+              : `🎫 Free SSD Counters Opening at ${ssdNextTokenTime || '5:00 AM'}`}
+          </div>
+          <div style={{ fontSize: '12px', color: '#475569' }}>
+            {ssdTokenStatus === 'closed-for-day'
+              ? (ssdNotice || 'Offline SSD token quota for today is complete. Next issuance tomorrow morning.')
+              : `Offline token counters opening shortly at Vishnu Nivasam & Srinivasam. Bring original Aadhaar cards for biometric issue.${ssdNotice ? ` ${ssdNotice}` : ''}`}
+          </div>
+        </div>
+      </div>
+
       {/* SSD Info Text */}
       <div className={styles.dataQualitySection} style={{ marginBottom: '24px' }}>
         <h3 className={styles.sectionTitle}>

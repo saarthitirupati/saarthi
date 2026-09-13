@@ -131,6 +131,32 @@ export default function AdminFestivalsPage() {
         </div>
       </div>
 
+      {/* Autonomous Festival Push Alert Preview & Connection */}
+      <div className={styles.dataQualitySection} style={{ marginBottom: '24px', backgroundColor: '#EFF6FF', border: '1px solid #BFDBFE' }}>
+        <h3 className={styles.sectionTitle} style={{ color: '#1E40AF', margin: '0 0 6px 0' }}>
+          🤖 Connected Autonomous Festival Alert (6:30 AM – 9:30 AM IST)
+        </h3>
+        <p style={{ fontSize: '12px', color: '#1D4ED8', margin: '0 0 10px 0' }}>
+          When you add or schedule a festival for today’s date, the autonomous engine automatically broadcasts it to pilgrims in the morning without requiring manual push:
+        </p>
+        <div style={{
+          backgroundColor: '#FFFFFF',
+          borderRadius: '8px',
+          padding: '12px 14px',
+          border: '1px solid #93C5FD',
+          fontSize: '13px',
+          color: '#0F172A',
+          lineHeight: 1.4
+        }}>
+          <div style={{ fontWeight: 800, color: '#1E40AF', marginBottom: '2px' }}>
+            🪔 Today in Tirumala: [Active Festival Name]
+          </div>
+          <div style={{ fontSize: '12px', color: '#475569' }}>
+            [Location] • [Visitor Notes / Description]. Special sevas & rituals today. Check live wait times before traveling.
+          </div>
+        </div>
+      </div>
+
       {/* Festivals List Table */}
       <div className={styles.dataQualitySection}>
         <h3 className={styles.sectionTitle}>

@@ -11,6 +11,7 @@ import { readStatus, TirumalaStatus } from '@/lib/statusDb';
 import { FESTIVALS_2026 } from '@/data/festivals';
 import { getPanchangamData } from '@/lib/panchangam';
 import { pushNotifyAll } from '@/lib/pushNotify';
+import { supabase } from '@/lib/supabase';
 import fs from 'fs/promises';
 import path from 'path';
 
@@ -107,18 +108,37 @@ export async function evaluateAutonomousTrigger(): Promise<AutonomousDecision> {
     };
   }
 
-  // 2. RULE 2: Offline SSD Token Counters Opening (4:30 AM - 5:30 AM IST)
-  // Counters open at 5:00 AM at Vishnu Nivasam & Srinivasam
+  // 2. RULE 2: Offline SSD Token Counters Opening (4:30 AM - 5:30 AM IST) - Connected to Admin Panel
   if (hour === 4 && minute >= 30 || hour === 5 && minute <= 30) {
+    const isClosed = status.ssdTokenStatus === 'closed-for-day';
+    const openTime = status.ssdNextTokenTime || '5:00 AM';
+    const activeCounters = status.ssdCounters && status.ssdCounters.length > 0
+      ? status.ssdCounters.map(c => c.name.replace(/ Counter$/i, '')).join(' & ')
+      : 'Vishnu Nivasam & Srinivasam';
+
+    if (isClosed) {
+      return {
+        shouldBroadcast: true,
+        type: 'ssd_morning',
+        title: '⚠️ Today’s SSD Token Quota Closed',
+        body: status.ssdNotice || 'Offline SSD token quota for today is complete. Next issuance tomorrow morning.',
+        url: '/darshan/ssd-token',
+        tag: 'ssd-morning',
+        urgency: 'high',
+        reason: 'Admin panel has set SSD Token status to closed-for-day.'
+      };
+    }
+
+    const customNotice = status.ssdNotice ? ` ${status.ssdNotice}` : '';
     return {
       shouldBroadcast: true,
       type: 'ssd_morning',
-      title: '🎫 Free SSD Counters Opening at 5:00 AM',
-      body: 'Offline token counters opening shortly at Vishnu Nivasam & Srinivasam. Bring original Aadhaar cards for biometric issue.',
+      title: `🎫 Free SSD Counters Opening at ${openTime}`,
+      body: `Offline token counters opening shortly at ${activeCounters}. Bring original Aadhaar cards for biometric issue.${customNotice}`,
       url: '/darshan/ssd-token',
       tag: 'ssd-morning',
       urgency: 'high',
-      reason: 'Early morning 5:00 AM counter opening window for same-day free Sarva Darshan tokens.'
+      reason: `Connected to Admin Panel SSD state: early morning opening at ${openTime} across ${activeCounters}.`
     };
   }
 
@@ -137,21 +157,37 @@ export async function evaluateAutonomousTrigger(): Promise<AutonomousDecision> {
     };
   }
 
-  // 3. RULE 3: Major Temple Festival / Auspicious Tithi Today (6:30 AM - 9:30 AM IST)
+  // 3. RULE 3: Major Temple Festival / Auspicious Tithi Today (6:30 AM - 9:30 AM IST) - Connected to Admin Panel
   if (hour >= 6 && hour <= 9) {
-    const todayFestival = FESTIVALS_2026.find(f => f.date === dateStr);
+    // 3a. Check live festivals configured by admin in Supabase first
+    let liveFestival: any = null;
+    try {
+      const { data: dbFest } = await supabase
+        .from('festivals')
+        .select('*')
+        .eq('date', dateStr)
+        .maybeSingle();
+      if (dbFest) liveFestival = dbFest;
+    } catch {}
+
+    // 3b. Fallback to static festival calendar if not yet in database
+    if (!liveFestival) {
+      liveFestival = FESTIVALS_2026.find(f => f.date === dateStr);
+    }
+
     const isSpecialTithi = panchangam.tithiEn.includes('Ekadashi') || panchangam.tithiEn.includes('Pournami');
 
-    if (todayFestival) {
+    if (liveFestival) {
+      const advisory = liveFestival.visitor_notes || liveFestival.description || `Special rituals & sevas today. Expected crowd: ${liveFestival.crowd_level || 'High'}.`;
       return {
         shouldBroadcast: true,
         type: 'festival_today',
-        title: `🪔 Today in Tirumala: ${todayFestival.name}`,
-        body: `${todayFestival.location} • Special sevas & rituals today. Check live wait times before traveling.`,
-        url: '/festivals',
+        title: `🪔 Today in Tirumala: ${liveFestival.name}`,
+        body: `${liveFestival.location ? liveFestival.location + ' • ' : ''}${advisory.slice(0, 110)}`,
+        url: liveFestival.slug ? `/festivals/${liveFestival.slug}` : '/festivals',
         tag: 'festival-today',
         urgency: 'high',
-        reason: `Matched official temple festival for today (${todayFestival.name}).`
+        reason: `Connected to Admin Panel Festivals: Matched live festival for today (${liveFestival.name}).`
       };
     }
 
@@ -160,7 +196,7 @@ export async function evaluateAutonomousTrigger(): Promise<AutonomousDecision> {
         shouldBroadcast: true,
         type: 'festival_today',
         title: `🕉️ Auspicious ${panchangam.tithiEn} Today`,
-        body: `Srivari Temple sacred observance day (${panchangam.pakshaEn} Paksha). Check live queue status.`,
+        body: `Srivari Temple sacred observance day (${panchangam.pakshaEn} Paksha). Check live queue status before traveling.`,
         url: '/festivals',
         tag: 'festival-today',
         urgency: 'normal',
