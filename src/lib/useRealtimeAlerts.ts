@@ -47,10 +47,12 @@ export function useRealtimeAlerts() {
     // 1. Fetch initial active alerts
     fetchAlerts();
 
-    // 2. Poll fallback every 6 seconds to ensure immediate update across tabs/devices
+    // 2. Poll fallback every 30 seconds (only when tab is visible)
     const pollInterval = setInterval(() => {
-      fetchAlerts();
-    }, 6000);
+      if (typeof document === 'undefined' || !document.hidden) {
+        fetchAlerts();
+      }
+    }, 30000);
 
     // 3. Instant local & cross-tab admin event listeners
     const handleCustomEvent = () => fetchAlerts();
