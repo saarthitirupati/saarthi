@@ -31,7 +31,8 @@ export async function POST(req: Request) {
 
     // Fire welcome notification for brand-new subscribers only
     if (!existing && process.env.CRON_SECRET) {
-      fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/push/send`, {
+      const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || process.env.NEXT_PUBLIC_BASE_URL || 'https://www.saarthiguide.in';
+      fetch(`${siteUrl}/api/push/send`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

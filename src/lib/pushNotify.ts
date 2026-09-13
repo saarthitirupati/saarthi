@@ -1,15 +1,17 @@
 import webpush from 'web-push';
 import { supabase } from '@/lib/supabase';
 
-const VAPID_PUBLIC = process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY;
-const VAPID_PRIVATE = process.env.VAPID_PRIVATE_KEY;
-
 let vapidConfigured = false;
 function ensureVapid(): boolean {
   if (vapidConfigured) return true;
-  if (!VAPID_PUBLIC || !VAPID_PRIVATE) return false;
+  const pub = process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY;
+  const priv = process.env.VAPID_PRIVATE_KEY;
+  if (!pub || !priv) {
+    console.warn('[PushNotify] VAPID keys not configured in environment');
+    return false;
+  }
   try {
-    webpush.setVapidDetails('mailto:saarthiguide9@gmail.com', VAPID_PUBLIC, VAPID_PRIVATE);
+    webpush.setVapidDetails('mailto:admin@saarthiguide.in', pub, priv);
     vapidConfigured = true;
     return true;
   } catch (err) {
@@ -54,7 +56,8 @@ export async function pushNotifyAll(payload: PushPayload) {
           { TTL: 3600 }
         );
       } catch (err: any) {
-        if (err.statusCode === 404 || err.statusCode === 410) {
+        // Prune 404 (Not Found), 410 (Gone), 403 (Invalid VAPID credentials / rotated key)
+        if (err.statusCode === 404 || err.statusCode === 410 || err.statusCode === 403) {
           gone.push(sub.id);
         }
       }

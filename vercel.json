@@ -16,5 +16,19 @@
         }
       ]
     }
+  ],
+  "crons": [
+    {
+      "path": "/api/push/send?type=daily_spot",
+      "schedule": "30 1 * * *"
+    },
+    {
+      "path": "/api/push/send?type=festival",
+      "schedule": "30 3 * * *"
+    },
+    {
+      "path": "/api/push/send?type=weekend",
+      "schedule": "30 11 * * 5"
+    }
   ]
 }

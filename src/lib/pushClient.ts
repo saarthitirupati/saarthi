@@ -54,19 +54,32 @@ export async function subscribeToPushNotifications(): Promise<{
     }
 
     let sub = await reg.pushManager.getSubscription();
+    const savedVapid = localStorage.getItem('saarthi_vapid_key');
+
+    // Auto-migrate if VAPID key was rotated or changed
+    if (sub && VAPID_KEY && savedVapid !== VAPID_KEY) {
+      try {
+        await sub.unsubscribe();
+      } catch {}
+      sub = null;
+    }
+
     if (!sub && VAPID_KEY) {
       sub = await reg.pushManager.subscribe({
         userVisibleOnly: true,
         applicationServerKey: urlBase64ToUint8Array(VAPID_KEY),
       });
+      localStorage.setItem('saarthi_vapid_key', VAPID_KEY);
     }
 
-    // Register with backend
-    await fetch('/api/push/subscribe', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(sub.toJSON()),
-    }).catch(() => {});
+    // Register with backend if subscription exists
+    if (sub) {
+      await fetch('/api/push/subscribe', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(sub.toJSON()),
+      }).catch(() => {});
+    }
 
     // Save local flag
     localStorage.setItem('saarthi_notifications_enabled', 'true');
@@ -83,7 +96,7 @@ export async function subscribeToPushNotifications(): Promise<{
     console.error('Subscription error:', err);
     return {
       success: false,
-      permission: (Notification?.permission as PushPermissionState) || 'default',
+      permission: (typeof Notification !== 'undefined' ? Notification.permission : 'unsupported') as PushPermissionState,
       error: err?.message || 'Failed to subscribe',
     };
   }
@@ -120,25 +133,38 @@ export async function sendTestNotification(): Promise<boolean> {
  */
 export async function syncExistingPushSubscription(): Promise<void> {
   if (typeof window === 'undefined' || !('serviceWorker' in navigator) || !('Notification' in window)) return;
-  if (Notification.permission !== 'granted') return;
+  if (Notification.permission !== 'granted' || !VAPID_KEY) return;
 
   try {
     const reg = await navigator.serviceWorker.ready;
     if (!reg.pushManager) return;
 
     let sub = await reg.pushManager.getSubscription();
-    if (!sub && VAPID_KEY) {
+    const savedVapid = localStorage.getItem('saarthi_vapid_key');
+
+    // Auto-migrate if VAPID key was rotated
+    if (sub && savedVapid !== VAPID_KEY) {
+      try {
+        await sub.unsubscribe();
+      } catch {}
+      sub = null;
+    }
+
+    if (!sub) {
       sub = await reg.pushManager.subscribe({
         userVisibleOnly: true,
         applicationServerKey: urlBase64ToUint8Array(VAPID_KEY),
       });
+      localStorage.setItem('saarthi_vapid_key', VAPID_KEY);
     }
 
-    await fetch('/api/push/subscribe', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(sub.toJSON()),
-    });
+    if (sub) {
+      await fetch('/api/push/subscribe', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(sub.toJSON()),
+      });
+    }
   } catch {
     // Silent fail on background refresh
   }
