@@ -19,7 +19,6 @@ import {
   setAudioGloballyEnabled, 
   triggerBeadHaptic 
 } from '@/lib/audioBell';
-import { getPanchangamData } from '@/lib/panchangam';
 import { getDayTempleGuidance } from '@/lib/dailyGuidance';
 import { getGovindaNamaForBead } from '@/data/govindaNamas';
 import { LocationPickerModal, LocationPill } from '@/components/common/LocationPickerModal';
@@ -1101,7 +1100,8 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
   };
 
   const scenario = getSaarthiDecisionScenario();
-  const todayDateStr = new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'short' });
+  const todayDateStr = new Date().toLocaleDateString(lang === 'te' ? 'te-IN' : 'en-GB', { day: 'numeric', month: 'short' });
+  const dayShort = new Date().toLocaleDateString(lang === 'te' ? 'te-IN' : 'en-US', { weekday: 'short' });
 
   const handleCycleScenario = () => {
     const list = ['auto', 'green', 'yellow', 'red', 'blue', 'purple', 'orange', 'night', 'alert'];
@@ -1234,38 +1234,28 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
           <>
             {/* ══════════ DEVOTIONAL INVOCATION & 108 JAPA MALA BAR ══════════ */}
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '8px', marginBottom: '10px', position: 'relative', width: '100%', boxSizing: 'border-box' }}>
-              {/* Left: Panchangam Tithi & Today's Weather / Date (Image 1 Refinement) */}
+              {/* Left: Today's Day, Date & Live Weather */}
               <div style={{ 
                 display: 'inline-flex', 
                 alignItems: 'center', 
-                gap: '6px', 
-                fontSize: 'clamp(10.5px, 2.9vw, 12px)', 
+                gap: '5px', 
+                fontSize: '11.5px', 
                 fontWeight: 600, 
                 color: '#475569', 
                 whiteSpace: 'nowrap', 
-                minWidth: 0,
-                overflow: 'hidden',
+                flexShrink: 0,
                 padding: '4px 10px',
                 borderRadius: '16px',
-                background: 'rgba(255, 255, 255, 0.85)',
-                border: '1px solid #E2E8F0',
+                background: 'rgba(255, 255, 255, 0.9)',
+                border: '1.5px solid #E2E8F0',
                 boxShadow: '0 1px 3px rgba(0,0,0,0.03)'
               }}>
-                <span style={{ 
-                  fontWeight: 800, 
-                  color: '#B45309', 
-                  whiteSpace: 'nowrap', 
-                  overflow: 'hidden', 
-                  textOverflow: 'ellipsis', 
-                  maxWidth: 'clamp(70px, 22vw, 120px)' 
-                }}>
-                  {lang === 'te' ? getPanchangamData().tithiTe : getPanchangamData().tithiEn}
+                <span style={{ fontWeight: 800, color: '#B45309' }}>
+                  {dayShort}, {todayDateStr}
                 </span>
-                <span style={{ opacity: 0.35, flexShrink: 0 }}>•</span>
-                <span style={{ flexShrink: 0 }}>{todayDateStr}</span>
-                <span style={{ opacity: 0.35, flexShrink: 0 }}>•</span>
+                <span style={{ opacity: 0.35 }}>•</span>
                 <Sun size={12} color="#D97706" style={{ flexShrink: 0 }} />
-                <span style={{ flexShrink: 0, fontWeight: 700, color: '#334155' }}>{weatherTemp || '26°C'}</span>
+                <span style={{ fontWeight: 700, color: '#334155' }}>{weatherTemp || '26°C'}</span>
               </div>
 
               {/* Right: Dedicated Srivari 108 Japa Mala Button (Image 1 Refinement) */}
@@ -2465,8 +2455,8 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
               ? (lang === 'te' ? 'నేటి SSD కోటా ముగిసింది — సమీప పుణ్యక్షేత్రాలను దర్శించండి' : 'SSD CLOSED TODAY — VISIT SACRED SHRINES FIRST')
               : (lang === 'te' ? dayGuide.benefitTe : dayGuide.benefitEn);
             
-            const firstReason = isSsdClosed && liveStatus?.ssdTimingsGuide 
-              ? (liveStatus.ssdTimingsGuide.length > 110 ? `${liveStatus.ssdTimingsGuide.slice(0, 107)}...` : liveStatus.ssdTimingsGuide)
+            const firstReason = isSsdClosed
+              ? (lang === 'te' ? 'తిరుపతిలోని అన్ని కౌంటర్లలో నేటి ఉచిత SSD టోకెన్ల కోటా పూర్తయింది' : "Today's free SSD token quota is fully exhausted across all counters")
               : (lang === 'te' ? `సర్వదర్శనం క్యూ అధిక రద్దీతో ఉంది (${sarvaWait})` : `Sarva Darshan queue has heavy rush (${sarvaWait})`);
 
             customReasons = lang === 'te' ? [
@@ -2586,8 +2576,8 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
 
               {/* Subtle Trust & Confidence Indicator */}
               <div style={{ fontSize: '10px', color: '#94A3B8', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '4px' }}>
-                <Zap size={11} color="#94A3B8" />
-                <span>Based on live queue trends • Verified recently</span>
+                <Sparkles size={11} color="#94A3B8" />
+                <span>{lang === 'te' ? 'లైవ్ క్యూ ఆధారంగా • ఇటీవల ధృవీకరించబడింది' : 'Based on live queue trends • Verified recently'}</span>
               </div>
             </div>
           );
