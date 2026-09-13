@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Menu, Bell, MapPin, Sun, Sparkles, Ticket, Car, Gift, CloudRain, Bus, Clock, Route, Users, Zap, Check, ChevronDown, Navigation, Flame, Moon, Languages, RotateCcw, Share2, X } from 'lucide-react';
+import { Menu, Bell, MapPin, Sun, Sparkles, Ticket, Car, Gift, CloudRain, Bus, Clock, Route, Users, Zap, Check, ChevronDown, Navigation, Flame, Moon, Languages, RotateCcw, Share2, X, Volume2, VolumeX, ChevronLeft, ChevronRight } from 'lucide-react';
 import Link from 'next/link';
 import Logo from '@/components/Logo/Logo';
 import { useLanguage, setAppLanguage } from '@/lib/useLanguage';
@@ -700,7 +700,28 @@ export function HomeHero({ userName, locationName, weatherTemp, liveStatus, acti
   const [isChanting, setIsChanting] = useState(false);
   const [justCompletedMala, setJustCompletedMala] = useState(false);
   const [cooldownSeconds, setCooldownSeconds] = useState(0);
+  const [previewBead, setPreviewBead] = useState<number | null>(null);
   const cooldownTimerRef = React.useRef<NodeJS.Timeout | null>(null);
+
+  // Sound toggle (persisted in localStorage)
+  const [isSoundEnabled, setIsSoundEnabled] = useState<boolean>(() => {
+    if (typeof window !== 'undefined') {
+      return localStorage.getItem('srivari_japa_sound') !== 'muted';
+    }
+    return true;
+  });
+
+  const toggleSound = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setIsSoundEnabled((prev) => {
+      const next = !prev;
+      if (typeof window !== 'undefined') {
+        localStorage.setItem('srivari_japa_sound', next ? 'enabled' : 'muted');
+      }
+      return next;
+    });
+    triggerBeadHaptic(false);
+  };
 
   // Bead counter within current Mala: 1 to 108
   const [chantCount, setChantCount] = useState<number>(() => {
@@ -723,7 +744,23 @@ export function HomeHero({ userName, locationName, weatherTemp, liveStatus, acti
   React.useEffect(() => {
     if (cooldownSeconds > 0) {
       cooldownTimerRef.current = setTimeout(() => {
-        setCooldownSeconds((prev) => Math.max(0, prev - 1));
+        setCooldownSeconds((prev) => {
+          if (prev <= 1) {
+            // 10s cooldown expired! Advance to next bead
+            setChantCount((curr) => {
+              if (curr < 108) {
+                const next = curr + 1;
+                if (typeof window !== 'undefined') {
+                  localStorage.setItem('srivari_chant_count', next.toString());
+                }
+                return next;
+              }
+              return curr;
+            });
+            return 0;
+          }
+          return prev - 1;
+        });
       }, 1000);
     }
     return () => {
@@ -741,10 +778,22 @@ export function HomeHero({ userName, locationName, weatherTemp, liveStatus, acti
 
     const is108Reach = chantCount >= 108;
 
+    if (isSoundEnabled) {
+      if (is108Reach) {
+        playMalaCompletionChime();
+      } else {
+        playTempleBellChime();
+      }
+    }
+    triggerBeadHaptic(is108Reach);
+
+    setIsChanting(true);
+    setShowBlessing(true);
+    setPreviewBead(null); // Reset preview back to active chant bead
+    setTimeout(() => setIsChanting(false), 300);
+
     if (is108Reach) {
       // 🪔 Milestone reached! 108 chants completed.
-      playMalaCompletionChime();
-      triggerBeadHaptic(true);
       const nextMalas = completedMalas + 1;
       setCompletedMalas(nextMalas);
       setJustCompletedMala(true);
@@ -753,30 +802,22 @@ export function HomeHero({ userName, locationName, weatherTemp, liveStatus, acti
         localStorage.setItem('srivari_completed_malas', nextMalas.toString());
       }
     } else {
-      playTempleBellChime();
-      triggerBeadHaptic(false);
-      const nextCount = chantCount + 1;
-      setChantCount(nextCount);
-      setJustCompletedMala(false);
-      setCooldownSeconds(10); // Enforce 10-second reverent gap between chants
-      if (typeof window !== 'undefined') {
-        localStorage.setItem('srivari_chant_count', nextCount.toString());
-      }
+      // Start the 10-second meditative reflection cadence on this bead
+      setCooldownSeconds(10);
     }
-
-    setIsChanting(true);
-    setShowBlessing(true);
-    setTimeout(() => setIsChanting(false), 300);
   };
 
   const handleStartNextMala = () => {
     setChantCount(1);
     setJustCompletedMala(false);
     setCooldownSeconds(0);
+    setPreviewBead(null);
     if (typeof window !== 'undefined') {
       localStorage.setItem('srivari_chant_count', '1');
     }
-    playTempleBellChime();
+    if (isSoundEnabled) {
+      playTempleBellChime();
+    }
     triggerBeadHaptic(false);
   };
 
@@ -785,6 +826,7 @@ export function HomeHero({ userName, locationName, weatherTemp, liveStatus, acti
     setChantCount(1);
     setJustCompletedMala(false);
     setCooldownSeconds(0);
+    setPreviewBead(null);
     if (typeof window !== 'undefined') {
       localStorage.setItem('srivari_chant_count', '1');
     }
@@ -1123,28 +1165,54 @@ _ఓం నమో వేంకటేశాయ • శ్రీ పద్మా�
                       </div>
                     </div>
 
-                    <button 
-                      onClick={() => setShowBlessing(false)}
-                      aria-label="Close modal"
-                      style={{
-                        background: 'rgba(255, 255, 255, 0.08)',
-                        border: '1px solid rgba(255, 255, 255, 0.15)',
-                        borderRadius: '50%',
-                        width: '28px',
-                        height: '28px',
-                        color: '#CBD5E1',
-                        cursor: 'pointer',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        transition: 'background 0.15s ease'
-                      }}
-                    >
-                      <X size={15} />
-                    </button>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                      {/* 🔔 Sound Bell Mute / Unmute Toggle */}
+                      <button
+                        type="button"
+                        onClick={toggleSound}
+                        title={isSoundEnabled 
+                          ? (lang === 'te' ? 'గంట శబ్దం ఆపివేయండి (మౌనం)' : 'Mute temple bell sound') 
+                          : (lang === 'te' ? 'గంట శబ్దం ప్రారంభించండి' : 'Enable temple bell sound')}
+                        style={{
+                          background: isSoundEnabled ? 'rgba(245, 158, 11, 0.2)' : 'rgba(255, 255, 255, 0.08)',
+                          border: isSoundEnabled ? '1px solid rgba(245, 158, 11, 0.45)' : '1px solid rgba(255, 255, 255, 0.15)',
+                          borderRadius: '50%',
+                          width: '28px',
+                          height: '28px',
+                          color: isSoundEnabled ? '#FDE047' : '#94A3B8',
+                          cursor: 'pointer',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          transition: 'all 0.15s ease'
+                        }}
+                      >
+                        {isSoundEnabled ? <Volume2 size={15} color="#FDE047" /> : <VolumeX size={15} color="#94A3B8" />}
+                      </button>
+
+                      <button 
+                        onClick={() => setShowBlessing(false)}
+                        aria-label="Close modal"
+                        style={{
+                          background: 'rgba(255, 255, 255, 0.08)',
+                          border: '1px solid rgba(255, 255, 255, 0.15)',
+                          borderRadius: '50%',
+                          width: '28px',
+                          height: '28px',
+                          color: '#CBD5E1',
+                          cursor: 'pointer',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          transition: 'background 0.15s ease'
+                        }}
+                      >
+                        <X size={15} />
+                      </button>
+                    </div>
                   </div>
 
-                  {/* 🪔 Golden Japa Mala Progress Bar */}
+                  {/* 📿 Golden Japa Mala Progress Bar */}
                   <div style={{ marginBottom: '16px' }}>
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '6px' }}>
                       <span style={{
@@ -1300,211 +1368,316 @@ _ఓం నమో వేంకటేశాయ • శ్రీ పద్మా�
                     </div>
                   ) : (
                     /* 📿 ACTIVE JAPA CHANTING VIEW */
-                    <div>
-                      {/* Sacred Divine Nama Display */}
-                      <div style={{
-                        background: 'rgba(255, 255, 255, 0.05)',
-                        border: '1px solid rgba(245, 158, 11, 0.3)',
-                        borderRadius: '18px',
-                        padding: '16px 14px',
-                        marginBottom: '14px',
-                        textAlign: 'center'
-                      }}>
-                        <div style={{
-                          fontSize: '10.5px',
-                          fontWeight: 700,
-                          color: '#FDE047',
-                          textTransform: 'uppercase',
-                          letterSpacing: '0.06em',
-                          marginBottom: '4px'
-                        }}>
-                          {lang === 'te' ? `శ్రీవారి దివ్య నామం #${chantCount}/108` : `Srivari Divine Nama #${chantCount}/108`}
-                        </div>
+                    (() => {
+                      const activeBead = previewBead !== null ? previewBead : chantCount;
+                      const activeNama = getGovindaNamaForBead(activeBead);
+                      const isBrowsingOtherBead = previewBead !== null && previewBead !== chantCount;
 
-                        <div style={{
-                          fontSize: 'clamp(18px, 5.2vw, 22px)',
-                          fontWeight: 800,
-                          color: '#FEF08A',
-                          marginBottom: '6px',
-                          lineHeight: 1.35,
-                          textShadow: '0 2px 10px rgba(245, 158, 11, 0.25)'
-                        }}>
-                          {getGovindaNamaForBead(chantCount).namaTe}
-                        </div>
-
-                        <div style={{
-                          fontSize: '12px',
-                          color: '#CBD5E1',
-                          fontStyle: 'italic',
-                          lineHeight: 1.4
-                        }}>
-                          {getGovindaNamaForBead(chantCount).namaEn}
-                        </div>
-                      </div>
-
-                      {/* Divine Blessing Content Card */}
-                      <div style={{
-                        background: 'rgba(255, 255, 255, 0.03)',
-                        border: '1px solid rgba(255, 255, 255, 0.08)',
-                        borderRadius: '16px',
-                        padding: '14px',
-                        marginBottom: '16px'
-                      }}>
-                        <div style={{
-                          fontSize: '11px',
-                          fontWeight: 700,
-                          color: '#F59E0B',
-                          marginBottom: '4px',
-                          display: 'flex',
-                          alignItems: 'center',
-                          gap: '5px'
-                        }}>
-                          <Sparkles size={11} color="#F59E0B" />
-                          <span>{lang === 'te' ? 'దివ్య ఆశీర్వచనం & ఫలశ్రుతి:' : 'Divine Blessing & Grace:'}</span>
-                        </div>
-                        <p style={{
-                          margin: '0 0 6px 0',
-                          fontSize: '13px',
-                          lineHeight: 1.55,
-                          color: '#F8FAFC',
-                          fontWeight: 500
-                        }}>
-                          {getGovindaNamaForBead(chantCount).blessingTe}
-                        </p>
-                        <p style={{
-                          margin: 0,
-                          fontSize: '11.5px',
-                          lineHeight: 1.45,
-                          color: '#94A3B8',
-                          fontStyle: 'italic'
-                        }}>
-                          {getGovindaNamaForBead(chantCount).blessingEn}
-                        </p>
-                      </div>
-
-                      {/* 10-Second Cadence Meditative Chant Action */}
-                      <div style={{ marginBottom: '12px' }}>
-                        {cooldownSeconds > 0 ? (
+                      return (
+                        <div>
+                          {/* Sacred Divine Nama Display with Browse Navigators */}
                           <div style={{
-                            width: '100%',
-                            padding: '12px',
-                            borderRadius: '16px',
-                            background: 'rgba(255, 255, 255, 0.06)',
+                            background: 'rgba(255, 255, 255, 0.05)',
                             border: '1px solid rgba(245, 158, 11, 0.3)',
-                            color: '#FDE68A',
-                            display: 'flex',
-                            flexDirection: 'column',
-                            alignItems: 'center',
-                            gap: '6px',
-                            boxSizing: 'border-box'
+                            borderRadius: '18px',
+                            padding: '14px 12px',
+                            marginBottom: '14px',
+                            textAlign: 'center',
+                            position: 'relative'
                           }}>
-                            <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '13.5px', fontWeight: 700 }}>
-                              <Clock size={15} color="#F59E0B" />
-                              <span>
-                                {lang === 'te' 
-                                  ? `నామాన్ని ధ్యానించండి... (${cooldownSeconds}s)` 
-                                  : `Reflect upon the Nama... (${cooldownSeconds}s)`}
-                              </span>
-                            </div>
-                            {/* Visual 10-second countdown bar */}
-                            <div style={{
-                              width: '100%',
-                              maxWidth: '220px',
-                              height: '4px',
-                              backgroundColor: 'rgba(255, 255, 255, 0.1)',
-                              borderRadius: '2px',
-                              overflow: 'hidden'
-                            }}>
+                            {/* Previous / Next Browsing Arrows */}
+                            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '6px' }}>
+                              <button
+                                type="button"
+                                onClick={() => setPreviewBead(Math.max(1, activeBead - 1))}
+                                disabled={activeBead <= 1}
+                                title={lang === 'te' ? 'మునుపటి నామం చూడండి' : 'Previous Nama'}
+                                style={{
+                                  background: 'rgba(255, 255, 255, 0.08)',
+                                  border: '1px solid rgba(255, 255, 255, 0.15)',
+                                  borderRadius: '8px',
+                                  width: '26px',
+                                  height: '26px',
+                                  display: 'inline-flex',
+                                  alignItems: 'center',
+                                  justifyContent: 'center',
+                                  color: activeBead <= 1 ? '#475569' : '#CBD5E1',
+                                  cursor: activeBead <= 1 ? 'not-allowed' : 'pointer'
+                                }}
+                              >
+                                <ChevronLeft size={14} />
+                              </button>
+
                               <div style={{
-                                width: `${((10 - cooldownSeconds) / 10) * 100}%`,
-                                height: '100%',
-                                background: 'linear-gradient(90deg, #F59E0B, #FDE047)',
-                                transition: 'width 1s linear'
-                              }} />
+                                fontSize: '10.5px',
+                                fontWeight: 700,
+                                color: isBrowsingOtherBead ? '#FCD34D' : '#FDE047',
+                                textTransform: 'uppercase',
+                                letterSpacing: '0.05em'
+                              }}>
+                                {isBrowsingOtherBead 
+                                  ? (lang === 'te' ? `నామ పఠనం #${activeBead}/108` : `Browsing Nama #${activeBead}/108`)
+                                  : (lang === 'te' ? `శ్రీవారి దివ్య నామం #${activeBead}/108` : `Srivari Divine Nama #${activeBead}/108`)}
+                              </div>
+
+                              <button
+                                type="button"
+                                onClick={() => setPreviewBead(Math.min(108, activeBead + 1))}
+                                disabled={activeBead >= 108}
+                                title={lang === 'te' ? 'తదుపరి నామం చూడండి' : 'Next Nama'}
+                                style={{
+                                  background: 'rgba(255, 255, 255, 0.08)',
+                                  border: '1px solid rgba(255, 255, 255, 0.15)',
+                                  borderRadius: '8px',
+                                  width: '26px',
+                                  height: '26px',
+                                  display: 'inline-flex',
+                                  alignItems: 'center',
+                                  justifyContent: 'center',
+                                  color: activeBead >= 108 ? '#475569' : '#CBD5E1',
+                                  cursor: activeBead >= 108 ? 'not-allowed' : 'pointer'
+                                }}
+                              >
+                                <ChevronRight size={14} />
+                              </button>
                             </div>
-                            <span style={{ fontSize: '10.5px', color: '#94A3B8' }}>
-                              {lang === 'te' ? 'కనీసం 10 సెకన్ల ఆధ్యాత్మిక ధ్యానం' : '10-second meditative cadence'}
-                            </span>
-                          </div>
-                        ) : (
-                          <button
-                            type="button"
-                            onClick={handleChantTap}
-                            style={{
-                              width: '100%',
-                              padding: '13px',
-                              borderRadius: '16px',
-                              background: 'linear-gradient(135deg, #D97706 0%, #F59E0B 50%, #FBBF24 100%)',
-                              border: 'none',
-                              color: '#78350F',
-                              fontSize: '15px',
+
+                            {/* Telugu Divine Nama */}
+                            <div style={{
+                              fontSize: 'clamp(18px, 5.2vw, 22px)',
                               fontWeight: 800,
+                              color: '#FEF08A',
+                              marginBottom: '6px',
+                              lineHeight: 1.35,
+                              textShadow: '0 2px 10px rgba(245, 158, 11, 0.25)'
+                            }}>
+                              {activeNama.namaTe}
+                            </div>
+
+                            {/* English Transliteration */}
+                            <div style={{
+                              fontSize: '12px',
+                              color: '#CBD5E1',
+                              fontStyle: 'italic',
+                              lineHeight: 1.4
+                            }}>
+                              {activeNama.namaEn}
+                            </div>
+
+                            {/* Return to Active Chant helper pill if browsing */}
+                            {isBrowsingOtherBead && (
+                              <button
+                                type="button"
+                                onClick={() => setPreviewBead(null)}
+                                style={{
+                                  marginTop: '8px',
+                                  display: 'inline-flex',
+                                  alignItems: 'center',
+                                  gap: '4px',
+                                  padding: '2px 8px',
+                                  borderRadius: '8px',
+                                  background: 'rgba(245, 158, 11, 0.18)',
+                                  border: '1px solid rgba(245, 158, 11, 0.35)',
+                                  color: '#FDE047',
+                                  fontSize: '10.5px',
+                                  fontWeight: 700,
+                                  cursor: 'pointer'
+                                }}
+                              >
+                                <RotateCcw size={10} />
+                                <span>{lang === 'te' ? `ప్రస్తుత జపానికి వెళ్ళండి (#${chantCount})` : `Back to Active Bead (#${chantCount})`}</span>
+                              </button>
+                            )}
+                          </div>
+
+                          {/* Divine Blessing Content Card */}
+                          <div style={{
+                            background: 'rgba(255, 255, 255, 0.03)',
+                            border: '1px solid rgba(255, 255, 255, 0.08)',
+                            borderRadius: '16px',
+                            padding: '14px',
+                            marginBottom: '16px'
+                          }}>
+                            <div style={{
+                              fontSize: '11px',
+                              fontWeight: 700,
+                              color: '#F59E0B',
+                              marginBottom: '4px',
                               display: 'flex',
                               alignItems: 'center',
-                              justifyContent: 'center',
-                              gap: '8px',
-                              cursor: 'pointer',
-                              boxShadow: '0 4px 20px rgba(245, 158, 11, 0.4)',
-                              transform: isChanting ? 'scale(0.97)' : 'scale(1)',
-                              transition: 'all 0.15s ease'
-                            }}
-                          >
-                            <Sparkles size={16} color="#78350F" />
-                            <span>
-                              {chantCount < 108 
-                                ? (lang === 'te' ? `తదుపరి నామం జపించండి (${chantCount + 1}/108)` : `Chant Next Bead (${chantCount + 1}/108)`)
-                                : (lang === 'te' ? '108వ నామ జపం చేయండి (మాల సంపూర్ణం)' : 'Chant 108th Bead (Complete Mala)')}
-                            </span>
-                          </button>
-                        )}
-                      </div>
+                              gap: '5px'
+                            }}>
+                              <Sparkles size={11} color="#F59E0B" />
+                              <span>{lang === 'te' ? 'దివ్య ఆశీర్వచనం & ఫలశ్రుతి:' : 'Divine Blessing & Grace:'}</span>
+                            </div>
+                            <p style={{
+                              margin: '0 0 6px 0',
+                              fontSize: '13px',
+                              lineHeight: 1.55,
+                              color: '#F8FAFC',
+                              fontWeight: 500
+                            }}>
+                              {activeNama.blessingTe}
+                            </p>
+                            <p style={{
+                              margin: 0,
+                              fontSize: '11.5px',
+                              lineHeight: 1.45,
+                              color: '#94A3B8',
+                              fontStyle: 'italic'
+                            }}>
+                              {activeNama.blessingEn}
+                            </p>
+                          </div>
 
-                      {/* Modal Footer Controls */}
-                      <div style={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'space-between',
-                        borderTop: '1px solid rgba(255, 255, 255, 0.1)',
-                        paddingTop: '10px'
-                      }}>
-                        <button
-                          type="button"
-                          onClick={() => setShowBlessing(false)}
-                          style={{
-                            background: 'none',
-                            border: 'none',
-                            color: '#94A3B8',
-                            fontSize: '12px',
-                            cursor: 'pointer',
-                            padding: '4px 6px'
-                          }}
-                        >
-                          {lang === 'te' ? 'ధ్యానం ముగించండి' : 'Close Sadhana'}
-                        </button>
+                          {/* 10-Second Cadence Meditative Chant Action */}
+                          <div style={{ marginBottom: '12px' }}>
+                            {isBrowsingOtherBead ? (
+                              <button
+                                type="button"
+                                onClick={() => setPreviewBead(null)}
+                                style={{
+                                  width: '100%',
+                                  padding: '13px',
+                                  borderRadius: '16px',
+                                  background: 'linear-gradient(135deg, #1E1B4B 0%, #312E81 100%)',
+                                  border: '1px solid rgba(245, 158, 11, 0.4)',
+                                  color: '#FEF08A',
+                                  fontSize: '14px',
+                                  fontWeight: 800,
+                                  display: 'flex',
+                                  alignItems: 'center',
+                                  justifyContent: 'center',
+                                  gap: '8px',
+                                  cursor: 'pointer'
+                                }}
+                              >
+                                <RotateCcw size={15} color="#FEF08A" />
+                                <span>{lang === 'te' ? `ప్రస్తుత జపానికి తిరిగి వెళ్ళండి (#${chantCount}/108)` : `Return to Active Chant (#${chantCount}/108)`}</span>
+                              </button>
+                            ) : cooldownSeconds > 0 ? (
+                              <div style={{
+                                width: '100%',
+                                padding: '12px',
+                                borderRadius: '16px',
+                                background: 'rgba(255, 255, 255, 0.06)',
+                                border: '1px solid rgba(245, 158, 11, 0.3)',
+                                color: '#FDE68A',
+                                display: 'flex',
+                                flexDirection: 'column',
+                                alignItems: 'center',
+                                gap: '6px',
+                                boxSizing: 'border-box'
+                              }}>
+                                <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '13.5px', fontWeight: 700 }}>
+                                  <Clock size={15} color="#F59E0B" />
+                                  <span>
+                                    {lang === 'te' 
+                                      ? `నామాన్ని ధ్యానించండి... (${cooldownSeconds}s)` 
+                                      : `Reflect upon the Nama... (${cooldownSeconds}s)`}
+                                  </span>
+                                </div>
+                                {/* Visual 10-second countdown bar */}
+                                <div style={{
+                                  width: '100%',
+                                  maxWidth: '220px',
+                                  height: '4px',
+                                  backgroundColor: 'rgba(255, 255, 255, 0.1)',
+                                  borderRadius: '2px',
+                                  overflow: 'hidden'
+                                }}>
+                                  <div style={{
+                                    width: `${((10 - cooldownSeconds) / 10) * 100}%`,
+                                    height: '100%',
+                                    background: 'linear-gradient(90deg, #F59E0B, #FDE047)',
+                                    transition: 'width 1s linear'
+                                  }} />
+                                </div>
+                                <span style={{ fontSize: '10.5px', color: '#94A3B8' }}>
+                                  {lang === 'te' ? 'కనీసం 10 సెకన్ల ఆధ్యాత్మిక ధ్యానం' : '10-second meditative cadence'}
+                                </span>
+                              </div>
+                            ) : (
+                              <button
+                                type="button"
+                                onClick={handleChantTap}
+                                style={{
+                                  width: '100%',
+                                  padding: '13px',
+                                  borderRadius: '16px',
+                                  background: 'linear-gradient(135deg, #D97706 0%, #F59E0B 50%, #FBBF24 100%)',
+                                  border: 'none',
+                                  color: '#78350F',
+                                  fontSize: '15px',
+                                  fontWeight: 800,
+                                  display: 'flex',
+                                  alignItems: 'center',
+                                  justifyContent: 'center',
+                                  gap: '8px',
+                                  cursor: 'pointer',
+                                  boxShadow: '0 4px 20px rgba(245, 158, 11, 0.4)',
+                                  transform: isChanting ? 'scale(0.97)' : 'scale(1)',
+                                  transition: 'all 0.15s ease'
+                                }}
+                              >
+                                <Sparkles size={16} color="#78350F" />
+                                <span>
+                                  {chantCount < 108 
+                                    ? (lang === 'te' ? `📿 #${chantCount}వ నామ జపం చేయండి (${chantCount}/108)` : `Chant Bead #${chantCount} (${chantCount}/108)`)
+                                    : (lang === 'te' ? '108వ నామ జపం చేయండి (మాల సంపూర్ణం)' : 'Chant 108th Bead (Complete Mala)')}
+                                </span>
+                              </button>
+                            )}
+                          </div>
 
-                        <button
-                          type="button"
-                          onClick={handleShareBlessing}
-                          style={{
-                            display: 'inline-flex',
+                          {/* Modal Footer Controls */}
+                          <div style={{
+                            display: 'flex',
                             alignItems: 'center',
-                            gap: '5px',
-                            backgroundColor: 'rgba(34, 197, 94, 0.2)',
-                            border: '1px solid rgba(74, 222, 128, 0.4)',
-                            borderRadius: '10px',
-                            padding: '5px 10px',
-                            color: '#86EFAC',
-                            fontSize: '11.5px',
-                            fontWeight: 700,
-                            cursor: 'pointer',
-                            transition: 'background 0.15s ease'
-                          }}
-                        >
-                          <Share2 size={13} color="#86EFAC" />
-                          <span>{lang === 'te' ? 'వాట్సాప్‌లో షేర్ చేయండి' : 'Share Blessing'}</span>
-                        </button>
-                      </div>
-                    </div>
+                            justifyContent: 'space-between',
+                            borderTop: '1px solid rgba(255, 255, 255, 0.1)',
+                            paddingTop: '10px'
+                          }}>
+                            <button
+                              type="button"
+                              onClick={() => setShowBlessing(false)}
+                              style={{
+                                background: 'none',
+                                border: 'none',
+                                color: '#94A3B8',
+                                fontSize: '12px',
+                                cursor: 'pointer',
+                                padding: '4px 6px'
+                              }}
+                            >
+                              {lang === 'te' ? 'ధ్యానం ముగించండి' : 'Close Sadhana'}
+                            </button>
+
+                            <button
+                              type="button"
+                              onClick={handleShareBlessing}
+                              style={{
+                                display: 'inline-flex',
+                                alignItems: 'center',
+                                gap: '5px',
+                                backgroundColor: 'rgba(34, 197, 94, 0.2)',
+                                border: '1px solid rgba(74, 222, 128, 0.4)',
+                                borderRadius: '10px',
+                                padding: '5px 10px',
+                                color: '#86EFAC',
+                                fontSize: '11.5px',
+                                fontWeight: 700,
+                                cursor: 'pointer',
+                                transition: 'background 0.15s ease'
+                              }}
+                            >
+                              <Share2 size={13} color="#86EFAC" />
+                              <span>{lang === 'te' ? 'వాట్సాప్‌లో షేర్ చేయండి' : 'Share Blessing'}</span>
+                            </button>
+                          </div>
+                        </div>
+                      );
+                    })()
                   )}
                 </div>
               </div>
