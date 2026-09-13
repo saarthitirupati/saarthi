@@ -1,6 +1,6 @@
 /* =========================================================
-   SAARTHI SACRED OPENING SPLASH SCREEN (100% Pure Vector Canvas)
-   Cinematic Sequence: Darkness → Guidance Light → Divine Presence → Journey Begins
+   SAARTHI SACRED OPENING SPLASH SCREEN (First-Principle UI)
+   Cinematic Sequence: Sanctum Atmosphere → Radiant Emblem → Divine Blessing → Home
    ========================================================= */
 
 .splashContainer {
@@ -10,7 +10,7 @@
   height: 100dvh;
   max-width: 100vw;
   z-index: 99999;
-  background: radial-gradient(circle at 50% 46%, #0A241C 0%, #061813 55%, #020A07 100%);
+  background: radial-gradient(circle at 50% 40%, #082118 0%, #04120D 58%, #010604 100%);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -31,7 +31,7 @@
 .sanctumVignette {
   position: absolute;
   inset: 0;
-  background: radial-gradient(circle at 50% 42%, transparent 20%, rgba(2, 10, 7, 0.6) 70%, #020A07 100%);
+  background: radial-gradient(circle at 50% 38%, transparent 25%, rgba(1, 6, 4, 0.65) 75%, #010604 100%);
   pointer-events: none;
   z-index: 1;
 }
@@ -39,13 +39,13 @@
 /* Layered Golden Sanctum Aura Glow */
 .centralGoldenAura {
   position: absolute;
-  top: 42%;
+  top: 38%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: min(85vw, 360px, calc(100dvh - 180px));
-  height: min(85vw, 360px, calc(100dvh - 180px));
+  width: min(85vw, 360px, calc(100dvh - 140px));
+  height: min(85vw, 360px, calc(100dvh - 140px));
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(245, 175, 25, 0.35) 0%, rgba(217, 119, 6, 0.15) 45%, transparent 75%);
+  background: radial-gradient(circle, rgba(245, 175, 25, 0.32) 0%, rgba(217, 119, 6, 0.14) 45%, transparent 75%);
   pointer-events: none;
   z-index: 2;
   will-change: opacity, transform;
@@ -54,9 +54,9 @@
 /* Vector Canvas Wrapper */
 .vectorCanvasWrapper {
   position: relative;
-  width: min(88vw, 380px, calc((100dvh - 180px) * (400 / 480)));
-  max-height: calc(100dvh - 180px);
-  aspect-ratio: 400 / 480;
+  width: min(88vw, 360px, calc((100dvh - 140px) * (380 / 440)));
+  max-height: calc(100dvh - 140px);
+  aspect-ratio: 380 / 440;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -74,23 +74,25 @@
   shape-rendering: geometricPrecision;
 }
 
-/* Ambient Starlight Particles */
-.particleCanvas {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  z-index: 2;
-  overflow: hidden;
+/* Sacred Holy Emblem Breathing Glow */
+.sacredEmblemGroup {
+  animation: sanctumBreathe 3.2s ease-in-out infinite alternate;
 }
 
-.starlight {
-  position: absolute;
-  border-radius: 50%;
-  background: #FDE68A;
-  box-shadow: 0 0 6px rgba(253, 230, 138, 0.8);
+@keyframes sanctumBreathe {
+  0% {
+    filter: drop-shadow(0 0 8px rgba(245, 158, 11, 0.2));
+  }
+  100% {
+    filter: drop-shadow(0 0 22px rgba(245, 158, 11, 0.5));
+  }
 }
 
-/* Skip Indicator Pill — Positioned cleanly in Top Right to avoid collision with sound controls */
+.brandTitleText {
+  text-shadow: 0 2px 14px rgba(245, 158, 11, 0.4);
+}
+
+/* Skip Indicator Pill — Top Right Safe Area */
 .skipPill {
   position: absolute;
   top: max(16px, env(safe-area-inset-top, 16px));
@@ -98,7 +100,7 @@
   bottom: auto;
   background: rgba(6, 44, 28, 0.75);
   border: 1px solid rgba(212, 175, 55, 0.35);
-  color: rgba(254, 243, 199, 0.85);
+  color: rgba(254, 243, 199, 0.88);
   font-size: 11px;
   font-weight: 700;
   letter-spacing: 0.08em;
@@ -119,10 +121,10 @@
   border-color: rgba(212, 175, 55, 0.6);
 }
 
-/* Sacred Sound Prompt Pill */
+/* Sacred OM Sound Prompt Pill (When browser autoplay is waiting for interaction) */
 .soundPromptPill {
   position: absolute;
-  bottom: max(22px, env(safe-area-inset-bottom, 22px));
+  bottom: max(20px, env(safe-area-inset-bottom, 20px));
   left: 50%;
   transform: translateX(-50%);
   display: flex;
@@ -135,7 +137,7 @@
   border: 1.5px solid rgba(245, 158, 11, 0.65);
   box-shadow: 0 4px 24px rgba(245, 158, 11, 0.28), 0 0 16px rgba(245, 158, 11, 0.16);
   color: #FEF3C7;
-  padding: 8px 16px;
+  padding: 7px 15px;
   border-radius: 9999px;
   cursor: pointer;
   z-index: 25;
@@ -197,7 +199,7 @@
 /* Sound Active Indicator */
 .soundActivePill {
   position: absolute;
-  bottom: max(22px, env(safe-area-inset-bottom, 22px));
+  bottom: max(20px, env(safe-area-inset-bottom, 20px));
   left: 50%;
   transform: translateX(-50%);
   display: flex;
@@ -210,8 +212,7 @@
   color: #FDE68A;
   font-size: 11px;
   font-weight: 600;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
+  letter-spacing: 0.06em;
   padding: 6px 14px;
   border-radius: 9999px;
   z-index: 20;
@@ -247,3 +248,27 @@
   100% { transform: scaleY(1); }
 }
 
+/* Minimalist Golden Progress Line at Bottom */
+.loadingBarContainer {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: rgba(255, 255, 255, 0.05);
+  z-index: 10;
+  overflow: hidden;
+}
+
+.loadingBarFill {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, #F59E0B, #FDE68A, #F59E0B, transparent);
+  animation: loadProgress 3.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  transform-origin: left;
+}
+
+@keyframes loadProgress {
+  0% { transform: scaleX(0); }
+  100% { transform: scaleX(1); }
+}

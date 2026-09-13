@@ -30,7 +30,7 @@ export default function SplashScreen({ onFinish }: { onFinish: () => void }) {
     let isMounted = true;
     let splashTimer: NodeJS.Timeout;
 
-    // 🎵 Attempt immediate playback on load
+    // 🎵 Attempt immediate sacred OM chant playback on load
     const soundTimer = setTimeout(async () => {
       const started = await playSaarthiSonicIdent();
       if (!isMounted) return;
@@ -43,14 +43,14 @@ export default function SplashScreen({ onFinish }: { onFinish: () => void }) {
       }
     }, 60);
 
-    // ⏱️ Auto-finish splash after duration (7.2s divine journey)
+    // ⏱️ Pacing from first principles: 3.8s golden window (serene, sacred, zero sluggishness)
     splashTimer = setTimeout(() => {
       if (isMounted) {
         handleFinish();
       }
-    }, 7200);
+    }, 3800);
 
-    // 🛡️ Global one-time gesture unlock: any touch/tap on screen unlocks and plays audio
+    // 🛡️ Global one-time gesture unlock: touch/tap on screen unlocks sound & enters gracefully
     const handleOneTimeGesture = async () => {
       const started = await playSaarthiSonicIdent(true);
       if (isMounted && started) {
@@ -81,418 +81,340 @@ export default function SplashScreen({ onFinish }: { onFinish: () => void }) {
           exit={{ opacity: 0 }}
           transition={{ duration: 0.45, ease: SMOOTH_EASE }}
           onClick={() => {
-            if (!isAudioPlaying) {
+            if (!isAudioPlaying && isAutoplayBlocked) {
               handleStartSound();
+            } else {
+              handleFinish();
             }
           }}
         >
-          {/* 🌌 Phase 1: Deep Sanctum Ambient Vignette */}
+          {/* 🌌 Atmospheric Sanctum Background */}
           <div className={styles.sanctumVignette} />
 
-          {/* 🌟 Phase 2: Layered Golden Sanctum Aura */}
+          {/* 🌟 Radiant Golden Sanctum Aura Glow */}
           <motion.div
             className={styles.centralGoldenAura}
             initial={{ opacity: 0, scale: 0.85 }}
-            animate={{ opacity: 0.8, scale: 1 }}
-            transition={{ duration: 2.0, ease: SMOOTH_EASE }}
+            animate={{ opacity: 0.9, scale: 1.05 }}
+            transition={{ duration: 1.4, ease: SMOOTH_EASE }}
           />
 
-          {/* 🛕 100% PURE VECTOR CANVAS (Grouped Hardware-Accelerated SVG) */}
+          {/* 🛕 100% PURE VECTOR CANVAS (First-Principle Sacred Iconography) */}
           <div className={styles.vectorCanvasWrapper}>
             <svg
-              viewBox="0 0 400 480"
+              viewBox="0 0 380 440"
               className={styles.svgCanvas}
               xmlns="http://www.w3.org/2000/svg"
             >
               <defs>
-                {/* 🌟 Divine Sanctum Golden Halo */}
-                <radialGradient id="masterSanctumAura" cx="50%" cy="44%" r="46%">
-                  <stop offset="0%" stopColor="#F59E0B" stopOpacity="0.65" />
-                  <stop offset="25%" stopColor="#D97706" stopOpacity="0.45" />
-                  <stop offset="55%" stopColor="#B45309" stopOpacity="0.18" />
-                  <stop offset="80%" stopColor="#0A241C" stopOpacity="0.04" />
-                  <stop offset="100%" stopColor="#061813" stopOpacity="0" />
+                {/* Master Sanctum Radial Aura */}
+                <radialGradient id="masterSanctumAura" cx="50%" cy="38%" r="48%">
+                  <stop offset="0%" stopColor="#F59E0B" stopOpacity="0.55" />
+                  <stop offset="30%" stopColor="#D97706" stopOpacity="0.35" />
+                  <stop offset="60%" stopColor="#B45309" stopOpacity="0.12" />
+                  <stop offset="100%" stopColor="#05130D" stopOpacity="0" />
                 </radialGradient>
 
                 {/* Master Sacred Gold Gradient */}
                 <linearGradient id="divineGoldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
                   <stop offset="0%" stopColor="#FFFBEB" />
-                  <stop offset="20%" stopColor="#FDE68A" />
-                  <stop offset="50%" stopColor="#F59E0B" />
-                  <stop offset="80%" stopColor="#B45309" />
-                  <stop offset="100%" stopColor="#78350F" />
+                  <stop offset="25%" stopColor="#FDE68A" />
+                  <stop offset="60%" stopColor="#F59E0B" />
+                  <stop offset="100%" stopColor="#B45309" />
                 </linearGradient>
 
                 {/* Brilliant Golden Rim Highlight */}
                 <linearGradient id="goldRimGlow" x1="0%" y1="0%" x2="0%" y2="100%">
                   <stop offset="0%" stopColor="#FFFFFF" />
-                  <stop offset="25%" stopColor="#FEF08A" />
-                  <stop offset="65%" stopColor="#F59E0B" />
-                  <stop offset="100%" stopColor="#B45309" />
+                  <stop offset="30%" stopColor="#FEF08A" />
+                  <stop offset="70%" stopColor="#F59E0B" />
+                  <stop offset="100%" stopColor="#92400E" />
                 </linearGradient>
 
-                {/* Sacred Srichoornam Tilak Red */}
+                {/* Sacred Srichoornam Tilak Crimson Ruby */}
                 <linearGradient id="srichoornamRed" x1="0%" y1="0%" x2="0%" y2="100%">
-                  <stop offset="0%" stopColor="#EF4444" />
-                  <stop offset="45%" stopColor="#DC2626" />
+                  <stop offset="0%" stopColor="#FCA5A5" />
+                  <stop offset="20%" stopColor="#EF4444" />
+                  <stop offset="65%" stopColor="#DC2626" />
                   <stop offset="100%" stopColor="#991B1B" />
                 </linearGradient>
+
+                {/* Pristine Pure White Pearl Gradient for Thiruman */}
+                <linearGradient id="pearlWhite" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stopColor="#FFFFFF" />
+                  <stop offset="45%" stopColor="#F8FAFC" />
+                  <stop offset="85%" stopColor="#E2E8F0" />
+                  <stop offset="100%" stopColor="#CBD5E1" />
+                </linearGradient>
+
+                {/* Subtle Sacred Sanctum Glow Filter */}
+                <filter id="sanctumGlow" x="-20%" y="-20%" width="140%" height="140%">
+                  <feGaussianBlur stdDeviation="3.5" result="blur" />
+                  <feMerge>
+                    <feMergeNode in="blur" />
+                    <feMergeNode in="SourceGraphic" />
+                  </feMerge>
+                </filter>
               </defs>
 
-              {/* 🌟 LAYER 1: SANCTUM HALO & CELESTIAL ORBIT CIRCLE (0.0s – 1.4s | Tanpura Drone) */}
+              {/* 🌟 LAYER 1: SANCTUM HALO & CELESTIAL PRANAVA ॐ (0.0s – 1.0s) */}
               <motion.g
                 id="background-halo"
                 initial={{ opacity: 0, scale: 0.88 }}
                 animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 1.2, ease: SMOOTH_EASE }}
-                style={{ transformOrigin: '200px 210px' }}
+                transition={{ duration: 1.1, ease: SMOOTH_EASE }}
+                style={{ transformOrigin: '190px 150px' }}
               >
-                <circle
-                  cx="200"
-                  cy="210"
-                  r="155"
-                  fill="url(#masterSanctumAura)"
-                />
-                <circle
-                  cx="200"
-                  cy="205"
-                  r="142"
-                  stroke="url(#divineGoldGrad)"
-                  strokeWidth="0.8"
-                  strokeDasharray="4 4"
-                  fill="none"
-                  opacity="0.45"
-                />
+                {/* Aura circles */}
+                <circle cx="190" cy="150" r="135" fill="url(#masterSanctumAura)" />
+                <circle cx="190" cy="150" r="120" stroke="url(#divineGoldGrad)" strokeWidth="0.8" strokeDasharray="3 4" fill="none" opacity="0.38" />
+                <circle cx="190" cy="150" r="85" stroke="url(#divineGoldGrad)" strokeWidth="0.6" strokeDasharray="2 3" fill="none" opacity="0.28" />
+
+                {/* 12 Radiating Celestial Sunburst Light Filaments */}
+                {[0, 30, 60, 90, 120, 150, 180, 210, 240, 270, 300, 330].map((deg) => (
+                  <line
+                    key={deg}
+                    x1="190"
+                    y1="150"
+                    x2={190 + 130 * Math.cos((deg * Math.PI) / 180)}
+                    y2={150 + 130 * Math.sin((deg * Math.PI) / 180)}
+                    stroke="url(#divineGoldGrad)"
+                    strokeWidth="0.75"
+                    strokeDasharray="4 6"
+                    opacity="0.25"
+                  />
+                ))}
+
+                {/* ॐ (Sacred Pranava Om) Glowing Crown Watermark */}
+                <text
+                  x="190"
+                  y="74"
+                  textAnchor="middle"
+                  fontFamily="'Cinzel', Georgia, serif"
+                  fontSize="28"
+                  fontWeight="700"
+                  fill="url(#goldRimGlow)"
+                  opacity="0.88"
+                  letterSpacing="0.05em"
+                >
+                  ॐ
+                </text>
               </motion.g>
 
-              {/* ✦ LAYER 2: SACRED GEOMETRY SAARTHI MANDALA (0.2s – 1.5s) */}
+              {/* 🛕 LAYER 2: THE SACRED TIRUMALA HOLY TRIO & LOTUS (0.2s – 1.4s) */}
               <motion.g
-                id="sacred-mandala"
-                initial={{ opacity: 0, scale: 0.75 }}
-                animate={{ opacity: 1, scale: 1 }}
+                id="sacred-holy-emblem"
+                initial={{ opacity: 0, scale: 0.92, y: 12 }}
+                animate={{ opacity: 1, scale: 1, y: 0 }}
                 transition={{ delay: 0.2, duration: 1.1, ease: SMOOTH_EASE }}
-                style={{ transformOrigin: '200px 54px' }}
+                style={{ transformOrigin: '190px 160px' }}
+                className={styles.sacredEmblemGroup}
               >
-                {/* Concentric rings */}
-                <circle
-                  cx="200"
-                  cy="54"
-                  r="30"
-                  stroke="url(#divineGoldGrad)"
-                  strokeWidth="1.3"
-                  fill="none"
-                  opacity="0.95"
-                />
-                <circle
-                  cx="200"
-                  cy="54"
-                  r="20"
-                  stroke="url(#divineGoldGrad)"
-                  strokeWidth="0.9"
-                  fill="none"
-                  opacity="0.8"
-                />
-                <circle
-                  cx="200"
-                  cy="54"
-                  r="10"
-                  stroke="url(#goldRimGlow)"
-                  strokeWidth="0.7"
-                  fill="none"
-                  opacity="0.7"
-                />
-
-                {/* 8 Intersecting Sacred Flower-of-Life Arcs */}
-                <path
-                  d="
-                    M 200 24 Q 220 44 200 64 Q 180 44 200 24
-                    M 200 44 Q 220 64 200 84 Q 180 64 200 44
-                    M 170 54 Q 190 74 210 54 Q 190 34 170 54
-                    M 190 54 Q 210 74 230 54 Q 210 34 190 54
-                    M 179 33 Q 200 54 221 75
-                    M 179 75 Q 200 54 221 33
-                  "
-                  stroke="url(#goldRimGlow)"
-                  strokeWidth="0.9"
-                  fill="none"
-                  opacity="0.85"
-                />
-
-                {/* Cardinal Radial Axis Rays */}
-                <path
-                  d="M 200 18 L 200 90 M 164 54 L 236 54"
-                  stroke="url(#divineGoldGrad)"
-                  strokeWidth="1.1"
-                  strokeLinecap="round"
-                  opacity="0.9"
-                />
-
-                {/* Center Brilliant Diamond Star Burst */}
-                <polygon
-                  points="200,40 203.5,54 218,54 203.5,56.5 200,70 196.5,56.5 182,54 196.5,54"
-                  fill="url(#goldRimGlow)"
-                />
-                <circle cx="200" cy="54" r="2.8" fill="#FFFFFF" />
-              </motion.g>
-
-              {/* 👑 LAYER 3: LORD VENKATESWARA SWAMY MAJESTIC SILHOUETTE (1.35s – 2.8s | Bamboo Flute Motif) */}
-              <motion.g
-                id="divine-deity-form"
-                initial={{ opacity: 0, y: 12 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 1.35, duration: 1.1, ease: SMOOTH_EASE }}
-              >
-                {/* 1. Crown Pinnacle Kalasam Spire */}
-                <path
-                  d="
-                    M 200 88 L 203.5 96 L 207 106 L 193 106 L 196.5 96 Z
-                    M 200 84 L 202 88 L 198 88 Z
-                  "
-                  fill="url(#goldRimGlow)"
-                />
-
-                {/* 2. Stepped Gopuram Tiers with Golden Contours */}
-                <path
-                  d="
-                    M 193 106 C 195 116, 198 126, 200 130 C 202 126, 205 116, 207 106
-                    M 190 120 Q 200 115 210 120
-                    M 186 134 Q 200 129 214 134
-                    M 182 150 Q 200 144 218 150
-                    M 178 168 Q 200 161 222 168
-                    M 174 188 Q 200 180 226 188
-                  "
-                  stroke="url(#divineGoldGrad)"
-                  strokeWidth="1.8"
-                  strokeLinecap="round"
-                  fill="none"
-                  opacity="0.95"
-                />
-
-                {/* Crown Outer Ridge Flares */}
-                <path
-                  d="
-                    M 200 88
-                    C 205 108, 212 134, 218 160
-                    C 223 176, 227 188, 230 196
-                    M 200 88
-                    C 195 108, 188 134, 182 160
-                    C 177 176, 173 188, 170 196
-                  "
-                  stroke="url(#goldRimGlow)"
-                  strokeWidth="2.4"
-                  strokeLinecap="round"
-                  fill="none"
-                />
-
-                {/* Crown Inner Pointed Arch Tracery Panel */}
-                <path
-                  d="
-                    M 196 148 Q 200 142 204 148
-                    M 194 164 Q 200 156 206 164
-                    M 191 182 Q 200 172 209 182
-                    M 197 132 L 200 126 L 203 132
-                  "
-                  stroke="url(#divineGoldGrad)"
-                  strokeWidth="1.4"
-                  fill="none"
-                  opacity="0.85"
-                />
-
-                {/* Makara Kundalams (Earrings) */}
-                <g id="earrings">
-                  {/* Left */}
-                  <circle cx="156" cy="220" r="8.5" stroke="url(#divineGoldGrad)" strokeWidth="1.6" fill="none" />
-                  <circle cx="156" cy="220" r="5" stroke="url(#goldRimGlow)" strokeWidth="1.2" fill="none" />
-                  <circle cx="156" cy="220" r="2.5" fill="#FDE68A" />
-                  <path d="M 156 228.5 L 156 240 M 153 240 L 159 240" stroke="url(#divineGoldGrad)" strokeWidth="1.5" strokeLinecap="round" />
-                  {/* Right */}
-                  <circle cx="244" cy="220" r="8.5" stroke="url(#divineGoldGrad)" strokeWidth="1.6" fill="none" />
-                  <circle cx="244" cy="220" r="5" stroke="url(#goldRimGlow)" strokeWidth="1.2" fill="none" />
-                  <circle cx="244" cy="220" r="2.5" fill="#FDE68A" />
-                  <path d="M 244 228.5 L 244 240 M 241 240 L 247 240" stroke="url(#divineGoldGrad)" strokeWidth="1.5" strokeLinecap="round" />
+                {/* 🪷 Left: Sri Panchajanya Shankha (Sacred Conch Shell) */}
+                <g id="sacred-shankha">
+                  {/* Golden flame plume on top */}
+                  <path d="M 92 108 C 88 96, 96 86, 92 78 C 87 86, 83 92, 85 102 Z" fill="url(#goldRimGlow)" />
+                  {/* Pearlescent conch body */}
+                  <path
+                    d="M 94 110 C 74 116, 62 136, 68 156 C 74 174, 96 176, 108 166 C 116 156, 115 132, 102 122 Z"
+                    fill="url(#pearlWhite)"
+                    stroke="url(#divineGoldGrad)"
+                    strokeWidth="1.3"
+                  />
+                  {/* Sacred spiral grooves */}
+                  <path d="M 76 138 Q 90 144 104 134" stroke="url(#divineGoldGrad)" strokeWidth="1.2" fill="none" opacity="0.85" />
+                  <path d="M 72 150 Q 90 156 106 148" stroke="url(#divineGoldGrad)" strokeWidth="1.2" fill="none" opacity="0.85" />
+                  <path d="M 80 162 Q 92 166 102 160" stroke="url(#divineGoldGrad)" strokeWidth="1.0" fill="none" opacity="0.75" />
+                  <circle cx="92" cy="110" r="2.2" fill="#FDE68A" />
                 </g>
 
-                {/* Shoulder Finials / Kalasams */}
-                <path
-                  d="
-                    M 132 232 L 136 222 L 140 232 Z
-                    M 136 218 L 136 222
-                    M 128 236 Q 136 232 144 236
-                  "
-                  stroke="url(#goldRimGlow)"
-                  strokeWidth="1.5"
-                  fill="url(#divineGoldGrad)"
-                />
-                <path
-                  d="
-                    M 260 232 L 264 222 L 268 232 Z
-                    M 264 218 L 264 222
-                    M 256 236 Q 264 232 272 236
-                  "
-                  stroke="url(#goldRimGlow)"
-                  strokeWidth="1.5"
-                  fill="url(#divineGoldGrad)"
-                />
+                {/* ☸️ Right: Sri Sudarshana Chakra (Sacred Discus) */}
+                <g id="sacred-chakra">
+                  {/* Golden flame plume on top */}
+                  <path d="M 288 108 C 284 96, 292 86, 288 78 C 283 86, 279 92, 281 102 Z" fill="url(#goldRimGlow)" />
+                  {/* Double outer rims */}
+                  <circle cx="288" cy="142" r="28" stroke="url(#divineGoldGrad)" strokeWidth="2.2" fill="none" />
+                  <circle cx="288" cy="142" r="23" stroke="url(#goldRimGlow)" strokeWidth="0.9" strokeDasharray="3 3" fill="none" opacity="0.85" />
+                  {/* Center diamond hub */}
+                  <circle cx="288" cy="142" r="8" fill="url(#divineGoldGrad)" />
+                  <circle cx="288" cy="142" r="3.5" fill="#FFFFFF" />
+                  {/* 8 Cardinal & Diagonal Spokes */}
+                  <path
+                    d="
+                      M 288 114 L 288 170
+                      M 260 142 L 316 142
+                      M 268 122 L 308 162
+                      M 268 162 L 308 122
+                    "
+                    stroke="url(#divineGoldGrad)"
+                    strokeWidth="1.4"
+                    strokeLinecap="round"
+                  />
+                  {/* Discus Flame Teeth at Cardinal Edges */}
+                  <circle cx="288" cy="114" r="2.2" fill="#FDE68A" />
+                  <circle cx="288" cy="170" r="2.2" fill="#FDE68A" />
+                  <circle cx="260" cy="142" r="2.2" fill="#FDE68A" />
+                  <circle cx="316" cy="142" r="2.2" fill="#FDE68A" />
+                </g>
 
-                {/* Shoulder Armor Arcs (Bhujakirti Contours) */}
-                <path
-                  d="
-                    M 166 204
-                    C 148 208, 134 222, 126 240
-                    C 118 260, 116 282, 120 306
-                    C 124 320, 132 328, 142 334
-                    M 234 204
-                    C 252 208, 266 222, 274 240
-                    C 282 260, 284 282, 280 306
-                    C 276 320, 268 328, 258 334
-                  "
-                  stroke="url(#divineGoldGrad)"
-                  strokeWidth="2.4"
-                  strokeLinecap="round"
-                  fill="none"
-                  opacity="0.95"
-                />
+                {/* 🛕 Center: Sri Tirumala Sacred Namam (Thiruman & Srichoornam) */}
+                <g id="sacred-tirunamam" filter="url(#sanctumGlow)">
+                  {/* Left White Arm (Thiruman) */}
+                  <path
+                    d="
+                      M 160 98 
+                      C 166 128, 172 166, 178 198 
+                      L 188 198 
+                      C 182 166, 175 128, 169 98 Z
+                    "
+                    fill="url(#pearlWhite)"
+                    stroke="url(#divineGoldGrad)"
+                    strokeWidth="0.8"
+                  />
 
-                {/* Shoulder Medallions */}
-                <circle cx="138" cy="266" r="10" stroke="url(#divineGoldGrad)" strokeWidth="1.3" strokeDasharray="3 2" fill="none" opacity="0.85" />
-                <circle cx="262" cy="266" r="10" stroke="url(#divineGoldGrad)" strokeWidth="1.3" strokeDasharray="3 2" fill="none" opacity="0.85" />
+                  {/* Right White Arm (Thiruman) */}
+                  <path
+                    d="
+                      M 220 98 
+                      C 214 128, 208 166, 202 198 
+                      L 192 198 
+                      C 198 166, 205 128, 211 98 Z
+                    "
+                    fill="url(#pearlWhite)"
+                    stroke="url(#divineGoldGrad)"
+                    strokeWidth="0.8"
+                  />
 
-                {/* Chest Necklaces */}
-                <path
-                  d="
-                    M 166 260 Q 200 274 234 260
-                    M 158 278 Q 200 296 242 278
-                    M 150 298 Q 200 320 250 298
-                  "
-                  stroke="url(#divineGoldGrad)"
-                  strokeWidth="1.4"
-                  strokeDasharray="3 3"
-                  fill="none"
-                  opacity="0.8"
-                />
+                  {/* Connecting White Base (U-Pedestal) */}
+                  <path
+                    d="
+                      M 178 198 
+                      Q 190 216 202 198 
+                      Q 190 224 178 198 Z
+                    "
+                    fill="url(#pearlWhite)"
+                    stroke="url(#divineGoldGrad)"
+                    strokeWidth="0.8"
+                  />
 
-                {/* Central Jeweled Pendant */}
-                <polygon
-                  points="200,290 206,299 200,308 194,299"
-                  fill="url(#goldRimGlow)"
-                />
+                  {/* Central Sacred Vermilion Srichoornam Tilakam */}
+                  <path
+                    d="
+                      M 186 102 
+                      L 194 102 
+                      L 193 206 
+                      Q 190 214 187 206 Z
+                    "
+                    fill="url(#srichoornamRed)"
+                  />
+                  {/* Radiant Golden Diamond Crown on Tilakam */}
+                  <polygon points="190,92 194,98 190,104 186,98" fill="url(#goldRimGlow)" />
+                  <circle cx="190" cy="98" r="1.5" fill="#FFFFFF" />
+                </g>
+
+                {/* 🌸 Sacred Golden Lotus Base (Padma Peetham) */}
+                <g id="sacred-lotus-base">
+                  {/* Center Petal */}
+                  <path d="M 190 200 Q 196 214 190 226 Q 184 214 190 200 Z" fill="url(#goldRimGlow)" />
+                  {/* Inner Flanking Petals */}
+                  <path d="M 190 226 Q 174 218 178 206 Q 185 216 190 226 Z" fill="url(#divineGoldGrad)" />
+                  <path d="M 190 226 Q 206 218 202 206 Q 195 216 190 226 Z" fill="url(#divineGoldGrad)" />
+                  {/* Outer Flanking Petals */}
+                  <path d="M 190 226 Q 158 222 165 212 Q 178 220 190 226 Z" fill="url(#divineGoldGrad)" />
+                  <path d="M 190 226 Q 222 222 215 212 Q 202 220 190 226 Z" fill="url(#divineGoldGrad)" />
+                  {/* Wide Base Petals */}
+                  <path d="M 190 226 Q 142 228 150 220 Q 170 224 190 226 Z" fill="url(#goldRimGlow)" opacity="0.8" />
+                  <path d="M 190 226 Q 238 228 230 220 Q 210 224 190 226 Z" fill="url(#goldRimGlow)" opacity="0.8" />
+                  {/* Lotus Foundation Golden Line */}
+                  <line x1="130" y1="232" x2="250" y2="232" stroke="url(#divineGoldGrad)" strokeWidth="1.2" strokeLinecap="round" />
+                  <circle cx="130" cy="232" r="2.2" fill="#F59E0B" />
+                  <circle cx="250" cy="232" r="2.2" fill="#F59E0B" />
+                </g>
               </motion.g>
 
-              {/* 🪷 LAYER 4: RADIANT SACRED TIRUMALA NAMAM (2.95s – 4.2s | Resonant Veena Pluck) */}
+              {/* 📜 LAYER 3: MASTER BRAND TYPOGRAPHY & BLESSING (0.65s – 1.6s) */}
               <motion.g
-                id="sacred-namam"
-                initial={{ opacity: 0, scale: 0.8 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ delay: 2.95, duration: 0.9, ease: SMOOTH_EASE }}
-                style={{ transformOrigin: '200px 225px' }}
-              >
-                {/* Left Pure White Shankha/U-Arm */}
-                <path
-                  d="
-                    M 181 194 
-                    C 184 212, 189 230, 193 242 
-                    L 199 242 
-                    C 195 230, 190 212, 187 194 Z
-                  "
-                  fill="#FFFFFF"
-                />
-
-                {/* Right Pure White Chakra/U-Arm */}
-                <path
-                  d="
-                    M 219 194 
-                    C 216 212, 211 230, 207 242 
-                    L 201 242 
-                    C 205 230, 210 212, 213 194 Z
-                  "
-                  fill="#FFFFFF"
-                />
-
-                {/* Connecting White Base */}
-                <path
-                  d="M 193 242 Q 200 250 207 242 Q 200 254 193 242 Z"
-                  fill="#FFFFFF"
-                />
-
-                {/* Central Radiant Vermilion Srichoornam Tilakam */}
-                <path
-                  d="M 198 196 L 202 196 L 202 248 Q 200 252 198 248 Z"
-                  fill="url(#srichoornamRed)"
-                />
-                <circle cx="200" cy="196" r="2" fill="#F87171" />
-              </motion.g>
-
-              {/* 📜 LAYER 5: MASTER BRAND TYPOGRAPHY & SACRED LOTUS BEAM (4.1s – 5.8s | Subtle "Om" Swell) */}
-              <motion.g
-                id="brand-typography-and-lotus"
+                id="brand-typography-section"
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 4.1, duration: 0.9, ease: SMOOTH_EASE }}
+                transition={{ delay: 0.65, duration: 0.9, ease: SMOOTH_EASE }}
               >
-                {/* Saarthi Wordmark */}
+                {/* Main Regal Wordmark */}
                 <text
-                  x="200"
-                  y="370"
+                  x="190"
+                  y="294"
                   textAnchor="middle"
                   fill="#FFFDF8"
-                  fontSize="38"
-                  fontWeight="600"
-                  fontFamily="Cinzel, 'Playfair Display', Georgia, serif"
-                  letterSpacing="0.18em"
+                  fontSize="34"
+                  fontWeight="700"
+                  fontFamily="'Cinzel', 'Playfair Display', Georgia, serif"
+                  letterSpacing="0.22em"
+                  className={styles.brandTitleText}
                 >
-                  Saarthi Guide
+                  SAARTHI
                 </text>
 
-                {/* Subtitle / Tagline */}
+                {/* Telugu Sacred Name */}
                 <text
-                  x="200"
-                  y="400"
+                  x="190"
+                  y="326"
+                  textAnchor="middle"
+                  fill="#FDE68A"
+                  fontSize="17.5"
+                  fontWeight="700"
+                  fontFamily="'Noto Sans Telugu', system-ui, sans-serif"
+                  letterSpacing="0.12em"
+                >
+                  సారథి
+                </text>
+
+                {/* Clean Purpose Subtitle */}
+                <text
+                  x="190"
+                  y="354"
+                  textAnchor="middle"
+                  fill="#E2E8F0"
+                  fontSize="9.8"
+                  fontWeight="600"
+                  fontFamily="'Inter', system-ui, sans-serif"
+                  letterSpacing="0.24em"
+                  opacity="0.88"
+                >
+                  YOUR DIVINE TIRUPATI COMPANION
+                </text>
+
+                {/* Sacred Devotional Blessing Mantra */}
+                <text
+                  x="190"
+                  y="384"
                   textAnchor="middle"
                   fill="#F59E0B"
-                  fontSize="11.5"
-                  fontWeight="600"
-                  fontFamily="Inter, system-ui, sans-serif"
-                  letterSpacing="0.22em"
+                  fontSize="12"
+                  fontWeight="700"
+                  fontFamily="'Noto Sans Telugu', system-ui, sans-serif"
+                  letterSpacing="0.06em"
                   opacity="0.95"
                 >
-                  Spiritual Pilgrim Companion
+                  || ఓం నమో వేంకటేశాయ ||
                 </text>
 
-                {/* Lotus Beam - Left */}
+                {/* Decorative Bottom Divider Filament */}
                 <line
-                  x1="95"
-                  y1="428"
-                  x2="182"
-                  y2="428"
+                  x1="120"
+                  y1="406"
+                  x2="260"
+                  y2="406"
                   stroke="url(#divineGoldGrad)"
-                  strokeWidth="1.1"
-                  strokeLinecap="round"
+                  strokeWidth="0.8"
+                  strokeDasharray="2 3"
+                  opacity="0.4"
                 />
-                <circle cx="95" cy="428" r="2.2" fill="#F59E0B" />
-
-                {/* Central Sacred Lotus Flower */}
-                <g id="lotus-flower">
-                  <path d="M 200 416 Q 204.5 423 200 428 Q 195.5 423 200 416 Z" fill="url(#goldRimGlow)" />
-                  <path d="M 200 428 Q 189 424 192 418 Q 196.5 422 200 428 Z" fill="url(#divineGoldGrad)" />
-                  <path d="M 200 428 Q 211 424 208 418 Q 203.5 422 200 428 Z" fill="url(#divineGoldGrad)" />
-                </g>
-
-                {/* Lotus Beam - Right */}
-                <line
-                  x1="218"
-                  y1="428"
-                  x2="305"
-                  y2="428"
-                  stroke="url(#divineGoldGrad)"
-                  strokeWidth="1.1"
-                  strokeLinecap="round"
-                />
-                <circle cx="305" cy="428" r="2.2" fill="#F59E0B" />
+                <circle cx="190" cy="406" r="2.2" fill="#F59E0B" />
               </motion.g>
             </svg>
           </div>
 
-          {/* 🔊 Sacred Sound Prompt Pill (Visible when browser blocks autoplay until user interaction) */}
+          {/* 🔊 Sacred OM Sound Prompt (When browser autoplay requires user gesture) */}
           {isAutoplayBlocked && !isAudioPlaying && (
             <motion.button
               type="button"
@@ -507,13 +429,13 @@ export default function SplashScreen({ onFinish }: { onFinish: () => void }) {
               }}
             >
               <span className={styles.pulseDot} />
-              <span className={styles.soundPromptTelugu}>దివ్య నాదం వినండి</span>
+              <span className={styles.soundPromptTelugu}>దివ్య ప్రణవ నాదం</span>
               <span className={styles.soundPromptDivider}>•</span>
-              <span className={styles.soundPromptEnglish}>Tap for Sacred Sound 🔊</span>
+              <span className={styles.soundPromptEnglish}>Tap for OM ॐ</span>
             </motion.button>
           )}
 
-          {/* 🎵 Active Divine Sound Indicator */}
+          {/* 🎵 Active Divine OM Soundwave Indicator */}
           {isAudioPlaying && (
             <motion.div
               className={styles.soundActivePill}
@@ -526,7 +448,7 @@ export default function SplashScreen({ onFinish }: { onFinish: () => void }) {
                 <span />
                 <span />
               </span>
-              <span>Divine Soundscape</span>
+              <span>ప్రణవ నాదం ॐ • OM Soundscape</span>
             </motion.div>
           )}
 
@@ -535,7 +457,7 @@ export default function SplashScreen({ onFinish }: { onFinish: () => void }) {
             className={styles.skipPill}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ delay: 0.2, duration: 0.3 }}
+            transition={{ delay: 0.15, duration: 0.25 }}
             onClick={(e) => {
               e.stopPropagation();
               handleFinish();
@@ -543,6 +465,11 @@ export default function SplashScreen({ onFinish }: { onFinish: () => void }) {
           >
             Skip →
           </motion.button>
+
+          {/* 🌟 Elegant Bottom Loading Progress Bar */}
+          <div className={styles.loadingBarContainer}>
+            <div className={styles.loadingBarFill} />
+          </div>
         </motion.div>
       )}
     </AnimatePresence>

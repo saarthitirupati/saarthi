@@ -46,7 +46,7 @@ export default function SplashPage() {
           className={styles.brandContainer}
         >
           <h1 className={styles.brandName}>Saarthi</h1>
-          <p className={styles.tagline}>पथ की खोज करें</p>
+          <p className={styles.tagline}>దివ్య యాత్రా మార్గదర్శి</p>
         </motion.div>
       </motion.div>
 

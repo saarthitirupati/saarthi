@@ -141,63 +141,87 @@ async function playSyntheticOpeningIdent(): Promise<boolean> {
     // Master gain
     const masterGain = ctx.createGain();
     masterGain.gain.setValueAtTime(0.001, now);
-    masterGain.gain.linearRampToValueAtTime(0.35, now + 1.2);
-    masterGain.gain.setValueAtTime(0.35, now + 5.0);
-    masterGain.gain.exponentialRampToValueAtTime(0.0001, now + 7.0);
+    masterGain.gain.linearRampToValueAtTime(0.40, now + 0.8);
+    masterGain.gain.setValueAtTime(0.40, now + 3.6);
+    masterGain.gain.exponentialRampToValueAtTime(0.0001, now + 5.2);
     masterGain.connect(ctx.destination);
 
-    // 1. Warm Tanpura Drone (108 Hz + 216 Hz harmonics)
-    [108, 216, 324].forEach((freq, idx) => {
+    // 1. Warm Cosmic Tanpura Drone Bed (136.1 Hz Om + sub-octaves & fifths)
+    const tanpuraFreqs = [68.05, 102.08, 136.10, 272.20];
+    tanpuraFreqs.forEach((freq, idx) => {
       const osc = ctx.createOscillator();
       const oscGain = ctx.createGain();
       osc.type = idx === 0 ? 'sine' : 'triangle';
       osc.frequency.setValueAtTime(freq, now);
 
       oscGain.gain.setValueAtTime(0.001, now);
-      oscGain.gain.linearRampToValueAtTime(0.15 / (idx + 1), now + 1.0);
-      oscGain.gain.exponentialRampToValueAtTime(0.0001, now + 6.8);
+      oscGain.gain.linearRampToValueAtTime(0.18 / (idx + 1), now + 0.9);
+      oscGain.gain.exponentialRampToValueAtTime(0.0001, now + 5.0);
 
       osc.connect(oscGain);
       oscGain.connect(masterGain);
       osc.start(now);
-      osc.stop(now + 7.0);
+      osc.stop(now + 5.2);
     });
 
-    // 2. Deep Temple Bell (216 Hz with long resonance)
-    const bellOsc = ctx.createOscillator();
-    const bellGain = ctx.createGain();
-    bellOsc.type = 'sine';
-    bellOsc.frequency.setValueAtTime(216, now + 0.2);
-    bellGain.gain.setValueAtTime(0.001, now);
-    bellGain.gain.setValueAtTime(0.3, now + 0.2);
-    bellGain.gain.exponentialRampToValueAtTime(0.0001, now + 4.8);
-    bellOsc.connect(bellGain);
-    bellGain.connect(masterGain);
-    bellOsc.start(now + 0.2);
-    bellOsc.stop(now + 5.0);
+    // 2. Deep Sanctum Bronze Bell (Tuned to 136.1 Hz with rich partials)
+    const bellFreqs = [136.1, 272.2, 324.0, 408.3];
+    bellFreqs.forEach((freq, idx) => {
+      const bellOsc = ctx.createOscillator();
+      const bellGain = ctx.createGain();
+      bellOsc.type = 'sine';
+      bellOsc.frequency.setValueAtTime(freq, now + 0.1);
 
-    // 3. Three-note Veena Greeting Phrase (Sa=240, Pa=360, Sa'=480)
-    const notes = [
-      { f: 240, t: 1.5, d: 1.4 },
-      { f: 360, t: 2.6, d: 1.4 },
-      { f: 480, t: 3.8, d: 2.0 },
-    ];
-    notes.forEach(({ f, t, d }) => {
-      const noteTime = now + t;
-      const vOsc = ctx.createOscillator();
-      const vGain = ctx.createGain();
-      vOsc.type = 'triangle';
-      vOsc.frequency.setValueAtTime(f, noteTime);
+      const amp = idx === 0 ? 0.35 : (0.22 / (idx + 1));
+      bellGain.gain.setValueAtTime(0.001, now);
+      bellGain.gain.setValueAtTime(amp, now + 0.1);
+      bellGain.gain.exponentialRampToValueAtTime(0.0001, now + 3.8);
 
-      vGain.gain.setValueAtTime(0.001, noteTime);
-      vGain.gain.setValueAtTime(0.28, noteTime + 0.04);
-      vGain.gain.exponentialRampToValueAtTime(0.0001, noteTime + d);
-
-      vOsc.connect(vGain);
-      vGain.connect(masterGain);
-      vOsc.start(noteTime);
-      vOsc.stop(noteTime + d + 0.1);
+      bellOsc.connect(bellGain);
+      bellGain.connect(masterGain);
+      bellOsc.start(now + 0.1);
+      bellOsc.stop(now + 4.0);
     });
+
+    // 3. Primordial Sacred OM (A-U-M) Vocal Formant Chanted Drone
+    const omOsc = ctx.createOscillator();
+    const omGain = ctx.createGain();
+    const formantFilter = ctx.createBiquadFilter();
+
+    omOsc.type = 'sawtooth';
+    omOsc.frequency.setValueAtTime(136.10, now + 0.15); // Cosmic OM fundamental
+
+    // Micro-vibrato (4.2 Hz) for human breath warmth
+    const lfo = ctx.createOscillator();
+    const lfoGain = ctx.createGain();
+    lfo.frequency.setValueAtTime(4.2, now);
+    lfoGain.gain.setValueAtTime(1.5, now);
+    lfo.connect(omOsc.frequency);
+    lfo.start(now + 0.15);
+    lfo.stop(now + 5.0);
+
+    // Dynamic A -> U -> M Formant Filter
+    formantFilter.type = 'bandpass';
+    formantFilter.Q.setValueAtTime(2.8, now);
+    // "Aaah" formant at opening
+    formantFilter.frequency.setValueAtTime(740, now + 0.15);
+    // Smooth glide to "Ooo"
+    formantFilter.frequency.exponentialRampToValueAtTime(420, now + 1.4);
+    // Transition to deep nasal "Mmmm..."
+    formantFilter.frequency.exponentialRampToValueAtTime(260, now + 2.6);
+
+    // Vocal envelope
+    omGain.gain.setValueAtTime(0.001, now);
+    omGain.gain.linearRampToValueAtTime(0.32, now + 0.9);
+    omGain.gain.setValueAtTime(0.32, now + 3.2);
+    omGain.gain.exponentialRampToValueAtTime(0.0001, now + 4.9);
+
+    omOsc.connect(formantFilter);
+    formantFilter.connect(omGain);
+    omGain.connect(masterGain);
+
+    omOsc.start(now + 0.15);
+    omOsc.stop(now + 5.0);
 
     return true;
   } catch {
