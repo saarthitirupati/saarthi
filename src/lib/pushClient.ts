@@ -3,9 +3,7 @@
 
 export type PushPermissionState = 'granted' | 'denied' | 'default' | 'unsupported';
 
-const VAPID_KEY =
-  process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY ||
-  'BG66lKYjVyCTBCyVvgT0qpmwpFaJ414JqzVUVNZ14KRQlcC5UdqDUOp9USQElQ2r7vO6P4fzYlX3oFRuu4oR5V8';
+const VAPID_KEY = process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY || '';
 
 function urlBase64ToUint8Array(base64String: string): BufferSource {
   const padding = '='.repeat((4 - (base64String.length % 4)) % 4);
@@ -56,7 +54,7 @@ export async function subscribeToPushNotifications(): Promise<{
     }
 
     let sub = await reg.pushManager.getSubscription();
-    if (!sub) {
+    if (!sub && VAPID_KEY) {
       sub = await reg.pushManager.subscribe({
         userVisibleOnly: true,
         applicationServerKey: urlBase64ToUint8Array(VAPID_KEY),
@@ -129,7 +127,7 @@ export async function syncExistingPushSubscription(): Promise<void> {
     if (!reg.pushManager) return;
 
     let sub = await reg.pushManager.getSubscription();
-    if (!sub) {
+    if (!sub && VAPID_KEY) {
       sub = await reg.pushManager.subscribe({
         userVisibleOnly: true,
         applicationServerKey: urlBase64ToUint8Array(VAPID_KEY),
