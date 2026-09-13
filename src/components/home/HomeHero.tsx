@@ -699,7 +699,8 @@ export function HomeHero({ userName, locationName, weatherTemp, liveStatus, acti
   const [showBlessing, setShowBlessing] = useState(false);
   const [isChanting, setIsChanting] = useState(false);
   const [justCompletedMala, setJustCompletedMala] = useState(false);
-  const blessingTimerRef = React.useRef<NodeJS.Timeout | null>(null);
+  const [cooldownSeconds, setCooldownSeconds] = useState(0);
+  const cooldownTimerRef = React.useRef<NodeJS.Timeout | null>(null);
 
   // Bead counter within current Mala: 1 to 108
   const [chantCount, setChantCount] = useState<number>(() => {
@@ -718,7 +719,26 @@ export function HomeHero({ userName, locationName, weatherTemp, liveStatus, acti
     return 0;
   });
 
+  // 10-second meditative cadence countdown effect
+  React.useEffect(() => {
+    if (cooldownSeconds > 0) {
+      cooldownTimerRef.current = setTimeout(() => {
+        setCooldownSeconds((prev) => Math.max(0, prev - 1));
+      }, 1000);
+    }
+    return () => {
+      if (cooldownTimerRef.current) {
+        clearTimeout(cooldownTimerRef.current);
+      }
+    };
+  }, [cooldownSeconds]);
+
   const handleChantTap = () => {
+    if (cooldownSeconds > 0) {
+      triggerBeadHaptic(false);
+      return;
+    }
+
     const is108Reach = chantCount >= 108;
 
     if (is108Reach) {
@@ -727,10 +747,9 @@ export function HomeHero({ userName, locationName, weatherTemp, liveStatus, acti
       triggerBeadHaptic(true);
       const nextMalas = completedMalas + 1;
       setCompletedMalas(nextMalas);
-      setChantCount(1); // Clean reset back to 1 for next 108 Mala
       setJustCompletedMala(true);
+      setCooldownSeconds(0);
       if (typeof window !== 'undefined') {
-        localStorage.setItem('srivari_chant_count', '1');
         localStorage.setItem('srivari_completed_malas', nextMalas.toString());
       }
     } else {
@@ -739,6 +758,7 @@ export function HomeHero({ userName, locationName, weatherTemp, liveStatus, acti
       const nextCount = chantCount + 1;
       setChantCount(nextCount);
       setJustCompletedMala(false);
+      setCooldownSeconds(10); // Enforce 10-second reverent gap between chants
       if (typeof window !== 'undefined') {
         localStorage.setItem('srivari_chant_count', nextCount.toString());
       }
@@ -747,45 +767,78 @@ export function HomeHero({ userName, locationName, weatherTemp, liveStatus, acti
     setIsChanting(true);
     setShowBlessing(true);
     setTimeout(() => setIsChanting(false), 300);
-
-    if (blessingTimerRef.current) {
-      clearTimeout(blessingTimerRef.current);
-    }
-    blessingTimerRef.current = setTimeout(() => {
-      setShowBlessing(false);
-      setJustCompletedMala(false);
-    }, 4500);
   };
 
-  const handleResetMala = (e: React.MouseEvent) => {
-    e.stopPropagation();
+  const handleStartNextMala = () => {
     setChantCount(1);
     setJustCompletedMala(false);
+    setCooldownSeconds(0);
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('srivari_chant_count', '1');
+    }
+    playTempleBellChime();
+    triggerBeadHaptic(false);
+  };
+
+  const handleResetMala = (e?: React.MouseEvent) => {
+    if (e) e.stopPropagation();
+    setChantCount(1);
+    setJustCompletedMala(false);
+    setCooldownSeconds(0);
     if (typeof window !== 'undefined') {
       localStorage.setItem('srivari_chant_count', '1');
     }
     triggerBeadHaptic(false);
   };
 
-  const handleShareBlessing = (e: React.MouseEvent) => {
-    e.stopPropagation();
+  const handleShareBlessing = (e?: React.MouseEvent) => {
+    if (e) e.stopPropagation();
     const currentNama = getGovindaNamaForBead(chantCount);
-    const text = lang === 'te'
-      ? `🙏 *శ్రీవారి దివ్య ఆశీర్వచనం* ✨\n\n"${currentNama.namaTe}"\n\n${currentNama.blessingTe}\n\n📿 సారథి యాప్‌లో శ్రీవారి 108 జప మాల నామస్మరణ చేయండి: https://saarthitirupati.in`
-      : `🙏 *Srivari Divine Blessing* ✨\n\n"${currentNama.namaEn}"\n\n${currentNama.blessingEn}\n\n📿 Chant Srivari 108 Japa Mala on Saarthi: https://saarthitirupati.in`;
+    const text = `✨ 📿 *శ్రీ వేంకటేశ్వర 108 దివ్య నామ జప మాల* 📿 ✨
+━━━━━━━━━━━━━━━━━━━━━━━━
+🌸 *నామం #${chantCount}/108:*
+*${currentNama.namaTe}*
+_(${currentNama.namaEn})_
+
+🌿 *దివ్య ఆశీర్వచనం:*
+"${currentNama.blessingTe}"
+
+🕊️ _${currentNama.blessingEn}_
+━━━━━━━━━━━━━━━━━━━━━━━━
+🪔 *మాల ప్రగతి:* ${chantCount}/108 నామ జపం పూర్తయింది${completedMalas > 0 ? ` | సంపూర్ణ మాలలు: ${completedMalas}` : ''}
+🙏 మీరూ శ్రీవారి 108 నామ జప సాధన చేయండి:
+👉 https://saarthitirupati.in
+━━━━━━━━━━━━━━━━━━━━━━━━
+_ఓం నమో వేంకటేశాయ • సర్వే జనాః సుఖినో భవంతు_`;
     
     if (typeof window !== 'undefined') {
       window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(text)}`, '_blank');
     }
   };
 
-  React.useEffect(() => {
-    return () => {
-      if (blessingTimerRef.current) {
-        clearTimeout(blessingTimerRef.current);
-      }
-    };
-  }, []);
+  const handleShareMalaPoorthi = (e?: React.MouseEvent) => {
+    if (e) e.stopPropagation();
+    const text = `🎉 📿 *శ్రీ వేంకటేశ్వర 108 జప మాల సంపూర్ణం!* 📿 🎉
+━━━━━━━━━━━━━━━━━━━━━━━━
+స్వామివారి దివ్య కృపతో ఈరోజు *108 దివ్య నామాల సంపూర్ణ జప మాల* విజయవంతంగా పూర్తి చేయడమైనది! 🪔
+
+✨ *శ్రీ వేంకటాచలాధీశ్వర పరబ్రహ్మణే నమః* ✨
+
+🌸 *దివ్య ఫలశ్రుతి:*
+"శ్రీ వేంకటేశ్వర పవిత్ర నామ సంకీర్తనం సకల పాపహరం, మనశ్శాంతి ప్రదాయకం, సర్వ శుభప్రదం."
+_("Chanting the 108 divine names of Lord Srinivasa brings peace, protection, and boundless auspicious blessings.")_
+
+🏆 *పూర్తయిన మాలలు:* ${completedMalas} (${completedMalas * 108} దివ్య జపాలు)
+━━━━━━━━━━━━━━━━━━━━━━━━
+🙏 మీరూ శ్రీవారి 108 జప మాల సాధన చేయండి:
+👉 https://saarthitirupati.in
+━━━━━━━━━━━━━━━━━━━━━━━━
+_ఓం నమో వేంకటేశాయ • శ్రీ పద్మావతీ సమేత శ్రీనివాసాయ నమః_`;
+    
+    if (typeof window !== 'undefined') {
+      window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(text)}`, '_blank');
+    }
+  };
 
   const scenario = getSaarthiDecisionScenario();
   const todayDateStr = new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'short' });
@@ -921,257 +974,541 @@ export function HomeHero({ userName, locationName, weatherTemp, liveStatus, acti
           <>
             {/* Devotional Invocation & Weather Bar */}
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '8px', marginBottom: '10px', position: 'relative', width: '100%', boxSizing: 'border-box' }}>
-              <button
-                type="button"
-                onClick={handleChantTap}
-                aria-label={lang === 'te' ? 'ఓం నమో వేంకటేశాయ జపించండి మరియు ఆశీస్సులు పొందండి' : 'Chant Om Namo Venkatesaya & receive divine blessings'}
-                style={{
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  gap: '4px',
-                  padding: '4px 8px',
-                  borderRadius: '16px',
-                  background: 'linear-gradient(135deg, #FFFBEB 0%, #FEF3C7 50%, #FDE68A 100%)',
-                  border: '1px solid rgba(245, 158, 11, 0.45)',
-                  boxShadow: '0 2px 8px rgba(245, 158, 11, 0.18)',
-                  fontSize: 'clamp(10px, 2.8vw, 11px)',
-                  fontWeight: 800,
-                  color: '#78350F',
-                  letterSpacing: '0.1px',
-                  cursor: 'pointer',
-                  transform: isChanting ? 'scale(0.95)' : 'scale(1)',
-                  transition: 'all 0.2s cubic-bezier(0.16, 1, 0.3, 1)',
-                  userSelect: 'none',
-                  whiteSpace: 'nowrap',
-                  minWidth: 0,
-                  maxWidth: 'calc(100% - 94px)',
-                  flexShrink: 1
-                }}
-              >
-                <Sparkles size={11} color="#D97706" style={{ animation: isChanting ? 'spin 0.4s ease' : 'none', flexShrink: 0 }} />
-                <span style={{ whiteSpace: 'nowrap', flexShrink: 0 }}>{lang === 'te' ? 'ఓం నమో వేంకటేశాయ' : 'Om Namo Venkatesaya'}</span>
-                <span style={{ opacity: 0.35, flexShrink: 0 }}>•</span>
+              {/* Left: Panchangam Tithi & Today's Weather / Date */}
+              <div style={{ 
+                display: 'flex', 
+                alignItems: 'center', 
+                gap: '5px', 
+                fontSize: 'clamp(10px, 2.8vw, 11.5px)', 
+                fontWeight: 600, 
+                color: '#64748B', 
+                whiteSpace: 'nowrap', 
+                minWidth: 0,
+                overflow: 'hidden'
+              }}>
                 <span style={{ 
-                  fontWeight: 700, 
+                  fontWeight: 800, 
                   color: '#92400E', 
                   whiteSpace: 'nowrap', 
                   overflow: 'hidden', 
                   textOverflow: 'ellipsis', 
-                  maxWidth: 'clamp(55px, 16vw, 90px)' 
+                  maxWidth: 'clamp(70px, 22vw, 120px)' 
                 }}>
                   {lang === 'te' ? getPanchangamData().tithiTe : getPanchangamData().tithiEn}
                 </span>
-              </button>
-
-              <div style={{ 
-                display: 'flex', 
-                alignItems: 'center', 
-                gap: '4px', 
-                fontSize: 'clamp(10px, 2.9vw, 11.5px)', 
-                fontWeight: 600, 
-                color: '#64748B', 
-                whiteSpace: 'nowrap', 
-                flexShrink: 0 
-              }}>
-                <span>{todayDateStr}</span>
-                <span style={{ opacity: 0.3 }}>•</span>
+                <span style={{ opacity: 0.35, flexShrink: 0 }}>•</span>
+                <span style={{ flexShrink: 0 }}>{todayDateStr}</span>
+                <span style={{ opacity: 0.35, flexShrink: 0 }}>•</span>
                 <Sun size={11} color="#D97706" style={{ flexShrink: 0 }} />
-                <span>{weatherTemp || '26°C'}</span>
+                <span style={{ flexShrink: 0 }}>{weatherTemp || '26°C'}</span>
               </div>
 
-              {/* 🪔 Floating Sacred Srivari 108 Japa Blessing Toast */}
-              {showBlessing && (
-                <div style={{
-                  position: 'absolute',
-                  top: '34px',
-                  left: '0',
-                  zIndex: 40,
-                  background: 'linear-gradient(145deg, #0F172A 0%, #1E1B4B 55%, #2E1065 100%)',
-                  color: '#FFFFFF',
+              {/* Right: Dedicated, Separate "Om Namo Venkatesaya" 108 Japa Mala Button */}
+              <button
+                type="button"
+                onClick={() => {
+                  setShowBlessing(true);
+                  triggerBeadHaptic(false);
+                }}
+                aria-label={lang === 'te' ? 'ఓం నమో వేంకటేశాయ 108 జప మాల' : 'Om Namo Venkatesaya 108 Japa Mala'}
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '5px',
+                  padding: '4.5px 9px',
                   borderRadius: '16px',
-                  padding: '12px 14px',
-                  boxShadow: '0 16px 36px -4px rgba(0, 0, 0, 0.45), 0 0 0 1.5px rgba(245, 158, 11, 0.4)',
-                  width: 'min(330px, calc(100vw - 32px))',
-                  animation: 'fadeIn 0.2s ease-out',
-                  boxSizing: 'border-box'
+                  background: 'linear-gradient(135deg, #FFFBEB 0%, #FEF3C7 45%, #FDE68A 100%)',
+                  border: '1px solid rgba(217, 119, 6, 0.45)',
+                  boxShadow: '0 2px 8px rgba(217, 119, 6, 0.16)',
+                  fontSize: 'clamp(10px, 2.8vw, 11.5px)',
+                  fontWeight: 800,
+                  color: '#78350F',
+                  letterSpacing: '0.1px',
+                  cursor: 'pointer',
+                  transform: isChanting ? 'scale(0.96)' : 'scale(1)',
+                  transition: 'all 0.2s cubic-bezier(0.16, 1, 0.3, 1)',
+                  userSelect: 'none',
+                  whiteSpace: 'nowrap',
+                  flexShrink: 0
+                }}
+              >
+                <Sparkles size={11} color="#D97706" style={{ animation: isChanting ? 'spin 0.4s ease' : 'none', flexShrink: 0 }} />
+                <span style={{ whiteSpace: 'nowrap', flexShrink: 0 }}>{lang === 'te' ? 'ఓం నమో వేంకటేశాయ' : 'Om Namo Venkatesaya'}</span>
+                <span style={{
+                  fontSize: '9.5px',
+                  fontWeight: 800,
+                  color: '#92400E',
+                  background: 'rgba(255, 255, 255, 0.85)',
+                  padding: '1px 5px',
+                  borderRadius: '8px',
+                  border: '1px solid rgba(217, 119, 6, 0.25)',
+                  lineHeight: 1.2
                 }}>
-                  {/* Top Header Row */}
-                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '6px' }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                  {chantCount}/108
+                </span>
+              </button>
+            </div>
+
+            {/* ══════════ 📿 GRAND SACRED SRIVARI 108 JAPA MALA MODAL ══════════ */}
+            {showBlessing && (
+              <div 
+                onClick={() => setShowBlessing(false)}
+                style={{
+                  position: 'fixed',
+                  inset: 0,
+                  zIndex: 9999,
+                  background: 'rgba(10, 15, 30, 0.78)',
+                  backdropFilter: 'blur(8px)',
+                  WebkitBackdropFilter: 'blur(8px)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  padding: '16px',
+                  animation: 'fadeIn 0.2s ease-out'
+                }}
+              >
+                <div 
+                  onClick={(e) => e.stopPropagation()}
+                  style={{
+                    position: 'relative',
+                    width: '100%',
+                    maxWidth: '430px',
+                    borderRadius: '24px',
+                    background: 'linear-gradient(165deg, #130B24 0%, #1E1B4B 50%, #0F172A 100%)',
+                    border: justCompletedMala 
+                      ? '2px solid rgba(74, 222, 128, 0.6)' 
+                      : '1.5px solid rgba(245, 158, 11, 0.45)',
+                    boxShadow: justCompletedMala
+                      ? '0 25px 65px -10px rgba(0,0,0,0.85), 0 0 45px rgba(34, 197, 94, 0.3)'
+                      : '0 25px 65px -10px rgba(0,0,0,0.85), 0 0 40px rgba(245, 158, 11, 0.22)',
+                    color: '#FFFFFF',
+                    padding: '20px',
+                    boxSizing: 'border-box',
+                    maxHeight: '92vh',
+                    overflowY: 'auto'
+                  }}
+                >
+                  {/* Modal Header Row */}
+                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '14px' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                       <span style={{
                         display: 'inline-flex',
                         alignItems: 'center',
                         justifyContent: 'center',
-                        width: '20px',
-                        height: '20px',
-                        borderRadius: '6px',
-                        background: 'rgba(245, 158, 11, 0.25)',
-                        border: '1px solid rgba(253, 224, 71, 0.4)',
-                        fontSize: '11px'
-                      }}>
-                        <Flame size={12} color="#F59E0B" />
-                      </span>
-                      <span style={{ fontSize: '10.5px', fontWeight: 800, color: '#FDE047', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
-                        {lang === 'te' ? 'శ్రీవారి దివ్య ఆశీర్వచనం' : 'Srivari Divine Blessing'}
-                      </span>
-                    </div>
-
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
-                      <span style={{
-                        fontSize: '10px',
-                        fontWeight: 800,
-                        color: justCompletedMala ? '#86EFAC' : '#FCD34D',
-                        background: justCompletedMala ? 'rgba(34, 197, 94, 0.2)' : 'rgba(245, 158, 11, 0.18)',
-                        border: justCompletedMala ? '1px solid #4ADE80' : '1px solid rgba(253, 224, 71, 0.3)',
-                        padding: '2px 7px',
-                        borderRadius: '10px',
-                        display: 'inline-flex',
-                        alignItems: 'center',
-                        gap: '4px'
-                      }}>
-                        {justCompletedMala 
-                          ? (
-                            <>
-                              <Sparkles size={11} color="#4ADE80" />
-                              <span>{lang === 'te' ? '108/108 సంపూర్ణం!' : '108/108 Done!'}</span>
-                            </>
-                          )
-                          : (lang === 'te' ? `జపం ${chantCount}/108` : `Chant ${chantCount}/108`)}
-                      </span>
-                      <button 
-                        onClick={(e) => { e.stopPropagation(); setShowBlessing(false); }}
-                        style={{
-                          background: 'none',
-                          border: 'none',
-                          color: '#94A3B8',
-                          padding: '2px',
-                          cursor: 'pointer',
-                          display: 'flex',
-                          alignItems: 'center'
-                        }}
-                      >
-                        <X size={13} />
-                      </button>
-                    </div>
-                  </div>
-
-                  {/* 📿 Golden Japa Mala Progress Bar */}
-                  <div style={{
-                    width: '100%',
-                    height: '3.5px',
-                    backgroundColor: 'rgba(255, 255, 255, 0.12)',
-                    borderRadius: '2px',
-                    overflow: 'hidden',
-                    marginBottom: '8px'
-                  }}>
-                    <div style={{
-                      width: `${Math.min(100, (chantCount / 108) * 100)}%`,
-                      height: '100%',
-                      background: justCompletedMala 
-                        ? 'linear-gradient(90deg, #22C55E, #86EFAC)' 
-                        : 'linear-gradient(90deg, #F59E0B 0%, #FDE047 100%)',
-                      borderRadius: '2px',
-                      transition: 'width 0.25s ease'
-                    }} />
-                  </div>
-
-                  {/* Sacred Govinda Nama Title */}
-                  <div style={{
-                    fontSize: '12px',
-                    fontWeight: 800,
-                    color: '#FEF08A',
-                    marginBottom: '3px',
-                    lineHeight: 1.3
-                  }}>
-                    {justCompletedMala
-                      ? (
-                        <span style={{ display: 'inline-flex', alignItems: 'center', gap: 5 }}>
-                          <Sparkles size={13} color="#FDE047" />
-                          <span>{lang === 'te' ? 'అష్టోత్తర శత నామ జపం సంపూర్ణం!' : '108 Chants Completed! Srivari Maha Blessing'}</span>
-                        </span>
-                      )
-                      : (lang === 'te' ? getGovindaNamaForBead(chantCount).namaTe : getGovindaNamaForBead(chantCount).namaEn)}
-                  </div>
-
-                  {/* Blessing Content Text */}
-                  <p style={{
-                    margin: '0 0 10px 0',
-                    fontSize: '11.5px',
-                    lineHeight: 1.4,
-                    color: '#F1F5F9',
-                    fontWeight: 500
-                  }}>
-                    {justCompletedMala
-                      ? (lang === 'te' 
-                          ? 'గోవిందా! మీరు 108 శ్రీవారి దివ్య నామ జపం పూర్తి చేశారు. స్వామివారి సంపూర్ణ ఆశీస్సులు మీపై సదా ఉండుగాక. మాల మళ్ళీ 1 నుండి ప్రారంభమవుతుంది.'
-                          : 'Govinda! You have completed 108 sacred chants. May Lord Venkateswara shower eternal grace and fulfillment upon your pilgrimage.')
-                      : (lang === 'te' ? getGovindaNamaForBead(chantCount).blessingTe : getGovindaNamaForBead(chantCount).blessingEn)}
-                  </p>
-
-                  {/* Bottom Meta & Action Controls */}
-                  <div style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'space-between',
-                    borderTop: '1px solid rgba(255, 255, 255, 0.1)',
-                    paddingTop: '8px',
-                    fontSize: '10.5px',
-                    color: '#94A3B8'
-                  }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                      <span>
-                        {completedMalas > 0 ? (lang === 'te' ? `మాల #${completedMalas + 1}` : `Mala #${completedMalas + 1}`) : ''}
-                        {' '}
-                        {chantCount < 108 
-                          ? (lang === 'te' ? `(ఇంకా ${108 - chantCount})` : `(${108 - chantCount} to 108)`) 
-                          : ''}
-                      </span>
-                      <button
-                        onClick={handleResetMala}
-                        title={lang === 'te' ? 'మాల రీసెట్ చేయండి' : 'Reset Mala to 1'}
-                        style={{
-                          background: 'none',
-                          border: 'none',
-                          color: '#CBD5E1',
-                          cursor: 'pointer',
-                          display: 'inline-flex',
-                          alignItems: 'center',
-                          gap: '2px',
-                          padding: '1px 4px',
-                          borderRadius: '4px',
-                          fontSize: '10px'
-                        }}
-                      >
-                        <RotateCcw size={10} />
-                        <span>{lang === 'te' ? 'రీసెట్' : 'Reset'}</span>
-                      </button>
-                    </div>
-
-                    {/* WhatsApp Viral Devotional Sharing */}
-                    <button
-                      onClick={handleShareBlessing}
-                      style={{
-                        display: 'inline-flex',
-                        alignItems: 'center',
-                        gap: '4px',
-                        backgroundColor: 'rgba(34, 197, 94, 0.2)',
-                        border: '1px solid rgba(74, 222, 128, 0.4)',
+                        width: '28px',
+                        height: '28px',
                         borderRadius: '8px',
-                        padding: '3px 8px',
-                        color: '#86EFAC',
-                        fontSize: '10.5px',
-                        fontWeight: 700,
+                        background: justCompletedMala ? 'rgba(34, 197, 94, 0.25)' : 'rgba(245, 158, 11, 0.25)',
+                        border: justCompletedMala ? '1px solid #4ADE80' : '1px solid rgba(253, 224, 71, 0.45)'
+                      }}>
+                        {justCompletedMala ? <Sparkles size={16} color="#4ADE80" /> : <Flame size={16} color="#F59E0B" />}
+                      </span>
+                      <div>
+                        <div style={{ 
+                          fontSize: '12.5px', 
+                          fontWeight: 800, 
+                          color: justCompletedMala ? '#86EFAC' : '#FDE047', 
+                          textTransform: 'uppercase', 
+                          letterSpacing: '0.04em' 
+                        }}>
+                          {justCompletedMala 
+                            ? (lang === 'te' ? 'శ్రీవారి 108 జప మాల సంపూర్ణం!' : '108 Japa Mala Completed!') 
+                            : (lang === 'te' ? 'శ్రీ వేంకటేశ్వర 108 దివ్య నామ జప మాల' : 'Srivari 108 Sacred Japa Mala')}
+                        </div>
+                        <div style={{ fontSize: '10.5px', color: '#94A3B8' }}>
+                          {justCompletedMala 
+                            ? (lang === 'te' ? 'మహా పూర్ణ ఫల ప్రాప్తిరస్తు' : 'Supreme Devotional Fulfillment') 
+                            : (lang === 'te' ? 'కలియుగ ప్రత్యక్ష దైవ నామస్మరణ' : 'Sacred Names of Lord Venkateswara')}
+                        </div>
+                      </div>
+                    </div>
+
+                    <button 
+                      onClick={() => setShowBlessing(false)}
+                      aria-label="Close modal"
+                      style={{
+                        background: 'rgba(255, 255, 255, 0.08)',
+                        border: '1px solid rgba(255, 255, 255, 0.15)',
+                        borderRadius: '50%',
+                        width: '28px',
+                        height: '28px',
+                        color: '#CBD5E1',
                         cursor: 'pointer',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
                         transition: 'background 0.15s ease'
                       }}
                     >
-                      <Share2 size={11} color="#86EFAC" />
-                      <span>{lang === 'te' ? 'ఆశీర్వాదం షేర్' : 'Share Blessing'}</span>
+                      <X size={15} />
                     </button>
                   </div>
+
+                  {/* 🪔 Golden Japa Mala Progress Bar */}
+                  <div style={{ marginBottom: '16px' }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '6px' }}>
+                      <span style={{
+                        fontSize: '11px',
+                        fontWeight: 800,
+                        color: justCompletedMala ? '#86EFAC' : '#FCD34D',
+                        background: justCompletedMala ? 'rgba(34, 197, 94, 0.2)' : 'rgba(245, 158, 11, 0.2)',
+                        border: justCompletedMala ? '1px solid #4ADE80' : '1px solid rgba(253, 224, 71, 0.35)',
+                        padding: '2px 8px',
+                        borderRadius: '10px'
+                      }}>
+                        {justCompletedMala 
+                          ? (lang === 'te' ? '108 / 108 సంపూర్ణం' : '108 / 108 Completed') 
+                          : (lang === 'te' ? `నామ జపం ${chantCount} / 108` : `Bead ${chantCount} / 108`)}
+                      </span>
+
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                        {completedMalas > 0 && (
+                          <span style={{ fontSize: '10.5px', color: '#CBD5E1', fontWeight: 700 }}>
+                            {lang === 'te' ? `సంపూర్ణ మాలలు: ${completedMalas}` : `Completed: ${completedMalas}`}
+                          </span>
+                        )}
+                        {!justCompletedMala && (
+                          <button
+                            onClick={handleResetMala}
+                            title={lang === 'te' ? 'మాల రీసెట్ చేయండి' : 'Reset Mala to 1'}
+                            style={{
+                              background: 'none',
+                              border: 'none',
+                              color: '#94A3B8',
+                              cursor: 'pointer',
+                              display: 'inline-flex',
+                              alignItems: 'center',
+                              gap: '3px',
+                              padding: '2px 5px',
+                              borderRadius: '4px',
+                              fontSize: '10.5px'
+                            }}
+                          >
+                            <RotateCcw size={11} />
+                            <span>{lang === 'te' ? 'రీసెట్' : 'Reset'}</span>
+                          </button>
+                        )}
+                      </div>
+                    </div>
+
+                    <div style={{
+                      width: '100%',
+                      height: '6px',
+                      backgroundColor: 'rgba(255, 255, 255, 0.12)',
+                      borderRadius: '3px',
+                      overflow: 'hidden'
+                    }}>
+                      <div style={{
+                        width: `${Math.min(100, (chantCount / 108) * 100)}%`,
+                        height: '100%',
+                        background: justCompletedMala 
+                          ? 'linear-gradient(90deg, #22C55E 0%, #86EFAC 100%)' 
+                          : 'linear-gradient(90deg, #F59E0B 0%, #FDE047 100%)',
+                        borderRadius: '3px',
+                        transition: 'width 0.3s ease'
+                      }} />
+                    </div>
+                  </div>
+
+                  {/* ══════════ CONTENT VIEW ══════════ */}
+                  {justCompletedMala ? (
+                    /* 🪔 SPECIAL MALA POORTHI / COMPLETION VIEW */
+                    <div>
+                      <div style={{
+                        background: 'linear-gradient(135deg, rgba(34, 197, 94, 0.15) 0%, rgba(245, 158, 11, 0.15) 100%)',
+                        border: '1.5px solid rgba(74, 222, 128, 0.4)',
+                        borderRadius: '18px',
+                        padding: '16px',
+                        marginBottom: '16px',
+                        textAlign: 'center'
+                      }}>
+                        <div style={{ fontSize: '24px', marginBottom: '6px' }}>📿 ✨ 🪔</div>
+                        <div style={{
+                          fontSize: '17px',
+                          fontWeight: 800,
+                          color: '#FEF08A',
+                          marginBottom: '6px',
+                          lineHeight: 1.4
+                        }}>
+                          {lang === 'te' 
+                            ? 'అష్టోత్తర శత నామ జప మాల సంపూర్ణం!' 
+                            : '108 Srivari Sacred Chants Completed!'}
+                        </div>
+                        <p style={{
+                          margin: 0,
+                          fontSize: '13px',
+                          lineHeight: 1.6,
+                          color: '#F1F5F9'
+                        }}>
+                          {lang === 'te' 
+                            ? 'గోవిందా! భక్తిశ్రద్ధలతో 108 శ్రీవారి దివ్య నామ జప మాలను సంపూర్ణం చేశారు. స్వామివారి సంపూర్ణ ఆశీస్సులు, సకల పాప నివారణ, కుటుంబంలో నిరంతర ఆనందం మరియు శాంతి వర్ధిల్లుగాక!'
+                            : 'Govinda! You have completed the 108 Sacred Srivari Japa Mala. May Lord Venkateswara and Goddess Padmavathi shower boundless peace, vibrant health, and divine grace upon your family.'}
+                        </p>
+                      </div>
+
+                      {/* Action Controls for Mala Completion */}
+                      <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                        <button
+                          type="button"
+                          onClick={handleStartNextMala}
+                          style={{
+                            width: '100%',
+                            padding: '13px',
+                            borderRadius: '14px',
+                            background: 'linear-gradient(135deg, #15803D 0%, #22C55E 100%)',
+                            border: 'none',
+                            color: '#FFFFFF',
+                            fontSize: '14.5px',
+                            fontWeight: 800,
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            gap: '8px',
+                            cursor: 'pointer',
+                            boxShadow: '0 4px 18px rgba(34, 197, 94, 0.35)',
+                            transition: 'all 0.15s ease'
+                          }}
+                        >
+                          <Sparkles size={16} color="#FFFFFF" />
+                          <span>{lang === 'te' ? 'నూతన 108 మాల ప్రారంభించండి' : 'Start Next 108 Mala'}</span>
+                        </button>
+
+                        <button
+                          type="button"
+                          onClick={handleShareMalaPoorthi}
+                          style={{
+                            width: '100%',
+                            padding: '12px',
+                            borderRadius: '14px',
+                            background: 'rgba(34, 197, 94, 0.15)',
+                            border: '1px solid rgba(74, 222, 128, 0.45)',
+                            color: '#86EFAC',
+                            fontSize: '13.5px',
+                            fontWeight: 700,
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            gap: '7px',
+                            cursor: 'pointer',
+                            transition: 'background 0.15s ease'
+                          }}
+                        >
+                          <Share2 size={15} color="#86EFAC" />
+                          <span>{lang === 'te' ? 'వాట్సాప్‌లో ఈ శుభవార్తను షేర్ చేయండి' : 'Share 108 Mala Poorthi on WhatsApp'}</span>
+                        </button>
+                      </div>
+                    </div>
+                  ) : (
+                    /* 📿 ACTIVE JAPA CHANTING VIEW */
+                    <div>
+                      {/* Sacred Divine Nama Display */}
+                      <div style={{
+                        background: 'rgba(255, 255, 255, 0.05)',
+                        border: '1px solid rgba(245, 158, 11, 0.3)',
+                        borderRadius: '18px',
+                        padding: '16px 14px',
+                        marginBottom: '14px',
+                        textAlign: 'center'
+                      }}>
+                        <div style={{
+                          fontSize: '10.5px',
+                          fontWeight: 700,
+                          color: '#FDE047',
+                          textTransform: 'uppercase',
+                          letterSpacing: '0.06em',
+                          marginBottom: '4px'
+                        }}>
+                          {lang === 'te' ? `శ్రీవారి దివ్య నామం #${chantCount}/108` : `Srivari Divine Nama #${chantCount}/108`}
+                        </div>
+
+                        <div style={{
+                          fontSize: 'clamp(18px, 5.2vw, 22px)',
+                          fontWeight: 800,
+                          color: '#FEF08A',
+                          marginBottom: '6px',
+                          lineHeight: 1.35,
+                          textShadow: '0 2px 10px rgba(245, 158, 11, 0.25)'
+                        }}>
+                          {getGovindaNamaForBead(chantCount).namaTe}
+                        </div>
+
+                        <div style={{
+                          fontSize: '12px',
+                          color: '#CBD5E1',
+                          fontStyle: 'italic',
+                          lineHeight: 1.4
+                        }}>
+                          {getGovindaNamaForBead(chantCount).namaEn}
+                        </div>
+                      </div>
+
+                      {/* Divine Blessing Content Card */}
+                      <div style={{
+                        background: 'rgba(255, 255, 255, 0.03)',
+                        border: '1px solid rgba(255, 255, 255, 0.08)',
+                        borderRadius: '16px',
+                        padding: '14px',
+                        marginBottom: '16px'
+                      }}>
+                        <div style={{
+                          fontSize: '11px',
+                          fontWeight: 700,
+                          color: '#F59E0B',
+                          marginBottom: '4px',
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: '5px'
+                        }}>
+                          <Sparkles size={11} color="#F59E0B" />
+                          <span>{lang === 'te' ? 'దివ్య ఆశీర్వచనం & ఫలశ్రుతి:' : 'Divine Blessing & Grace:'}</span>
+                        </div>
+                        <p style={{
+                          margin: '0 0 6px 0',
+                          fontSize: '13px',
+                          lineHeight: 1.55,
+                          color: '#F8FAFC',
+                          fontWeight: 500
+                        }}>
+                          {getGovindaNamaForBead(chantCount).blessingTe}
+                        </p>
+                        <p style={{
+                          margin: 0,
+                          fontSize: '11.5px',
+                          lineHeight: 1.45,
+                          color: '#94A3B8',
+                          fontStyle: 'italic'
+                        }}>
+                          {getGovindaNamaForBead(chantCount).blessingEn}
+                        </p>
+                      </div>
+
+                      {/* 10-Second Cadence Meditative Chant Action */}
+                      <div style={{ marginBottom: '12px' }}>
+                        {cooldownSeconds > 0 ? (
+                          <div style={{
+                            width: '100%',
+                            padding: '12px',
+                            borderRadius: '16px',
+                            background: 'rgba(255, 255, 255, 0.06)',
+                            border: '1px solid rgba(245, 158, 11, 0.3)',
+                            color: '#FDE68A',
+                            display: 'flex',
+                            flexDirection: 'column',
+                            alignItems: 'center',
+                            gap: '6px',
+                            boxSizing: 'border-box'
+                          }}>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '13.5px', fontWeight: 700 }}>
+                              <Clock size={15} color="#F59E0B" />
+                              <span>
+                                {lang === 'te' 
+                                  ? `నామాన్ని ధ్యానించండి... (${cooldownSeconds}s)` 
+                                  : `Reflect upon the Nama... (${cooldownSeconds}s)`}
+                              </span>
+                            </div>
+                            {/* Visual 10-second countdown bar */}
+                            <div style={{
+                              width: '100%',
+                              maxWidth: '220px',
+                              height: '4px',
+                              backgroundColor: 'rgba(255, 255, 255, 0.1)',
+                              borderRadius: '2px',
+                              overflow: 'hidden'
+                            }}>
+                              <div style={{
+                                width: `${((10 - cooldownSeconds) / 10) * 100}%`,
+                                height: '100%',
+                                background: 'linear-gradient(90deg, #F59E0B, #FDE047)',
+                                transition: 'width 1s linear'
+                              }} />
+                            </div>
+                            <span style={{ fontSize: '10.5px', color: '#94A3B8' }}>
+                              {lang === 'te' ? 'కనీసం 10 సెకన్ల ఆధ్యాత్మిక ధ్యానం' : '10-second meditative cadence'}
+                            </span>
+                          </div>
+                        ) : (
+                          <button
+                            type="button"
+                            onClick={handleChantTap}
+                            style={{
+                              width: '100%',
+                              padding: '13px',
+                              borderRadius: '16px',
+                              background: 'linear-gradient(135deg, #D97706 0%, #F59E0B 50%, #FBBF24 100%)',
+                              border: 'none',
+                              color: '#78350F',
+                              fontSize: '15px',
+                              fontWeight: 800,
+                              display: 'flex',
+                              alignItems: 'center',
+                              justifyContent: 'center',
+                              gap: '8px',
+                              cursor: 'pointer',
+                              boxShadow: '0 4px 20px rgba(245, 158, 11, 0.4)',
+                              transform: isChanting ? 'scale(0.97)' : 'scale(1)',
+                              transition: 'all 0.15s ease'
+                            }}
+                          >
+                            <Sparkles size={16} color="#78350F" />
+                            <span>
+                              {chantCount < 108 
+                                ? (lang === 'te' ? `తదుపరి నామం జపించండి (${chantCount + 1}/108)` : `Chant Next Bead (${chantCount + 1}/108)`)
+                                : (lang === 'te' ? '108వ నామ జపం చేయండి (మాల సంపూర్ణం)' : 'Chant 108th Bead (Complete Mala)')}
+                            </span>
+                          </button>
+                        )}
+                      </div>
+
+                      {/* Modal Footer Controls */}
+                      <div style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'space-between',
+                        borderTop: '1px solid rgba(255, 255, 255, 0.1)',
+                        paddingTop: '10px'
+                      }}>
+                        <button
+                          type="button"
+                          onClick={() => setShowBlessing(false)}
+                          style={{
+                            background: 'none',
+                            border: 'none',
+                            color: '#94A3B8',
+                            fontSize: '12px',
+                            cursor: 'pointer',
+                            padding: '4px 6px'
+                          }}
+                        >
+                          {lang === 'te' ? 'ధ్యానం ముగించండి' : 'Close Sadhana'}
+                        </button>
+
+                        <button
+                          type="button"
+                          onClick={handleShareBlessing}
+                          style={{
+                            display: 'inline-flex',
+                            alignItems: 'center',
+                            gap: '5px',
+                            backgroundColor: 'rgba(34, 197, 94, 0.2)',
+                            border: '1px solid rgba(74, 222, 128, 0.4)',
+                            borderRadius: '10px',
+                            padding: '5px 10px',
+                            color: '#86EFAC',
+                            fontSize: '11.5px',
+                            fontWeight: 700,
+                            cursor: 'pointer',
+                            transition: 'background 0.15s ease'
+                          }}
+                        >
+                          <Share2 size={13} color="#86EFAC" />
+                          <span>{lang === 'te' ? 'వాట్సాప్‌లో షేర్ చేయండి' : 'Share Blessing'}</span>
+                        </button>
+                      </div>
+                    </div>
+                  )}
                 </div>
-              )}
-            </div>
+              </div>
+            )}
 
             {/* Personalized Greeting */}
             <div style={{ marginBottom: '12px' }}>
