@@ -143,6 +143,70 @@ function canvasDataURLToBlob(canvas: HTMLCanvasElement): Blob | null {
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
+// 🖼️ OFFICIAL SAARTHI LOGO LOADER & BRANDING
+// ─────────────────────────────────────────────────────────────────────────────
+
+let cachedLogoImage: HTMLImageElement | null = null;
+
+export function getSaarthiLogoImage(): Promise<HTMLImageElement | null> {
+  if (typeof window === 'undefined') return Promise.resolve(null);
+  if (cachedLogoImage && cachedLogoImage.complete && cachedLogoImage.naturalWidth > 0) {
+    return Promise.resolve(cachedLogoImage);
+  }
+
+  return new Promise((resolve) => {
+    const img = new Image();
+    img.crossOrigin = 'anonymous';
+    img.onload = () => {
+      cachedLogoImage = img;
+      resolve(img);
+    };
+    img.onerror = () => {
+      resolve(null);
+    };
+    img.src = '/saarthi-logo.png';
+  });
+}
+
+/**
+ * Draws a professional outer luxury border frame and corner cornerpins
+ * around the entire canvas to give the card a prestigious, premium poster finish.
+ */
+function drawCardOuterFrame(
+  ctx: CanvasRenderingContext2D,
+  width: number,
+  height: number,
+  primaryColor: string = 'rgba(212, 175, 55, 0.4)',
+  innerColor: string = 'rgba(253, 224, 71, 0.15)'
+) {
+  ctx.save();
+  // Outer primary golden/emerald border
+  ctx.strokeStyle = primaryColor;
+  ctx.lineWidth = 3;
+  drawRoundedRect(ctx, 24, 24, width - 48, height - 48, 24);
+  ctx.stroke();
+
+  // Subtle inner accent line
+  ctx.strokeStyle = innerColor;
+  ctx.lineWidth = 1;
+  drawRoundedRect(ctx, 32, 32, width - 64, height - 64, 18);
+  ctx.stroke();
+
+  // 4 Corner diamond accents
+  const drawCornerAccent = (cx: number, cy: number) => {
+    ctx.fillStyle = '#F59E0B';
+    ctx.beginPath();
+    ctx.arc(cx, cy, 3.5, 0, Math.PI * 2);
+    ctx.fill();
+  };
+  drawCornerAccent(32, 32);
+  drawCornerAccent(width - 32, 32);
+  drawCornerAccent(32, height - 32);
+  drawCornerAccent(width - 32, height - 32);
+  ctx.restore();
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
 // 🌟 VECTOR ICON DRAWING PRIMITIVES (Zero OS Emoji Inconsistencies)
 // ─────────────────────────────────────────────────────────────────────────────
 
@@ -471,6 +535,9 @@ function drawNamamIcon(ctx: CanvasRenderingContext2D, cx: number, cy: number, si
 export async function generateTodayInTirumalaCard(data: TodayPulseCardData): Promise<Blob | null> {
   if (typeof window === 'undefined') return null;
 
+  // Load official Saarthi logo icon
+  const logoImg = await getSaarthiLogoImage();
+
   const width = 1080;
   const height = 1220;
   const canvas = document.createElement('canvas');
@@ -482,7 +549,7 @@ export async function generateTodayInTirumalaCard(data: TodayPulseCardData): Pro
   const isTe = data.lang === 'te';
   const marginX = 72;
 
-  // 1. Deep Emerald Background
+  // 1. Deep Emerald Gradient Background
   const bgGrad = ctx.createLinearGradient(0, 0, 0, height);
   bgGrad.addColorStop(0, '#04160E');
   bgGrad.addColorStop(0.25, '#072418');
@@ -491,30 +558,57 @@ export async function generateTodayInTirumalaCard(data: TodayPulseCardData): Pro
   ctx.fillStyle = bgGrad;
   ctx.fillRect(0, 0, width, height);
 
-  // Subtle golden aura
+  // Subtle golden top aura
   const aura = ctx.createRadialGradient(880, 100, 20, 880, 100, 380);
   aura.addColorStop(0, 'rgba(245, 158, 11, 0.22)');
   aura.addColorStop(1, 'rgba(0, 0, 0, 0)');
   ctx.fillStyle = aura;
   ctx.fillRect(0, 0, width, 400);
 
-  // 2. BRANDING: SAARTHI + PILGRIM COMPANION (no tagline, no Govinda)
-  drawNamamIcon(ctx, marginX + 22, 62, 22);
+  // Luxury Card Outer Border Frame & Corner Pins (Covers entire image with refined finish)
+  drawCardOuterFrame(ctx, width, height, 'rgba(212, 175, 55, 0.45)', 'rgba(253, 224, 71, 0.15)');
+
+  // 2. BRANDING: OFFICIAL SAARTHI LOGO + PILGRIM COMPANION
+  const logoX = marginX + 4;
+  const logoY = 46;
+  const logoSize = 48;
+
+  if (logoImg && logoImg.complete && logoImg.naturalWidth > 0) {
+    ctx.save();
+    // Circular subtle glowing backdrop
+    ctx.fillStyle = 'rgba(255, 255, 255, 0.08)';
+    ctx.beginPath();
+    ctx.arc(logoX + logoSize / 2, logoY + logoSize / 2, logoSize / 2 + 3, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.strokeStyle = 'rgba(253, 224, 71, 0.45)';
+    ctx.lineWidth = 1.5;
+    ctx.stroke();
+
+    // Clip circular shape so pin logo blends seamlessly
+    ctx.beginPath();
+    ctx.arc(logoX + logoSize / 2, logoY + logoSize / 2, logoSize / 2, 0, Math.PI * 2);
+    ctx.clip();
+    ctx.drawImage(logoImg, logoX, logoY, logoSize, logoSize);
+    ctx.restore();
+  } else {
+    // Elegant fallback if image asset is not ready
+    drawNamamIcon(ctx, logoX + logoSize / 2, logoY + logoSize / 2, 22);
+  }
 
   ctx.save();
   ctx.textAlign = 'left';
   ctx.fillStyle = '#FFFFFF';
-  ctx.font = '800 38px Georgia, serif';
-  ctx.fillText('Saarthi', marginX + 58, 62);
+  ctx.font = '800 36px Georgia, serif';
+  ctx.fillText('Saarthi', logoX + logoSize + 16, logoY + 28);
 
   ctx.fillStyle = '#FDE68A';
   ctx.font = '800 12px system-ui, sans-serif';
   ctx.letterSpacing = '3px';
-  ctx.fillText('PILGRIM COMPANION', marginX + 60, 82);
+  ctx.fillText('PILGRIM COMPANION', logoX + logoSize + 18, logoY + 46);
   ctx.restore();
 
   // 3. TIRUMALA TODAY HEADER
-  const headerY = 110;
+  const headerY = 114;
 
   ctx.save();
   ctx.textAlign = 'left';
@@ -823,6 +917,9 @@ export async function generateTodayInTirumalaCard(data: TodayPulseCardData): Pro
 export async function generateJapaCard(data: JapaShareCardData): Promise<Blob | null> {
   if (typeof window === 'undefined') return null;
 
+  // Load official Saarthi logo icon
+  const logoImg = await getSaarthiLogoImage();
+
   const width = 1080;
   const height = 1350;
   const canvas = document.createElement('canvas');
@@ -875,10 +972,29 @@ export async function generateJapaCard(data: JapaShareCardData): Promise<Blob | 
   drawPin(width - 64, height - 64);
   ctx.restore();
 
-  // 3. HEADER
+  // 3. HEADER WITH OFFICIAL LOGO
   ctx.save();
   ctx.textAlign = 'center';
-  drawNamamIcon(ctx, width / 2, 115, 20);
+
+  const japaLogoSize = 44;
+  if (logoImg && logoImg.complete && logoImg.naturalWidth > 0) {
+    ctx.save();
+    ctx.fillStyle = 'rgba(255, 255, 255, 0.08)';
+    ctx.beginPath();
+    ctx.arc(width / 2, 108, japaLogoSize / 2 + 3, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.strokeStyle = 'rgba(253, 224, 71, 0.45)';
+    ctx.lineWidth = 1.5;
+    ctx.stroke();
+
+    ctx.beginPath();
+    ctx.arc(width / 2, 108, japaLogoSize / 2, 0, Math.PI * 2);
+    ctx.clip();
+    ctx.drawImage(logoImg, width / 2 - japaLogoSize / 2, 108 - japaLogoSize / 2, japaLogoSize, japaLogoSize);
+    ctx.restore();
+  } else {
+    drawNamamIcon(ctx, width / 2, 108, 20);
+  }
 
   ctx.fillStyle = '#FFFDF5';
   ctx.font = '700 24px Georgia, serif';
