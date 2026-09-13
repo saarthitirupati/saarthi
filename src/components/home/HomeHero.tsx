@@ -399,7 +399,7 @@ export function HomeHero({ userName, locationName, weatherTemp, liveStatus, acti
       }
       if (day === 0) { // Sunday
         return isExtreme || isHigh 
-          ? 'ఆదివారం · కంపార్ట్‌మెంట్లు నిండాయి' 
+          ? 'ఆదివారం · అధిక రద్దీ' 
           : 'ఆదివారం · సాధారణ దర్శన ప్రవాహం';
       }
       if (day === 5) { // Friday
@@ -428,7 +428,7 @@ export function HomeHero({ userName, locationName, weatherTemp, liveStatus, acti
     }
     if (day === 0) { // Sunday
       return isExtreme || isHigh 
-        ? 'Sunday Surge · Compartments Full' 
+        ? 'Sunday · Heavy Crowd' 
         : 'Sunday Flow · Regular Queue Movement';
     }
     if (day === 5) { // Friday
@@ -494,7 +494,6 @@ export function HomeHero({ userName, locationName, weatherTemp, liveStatus, acti
         {
           name: lang === 'te' ? 'సర్వదర్శనం' : 'Sarva Darshan',
           subtitle: lang === 'te' ? 'ఉచిత సాధారణ క్యూ' : 'Free General Queue',
-          category: lang === 'te' ? 'భక్తులందరికీ' : 'For all devotees',
           wait: sarvaWait,
           label: sarvaLabel,
           meter: sarvaMeter,
@@ -502,7 +501,7 @@ export function HomeHero({ userName, locationName, weatherTemp, liveStatus, acti
           bg: '#FFE4E6'
         },
         {
-          name: lang === 'te' ? '₹300 ప్రత్యేక ప్రవేశం' : '₹300 Special Entry',
+          name: lang === 'te' ? '₹300 ప్రత్యేక ప్రవేశ దర్శనం' : '₹300 Special Entry Darshan',
           subtitle: lang === 'te' ? 'ఆన్‌లైన్ బుకింగ్ స్లాట్' : 'Online Booked Slot',
           category: lang === 'te' ? '₹300 టికెట్ ఉన్నవారికి' : 'For ₹300 ticket holders',
           wait: specialWait,
@@ -512,9 +511,8 @@ export function HomeHero({ userName, locationName, weatherTemp, liveStatus, acti
           bg: '#FEF3C7'
         },
         {
-          name: lang === 'te' ? 'సమయ స్లాట్ ఉచిత దర్శనం' : 'Time-Slotted Free Darshan',
+          name: lang === 'te' ? 'ఉచిత సమయ స్లాట్ దర్శనం' : 'Free Time-Slotted Darshan',
           subtitle: lang === 'te' ? 'టోకెన్ ఆధారిత ప్రవేశం' : 'Token-based Entry',
-          category: lang === 'te' ? 'SSD (సమయ స్లాట్)' : 'SSD (Time-Slotted)',
           wait: ssdWait,
           label: ssdLabel,
           meter: ssdMeter,
@@ -526,15 +524,15 @@ export function HomeHero({ userName, locationName, weatherTemp, liveStatus, acti
       const shareText = lang === 'te'
         ? `🛕 *నేటి తిరుమల దర్శనం & రద్దీ సమాచారం (${dayName})*\n\n` +
           `• సర్వదర్శనం (ఉచితం): *${sarvaWait}* [${sarvaLabel}]\n` +
-          `• ₹300 ప్రత్యేక ప్రవేశం: *${specialWait}* [${specialLabel}]\n` +
-          `• సమయ స్లాట్ ఉచిత దర్శనం: *${ssdWait}* [${ssdLabel}]\n` +
+          `• ₹300 ప్రత్యేక ప్రవేశ దర్శనం: *${specialWait}* [${specialLabel}]\n` +
+          `• ఉచిత సమయ స్లాట్ దర్శనం: *${ssdWait}* [${ssdLabel}]\n` +
           `• రద్దీ స్థితి: *${whyThatNowText}*\n` +
           `• ఘాట్ రోడ్లు: *ప్రస్తుతం తెరిచి ఉన్నాయి*\n\n` +
           `సారథి గైడ్‌లో లైవ్ అప్‌డేట్స్ చూడండి 👇\n${siteUrl}`
         : `🛕 *Live Tirumala Darshan & Crowd Update (${dayName})*\n\n` +
           `• Sarva Darshan (Free): *${sarvaWait}* [${sarvaLabel}]\n` +
-          `• ₹300 Special Entry: *${specialWait}* [${specialLabel}]\n` +
-          `• Time-Slotted Free Darshan: *${ssdWait}* [${ssdLabel}]\n` +
+          `• ₹300 Special Entry Darshan: *${specialWait}* [${specialLabel}]\n` +
+          `• Free Time-Slotted Darshan: *${ssdWait}* [${ssdLabel}]\n` +
           `• Crowd Status: *${whyThatNowText}*\n` +
           `• Ghat Roads: *Open & Operational*\n\n` +
           `Check live updates on Saarthi Guide 👇\n${siteUrl}`;
@@ -546,6 +544,7 @@ export function HomeHero({ userName, locationName, weatherTemp, liveStatus, acti
         statusHeadline: whyThatNowText,
         queues,
         weatherTemp: weatherTemp || '26°C',
+        crowdSummary: whyThatNowText,
         lang
       });
 

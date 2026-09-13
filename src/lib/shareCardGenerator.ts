@@ -342,7 +342,7 @@ export async function generateTodayInTirumalaCard(data: TodayPulseCardData): Pro
   if (typeof window === 'undefined') return null;
 
   const width = 1080;
-  const height = 1350;
+  const height = 1220;
   const canvas = document.createElement('canvas');
   canvas.width = width;
   canvas.height = height;
@@ -352,7 +352,7 @@ export async function generateTodayInTirumalaCard(data: TodayPulseCardData): Pro
   const isTe = data.lang === 'te';
   const marginX = 72;
 
-  // 1. Outer Deep Emerald Spiritual Background
+  // 1. Deep Emerald Background
   const bgGrad = ctx.createLinearGradient(0, 0, 0, height);
   bgGrad.addColorStop(0, '#04160E');
   bgGrad.addColorStop(0.25, '#072418');
@@ -361,44 +361,30 @@ export async function generateTodayInTirumalaCard(data: TodayPulseCardData): Pro
   ctx.fillStyle = bgGrad;
   ctx.fillRect(0, 0, width, height);
 
-  // Top Right Golden Temple Aura
-  const aura = ctx.createRadialGradient(880, 130, 20, 880, 130, 440);
-  aura.addColorStop(0, 'rgba(245, 158, 11, 0.28)');
+  // Subtle golden aura
+  const aura = ctx.createRadialGradient(880, 100, 20, 880, 100, 380);
+  aura.addColorStop(0, 'rgba(245, 158, 11, 0.22)');
   aura.addColorStop(1, 'rgba(0, 0, 0, 0)');
   ctx.fillStyle = aura;
-  ctx.fillRect(0, 0, width, 500);
+  ctx.fillRect(0, 0, width, 400);
 
-  // Scriptural Calligraphy in Top Right: "Govinda Govinda"
-  ctx.save();
-  ctx.fillStyle = 'rgba(253, 230, 138, 0.55)';
-  ctx.font = 'italic 300 32px Georgia, serif';
-  ctx.textAlign = 'right';
-  ctx.fillText('Govinda', 1008, 62);
-  ctx.fillText('Govinda', 1030, 96);
-  ctx.restore();
-
-  // 2. TOP BRANDING (Saarthi Pilgrim Companion)
-  drawNamamIcon(ctx, marginX + 22, 68, 22);
+  // 2. BRANDING: SAARTHI + PILGRIM COMPANION (no tagline, no Govinda)
+  drawNamamIcon(ctx, marginX + 22, 62, 22);
 
   ctx.save();
   ctx.textAlign = 'left';
   ctx.fillStyle = '#FFFFFF';
   ctx.font = '800 38px Georgia, serif';
-  ctx.fillText('Saarthi', marginX + 58, 68);
+  ctx.fillText('Saarthi', marginX + 58, 62);
 
   ctx.fillStyle = '#FDE68A';
   ctx.font = '800 12px system-ui, sans-serif';
   ctx.letterSpacing = '3px';
-  ctx.fillText('PILGRIM COMPANION', marginX + 60, 88);
-
-  ctx.fillStyle = '#94A3B8';
-  ctx.font = '600 10.5px system-ui, sans-serif';
-  ctx.letterSpacing = '2.5px';
-  ctx.fillText('PLAN  •  TRAVEL  •  EXPERIENCE  •  REPEAT', marginX + 60, 110);
+  ctx.fillText('PILGRIM COMPANION', marginX + 60, 82);
   ctx.restore();
 
-  // 3. TIRUMALA TODAY HEADER + LIVE UPDATE BADGE
-  const headerY = 146;
+  // 3. TIRUMALA TODAY HEADER
+  const headerY = 110;
 
   ctx.save();
   ctx.textAlign = 'left';
@@ -408,9 +394,9 @@ export async function generateTodayInTirumalaCard(data: TodayPulseCardData): Pro
   if (isTe) {
     ctx.fillStyle = '#FFFFFF';
     ctx.fillText('నేటి తిరుమల ', marginX, headerY + 40);
-    const teMetrics = ctx.measureText('నేటి తిరుమల ');
+    const teW = ctx.measureText('నేటి తిరుమల ');
     ctx.fillStyle = '#FBBF24';
-    ctx.fillText('సమాచారం', marginX + teMetrics.width, headerY + 40);
+    ctx.fillText('సమాచారం', marginX + teW.width, headerY + 40);
   } else {
     ctx.fillStyle = '#FFFFFF';
     ctx.fillText('TIRUMALA ', marginX, headerY + 40);
@@ -419,7 +405,7 @@ export async function generateTodayInTirumalaCard(data: TodayPulseCardData): Pro
     ctx.fillText('TODAY', marginX + wTitle.width, headerY + 40);
   }
 
-  // Exact Date: Sunday, 13 September 2026
+  // Exact date
   const now = new Date();
   const fullDate = now.toLocaleDateString(isTe ? 'te-IN' : 'en-GB', {
     weekday: 'long',
@@ -427,52 +413,18 @@ export async function generateTodayInTirumalaCard(data: TodayPulseCardData): Pro
     month: 'long',
     year: 'numeric'
   });
-
   ctx.fillStyle = '#F8FAFC';
   ctx.font = `700 22px ${INDIC_FONT}`;
   ctx.fillText(`📅  ${fullDate}`, marginX, headerY + 76);
 
-  // Factual Crowd & Day Rush subtitle
-  const cleanStatus = data.statusHeadline
-    ? data.statusHeadline.replace(/^[•\s-]+/, '').trim()
-    : `${data.dayName} Rush`;
-  const crowdText = data.crowdSummary || cleanStatus;
-
+  // Clean crowd subtitle: "Sunday • Heavy Crowd"
+  const crowdText = data.crowdSummary || `${data.dayName} • Heavy Crowd`;
   ctx.fillStyle = '#CBD5E1';
   ctx.font = `600 18px ${INDIC_FONT}`;
   ctx.fillText(`👥  ${crowdText}`, marginX, headerY + 106);
   ctx.restore();
 
-  // Live Update Box (Right)
-  const liveBoxW = 236;
-  const liveBoxH = 74;
-  const liveBoxX = width - marginX - liveBoxW;
-  const liveBoxY = headerY + 18;
-
-  ctx.save();
-  ctx.fillStyle = 'rgba(6, 78, 59, 0.65)';
-  drawRoundedRect(ctx, liveBoxX, liveBoxY, liveBoxW, liveBoxH, 16);
-  ctx.fill();
-  ctx.strokeStyle = '#10B981';
-  ctx.lineWidth = 1.8;
-  drawRoundedRect(ctx, liveBoxX, liveBoxY, liveBoxW, liveBoxH, 16);
-  ctx.stroke();
-
-  // Glowing Green Dot
-  ctx.fillStyle = '#10B981';
-  ctx.beginPath();
-  ctx.arc(liveBoxX + 26, liveBoxY + 26, 6.5, 0, Math.PI * 2);
-  ctx.fill();
-  ctx.strokeStyle = 'rgba(16, 185, 129, 0.35)';
-  ctx.lineWidth = 3;
-  ctx.stroke();
-
-  ctx.textAlign = 'left';
-  ctx.fillStyle = '#FFFFFF';
-  ctx.font = `900 18px ${INDIC_FONT}`;
-  ctx.letterSpacing = '0.5px';
-  ctx.fillText(isTe ? 'లైవ్ అప్‌డేట్' : 'LIVE UPDATE', liveBoxX + 42, liveBoxY + 32);
-
+  // 4. Compact LIVE badge (right-aligned)
   const updatedTime = data.updatedTime || now.toLocaleTimeString('en-US', {
     hour: 'numeric',
     minute: '2-digit',
@@ -480,287 +432,246 @@ export async function generateTodayInTirumalaCard(data: TodayPulseCardData): Pro
     timeZone: 'Asia/Kolkata'
   });
 
+  const liveBoxW = 180;
+  const liveBoxH = 58;
+  const liveBoxX = width - marginX - liveBoxW;
+  const liveBoxY = headerY + 16;
+
+  ctx.save();
+  ctx.fillStyle = 'rgba(6, 78, 59, 0.65)';
+  drawRoundedRect(ctx, liveBoxX, liveBoxY, liveBoxW, liveBoxH, 14);
+  ctx.fill();
+  ctx.strokeStyle = '#10B981';
+  ctx.lineWidth = 1.8;
+  drawRoundedRect(ctx, liveBoxX, liveBoxY, liveBoxW, liveBoxH, 14);
+  ctx.stroke();
+
+  // Green dot
+  ctx.fillStyle = '#10B981';
+  ctx.beginPath();
+  ctx.arc(liveBoxX + 22, liveBoxY + 22, 5.5, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.strokeStyle = 'rgba(16, 185, 129, 0.35)';
+  ctx.lineWidth = 2.5;
+  ctx.stroke();
+
+  ctx.textAlign = 'left';
+  ctx.fillStyle = '#FFFFFF';
+  ctx.font = `900 20px ${INDIC_FONT}`;
+  ctx.letterSpacing = '1px';
+  ctx.fillText(isTe ? 'లైవ్' : 'LIVE', liveBoxX + 38, liveBoxY + 28);
+
   ctx.fillStyle = '#A7F3D0';
   ctx.font = `600 13px ${INDIC_FONT}`;
-  ctx.fillText(`${isTe ? 'తాజా సమయం:' : 'Last updated:'} ${updatedTime}`, liveBoxX + 24, liveBoxY + 56);
+  ctx.letterSpacing = '0px';
+  ctx.fillText(`${isTe ? 'అప్‌డేట్' : 'Updated'} ${updatedTime}`, liveBoxX + 22, liveBoxY + 48);
   ctx.restore();
 
-  // 4. THREE STANDALONE QUEUE CARDS
-  const cardsStartY = headerY + 130;
+  // 5. THREE COMPACT QUEUE CARDS (reduced height, wait time is hero)
+  const cardsStartY = headerY + 128;
   const cardW = width - 2 * marginX;
-  const cardH = 175;
-  const cardGap = 16;
-
-  const defaultCategories = [
-    isTe ? 'భక్తులందరికీ' : 'For all devotees',
-    isTe ? '₹300 టికెట్ ఉన్నవారికి' : 'For ₹300 ticket holders',
-    isTe ? 'SSD (సమయ స్లాట్)' : 'SSD (Time-Slotted)'
-  ];
+  const cardH = 140;
+  const cardGap = 14;
 
   data.queues.forEach((q, idx) => {
     const qY = cardsStartY + idx * (cardH + cardGap);
     const qX = marginX;
 
-    // Card Body (Clean White with Soft Status Tint)
+    // Card body
     ctx.save();
     ctx.fillStyle = '#FFFFFF';
-    drawRoundedRect(ctx, qX, qY, cardW, cardH, 20);
+    drawRoundedRect(ctx, qX, qY, cardW, cardH, 18);
     ctx.fill();
 
-    // Colored Border
     ctx.strokeStyle = q.color === '#E11D48' ? '#FECDD3' : '#FDE68A';
-    ctx.lineWidth = 2;
-    drawRoundedRect(ctx, qX, qY, cardW, cardH, 20);
+    ctx.lineWidth = 1.8;
+    drawRoundedRect(ctx, qX, qY, cardW, cardH, 18);
     ctx.stroke();
 
-    // Left Vertical Accent Bar
+    // Left accent bar
     ctx.fillStyle = q.color;
-    drawRoundedRect(ctx, qX, qY, 10, cardH, 5);
+    drawRoundedRect(ctx, qX, qY, 8, cardH, 4);
     ctx.fill();
 
-    // Left Rounded Icon Box
-    const iconBoxSize = 68;
-    const iconBoxX = qX + 26;
+    // Left icon box
+    const iconBoxSize = 56;
+    const iconBoxX = qX + 22;
     const iconBoxY = qY + (cardH - iconBoxSize) / 2;
     ctx.fillStyle = q.color === '#E11D48' ? '#FFE4E6' : '#FEF3C7';
-    drawRoundedRect(ctx, iconBoxX, iconBoxY, iconBoxSize, iconBoxSize, 16);
+    drawRoundedRect(ctx, iconBoxX, iconBoxY, iconBoxSize, iconBoxSize, 14);
     ctx.fill();
     ctx.strokeStyle = q.color;
-    ctx.lineWidth = 1.5;
-    drawRoundedRect(ctx, iconBoxX, iconBoxY, iconBoxSize, iconBoxSize, 16);
+    ctx.lineWidth = 1.2;
+    drawRoundedRect(ctx, iconBoxX, iconBoxY, iconBoxSize, iconBoxSize, 14);
     ctx.stroke();
 
-    const iconCenterX = iconBoxX + iconBoxSize / 2;
-    const iconCenterY = iconBoxY + iconBoxSize / 2;
-    if (idx === 0) {
-      drawUsersIcon(ctx, iconCenterX, iconCenterY, 16, q.color);
-    } else if (idx === 1) {
-      drawZapIcon(ctx, iconCenterX, iconCenterY, 16, q.color);
-    } else {
-      drawTicketIcon(ctx, iconCenterX, iconCenterY, 16, q.color);
-    }
+    const icx = iconBoxX + iconBoxSize / 2;
+    const icy = iconBoxY + iconBoxSize / 2;
+    if (idx === 0) drawUsersIcon(ctx, icx, icy, 14, q.color);
+    else if (idx === 1) drawZapIcon(ctx, icx, icy, 14, q.color);
+    else drawTicketIcon(ctx, icx, icy, 14, q.color);
 
-    // Titles Column
-    const textX = iconBoxX + iconBoxSize + 18;
+    // LEFT: Name + Subtitle + optional category
+    const textX = iconBoxX + iconBoxSize + 16;
     ctx.textAlign = 'left';
     ctx.fillStyle = '#0F172A';
-    ctx.font = `800 29px ${INDIC_FONT}`;
-    ctx.fillText(q.name, textX, qY + 48);
+    ctx.font = `800 26px ${INDIC_FONT}`;
+    ctx.fillText(q.name, textX, qY + 42);
 
     ctx.fillStyle = '#334155';
-    ctx.font = `600 19px ${INDIC_FONT}`;
-    ctx.fillText(q.subtitle, textX, qY + 84);
+    ctx.font = `600 17px ${INDIC_FONT}`;
+    ctx.fillText(q.subtitle, textX, qY + 72);
 
-    const cat = q.category || defaultCategories[idx] || '';
-    ctx.fillStyle = '#64748B';
-    ctx.font = `500 15px ${INDIC_FONT}`;
-    ctx.fillText(cat, textX, qY + 116);
-
-    // Middle-Right: EST. WAIT TIME + Giant Hero Number
-    const waitColX = qX + cardW - 370;
-    ctx.textAlign = 'left';
-    ctx.fillStyle = '#64748B';
-    ctx.font = `700 13px system-ui, sans-serif`;
-    ctx.letterSpacing = '0.8px';
-    ctx.fillText(isTe ? 'నిరీక్షణ సమయం' : 'EST. WAIT TIME', waitColX, qY + 48);
-
-    // Format wait hours cleanly
-    let waitText = q.wait;
-    if (!/hour|hr|గంట/i.test(waitText)) {
-      waitText = `${waitText} Hours`;
+    if (q.category) {
+      ctx.fillStyle = '#64748B';
+      ctx.font = `500 14px ${INDIC_FONT}`;
+      ctx.fillText(q.category, textX, qY + 98);
     }
-    ctx.fillStyle = q.color;
-    ctx.font = '900 40px -apple-system, system-ui, sans-serif';
-    ctx.letterSpacing = '-0.5px';
-    ctx.fillText(waitText, waitColX, qY + 98);
 
-    // Far Right: Status Badge & 5-Step Meter
-    const badgeW = 120;
-    const badgeH = 34;
-    const badgeX = qX + cardW - badgeW - 24;
-    const badgeY = qY + 36;
+    // RIGHT: EST. WAIT → Hero wait time → Status dot + label + tiny bars
+    const rightEdge = qX + cardW - 28;
+    ctx.textAlign = 'right';
 
-    // Solid Status Badge
-    ctx.fillStyle = q.color;
-    drawRoundedRect(ctx, badgeX, badgeY, badgeW, badgeH, 8);
-    ctx.fill();
-
-    ctx.textAlign = 'center';
-    ctx.fillStyle = '#FFFFFF';
-    ctx.font = '900 15.5px system-ui, sans-serif';
+    // "EST. WAIT" (small label)
+    ctx.fillStyle = '#64748B';
+    ctx.font = '700 12px system-ui, sans-serif';
     ctx.letterSpacing = '0.8px';
-    ctx.fillText(q.label, badgeX + badgeW / 2, badgeY + 23);
+    ctx.fillText(isTe ? 'నిరీక్షణ' : 'EST. WAIT', rightEdge, qY + 30);
 
-    // 5 Meter Bars directly under the badge
+    // Hero wait time (biggest element on the card)
+    let waitText = q.wait;
+    waitText = waitText.replace(/\s*hours?\s*/gi, ' HRS').replace(/\s*hrs?\s*/gi, ' HRS');
+    if (!/hrs|గంట|min/i.test(waitText)) waitText = `${waitText} HRS`;
+    waitText = waitText.replace(/\s+/g, ' ').trim();
+
+    ctx.fillStyle = q.color;
+    ctx.font = '900 38px -apple-system, system-ui, sans-serif';
+    ctx.letterSpacing = '-0.5px';
+    ctx.fillText(waitText, rightEdge, qY + 72);
+
+    // Status dot + label
+    const statusDot = q.color === '#E11D48' ? '🔴' : q.color === '#D97706' ? '🟠' : '🟢';
+    ctx.fillStyle = q.color;
+    ctx.font = '800 14px system-ui, sans-serif';
+    ctx.letterSpacing = '0.5px';
+    ctx.fillText(`${statusDot} ${q.label}`, rightEdge, qY + 96);
+
+    // Tiny inline meter bars
     const barCount = 5;
-    const barW = 18;
-    const barH = 15;
-    const barGap = 6;
-    const totalBarsW = barCount * barW + (barCount - 1) * barGap;
-    const barsStartX = badgeX + (badgeW - totalBarsW) / 2;
-    const barsY = badgeY + 46;
+    const barW = 12;
+    const barH = 6;
+    const barGapX = 3;
+    const totalBarsW = barCount * barW + (barCount - 1) * barGapX;
+    const barsStartX = rightEdge - totalBarsW;
+    const barsY = qY + 106;
 
     for (let b = 1; b <= barCount; b++) {
-      ctx.fillStyle = b <= q.meter ? q.color : 'rgba(15, 23, 42, 0.14)';
-      drawRoundedRect(ctx, barsStartX + (b - 1) * (barW + barGap), barsY, barW, barH, 3);
+      ctx.fillStyle = b <= q.meter ? q.color : 'rgba(15, 23, 42, 0.12)';
+      drawRoundedRect(ctx, barsStartX + (b - 1) * (barW + barGapX), barsY, barW, barH, 2);
       ctx.fill();
     }
 
     ctx.restore();
   });
 
-  // 5. BOTTOM UTILITY STRIP (3 Rounded Glass Capsules)
-  const utilityY = cardsStartY + 3 * (cardH + cardGap) + 14;
-  const pillGap = 18;
+  // 6. COMPACT UTILITY STRIP (3 single-line pills)
+  const utilityY = cardsStartY + 3 * (cardH + cardGap) + 10;
+  const pillGap = 14;
   const pillW = (cardW - 2 * pillGap) / 3;
-  const pillH = 72;
+  const pillH = 52;
 
   // Pill 1: Ghats Open
-  const p1X = marginX;
   ctx.save();
   ctx.fillStyle = 'rgba(6, 78, 59, 0.55)';
-  drawRoundedRect(ctx, p1X, utilityY, pillW, pillH, 16);
+  drawRoundedRect(ctx, marginX, utilityY, pillW, pillH, 14);
   ctx.fill();
   ctx.strokeStyle = '#10B981';
-  ctx.lineWidth = 1.5;
-  drawRoundedRect(ctx, p1X, utilityY, pillW, pillH, 16);
+  ctx.lineWidth = 1.2;
+  drawRoundedRect(ctx, marginX, utilityY, pillW, pillH, 14);
   ctx.stroke();
 
-  drawCarIcon(ctx, p1X + 38, utilityY + pillH / 2, 16, '#34D399');
+  drawCarIcon(ctx, marginX + 32, utilityY + pillH / 2, 13, '#34D399');
   ctx.textAlign = 'left';
   ctx.fillStyle = '#ECFDF5';
-  ctx.font = `700 18px ${INDIC_FONT}`;
-  ctx.fillText(isTe ? 'ఘాట్ రోడ్లు ఓపెన్' : 'Ghats Open', p1X + 68, utilityY + 32);
-  ctx.fillStyle = '#A7F3D0';
-  ctx.font = `500 12.5px ${INDIC_FONT}`;
-  ctx.fillText(isTe ? 'అలిపిరి & శ్రీవారి మెట్టు' : 'Both Alipiri & Srivari Mettu', p1X + 68, utilityY + 54);
+  ctx.font = `700 17px ${INDIC_FONT}`;
+  ctx.fillText(isTe ? 'ఘాట్ రోడ్లు ఓపెన్' : 'Ghats Open', marginX + 56, utilityY + 33);
   ctx.restore();
 
   // Pill 2: Weather
-  const p2X = p1X + pillW + pillGap;
+  const p2X = marginX + pillW + pillGap;
   ctx.save();
   ctx.fillStyle = 'rgba(120, 53, 15, 0.4)';
-  drawRoundedRect(ctx, p2X, utilityY, pillW, pillH, 16);
+  drawRoundedRect(ctx, p2X, utilityY, pillW, pillH, 14);
   ctx.fill();
   ctx.strokeStyle = '#F59E0B';
-  ctx.lineWidth = 1.5;
-  drawRoundedRect(ctx, p2X, utilityY, pillW, pillH, 16);
+  ctx.lineWidth = 1.2;
+  drawRoundedRect(ctx, p2X, utilityY, pillW, pillH, 14);
   ctx.stroke();
 
-  drawSunIcon(ctx, p2X + 38, utilityY + pillH / 2, 16, '#FBBF24');
+  drawSunIcon(ctx, p2X + 32, utilityY + pillH / 2, 13, '#FBBF24');
   ctx.textAlign = 'left';
   ctx.fillStyle = '#FFFBEB';
-  ctx.font = '700 20px system-ui, sans-serif';
-  ctx.fillText(data.weatherTemp || '32°C', p2X + 68, utilityY + 32);
-  ctx.fillStyle = '#FDE68A';
-  ctx.font = `500 12.5px ${INDIC_FONT}`;
-  ctx.fillText(isTe ? 'ఆహ్లాదకర వాతావరణం' : 'Clear Skies', p2X + 68, utilityY + 54);
+  ctx.font = '700 18px system-ui, sans-serif';
+  ctx.fillText(data.weatherTemp || '32°C', p2X + 56, utilityY + 33);
   ctx.restore();
 
-  // Pill 3: Source: TTD (Verified Information)
+  // Pill 3: Verified (honest — not "Source: TTD")
   const p3X = p2X + pillW + pillGap;
   ctx.save();
   ctx.fillStyle = 'rgba(6, 78, 59, 0.55)';
-  drawRoundedRect(ctx, p3X, utilityY, pillW, pillH, 16);
+  drawRoundedRect(ctx, p3X, utilityY, pillW, pillH, 14);
   ctx.fill();
   ctx.strokeStyle = '#10B981';
-  ctx.lineWidth = 1.5;
-  drawRoundedRect(ctx, p3X, utilityY, pillW, pillH, 16);
+  ctx.lineWidth = 1.2;
+  drawRoundedRect(ctx, p3X, utilityY, pillW, pillH, 14);
   ctx.stroke();
 
-  drawShieldCheckIcon(ctx, p3X + 38, utilityY + pillH / 2, 16, '#34D399');
+  drawShieldCheckIcon(ctx, p3X + 32, utilityY + pillH / 2, 13, '#34D399');
   ctx.textAlign = 'left';
   ctx.fillStyle = '#ECFDF5';
-  ctx.font = `700 18px ${INDIC_FONT}`;
-  ctx.fillText(isTe ? 'మూలం: TTD' : 'Source: TTD', p3X + 68, utilityY + 32);
-  ctx.fillStyle = '#A7F3D0';
-  ctx.font = `500 12.5px ${INDIC_FONT}`;
-  ctx.fillText(isTe ? 'ధృవీకరించిన సమాచారం' : 'Verified Information', p3X + 68, utilityY + 54);
+  ctx.font = `700 17px ${INDIC_FONT}`;
+  ctx.fillText(isTe ? 'ధృవీకరించబడింది' : 'Verified', p3X + 56, utilityY + 33);
   ctx.restore();
 
-  // 6. CALL TO ACTION HOOK & WEBSITE SEARCH PILL
-  const ctaY = utilityY + pillH + 20;
-  const ctaBoxW = 560;
-  const ctaBoxH = 78;
+  // 7. CENTERED CTA BLOCK (no split layout, no footer)
+  const ctaY = utilityY + pillH + 24;
+  const centerX = width / 2;
 
-  // Left Gold CTA Box
   ctx.save();
-  ctx.fillStyle = 'rgba(245, 158, 11, 0.12)';
-  drawRoundedRect(ctx, marginX, ctaY, ctaBoxW, ctaBoxH, 18);
-  ctx.fill();
-  ctx.strokeStyle = '#D97706';
-  ctx.lineWidth = 1.5;
-  drawRoundedRect(ctx, marginX, ctaY, ctaBoxW, ctaBoxH, 18);
-  ctx.stroke();
-
-  // Hands Folded Emoji
-  ctx.font = '30px system-ui, sans-serif';
   ctx.textAlign = 'center';
-  ctx.fillText('🙏', marginX + 42, ctaY + 49);
 
-  ctx.textAlign = 'left';
+  // 🙏 PLANNING DARSHAN TODAY?
+  ctx.font = '28px system-ui, sans-serif';
+  ctx.fillText('🙏', centerX, ctaY + 4);
+
   ctx.fillStyle = '#FEF08A';
-  ctx.font = `800 20px ${INDIC_FONT}`;
-  ctx.fillText(isTe ? 'ఈరోజు దర్శనానికి వెళ్తున్నారా?' : 'Planning Darshan Today?', marginX + 78, ctaY + 32);
-  ctx.fillStyle = '#F8FAFC';
-  ctx.font = `500 14.5px ${INDIC_FONT}`;
-  ctx.fillText(isTe ? 'వెళ్లేముందు లైవ్ క్యూ సమయం చూసుకోండి.' : 'Check the queue before you go.', marginX + 78, ctaY + 58);
-  ctx.restore();
+  ctx.font = `800 24px ${INDIC_FONT}`;
+  ctx.letterSpacing = '0.5px';
+  ctx.fillText(isTe ? 'ఈరోజు దర్శనానికి వెళ్తున్నారా?' : 'PLANNING DARSHAN TODAY?', centerX, ctaY + 40);
 
-  // Right Side Micro-Brand
-  ctx.save();
-  const rightSideCenterX = marginX + ctaBoxW + (cardW - ctaBoxW) / 2;
-  ctx.textAlign = 'center';
   ctx.fillStyle = '#CBD5E1';
-  ctx.font = `600 14px ${INDIC_FONT}`;
-  ctx.fillText(isTe ? 'మీ ప్రశాంత తిరుమల యాత్రకు' : 'Your Guide to a Meaningful', rightSideCenterX, ctaY + 30);
-  ctx.fillText(isTe ? 'సంపూర్ణ డిజిటల్ తోడు' : 'Tirumala Yatra', rightSideCenterX, ctaY + 52);
+  ctx.font = `500 17px ${INDIC_FONT}`;
+  ctx.letterSpacing = '0px';
+  ctx.fillText(isTe ? 'వెళ్లేముందు లైవ్ క్యూ సమయం చూసుకోండి.' : 'Check the queue before you go.', centerX, ctaY + 68);
 
-  ctx.font = '16px system-ui, sans-serif';
-  ctx.fillText('🪷', rightSideCenterX, ctaY + 74);
-  ctx.restore();
+  // saarthiguide.in → pill
+  const searchW = 380;
+  const searchH = 50;
+  const searchX = (width - searchW) / 2;
+  const searchY = ctaY + 84;
 
-  // Center Search Pill: saarthiguide.in ➔
-  const searchY = ctaY + ctaBoxH + 16;
-  const searchW = 560;
-  const searchH = 54;
-
-  ctx.save();
   ctx.fillStyle = 'rgba(4, 22, 15, 0.95)';
-  drawRoundedRect(ctx, marginX, searchY, searchW, searchH, 27);
+  drawRoundedRect(ctx, searchX, searchY, searchW, searchH, 25);
   ctx.fill();
   ctx.strokeStyle = '#10B981';
   ctx.lineWidth = 2;
-  drawRoundedRect(ctx, marginX, searchY, searchW, searchH, 27);
+  drawRoundedRect(ctx, searchX, searchY, searchW, searchH, 25);
   ctx.stroke();
 
-  ctx.textAlign = 'center';
   ctx.fillStyle = '#FFFFFF';
   ctx.font = '800 22px system-ui, sans-serif';
   ctx.letterSpacing = '1px';
-  ctx.fillText('🔍   saarthiguide.in   ➔', marginX + searchW / 2, searchY + 35);
-  ctx.restore();
-
-  // 7. SUB-FOOTER BAR (Icon Category Links & Hashtag)
-  const footBarY = searchY + searchH + 28;
-  ctx.save();
-  ctx.strokeStyle = 'rgba(255, 255, 255, 0.12)';
-  ctx.lineWidth = 1;
-  ctx.beginPath();
-  ctx.moveTo(marginX, footBarY);
-  ctx.lineTo(width - marginX, footBarY);
-  ctx.stroke();
-
-  ctx.textAlign = 'center';
-  ctx.fillStyle = '#94A3B8';
-  ctx.font = `600 13px ${INDIC_FONT}`;
-  ctx.fillText(
-    isTe
-      ? '📱 లైవ్ అప్‌డేట్స్   •   🛕 ప్రయాణ మార్గదర్శి   •   📖 పుణ్యక్షేత్రాలు   •   👥 ఆధ్యాత్మికం   |   #SaarthiTirupati'
-      : '📱 Live Updates   •   🛕 Travel Guidance   •   📖 Nearby Places   •   👥 Spiritual Content   |   #SaarthiTirupati',
-    width / 2,
-    footBarY + 32
-  );
+  ctx.fillText('saarthiguide.in  →', centerX, searchY + 33);
   ctx.restore();
 
   return canvasToBlob(canvas);
