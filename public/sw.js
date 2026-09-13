@@ -11,6 +11,9 @@ const APP_SHELL = [
   '/icon-192.png',
   '/icon-512.png',
   '/apple-touch-icon.png',
+  '/audio/saarthi-divine-journey.wav',
+  '/audio/veena-pluck.wav',
+  '/audio/mala-completion.wav',
 ];
 
 // Install: pre-cache the app shell
