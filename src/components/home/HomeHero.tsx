@@ -493,7 +493,8 @@ export function HomeHero({ userName, locationName, weatherTemp, liveStatus, acti
       const queues = [
         {
           name: lang === 'te' ? 'సర్వదర్శనం' : 'Sarva Darshan',
-          subtitle: lang === 'te' ? 'ఉచిత సాధారణ దర్శనం' : 'Free General Queue',
+          subtitle: lang === 'te' ? 'ఉచిత సాధారణ క్యూ' : 'Free General Queue',
+          category: lang === 'te' ? 'భక్తులందరికీ' : 'For all devotees',
           wait: sarvaWait,
           label: sarvaLabel,
           meter: sarvaMeter,
@@ -503,6 +504,7 @@ export function HomeHero({ userName, locationName, weatherTemp, liveStatus, acti
         {
           name: lang === 'te' ? '₹300 ప్రత్యేక ప్రవేశం' : '₹300 Special Entry',
           subtitle: lang === 'te' ? 'ఆన్‌లైన్ బుకింగ్ స్లాట్' : 'Online Booked Slot',
+          category: lang === 'te' ? '₹300 టికెట్ ఉన్నవారికి' : 'For ₹300 ticket holders',
           wait: specialWait,
           label: specialLabel,
           meter: specialMeter,
@@ -510,8 +512,9 @@ export function HomeHero({ userName, locationName, weatherTemp, liveStatus, acti
           bg: '#FEF3C7'
         },
         {
-          name: lang === 'te' ? 'SSD టోకెన్ దర్శనం' : 'SSD Token Darshan',
-          subtitle: lang === 'te' ? 'ఉచిత సమయ స్లాట్ టోకెన్లు' : 'Time-Slotted Free Darshan',
+          name: lang === 'te' ? 'సమయ స్లాట్ ఉచిత దర్శనం' : 'Time-Slotted Free Darshan',
+          subtitle: lang === 'te' ? 'టోకెన్ ఆధారిత ప్రవేశం' : 'Token-based Entry',
+          category: lang === 'te' ? 'SSD (సమయ స్లాట్)' : 'SSD (Time-Slotted)',
           wait: ssdWait,
           label: ssdLabel,
           meter: ssdMeter,
@@ -524,14 +527,14 @@ export function HomeHero({ userName, locationName, weatherTemp, liveStatus, acti
         ? `🛕 *నేటి తిరుమల దర్శనం & రద్దీ సమాచారం (${dayName})*\n\n` +
           `• సర్వదర్శనం (ఉచితం): *${sarvaWait}* [${sarvaLabel}]\n` +
           `• ₹300 ప్రత్యేక ప్రవేశం: *${specialWait}* [${specialLabel}]\n` +
-          `• ఉచిత SSD టోకెన్లు: *${ssdWait}* [${ssdLabel}]\n` +
+          `• సమయ స్లాట్ ఉచిత దర్శనం: *${ssdWait}* [${ssdLabel}]\n` +
           `• రద్దీ స్థితి: *${whyThatNowText}*\n` +
           `• ఘాట్ రోడ్లు: *ప్రస్తుతం తెరిచి ఉన్నాయి*\n\n` +
           `సారథి గైడ్‌లో లైవ్ అప్‌డేట్స్ చూడండి 👇\n${siteUrl}`
         : `🛕 *Live Tirumala Darshan & Crowd Update (${dayName})*\n\n` +
           `• Sarva Darshan (Free): *${sarvaWait}* [${sarvaLabel}]\n` +
           `• ₹300 Special Entry: *${specialWait}* [${specialLabel}]\n` +
-          `• Free SSD Tokens: *${ssdWait}* [${ssdLabel}]\n` +
+          `• Time-Slotted Free Darshan: *${ssdWait}* [${ssdLabel}]\n` +
           `• Crowd Status: *${whyThatNowText}*\n` +
           `• Ghat Roads: *Open & Operational*\n\n` +
           `Check live updates on Saarthi Guide 👇\n${siteUrl}`;
