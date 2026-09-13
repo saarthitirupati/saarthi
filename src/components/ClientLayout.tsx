@@ -85,6 +85,8 @@ function LayoutContent({
           maxWidth: isAdmin ? '100%' : '1440px',
           margin: '0 auto',
           background: '#FAFAF7',
+          overflowX: 'hidden',
+          boxSizing: 'border-box',
         }}
       >
         {showBottomNav && <BottomNav />}
@@ -93,6 +95,9 @@ function LayoutContent({
           minHeight: pathname === '/onboarding' ? '100dvh' : '100vh',
           height: pathname === '/onboarding' ? '100dvh' : 'auto',
           overflow: pathname === '/onboarding' ? 'hidden' : 'visible',
+          overflowX: 'hidden',
+          width: '100%',
+          boxSizing: 'border-box',
           paddingBottom: showBottomNav ? 'var(--layout-padding-bottom)' : (pathname === '/onboarding' ? '0px' : '24px')
         }}>
           {children}

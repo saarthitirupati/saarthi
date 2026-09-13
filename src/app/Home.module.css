@@ -1721,14 +1721,19 @@
   width: 100%;
   max-width: 1440px;
   margin: 0 auto;
-  padding: 0 12px var(--layout-padding-bottom) 12px;
+  padding: 0 0 var(--layout-padding-bottom) 0;
   box-sizing: border-box;
+  overflow-x: hidden;
 }
 
 .mobileStack {
   display: flex;
   flex-direction: column;
   gap: 10px;
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
+  box-sizing: border-box;
 }
 
 .desktopOnly {
@@ -1740,6 +1745,9 @@
 }
 
 @media (min-width: 768px) {
+  .homeWrapper {
+    padding: 0 24px var(--layout-padding-bottom) 24px;
+  }
   .mobileOnly {
     display: none;
   }

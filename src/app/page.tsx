@@ -138,7 +138,7 @@ export default function HomePage() {
   ];
 
   return (
-    <div className={styles.homeWrapper} style={{ backgroundColor: 'var(--bg-canvas, #FAF8F5)', minHeight: '100vh' }}>
+    <div className={styles.homeWrapper} style={{ backgroundColor: 'var(--bg-canvas, #FAF8F5)', minHeight: '100vh', width: '100%', maxWidth: '100%', overflowX: 'hidden', boxSizing: 'border-box' }}>
       
       {/* 📱 MOBILE VIEW (<768px): 3-Layer Information Architecture */}
       <div className={styles.mobileOnly}>

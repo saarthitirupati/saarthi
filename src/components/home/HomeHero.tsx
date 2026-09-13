@@ -1130,7 +1130,7 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
     setOverrideScenario(list[nextIdx]);
   };
   return (
-    <div style={{ fontFamily: 'var(--font-body)', background: '#FAF8F4' }}>
+    <div style={{ fontFamily: 'var(--font-body)', background: '#FAF8F4', width: '100%', maxWidth: '100%', overflowX: 'hidden', boxSizing: 'border-box' }}>
 
       {/* ══════════ MODERN CLASSIC HEADER ══════════ */}
       {!hideHeader && (
@@ -1139,23 +1139,28 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
           top: 0,
           zIndex: 50,
           background: '#FFFFFF',
-          boxShadow: '0 1px 0 rgba(212,175,55,0.15), 0 2px 12px rgba(0,0,0,0.04)'
+          boxShadow: '0 1px 0 rgba(212,175,55,0.15), 0 2px 12px rgba(0,0,0,0.04)',
+          width: '100%',
+          maxWidth: '100vw',
+          overflowX: 'hidden',
+          boxSizing: 'border-box'
         }}>
           <div style={{
             maxWidth: '100%',
-            padding: '0 14px 0 12px',
-            height: '64px',
+            padding: '0 clamp(8px, 2.5vw, 14px)',
+            height: '60px',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
-            gap: '8px',
+            gap: '6px',
+            boxSizing: 'border-box'
           }}>
 
             {/* Left — Official Saarthi Brand Lockup */}
-            <Link href="/" style={{ display: 'flex', alignItems: 'center', gap: '8px', textDecoration: 'none', flexShrink: 0 }}>
-              <Logo size={34} />
+            <Link href="/" style={{ display: 'flex', alignItems: 'center', gap: '6px', textDecoration: 'none', flexShrink: 0 }}>
+              <Logo size={30} />
               <span className="notranslate" style={{
-                fontSize: 'clamp(19px, 5.2vw, 22px)',
+                fontSize: 'clamp(18px, 4.6vw, 21px)',
                 fontWeight: 900,
                 color: '#0F5132',
                 letterSpacing: '-0.02em',
@@ -1168,11 +1173,11 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
             </Link>
 
             {/* Right — Location Badge, Language Toggle & Notification Bell */}
-            <div style={{ display: 'flex', alignItems: 'center', gap: '6px', minWidth: 0, flexShrink: 1 }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '5px', minWidth: 0, flexShrink: 1 }}>
               <LocationPill 
                 locationName={selectedLocation} 
                 onClick={() => setIsLocationModalOpen(true)} 
-                style={{ padding: '6px 11px', fontSize: '12.5px', gap: '4px', maxWidth: '150px' }}
+                style={{ padding: '5px 8px', fontSize: '11.5px', gap: '3px', maxWidth: 'clamp(80px, 23vw, 130px)' }}
               />
 
               {/* Language Switcher */}
@@ -1184,13 +1189,13 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
                 style={{
                   display: 'inline-flex',
                   alignItems: 'center',
-                  gap: '4px',
-                  padding: '6px 10px',
+                  gap: '3px',
+                  padding: '5px 8px',
                   borderRadius: '9999px',
                   border: '1px solid #E2E8F0',
                   background: '#F8FAFC',
                   color: '#0F5132',
-                  fontSize: '12px',
+                  fontSize: '11px',
                   fontWeight: 700,
                   cursor: 'pointer',
                   userSelect: 'none',
@@ -1201,16 +1206,16 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
                   flexShrink: 0,
                 }}
               >
-                <Languages size={15} color="#0F5132" strokeWidth={2.2} />
-                <span>{lang === 'en' ? 'తెలుగు' : 'English'}</span>
+                <Languages size={14} color="#0F5132" strokeWidth={2.2} />
+                <span>{lang === 'en' ? 'తెలుగు' : 'EN'}</span>
               </button>
 
               <Link href="/alerts" aria-label="Notifications" style={{
-                width: '40px', height: '40px', flexShrink: 0,
+                width: '36px', height: '36px', flexShrink: 0,
                 display: 'flex', alignItems: 'center', justifyContent: 'center',
                 textDecoration: 'none', position: 'relative'
               }}>
-                <Bell size={22} color="#0F5132" strokeWidth={1.9} />
+                <Bell size={20} color="#0F5132" strokeWidth={1.9} />
                 {(activeAlertsCount ?? 0) > 0 && (
                   <span style={{
                     position: 'absolute',
@@ -1249,27 +1254,29 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
       )}
 
       {/* ══════════ SCROLLABLE CONTENT ══════════ */}
-      <div style={{ padding: hideHeader ? '0' : '10px 12px 16px 12px', background: hideHeader ? 'transparent' : 'var(--bg-canvas, #FAF8F5)' }}>
+      <div style={{ padding: hideHeader ? '0' : '10px clamp(8px, 3vw, 12px) 16px', background: hideHeader ? 'transparent' : 'var(--bg-canvas, #FAF8F5)', width: '100%', maxWidth: '100%', boxSizing: 'border-box', overflowX: 'hidden' }}>
 
         {!hideHeader && (
           <>
             {/* ══════════ DEVOTIONAL INVOCATION & 108 JAPA MALA BAR ══════════ */}
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '8px', marginBottom: '10px', position: 'relative', width: '100%', boxSizing: 'border-box' }}>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '6px', marginBottom: '10px', position: 'relative', width: '100%', maxWidth: '100%', boxSizing: 'border-box' }}>
               {/* Left: Today's Day, Date & Live Weather */}
               <div style={{ 
                 display: 'inline-flex', 
                 alignItems: 'center', 
-                gap: '5px', 
-                fontSize: '11.5px', 
+                gap: '4px', 
+                fontSize: 'clamp(10px, 2.7vw, 11.5px)', 
                 fontWeight: 600, 
                 color: '#475569', 
                 whiteSpace: 'nowrap', 
-                flexShrink: 0,
-                padding: '4px 10px',
+                flexShrink: 1,
+                minWidth: 0,
+                padding: '4px 8px',
                 borderRadius: '16px',
                 background: 'rgba(255, 255, 255, 0.9)',
                 border: '1.5px solid #E2E8F0',
-                boxShadow: '0 1px 3px rgba(0,0,0,0.03)'
+                boxShadow: '0 1px 3px rgba(0,0,0,0.03)',
+                boxSizing: 'border-box'
               }}>
                 <span style={{ fontWeight: 800, color: '#B45309' }}>
                   {dayShort}, {todayDateStr}
@@ -1287,13 +1294,13 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
                 style={{
                   display: 'inline-flex',
                   alignItems: 'center',
-                  gap: '6px',
-                  padding: '4px 10px',
+                  gap: '5px',
+                  padding: '4px 8px',
                   borderRadius: '18px',
                   background: 'linear-gradient(135deg, #FFFDF7 0%, #FEF3C7 55%, #FDE68A 100%)',
                   border: '1.5px solid #D97706',
                   boxShadow: '0 2px 8px rgba(217, 119, 6, 0.18)',
-                  fontSize: 'clamp(10px, 2.8vw, 11.5px)',
+                  fontSize: 'clamp(10px, 2.7vw, 11.5px)',
                   fontWeight: 800,
                   color: '#78350F',
                   cursor: 'pointer',
@@ -1301,7 +1308,8 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
                   transition: 'all 0.2s cubic-bezier(0.16, 1, 0.3, 1)',
                   userSelect: 'none',
                   whiteSpace: 'nowrap',
-                  flexShrink: 0
+                  flexShrink: 0,
+                  boxSizing: 'border-box'
                 }}
               >
                 <Sparkles size={11} color="#D97706" style={{ animation: isChanting ? 'spin 0.4s ease' : 'none', flexShrink: 0 }} />
@@ -2248,6 +2256,10 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
                   alignItems: 'center',
                   justifyContent: 'space-between',
                   minHeight: '52px',
+                  width: '100%',
+                  maxWidth: '100%',
+                  boxSizing: 'border-box',
+                  gap: '8px',
                   boxShadow: card.shadow,
                   position: 'relative',
                   overflow: 'hidden',
@@ -2269,7 +2281,7 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
                 }} />
 
                 {/* Left Info with Icon Accent */}
-                <div style={{ display: 'flex', alignItems: 'center', gap: '9px', position: 'relative', zIndex: 2 }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '9px', position: 'relative', zIndex: 2, minWidth: 0, flex: 1 }}>
                   <div style={{
                     width: '32px',
                     height: '32px',
@@ -2284,13 +2296,14 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
                   }}>
                     {card.icon}
                   </div>
-                  <div>
+                  <div style={{ minWidth: 0, flex: 1 }}>
                     <div style={{
                       fontSize: lang === 'te' ? '14px' : '13.5px',
                       fontWeight: lang === 'te' ? 700 : 800,
                       color: '#0F172A',
                       letterSpacing: lang === 'te' ? 'normal' : '-0.01em',
-                      lineHeight: lang === 'te' ? 1.35 : '1.2'
+                      lineHeight: lang === 'te' ? 1.35 : '1.2',
+                      wordBreak: 'break-word',
                     }}>
                       {card.title}
                     </div>
@@ -2300,7 +2313,8 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
                       fontWeight: 600,
                       marginTop: '2px',
                       lineHeight: lang === 'te' ? 1.35 : '1.2',
-                      letterSpacing: 'normal'
+                      letterSpacing: 'normal',
+                      wordBreak: 'break-word',
                     }}>
                       {card.subtitle}
                     </div>
@@ -2308,7 +2322,7 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
                 </div>
 
                 {/* Right Wait Time & Status Meter */}
-                <div style={{ textAlign: 'right', display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '3px', position: 'relative', zIndex: 2 }}>
+                <div style={{ textAlign: 'right', display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '3px', position: 'relative', zIndex: 2, flexShrink: 0 }}>
                   <div style={{
                     fontSize: 'clamp(15px, 4.4vw, 17px)',
                     fontWeight: 900,
