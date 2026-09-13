@@ -43,6 +43,8 @@ export interface JapaShareCardData {
 // 🎨 SAFE CANVAS PATH PRIMITIVES
 // ─────────────────────────────────────────────────────────────────────────────
 
+const INDIC_FONT = '"Noto Sans Telugu", "Nirmala UI", "Segoe UI", system-ui, -apple-system, sans-serif';
+
 function drawRoundedRect(
   ctx: CanvasRenderingContext2D,
   x: number,
@@ -51,17 +53,18 @@ function drawRoundedRect(
   h: number,
   r: number
 ) {
+  const radius = Math.max(0, Math.min(r, Math.abs(w) / 2, Math.abs(h) / 2));
   ctx.beginPath();
-  if (typeof ctx.roundRect === 'function') {
-    ctx.roundRect(x, y, w, h, r);
-  } else {
-    ctx.moveTo(x + r, y);
-    ctx.arcTo(x + w, y, x + w, y + h, r);
-    ctx.arcTo(x + w, y + h, x, y + h, r);
-    ctx.arcTo(x, y + h, x, y, r);
-    ctx.arcTo(x, y, x + w, y, r);
-    ctx.closePath();
-  }
+  ctx.moveTo(x + radius, y);
+  ctx.lineTo(x + w - radius, y);
+  ctx.quadraticCurveTo(x + w, y, x + w, y + radius);
+  ctx.lineTo(x + w, y + h - radius);
+  ctx.quadraticCurveTo(x + w, y + h, x + w - radius, y + h);
+  ctx.lineTo(x + radius, y + h);
+  ctx.quadraticCurveTo(x, y + h, x, y + h - radius);
+  ctx.lineTo(x, y + radius);
+  ctx.quadraticCurveTo(x, y, x + radius, y);
+  ctx.closePath();
 }
 
 function wrapText(
@@ -72,24 +75,68 @@ function wrapText(
   maxWidth: number,
   lineHeight: number
 ): number {
-  const words = text.split(' ');
-  let line = '';
+  if (!text) return y;
+  const paragraphs = text.split('\n');
   let curY = y;
 
-  for (let n = 0; n < words.length; n++) {
-    const testLine = line + words[n] + ' ';
-    const metrics = ctx.measureText(testLine);
-    const testWidth = metrics.width;
-    if (testWidth > maxWidth && n > 0) {
-      ctx.fillText(line.trim(), x, curY);
-      line = words[n] + ' ';
+  for (let p = 0; p < paragraphs.length; p++) {
+    const words = paragraphs[p].split(' ').filter(Boolean);
+    let line = '';
+
+    for (let n = 0; n < words.length; n++) {
+      const testLine = line ? `${line} ${words[n]}` : words[n];
+      const metrics = ctx.measureText(testLine);
+      if (metrics.width > maxWidth && n > 0) {
+        ctx.fillText(line, x, curY);
+        line = words[n];
+        curY += lineHeight;
+      } else {
+        line = testLine;
+      }
+    }
+    if (line) {
+      ctx.fillText(line, x, curY);
       curY += lineHeight;
-    } else {
-      line = testLine;
     }
   }
-  ctx.fillText(line.trim(), x, curY);
-  return curY + lineHeight;
+  return curY;
+}
+
+export function canvasToBlob(canvas: HTMLCanvasElement): Promise<Blob | null> {
+  return new Promise((resolve) => {
+    try {
+      if (typeof canvas.toBlob === 'function') {
+        canvas.toBlob((blob) => {
+          if (blob) {
+            resolve(blob);
+          } else {
+            resolve(canvasDataURLToBlob(canvas));
+          }
+        }, 'image/png');
+      } else {
+        resolve(canvasDataURLToBlob(canvas));
+      }
+    } catch {
+      resolve(canvasDataURLToBlob(canvas));
+    }
+  });
+}
+
+function canvasDataURLToBlob(canvas: HTMLCanvasElement): Blob | null {
+  try {
+    const dataUrl = canvas.toDataURL('image/png');
+    const parts = dataUrl.split(',');
+    const byteString = atob(parts[1]);
+    const mimeString = parts[0].split(':')[1].split(';')[0];
+    const ab = new ArrayBuffer(byteString.length);
+    const ia = new Uint8Array(ab);
+    for (let i = 0; i < byteString.length; i++) {
+      ia[i] = byteString.charCodeAt(i);
+    }
+    return new Blob([ab], { type: mimeString });
+  } catch {
+    return null;
+  }
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -489,13 +536,11 @@ export async function generateTodayInTirumalaCard(data: TodayPulseCardData): Pro
   ctx.fillText('👉  https://saarthiguide.in', width / 2, bottomY + 38);
 
   ctx.fillStyle = 'rgba(255, 255, 255, 0.6)';
-  ctx.font = '500 18px system-ui, sans-serif';
+  ctx.font = `500 18px ${INDIC_FONT}`;
   ctx.fillText('Serving Sri Venkateswara Swami Pilgrims with First-Principles Clarity', width / 2, bottomY + 70);
   ctx.restore();
 
-  return new Promise((resolve) => {
-    canvas.toBlob((blob) => resolve(blob), 'image/png');
-  });
+  return canvasToBlob(canvas);
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -620,47 +665,52 @@ export async function generateJapaCard(data: JapaShareCardData): Promise<Blob | 
   }
   ctx.restore();
 
-  // Holy Nama (Telugu)
+  // Dynamically flow content vertically to eliminate overlap
+  let curY = shrineY + 140;
+
+  // Holy Nama (Telugu & Sanskrit)
   ctx.save();
   ctx.textAlign = 'center';
   ctx.fillStyle = '#FFFDF5';
-  ctx.font = '800 52px "Nirmala UI", "Segoe UI", sans-serif';
+  ctx.font = `800 50px ${INDIC_FONT}`;
   ctx.shadowColor = 'rgba(245, 158, 11, 0.65)';
-  ctx.shadowBlur = 24;
-  wrapText(ctx, data.namaTe, width / 2, shrineY + 160, shrineW - 80, 68);
+  ctx.shadowBlur = 22;
+  curY = wrapText(ctx, data.namaTe, width / 2, curY, shrineW - 80, 62) + 14;
   ctx.restore();
 
   // Transliteration & English
   ctx.save();
   ctx.textAlign = 'center';
   ctx.fillStyle = '#CBD5E1';
-  ctx.font = 'italic 500 28px -apple-system, system-ui, sans-serif';
-  ctx.fillText(data.namaEn, width / 2, shrineY + 245);
+  ctx.font = 'italic 500 26px -apple-system, system-ui, sans-serif';
+  curY = wrapText(ctx, data.namaEn, width / 2, curY, shrineW - 100, 34) + 10;
 
   // Lotus Divider
   ctx.fillStyle = '#F59E0B';
-  ctx.font = '26px system-ui, sans-serif';
-  ctx.fillText('─── 🪷 ───', width / 2, shrineY + 300);
+  ctx.font = '24px system-ui, sans-serif';
+  ctx.fillText('─── 🪷 ───', width / 2, curY);
+  curY += 40;
 
   // Divine Blessing Title
   ctx.fillStyle = '#F59E0B';
-  ctx.font = '700 22px system-ui, sans-serif';
+  ctx.font = '700 20px system-ui, sans-serif';
   ctx.letterSpacing = '2px';
-  ctx.fillText('DIVINE BLESSING & ANUGRAHAM', width / 2, shrineY + 350);
+  ctx.fillText('DIVINE BLESSING & ANUGRAHAM', width / 2, curY);
+  curY += 36;
 
   // Blessing Telugu Text
   ctx.fillStyle = '#F8FAFC';
-  ctx.font = '600 30px "Nirmala UI", Georgia, serif';
-  wrapText(ctx, `"${data.blessingTe}"`, width / 2, shrineY + 410, shrineW - 100, 48);
+  ctx.font = `600 28px ${INDIC_FONT}`;
+  curY = wrapText(ctx, `"${data.blessingTe}"`, width / 2, curY, shrineW - 100, 44) + 14;
 
   // Blessing English Meaning
   ctx.fillStyle = '#94A3B8';
-  ctx.font = 'italic 500 24px -apple-system, system-ui, sans-serif';
-  wrapText(ctx, `"${data.blessingEn}"`, width / 2, shrineY + 535, shrineW - 120, 36);
+  ctx.font = 'italic 500 22px -apple-system, system-ui, sans-serif';
+  curY = wrapText(ctx, `"${data.blessingEn}"`, width / 2, curY, shrineW - 120, 32);
   ctx.restore();
 
   // 5. PROGRESS STRAND (Strictly scoped paths)
-  const barY = shrineY + shrineH - 95;
+  const barY = shrineY + shrineH - 85;
   const barW = shrineW - 120;
   const barX = shrineX + 60;
   const pct = Math.min(1, data.beadNumber / 108);
@@ -706,13 +756,11 @@ export async function generateJapaCard(data: JapaShareCardData): Promise<Blob | 
   ctx.fillText('👉  https://saarthiguide.in', width / 2, botY + 38);
 
   ctx.fillStyle = 'rgba(255, 255, 255, 0.6)';
-  ctx.font = '500 18px "Nirmala UI", system-ui, sans-serif';
+  ctx.font = `500 18px ${INDIC_FONT}`;
   ctx.fillText('ఓం నమో వేంకటేశాయ • సర్వే జనాః సుఖినో భవంతు', width / 2, botY + 70);
   ctx.restore();
 
-  return new Promise((resolve) => {
-    canvas.toBlob((blob) => resolve(blob), 'image/png');
-  });
+  return canvasToBlob(canvas);
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -728,30 +776,67 @@ export async function shareOrDownloadCard(
 ): Promise<boolean> {
   if (typeof window === 'undefined') return false;
 
-  const file = new File([blob], filename, { type: 'image/png' });
+  let file: File;
+  try {
+    file = new File([blob], filename, { type: 'image/png', lastModified: Date.now() });
+  } catch {
+    file = Object.assign(blob.slice(0, blob.size, 'image/png'), {
+      name: filename,
+      lastModified: Date.now()
+    }) as unknown as File;
+  }
 
-  // 1. Try Native Web Share API Level 2 with files (Android Chrome, iOS Safari)
-  if (
-    typeof navigator !== 'undefined' &&
-    navigator.share &&
-    navigator.canShare &&
-    navigator.canShare({ files: [file] })
-  ) {
+  // 1. Native Web Share API Level 2 (Android Chrome, iOS Safari)
+  if (typeof navigator !== 'undefined' && navigator.share) {
+    let canShareFile = false;
     try {
-      await navigator.share({
-        title,
-        text,
-        url,
-        files: [file]
-      });
-      return true;
-    } catch (err: any) {
-      if (err.name === 'AbortError') return true; // User intentionally dismissed
+      canShareFile = typeof navigator.canShare === 'function' && navigator.canShare({ files: [file] });
+    } catch {
+      canShareFile = false;
+    }
+
+    if (canShareFile) {
+      // NOTE: DO NOT pass a separate `url` property alongside `files`!
+      // In WhatsApp on Android, passing `url` makes WhatsApp discard the file and treat it as a link-only share.
+      // In iOS Safari, passing both `files` and `url` throws a fatal TypeError.
+      const shareCaption = text ? `${text}\n\n${url}` : url;
+      try {
+        await navigator.share({
+          files: [file],
+          title,
+          text: shareCaption
+        });
+        return true;
+      } catch (err: any) {
+        if (err?.name === 'AbortError') return true;
+        // Fallback retry with files ONLY (maximally compatible across strict iOS/Android versions)
+        try {
+          await navigator.share({
+            files: [file],
+            title
+          });
+          return true;
+        } catch (err2: any) {
+          if (err2?.name === 'AbortError') return true;
+        }
+      }
     }
   }
 
-  // 2. Desktop or Non-file Share Fallback: Trigger direct image download + open WhatsApp
+  // 2. Desktop or Non-file Share Fallback: Clipboard + Direct Download + WhatsApp
   try {
+    // A. Copy Image directly to Clipboard for instant 1-tap paste (Ctrl+V) in WhatsApp Web
+    if (typeof navigator !== 'undefined' && navigator.clipboard && typeof window.ClipboardItem === 'function') {
+      try {
+        await navigator.clipboard.write([
+          new ClipboardItem({ 'image/png': blob })
+        ]);
+      } catch {
+        // Clipboard write might require active tab focus
+      }
+    }
+
+    // B. Direct Image Download
     const objectUrl = URL.createObjectURL(blob);
     const link = document.createElement('a');
     link.href = objectUrl;
@@ -759,9 +844,9 @@ export async function shareOrDownloadCard(
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
-    setTimeout(() => URL.revokeObjectURL(objectUrl), 2000);
+    setTimeout(() => URL.revokeObjectURL(objectUrl), 4000);
 
-    // Open WhatsApp with rich text caption
+    // C. Open WhatsApp with formatted caption
     const whatsappUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(text + '\n\n' + url)}`;
     window.open(whatsappUrl, '_blank');
     return true;

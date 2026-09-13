@@ -968,7 +968,8 @@ export function HomeHero({ userName, locationName, weatherTemp, liveStatus, acti
       const cardType: 'bead' | 'milestone' = isMilestone ? 'milestone' : 'bead';
       const siteUrl = 'https://saarthiguide.in';
 
-      const text = `✨ 📿 *శ్రీ వేంకటేశ్వర 108 దివ్య నామ జప మాల* 📿 ✨
+      const text = lang === 'te'
+        ? `✨ 📿 *శ్రీ వేంకటేశ్వర 108 దివ్య నామ జప మాల* 📿 ✨
 ━━━━━━━━━━━━━━━━━━━━━━━━
 🌸 *నామం #${activeBead}/108:*
 *${currentNama.namaTe}*
@@ -983,7 +984,23 @@ _(${currentNama.namaEn})_
 🙏 మీరూ శ్రీవారి 108 నామ జప సాధన చేయండి:
 👉 ${siteUrl}
 ━━━━━━━━━━━━━━━━━━━━━━━━
-_ఓం నమో వేంకటేశాయ • సర్వే జనాః సుఖినో భవంతు_`;
+_ఓం నమో వేంకటేశాయ • సర్వే జనాః సుఖినో భవంతు_`
+        : `✨ 📿 *Srivari 108 Sacred Japa Mala* 📿 ✨
+━━━━━━━━━━━━━━━━━━━━━━━━
+🌸 *Bead #${activeBead} of 108:*
+*${currentNama.namaTe}*
+_(${currentNama.namaEn})_
+
+🌿 *Divine Blessing & Grace:*
+"${currentNama.blessingEn}"
+
+🕊️ _"${currentNama.blessingTe}"_
+━━━━━━━━━━━━━━━━━━━━━━━━
+🪔 *Mala Progress:* ${activeBead}/108 Beads Chanted${completedMalas > 0 ? ` | Completed Malas: ${completedMalas}` : ''}
+🙏 Chant Srivari 108 Japa Mala on Saarthi:
+👉 ${siteUrl}
+━━━━━━━━━━━━━━━━━━━━━━━━
+_Om Namo Venkatesaya • Peace & Auspicious Blessings to All_`;
 
       const blob = await generateJapaCard({
         type: cardType,
@@ -1000,7 +1017,7 @@ _ఓం నమో వేంకటేశాయ • సర్వే జనాః �
         await shareOrDownloadCard(
           blob,
           `Saarthi-Japa-Bead-${activeBead}.png`,
-          `శ్రీ వేంకటేశ్వర నామ జపం #${activeBead}`,
+          lang === 'te' ? `శ్రీ వేంకటేశ్వర నామ జపం #${activeBead}` : `Srivari Japa Mala Bead #${activeBead}`,
           text,
           siteUrl
         );
@@ -1021,7 +1038,8 @@ _ఓం నమో వేంకటేశాయ • సర్వే జనాః �
 
     try {
       const siteUrl = 'https://saarthiguide.in';
-      const text = `🎉 📿 *శ్రీ వేంకటేశ్వర 108 జప మాల సంపూర్ణం!* 📿 🎉
+      const text = lang === 'te'
+        ? `🎉 📿 *శ్రీ వేంకటేశ్వర 108 జప మాల సంపూర్ణం!* 📿 🎉
 ━━━━━━━━━━━━━━━━━━━━━━━━
 స్వామివారి దివ్య కృపతో ఈరోజు *108 దివ్య నామాల సంపూర్ణ జప మాల* విజయవంతంగా పూర్తి చేయడమైనది! 🪔
 
@@ -1036,7 +1054,22 @@ _("Chanting the 108 divine names of Lord Srinivasa brings peace, protection, and
 🙏 మీరూ శ్రీవారి 108 జప మాల సాధన చేయండి:
 👉 ${siteUrl}
 ━━━━━━━━━━━━━━━━━━━━━━━━
-_ఓం నమో వేంకటేశాయ • శ్రీ పద్మావతీ సమేత శ్రీనివాసాయ నమః_`;
+_ఓం నమో వేంకటేశాయ • శ్రీ పద్మావతీ సమేత శ్రీనివాసాయ నమః_`
+        : `🎉 📿 *Srivari 108 Japa Mala Completed!* 📿 🎉
+━━━━━━━━━━━━━━━━━━━━━━━━
+By the divine grace of Lord Srinivasa, completed the sacred *108 Divine Names Japa Mala*! 🪔
+
+✨ *Om Namo Venkatesaya* ✨
+
+🌸 *Sacred Phalasruthi:*
+"Chanting the holy 108 names of Sri Venkateswara removes obstacles, brings tranquil peace of mind, and boundless auspicious fulfillment."
+
+🏆 *Completed Malas:* ${completedMalas} (${completedMalas * 108} divine chants)
+━━━━━━━━━━━━━━━━━━━━━━━━
+🙏 Chant Srivari 108 Japa Mala on Saarthi:
+👉 ${siteUrl}
+━━━━━━━━━━━━━━━━━━━━━━━━
+_Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
 
       const lastNama = getGovindaNamaForBead(108);
       const blob = await generateJapaCard({
@@ -1054,7 +1087,7 @@ _ఓం నమో వేంకటేశాయ • శ్రీ పద్మా�
         await shareOrDownloadCard(
           blob,
           `Saarthi-108-Mala-Poorthi.png`,
-          'శ్రీ వేంకటేశ్వర 108 జప మాల సంపూర్ణం!',
+          lang === 'te' ? 'శ్రీ వేంకటేశ్వర 108 జప మాల సంపూర్ణం!' : 'Srivari 108 Japa Mala Completed!',
           text,
           siteUrl
         );
