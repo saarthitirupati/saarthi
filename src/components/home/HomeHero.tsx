@@ -1166,13 +1166,13 @@ _ఓం నమో వేంకటేశాయ • శ్రీ పద్మా�
                     </div>
 
                     <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                      {/* 🔔 Sound Bell Mute / Unmute Toggle */}
+                      {/* 🕉️ Divine Journey Sound Mute / Unmute Toggle */}
                       <button
                         type="button"
                         onClick={toggleSound}
                         title={isSoundEnabled 
-                          ? (lang === 'te' ? 'గంట శబ్దం ఆపివేయండి (మౌనం)' : 'Mute temple bell sound') 
-                          : (lang === 'te' ? 'గంట శబ్దం ప్రారంభించండి' : 'Enable temple bell sound')}
+                          ? (lang === 'te' ? 'దివ్య నాదం ఆపివేయండి (మౌనం)' : 'Mute Divine Journey sound') 
+                          : (lang === 'te' ? 'దివ్య నాదం ప్రారంభించండి' : 'Enable Divine Journey sound')}
                         style={{
                           background: isSoundEnabled ? 'rgba(245, 158, 11, 0.2)' : 'rgba(255, 255, 255, 0.08)',
                           border: isSoundEnabled ? '1px solid rgba(245, 158, 11, 0.45)' : '1px solid rgba(255, 255, 255, 0.15)',

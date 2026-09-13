@@ -1,92 +1,42 @@
 /**
- * 🔔 Native Web Audio Temple Bell Chime
- * Synthesizes a soothing bronze temple bell chime using harmonic overtone physics.
- * Zero external audio assets required.
+ * 🕉️ Saarthi Audio Engine
+ * Replaces traditional metallic temple bells with the modern, spiritual "Divine Journey" sonic identity:
+ * - Hypnotic Tanpura drone
+ * - Bamboo Flute (Bansuri) motif
+ * - Resonant Saraswati Veena acoustic pluck
+ * - Subtle "Om" vocal cavity pad swell
+ * 
+ * Provides backwards-compatible entry points so existing callers gracefully transition to the new sonic palette.
  */
 
+import {
+  playSaarthiSonicIdent,
+  stopSaarthiSonicIdent,
+  playVeenaPluck,
+  playMalaCompletionSonicIdent
+} from './audioIdentity';
+
+export {
+  playSaarthiSonicIdent,
+  stopSaarthiSonicIdent,
+  playVeenaPluck,
+  playMalaCompletionSonicIdent
+};
+
+/**
+ * 🪕 Tactile Spiritual Note (replaces legacy temple bell chime)
+ * Pure acoustic Veena pluck with zero harsh metallic ringing.
+ */
 export function playTempleBellChime() {
-  if (typeof window === 'undefined') return;
-  try {
-    const AudioContext = window.AudioContext || (window as any).webkitAudioContext;
-    if (!AudioContext) return;
-    const ctx = new AudioContext();
-    
-    if (ctx.state === 'suspended') {
-      ctx.resume();
-    }
-    
-    const now = ctx.currentTime;
-    // Harmonic frequencies of a sacred Indian bronze bell (Fundamental 432 Hz)
-    const harmonics = [
-      { freq: 432, gain: 0.35, decay: 2.2 },
-      { freq: 864, gain: 0.18, decay: 1.6 },
-      { freq: 1296, gain: 0.10, decay: 1.1 },
-      { freq: 1728, gain: 0.04, decay: 0.8 }
-    ];
-    
-    harmonics.forEach(({ freq, gain, decay }) => {
-      const osc = ctx.createOscillator();
-      const gainNode = ctx.createGain();
-      
-      osc.type = 'sine';
-      osc.frequency.setValueAtTime(freq, now);
-      
-      gainNode.gain.setValueAtTime(gain, now);
-      gainNode.gain.exponentialRampToValueAtTime(0.0001, now + decay);
-      
-      osc.connect(gainNode);
-      gainNode.connect(ctx.destination);
-      
-      osc.start(now);
-      osc.stop(now + decay);
-    });
-  } catch (err) {
-    // Ignore if audio permissions are restricted
-  }
+  playVeenaPluck();
 }
 
 /**
- * 🪔 Grand 108 Mala Completion Chime
- * Celebratory double harmonic bell resonance signifying completion of 108 sacred chants.
+ * 🪷 Grand 108 Mala Completion Chime (replaces legacy double bell gong)
+ * Celebratory bansuri flourish + rich resonant veena chord + peaceful pad release.
  */
 export function playMalaCompletionChime() {
-  if (typeof window === 'undefined') return;
-  try {
-    const AudioContext = window.AudioContext || (window as any).webkitAudioContext;
-    if (!AudioContext) return;
-    const ctx = new AudioContext();
-    if (ctx.state === 'suspended') ctx.resume();
-
-    const ring = (timeOffset: number, baseFreq: number, volume: number) => {
-      const now = ctx.currentTime + timeOffset;
-      const harmonics = [
-        { freq: baseFreq, gain: volume * 0.4, decay: 2.8 },
-        { freq: baseFreq * 2, gain: volume * 0.22, decay: 2.2 },
-        { freq: baseFreq * 3, gain: volume * 0.12, decay: 1.6 },
-        { freq: baseFreq * 4, gain: volume * 0.05, decay: 1.1 }
-      ];
-
-      harmonics.forEach(({ freq, gain, decay }) => {
-        const osc = ctx.createOscillator();
-        const gainNode = ctx.createGain();
-        osc.type = 'sine';
-        osc.frequency.setValueAtTime(freq, now);
-        gainNode.gain.setValueAtTime(gain, now);
-        gainNode.gain.exponentialRampToValueAtTime(0.0001, now + decay);
-        osc.connect(gainNode);
-        gainNode.connect(ctx.destination);
-        osc.start(now);
-        osc.stop(now + decay);
-      });
-    };
-
-    // First stroke (432 Hz - fundamental)
-    ring(0, 432, 1.0);
-    // Second joyful stroke (540 Hz - major third harmonic overtone)
-    ring(0.28, 540, 1.1);
-  } catch (err) {
-    // Ignore audio permission errors
-  }
+  playMalaCompletionSonicIdent();
 }
 
 /**

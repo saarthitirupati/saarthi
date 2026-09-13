@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { playTempleBellChime } from '@/lib/audioBell';
+import { playSaarthiSonicIdent, stopSaarthiSonicIdent } from '@/lib/audioIdentity';
 import styles from './Splash.module.css';
 
 // Silky smooth spring-like deceleration curve (First Principle motion curve)
@@ -12,23 +12,25 @@ export default function SplashScreen({ onFinish }: { onFinish: () => void }) {
   const [isVisible, setIsVisible] = useState(true);
 
   const handleFinish = useCallback(() => {
+    stopSaarthiSonicIdent();
     setIsVisible(false);
   }, []);
 
   useEffect(() => {
-    // 🔔 Sacred bronze temple chime synthesized via Web Audio API
+    // 🎵 Saarthi "Divine Journey" signature sonic ident (Tanpura -> Bansuri -> Veena -> Om swell)
     const soundTimer = setTimeout(() => {
-      playTempleBellChime();
-    }, 120);
+      playSaarthiSonicIdent();
+    }, 60);
 
-    // ⏱️ Total viewing duration: ~2.3s darshan before smooth exit fade
+    // ⏱️ Total viewing duration: ~5.8s divine journey matching the sonic ident
     const splashTimer = setTimeout(() => {
       handleFinish();
-    }, 2300);
+    }, 5800);
 
     return () => {
       clearTimeout(soundTimer);
       clearTimeout(splashTimer);
+      stopSaarthiSonicIdent();
     };
   }, [handleFinish]);
 
@@ -39,7 +41,7 @@ export default function SplashScreen({ onFinish }: { onFinish: () => void }) {
           className={styles.splashContainer}
           initial={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          transition={{ duration: 0.35, ease: SMOOTH_EASE }}
+          transition={{ duration: 0.45, ease: SMOOTH_EASE }}
           onClick={handleFinish}
         >
           {/* 🌌 Phase 1: Deep Sanctum Ambient Vignette */}
@@ -49,8 +51,8 @@ export default function SplashScreen({ onFinish }: { onFinish: () => void }) {
           <motion.div
             className={styles.centralGoldenAura}
             initial={{ opacity: 0, scale: 0.85 }}
-            animate={{ opacity: 0.75, scale: 1 }}
-            transition={{ duration: 1.2, ease: SMOOTH_EASE }}
+            animate={{ opacity: 0.8, scale: 1 }}
+            transition={{ duration: 2.0, ease: SMOOTH_EASE }}
           />
 
           {/* 🛕 100% PURE VECTOR CANVAS (Grouped Hardware-Accelerated SVG) */}
@@ -95,12 +97,12 @@ export default function SplashScreen({ onFinish }: { onFinish: () => void }) {
                 </linearGradient>
               </defs>
 
-              {/* 🌟 LAYER 1: SANCTUM HALO & CELESTIAL ORBIT CIRCLE */}
+              {/* 🌟 LAYER 1: SANCTUM HALO & CELESTIAL ORBIT CIRCLE (0.0s – 1.4s | Tanpura Drone) */}
               <motion.g
                 id="background-halo"
                 initial={{ opacity: 0, scale: 0.88 }}
                 animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.8, ease: SMOOTH_EASE }}
+                transition={{ duration: 1.2, ease: SMOOTH_EASE }}
                 style={{ transformOrigin: '200px 210px' }}
               >
                 <circle
@@ -121,12 +123,12 @@ export default function SplashScreen({ onFinish }: { onFinish: () => void }) {
                 />
               </motion.g>
 
-              {/* ✦ LAYER 2: SACRED GEOMETRY SAARTHI MANDALA */}
+              {/* ✦ LAYER 2: SACRED GEOMETRY SAARTHI MANDALA (0.2s – 1.5s) */}
               <motion.g
                 id="sacred-mandala"
                 initial={{ opacity: 0, scale: 0.75 }}
                 animate={{ opacity: 1, scale: 1 }}
-                transition={{ delay: 0.15, duration: 0.7, ease: SMOOTH_EASE }}
+                transition={{ delay: 0.2, duration: 1.1, ease: SMOOTH_EASE }}
                 style={{ transformOrigin: '200px 54px' }}
               >
                 {/* Concentric rings */}
@@ -191,12 +193,12 @@ export default function SplashScreen({ onFinish }: { onFinish: () => void }) {
                 <circle cx="200" cy="54" r="2.8" fill="#FFFFFF" />
               </motion.g>
 
-              {/* 👑 LAYER 3: LORD VENKATESWARA SWAMY MAJESTIC SILHOUETTE */}
+              {/* 👑 LAYER 3: LORD VENKATESWARA SWAMY MAJESTIC SILHOUETTE (1.35s – 2.8s | Bamboo Flute Motif) */}
               <motion.g
                 id="divine-deity-form"
-                initial={{ opacity: 0, y: 10 }}
+                initial={{ opacity: 0, y: 12 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.3, duration: 0.75, ease: SMOOTH_EASE }}
+                transition={{ delay: 1.35, duration: 1.1, ease: SMOOTH_EASE }}
               >
                 {/* 1. Crown Pinnacle Kalasam Spire */}
                 <path
@@ -334,12 +336,12 @@ export default function SplashScreen({ onFinish }: { onFinish: () => void }) {
                 />
               </motion.g>
 
-              {/* 🪷 LAYER 4: RADIANT SACRED TIRUMALA NAMAM (Focal Sacred Light) */}
+              {/* 🪷 LAYER 4: RADIANT SACRED TIRUMALA NAMAM (2.95s – 4.2s | Resonant Veena Pluck) */}
               <motion.g
                 id="sacred-namam"
-                initial={{ opacity: 0, scale: 0.82 }}
+                initial={{ opacity: 0, scale: 0.8 }}
                 animate={{ opacity: 1, scale: 1 }}
-                transition={{ delay: 0.5, duration: 0.65, ease: SMOOTH_EASE }}
+                transition={{ delay: 2.95, duration: 0.9, ease: SMOOTH_EASE }}
                 style={{ transformOrigin: '200px 225px' }}
               >
                 {/* Left Pure White Shankha/U-Arm */}
@@ -378,12 +380,12 @@ export default function SplashScreen({ onFinish }: { onFinish: () => void }) {
                 <circle cx="200" cy="196" r="2" fill="#F87171" />
               </motion.g>
 
-              {/* 📜 LAYER 5: MASTER BRAND TYPOGRAPHY & SACRED LOTUS BEAM */}
+              {/* 📜 LAYER 5: MASTER BRAND TYPOGRAPHY & SACRED LOTUS BEAM (4.1s – 5.8s | Subtle "Om" Swell) */}
               <motion.g
                 id="brand-typography-and-lotus"
-                initial={{ opacity: 0, y: 8 }}
+                initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.7, duration: 0.6, ease: SMOOTH_EASE }}
+                transition={{ delay: 4.1, duration: 0.9, ease: SMOOTH_EASE }}
               >
                 {/* Saarthi Wordmark */}
                 <text
@@ -453,7 +455,7 @@ export default function SplashScreen({ onFinish }: { onFinish: () => void }) {
             className={styles.skipPill}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ delay: 0.35, duration: 0.3 }}
+            transition={{ delay: 0.2, duration: 0.3 }}
             onClick={(e) => {
               e.stopPropagation();
               handleFinish();
