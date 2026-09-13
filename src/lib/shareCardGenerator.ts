@@ -43,10 +43,31 @@ export interface JapaShareCardData {
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// 🎨 SAFE CANVAS PATH PRIMITIVES
+// 🎨 SAFE CANVAS PATH PRIMITIVES & TYPOGRAPHY ENGINE
 // ─────────────────────────────────────────────────────────────────────────────
 
-const INDIC_FONT = '"Noto Sans Telugu", "Nirmala UI", "Segoe UI", system-ui, -apple-system, sans-serif';
+// Premium typography stacks aligned with Saarthi Design System
+const FONT_HEADING = '"Plus Jakarta Sans", "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif';
+const FONT_BODY = '"Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif';
+const FONT_TELUGU = '"Noto Sans Telugu", "Tiro Telugu", "Gautami", "Vani", "Segoe UI", sans-serif';
+const FONT_HYBRID = `var(--font-heading, "Plus Jakarta Sans"), "Noto Sans Telugu", "Inter", -apple-system, BlinkMacSystemFont, system-ui, sans-serif`;
+
+/**
+ * Ensures web fonts are ready before canvas draws, with strict timeout to preserve user gesture
+ */
+export async function ensureFontsReady(timeoutMs = 120): Promise<void> {
+  if (typeof document === 'undefined' || !document.fonts || typeof document.fonts.ready === 'undefined') {
+    return;
+  }
+  try {
+    await Promise.race([
+      document.fonts.ready,
+      new Promise((resolve) => setTimeout(resolve, timeoutMs))
+    ]);
+  } catch {
+    // Graceful fallback
+  }
+}
 
 function drawRoundedRect(
   ctx: CanvasRenderingContext2D,
@@ -107,20 +128,31 @@ function wrapText(
 
 export function canvasToBlob(canvas: HTMLCanvasElement): Promise<Blob | null> {
   return new Promise((resolve) => {
+    let resolved = false;
+    const finish = (blob: Blob | null) => {
+      if (!resolved) {
+        resolved = true;
+        resolve(blob || canvasDataURLToBlob(canvas));
+      }
+    };
+
+    const safetyTimer = setTimeout(() => {
+      finish(canvasDataURLToBlob(canvas));
+    }, 600);
+
     try {
       if (typeof canvas.toBlob === 'function') {
         canvas.toBlob((blob) => {
-          if (blob) {
-            resolve(blob);
-          } else {
-            resolve(canvasDataURLToBlob(canvas));
-          }
+          clearTimeout(safetyTimer);
+          finish(blob);
         }, 'image/png');
       } else {
-        resolve(canvasDataURLToBlob(canvas));
+        clearTimeout(safetyTimer);
+        finish(canvasDataURLToBlob(canvas));
       }
     } catch {
-      resolve(canvasDataURLToBlob(canvas));
+      clearTimeout(safetyTimer);
+      finish(canvasDataURLToBlob(canvas));
     }
   });
 }
@@ -148,24 +180,41 @@ function canvasDataURLToBlob(canvas: HTMLCanvasElement): Blob | null {
 
 let cachedLogoImage: HTMLImageElement | null = null;
 
-export function getSaarthiLogoImage(): Promise<HTMLImageElement | null> {
+// Eager preload in browser so logo is ready before user taps share
+if (typeof window !== 'undefined') {
+  try {
+    const preload = new Image();
+    preload.crossOrigin = 'anonymous';
+    preload.src = '/saarthi-logo.png';
+    preload.onload = () => {
+      cachedLogoImage = preload;
+    };
+  } catch {
+    // Graceful fallback
+  }
+}
+
+export function getSaarthiLogoImage(timeoutMs = 150): Promise<HTMLImageElement | null> {
   if (typeof window === 'undefined') return Promise.resolve(null);
   if (cachedLogoImage && cachedLogoImage.complete && cachedLogoImage.naturalWidth > 0) {
     return Promise.resolve(cachedLogoImage);
   }
 
-  return new Promise((resolve) => {
-    const img = new Image();
-    img.crossOrigin = 'anonymous';
-    img.onload = () => {
-      cachedLogoImage = img;
-      resolve(img);
-    };
-    img.onerror = () => {
-      resolve(null);
-    };
-    img.src = '/saarthi-logo.png';
-  });
+  return Promise.race([
+    new Promise<HTMLImageElement | null>((resolve) => {
+      const img = new Image();
+      img.crossOrigin = 'anonymous';
+      img.onload = () => {
+        cachedLogoImage = img;
+        resolve(img);
+      };
+      img.onerror = () => {
+        resolve(null);
+      };
+      img.src = '/saarthi-logo.png';
+    }),
+    new Promise<null>((resolve) => setTimeout(() => resolve(null), timeoutMs))
+  ]);
 }
 
 /**
@@ -535,6 +584,9 @@ function drawNamamIcon(ctx: CanvasRenderingContext2D, cx: number, cy: number, si
 export async function generateTodayInTirumalaCard(data: TodayPulseCardData): Promise<Blob | null> {
   if (typeof window === 'undefined') return null;
 
+  // Wait for document web fonts (Inter, Plus Jakarta Sans, Noto Sans Telugu) to fully resolve
+  await ensureFontsReady();
+
   // Load official Saarthi logo icon
   const logoImg = await getSaarthiLogoImage();
 
@@ -598,11 +650,11 @@ export async function generateTodayInTirumalaCard(data: TodayPulseCardData): Pro
   ctx.save();
   ctx.textAlign = 'left';
   ctx.fillStyle = '#FFFFFF';
-  ctx.font = '800 36px Georgia, serif';
+  ctx.font = '800 36px Georgia, "Times New Roman", serif';
   ctx.fillText('Saarthi', logoX + logoSize + 16, logoY + 28);
 
   ctx.fillStyle = '#FDE68A';
-  ctx.font = '800 12px system-ui, sans-serif';
+  ctx.font = `800 12px ${FONT_HEADING}`;
   ctx.letterSpacing = '3px';
   ctx.fillText('PILGRIM COMPANION', logoX + logoSize + 18, logoY + 46);
   ctx.restore();
@@ -612,8 +664,8 @@ export async function generateTodayInTirumalaCard(data: TodayPulseCardData): Pro
 
   ctx.save();
   ctx.textAlign = 'left';
-  ctx.font = '900 46px -apple-system, system-ui, sans-serif';
-  ctx.letterSpacing = '0.5px';
+  ctx.font = `900 48px ${isTe ? FONT_TELUGU : FONT_HEADING}`;
+  ctx.letterSpacing = isTe ? '0px' : '-0.5px';
 
   if (isTe) {
     ctx.fillStyle = '#FFFFFF';
@@ -639,14 +691,16 @@ export async function generateTodayInTirumalaCard(data: TodayPulseCardData): Pro
   });
   drawCalendarIcon(ctx, marginX + 10, headerY + 68, 12, '#F8FAFC');
   ctx.fillStyle = '#F8FAFC';
-  ctx.font = `700 22px ${INDIC_FONT}`;
+  ctx.font = `700 21px ${isTe ? FONT_TELUGU : FONT_BODY}`;
+  ctx.letterSpacing = '0.2px';
   ctx.fillText(fullDate, marginX + 28, headerY + 76);
 
   // Clean crowd subtitle: "Sunday • Heavy Crowd"
   const crowdText = data.crowdSummary || `${data.dayName} • Heavy Crowd`;
   drawCrowdIcon(ctx, marginX + 10, headerY + 100, 11, '#CBD5E1');
   ctx.fillStyle = '#CBD5E1';
-  ctx.font = `600 18px ${INDIC_FONT}`;
+  ctx.font = `600 18px ${isTe ? FONT_TELUGU : FONT_BODY}`;
+  ctx.letterSpacing = '0.1px';
   ctx.fillText(crowdText, marginX + 28, headerY + 106);
   ctx.restore();
 
@@ -683,12 +737,12 @@ export async function generateTodayInTirumalaCard(data: TodayPulseCardData): Pro
 
   ctx.textAlign = 'left';
   ctx.fillStyle = '#FFFFFF';
-  ctx.font = `900 20px ${INDIC_FONT}`;
+  ctx.font = `900 20px ${isTe ? FONT_TELUGU : FONT_HEADING}`;
   ctx.letterSpacing = '1px';
   ctx.fillText(isTe ? 'లైవ్' : 'LIVE', liveBoxX + 38, liveBoxY + 28);
 
   ctx.fillStyle = '#A7F3D0';
-  ctx.font = `600 13px ${INDIC_FONT}`;
+  ctx.font = `600 13px ${isTe ? FONT_TELUGU : FONT_BODY}`;
   ctx.letterSpacing = '0px';
   ctx.fillText(`${isTe ? 'అప్‌డేట్' : 'Updated'} ${updatedTime}`, liveBoxX + 22, liveBoxY + 48);
   ctx.restore();
@@ -741,17 +795,19 @@ export async function generateTodayInTirumalaCard(data: TodayPulseCardData): Pro
     const textX = iconBoxX + iconBoxSize + 16;
     ctx.textAlign = 'left';
     ctx.fillStyle = '#0F172A';
-    ctx.font = `800 26px ${INDIC_FONT}`;
-    ctx.fillText(q.name, textX, qY + 42);
+    ctx.font = `800 24px ${isTe ? FONT_TELUGU : FONT_HEADING}`;
+    ctx.letterSpacing = isTe ? '0px' : '-0.3px';
+    ctx.fillText(q.name, textX, qY + 40);
 
-    ctx.fillStyle = '#334155';
-    ctx.font = `600 17px ${INDIC_FONT}`;
-    ctx.fillText(q.subtitle, textX, qY + 72);
+    ctx.fillStyle = '#475569';
+    ctx.font = `600 16px ${isTe ? FONT_TELUGU : FONT_BODY}`;
+    ctx.letterSpacing = '0px';
+    ctx.fillText(q.subtitle, textX, qY + 70);
 
     if (q.category) {
       ctx.fillStyle = '#64748B';
-      ctx.font = `500 14px ${INDIC_FONT}`;
-      ctx.fillText(q.category, textX, qY + 98);
+      ctx.font = `500 13px ${isTe ? FONT_TELUGU : FONT_BODY}`;
+      ctx.fillText(q.category, textX, qY + 96);
     }
 
     // RIGHT: EST. WAIT → Hero wait time → Status dot + label + tiny bars
@@ -760,9 +816,9 @@ export async function generateTodayInTirumalaCard(data: TodayPulseCardData): Pro
 
     // "EST. WAIT" (small label)
     ctx.fillStyle = '#64748B';
-    ctx.font = '700 12px system-ui, sans-serif';
-    ctx.letterSpacing = '0.8px';
-    ctx.fillText(isTe ? 'నిరీక్షణ' : 'EST. WAIT', rightEdge, qY + 30);
+    ctx.font = `800 11px ${FONT_HEADING}`;
+    ctx.letterSpacing = '1.2px';
+    ctx.fillText(isTe ? 'అంచనా నిరీక్షణ' : 'EST. WAIT', rightEdge, qY + 30);
 
     // Hero wait time (biggest element on the card)
     let waitText = q.wait;
@@ -771,11 +827,13 @@ export async function generateTodayInTirumalaCard(data: TodayPulseCardData): Pro
     waitText = waitText.replace(/\s+/g, ' ').trim();
 
     ctx.fillStyle = q.color;
-    ctx.font = '900 38px -apple-system, system-ui, sans-serif';
-    ctx.letterSpacing = '-0.5px';
+    ctx.font = `900 36px ${FONT_HEADING}`;
+    ctx.letterSpacing = '-0.8px';
     ctx.fillText(waitText, rightEdge, qY + 72);
 
     // Status indicator dot (vector arc) + label
+    ctx.font = `800 13px ${isTe ? FONT_TELUGU : FONT_HEADING}`;
+    ctx.letterSpacing = '0.6px';
     const labelMetrics = ctx.measureText(q.label);
     const labelW = labelMetrics.width;
     const dotX = rightEdge - labelW - 10;
@@ -786,8 +844,6 @@ export async function generateTodayInTirumalaCard(data: TodayPulseCardData): Pro
     ctx.arc(dotX, dotY, 4.5, 0, Math.PI * 2);
     ctx.fill();
 
-    ctx.font = '800 14px system-ui, sans-serif';
-    ctx.letterSpacing = '0.5px';
     ctx.fillText(q.label, rightEdge, qY + 96);
 
     // Tiny inline meter bars
@@ -827,7 +883,8 @@ export async function generateTodayInTirumalaCard(data: TodayPulseCardData): Pro
   drawCarIcon(ctx, marginX + 32, utilityY + pillH / 2, 13, '#34D399');
   ctx.textAlign = 'left';
   ctx.fillStyle = '#ECFDF5';
-  ctx.font = `700 17px ${INDIC_FONT}`;
+  ctx.font = `700 16px ${isTe ? FONT_TELUGU : FONT_HEADING}`;
+  ctx.letterSpacing = '0.2px';
   ctx.fillText(isTe ? 'ఘాట్ రోడ్లు ఓపెన్' : 'Ghats Open', marginX + 56, utilityY + 33);
   ctx.restore();
 
@@ -845,7 +902,8 @@ export async function generateTodayInTirumalaCard(data: TodayPulseCardData): Pro
   drawSunIcon(ctx, p2X + 32, utilityY + pillH / 2, 13, '#FBBF24');
   ctx.textAlign = 'left';
   ctx.fillStyle = '#FFFBEB';
-  ctx.font = '700 18px system-ui, sans-serif';
+  ctx.font = `700 17px ${FONT_HEADING}`;
+  ctx.letterSpacing = '0.2px';
   ctx.fillText(data.weatherTemp || '32°C', p2X + 56, utilityY + 33);
   ctx.restore();
 
@@ -863,7 +921,8 @@ export async function generateTodayInTirumalaCard(data: TodayPulseCardData): Pro
   drawShieldCheckIcon(ctx, p3X + 32, utilityY + pillH / 2, 13, '#34D399');
   ctx.textAlign = 'left';
   ctx.fillStyle = '#ECFDF5';
-  ctx.font = `700 17px ${INDIC_FONT}`;
+  ctx.font = `700 16px ${isTe ? FONT_TELUGU : FONT_HEADING}`;
+  ctx.letterSpacing = '0.2px';
   ctx.fillText(isTe ? 'ధృవీకరించబడింది' : 'Verified', p3X + 56, utilityY + 33);
   ctx.restore();
 
@@ -878,13 +937,13 @@ export async function generateTodayInTirumalaCard(data: TodayPulseCardData): Pro
   drawNamasteIcon(ctx, centerX, ctaY + 12, 18, '#FDE047');
 
   ctx.fillStyle = '#FEF08A';
-  ctx.font = `800 24px ${INDIC_FONT}`;
-  ctx.letterSpacing = '0.5px';
+  ctx.font = `800 23px ${isTe ? FONT_TELUGU : FONT_HEADING}`;
+  ctx.letterSpacing = isTe ? '0px' : '0.8px';
   ctx.fillText(isTe ? 'ఈరోజు దర్శనానికి వెళ్తున్నారా?' : 'PLANNING DARSHAN TODAY?', centerX, ctaY + 48);
 
   ctx.fillStyle = '#CBD5E1';
-  ctx.font = `500 17px ${INDIC_FONT}`;
-  ctx.letterSpacing = '0px';
+  ctx.font = `500 16px ${isTe ? FONT_TELUGU : FONT_BODY}`;
+  ctx.letterSpacing = '0.1px';
   ctx.fillText(isTe ? 'వెళ్లేముందు లైవ్ క్యూ సమయం చూసుకోండి.' : 'Check the queue before you go.', centerX, ctaY + 68);
 
   // saarthiguide.in → pill
@@ -902,7 +961,7 @@ export async function generateTodayInTirumalaCard(data: TodayPulseCardData): Pro
   ctx.stroke();
 
   ctx.fillStyle = '#FFFFFF';
-  ctx.font = '800 22px system-ui, sans-serif';
+  ctx.font = `800 21px ${FONT_HEADING}`;
   ctx.letterSpacing = '1px';
   ctx.fillText('saarthiguide.in  →', centerX, searchY + 33);
   ctx.restore();
@@ -997,12 +1056,12 @@ export async function generateJapaCard(data: JapaShareCardData): Promise<Blob | 
   }
 
   ctx.fillStyle = '#FFFDF5';
-  ctx.font = '700 24px Georgia, serif';
+  ctx.font = '700 24px Georgia, "Times New Roman", serif';
   ctx.letterSpacing = '5px';
   ctx.fillText('SAARTHI GUIDE', width / 2, 158);
 
   ctx.fillStyle = isPoorthi ? '#86EFAC' : '#FDE68A';
-  ctx.font = '700 20px -apple-system, system-ui, sans-serif';
+  ctx.font = `800 18px ${FONT_HEADING}`;
   ctx.letterSpacing = '3px';
   ctx.fillText('SRIVARI 108 SACRED JAPA MALA', width / 2, 194);
   ctx.restore();
@@ -1041,7 +1100,7 @@ export async function generateJapaCard(data: JapaShareCardData): Promise<Blob | 
 
   ctx.textAlign = 'center';
   ctx.fillStyle = isPoorthi ? '#86EFAC' : '#FDE047';
-  ctx.font = '800 22px system-ui, sans-serif';
+  ctx.font = `800 20px ${FONT_HEADING}`;
   ctx.letterSpacing = '1.5px';
   if (isPoorthi) {
     ctx.fillText('✦ MALA POORTHI (108/108) ✦', width / 2, badgeY + 32);
@@ -1059,7 +1118,7 @@ export async function generateJapaCard(data: JapaShareCardData): Promise<Blob | 
   ctx.save();
   ctx.textAlign = 'center';
   ctx.fillStyle = '#FFFDF5';
-  ctx.font = `800 50px ${INDIC_FONT}`;
+  ctx.font = `800 48px ${FONT_TELUGU}`;
   ctx.shadowColor = 'rgba(245, 158, 11, 0.65)';
   ctx.shadowBlur = 22;
   curY = wrapText(ctx, data.namaTe, width / 2, curY, shrineW - 80, 62) + 14;
@@ -1069,7 +1128,7 @@ export async function generateJapaCard(data: JapaShareCardData): Promise<Blob | 
   ctx.save();
   ctx.textAlign = 'center';
   ctx.fillStyle = '#CBD5E1';
-  ctx.font = 'italic 500 26px -apple-system, system-ui, sans-serif';
+  ctx.font = `italic 600 24px ${FONT_BODY}`;
   curY = wrapText(ctx, data.namaEn, width / 2, curY, shrineW - 100, 34) + 10;
 
   // Lotus Divider (Custom Vector Icon)
@@ -1092,19 +1151,19 @@ export async function generateJapaCard(data: JapaShareCardData): Promise<Blob | 
 
   // Divine Blessing Title
   ctx.fillStyle = '#F59E0B';
-  ctx.font = '700 20px system-ui, sans-serif';
+  ctx.font = `800 18px ${FONT_HEADING}`;
   ctx.letterSpacing = '2px';
   ctx.fillText('DIVINE BLESSING & ANUGRAHAM', width / 2, curY);
   curY += 36;
 
   // Blessing Telugu Text
   ctx.fillStyle = '#F8FAFC';
-  ctx.font = `600 28px ${INDIC_FONT}`;
+  ctx.font = `600 26px ${FONT_TELUGU}`;
   curY = wrapText(ctx, `"${data.blessingTe}"`, width / 2, curY, shrineW - 100, 44) + 14;
 
   // Blessing English Meaning
   ctx.fillStyle = '#94A3B8';
-  ctx.font = 'italic 500 22px -apple-system, system-ui, sans-serif';
+  ctx.font = `italic 500 20px ${FONT_BODY}`;
   curY = wrapText(ctx, `"${data.blessingEn}"`, width / 2, curY, shrineW - 120, 32);
   ctx.restore();
 
@@ -1133,12 +1192,12 @@ export async function generateJapaCard(data: JapaShareCardData): Promise<Blob | 
   // Text above bar
   ctx.textAlign = 'left';
   ctx.fillStyle = '#FDE047';
-  ctx.font = '800 22px system-ui, sans-serif';
+  ctx.font = `800 20px ${FONT_HEADING}`;
   ctx.fillText(`Mala Progress: ${data.beadNumber} / 108 Beads`, barX, barY - 14);
 
   ctx.textAlign = 'right';
   ctx.fillStyle = '#CBD5E1';
-  ctx.font = '800 22px system-ui, sans-serif';
+  ctx.font = `800 20px ${FONT_HEADING}`;
   ctx.fillText(`${Math.round(pct * 100)}%`, barX + barW, barY - 14);
   ctx.restore();
 
@@ -1147,15 +1206,16 @@ export async function generateJapaCard(data: JapaShareCardData): Promise<Blob | 
   ctx.save();
   ctx.textAlign = 'center';
   ctx.fillStyle = '#FEF08A';
-  ctx.font = '700 24px Georgia, serif';
+  ctx.font = '700 23px Georgia, "Times New Roman", serif';
   ctx.fillText('Chant the sacred 108 Srivari Japa Mala on Saarthi:', width / 2, botY);
 
   ctx.fillStyle = '#38BDF8';
-  ctx.font = '900 28px -apple-system, system-ui, sans-serif';
+  ctx.font = `900 26px ${FONT_HEADING}`;
+  ctx.letterSpacing = '1px';
   ctx.fillText('saarthiguide.in  →', width / 2, botY + 38);
 
-  ctx.fillStyle = 'rgba(255, 255, 255, 0.6)';
-  ctx.font = `500 18px ${INDIC_FONT}`;
+  ctx.fillStyle = 'rgba(255, 255, 255, 0.7)';
+  ctx.font = `600 17px ${FONT_TELUGU}`;
   ctx.fillText('ఓం నమో వేంకటేశాయ • సర్వే జనాః సుఖినో భవంతు', width / 2, botY + 70);
   ctx.restore();
 
@@ -1174,6 +1234,11 @@ export async function shareOrDownloadCard(
   url: string
 ): Promise<boolean> {
   if (typeof window === 'undefined') return false;
+
+  const fullCaption = text ? `${text}\n\n${url}` : url;
+  const userAgent = typeof navigator !== 'undefined' ? (navigator.userAgent || '') : '';
+  const isMobile = /android|iphone|ipad|ipod|mobile/i.test(userAgent);
+  const isIOS = /iphone|ipad|ipod/i.test(userAgent);
 
   // 1. Construct File strictly with correct PNG mime type and name
   let file: File;
@@ -1194,48 +1259,51 @@ export async function shareOrDownloadCard(
       if (typeof navigator.canShare === 'function') {
         canShareFile = navigator.canShare({ files: [file] });
       } else {
-        // Assume file sharing might work if navigator.share exists
-        canShareFile = true;
+        canShareFile = isMobile;
       }
     } catch {
       canShareFile = false;
     }
 
     if (canShareFile) {
-      // ⚠️ FIRST PRINCIPLES FIX FOR WHATSAPP ON ANDROID / iOS:
-      // WhatsApp on Android and iOS has a known bug/limitation:
-      // If BOTH `files` AND `text` (or `url`) are provided, WhatsApp either:
-      // A) Only imports the `text` and completely ignores the image file, OR
-      // B) Fails the file transfer intent and reverts to plain text link.
-      // To guarantee the image card is shared, we share ONLY files: [file] with title.
       try {
-        await navigator.share({
-          files: [file],
-          title
-        });
+        // On iOS Safari, sharing files + text sends image card with caption.
+        // On Android Chrome, passing multi-line text with files causes WhatsApp to drop the image file.
+        // So on Android we share { files: [file], title }, keeping the complete visual poster intact.
+        const sharePayload: ShareData = isIOS
+          ? { files: [file], title, text: fullCaption }
+          : { files: [file], title };
+
+        await navigator.share(sharePayload);
         return true;
       } catch (err: any) {
-        // User dismissed the share sheet - do NOT fallback to opening WhatsApp text
+        // User cancelled the share dialog
         if (err?.name === 'AbortError' || err?.message?.includes('abort')) {
           return true;
         }
+        console.warn('[Share] Native file share failed, falling back to text share:', err);
       }
+    }
+
+    // 3. Fallback: Native Text Share (if file share unsupported or rejected by target app)
+    try {
+      await navigator.share({
+        title,
+        text: fullCaption,
+        url
+      });
+      return true;
+    } catch (err: any) {
+      if (err?.name === 'AbortError' || err?.message?.includes('abort')) {
+        return true;
+      }
+      console.warn('[Share] Native text share failed, falling back to direct WhatsApp:', err);
     }
   }
 
-  // 3. Fallback for Desktop or browsers without file Web Share:
-  // Trigger direct download of the image card and copy image to clipboard
+  // 4. Ultimate Fallback: Download Card Image + Open WhatsApp (Works on Mobile & Desktop)
   try {
-    if (typeof navigator !== 'undefined' && navigator.clipboard && typeof window.ClipboardItem === 'function') {
-      try {
-        await navigator.clipboard.write([
-          new ClipboardItem({ 'image/png': blob })
-        ]);
-      } catch {
-        // Clipboard write might require active tab focus
-      }
-    }
-
+    // A. Direct Image Download so user has the card saved
     const objectUrl = URL.createObjectURL(blob);
     const link = document.createElement('a');
     link.href = objectUrl;
@@ -1245,14 +1313,34 @@ export async function shareOrDownloadCard(
     document.body.removeChild(link);
     setTimeout(() => URL.revokeObjectURL(objectUrl), 4000);
 
-    // Open WhatsApp Web with caption if desktop
-    const isMobile = /android|iphone|ipad|ipod|mobile/i.test(navigator.userAgent || '');
-    if (!isMobile) {
-      const whatsappUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(text + '\n\n' + url)}`;
-      window.open(whatsappUrl, '_blank');
+    // B. Copy Image to Clipboard if supported
+    if (typeof navigator !== 'undefined' && navigator.clipboard && typeof window.ClipboardItem === 'function') {
+      try {
+        await navigator.clipboard.write([
+          new ClipboardItem({ 'image/png': blob })
+        ]);
+      } catch {
+        // Clipboard write requires active document focus
+      }
+    }
+
+    // C. Open WhatsApp with formatted text and link
+    const encoded = encodeURIComponent(fullCaption);
+    if (isMobile) {
+      // Direct WhatsApp scheme on mobile, fallback to web
+      window.location.href = `whatsapp://send?text=${encoded}`;
+      setTimeout(() => {
+        window.open(`https://api.whatsapp.com/send?text=${encoded}`, '_blank');
+      }, 700);
+    } else {
+      window.open(`https://api.whatsapp.com/send?text=${encoded}`, '_blank');
     }
     return true;
-  } catch {
-    return false;
+  } catch (err) {
+    console.error('[Share] Fallback sharing error:', err);
+    // As absolute last resort, open WhatsApp web URL
+    const encoded = encodeURIComponent(fullCaption);
+    window.open(`https://api.whatsapp.com/send?text=${encoded}`, '_blank');
+    return true;
   }
 }

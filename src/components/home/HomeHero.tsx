@@ -559,17 +559,26 @@ export function HomeHero({ userName, locationName, weatherTemp, liveStatus, acti
       } else {
         // Fallback to text if canvas fails
         if (typeof navigator !== 'undefined' && navigator.share) {
-          await navigator.share({
-            title: lang === 'te' ? 'నేటి తిరుమల దర్శనం అప్‌డేట్' : 'Today in Tirumala Live Update',
-            text: shareText,
-            url: siteUrl
-          });
+          try {
+            await navigator.share({
+              title: lang === 'te' ? 'నేటి తిరుమల దర్శనం అప్‌డేట్' : 'Today in Tirumala Live Update',
+              text: `${shareText}\n\n${siteUrl}`,
+              url: siteUrl
+            });
+          } catch (e: any) {
+            if (e?.name !== 'AbortError') {
+              window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(shareText + '\n\n' + siteUrl)}`, '_blank');
+            }
+          }
         } else {
-          window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(shareText)}`, '_blank');
+          window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(shareText + '\n\n' + siteUrl)}`, '_blank');
         }
       }
-    } catch {
-      // Graceful fallback
+    } catch (err: any) {
+      if (err?.name !== 'AbortError') {
+        const fallbackUrl = typeof window !== 'undefined' ? window.location.origin : 'https://www.saarthiguide.in';
+        window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(fallbackUrl)}`, '_blank');
+      }
     } finally {
       setIsSharingPulse(false);
     }
@@ -961,6 +970,7 @@ export function HomeHero({ userName, locationName, weatherTemp, liveStatus, acti
     if (isSharingJapa) return;
     setIsSharingJapa(true);
 
+    let shareMessage = '';
     try {
       const activeBead = previewBead !== null ? previewBead : chantCount;
       const currentNama = getGovindaNamaForBead(activeBead);
@@ -1002,6 +1012,8 @@ _(${currentNama.namaEn})_
 ━━━━━━━━━━━━━━━━━━━━━━━━
 _Om Namo Venkatesaya • Peace & Auspicious Blessings to All_`;
 
+      shareMessage = text;
+
       const blob = await generateJapaCard({
         type: cardType,
         beadNumber: activeBead,
@@ -1024,8 +1036,10 @@ _Om Namo Venkatesaya • Peace & Auspicious Blessings to All_`;
       } else {
         window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(text)}`, '_blank');
       }
-    } catch {
-      // Ignored
+    } catch (err: any) {
+      if (err?.name !== 'AbortError') {
+        window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(shareMessage || 'https://saarthiguide.in')}`, '_blank');
+      }
     } finally {
       setIsSharingJapa(false);
     }
@@ -1036,6 +1050,7 @@ _Om Namo Venkatesaya • Peace & Auspicious Blessings to All_`;
     if (isSharingJapa) return;
     setIsSharingJapa(true);
 
+    let shareMessage = '';
     try {
       const siteUrl = 'https://saarthiguide.in';
       const text = lang === 'te'
@@ -1071,6 +1086,8 @@ By the divine grace of Lord Srinivasa, completed the sacred *108 Divine Names Ja
 ━━━━━━━━━━━━━━━━━━━━━━━━
 _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
 
+      shareMessage = text;
+
       const lastNama = getGovindaNamaForBead(108);
       const blob = await generateJapaCard({
         type: 'poorthi',
@@ -1094,8 +1111,10 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
       } else {
         window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(text)}`, '_blank');
       }
-    } catch {
-      // Ignored
+    } catch (err: any) {
+      if (err?.name !== 'AbortError') {
+        window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(shareMessage || 'https://saarthiguide.in')}`, '_blank');
+      }
     } finally {
       setIsSharingJapa(false);
     }
