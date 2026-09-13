@@ -24,7 +24,7 @@ export interface TodayPulseCardData {
   statusHeadline: string;
   queues: DarshanQueueData[];
   weatherTemp: string;
-  ghatsOpen: boolean;
+  ghatsOpen?: boolean;
   lang: 'te' | 'en';
 }
 
@@ -470,57 +470,40 @@ export async function generateTodayInTirumalaCard(data: TodayPulseCardData): Pro
 
   // 6. FOOTER TELEMETRY PILLS (Inside Main White Card)
   const footY = dividerY + 24;
-
-  // Ghats Open Pill
-  const pill1X = mainX + 28;
-  const pill1W = 260;
   const pillH = 54;
-  ctx.save();
-  ctx.fillStyle = 'rgba(16, 185, 129, 0.12)';
-  drawRoundedRect(ctx, pill1X, footY, pill1W, pillH, 16);
-  ctx.fill();
-  ctx.strokeStyle = '#0F172A';
-  ctx.lineWidth = 2;
-  drawRoundedRect(ctx, pill1X, footY, pill1W, pillH, 16);
-  ctx.stroke();
-  ctx.textAlign = 'center';
-  ctx.fillStyle = '#065F46';
-  ctx.font = '700 22px system-ui, sans-serif';
-  ctx.fillText('🚗  Ghats Open', pill1X + pill1W / 2, footY + 35);
-  ctx.restore();
+  const pillGap = 20;
+  const halfPillW = (mainW - 56 - pillGap) / 2;
 
   // Weather Pill
-  const pill2X = pill1X + pill1W + 18;
-  const pill2W = 240;
+  const pill1X = mainX + 28;
   ctx.save();
   ctx.fillStyle = 'rgba(217, 119, 6, 0.12)';
-  drawRoundedRect(ctx, pill2X, footY, pill2W, pillH, 16);
+  drawRoundedRect(ctx, pill1X, footY, halfPillW, pillH, 16);
   ctx.fill();
   ctx.strokeStyle = '#0F172A';
   ctx.lineWidth = 2;
-  drawRoundedRect(ctx, pill2X, footY, pill2W, pillH, 16);
+  drawRoundedRect(ctx, pill1X, footY, halfPillW, pillH, 16);
   ctx.stroke();
   ctx.textAlign = 'center';
   ctx.fillStyle = '#B45309';
   ctx.font = '700 22px system-ui, sans-serif';
-  ctx.fillText(`☀️  ${data.weatherTemp || '26°C'}`, pill2X + pill2W / 2, footY + 35);
+  ctx.fillText(`☀️  ${data.weatherTemp || '26°C'}`, pill1X + halfPillW / 2, footY + 35);
   ctx.restore();
 
   // Verified Live Pill
-  const pill3X = pill2X + pill2W + 18;
-  const pill3W = mainW - 28 - (pill3X - mainX);
+  const pill2X = pill1X + halfPillW + pillGap;
   ctx.save();
   ctx.fillStyle = '#F0FDF4';
-  drawRoundedRect(ctx, pill3X, footY, pill3W, pillH, 16);
+  drawRoundedRect(ctx, pill2X, footY, halfPillW, pillH, 16);
   ctx.fill();
   ctx.strokeStyle = '#16A34A';
   ctx.lineWidth = 2;
-  drawRoundedRect(ctx, pill3X, footY, pill3W, pillH, 16);
+  drawRoundedRect(ctx, pill2X, footY, halfPillW, pillH, 16);
   ctx.stroke();
   ctx.textAlign = 'center';
   ctx.fillStyle = '#166534';
   ctx.font = '700 22px system-ui, sans-serif';
-  ctx.fillText('🛡️  Verified Live', pill3X + pill3W / 2, footY + 35);
+  ctx.fillText('🛡️  Verified Live', pill2X + halfPillW / 2, footY + 35);
   ctx.restore();
 
   // 7. BOTTOM ATTRIBUTION & LINK (On Canvas Outside)

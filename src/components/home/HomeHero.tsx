@@ -544,7 +544,6 @@ export function HomeHero({ userName, locationName, weatherTemp, liveStatus, acti
         statusHeadline: whyThatNowText,
         queues,
         weatherTemp: weatherTemp || '26°C',
-        ghatsOpen: true,
         lang
       });
 
@@ -2355,21 +2354,6 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
         {/* 2️⃣ TRAVEL & WEATHER CONDITIONS CAPSULES */}
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '8px' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
-            <span style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: '6px',
-              backgroundColor: 'rgba(16, 185, 129, 0.12)',
-              border: '1.5px solid #0F172A',
-              padding: '4px 10px',
-              borderRadius: '10px',
-              fontSize: '11px',
-              fontWeight: 700,
-              color: '#065F46'
-            }}>
-              <Car size={13} color="#065F46" />
-              <span>Ghats Open</span>
-            </span>
             {isNight && (
               <span style={{
                 display: 'inline-flex',
