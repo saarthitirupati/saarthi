@@ -10,26 +10,64 @@ const SMOOTH_EASE = [0.16, 1, 0.3, 1] as const;
 
 export default function SplashScreen({ onFinish }: { onFinish: () => void }) {
   const [isVisible, setIsVisible] = useState(true);
+  const [isAudioPlaying, setIsAudioPlaying] = useState(false);
+  const [isAutoplayBlocked, setIsAutoplayBlocked] = useState(false);
 
   const handleFinish = useCallback(() => {
     stopSaarthiSonicIdent();
     setIsVisible(false);
   }, []);
 
+  const handleStartSound = useCallback(async () => {
+    const started = await playSaarthiSonicIdent(true);
+    if (started) {
+      setIsAudioPlaying(true);
+      setIsAutoplayBlocked(false);
+    }
+  }, []);
+
   useEffect(() => {
-    // 🎵 Saarthi "Divine Journey" signature sonic ident (Tanpura -> Bansuri -> Veena -> Om swell)
-    const soundTimer = setTimeout(() => {
-      playSaarthiSonicIdent();
+    let isMounted = true;
+    let splashTimer: NodeJS.Timeout;
+
+    // 🎵 Attempt immediate playback on load
+    const soundTimer = setTimeout(async () => {
+      const started = await playSaarthiSonicIdent();
+      if (!isMounted) return;
+      if (started) {
+        setIsAudioPlaying(true);
+        setIsAutoplayBlocked(false);
+      } else {
+        // Autoplay policy prevented playback until user gesture
+        setIsAutoplayBlocked(true);
+      }
     }, 60);
 
-    // ⏱️ Total viewing duration: ~6.8s divine journey matching the 7.0s opening ident
-    const splashTimer = setTimeout(() => {
-      handleFinish();
-    }, 6800);
+    // ⏱️ Auto-finish splash after duration (7.2s divine journey)
+    splashTimer = setTimeout(() => {
+      if (isMounted) {
+        handleFinish();
+      }
+    }, 7200);
+
+    // 🛡️ Global one-time gesture unlock: any touch/tap on screen unlocks and plays audio
+    const handleOneTimeGesture = async () => {
+      const started = await playSaarthiSonicIdent(true);
+      if (isMounted && started) {
+        setIsAudioPlaying(true);
+        setIsAutoplayBlocked(false);
+      }
+    };
+
+    window.addEventListener('pointerdown', handleOneTimeGesture, { once: true });
+    window.addEventListener('keydown', handleOneTimeGesture, { once: true });
 
     return () => {
+      isMounted = false;
       clearTimeout(soundTimer);
       clearTimeout(splashTimer);
+      window.removeEventListener('pointerdown', handleOneTimeGesture);
+      window.removeEventListener('keydown', handleOneTimeGesture);
       stopSaarthiSonicIdent();
     };
   }, [handleFinish]);
@@ -42,7 +80,11 @@ export default function SplashScreen({ onFinish }: { onFinish: () => void }) {
           initial={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 0.45, ease: SMOOTH_EASE }}
-          onClick={handleFinish}
+          onClick={() => {
+            if (!isAudioPlaying) {
+              handleStartSound();
+            }
+          }}
         >
           {/* 🌌 Phase 1: Deep Sanctum Ambient Vignette */}
           <div className={styles.sanctumVignette} />
@@ -449,6 +491,44 @@ export default function SplashScreen({ onFinish }: { onFinish: () => void }) {
               </motion.g>
             </svg>
           </div>
+
+          {/* 🔊 Sacred Sound Prompt Pill (Visible when browser blocks autoplay until user interaction) */}
+          {isAutoplayBlocked && !isAudioPlaying && (
+            <motion.button
+              type="button"
+              className={styles.soundPromptPill}
+              initial={{ opacity: 0, y: 10, scale: 0.95 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.95 }}
+              transition={{ duration: 0.35, ease: SMOOTH_EASE }}
+              onClick={(e) => {
+                e.stopPropagation();
+                handleStartSound();
+              }}
+            >
+              <span className={styles.pulseDot} />
+              <span className={styles.soundPromptTelugu}>దివ్య నాదం వినండి</span>
+              <span className={styles.soundPromptDivider}>•</span>
+              <span className={styles.soundPromptEnglish}>Tap for Sacred Sound 🔊</span>
+            </motion.button>
+          )}
+
+          {/* 🎵 Active Divine Sound Indicator */}
+          {isAudioPlaying && (
+            <motion.div
+              className={styles.soundActivePill}
+              initial={{ opacity: 0, y: 6 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.35, ease: SMOOTH_EASE }}
+            >
+              <span className={styles.soundActiveWave}>
+                <span />
+                <span />
+                <span />
+              </span>
+              <span>Divine Soundscape</span>
+            </motion.div>
+          )}
 
           {/* ⚡ Skip button */}
           <motion.button

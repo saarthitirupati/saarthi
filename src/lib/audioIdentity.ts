@@ -111,27 +111,130 @@ function fadeIn(audio: HTMLAudioElement, targetVolume: number, durationMs: numbe
 // 🛕 SCREEN 1: SAARTHI GUIDE (THE THRESHOLD AT DAWN)
 // ─────────────────────────────────────────────────────────────────────────────
 
+let syntheticAudioCtx: AudioContext | null = null;
+
+export function stopSyntheticOpeningIdent() {
+  if (syntheticAudioCtx) {
+    try {
+      syntheticAudioCtx.close();
+    } catch {}
+    syntheticAudioCtx = null;
+  }
+}
+
+async function playSyntheticOpeningIdent(): Promise<boolean> {
+  if (typeof window === 'undefined') return false;
+  try {
+    const AudioCtx = window.AudioContext || (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext;
+    if (!AudioCtx) return false;
+
+    stopSyntheticOpeningIdent();
+    const ctx = new AudioCtx();
+    syntheticAudioCtx = ctx;
+
+    if (ctx.state === 'suspended') {
+      await ctx.resume();
+    }
+
+    const now = ctx.currentTime;
+
+    // Master gain
+    const masterGain = ctx.createGain();
+    masterGain.gain.setValueAtTime(0.001, now);
+    masterGain.gain.linearRampToValueAtTime(0.35, now + 1.2);
+    masterGain.gain.setValueAtTime(0.35, now + 5.0);
+    masterGain.gain.exponentialRampToValueAtTime(0.0001, now + 7.0);
+    masterGain.connect(ctx.destination);
+
+    // 1. Warm Tanpura Drone (108 Hz + 216 Hz harmonics)
+    [108, 216, 324].forEach((freq, idx) => {
+      const osc = ctx.createOscillator();
+      const oscGain = ctx.createGain();
+      osc.type = idx === 0 ? 'sine' : 'triangle';
+      osc.frequency.setValueAtTime(freq, now);
+
+      oscGain.gain.setValueAtTime(0.001, now);
+      oscGain.gain.linearRampToValueAtTime(0.15 / (idx + 1), now + 1.0);
+      oscGain.gain.exponentialRampToValueAtTime(0.0001, now + 6.8);
+
+      osc.connect(oscGain);
+      oscGain.connect(masterGain);
+      osc.start(now);
+      osc.stop(now + 7.0);
+    });
+
+    // 2. Deep Temple Bell (216 Hz with long resonance)
+    const bellOsc = ctx.createOscillator();
+    const bellGain = ctx.createGain();
+    bellOsc.type = 'sine';
+    bellOsc.frequency.setValueAtTime(216, now + 0.2);
+    bellGain.gain.setValueAtTime(0.001, now);
+    bellGain.gain.setValueAtTime(0.3, now + 0.2);
+    bellGain.gain.exponentialRampToValueAtTime(0.0001, now + 4.8);
+    bellOsc.connect(bellGain);
+    bellGain.connect(masterGain);
+    bellOsc.start(now + 0.2);
+    bellOsc.stop(now + 5.0);
+
+    // 3. Three-note Veena Greeting Phrase (Sa=240, Pa=360, Sa'=480)
+    const notes = [
+      { f: 240, t: 1.5, d: 1.4 },
+      { f: 360, t: 2.6, d: 1.4 },
+      { f: 480, t: 3.8, d: 2.0 },
+    ];
+    notes.forEach(({ f, t, d }) => {
+      const noteTime = now + t;
+      const vOsc = ctx.createOscillator();
+      const vGain = ctx.createGain();
+      vOsc.type = 'triangle';
+      vOsc.frequency.setValueAtTime(f, noteTime);
+
+      vGain.gain.setValueAtTime(0.001, noteTime);
+      vGain.gain.setValueAtTime(0.28, noteTime + 0.04);
+      vGain.gain.exponentialRampToValueAtTime(0.0001, noteTime + d);
+
+      vOsc.connect(vGain);
+      vGain.connect(masterGain);
+      vOsc.start(noteTime);
+      vOsc.stop(noteTime + d + 0.1);
+    });
+
+    return true;
+  } catch {
+    return false;
+  }
+}
+
 /**
  * 🎵 Screen 1 Opening Sonic Ident (5–8s on load/splash)
+ * Returns Promise<boolean> indicating whether playback actually started.
  */
-export function playScreen1Opening() {
-  if (!isAudioGloballyEnabled() || typeof window === 'undefined') return;
+export async function playScreen1Opening(force: boolean = false): Promise<boolean> {
+  if (typeof window === 'undefined') return false;
+  if (!force && !isAudioGloballyEnabled()) return false;
 
   stopScreen1Opening();
 
+  if (force) {
+    setAudioGloballyEnabled(true);
+  }
+
   try {
     const audio = new Audio('/audio/saarthi-opening-ident.wav');
-    audio.volume = 0.90;
+    audio.preload = 'auto';
+    audio.volume = 0.92;
     screen1OpeningAudio = audio;
 
-    const p = audio.play();
-    if (p !== undefined) {
-      p.catch(() => {
-        // Autoplay policy fallback
-      });
-    }
+    await audio.play();
+    return true;
   } catch {
-    // Ignored
+    // If HTML5 Audio was blocked by autoplay or failed to fetch, attempt Web Audio synthesis
+    try {
+      const synOk = await playSyntheticOpeningIdent();
+      return synOk;
+    } catch {
+      return false;
+    }
   }
 }
 
@@ -141,6 +244,7 @@ export function stopScreen1Opening() {
     screen1OpeningAudio = null;
     fadeOutAndStop(el, 250);
   }
+  stopSyntheticOpeningIdent();
 }
 
 /**
