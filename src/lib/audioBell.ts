@@ -1,15 +1,35 @@
 /**
  * 🕉️ Saarthi Audio Engine
- * Replaces traditional metallic temple bells with the modern, spiritual "Divine Journey" sonic identity:
- * - Hypnotic Tanpura drone
- * - Bamboo Flute (Bansuri) motif
- * - Resonant Saraswati Veena acoustic pluck
- * - Subtle "Om" vocal cavity pad swell
+ * Dual-Screen First-Principles Spiritual Soundscapes:
  * 
- * Provides backwards-compatible entry points so existing callers gracefully transition to the new sonic palette.
+ * 1. Screen 1 ("Saarthi Guide" - Threshold at Dawn):
+ *    - Opening Ident (Distant shankha, deep 216Hz bell, 3-note Veena, warm tanpura)
+ *    - Courtyard Ambient (Spacious Veena + shruti drone + faint breath-like "Hari...")
+ * 
+ * 2. Screen 2 ("Japa Mala" - Sanctum Altar):
+ *    - Sanctum Ambient (Meditative breathing bed: Shruti + subtle veena motif + soft bansuri)
+ *    - Bead complete (Tactile bead click + pure Veena note)
+ *    - Reflection end (Harmonic resolution countdown cue)
+ *    - Milestone quarter (Ethereal "Govinda" resonance at 27, 54, 81)
+ *    - 108 Mala Poorthi (Grand triumphant shankha + full Veena chord + Garbhagriha reverb finale)
  */
 
 import {
+  playScreen1Opening,
+  stopScreen1Opening,
+  startScreen1Ambient,
+  stopScreen1Ambient,
+  startJapaAmbient,
+  stopJapaAmbient,
+  playBeadComplete,
+  playReflectionEnd,
+  playQuarterMilestone,
+  playJapa108Complete,
+  transitionToJapa,
+  returnFromJapa,
+  stopAllAudio,
+  isAudioGloballyEnabled,
+  setAudioGloballyEnabled,
   playSaarthiSonicIdent,
   stopSaarthiSonicIdent,
   playVeenaPluck,
@@ -17,6 +37,21 @@ import {
 } from './audioIdentity';
 
 export {
+  playScreen1Opening,
+  stopScreen1Opening,
+  startScreen1Ambient,
+  stopScreen1Ambient,
+  startJapaAmbient,
+  stopJapaAmbient,
+  playBeadComplete,
+  playReflectionEnd,
+  playQuarterMilestone,
+  playJapa108Complete,
+  transitionToJapa,
+  returnFromJapa,
+  stopAllAudio,
+  isAudioGloballyEnabled,
+  setAudioGloballyEnabled,
   playSaarthiSonicIdent,
   stopSaarthiSonicIdent,
   playVeenaPluck,
@@ -28,7 +63,7 @@ export {
  * Pure acoustic Veena pluck with zero harsh metallic ringing.
  */
 export function playTempleBellChime() {
-  playVeenaPluck();
+  playBeadComplete();
 }
 
 /**
@@ -36,7 +71,7 @@ export function playTempleBellChime() {
  * Celebratory bansuri flourish + rich resonant veena chord + peaceful pad release.
  */
 export function playMalaCompletionChime() {
-  playMalaCompletionSonicIdent();
+  playJapa108Complete();
 }
 
 /**

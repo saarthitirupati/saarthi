@@ -22,10 +22,10 @@ export default function SplashScreen({ onFinish }: { onFinish: () => void }) {
       playSaarthiSonicIdent();
     }, 60);
 
-    // ⏱️ Total viewing duration: ~5.8s divine journey matching the sonic ident
+    // ⏱️ Total viewing duration: ~6.8s divine journey matching the 7.0s opening ident
     const splashTimer = setTimeout(() => {
       handleFinish();
-    }, 5800);
+    }, 6800);
 
     return () => {
       clearTimeout(soundTimer);

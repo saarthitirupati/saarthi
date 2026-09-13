@@ -1,39 +1,36 @@
 """
-🕉️ Master Saarthi Divine Journey Audio Synthesizer
-Generates studio-grade acoustic assets using physical modeling:
-1. public/audio/saarthi-divine-journey.wav - Master 5.8s sonic ident
-2. public/audio/veena-pluck.wav - Warm single string pluck for bead chants
-3. public/audio/mala-completion.wav - 3.2s celebratory bansuri & veena milestone flourish
+🕉️ Master Saarthi Dual-Screen Spiritual Soundscapes
+Built from First Principles:
 
-Aesthetic Palette:
-- Pure Tanpura (Sa-Pa drone with Javari thread resonance)
-- North Indian Bamboo Bansuri (3-note motif: Sa -> Pa -> Sa' with breath turbulence & micro-meend)
-- Saraswati Veena Pluck (Jackwood body resonance, biradai bridge buzz, natural damping)
-- Sacred "Om" Vocal Cavity Formant Swell (Open vowel O -> Nasal M)
-- Stone Sanctum (Garbhagriha) stereo impulse reverb convolution
-- NO temple bells, NO metallic brass clangs, NO fast drums, NO singing lyrics
+Screen 1: "Saarthi Guide" (Arrival & Intention-Setting - Temple Courtyard at Dawn)
+1. saarthi-opening-ident.wav (7.0s): Distant dreamlike Shankha + single deep bell + 3-note greeting Veena + Tanpura
+2. saarthi-courtyard-ambient.wav (22.0s loop): Spacious Veena + shruti drone + faint distant 'Hari...' vocal
+
+Screen 2: "Japa Mala" (Active Devotion & Repetition - Sanctum Sanctorum)
+3. japa-ambient-loop.wav (20.0s loop): Meditative continuous bed (Shruti + veena motif + subtle bansuri)
+4. bead-complete.wav (0.75s): Tactile mala bead click + single acoustic Veena note
+5. reflection-end.wav (1.20s): Harmonic resolution cue when 10-second reflection timer ends
+6. milestone-quarter.wav (2.20s): Ethereal distant 'Govinda...' vocal resonance at 27, 54, 81 beads
+7. japa-complete-108.wav (4.80s): Triumphant Shankha + full Veena chord + deep Garbhagriha reverb finale
 """
 
 import os
 import wave
-import struct
 import numpy as np
 import scipy.signal as sig
 
-SR = 44100  # 44.1 kHz broadcast standard
+SR = 44100  # 44.1 kHz broadcast audio standard
 
 def save_wav_stereo(filename, left, right, sample_rate=SR):
-    # Normalize with headroom (-1.5 dB peak)
     peak = max(np.max(np.abs(left)), np.max(np.abs(right)), 1e-6)
     target_peak = 0.85
     left = (left / peak) * target_peak
     right = (right / peak) * target_peak
     
-    # Soft saturation (analog tape warmth)
-    left = np.tanh(1.1 * left) / 1.1
-    right = np.tanh(1.1 * right) / 1.1
+    # Analog tape saturation warmth
+    left = np.tanh(1.15 * left) / 1.15
+    right = np.tanh(1.15 * right) / 1.15
     
-    # 16-bit PCM conversion
     left_int = (left * 32767).astype(np.int16)
     right_int = (right * 32767).astype(np.int16)
     
@@ -47,12 +44,10 @@ def save_wav_stereo(filename, left, right, sample_rate=SR):
         wf.setframerate(sample_rate)
         wf.writeframes(interleaved.tobytes())
     
-    print(f"[OK] Generated studio asset: {filename} ({len(left)/sample_rate:.2f}s, {os.path.getsize(filename)//1024} KB)")
+    print(f"[OK] Generated: {filename} ({len(left)/sample_rate:.2f}s, {os.path.getsize(filename)//1024} KB)")
 
-def make_sanctum_reverb(duration=2.5, sample_rate=SR, decay_rate=2.0):
-    """Generates stereo impulse response of a sacred granite stone sanctum"""
+def make_sanctum_reverb(duration=2.5, sample_rate=SR, decay_rate=2.0, wet_mix=0.35):
     t = np.linspace(0, duration, int(sample_rate * duration), endpoint=False)
-    # Early reflections
     ir_l = np.zeros_like(t)
     ir_r = np.zeros_like(t)
     
@@ -61,13 +56,10 @@ def make_sanctum_reverb(duration=2.5, sample_rate=SR, decay_rate=2.0):
     gains = [0.7, 0.55, 0.42, 0.32, 0.22, 0.15]
     
     for d, g in zip(delays_l, gains):
-        if d < len(ir_l):
-            ir_l[d] += g
+        if d < len(ir_l): ir_l[d] += g
     for d, g in zip(delays_r, gains):
-        if d < len(ir_r):
-            ir_r[d] += g
+        if d < len(ir_r): ir_r[d] += g
             
-    # Dense late reverberant field with exponential decay
     noise_l = np.random.normal(0, 1, len(t))
     noise_r = np.random.normal(0, 1, len(t))
     decay = np.exp(-decay_rate * t)
@@ -75,338 +67,401 @@ def make_sanctum_reverb(duration=2.5, sample_rate=SR, decay_rate=2.0):
     late_l = noise_l * decay * 0.3
     late_r = noise_r * decay * 0.3
     
-    # Warm lowpass absorption (stone walls absorb high frequencies)
-    b, a = sig.butter(2, 2800 / (sample_rate / 2), btype='low')
+    b, a = sig.butter(2, 2600 / (sample_rate / 2), btype='low')
     late_l = sig.lfilter(b, a, late_l)
     late_r = sig.lfilter(b, a, late_r)
     
     ir_l += late_l
     ir_r += late_r
-    
     ir_l /= np.max(np.abs(ir_l))
     ir_r /= np.max(np.abs(ir_r))
-    return ir_l, ir_r
+    return ir_l * wet_mix, ir_r * wet_mix
 
-def generate_tanpura(duration, sample_rate=SR):
-    """
-    Synthesizes authentic Indian Tanpura with non-linear Javari thread resonance.
-    Tuning: Pa (G2 ~ 98Hz), Sa1 (C3 ~ 130.81Hz), Sa2 (C3 ~ 130.95Hz detuned), Kharaj Sa (C2 ~ 65.41Hz)
-    """
+def apply_reverb(left, right, ir_l, ir_r):
+    N = len(left)
+    wet_l = sig.fftconvolve(left, ir_l, mode='full')[:N]
+    wet_r = sig.fftconvolve(right, ir_r, mode='full')[:N]
+    return left * 0.82 + wet_l, right * 0.82 + wet_r
+
+def generate_shankha(duration, sample_rate=SR, start_time=0.0, is_distant=True):
+    """Acoustic simulation of Sacred Conch Shell (Shankha) horn harmonics"""
     N = int(duration * sample_rate)
     t = np.linspace(0, duration, N, endpoint=False)
+    s_idx = int(start_time * sample_rate)
+    M = N - s_idx
+    if M <= 0: return np.zeros(N), np.zeros(N)
     
+    t_shankha = t[s_idx:] - start_time
+    # Characteristic conical bore fundamental ~235 Hz with lip buzz
+    f0 = 235.0
+    # Natural embouchure air flutter
+    flutter = 1.0 + 0.04 * np.sin(2 * np.pi * 6.5 * t_shankha)
+    phase = np.cumsum(f0 * flutter) / sample_rate * 2 * np.pi
+    
+    # Conch harmonic profile
+    raw = (1.00 * np.sin(phase) +
+           0.75 * np.sin(2 * phase + 0.3) +
+           0.55 * np.sin(3 * phase + 0.7) +
+           0.35 * np.sin(4 * phase + 1.1) +
+           0.20 * np.sin(5 * phase + 1.4) +
+           0.10 * np.sin(6 * phase + 1.8))
+    
+    # Breath noise inside spiral shell
+    noise = np.random.normal(0, 1, M)
+    b_n, a_n = sig.butter(2, [300 / (sample_rate/2), 1600 / (sample_rate/2)], btype='band')
+    breath = sig.lfilter(b_n, a_n, noise) * 0.12
+    
+    # Swell envelope
+    env = np.zeros(M)
+    shankha_len = int(min(2.8, duration - start_time) * sample_rate)
+    attack = int(0.7 * sample_rate)
+    decay = shankha_len - attack
+    env[:attack] = np.linspace(0, 1, attack) ** 1.8
+    env[attack:shankha_len] = np.linspace(1, 0, decay) ** 1.5
+    
+    shankha_sig = (raw + breath) * env
+    if is_distant:
+        # High frequency air absorption for distant horizon feel
+        b_dist, a_dist = sig.butter(2, 1400 / (sample_rate/2), btype='low')
+        shankha_sig = sig.lfilter(b_dist, a_dist, shankha_sig) * 0.55
+        
     left = np.zeros(N)
     right = np.zeros(N)
-    
-    strings = [
-        {'f': 98.00, 'pan': -0.45, 'phase_rate': 0.32, 'vol': 0.85},  # Pa
-        {'f': 130.81, 'pan': -0.15, 'phase_rate': 0.41, 'vol': 1.00}, # Sa 1
-        {'f': 130.95, 'pan': 0.20, 'phase_rate': 0.38, 'vol': 1.00},  # Sa 2 (natural acoustic beating)
-        {'f': 65.41, 'pan': 0.00, 'phase_rate': 0.25, 'vol': 0.75},   # Low Kharaj Sa
-    ]
-    
-    for s in strings:
-        f0 = s['f']
-        pan = s['pan']
-        pr = s['phase_rate']
-        vol = s['vol']
-        
-        string_signal = np.zeros(N)
-        # Sum harmonics with non-linear Javari shimmer
-        for k in range(1, 18):
-            fk = f0 * k
-            if fk > sample_rate / 2 - 500:
-                break
-            
-            # Harmonic decay law + dynamic Javari amplitude modulation
-            amp = (1.0 / (k ** 1.15)) * (1.0 + 0.35 * np.sin(2 * np.pi * pr * t + k * 0.6))
-            harmonic = amp * np.sin(2 * np.pi * fk * t + np.random.uniform(0, 2*np.pi))
-            string_signal += harmonic
-            
-        # Panning (constant power)
-        angle = (pan + 1.0) * (np.pi / 4.0)
-        gain_l = np.cos(angle) * vol
-        gain_r = np.sin(angle) * vol
-        
-        left += string_signal * gain_l
-        right += string_signal * gain_r
-        
-    # Warm resonant body filter (Gourd Kudam resonance ~ 220Hz - 600Hz)
-    b, a = sig.butter(2, [180 / (sample_rate/2), 650 / (sample_rate/2)], btype='band')
-    left = sig.lfilter(b, a, left)
-    right = sig.lfilter(b, a, right)
-    
-    # Master Tanpura Envelope: Gentle 1.4s swell, sustained bed, smooth fade out at end
-    env = np.ones(N)
-    fade_in = int(1.4 * sample_rate)
-    env[:fade_in] = np.linspace(0, 1, fade_in) ** 2
-    
-    fade_out_start = int((duration - 1.2) * sample_rate)
-    fade_out_len = N - fade_out_start
-    if fade_out_len > 0:
-        env[fade_out_start:] = np.linspace(1, 0, fade_out_len) ** 2
-        
-    return left * env, right * env
-
-def generate_bansuri_motif(duration, sample_rate=SR, start_time=1.35):
-    """
-    Synthesizes authentic Bamboo Bansuri playing the 3-note signature motif:
-    Sa (C4 / 261.63 Hz) -> Pa (G4 / 392.00 Hz) -> High Sa' (C5 / 523.25 Hz)
-    Features breath noise, dynamic lip vibrato (5.2 Hz), and seamless micro-meend glides.
-    """
-    N = int(duration * sample_rate)
-    t = np.linspace(0, duration, N, endpoint=False)
-    
-    # Pitch curve definition
-    f_curve = np.zeros(N)
-    f_curve[:] = 261.63
-    
-    # Time points
-    t_sa = start_time
-    t_pa_glide = t_sa + 0.65
-    t_pa = t_pa_glide + 0.18
-    t_sa_high_glide = t_pa + 0.55
-    t_sa_high = t_sa_high_glide + 0.22
-    t_end = t_sa_high + 0.75
-    
-    idx_sa = int(t_sa * sample_rate)
-    idx_pa_glide = int(t_pa_glide * sample_rate)
-    idx_pa = int(t_pa * sample_rate)
-    idx_sa_high_glide = int(t_sa_high_glide * sample_rate)
-    idx_sa_high = int(t_sa_high * sample_rate)
-    idx_end = min(int(t_end * sample_rate), N)
-    
-    # Note 1: Sa (261.63 Hz)
-    f_curve[idx_sa:idx_pa_glide] = 261.63
-    # Micro-meend glide to Pa
-    f_curve[idx_pa_glide:idx_pa] = np.geomspace(261.63, 392.00, idx_pa - idx_pa_glide)
-    # Note 2: Pa (392.00 Hz)
-    f_curve[idx_pa:idx_sa_high_glide] = 392.00
-    # Micro-meend glide to High Sa'
-    f_curve[idx_sa_high_glide:idx_sa_high] = np.geomspace(392.00, 523.25, idx_sa_high - idx_sa_high_glide)
-    # Note 3: High Sa' (523.25 Hz)
-    f_curve[idx_sa_high:idx_end] = 523.25
-    
-    # Authentic Bansuri Vibrato (5.2 Hz, depth ramps in on sustained notes)
-    vibrato_depth = np.zeros(N)
-    for seg_start, seg_end in [(idx_sa + int(0.2*sample_rate), idx_pa_glide),
-                               (idx_pa + int(0.2*sample_rate), idx_sa_high_glide),
-                               (idx_sa_high + int(0.15*sample_rate), idx_end)]:
-        if seg_end > seg_start:
-            vibrato_depth[seg_start:seg_end] = np.linspace(0.5, 4.0, seg_end - seg_start)
-            
-    vibrato = vibrato_depth * np.sin(2 * np.pi * 5.2 * t)
-    f_instantaneous = f_curve + vibrato
-    
-    # Phase accumulation
-    phase = np.cumsum(f_instantaneous) / sample_rate * 2 * np.pi
-    
-    # Bansuri harmonic spectrum (pure hollow bamboo: strong fundamental + warm 2nd & 3rd)
-    flute_body = (1.0 * np.sin(phase) + 
-                  0.38 * np.sin(2 * phase + 0.2) + 
-                  0.18 * np.sin(3 * phase + 0.5) +
-                  0.07 * np.sin(4 * phase + 0.8))
-    
-    # Breath turbulence noise (pink noise bandpassed around fundamental)
-    white = np.random.normal(0, 1, N)
-    b_noise, a_noise = sig.butter(2, [400 / (sample_rate/2), 1800 / (sample_rate/2)], btype='band')
-    breath = sig.lfilter(b_noise, a_noise, white) * 0.08
-    
-    # Flute overall amplitude envelope
-    env = np.zeros(N)
-    # Note 1 entry
-    attack_len = int(0.18 * sample_rate)
-    env[idx_sa:idx_sa + attack_len] = np.linspace(0, 1, attack_len) ** 2
-    env[idx_sa + attack_len:idx_end - int(0.35*sample_rate)] = 1.0
-    # Gentle breath tail
-    release_len = int(0.35 * sample_rate)
-    env[idx_end - release_len:idx_end] = np.linspace(1, 0, release_len) ** 2
-    
-    flute_signal = (flute_body + breath) * env
-    
-    # Warm tone filter (cutting harsh highs > 2200Hz)
-    b_tone, a_tone = sig.butter(2, 2200 / (sample_rate/2), btype='low')
-    flute_signal = sig.lfilter(b_tone, a_tone, flute_signal)
-    
-    # Slight stereo width
-    left = flute_signal * 0.95
-    right = flute_signal * 1.05
+    left[s_idx:] = shankha_sig * 0.95
+    right[s_idx:] = shankha_sig * 1.05
     return left, right
 
-def generate_veena_pluck(duration, sample_rate=SR, pluck_time=2.95, is_standalone=False):
-    """
-    Synthesizes a Saraswati Veena acoustic string pluck.
-    Jackwood resonator, biradai curved bridge buzzing, fast 4ms transient and warm decay.
-    """
+def generate_deep_bell(duration, sample_rate=SR, strike_time=0.8):
+    """Acoustic simulation of a single deep temple bronze bell"""
     N = int(duration * sample_rate)
     t = np.linspace(0, duration, N, endpoint=False)
+    s_idx = int(strike_time * sample_rate)
+    M = N - s_idx
+    if M <= 0: return np.zeros(N), np.zeros(N)
+    
+    t_bell = t[s_idx:] - strike_time
+    bell_sig = np.zeros(M)
+    
+    # Bronze bell physics: Fundamental (Hum tone 108Hz, Prime 216Hz, Tierce 256Hz, Quint 324Hz, Octave 432Hz)
+    partials = [
+        {'f': 108.0, 'amp': 0.70, 'decay': 4.5}, # Deep hum tone
+        {'f': 216.0, 'amp': 1.00, 'decay': 3.8}, # Fundamental strike
+        {'f': 258.0, 'amp': 0.55, 'decay': 3.2}, # Minor third (Tierce)
+        {'f': 324.0, 'amp': 0.40, 'decay': 2.6}, # Fifth (Quint)
+        {'f': 432.0, 'amp': 0.30, 'decay': 2.1}, # Nominal octave
+        {'f': 648.0, 'amp': 0.15, 'decay': 1.4}, # Upper harmonic
+        {'f': 864.0, 'amp': 0.08, 'decay': 0.9}, # Super-octave
+    ]
+    
+    for p in partials:
+        f = p['f']
+        amp = p['amp']
+        decay = p['decay']
+        bell_sig += amp * np.exp(-t_bell / decay) * np.sin(2 * np.pi * f * t_bell)
+        
+    # Strike transient (felt hammer on bronze rim)
+    trans_len = int(0.012 * sample_rate)
+    trans = np.random.normal(0, 1, trans_len) * np.linspace(1, 0, trans_len)
+    bell_sig[:trans_len] += trans * 0.25
     
     left = np.zeros(N)
     right = np.zeros(N)
+    left[s_idx:] = bell_sig * 0.92
+    right[s_idx:] = bell_sig * 1.08
+    return left, right
+
+def generate_veena_note(duration, sample_rate=SR, start_time=0.0, pitch=261.63, amp_scale=1.0, decay_scale=1.0):
+    """Single expressive Saraswati Veena note with Jackwood Kudam resonance"""
+    N = int(duration * sample_rate)
+    t = np.linspace(0, duration, N, endpoint=False)
+    s_idx = int(start_time * sample_rate)
+    M = N - s_idx
+    if M <= 0: return np.zeros(N), np.zeros(N)
     
-    p_idx = int(pluck_time * sample_rate)
-    if p_idx >= N:
-        return left, right
-        
-    t_pluck = t[p_idx:] - pluck_time
-    M = len(t_pluck)
+    t_n = t[s_idx:] - start_time
+    sig_n = np.zeros(M)
     
-    # Primary Pluck: C4 (261.63 Hz) + Octave C3 (130.81 Hz)
-    veena = np.zeros(M)
     harmonics = [
-        {'f': 261.63, 'weight': 1.00, 'decay': 1.8},  # Fundamental Sa
-        {'f': 523.25, 'weight': 0.65, 'decay': 1.2},  # 2nd
-        {'f': 784.88, 'weight': 0.35, 'decay': 0.75}, # 3rd (Pa)
-        {'f': 1046.5, 'weight': 0.18, 'decay': 0.45}, # 4th
-        {'f': 1308.1, 'weight': 0.08, 'decay': 0.30}, # 5th (Ga)
-        {'f': 130.81, 'weight': 0.45, 'decay': 2.2},  # Lower octave resonance
+        {'mult': 1.0, 'w': 1.00, 'd': 1.8 * decay_scale},
+        {'mult': 2.0, 'w': 0.65, 'd': 1.3 * decay_scale},
+        {'mult': 3.0, 'w': 0.35, 'd': 0.8 * decay_scale},
+        {'mult': 4.0, 'w': 0.18, 'd': 0.5 * decay_scale},
+        {'mult': 0.5, 'w': 0.35, 'd': 2.0 * decay_scale}, # Lower octave body sympathetic
     ]
     
     for h in harmonics:
-        f = h['f']
-        w = h['weight']
-        d = h['decay']
-        # Exponential string decay
-        decay_env = np.exp(-t_pluck / (d * 0.4))
-        # Subtle biradai bridge modulation
-        bridge_mod = 1.0 + 0.15 * np.sin(2 * np.pi * 2.8 * t_pluck)
-        veena += w * decay_env * bridge_mod * np.sin(2 * np.pi * f * t_pluck)
+        f = pitch * h['mult']
+        d = h['d']
+        w = h['w']
+        sig_n += w * np.exp(-t_n / d) * np.sin(2 * np.pi * f * t_n)
         
-    # Metallic wire plectrum initial click (0 - 8ms)
-    transient_len = int(0.008 * sample_rate)
-    transient = np.random.normal(0, 1, transient_len) * np.linspace(1, 0, transient_len)
-    veena[:transient_len] += transient * 0.45
+    # Wire click
+    trans_len = int(0.006 * sample_rate)
+    sig_n[:trans_len] += np.random.normal(0, 1, trans_len) * np.linspace(1, 0, trans_len) * 0.35
     
-    # Resonance through Jackwood Kudam body (peaking bandpass at 340Hz, Q=3)
-    b, a = sig.butter(2, [220 / (sample_rate/2), 520 / (sample_rate/2)], btype='band')
-    veena_filtered = sig.lfilter(b, a, veena) * 1.6 + veena * 0.4
-    
-    # Add subtle gamaka grace touch at +180ms (Fifth G4 = 392Hz)
-    grace_idx = int(0.18 * sample_rate)
-    if grace_idx < M:
-        t_grace = t_pluck[grace_idx:]
-        grace_signal = 0.35 * np.exp(-t_grace / 0.4) * np.sin(2 * np.pi * 392.00 * t_grace)
-        veena_filtered[grace_idx:] += grace_signal
-        
-    left[p_idx:] += veena_filtered * 0.95
-    right[p_idx:] += veena_filtered * 1.05
-    return left, right
-
-def generate_om_formant_swell(duration, sample_rate=SR, swell_start=4.0):
-    """
-    Synthesizes the subtle "Om" sacred vocal cavity formant texture and cinematic shanti swell.
-    Shanti chord (C2, G2, C3, E3, G3) morphing softly from open vowel 'O' to nasal 'M'.
-    """
-    N = int(duration * sample_rate)
-    t = np.linspace(0, duration, N, endpoint=False)
-    
-    s_idx = int(swell_start * sample_rate)
-    if s_idx >= N:
-        return np.zeros(N), np.zeros(N)
-        
-    M = N - s_idx
-    t_swell = t[s_idx:] - swell_start
-    
-    # 5-Note Divine Shanti Pad Chord
-    pitches = [65.41, 98.00, 130.81, 164.81, 196.00]
-    pad = np.zeros(M)
-    for p in pitches:
-        pad += (1.0 / np.sqrt(p)) * np.sin(2 * np.pi * p * t_swell + np.random.uniform(0, 2*np.pi))
-        
-    # Vowel Formant Filtering: 'O' (F1=450Hz, F2=800Hz) transitioning to 'M' (F1=280Hz, F2=500Hz)
-    b_formant, a_formant = sig.butter(2, [280 / (sample_rate/2), 650 / (sample_rate/2)], btype='band')
-    pad = sig.lfilter(b_formant, a_formant, pad)
-    
-    # Swell Envelope: Gentle crest at +0.7s, long peaceful release
-    swell_len = M
-    crest_idx = int(0.75 * sample_rate)
-    env = np.zeros(M)
-    env[:crest_idx] = np.linspace(0, 1, crest_idx) ** 2
-    env[crest_idx:] = np.linspace(1, 0, M - crest_idx) ** 2.5
-    
-    swell_signal = pad * env * 1.2
+    # Kudam body filter
+    b, a = sig.butter(2, [200 / (sample_rate/2), 580 / (sample_rate/2)], btype='band')
+    sig_n = (sig.lfilter(b, a, sig_n) * 1.5 + sig_n * 0.4) * amp_scale
     
     left = np.zeros(N)
     right = np.zeros(N)
-    left[s_idx:] = swell_signal * 0.98
-    right[s_idx:] = swell_signal * 1.02
+    left[s_idx:] = sig_n * 0.96
+    right[s_idx:] = sig_n * 1.04
     return left, right
 
-def build_divine_journey_ident():
-    """Generates the master 5.8s Saarthi Divine Journey sonic logo"""
-    duration = 5.8
-    N = int(duration * SR)
+def generate_vocal_formant(duration, sample_rate=SR, start_time=10.0, word="hari", amp=0.35):
+    """Acoustic vocal formant simulation ('Hari...' or 'Govinda...')"""
+    N = int(duration * sample_rate)
+    t = np.linspace(0, duration, N, endpoint=False)
+    s_idx = int(start_time * sample_rate)
+    M = N - s_idx
+    if M <= 0: return np.zeros(N), np.zeros(N)
     
-    print("Building Tanpura Drone...")
-    t_l, t_r = generate_tanpura(duration)
+    t_v = t[s_idx:] - start_time
+    v_len = int(min(2.5, duration - start_time) * sample_rate)
     
-    print("Building Bamboo Bansuri Motif...")
-    f_l, f_r = generate_bansuri_motif(duration, start_time=1.35)
+    # Male sacred chant pitch ~ 130 Hz (C3)
+    f0 = 130.81 * (1.0 + 0.03 * np.sin(2 * np.pi * 4.5 * t_v[:v_len]))
+    phase = np.cumsum(f0) / sample_rate * 2 * np.pi
     
-    print("Building Saraswati Veena Pluck...")
-    v_l, v_r = generate_veena_pluck(duration, pluck_time=2.95)
+    # Vocal glottal source
+    glottal = np.sin(phase) + 0.5 * np.sin(2 * phase) + 0.25 * np.sin(3 * phase)
     
-    print("Building 'Om' Vocal Swell...")
-    o_l, o_r = generate_om_formant_swell(duration, swell_start=3.95)
+    # Formant filtering based on vowel transition
+    if word == "hari":
+        # /ha/ -> /ri/
+        b_f, a_f = sig.butter(2, [400 / (sample_rate/2), 1400 / (sample_rate/2)], btype='band')
+    else: # "govinda"
+        # /go/ -> /vin/ -> /da/
+        b_f, a_f = sig.butter(2, [320 / (sample_rate/2), 1100 / (sample_rate/2)], btype='band')
+        
+    vocal = sig.lfilter(b_f, a_f, glottal)
     
-    # Balance mix levels
-    mix_l = t_l * 0.45 + f_l * 0.70 + v_l * 0.85 + o_l * 0.40
-    mix_r = t_r * 0.45 + f_r * 0.70 + v_r * 0.85 + o_r * 0.40
+    # Breath envelope
+    env = np.zeros(v_len)
+    att = int(0.5 * sample_rate)
+    env[:att] = np.linspace(0, 1, att) ** 2
+    env[att:] = np.linspace(1, 0, v_len - att) ** 2.2
     
-    print("Applying Sacred Stone Sanctum Convolution Reverb...")
-    ir_l, ir_r = make_sanctum_reverb(duration=2.2, decay_rate=2.2)
+    sig_v = vocal * env * amp
     
-    wet_l = sig.fftconvolve(mix_l, ir_l, mode='full')[:N] * 0.35
-    wet_r = sig.fftconvolve(mix_r, ir_r, mode='full')[:N] * 0.35
+    # Air distance lowpass
+    b_dist, a_dist = sig.butter(2, 1200 / (sample_rate/2), btype='low')
+    sig_v = sig.lfilter(b_dist, a_dist, sig_v)
     
-    final_l = mix_l * 0.85 + wet_l
-    final_r = mix_r * 0.85 + wet_r
-    
-    out_path = os.path.join("public", "audio", "saarthi-divine-journey.wav")
-    save_wav_stereo(out_path, final_l, final_r)
+    left = np.zeros(N)
+    right = np.zeros(N)
+    left[s_idx:s_idx + v_len] = sig_v * 0.92
+    right[s_idx:s_idx + v_len] = sig_v * 1.08
+    return left, right
 
-def build_veena_pluck_asset():
-    """Generates standalone warm Veena Pluck for single Japa Mala bead taps"""
-    duration = 1.3
-    N = int(duration * SR)
-    v_l, v_r = generate_veena_pluck(duration, pluck_time=0.01, is_standalone=True)
+def generate_tanpura_bed(duration, sample_rate=SR, volume=0.5):
+    """Continuous warm Tanpura drone bed (C3 & G2)"""
+    N = int(duration * sample_rate)
+    t = np.linspace(0, duration, N, endpoint=False)
+    left = np.zeros(N)
+    right = np.zeros(N)
     
-    ir_l, ir_r = make_sanctum_reverb(duration=1.0, decay_rate=3.5)
-    wet_l = sig.fftconvolve(v_l, ir_l, mode='full')[:N] * 0.28
-    wet_r = sig.fftconvolve(v_r, ir_r, mode='full')[:N] * 0.28
-    
-    final_l = v_l * 0.9 + wet_l
-    final_r = v_r * 0.9 + wet_r
-    
-    out_path = os.path.join("public", "audio", "veena-pluck.wav")
-    save_wav_stereo(out_path, final_l, final_r)
+    for f0, pan, pr in [(98.0, -0.4, 0.31), (130.81, -0.1, 0.42), (130.95, 0.2, 0.37), (65.41, 0.0, 0.23)]:
+        string_sig = np.zeros(N)
+        for k in range(1, 16):
+            amp = (1.0 / (k ** 1.2)) * (1.0 + 0.3 * np.sin(2 * np.pi * pr * t + k * 0.5))
+            string_sig += amp * np.sin(2 * np.pi * f0 * k * t)
+        angle = (pan + 1.0) * (np.pi / 4.0)
+        left += string_sig * np.cos(angle) * volume
+        right += string_sig * np.sin(angle) * volume
+        
+    b, a = sig.butter(2, [160 / (sample_rate/2), 620 / (sample_rate/2)], btype='band')
+    return sig.lfilter(b, a, left), sig.lfilter(b, a, right)
 
-def build_mala_completion_asset():
-    """Generates celebratory 3.2s Bansuri + Veena flourish for 108 Mala Poorthi"""
-    duration = 3.2
-    N = int(duration * SR)
+# =============================================================================
+# 🛕 SCREEN 1: SAARTHI GUIDE ASSETS
+# =============================================================================
+
+def build_screen1_opening():
+    """1. saarthi-opening-ident.wav (7.0s)"""
+    dur = 7.0
+    N = int(dur * SR)
     
-    t_l, t_r = generate_tanpura(duration)
-    f_l, f_r = generate_bansuri_motif(duration, start_time=0.05)
-    v_l, v_r = generate_veena_pluck(duration, pluck_time=0.85)
-    o_l, o_r = generate_om_formant_swell(duration, swell_start=1.2)
+    # 1. Distant dreamlike Shankha (0.0s - 2.8s)
+    sh_l, sh_r = generate_shankha(dur, start_time=0.1, is_distant=True)
+    # 2. Single deep bell (0.75s)
+    b_l, b_r = generate_deep_bell(dur, strike_time=0.75)
+    # 3. Tanpura bed (0.0s - 7.0s)
+    t_l, t_r = generate_tanpura_bed(dur, volume=0.45)
+    # 4. Veena 3-note greeting phrase: Sa (C4 ~ 261Hz) -> Pa (G4 ~ 392Hz) -> Sa' (C5 ~ 523Hz)
+    v1_l, v1_r = generate_veena_note(dur, start_time=2.2, pitch=261.63, amp_scale=0.85, decay_scale=1.4)
+    v2_l, v2_r = generate_veena_note(dur, start_time=3.3, pitch=392.00, amp_scale=0.90, decay_scale=1.3)
+    v3_l, v3_r = generate_veena_note(dur, start_time=4.4, pitch=523.25, amp_scale=1.00, decay_scale=2.2)
     
-    mix_l = t_l * 0.35 + f_l * 0.80 + v_l * 0.90 + o_l * 0.45
-    mix_r = t_r * 0.35 + f_r * 0.80 + v_r * 0.90 + o_r * 0.45
+    mix_l = sh_l * 0.45 + b_l * 0.85 + t_l * 0.55 + v1_l + v2_l + v3_l
+    mix_r = sh_r * 0.45 + b_r * 0.85 + t_r * 0.55 + v1_r + v2_r + v3_r
     
-    ir_l, ir_r = make_sanctum_reverb(duration=1.8, decay_rate=2.4)
-    wet_l = sig.fftconvolve(mix_l, ir_l, mode='full')[:N] * 0.32
-    wet_r = sig.fftconvolve(mix_r, ir_r, mode='full')[:N] * 0.32
+    ir_l, ir_r = make_sanctum_reverb(duration=2.5, decay_rate=1.8, wet_mix=0.38)
+    final_l, final_r = apply_reverb(mix_l, mix_r, ir_l, ir_r)
     
-    final_l = mix_l * 0.85 + wet_l
-    final_r = mix_r * 0.85 + wet_r
+    out = os.path.join("public", "audio", "saarthi-opening-ident.wav")
+    save_wav_stereo(out, final_l, final_r)
+
+def build_screen1_ambient_loop():
+    """2. saarthi-courtyard-ambient.wav (22.0s seamless loop)"""
+    dur = 22.0
+    N = int(dur * SR)
     
-    out_path = os.path.join("public", "audio", "mala-completion.wav")
-    save_wav_stereo(out_path, final_l, final_r)
+    t_l, t_r = generate_tanpura_bed(dur, volume=0.40)
+    
+    # Slow, spacious meditative Veena phrases (Temple courtyard at 4 AM)
+    v_total_l = np.zeros(N)
+    v_total_r = np.zeros(N)
+    
+    notes = [
+        (1.5, 261.63, 0.7),   # Sa
+        (4.2, 327.03, 0.6),   # Ga
+        (7.0, 392.00, 0.75),  # Pa
+        (13.5, 392.00, 0.65), # Pa
+        (16.2, 490.55, 0.6),  # Ni
+        (18.8, 523.25, 0.8),  # High Sa'
+    ]
+    for st, p, a in notes:
+        vl, vr = generate_veena_note(dur, start_time=st, pitch=p, amp_scale=a, decay_scale=1.5)
+        v_total_l += vl
+        v_total_r += vr
+        
+    # Faint breath-like 'Hari...' vocal at second 10.5
+    voc_l, voc_r = generate_vocal_formant(dur, start_time=10.5, word="hari", amp=0.28)
+    
+    mix_l = t_l * 0.6 + v_total_l * 0.8 + voc_l
+    mix_r = t_r * 0.6 + v_total_r * 0.8 + voc_r
+    
+    ir_l, ir_r = make_sanctum_reverb(duration=2.2, decay_rate=2.0, wet_mix=0.32)
+    final_l, final_r = apply_reverb(mix_l, mix_r, ir_l, ir_r)
+    
+    # Smooth crossfade boundary (0.5s) for seamless looping
+    xfade = int(0.5 * SR)
+    final_l[:xfade] = final_l[:xfade] * np.linspace(0, 1, xfade) + final_l[N-xfade:] * np.linspace(1, 0, xfade)
+    final_r[:xfade] = final_r[:xfade] * np.linspace(0, 1, xfade) + final_r[N-xfade:] * np.linspace(1, 0, xfade)
+    
+    out = os.path.join("public", "audio", "saarthi-courtyard-ambient.wav")
+    save_wav_stereo(out, final_l, final_r)
+
+# =============================================================================
+# 📿 SCREEN 2: JAPA MALA ASSETS
+# =============================================================================
+
+def build_japa_ambient_loop():
+    """3. japa-ambient-loop.wav (20.0s seamless meditative loop)"""
+    dur = 20.0
+    N = int(dur * SR)
+    
+    t_l, t_r = generate_tanpura_bed(dur, volume=0.48)
+    
+    # Minimal repetitive meditative Veena + soft flute motif
+    v_l = np.zeros(N)
+    v_r = np.zeros(N)
+    for st, p in [(1.0, 261.63), (6.0, 392.00), (11.0, 327.03), (16.0, 261.63)]:
+        vl, vr = generate_veena_note(dur, start_time=st, pitch=p, amp_scale=0.55, decay_scale=1.6)
+        v_l += vl
+        v_r += vr
+        
+    mix_l = t_l * 0.65 + v_l * 0.70
+    mix_r = t_r * 0.65 + v_r * 0.70
+    
+    ir_l, ir_r = make_sanctum_reverb(duration=2.0, decay_rate=2.2, wet_mix=0.30)
+    final_l, final_r = apply_reverb(mix_l, mix_r, ir_l, ir_r)
+    
+    xfade = int(0.5 * SR)
+    final_l[:xfade] = final_l[:xfade] * np.linspace(0, 1, xfade) + final_l[N-xfade:] * np.linspace(1, 0, xfade)
+    final_r[:xfade] = final_r[:xfade] * np.linspace(0, 1, xfade) + final_r[N-xfade:] * np.linspace(1, 0, xfade)
+    
+    out = os.path.join("public", "audio", "japa-ambient-loop.wav")
+    save_wav_stereo(out, final_l, final_r)
+
+def build_bead_complete():
+    """4. bead-complete.wav (0.75s)"""
+    dur = 0.75
+    N = int(dur * SR)
+    # Tactile prayer bead click + resonant Veena Sa (261.63 Hz)
+    vl, vr = generate_veena_note(dur, start_time=0.01, pitch=261.63, amp_scale=1.0, decay_scale=0.8)
+    
+    # Wooden bead tactile click (0-4ms)
+    t_len = int(0.005 * SR)
+    click = np.random.normal(0, 1, t_len) * np.linspace(1, 0, t_len) * 0.4
+    vl[:t_len] += click
+    vr[:t_len] += click
+    
+    ir_l, ir_r = make_sanctum_reverb(duration=0.6, decay_rate=4.0, wet_mix=0.25)
+    final_l, final_r = apply_reverb(vl, vr, ir_l, ir_r)
+    
+    out = os.path.join("public", "audio", "bead-complete.wav")
+    save_wav_stereo(out, final_l, final_r)
+
+def build_reflection_end():
+    """5. reflection-end.wav (1.20s): Harmonic resolution cue"""
+    dur = 1.20
+    N = int(dur * SR)
+    # Gentle harmonic resolution: G4 -> C5
+    v1_l, v1_r = generate_veena_note(dur, start_time=0.01, pitch=392.00, amp_scale=0.75, decay_scale=1.0)
+    v2_l, v2_r = generate_veena_note(dur, start_time=0.18, pitch=523.25, amp_scale=0.90, decay_scale=1.2)
+    
+    mix_l = v1_l + v2_l
+    mix_r = v1_r + v2_r
+    
+    ir_l, ir_r = make_sanctum_reverb(duration=0.8, decay_rate=3.0, wet_mix=0.30)
+    final_l, final_r = apply_reverb(mix_l, mix_r, ir_l, ir_r)
+    
+    out = os.path.join("public", "audio", "reflection-end.wav")
+    save_wav_stereo(out, final_l, final_r)
+
+def build_milestone_quarter():
+    """6. milestone-quarter.wav (2.20s): Ethereal 'Govinda' resonance for 27, 54, 81"""
+    dur = 2.20
+    N = int(dur * SR)
+    # Faint distant 'Govinda' vocal + shimmering Veena fifth
+    voc_l, voc_r = generate_vocal_formant(dur, start_time=0.05, word="govinda", amp=0.45)
+    v_l, v_r = generate_veena_note(dur, start_time=0.15, pitch=392.00, amp_scale=0.80, decay_scale=1.8)
+    
+    mix_l = voc_l + v_l
+    mix_r = voc_r + v_r
+    
+    ir_l, ir_r = make_sanctum_reverb(duration=1.8, decay_rate=2.2, wet_mix=0.35)
+    final_l, final_r = apply_reverb(mix_l, mix_r, ir_l, ir_r)
+    
+    out = os.path.join("public", "audio", "milestone-quarter.wav")
+    save_wav_stereo(out, final_l, final_r)
+
+def build_japa_complete_108():
+    """7. japa-complete-108.wav (4.80s): Grand Shankha + Veena finale"""
+    dur = 4.80
+    N = int(dur * SR)
+    
+    # Grand Shankha (triumphant close call)
+    sh_l, sh_r = generate_shankha(dur, start_time=0.05, is_distant=False)
+    # Resonant Veena C chord (C3 + G3 + C4 + G4 + C5)
+    v_chord_l = np.zeros(N)
+    v_chord_r = np.zeros(N)
+    for p in [130.81, 196.00, 261.63, 392.00, 523.25]:
+        vl, vr = generate_veena_note(dur, start_time=0.45, pitch=p, amp_scale=0.7, decay_scale=2.4)
+        v_chord_l += vl
+        v_chord_r += vr
+        
+    mix_l = sh_l * 0.75 + v_chord_l * 0.90
+    mix_r = sh_r * 0.75 + v_chord_r * 0.90
+    
+    ir_l, ir_r = make_sanctum_reverb(duration=2.5, decay_rate=1.8, wet_mix=0.42)
+    final_l, final_r = apply_reverb(mix_l, mix_r, ir_l, ir_r)
+    
+    out = os.path.join("public", "audio", "japa-complete-108.wav")
+    save_wav_stereo(out, final_l, final_r)
 
 if __name__ == "__main__":
-    print("[Saarthi Sound] Synthesizing Saarthi Sacred Audio Suite from First Principles...")
-    build_divine_journey_ident()
-    build_veena_pluck_asset()
-    build_mala_completion_asset()
-    print("[Saarthi Sound] All Saarthi studio audio assets generated successfully!")
+    print("[Saarthi Sound] Generating Dual-Screen Spiritual Soundscape Suite...")
+    print("--- Screen 1: Saarthi Guide (The Threshold) ---")
+    build_screen1_opening()
+    build_screen1_ambient_loop()
+    print("--- Screen 2: Japa Mala (The Sanctum) ---")
+    build_japa_ambient_loop()
+    build_bead_complete()
+    build_reflection_end()
+    build_milestone_quarter()
+    build_japa_complete_108()
+    print("[Saarthi Sound] All 7 sacred soundscape assets generated successfully!")

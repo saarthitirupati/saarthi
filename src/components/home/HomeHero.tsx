@@ -7,7 +7,18 @@ import Logo from '@/components/Logo/Logo';
 import { useLanguage, setAppLanguage } from '@/lib/useLanguage';
 import { useTrip } from '@/components/TripContext';
 import { detectCoordinates, isCoordinateOnTirumalaHill } from '@/lib/location';
-import { playTempleBellChime, playMalaCompletionChime, triggerBeadHaptic } from '@/lib/audioBell';
+import { 
+  playBeadComplete, 
+  playReflectionEnd, 
+  playQuarterMilestone, 
+  playJapa108Complete, 
+  transitionToJapa, 
+  returnFromJapa, 
+  startJapaAmbient, 
+  stopAllAudio, 
+  setAudioGloballyEnabled, 
+  triggerBeadHaptic 
+} from '@/lib/audioBell';
 import { getPanchangamData } from '@/lib/panchangam';
 import { getDayTempleGuidance } from '@/lib/dailyGuidance';
 import { getGovindaNamaForBead } from '@/data/govindaNamas';
@@ -718,9 +729,28 @@ export function HomeHero({ userName, locationName, weatherTemp, liveStatus, acti
       if (typeof window !== 'undefined') {
         localStorage.setItem('srivari_japa_sound', next ? 'enabled' : 'muted');
       }
+      setAudioGloballyEnabled(next);
+      if (!next) {
+        stopAllAudio();
+      } else if (showBlessing) {
+        startJapaAmbient(0.35);
+      }
       return next;
     });
     triggerBeadHaptic(false);
+  };
+
+  const handleOpenBlessing = () => {
+    setShowBlessing(true);
+    if (isSoundEnabled) {
+      transitionToJapa();
+    }
+    triggerBeadHaptic(false);
+  };
+
+  const handleCloseBlessing = () => {
+    setShowBlessing(false);
+    returnFromJapa(false);
   };
 
   // Bead counter within current Mala: 1 to 108
@@ -746,7 +776,10 @@ export function HomeHero({ userName, locationName, weatherTemp, liveStatus, acti
       cooldownTimerRef.current = setTimeout(() => {
         setCooldownSeconds((prev) => {
           if (prev <= 1) {
-            // 10s cooldown expired! Advance to next bead
+            // 10s cooldown expired! Play harmonic reflection resolution cue & advance
+            if (isSoundEnabled) {
+              playReflectionEnd();
+            }
             setChantCount((curr) => {
               if (curr < 108) {
                 const next = curr + 1;
@@ -768,7 +801,7 @@ export function HomeHero({ userName, locationName, weatherTemp, liveStatus, acti
         clearTimeout(cooldownTimerRef.current);
       }
     };
-  }, [cooldownSeconds]);
+  }, [cooldownSeconds, isSoundEnabled]);
 
   const handleChantTap = () => {
     if (cooldownSeconds > 0) {
@@ -777,12 +810,15 @@ export function HomeHero({ userName, locationName, weatherTemp, liveStatus, acti
     }
 
     const is108Reach = chantCount >= 108;
+    const isQuarterMilestone = chantCount === 27 || chantCount === 54 || chantCount === 81;
 
     if (isSoundEnabled) {
       if (is108Reach) {
-        playMalaCompletionChime();
+        playJapa108Complete();
+      } else if (isQuarterMilestone) {
+        playQuarterMilestone();
       } else {
-        playTempleBellChime();
+        playBeadComplete();
       }
     }
     triggerBeadHaptic(is108Reach);
@@ -816,7 +852,8 @@ export function HomeHero({ userName, locationName, weatherTemp, liveStatus, acti
       localStorage.setItem('srivari_chant_count', '1');
     }
     if (isSoundEnabled) {
-      playTempleBellChime();
+      playBeadComplete();
+      startJapaAmbient(0.35);
     }
     triggerBeadHaptic(false);
   };
@@ -1053,10 +1090,7 @@ _ఓం నమో వేంకటేశాయ • శ్రీ పద్మా�
               {/* Right: Dedicated Srivari 108 Japa Mala Button (Image 1 Refinement) */}
               <button
                 type="button"
-                onClick={() => {
-                  setShowBlessing(true);
-                  triggerBeadHaptic(false);
-                }}
+                onClick={handleOpenBlessing}
                 aria-label={lang === 'te' ? 'ఓం నమో వేంకటేశాయ 108 జప మాల' : 'Om Namo Venkatesaya 108 Japa Mala'}
                 style={{
                   display: 'inline-flex',
@@ -1101,7 +1135,7 @@ _ఓం నమో వేంకటేశాయ • శ్రీ పద్మా�
             {/* ══════════ 📿 FIRST PRINCIPLES SANCTUM 108 JAPA MALA MODAL ══════════ */}
             {showBlessing && (
               <div 
-                onClick={() => setShowBlessing(false)}
+                onClick={handleCloseBlessing}
                 style={{
                   position: 'fixed',
                   inset: 0,
@@ -1201,7 +1235,7 @@ _ఓం నమో వేంకటేశాయ • శ్రీ పద్మా�
                       </button>
 
                       <button 
-                        onClick={() => setShowBlessing(false)}
+                        onClick={handleCloseBlessing}
                         aria-label="Close modal"
                         style={{
                           background: 'rgba(255, 255, 255, 0.08)',

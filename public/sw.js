@@ -1,7 +1,7 @@
 // Saarthi Guide Service Worker v1
 // Caches app shell & visited pages for full offline support on Tirumala hill
 
-const CACHE_NAME = 'saarthi-v2';
+const CACHE_NAME = 'saarthi-v3';
 const APP_SHELL = [
   '/',
   '/explore',
@@ -11,6 +11,13 @@ const APP_SHELL = [
   '/icon-192.png',
   '/icon-512.png',
   '/apple-touch-icon.png',
+  '/audio/saarthi-opening-ident.wav',
+  '/audio/saarthi-courtyard-ambient.wav',
+  '/audio/japa-ambient-loop.wav',
+  '/audio/bead-complete.wav',
+  '/audio/reflection-end.wav',
+  '/audio/milestone-quarter.wav',
+  '/audio/japa-complete-108.wav',
   '/audio/saarthi-divine-journey.wav',
   '/audio/veena-pluck.wav',
   '/audio/mala-completion.wav',
