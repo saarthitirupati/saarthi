@@ -304,6 +304,136 @@ function drawShieldCheckIcon(ctx: CanvasRenderingContext2D, cx: number, cy: numb
   ctx.restore();
 }
 
+function drawCalendarIcon(ctx: CanvasRenderingContext2D, cx: number, cy: number, size: number, color: string = '#F8FAFC') {
+  ctx.save();
+  const w = size * 1.5;
+  const h = size * 1.3;
+  const x = cx - w / 2;
+  const y = cy - h / 2;
+  // Outer frame
+  ctx.strokeStyle = color;
+  ctx.lineWidth = 1.8;
+  drawRoundedRect(ctx, x, y, w, h, 3.5);
+  ctx.stroke();
+
+  // Top header bar
+  ctx.fillStyle = '#E11D48';
+  drawRoundedRect(ctx, x, y, w, h * 0.35, 3.5);
+  ctx.fill();
+
+  // Ring binder tabs at top
+  ctx.fillStyle = '#FFFFFF';
+  ctx.fillRect(x + w * 0.22, y - 2, 2.5, 4);
+  ctx.fillRect(x + w * 0.72, y - 2, 2.5, 4);
+
+  // Calendar grid dots/lines
+  ctx.fillStyle = color;
+  const dotR = 1.2;
+  for (let r = 0; r < 2; r++) {
+    for (let c = 0; c < 3; c++) {
+      ctx.beginPath();
+      ctx.arc(x + w * 0.25 + c * (w * 0.25), y + h * 0.55 + r * (h * 0.22), dotR, 0, Math.PI * 2);
+      ctx.fill();
+    }
+  }
+  ctx.restore();
+}
+
+function drawCrowdIcon(ctx: CanvasRenderingContext2D, cx: number, cy: number, size: number, color: string = '#CBD5E1') {
+  ctx.save();
+  ctx.fillStyle = color;
+  // Center head
+  ctx.beginPath();
+  ctx.arc(cx, cy - size * 0.3, size * 0.28, 0, Math.PI * 2);
+  ctx.fill();
+  // Center body
+  ctx.beginPath();
+  ctx.arc(cx, cy + size * 0.7, size * 0.55, Math.PI, 0);
+  ctx.fill();
+
+  // Left companion
+  ctx.beginPath();
+  ctx.arc(cx - size * 0.55, cy - size * 0.15, size * 0.22, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.beginPath();
+  ctx.arc(cx - size * 0.55, cy + size * 0.75, size * 0.4, Math.PI, 0);
+  ctx.fill();
+
+  // Right companion
+  ctx.beginPath();
+  ctx.arc(cx + size * 0.55, cy - size * 0.15, size * 0.22, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.beginPath();
+  ctx.arc(cx + size * 0.55, cy + size * 0.75, size * 0.4, Math.PI, 0);
+  ctx.fill();
+  ctx.restore();
+}
+
+function drawNamasteIcon(ctx: CanvasRenderingContext2D, cx: number, cy: number, size: number, color: string = '#FDE047') {
+  ctx.save();
+  ctx.strokeStyle = color;
+  ctx.fillStyle = color;
+  ctx.lineWidth = 2.2;
+  ctx.lineCap = 'round';
+  ctx.lineJoin = 'round';
+
+  // Left hand palm/fingers arch
+  ctx.beginPath();
+  ctx.moveTo(cx - size * 0.35, cy + size * 0.7);
+  ctx.lineTo(cx - size * 0.08, cy - size * 0.5);
+  ctx.quadraticCurveTo(cx, cy - size * 0.85, cx + size * 0.08, cy - size * 0.5);
+  ctx.lineTo(cx + size * 0.35, cy + size * 0.7);
+  ctx.stroke();
+
+  // Center joining crease
+  ctx.beginPath();
+  ctx.moveTo(cx, cy - size * 0.7);
+  ctx.lineTo(cx, cy + size * 0.45);
+  ctx.stroke();
+
+  // Subtle wrist cuffs
+  ctx.strokeStyle = 'rgba(253, 224, 71, 0.4)';
+  ctx.lineWidth = 1.5;
+  ctx.beginPath();
+  ctx.arc(cx, cy + size * 0.75, size * 0.45, 0, Math.PI);
+  ctx.stroke();
+  ctx.restore();
+}
+
+function drawLotusIcon(ctx: CanvasRenderingContext2D, cx: number, cy: number, size: number, color: string = '#F59E0B') {
+  ctx.save();
+  ctx.fillStyle = color;
+
+  // Center petal
+  ctx.beginPath();
+  ctx.moveTo(cx, cy + size * 0.5);
+  ctx.quadraticCurveTo(cx - size * 0.3, cy, cx, cy - size * 0.7);
+  ctx.quadraticCurveTo(cx + size * 0.3, cy, cx, cy + size * 0.5);
+  ctx.fill();
+
+  // Left petal
+  ctx.beginPath();
+  ctx.moveTo(cx, cy + size * 0.5);
+  ctx.quadraticCurveTo(cx - size * 0.6, cy + size * 0.1, cx - size * 0.65, cy - size * 0.3);
+  ctx.quadraticCurveTo(cx - size * 0.25, cy - size * 0.1, cx, cy + size * 0.5);
+  ctx.fill();
+
+  // Right petal
+  ctx.beginPath();
+  ctx.moveTo(cx, cy + size * 0.5);
+  ctx.quadraticCurveTo(cx + size * 0.6, cy + size * 0.1, cx + size * 0.65, cy - size * 0.3);
+  ctx.quadraticCurveTo(cx + size * 0.25, cy - size * 0.1, cx, cy + size * 0.5);
+  ctx.fill();
+
+  // Base arc
+  ctx.strokeStyle = color;
+  ctx.lineWidth = 2;
+  ctx.beginPath();
+  ctx.arc(cx, cy + size * 0.45, size * 0.4, 0.1 * Math.PI, 0.9 * Math.PI);
+  ctx.stroke();
+  ctx.restore();
+}
+
 function drawNamamIcon(ctx: CanvasRenderingContext2D, cx: number, cy: number, size: number) {
   ctx.save();
   // Gold decorative circle aura
@@ -413,15 +543,17 @@ export async function generateTodayInTirumalaCard(data: TodayPulseCardData): Pro
     month: 'long',
     year: 'numeric'
   });
+  drawCalendarIcon(ctx, marginX + 10, headerY + 68, 12, '#F8FAFC');
   ctx.fillStyle = '#F8FAFC';
   ctx.font = `700 22px ${INDIC_FONT}`;
-  ctx.fillText(`📅  ${fullDate}`, marginX, headerY + 76);
+  ctx.fillText(fullDate, marginX + 28, headerY + 76);
 
   // Clean crowd subtitle: "Sunday • Heavy Crowd"
   const crowdText = data.crowdSummary || `${data.dayName} • Heavy Crowd`;
+  drawCrowdIcon(ctx, marginX + 10, headerY + 100, 11, '#CBD5E1');
   ctx.fillStyle = '#CBD5E1';
   ctx.font = `600 18px ${INDIC_FONT}`;
-  ctx.fillText(`👥  ${crowdText}`, marginX, headerY + 106);
+  ctx.fillText(crowdText, marginX + 28, headerY + 106);
   ctx.restore();
 
   // 4. Compact LIVE badge (right-aligned)
@@ -549,12 +681,20 @@ export async function generateTodayInTirumalaCard(data: TodayPulseCardData): Pro
     ctx.letterSpacing = '-0.5px';
     ctx.fillText(waitText, rightEdge, qY + 72);
 
-    // Status dot + label
-    const statusDot = q.color === '#E11D48' ? '🔴' : q.color === '#D97706' ? '🟠' : '🟢';
+    // Status indicator dot (vector arc) + label
+    const labelMetrics = ctx.measureText(q.label);
+    const labelW = labelMetrics.width;
+    const dotX = rightEdge - labelW - 10;
+    const dotY = qY + 91;
+
     ctx.fillStyle = q.color;
+    ctx.beginPath();
+    ctx.arc(dotX, dotY, 4.5, 0, Math.PI * 2);
+    ctx.fill();
+
     ctx.font = '800 14px system-ui, sans-serif';
     ctx.letterSpacing = '0.5px';
-    ctx.fillText(`${statusDot} ${q.label}`, rightEdge, qY + 96);
+    ctx.fillText(q.label, rightEdge, qY + 96);
 
     // Tiny inline meter bars
     const barCount = 5;
@@ -640,14 +780,13 @@ export async function generateTodayInTirumalaCard(data: TodayPulseCardData): Pro
   ctx.save();
   ctx.textAlign = 'center';
 
-  // 🙏 PLANNING DARSHAN TODAY?
-  ctx.font = '28px system-ui, sans-serif';
-  ctx.fillText('🙏', centerX, ctaY + 4);
+  // Planning Darshan Namaste vector
+  drawNamasteIcon(ctx, centerX, ctaY + 12, 18, '#FDE047');
 
   ctx.fillStyle = '#FEF08A';
   ctx.font = `800 24px ${INDIC_FONT}`;
   ctx.letterSpacing = '0.5px';
-  ctx.fillText(isTe ? 'ఈరోజు దర్శనానికి వెళ్తున్నారా?' : 'PLANNING DARSHAN TODAY?', centerX, ctaY + 40);
+  ctx.fillText(isTe ? 'ఈరోజు దర్శనానికి వెళ్తున్నారా?' : 'PLANNING DARSHAN TODAY?', centerX, ctaY + 48);
 
   ctx.fillStyle = '#CBD5E1';
   ctx.font = `500 17px ${INDIC_FONT}`;
@@ -739,9 +878,7 @@ export async function generateJapaCard(data: JapaShareCardData): Promise<Blob | 
   // 3. HEADER
   ctx.save();
   ctx.textAlign = 'center';
-  ctx.fillStyle = '#F59E0B';
-  ctx.font = '32px system-ui, sans-serif';
-  ctx.fillText('🛕 ✨ 📿', width / 2, 115);
+  drawNamamIcon(ctx, width / 2, 115, 20);
 
   ctx.fillStyle = '#FFFDF5';
   ctx.font = '700 24px Georgia, serif';
@@ -791,9 +928,9 @@ export async function generateJapaCard(data: JapaShareCardData): Promise<Blob | 
   ctx.font = '800 22px system-ui, sans-serif';
   ctx.letterSpacing = '1.5px';
   if (isPoorthi) {
-    ctx.fillText('🎉 MALA POORTHI (108/108) 🎉', width / 2, badgeY + 32);
+    ctx.fillText('✦ MALA POORTHI (108/108) ✦', width / 2, badgeY + 32);
   } else if (isMilestone) {
-    ctx.fillText(`🌟 MILESTONE #${data.beadNumber} / 108 🌟`, width / 2, badgeY + 32);
+    ctx.fillText(`✦ MILESTONE #${data.beadNumber} / 108 ✦`, width / 2, badgeY + 32);
   } else {
     ctx.fillText(`✦ DIVINE NAMA #${data.beadNumber} OF 108 ✦`, width / 2, badgeY + 32);
   }
@@ -819,11 +956,23 @@ export async function generateJapaCard(data: JapaShareCardData): Promise<Blob | 
   ctx.font = 'italic 500 26px -apple-system, system-ui, sans-serif';
   curY = wrapText(ctx, data.namaEn, width / 2, curY, shrineW - 100, 34) + 10;
 
-  // Lotus Divider
-  ctx.fillStyle = '#F59E0B';
-  ctx.font = '24px system-ui, sans-serif';
-  ctx.fillText('─── 🪷 ───', width / 2, curY);
-  curY += 40;
+  // Lotus Divider (Custom Vector Icon)
+  const lotusY = curY + 15;
+  // Left divider line
+  ctx.strokeStyle = 'rgba(245, 158, 11, 0.4)';
+  ctx.lineWidth = 1.5;
+  ctx.beginPath();
+  ctx.moveTo(width / 2 - 120, lotusY);
+  ctx.lineTo(width / 2 - 25, lotusY);
+  ctx.stroke();
+  // Vector lotus
+  drawLotusIcon(ctx, width / 2, lotusY, 14, '#F59E0B');
+  // Right divider line
+  ctx.beginPath();
+  ctx.moveTo(width / 2 + 25, lotusY);
+  ctx.lineTo(width / 2 + 120, lotusY);
+  ctx.stroke();
+  curY += 45;
 
   // Divine Blessing Title
   ctx.fillStyle = '#F59E0B';
@@ -887,7 +1036,7 @@ export async function generateJapaCard(data: JapaShareCardData): Promise<Blob | 
 
   ctx.fillStyle = '#38BDF8';
   ctx.font = '900 28px -apple-system, system-ui, sans-serif';
-  ctx.fillText('👉  https://saarthiguide.in', width / 2, botY + 38);
+  ctx.fillText('saarthiguide.in  →', width / 2, botY + 38);
 
   ctx.fillStyle = 'rgba(255, 255, 255, 0.6)';
   ctx.font = `500 18px ${INDIC_FONT}`;
