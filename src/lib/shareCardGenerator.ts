@@ -1059,56 +1059,57 @@ export async function shareOrDownloadCard(
 ): Promise<boolean> {
   if (typeof window === 'undefined') return false;
 
+  // 1. Construct File strictly with correct PNG mime type and name
   let file: File;
   try {
     file = new File([blob], filename, { type: 'image/png', lastModified: Date.now() });
   } catch {
-    file = Object.assign(blob.slice(0, blob.size, 'image/png'), {
-      name: filename,
-      lastModified: Date.now()
-    }) as unknown as File;
+    // Safari/older webviews fallback
+    const b: any = blob;
+    b.lastModifiedDate = new Date();
+    b.name = filename;
+    file = b as File;
   }
 
-  // 1. Native Web Share API Level 2 (Android Chrome, iOS Safari)
-  if (typeof navigator !== 'undefined' && navigator.share) {
+  // 2. Native Web Share API Level 2 (Mobile Chrome, Samsung Internet, iOS Safari)
+  if (typeof navigator !== 'undefined' && typeof navigator.share === 'function') {
     let canShareFile = false;
     try {
-      canShareFile = typeof navigator.canShare === 'function' && navigator.canShare({ files: [file] });
+      if (typeof navigator.canShare === 'function') {
+        canShareFile = navigator.canShare({ files: [file] });
+      } else {
+        // Assume file sharing might work if navigator.share exists
+        canShareFile = true;
+      }
     } catch {
       canShareFile = false;
     }
 
     if (canShareFile) {
-      // NOTE: DO NOT pass a separate `url` property alongside `files`!
-      // In WhatsApp on Android, passing `url` makes WhatsApp discard the file and treat it as a link-only share.
-      // In iOS Safari, passing both `files` and `url` throws a fatal TypeError.
-      const shareCaption = text ? `${text}\n\n${url}` : url;
+      // ⚠️ FIRST PRINCIPLES FIX FOR WHATSAPP ON ANDROID / iOS:
+      // WhatsApp on Android and iOS has a known bug/limitation:
+      // If BOTH `files` AND `text` (or `url`) are provided, WhatsApp either:
+      // A) Only imports the `text` and completely ignores the image file, OR
+      // B) Fails the file transfer intent and reverts to plain text link.
+      // To guarantee the image card is shared, we share ONLY files: [file] with title.
       try {
         await navigator.share({
           files: [file],
-          title,
-          text: shareCaption
+          title
         });
         return true;
       } catch (err: any) {
-        if (err?.name === 'AbortError') return true;
-        // Fallback retry with files ONLY (maximally compatible across strict iOS/Android versions)
-        try {
-          await navigator.share({
-            files: [file],
-            title
-          });
+        // User dismissed the share sheet - do NOT fallback to opening WhatsApp text
+        if (err?.name === 'AbortError' || err?.message?.includes('abort')) {
           return true;
-        } catch (err2: any) {
-          if (err2?.name === 'AbortError') return true;
         }
       }
     }
   }
 
-  // 2. Desktop or Non-file Share Fallback: Clipboard + Direct Download + WhatsApp
+  // 3. Fallback for Desktop or browsers without file Web Share:
+  // Trigger direct download of the image card and copy image to clipboard
   try {
-    // A. Copy Image directly to Clipboard for instant 1-tap paste (Ctrl+V) in WhatsApp Web
     if (typeof navigator !== 'undefined' && navigator.clipboard && typeof window.ClipboardItem === 'function') {
       try {
         await navigator.clipboard.write([
@@ -1119,7 +1120,6 @@ export async function shareOrDownloadCard(
       }
     }
 
-    // B. Direct Image Download
     const objectUrl = URL.createObjectURL(blob);
     const link = document.createElement('a');
     link.href = objectUrl;
@@ -1129,9 +1129,12 @@ export async function shareOrDownloadCard(
     document.body.removeChild(link);
     setTimeout(() => URL.revokeObjectURL(objectUrl), 4000);
 
-    // C. Open WhatsApp with formatted caption
-    const whatsappUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(text + '\n\n' + url)}`;
-    window.open(whatsappUrl, '_blank');
+    // Open WhatsApp Web with caption if desktop
+    const isMobile = /android|iphone|ipad|ipod|mobile/i.test(navigator.userAgent || '');
+    if (!isMobile) {
+      const whatsappUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(text + '\n\n' + url)}`;
+      window.open(whatsappUrl, '_blank');
+    }
     return true;
   } catch {
     return false;
