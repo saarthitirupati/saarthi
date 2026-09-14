@@ -1,6 +1,6 @@
 /* =========================================================
    SAARTHI SACRED OPENING SPLASH SCREEN (First-Principle UI)
-   Cinematic Sequence: Sanctum Atmosphere → Radiant Emblem → Divine Blessing → Home
+   Cinematic Sequence: Sanctum Atmosphere → Master Artwork → Divine Blessing → Home
    ========================================================= */
 
 .splashContainer {
@@ -10,7 +10,7 @@
   height: 100dvh;
   max-width: 100vw;
   z-index: 99999;
-  background: radial-gradient(circle at 50% 40%, #082118 0%, #04120D 58%, #010604 100%);
+  background: radial-gradient(circle at 50% 45%, #022819 0%, #011C11 55%, #000F09 100%);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -31,7 +31,7 @@
 .sanctumVignette {
   position: absolute;
   inset: 0;
-  background: radial-gradient(circle at 50% 38%, transparent 25%, rgba(1, 6, 4, 0.65) 75%, #010604 100%);
+  background: radial-gradient(circle at 50% 45%, transparent 35%, rgba(0, 15, 9, 0.65) 75%, #000A06 100%);
   pointer-events: none;
   z-index: 1;
 }
@@ -39,24 +39,25 @@
 /* Layered Golden Sanctum Aura Glow */
 .centralGoldenAura {
   position: absolute;
-  top: 38%;
+  top: 45%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: min(85vw, 360px, calc(100dvh - 140px));
-  height: min(85vw, 360px, calc(100dvh - 140px));
+  width: min(90vw, 420px, calc(100dvh - 120px));
+  height: min(90vw, 420px, calc(100dvh - 120px));
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(245, 175, 25, 0.32) 0%, rgba(217, 119, 6, 0.14) 45%, transparent 75%);
+  background: radial-gradient(circle, rgba(245, 175, 25, 0.24) 0%, rgba(217, 119, 6, 0.09) 48%, transparent 75%);
   pointer-events: none;
   z-index: 2;
   will-change: opacity, transform;
 }
 
-/* Vector Canvas Wrapper */
-.vectorCanvasWrapper {
+/* Master Artwork Wrapper */
+.artworkWrapper {
   position: relative;
-  width: min(88vw, 360px, calc((100dvh - 140px) * (380 / 440)));
-  max-height: calc(100dvh - 140px);
-  aspect-ratio: 380 / 440;
+  width: min(88vw, 420px, calc(100dvh - 120px));
+  height: min(88vw, 420px, calc(100dvh - 120px));
+  max-height: calc(100dvh - 120px);
+  aspect-ratio: 1 / 1;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -65,31 +66,25 @@
   will-change: transform, opacity;
 }
 
-.svgCanvas {
+.masterArtwork {
   width: 100%;
   height: 100%;
-  max-height: 100%;
+  object-fit: contain;
   display: block;
-  overflow: visible;
-  shape-rendering: geometricPrecision;
+  border-radius: 24px;
+  mask-image: radial-gradient(circle at 50% 50%, black 72%, transparent 100%);
+  -webkit-mask-image: radial-gradient(circle at 50% 50%, black 72%, transparent 100%);
+  filter: drop-shadow(0 8px 32px rgba(0, 0, 0, 0.4));
+  animation: artworkFloat 3.6s ease-in-out infinite alternate;
 }
 
-/* Sacred Holy Emblem Breathing Glow */
-.sacredEmblemGroup {
-  animation: sanctumBreathe 3.2s ease-in-out infinite alternate;
-}
-
-@keyframes sanctumBreathe {
+@keyframes artworkFloat {
   0% {
-    filter: drop-shadow(0 0 8px rgba(245, 158, 11, 0.2));
+    transform: translateY(0px) scale(1);
   }
   100% {
-    filter: drop-shadow(0 0 22px rgba(245, 158, 11, 0.5));
+    transform: translateY(-3px) scale(1.01);
   }
-}
-
-.brandTitleText {
-  text-shadow: 0 2px 14px rgba(245, 158, 11, 0.4);
 }
 
 /* Skip Indicator Pill — Top Right Safe Area */

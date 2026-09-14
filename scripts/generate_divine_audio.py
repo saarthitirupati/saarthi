@@ -278,12 +278,110 @@ def generate_tanpura_bed(duration, sample_rate=SR, volume=0.5):
 # 🛕 SCREEN 1: SAARTHI GUIDE ASSETS
 # =============================================================================
 
-def generate_om_chant(duration=5.6, sample_rate=SR, start_time=0.15):
-    """
-    Synthesize an authentic, deep, primordial sacred OM (AUM) vocal chant
-    Fundamental frequency = 136.1 Hz (Cosmic OM) with chest resonance at 68 Hz
-    Phonetics: A (0 - 1.2s) -> U (1.2 - 2.5s) -> M (2.5 - 4.8s) -> Reverb tail
-    """
+def generate_sacred_shankha(duration=5.5, sample_rate=SR, start_time=0.1):
+    """Authentic acoustic simulation of Sacred Conch Shell (శంఖ నాదం)"""
+    N = int(duration * sample_rate)
+    t = np.linspace(0, duration, N, endpoint=False)
+    s_idx = int(start_time * sample_rate)
+    M = N - s_idx
+    if M <= 0: return np.zeros(N), np.zeros(N)
+    
+    t_sh = t[s_idx:] - start_time
+    sh_len = int(min(3.2, duration - start_time) * sample_rate)
+    f0 = 232.0
+    pitch_contour = f0 * (1.0 + 0.03 * np.exp(-t_sh[:sh_len] * 1.5) + 0.015 * np.sin(2 * np.pi * 5.5 * t_sh[:sh_len]))
+    phase = np.cumsum(pitch_contour) / sample_rate * 2 * np.pi
+    
+    raw = (
+        1.00 * np.sin(phase) +
+        0.70 * np.sin(2 * phase + 0.2) +
+        0.48 * np.sin(3 * phase + 0.5) +
+        0.30 * np.sin(4 * phase + 0.9) +
+        0.18 * np.sin(5 * phase + 1.2) +
+        0.10 * np.sin(6 * phase + 1.6)
+    )
+    noise = np.random.normal(0, 1, sh_len)
+    b_n, a_n = sig.butter(2, [350 / (sample_rate/2), 1800 / (sample_rate/2)], btype='band')
+    breath = sig.lfilter(b_n, a_n, noise) * 0.14
+    
+    env = np.zeros(sh_len)
+    att = int(0.8 * sample_rate)
+    dec = sh_len - att
+    env[:att] = np.linspace(0, 1, att) ** 1.8
+    env[att:] = np.linspace(1, 0, dec) ** 1.5
+    
+    sh_sig = (raw + breath) * env
+    b_sm, a_sm = sig.butter(2, 2400 / (sample_rate/2), btype='low')
+    sh_sig = sig.lfilter(b_sm, a_sm, sh_sig) * 0.65
+    
+    left = np.zeros(N)
+    right = np.zeros(N)
+    left[s_idx:s_idx + sh_len] = sh_sig * 0.94
+    right[s_idx:s_idx + sh_len] = sh_sig * 1.06
+    return left, right
+
+def generate_sanctum_bell(duration=5.5, sample_rate=SR, strike_time=0.4, pitch=216.0, amp=0.85):
+    """Sacred Bronze Temple Bell (కంచు ఘంట) with authentic strike transient and multi-harmonic hum"""
+    N = int(duration * sample_rate)
+    t = np.linspace(0, duration, N, endpoint=False)
+    s_idx = int(strike_time * sample_rate)
+    M = N - s_idx
+    if M <= 0: return np.zeros(N), np.zeros(N)
+    
+    t_b = t[s_idx:] - strike_time
+    bell_sig = np.zeros(M)
+    partials = [
+        {'ratio': 0.50, 'amp': 0.55, 'decay': 4.8},
+        {'ratio': 1.00, 'amp': 1.00, 'decay': 4.0},
+        {'ratio': 1.19, 'amp': 0.50, 'decay': 3.4},
+        {'ratio': 1.50, 'amp': 0.38, 'decay': 2.8},
+        {'ratio': 2.00, 'amp': 0.25, 'decay': 2.0},
+        {'ratio': 2.76, 'amp': 0.12, 'decay': 1.4},
+        {'ratio': 4.07, 'amp': 0.06, 'decay': 0.8},
+    ]
+    for p in partials:
+        f = pitch * p['ratio']
+        decay = p['decay']
+        w = p['amp']
+        bell_sig += w * np.exp(-t_b / decay) * np.sin(2 * np.pi * f * t_b)
+        
+    trans_len = int(0.012 * sample_rate)
+    trans = np.random.normal(0, 1, trans_len) * np.linspace(1, 0, trans_len)
+    bell_sig[:trans_len] += trans * 0.20
+    bell_sig *= amp
+    
+    left = np.zeros(N)
+    right = np.zeros(N)
+    left[s_idx:] = bell_sig * 0.92
+    right[s_idx:] = bell_sig * 1.08
+    return left, right
+
+def generate_meditative_tanpura(duration=5.5, sample_rate=SR, volume=0.45):
+    """Sacred Tanpura Drone tuned to 136.10 Hz (C# / Cosmic OM)"""
+    N = int(duration * sample_rate)
+    t = np.linspace(0, duration, N, endpoint=False)
+    left = np.zeros(N)
+    right = np.zeros(N)
+    strings = [
+        (102.08, -0.30, 0.25),
+        (136.10, -0.08, 0.35),
+        (136.25,  0.12, 0.32),
+        (68.05,   0.00, 0.20)
+    ]
+    for f0, pan, pr in strings:
+        str_sig = np.zeros(N)
+        for k in range(1, 14):
+            harmonic_amp = (1.0 / (k ** 1.3)) * (1.0 + 0.25 * np.sin(2 * np.pi * pr * t + k * 0.5))
+            str_sig += harmonic_amp * np.sin(2 * np.pi * f0 * k * t)
+        angle = (pan + 1.0) * (np.pi / 4.0)
+        left += str_sig * np.cos(angle) * volume
+        right += str_sig * np.sin(angle) * volume
+        
+    b, a = sig.butter(2, [110 / (sample_rate/2), 950 / (sample_rate/2)], btype='band')
+    return sig.lfilter(b, a, left), sig.lfilter(b, a, right)
+
+def generate_sacred_om_voice(duration=5.5, sample_rate=SR, start_time=1.0):
+    """Mellow, acoustic sacred OM (ఓం) vocal drone"""
     N = int(duration * sample_rate)
     t = np.linspace(0, duration, N, endpoint=False)
     s_idx = int(start_time * sample_rate)
@@ -291,107 +389,64 @@ def generate_om_chant(duration=5.6, sample_rate=SR, start_time=0.15):
     if M <= 0: return np.zeros(N), np.zeros(N)
     
     t_v = t[s_idx:] - start_time
-    chant_len = min(4.8, duration - start_time)
-    chant_samples = int(chant_len * sample_rate)
-    
-    # 1. Fundamental Glottal Pulse Generator with sacred 136.1 Hz + micro-vibrato
+    v_len = int(min(3.8, duration - start_time) * sample_rate)
     f0 = 136.10
-    vibrato = 1.0 + 0.012 * np.sin(2 * np.pi * 4.2 * t_v[:chant_samples])
+    vibrato = 1.0 + 0.008 * np.sin(2 * np.pi * 4.0 * t_v[:v_len])
     phase = np.cumsum(f0 * vibrato) / sample_rate * 2 * np.pi
     
-    glottal = (
+    vocal = (
         1.00 * np.sin(phase) +
-        0.75 * np.sin(2 * phase + 0.1) +
-        0.55 * np.sin(3 * phase + 0.25) +
-        0.38 * np.sin(4 * phase + 0.4) +
-        0.26 * np.sin(5 * phase + 0.55) +
-        0.18 * np.sin(6 * phase + 0.7) +
-        0.12 * np.sin(7 * phase + 0.9) +
-        0.08 * np.sin(8 * phase + 1.1)
+        0.55 * np.sin(2 * phase + 0.1) +
+        0.30 * np.sin(3 * phase + 0.3) +
+        0.15 * np.sin(4 * phase + 0.6) +
+        0.08 * np.sin(5 * phase + 0.9)
     )
-    glottal += 0.40 * np.sin(0.5 * phase)
+    vocal += 0.35 * np.sin(0.5 * phase)
     
-    t_norm = np.linspace(0, 1, chant_samples)
-    f1_t = np.piecewise(t_norm, [
-        t_norm < 0.28,
-        (t_norm >= 0.28) & (t_norm < 0.58),
-        t_norm >= 0.58
-    ], [
-        lambda x: 740 - (x / 0.28) * 120,
-        lambda x: 620 - ((x - 0.28) / 0.30) * 250,
-        lambda x: 370 - ((x - 0.58) / 0.42) * 120
-    ])
+    env = np.zeros(v_len)
+    att = int(1.0 * sample_rate)
+    hold = int(1.8 * sample_rate)
+    rel = v_len - att - hold
+    env[:att] = np.linspace(0, 1, att) ** 2.0
+    env[att:att+hold] = 1.0
+    env[att+hold:] = np.linspace(1, 0, rel) ** 1.8
     
-    seg_size = 256
-    vocal_filtered = np.zeros(chant_samples)
-    for i in range(0, chant_samples, seg_size):
-        end_i = min(i + seg_size, chant_samples)
-        mid_idx = (i + end_i) // 2
-        f1 = float(f1_t[mid_idx])
-        
-        bw1 = 110.0
-        b1, a1 = sig.butter(2, [max(50, f1 - bw1) / (sample_rate/2), min(f1 + bw1, 3500) / (sample_rate/2)], btype='band')
-        chunk = glottal[i:end_i]
-        filt_chunk = sig.lfilter(b1, a1, chunk) * 2.2
-        
-        b_chest, a_chest = sig.butter(2, [100 / (sample_rate/2), 280 / (sample_rate/2)], btype='band')
-        chest_chunk = sig.lfilter(b_chest, a_chest, chunk) * 1.5
-        
-        if t_norm[mid_idx] >= 0.55:
-            m_factor = min(1.0, (t_norm[mid_idx] - 0.55) / 0.2)
-            b_nasal, a_nasal = sig.butter(2, [1800 / (sample_rate/2), 2400 / (sample_rate/2)], btype='band')
-            nasal_chunk = sig.lfilter(b_nasal, a_nasal, chunk) * 0.8 * m_factor
-            vocal_filtered[i:end_i] = filt_chunk * (1.0 - 0.4 * m_factor) + chest_chunk * 0.8 + nasal_chunk
-        else:
-            vocal_filtered[i:end_i] = filt_chunk + chest_chunk * 0.7
-            
-    env = np.zeros(chant_samples)
-    att = int(0.7 * sample_rate)
-    sus = int(2.6 * sample_rate)
-    dec = chant_samples - att - sus
-    env[:att] = np.linspace(0, 1, att) ** 1.8
-    env[att:att+sus] = 1.0 + 0.05 * np.sin(np.linspace(0, np.pi, sus))
-    env[att+sus:] = np.linspace(1, 0, dec) ** 1.6
-    
-    air_noise = np.random.normal(0, 1, chant_samples)
-    b_air, a_air = sig.butter(2, [400 / (sample_rate/2), 2200 / (sample_rate/2)], btype='band')
-    air = sig.lfilter(b_air, a_air, air_noise) * 0.04 * env
-    vocal_out = (vocal_filtered * env + air) * 0.95
-    
-    b_warm, a_warm = sig.butter(2, 2800 / (sample_rate/2), btype='low')
-    vocal_out = sig.lfilter(b_warm, a_warm, vocal_out)
+    b_voc, a_voc = sig.butter(2, 550 / (sample_rate/2), btype='low')
+    vocal_sig = sig.lfilter(b_voc, a_voc, vocal * env) * 0.70
     
     left = np.zeros(N)
     right = np.zeros(N)
-    left[s_idx:s_idx + chant_samples] = vocal_out * 0.96
-    right[s_idx:s_idx + chant_samples] = vocal_out * 1.04
+    left[s_idx:s_idx + v_len] = vocal_sig * 0.95
+    right[s_idx:s_idx + v_len] = vocal_sig * 1.05
     return left, right
 
 def build_screen1_opening():
-    """1. saarthi-opening-ident.wav (5.6s primordial OM chant)"""
-    dur = 5.6
+    """1. saarthi-opening-ident.wav (5.5s First-Principle Tirumala Temple Soundscape)"""
+    dur = 5.5
     N = int(dur * SR)
     
-    # 1. Sacred Vocal OM Chant (A -> U -> M with 136.1 Hz Cosmic Om)
-    om_l, om_r = generate_om_chant(dur, start_time=0.15)
-    # 2. Deep sanctum bronze bell (0.10s)
-    b_l, b_r = generate_deep_bell(dur, strike_time=0.10)
-    # 3. Warm Tanpura bed (0.0s - 5.6s)
-    t_l, t_r = generate_tanpura_bed(dur, volume=0.42)
-    # 4. Subtle Shankha resonance at opening
-    sh_l, sh_r = generate_shankha(dur, start_time=0.08, is_distant=True)
+    sh_l, sh_r = generate_sacred_shankha(dur, start_time=0.1)
+    b1_l, b1_r = generate_sanctum_bell(dur, strike_time=0.5, pitch=216.0, amp=0.90)
+    b2_l, b2_r = generate_sanctum_bell(dur, strike_time=1.9, pitch=272.2, amp=0.65)
+    tan_l, tan_r = generate_meditative_tanpura(dur, volume=0.42)
+    om_l, om_r = generate_sacred_om_voice(dur, start_time=1.0)
     
-    mix_l = om_l * 1.20 + b_l * 0.75 + t_l * 0.50 + sh_l * 0.35
-    mix_r = om_r * 1.20 + b_r * 0.75 + t_r * 0.50 + sh_r * 0.35
+    mix_l = sh_l * 0.75 + b1_l * 0.85 + b2_l * 0.65 + tan_l * 0.55 + om_l * 0.85
+    mix_r = sh_r * 0.75 + b1_r * 0.85 + b2_r * 0.65 + tan_r * 0.55 + om_r * 0.85
     
-    ir_l, ir_r = make_sanctum_reverb(duration=2.8, decay_rate=1.5, wet_mix=0.45)
+    ir_l, ir_r = make_sanctum_reverb(duration=3.2, decay_rate=1.4, wet_mix=0.45)
     final_l, final_r = apply_reverb(mix_l, mix_r, ir_l, ir_r)
     
-    # Smooth tail fade
-    fade_len = int(0.7 * SR)
-    fade_curve = np.linspace(1, 0, fade_len) ** 1.5
-    final_l[-fade_len:] *= fade_curve
-    final_r[-fade_len:] *= fade_curve
+    fade_len = int(0.8 * SR)
+    fade = np.linspace(1, 0, fade_len) ** 1.6
+    final_l[-fade_len:] *= fade
+    final_r[-fade_len:] *= fade
+    
+    peak = max(np.max(np.abs(final_l)), np.max(np.abs(final_r)), 1e-6)
+    final_l = (final_l / peak) * 0.88
+    final_r = (final_r / peak) * 0.88
+    final_l = np.tanh(1.15 * final_l) / 1.15
+    final_r = np.tanh(1.15 * final_r) / 1.15
     
     out = os.path.join("public", "audio", "saarthi-opening-ident.wav")
     save_wav_stereo(out, final_l, final_r)
