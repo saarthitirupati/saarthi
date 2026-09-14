@@ -82,9 +82,9 @@ function LayoutContent({
           minHeight: '100%', 
           position: 'relative',
           width: '100%',
-          maxWidth: isAdmin ? '100%' : '1440px',
+          maxWidth: (isAdmin || pathname === '/onboarding') ? '100%' : '1440px',
           margin: '0 auto',
-          background: '#FAFAF7',
+          background: pathname === '/onboarding' ? 'transparent' : '#FAFAF7',
           overflowX: 'hidden',
           boxSizing: 'border-box',
         }}
@@ -94,7 +94,7 @@ function LayoutContent({
         <div style={{ 
           minHeight: pathname === '/onboarding' ? '100dvh' : '100vh',
           height: pathname === '/onboarding' ? '100dvh' : 'auto',
-          overflow: pathname === '/onboarding' ? 'hidden' : 'visible',
+          overflow: pathname === '/onboarding' ? 'auto' : 'visible',
           overflowX: 'hidden',
           width: '100%',
           boxSizing: 'border-box',
