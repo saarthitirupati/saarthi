@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import { readStatus, updateStatus } from '@/lib/statusDb';
 import { isAuthorizedAdmin } from '@/lib/authGuard';
-import { pushNotifyAll } from '@/lib/pushNotify';
+import { notifyLiveStatusUpdates, notifySsdUpdates } from '@/lib/pushNotify';
 
 export const dynamic = 'force-dynamic';
 
@@ -25,25 +25,15 @@ export async function POST(req: Request) {
     const before = await readStatus();
     const updated = await updateStatus(body);
 
-    // Push: general notice/announcement changed
-    if (body.notice && body.notice !== before.notice && body.notice.trim()) {
-      pushNotifyAll({
-        title: '📢 Tirumala Update',
-        body: body.notice,
-        url: '/',
-        tag: 'tirumala-notice',
-      }).catch(() => {});
-    }
+    // Push notifications for live queue, darshan wait times, crowd level, and notices
+    notifyLiveStatusUpdates(before, updated).catch((err) => {
+      console.error('[PushNotify] Error broadcasting Live Status update:', err);
+    });
 
-    // Push: crowd dropped to low
-    if (body.crowdLevel === 'low' && before.crowdLevel !== 'low') {
-      pushNotifyAll({
-        title: '🟢 Low Crowd at Tirumala!',
-        body: `Wait time: ${updated.waitTime}. Great time for darshan.`,
-        url: '/',
-        tag: 'crowd-low',
-      }).catch(() => {});
-    }
+    // Also notify if any SSD fields were updated through this route
+    notifySsdUpdates(before, updated).catch((err) => {
+      console.error('[PushNotify] Error broadcasting SSD update:', err);
+    });
 
     return NextResponse.json(updated);
   } catch (e: any) {

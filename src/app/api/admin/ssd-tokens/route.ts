@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import { readStatus, updateStatus, SsdTokenSlot, SsdCounter } from '@/lib/statusDb';
 import { isAuthorizedAdmin } from '@/lib/authGuard';
-import { pushNotifyAll } from '@/lib/pushNotify';
+import { notifySsdUpdates } from '@/lib/pushNotify';
 
 export async function GET() {
   try {
@@ -41,31 +41,10 @@ export async function POST(req: Request) {
     const before = await readStatus();
     const updated = await updateStatus(updates);
 
-    // Push notifications for SSD status changes
-    if (body.ssdTokenStatus === 'issuing' && before.ssdTokenStatus !== 'issuing') {
-      pushNotifyAll({
-        title: '🎫 SSD Tokens are LIVE!',
-        body: 'Srivari Seva Darshanam tokens are being issued now at Tirumala counters.',
-        url: '/darshan/ssd-token',
-        tag: 'ssd-live',
-      }).catch(() => {});
-    } else if (body.ssdTokenStatus === 'paused' && before.ssdTokenStatus === 'issuing') {
-      pushNotifyAll({
-        title: '⏸️ SSD Tokens Paused',
-        body: body.ssdNotice || 'Token issuing has been paused. Check back soon.',
-        url: '/darshan/ssd-token',
-        tag: 'ssd-paused',
-      }).catch(() => {});
-    }
-    // Notify on new SSD notice
-    if (body.ssdNotice && body.ssdNotice !== before.ssdNotice && body.ssdNotice.trim()) {
-      pushNotifyAll({
-        title: '📢 SSD Token Update',
-        body: body.ssdNotice,
-        url: '/darshan/ssd-token',
-        tag: 'ssd-notice',
-      }).catch(() => {});
-    }
+    // Push notifications for any SSD timings, slot, status, or notice changes
+    notifySsdUpdates(before, updated).catch((err) => {
+      console.error('[PushNotify] Error broadcasting SSD update:', err);
+    });
 
     return NextResponse.json({
       success: true,

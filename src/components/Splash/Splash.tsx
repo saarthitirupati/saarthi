@@ -23,40 +23,10 @@ interface Particle {
   driftX: number;
 }
 
-function getDynamicSanctumPhase(): { telugu: string; english: string; period: string } {
-  try {
-    const now = new Date();
-    // Indian Standard Time (IST) hour
-    const istHour = (now.getUTCHours() + 5.5) % 24;
-    if (istHour >= 4 && istHour < 8.5) {
-      return { telugu: 'సుప్రభాత దర్శనం', english: 'Suprabhatam Darshan', period: 'dawn' };
-    }
-    if (istHour >= 8.5 && istHour < 12.5) {
-      return { telugu: 'ప్రాతఃకాల దర్శనం', english: 'Morning Darshan', period: 'morning' };
-    }
-    if (istHour >= 12.5 && istHour < 16.5) {
-      return { telugu: 'మధ్యాహ్న సమయం', english: 'Midday Sanctum', period: 'midday' };
-    }
-    if (istHour >= 16.5 && istHour < 20.5) {
-      return { telugu: 'సాయం సంధ్యా హారతి', english: 'Sandhya Aarti', period: 'evening' };
-    }
-    return { telugu: 'ఏకాంత సేవ', english: 'Ekantha Seva', period: 'night' };
-  } catch {
-    return { telugu: 'దివ్య దర్శనం', english: 'Divine Darshan', period: 'day' };
-  }
-}
-
 export default function SplashScreen({ onFinish }: { onFinish: () => void }) {
   const [isVisible, setIsVisible] = useState(true);
   const [isAudioPlaying, setIsAudioPlaying] = useState(false);
   const [isAutoplayBlocked, setIsAutoplayBlocked] = useState(false);
-
-  // Dynamic Live State
-  const [sanctumPhase, setSanctumPhase] = useState(getDynamicSanctumPhase());
-  const [userName, setUserName] = useState<string | null>(null);
-  const [liveWaitTime, setLiveWaitTime] = useState<string | null>(null);
-  const [liveCrowd, setLiveCrowd] = useState<string | null>(null);
-  const [loadingStep, setLoadingStep] = useState<'init' | 'syncing' | 'ready'>('init');
 
   // Generate 18 floating golden camphor/temple particles
   const particles = useMemo<Particle[]>(() => {
@@ -92,47 +62,7 @@ export default function SplashScreen({ onFinish }: { onFinish: () => void }) {
     let isMounted = true;
     let splashTimer: NodeJS.Timeout;
 
-    // 1. Check local user name for dynamic personal greeting
-    try {
-      const isApp = window.matchMedia('(display-mode: standalone)').matches;
-      const storedName = localStorage.getItem(isApp ? 'saarthi_user_name_app' : 'saarthi_user_name');
-      if (storedName && isMounted) {
-        setUserName(storedName.trim());
-      }
-    } catch {
-      // safe fallback
-    }
-
-    // 2. Fetch live Tirumala status dynamically
-    fetch('/api/v1/status')
-      .then((res) => (res.ok ? res.json() : null))
-      .then((data) => {
-        if (!isMounted || !data) return;
-        if (data.waitTime) setLiveWaitTime(data.waitTime.trim());
-        if (data.crowdLevel) {
-          const crowdMap: Record<string, string> = {
-            low: 'సాధారణం (Normal)',
-            moderate: 'మధ్యస్థం (Moderate)',
-            high: 'రద్దీ (High)',
-            'very-high': 'తీవ్ర రద్దీ (Peak)',
-          };
-          setLiveCrowd(crowdMap[data.crowdLevel] || data.crowdLevel);
-        }
-      })
-      .catch(() => {
-        // graceful offline fallback
-      });
-
-    // 3. Dynamic progressive loading stages
-    const stepTimer1 = setTimeout(() => {
-      if (isMounted) setLoadingStep('syncing');
-    }, 1100);
-
-    const stepTimer2 = setTimeout(() => {
-      if (isMounted) setLoadingStep('ready');
-    }, 2500);
-
-    // 4. Sacred dawn soundscape playback
+    // Sacred dawn soundscape playback
     const soundTimer = setTimeout(async () => {
       const started = await playSaarthiSonicIdent();
       if (!isMounted) return;
@@ -144,7 +74,7 @@ export default function SplashScreen({ onFinish }: { onFinish: () => void }) {
       }
     }, 50);
 
-    // 5. Total golden darshan window: 3.8s
+    // Total golden darshan window: 3.8s
     splashTimer = setTimeout(() => {
       if (isMounted) {
         handleFinish();
@@ -166,8 +96,6 @@ export default function SplashScreen({ onFinish }: { onFinish: () => void }) {
     return () => {
       isMounted = false;
       clearTimeout(soundTimer);
-      clearTimeout(stepTimer1);
-      clearTimeout(stepTimer2);
       clearTimeout(splashTimer);
       window.removeEventListener('pointerdown', handleOneTimeGesture);
       window.removeEventListener('keydown', handleOneTimeGesture);
@@ -201,35 +129,6 @@ export default function SplashScreen({ onFinish }: { onFinish: () => void }) {
             animate={{ opacity: 0.9, scale: 1.05 }}
             transition={{ duration: 1.4, ease: SMOOTH_EASE }}
           />
-
-          {/* 🔴 DYNAMIC TOP LIVE TEMPLE TELEMETRY BADGE */}
-          <motion.div
-            className={styles.dynamicLiveBadge}
-            initial={{ opacity: 0, y: -12 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.25, duration: 0.8, ease: SMOOTH_EASE }}
-          >
-            <span className={styles.livePulseDot} />
-            <span className={styles.liveBadgePhase}>
-              {sanctumPhase.telugu} • {sanctumPhase.english}
-            </span>
-            {liveWaitTime && (
-              <>
-                <span className={styles.liveBadgeDivider}>|</span>
-                <span className={styles.liveBadgeDarshan}>
-                  సర్వదర్శనం: {liveWaitTime}
-                </span>
-              </>
-            )}
-            {userName && (
-              <>
-                <span className={styles.liveBadgeDivider}>•</span>
-                <span className={styles.liveBadgeUser}>
-                  నమస్కారం, {userName}!
-                </span>
-              </>
-            )}
-          </motion.div>
 
           {/* 🛕 PURE VECTOR SVG CANVAS WITH HARDWARE-ACCELERATED ANIMATIONS */}
           <div className={styles.vectorCanvasWrapper}>
@@ -765,18 +664,6 @@ export default function SplashScreen({ onFinish }: { onFinish: () => void }) {
               </motion.g>
             </svg>
           </div>
-
-          {/* ⚡ DYNAMIC LIVE LOADING STATUS TELEMETRY CAPTION */}
-          <motion.div
-            className={styles.dynamicStatusCaption}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.6, duration: 0.6 }}
-          >
-            {loadingStep === 'init' && 'దివ్య సంకల్పం • Awakening Sacred Presence...'}
-            {loadingStep === 'syncing' && 'ప్రత్యక్ష సమాచారం • Syncing Live Sanctum Timings...'}
-            {loadingStep === 'ready' && (liveCrowd ? `దర్శన భాగ్యం • Tirumala Crowd: ${liveCrowd}` : 'దర్శన భాగ్యం • Sanctum Ready')}
-          </motion.div>
 
           {/* 🔊 Sacred OM Sound Prompt (When autoplay requires user gesture) */}
           {isAutoplayBlocked && !isAudioPlaying && (

@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import { fetchLiveAlerts, saveLiveAlert, deleteLiveAlert } from '@/lib/alertsStore';
-
 import { isAuthorizedAdmin } from '@/lib/authGuard';
+import { pushNotifyAll } from '@/lib/pushNotify';
 
 export const dynamic = 'force-dynamic';
 
@@ -26,6 +26,18 @@ export async function POST(request: Request) {
 
     const body = await request.json();
     const createdAlert = await saveLiveAlert(body);
+
+    if (createdAlert && (createdAlert.status === 'Published' || (createdAlert as any).active)) {
+      pushNotifyAll({
+        title: createdAlert.title ? `🚨 ${createdAlert.title}` : '🚨 Tirumala Operational Alert',
+        body: createdAlert.description || (createdAlert as any).message || '',
+        url: '/live',
+        tag: `alert-${createdAlert.id || 'live'}`
+      }).catch((err) => {
+        console.error('[PushNotify] Error broadcasting live alert:', err);
+      });
+    }
+
     return NextResponse.json(createdAlert, { status: 201 });
   } catch (error: any) {
     console.error('API Error (/api/v1/alerts POST):', error);
