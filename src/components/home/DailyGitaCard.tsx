@@ -14,6 +14,7 @@ export function DailyGitaCard({ date, variant = 'desktop' }: DailyGitaCardProps)
   const lang = useLanguage();
   const shloka: GitaShloka = getDailyGitaShloka(date);
   const [script, setScript] = useState<'te' | 'sa' | 'en'>(lang === 'te' ? 'te' : 'en');
+  const [activeTab, setActiveTab] = useState<'meaning' | 'practice'>('meaning');
   const [copied, setCopied] = useState(false);
 
   const handleShare = async () => {
@@ -178,8 +179,8 @@ export function DailyGitaCard({ date, variant = 'desktop' }: DailyGitaCardProps)
           backgroundColor: '#FFFFFF',
           border: '1.5px solid #FDE68A',
           borderRadius: '14px',
-          padding: '14px 16px',
-          marginBottom: '12px',
+          padding: '12px 14px',
+          marginBottom: '10px',
           position: 'relative',
           boxShadow: '0 2px 8px rgba(217, 119, 6, 0.04)'
         }}
@@ -187,10 +188,10 @@ export function DailyGitaCard({ date, variant = 'desktop' }: DailyGitaCardProps)
         <p
           style={{
             margin: 0,
-            fontSize: script === 'en' ? '13px' : '15px',
+            fontSize: script === 'en' ? '12.5px' : '14.5px',
             fontWeight: 800,
             color: '#78350F',
-            lineHeight: '1.6',
+            lineHeight: '1.55',
             whiteSpace: 'pre-line',
             textAlign: 'center',
             fontFamily: script === 'en' ? 'inherit' : 'serif'
@@ -202,40 +203,108 @@ export function DailyGitaCard({ date, variant = 'desktop' }: DailyGitaCardProps)
         </p>
       </div>
 
-      {/* ── MEANING (భావం) ── */}
-      <div style={{ marginBottom: '12px' }}>
-        <div style={{ fontSize: '11px', fontWeight: 900, color: '#B45309', textTransform: 'uppercase', letterSpacing: '0.4px', marginBottom: '3px' }}>
-          {lang === 'te' ? 'భావం' : 'Meaning'}
-        </div>
-        <p style={{ fontSize: '12.5px', color: '#451A03', margin: 0, lineHeight: '1.45', fontWeight: 600 }}>
-          {lang === 'te' ? shloka.meaningTe : shloka.meaningEn}
-        </p>
+      {/* ── TAB SEGMENT CONTROL FOR MEANING vs PRACTICE (Halves text height!) ── */}
+      <div style={{
+        display: 'flex',
+        alignItems: 'center',
+        gap: '6px',
+        marginBottom: '8px'
+      }}>
+        <button
+          onClick={() => setActiveTab('meaning')}
+          style={{
+            flex: 1,
+            padding: '5px 8px',
+            borderRadius: '8px',
+            border: activeTab === 'meaning' ? '1.5px solid #D97706' : '1px solid #E2E8F0',
+            backgroundColor: activeTab === 'meaning' ? '#FEF3C7' : '#FFFFFF',
+            color: activeTab === 'meaning' ? '#92400E' : '#64748B',
+            fontSize: '11px',
+            fontWeight: 800,
+            cursor: 'pointer',
+            transition: 'all 0.15s ease',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            gap: '4px'
+          }}
+        >
+          <BookOpen size={12} color={activeTab === 'meaning' ? '#B45309' : '#64748B'} />
+          <span>{lang === 'te' ? 'భావం' : 'Meaning'}</span>
+        </button>
+
+        <button
+          onClick={() => setActiveTab('practice')}
+          style={{
+            flex: 1,
+            padding: '5px 8px',
+            borderRadius: '8px',
+            border: activeTab === 'practice' ? '1.5px solid #166534' : '1px solid #E2E8F0',
+            backgroundColor: activeTab === 'practice' ? '#DCFCE7' : '#FFFFFF',
+            color: activeTab === 'practice' ? '#14532D' : '#64748B',
+            fontSize: '11px',
+            fontWeight: 800,
+            cursor: 'pointer',
+            transition: 'all 0.15s ease',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            gap: '4px'
+          }}
+        >
+          <HeartHandshake size={12} color={activeTab === 'practice' ? '#166534' : '#64748B'} />
+          <span>{lang === 'te' ? 'యాత్ర సాధన' : 'Pilgrim Practice'}</span>
+        </button>
       </div>
 
-      {/* ── PILGRIM QUEUE & LIFE REFLECTION ── */}
-      <div
-        style={{
-          backgroundColor: '#FFFBEB',
-          border: '1px solid #FDE68A',
-          borderLeft: '4px solid #D97706',
-          borderRadius: '10px',
-          padding: '9px 12px',
-          marginBottom: '12px',
-          display: 'flex',
-          alignItems: 'flex-start',
-          gap: '8px'
-        }}
-      >
-        <HeartHandshake size={15} color="#D97706" style={{ flexShrink: 0, marginTop: '2px' }} />
-        <div>
-          <div style={{ fontSize: '10.5px', fontWeight: 900, color: '#92400E', textTransform: 'uppercase', letterSpacing: '0.3px', marginBottom: '2px' }}>
-            {lang === 'te' ? 'యాత్ర సాధన • మనశ్శాంతి' : 'Pilgrim Reflection • Inner Peace'}
+      {/* ── TAB CONTENT: MEANING ── */}
+      {activeTab === 'meaning' && (
+        <div style={{
+          backgroundColor: '#FFFFFF',
+          border: '1px solid #FCD34D',
+          borderRadius: '12px',
+          padding: '10px 12px',
+          marginBottom: '10px',
+          boxShadow: '0 2px 6px rgba(217, 119, 6, 0.04)'
+        }}>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '4px' }}>
+            <span style={{ fontSize: '10px', fontWeight: 900, color: '#B45309', textTransform: 'uppercase', letterSpacing: '0.4px' }}>
+              {lang === 'te' ? 'భగవద్గీత సారం' : 'CORE TAKEAWAY'}
+            </span>
+            <span style={{ fontSize: '9px', fontWeight: 800, color: '#B45309', backgroundColor: '#FEF3C7', border: '1px solid #FDE68A', padding: '1px 6px', borderRadius: '4px' }}>
+              {lang === 'te' ? 'దివ్య అభయం' : 'DIVINE ASSURANCE'}
+            </span>
           </div>
-          <div style={{ fontSize: '11.5px', color: '#78350F', lineHeight: '1.4', fontWeight: 600 }}>
+          <p style={{ fontSize: '12px', color: '#78350F', margin: 0, lineHeight: '1.45', fontWeight: 700 }}>
+            {lang === 'te' ? shloka.meaningTe : shloka.meaningEn}
+          </p>
+        </div>
+      )}
+
+      {/* ── TAB CONTENT: PILGRIM PRACTICE ── */}
+      {activeTab === 'practice' && (
+        <div
+          style={{
+            backgroundColor: '#F0FDF4',
+            border: '1px solid #BBF7D0',
+            borderRadius: '12px',
+            padding: '10px 12px',
+            marginBottom: '10px'
+          }}
+        >
+          <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '4px' }}>
+            <span style={{ fontSize: '10px', fontWeight: 900, color: '#166534', textTransform: 'uppercase', letterSpacing: '0.3px' }}>
+              {lang === 'te' ? 'నేటి సాధన' : 'DAILY PRACTICE'}
+            </span>
+            <span style={{ fontSize: '9px', fontWeight: 800, color: '#15803D', backgroundColor: '#DCFCE7', padding: '1px 5px', borderRadius: '4px' }}>
+              {lang === 'te' ? 'మనశ్శాంతి' : 'INNER PEACE'}
+            </span>
+          </div>
+          <div style={{ fontSize: '12px', color: '#14532D', lineHeight: '1.4', fontWeight: 700 }}>
             {lang === 'te' ? shloka.pilgrimReflectionTe : shloka.pilgrimReflectionEn}
           </div>
         </div>
-      </div>
+      )}
 
       {/* ── FOOTER ACTIONS ── */}
       <div
