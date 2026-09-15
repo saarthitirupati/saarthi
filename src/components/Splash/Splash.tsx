@@ -37,85 +37,118 @@ export default function SplashScreen({ onFinish }: { onFinish: () => void }) {
           transition={{ duration: 0.35, ease: SMOOTH_EASE }}
           onClick={handleFinish}
         >
-          {/* Skip Action */}
-          <button
-            type="button"
-            className={styles.skipPill}
-            onClick={(e) => {
-              e.stopPropagation();
-              handleFinish();
-            }}
-          >
-            Skip →
-          </button>
-
           {/* Central Brand Identity */}
           <motion.div
             className={styles.brandContent}
-            initial={{ opacity: 0, y: 14 }}
+            initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, ease: SMOOTH_EASE }}
+            transition={{ duration: 0.6, ease: SMOOTH_EASE }}
           >
-            {/* Clean, Vector Tirumala Namam Mark */}
+            {/* Pure SVG Vector Tirumala Namam */}
             <div className={styles.namamFrame}>
               <svg
-                viewBox="0 0 200 240"
+                viewBox="0 0 160 160"
                 className={styles.namamSvg}
                 fill="none"
                 xmlns="http://www.w3.org/2000/svg"
               >
-                {/* Left White Pillar (Shankha-white) */}
-                <path
-                  d="M 40 30 L 76 30 L 96 170 C 93 170 88 170 82 166 L 40 30 Z"
-                  fill="#F8FAFC"
-                />
-                {/* Right White Pillar */}
-                <path
-                  d="M 160 30 L 124 30 L 104 170 C 107 170 112 170 118 166 L 160 30 Z"
-                  fill="#E2E8F0"
-                />
-                {/* U-Base Curve */}
-                <path
-                  d="M 82 166 C 92 180 108 180 118 166 C 110 172 90 172 82 166 Z"
-                  fill="#F8FAFC"
-                />
-                {/* Outer Subtle Golden Rim */}
-                <path
-                  d="M 38 28 L 78 28 M 122 28 L 162 28"
-                  stroke="#C89B3C"
-                  strokeWidth="2.5"
-                  strokeLinecap="round"
+                {/* White Namam U-Pillars (Fade and subtle slide in) */}
+                <motion.g
+                  initial={{ opacity: 0, y: -6 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, ease: SMOOTH_EASE }}
+                >
+                  {/* Left White Pillar */}
+                  <path
+                    d="M 42 22 L 62 22 C 64 62 70 95 76 117 C 73 120 66 120 61 116 C 53 95 46 60 42 22 Z"
+                    fill="#F8F9FA"
+                  />
+                  {/* Right White Pillar */}
+                  <path
+                    d="M 118 22 L 98 22 C 96 62 90 95 84 117 C 87 120 94 120 99 116 C 107 95 114 60 118 22 Z"
+                    fill="#F8F9FA"
+                  />
+                </motion.g>
+
+                {/* Central Red Tilak (Sacred Kasturi Spindle, animates top-down) */}
+                <motion.path
+                  d="M 80 12 C 82.5 40 84.5 70 84.5 95 C 84.5 109 82 119 80 121 C 78 119 75.5 109 75.5 95 C 75.5 70 77.5 40 80 12 Z"
+                  fill="#E52E2E"
+                  initial={{ scaleY: 0, opacity: 0 }}
+                  animate={{ scaleY: 1, opacity: 1 }}
+                  transition={{ duration: 0.5, delay: 0.2, ease: SMOOTH_EASE }}
+                  style={{ transformOrigin: '80px 12px' }}
                 />
 
-                {/* Central Sacred Vermilion Srichoornam Tilakam */}
-                <path
-                  d="M 100 20 C 91 60 88 115 95 162 C 97 170 100 174 100 174 C 100 174 103 170 105 162 C 112 115 109 60 100 20 Z"
-                  fill="#DC2626"
-                />
-                {/* Tilakam Crown Jewel */}
-                <polygon
-                  points="100,12 105,20 100,24 95,20"
-                  fill="#C89B3C"
+                {/* Golden Base Dot (Pops in at bottom base) */}
+                <motion.circle
+                  cx="80"
+                  cy="137"
+                  r="7.5"
+                  fill="#E5B246"
+                  initial={{ scale: 0, opacity: 0 }}
+                  animate={{ scale: 1, opacity: 1 }}
+                  transition={{ duration: 0.35, delay: 0.4, ease: [0.34, 1.56, 0.64, 1] }}
+                  style={{ transformOrigin: '80px 137px' }}
                 />
               </svg>
             </div>
 
             {/* Wordmark: SAARTHI */}
-            <h1 className={styles.brandTitle}>SAARTHI</h1>
+            <motion.h1
+              className={styles.brandTitle}
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.25, ease: SMOOTH_EASE }}
+            >
+              SAARTHI
+            </motion.h1>
 
             {/* Telugu Script: సారథి */}
-            <div className={styles.brandTelugu}>సారథి</div>
+            <motion.div
+              className={styles.brandTelugu}
+              initial={{ opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.35, ease: SMOOTH_EASE }}
+            >
+              సారథి
+            </motion.div>
 
-            {/* Restrained Gold Divider */}
-            <div className={styles.divider} />
+            {/* Gold Divider Line */}
+            <motion.div
+              className={styles.divider}
+              initial={{ scaleX: 0, opacity: 0 }}
+              animate={{ scaleX: 1, opacity: 1 }}
+              transition={{ duration: 0.4, delay: 0.45, ease: SMOOTH_EASE }}
+            />
 
-            {/* Authentic Product Tagline */}
-            <p className={styles.tagline}>
+            {/* Tagline */}
+            <motion.p
+              className={styles.tagline}
+              initial={{ opacity: 0, y: 6 }}
+              animate={{ opacity: 0.8, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.5, ease: SMOOTH_EASE }}
+            >
               From Free Time to Meaningful Memories
-            </p>
+            </motion.p>
           </motion.div>
 
-          {/* Subdued Bottom Loading Line */}
+          {/* Skip Action (Bottom Right) */}
+          <motion.button
+            type="button"
+            className={styles.skipPill}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.4, delay: 0.6 }}
+            onClick={(e) => {
+              e.stopPropagation();
+              handleFinish();
+            }}
+          >
+            Skip &rarr;
+          </motion.button>
+
+          {/* Subdued Bottom Progress Line */}
           <div className={styles.loadingBarContainer}>
             <div className={styles.loadingBarFill} />
           </div>
