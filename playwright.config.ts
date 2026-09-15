@@ -6,7 +6,7 @@ export default defineConfig({
   workers: 1,
   reporter: 'list',
   use: {
-    baseURL: process.env.PLAYWRIGHT_TEST_BASE_URL || 'https://www.saarthiguide.in',
+    baseURL: process.env.PLAYWRIGHT_TEST_BASE_URL || 'http://localhost:3005',
     trace: 'on-first-retry',
   },
   projects: [
@@ -23,6 +23,24 @@ export default defineConfig({
       use: {
         ...devices['Desktop Chrome'],
         viewport: { width: 390, height: 844 },
+        isMobile: true,
+        hasTouch: true,
+      },
+    },
+    {
+      name: 'Mobile 375px (iPhone SE)',
+      use: {
+        ...devices['Desktop Chrome'],
+        viewport: { width: 375, height: 667 },
+        isMobile: true,
+        hasTouch: true,
+      },
+    },
+    {
+      name: 'Mobile 360px (Compact Android)',
+      use: {
+        ...devices['Desktop Chrome'],
+        viewport: { width: 360, height: 740 },
         isMobile: true,
         hasTouch: true,
       },
