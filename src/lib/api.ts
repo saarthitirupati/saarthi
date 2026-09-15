@@ -12,5 +12,5 @@ export function getApiBaseUrl(): string {
   if (process.env.BACKEND_URL && process.env.BACKEND_URL.trim() !== '') {
     return process.env.BACKEND_URL.replace(/\/+$/, '');
   }
-  return 'http://127.0.0.1:8000';
+  return '';
 }
