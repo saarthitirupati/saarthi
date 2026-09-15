@@ -9,6 +9,11 @@ export default defineConfig({
     baseURL: process.env.PLAYWRIGHT_TEST_BASE_URL || 'http://localhost:3005',
     trace: 'on-first-retry',
   },
+  webServer: {
+    command: 'npm run start -- -p 3005',
+    port: 3005,
+    reuseExistingServer: true,
+  },
   projects: [
     {
       name: 'Desktop Chrome',
