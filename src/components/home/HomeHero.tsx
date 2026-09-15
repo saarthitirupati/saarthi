@@ -2487,11 +2487,11 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
             // Dynamic Day-of-Week Temple Recommendation
             guidanceHeadline = lang === 'te' ? dayGuide.headlineTe : dayGuide.headlineEn;
             highlightedBenefit = isSsdClosed 
-              ? (lang === 'te' ? 'నేటి SSD కోటా ముగిసింది — సమీప పుణ్యక్షేత్రాలను దర్శించండి' : 'SSD CLOSED TODAY — VISIT SACRED SHRINES FIRST')
+              ? (lang === 'te' ? 'SSD బంద్ • ముందుగా పుణ్యక్షేత్రాలు దర్శించండి' : 'SSD CLOSED TODAY — VISIT SACRED SHRINES')
               : (lang === 'te' ? dayGuide.benefitTe : dayGuide.benefitEn);
             
             const firstReason = isSsdClosed
-              ? (lang === 'te' ? 'తిరుపతిలోని అన్ని కౌంటర్లలో నేటి ఉచిత SSD టోకెన్ల కోటా పూర్తయింది' : "Today's free SSD token quota is fully exhausted across all counters")
+              ? (lang === 'te' ? 'అన్ని కౌంటర్లలో నేటి ఉచిత SSD టోకెన్లు పూర్తి' : "Today's free SSD token quota is exhausted across all counters")
               : (lang === 'te' ? `సర్వదర్శనం క్యూ అధిక రద్దీతో ఉంది (${sarvaWait})` : `Sarva Darshan queue has heavy rush (${sarvaWait})`);
 
             customReasons = lang === 'te' ? [
