@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Menu, Bell, MapPin, Sun, Sparkles, Ticket, Car, Gift, CloudRain, Bus, Clock, Route, Users, Zap, Check, ChevronDown, Navigation, Flame, Moon, Languages, RotateCcw, Share2, X, Volume2, VolumeX, ChevronLeft, ChevronRight, Pause } from 'lucide-react';
+import { Menu, Bell, MapPin, Sun, Sparkles, Ticket, TicketX, ShieldAlert, Car, Gift, CloudRain, Bus, Clock, Route, Users, Zap, Check, ChevronDown, Navigation, Flame, Moon, Languages, RotateCcw, Share2, X, Volume2, VolumeX, ChevronLeft, ChevronRight, Pause } from 'lucide-react';
 import Link from 'next/link';
 import Logo from '@/components/Logo/Logo';
 import { useLanguage, setAppLanguage } from '@/lib/useLanguage';
@@ -2570,24 +2570,125 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
                 {guidanceHeadline}
               </div>
 
-              {/* Rationale Checklist */}
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '5px', marginBottom: '10px' }}>
-                {customReasons.map((point, i) => (
-                  <div key={i} style={{
-                    fontSize: '11.5px',
-                    color: '#334155',
-                    fontWeight: 600,
-                    display: 'flex',
-                    alignItems: 'center',
+              {/* VISUAL MICRO-CARDS GRID (Replaces heavy text bullet list) */}
+              {(() => {
+                const visualCards = isSsdClosed ? [
+                  {
+                    icon: <TicketX size={14} color="#DC2626" />,
+                    bg: '#FEF2F2',
+                    border: '1px solid #FCA5A5',
+                    title: lang === 'te' ? 'SSD టోకెన్లు' : 'SSD Tokens',
+                    value: lang === 'te' ? 'పూర్తి అయ్యాయి' : 'Exhausted Today',
+                    color: '#991B1B'
+                  },
+                  {
+                    icon: <Flame size={14} color="#D97706" />,
+                    bg: '#FEF3C7',
+                    border: '1px solid #FCD34D',
+                    title: lang === 'te' ? 'నేటి విశేషం' : 'Sacred Shrine',
+                    value: lang === 'te' ? (dayGuide.dayNameTe || 'పుణ్యక్షేత్రం') : (dayGuide.dayName || 'Sacred Shrine'),
+                    color: '#92400E'
+                  },
+                  {
+                    icon: <Clock size={14} color="#0F5132" />,
+                    bg: '#F0FDF4',
+                    border: '1px solid #86EFAC',
+                    title: lang === 'te' ? 'క్యూ రద్దీ' : 'Queue Trend',
+                    value: lang === 'te' ? 'మధ్యాహ్నం అనుకూలం' : 'Eases Post-Noon',
+                    color: '#166534'
+                  }
+                ] : (isSsdOpen ? [
+                  {
+                    icon: <Ticket size={14} color="#16A34A" />,
+                    bg: '#F0FDF4',
+                    border: '1px solid #86EFAC',
+                    title: lang === 'te' ? 'కౌంటర్లు' : 'SSD Status',
+                    value: lang === 'te' ? 'జారీ అవుతున్నాయి' : 'Issuing Now',
+                    color: '#166534'
+                  },
+                  {
+                    icon: <Clock size={14} color="#2563EB" />,
+                    bg: '#EFF6FF',
+                    border: '1px solid #BFDBFE',
+                    title: lang === 'te' ? 'సమయం ఆదా' : 'Time Saved',
+                    value: lang === 'te' ? '10+ గంటలు' : 'Save 10+ Hours',
+                    color: '#1E40AF'
+                  },
+                  {
+                    icon: <MapPin size={14} color="#D97706" />,
+                    bg: '#FEF3C7',
+                    border: '1px solid #FCD34D',
+                    title: lang === 'te' ? 'కేంద్రాలు' : 'Counters',
+                    value: lang === 'te' ? 'అలిపిరి & శ్రీనివాసం' : 'Alipiri / Srinivasam',
+                    color: '#92400E'
+                  }
+                ] : [
+                  {
+                    icon: <Users size={14} color="#D97706" />,
+                    bg: '#FEF3C7',
+                    border: '1px solid #FCD34D',
+                    title: lang === 'te' ? 'క్యూ సమయం' : 'Queue Flow',
+                    value: sarvaWait || (lang === 'te' ? 'సాధారణం' : 'Moderate'),
+                    color: '#92400E'
+                  },
+                  {
+                    icon: <Clock size={14} color="#0F5132" />,
+                    bg: '#F0FDF4',
+                    border: '1px solid #86EFAC',
+                    title: lang === 'te' ? 'ఉత్తమ సమయం' : 'Best Time',
+                    value: lang === 'te' ? 'ఉదయం వేళలు' : 'Early Morning',
+                    color: '#166534'
+                  },
+                  {
+                    icon: <Sparkles size={14} color="#2563EB" />,
+                    bg: '#EFF6FF',
+                    border: '1px solid #BFDBFE',
+                    title: lang === 'te' ? 'ప్రవేశం' : 'Entry Advice',
+                    value: lang === 'te' ? 'నేరుగా ప్రవేశించండి' : 'Direct Entry',
+                    color: '#1E40AF'
+                  }
+                ]);
+
+                return (
+                  <div style={{
+                    display: 'grid',
+                    gridTemplateColumns: 'repeat(3, minmax(0, 1fr))',
                     gap: '6px',
-                    lineHeight: lang === 'te' ? 1.4 : 1.2,
-                    letterSpacing: 'normal'
+                    marginBottom: '9px'
                   }}>
-                    <Check size={12} color="#10B981" strokeWidth={2.5} style={{ flexShrink: 0 }} />
-                    <span>{point}</span>
+                    {visualCards.map((card, idx) => (
+                      <div key={idx} style={{
+                        backgroundColor: card.bg,
+                        border: card.border,
+                        borderRadius: '11px',
+                        padding: '7px 5px',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        textAlign: 'center',
+                        minWidth: 0
+                      }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '3.5px', marginBottom: '2px' }}>
+                          {card.icon}
+                          <span style={{ fontSize: '9px', fontWeight: 800, color: '#64748B', whiteSpace: 'nowrap' }}>
+                            {card.title}
+                          </span>
+                        </div>
+                        <div style={{
+                          fontSize: '11px',
+                          fontWeight: 900,
+                          color: card.color,
+                          lineHeight: 1.15,
+                          wordBreak: 'break-word'
+                        }}>
+                          {card.value}
+                        </div>
+                      </div>
+                    ))}
                   </div>
-                ))}
-              </div>
+                );
+              })()}
 
               {/* HIGHLIGHTED GOLD BENEFIT CALLOUT */}
               <div style={{

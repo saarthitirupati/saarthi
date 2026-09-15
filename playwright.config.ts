@@ -2,8 +2,8 @@ import { defineConfig, devices } from '@playwright/test';
 
 export default defineConfig({
   testDir: './tests',
-  fullyParallel: false,
-  workers: 1,
+  fullyParallel: true,
+  workers: process.env.CI ? 1 : 2,
   reporter: 'list',
   use: {
     baseURL: process.env.PLAYWRIGHT_TEST_BASE_URL || 'http://127.0.0.1:3005',
@@ -13,7 +13,7 @@ export default defineConfig({
     command: 'npx next start -p 3005',
     url: 'http://127.0.0.1:3005',
     reuseExistingServer: true,
-    timeout: 120 * 1000,
+    timeout: 300 * 1000,
   },
   projects: [
     {
