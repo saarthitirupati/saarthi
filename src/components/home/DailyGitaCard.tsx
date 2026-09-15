@@ -18,7 +18,7 @@ export function DailyGitaCard({ date, variant = 'desktop' }: DailyGitaCardProps)
 
   const handleShare = async () => {
     const activeShlokaText = script === 'en' ? shloka.transliteration : script === 'sa' ? shloka.shlokaSanskrit : shloka.shlokaTelugu;
-    const textToShare = `🕉️ *శ్రీమద్భగవద్గీత నిత్య శ్లోకం • Daily Gita Shloka*\n${lang === 'te' ? shloka.referenceTe : shloka.referenceEn}\n\n"${activeShlokaText}"\n\n📖 *భావం (Meaning):*\n${lang === 'te' ? shloka.meaningTe : shloka.meaningEn}\n\n✨ *యాత్ర సాధన (Pilgrim Reflection):*\n${lang === 'te' ? shloka.pilgrimReflectionTe : shloka.pilgrimReflectionEn}\n\n— *Saarthi Tirumala Yatra Companion* (saarthiguide.in)`;
+    const textToShare = `*శ్రీమద్భగవద్గీత నిత్య శ్లోకం • Daily Gita Shloka*\n${lang === 'te' ? shloka.referenceTe : shloka.referenceEn}\n\n"${activeShlokaText}"\n\n• భావం (Meaning):\n${lang === 'te' ? shloka.meaningTe : shloka.meaningEn}\n\n• యాత్ర సాధన (Pilgrim Reflection):\n${lang === 'te' ? shloka.pilgrimReflectionTe : shloka.pilgrimReflectionEn}\n\n— Saarthi Tirumala Yatra Companion (saarthiguide.in)`;
 
     if (typeof navigator !== 'undefined' && navigator.share) {
       try {

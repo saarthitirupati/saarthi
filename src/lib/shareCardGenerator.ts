@@ -1222,9 +1222,21 @@ export async function generateJapaCard(data: JapaShareCardData): Promise<Blob | 
   return canvasToBlob(canvas);
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
-// 🚀 NATIVE SHARING / DOWNLOAD DISPATCHER
-// ─────────────────────────────────────────────────────────────────────────────
+export function downloadCard(blob: Blob, filename: string): void {
+  if (typeof window === 'undefined') return;
+  try {
+    const objectUrl = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = objectUrl;
+    link.download = filename;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    setTimeout(() => URL.revokeObjectURL(objectUrl), 4000);
+  } catch (err) {
+    console.error('[Download] Failed to trigger image download:', err);
+  }
+}
 
 export async function shareOrDownloadCard(
   blob: Blob,
@@ -1267,9 +1279,6 @@ export async function shareOrDownloadCard(
 
     if (canShareFile) {
       try {
-        // On iOS Safari, sharing files + text sends image card with caption.
-        // On Android Chrome, passing multi-line text with files causes WhatsApp to drop the image file.
-        // So on Android we share { files: [file], title }, keeping the complete visual poster intact.
         const sharePayload: ShareData = isIOS
           ? { files: [file], title, text: fullCaption }
           : { files: [file], title };
@@ -1277,43 +1286,21 @@ export async function shareOrDownloadCard(
         await navigator.share(sharePayload);
         return true;
       } catch (err: any) {
-        // User cancelled the share dialog
+        // User explicitly cancelled the share dialog
         if (err?.name === 'AbortError' || err?.message?.includes('abort')) {
           return true;
         }
-        console.warn('[Share] Native file share failed, falling back to text share:', err);
+        console.warn('[Share] Native file share failed in WebView/Browser, proceeding to direct image download + clipboard copy:', err);
       }
-    }
-
-    // 3. Fallback: Native Text Share (if file share unsupported or rejected by target app)
-    try {
-      await navigator.share({
-        title,
-        text: fullCaption,
-        url
-      });
-      return true;
-    } catch (err: any) {
-      if (err?.name === 'AbortError' || err?.message?.includes('abort')) {
-        return true;
-      }
-      console.warn('[Share] Native text share failed, falling back to direct WhatsApp:', err);
     }
   }
 
-  // 4. Ultimate Fallback: Download Card Image + Open WhatsApp (Works on Mobile & Desktop)
+  // 3. Guaranteed Image PNG Delivery Fallback: Direct Download + Clipboard Copy
   try {
-    // A. Direct Image Download so user has the card saved
-    const objectUrl = URL.createObjectURL(blob);
-    const link = document.createElement('a');
-    link.href = objectUrl;
-    link.download = filename;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-    setTimeout(() => URL.revokeObjectURL(objectUrl), 4000);
+    // A. Always trigger direct image PNG download so user gets visual poster
+    downloadCard(blob, filename);
 
-    // B. Copy Image to Clipboard if supported
+    // B. Copy Image PNG to Clipboard if supported
     if (typeof navigator !== 'undefined' && navigator.clipboard && typeof window.ClipboardItem === 'function') {
       try {
         await navigator.clipboard.write([
@@ -1324,10 +1311,9 @@ export async function shareOrDownloadCard(
       }
     }
 
-    // C. Open WhatsApp with formatted text and link
+    // C. If on mobile device, open WhatsApp with caption so user can paste/attach downloaded card
     const encoded = encodeURIComponent(fullCaption);
     if (isMobile) {
-      // Direct WhatsApp scheme on mobile, fallback to web
       window.location.href = `whatsapp://send?text=${encoded}`;
       setTimeout(() => {
         window.open(`https://api.whatsapp.com/send?text=${encoded}`, '_blank');
@@ -1338,9 +1324,7 @@ export async function shareOrDownloadCard(
     return true;
   } catch (err) {
     console.error('[Share] Fallback sharing error:', err);
-    // As absolute last resort, open WhatsApp web URL
-    const encoded = encodeURIComponent(fullCaption);
-    window.open(`https://api.whatsapp.com/send?text=${encoded}`, '_blank');
+    downloadCard(blob, filename);
     return true;
   }
 }

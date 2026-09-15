@@ -1386,7 +1386,7 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
                         boxShadow: justCompletedMala ? '0 0 12px rgba(74, 222, 128, 0.35)' : '0 0 12px rgba(245, 158, 11, 0.25)',
                         fontSize: '16px'
                       }}>
-                        {justCompletedMala ? '🎉' : '🪔'}
+                        {justCompletedMala ? <Sparkles size={16} color="#86EFAC" /> : <Flame size={16} color="#FDE047" />}
                       </span>
                       <div>
                         <div style={{ 
@@ -1410,7 +1410,7 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
                     </div>
 
                     <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                      {/* 🕉️ Divine Journey Sound Mute / Unmute Toggle */}
+                      {/* Divine Journey Sound Mute / Unmute Toggle */}
                       <button
                         type="button"
                         onClick={toggleSound}
@@ -1458,7 +1458,7 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
 
                   {/* ══════════ CONTENT VIEW ══════════ */}
                   {justCompletedMala ? (
-                    /* 🪔 SPECIAL MALA POORTHI / COMPLETION CELEBRATION */
+                    /* SPECIAL MALA POORTHI / COMPLETION CELEBRATION */
                     <div>
                       <div style={{
                         background: 'radial-gradient(circle at 50% 30%, rgba(34, 197, 94, 0.15) 0%, rgba(212, 175, 55, 0.08) 100%)',
@@ -1468,7 +1468,9 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
                         marginBottom: '16px',
                         textAlign: 'center'
                       }}>
-                        <div style={{ fontSize: '28px', marginBottom: '8px' }}>📿 ✨ 🪔</div>
+                        <div style={{ display: 'flex', justifyContent: 'center', gap: '8px', marginBottom: '8px' }}>
+                          <Sparkles size={24} color="#86EFAC" />
+                        </div>
                         <div style={{
                           fontSize: '18px',
                           fontWeight: 800,
@@ -1502,7 +1504,8 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
                           fontWeight: 700,
                           color: '#86EFAC'
                         }}>
-                          🏆 {lang === 'te' ? `మొత్తం పూర్తయిన మాలలు: ${completedMalas}` : `Total Completed Malas: ${completedMalas}`}
+                          <Check size={13} color="#86EFAC" />
+                          <span>{lang === 'te' ? `మొత్తం పూర్తయిన మాలలు: ${completedMalas}` : `Total Completed Malas: ${completedMalas}`}</span>
                         </div>
                       </div>
 
@@ -1561,7 +1564,7 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
                       </div>
                     </div>
                   ) : (
-                    /* 📿 REDESIGNED UNIFIED SACRED SANCTUM ALTAR (First Principle) */
+                    /* REDESIGNED UNIFIED SACRED SANCTUM ALTAR (First Principle) */
                     (() => {
                       const activeBead = previewBead !== null ? previewBead : chantCount;
                       const activeNama = getGovindaNamaForBead(activeBead);
@@ -1569,7 +1572,7 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
 
                       return (
                         <div>
-                          {/* Sacred Altar (One unified shrine, eliminating box-in-box clutter) */}
+                          {/* Sacred Altar */}
                           <div style={{
                             background: 'radial-gradient(circle at 50% 25%, rgba(212, 175, 55, 0.08) 0%, rgba(255, 255, 255, 0.02) 100%)',
                             border: '1px solid rgba(212, 175, 55, 0.28)',
@@ -1617,11 +1620,9 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
                                 letterSpacing: '0.06em',
                                 textTransform: 'uppercase'
                               }}>
-                                <span>✦</span>
                                 <span>{isBrowsingOtherBead 
                                   ? (lang === 'te' ? `నామ పఠనం #${activeBead} / 108` : `Browsing Bead #${activeBead} of 108`)
                                   : (lang === 'te' ? `శ్రీవారి నామం #${activeBead} / 108` : `BEAD #${activeBead} OF 108`)}</span>
-                                <span>✦</span>
                               </div>
 
                               <button
@@ -1696,10 +1697,10 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
                               </button>
                             )}
 
-                            {/* Sacred Lotus Divider */}
+                            {/* Sacred Divider */}
                             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '10px', margin: '12px 0 10px 0' }}>
                               <div style={{ flex: 1, height: '1px', background: 'linear-gradient(90deg, transparent, rgba(212, 175, 55, 0.35))' }} />
-                              <span style={{ fontSize: '13px', color: '#F59E0B' }}>🪷</span>
+                              <Sparkles size={12} color="#F59E0B" />
                               <div style={{ flex: 1, height: '1px', background: 'linear-gradient(90deg, rgba(212, 175, 55, 0.35), transparent)' }} />
                             </div>
 
@@ -1736,7 +1737,7 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
                             </div>
                           </div>
 
-                          {/* 📿 Luminous 108-Mala Progress Strand */}
+                          {/* Luminous 108-Mala Progress Strand */}
                           <div style={{ marginBottom: '14px' }}>
                             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '6px' }}>
                               <span style={{
@@ -1776,7 +1777,7 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
                             </div>
                           </div>
 
-                          {/* 💭 Devotional Guidance Instruction (First Principle: Read -> Chant -> Advance) */}
+                          {/* Devotional Guidance Instruction */}
                           <div style={{
                             marginBottom: '10px',
                             padding: '8px 12px',
@@ -1788,7 +1789,7 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
                             justifyContent: 'center',
                             gap: '6px'
                           }}>
-                            <span style={{ fontSize: '13px' }}>💭</span>
+                            <Sparkles size={12} color="#F59E0B" />
                             <span style={{
                               fontSize: '12px',
                               fontWeight: 700,
@@ -1801,7 +1802,7 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
                             </span>
                           </div>
 
-                          {/* 10-Second Cadence Meditative Chant Action */}
+                          {/* Meditative Chant Action */}
                           <div style={{ marginBottom: '12px' }}>
                             {isBrowsingOtherBead ? (
                               <button
@@ -1891,13 +1892,12 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
                                   transition: 'all 0.15s ease'
                                 }}
                               >
-                                <span style={{ fontSize: '15px' }}>🔶</span>
+                                <Sparkles size={15} color="#451A03" />
                                 <span>
                                   {chantCount < 108 
-                                    ? (lang === 'te' ? 'సిద్ధం - తదుపరి నామం ➡️' : 'Ready - Next Bead ➡️')
-                                    : (lang === 'te' ? '🎉 108 మాల సంపూర్ణం - దివ్య అనుగ్రహం ✨' : '🎉 Complete 108 Mala ✨')}
+                                    ? (lang === 'te' ? 'సిద్ధం - తదుపరి నామం' : 'Ready - Next Bead')
+                                    : (lang === 'te' ? '108 మాల సంపూర్ణం - దివ్య అనుగ్రహం' : 'Complete 108 Mala')}
                                 </span>
-                                <span style={{ fontSize: '15px' }}>🔶</span>
                               </button>
                             )}
                           </div>
@@ -1931,7 +1931,7 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
                                 }}
                               >
                                 <Share2 size={12} color="#A7F3D0" />
-                                <span>{isSharingJapa ? (lang === 'te' ? 'కార్డ్...' : 'Card...') : (lang === 'te' ? '📱 కార్డ్ షేర్' : '📱 Share Card')}</span>
+                                <span>{isSharingJapa ? (lang === 'te' ? 'కార్డ్...' : 'Card...') : (lang === 'te' ? 'కార్డ్ షేర్' : 'Share Card')}</span>
                               </button>
 
                               <button
@@ -1953,7 +1953,7 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
                                 }}
                               >
                                 <Pause size={12} />
-                                <span>{lang === 'te' ? '⏸️ పాజ్' : '⏸️ Pause'}</span>
+                                <span>{lang === 'te' ? 'పాజ్' : 'Pause'}</span>
                               </button>
                             </div>
 
@@ -1981,7 +1981,7 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
                                 }}
                               >
                                 <RotateCcw size={11} />
-                                <span>{lang === 'te' ? '🔄 రీసెట్' : '🔄 Reset'}</span>
+                                <span>{lang === 'te' ? 'రీసెట్' : 'Reset'}</span>
                               </button>
                             </div>
                           </div>
@@ -2572,6 +2572,13 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
 
               {/* VISUAL MICRO-CARDS GRID (Replaces heavy text bullet list) */}
               {(() => {
+                const shrineNameEn = dayGuide.placeName
+                  ? dayGuide.placeName.replace(' Temple', '').replace(' Theertham', '').replace(' Sri', '').replace(' (Kapila Theertham)', '').replace(' (Tiruchanur)', '').trim()
+                  : 'Sacred Shrine';
+                const shrineNameTe = dayGuide.placeNameTe
+                  ? dayGuide.placeNameTe.replace(' ఆలయం', '').replace(' తీర్థం', '').replace(' శ్రీ', '').replace(' (కపిలతీర్థం)', '').replace(' (తిరుచానూరు)', '').trim()
+                  : 'పుణ్యక్షేత్రం';
+
                 const visualCards = isSsdClosed ? [
                   {
                     icon: <TicketX size={14} color="#DC2626" />,
@@ -2586,7 +2593,7 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
                     bg: '#FEF3C7',
                     border: '1px solid #FCD34D',
                     title: lang === 'te' ? 'నేటి విశేషం' : 'Sacred Shrine',
-                    value: lang === 'te' ? (dayGuide.dayNameTe || 'పుణ్యక్షేత్రం') : (dayGuide.dayName || 'Sacred Shrine'),
+                    value: lang === 'te' ? shrineNameTe : shrineNameEn,
                     color: '#92400E'
                   },
                   {
@@ -2632,20 +2639,20 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
                     color: '#92400E'
                   },
                   {
+                    icon: <Flame size={14} color="#D97706" />,
+                    bg: '#FEF3C7',
+                    border: '1px solid #FCD34D',
+                    title: lang === 'te' ? 'విశేష క్షేత్రం' : 'Sacred Shrine',
+                    value: lang === 'te' ? shrineNameTe : shrineNameEn,
+                    color: '#92400E'
+                  },
+                  {
                     icon: <Clock size={14} color="#0F5132" />,
                     bg: '#F0FDF4',
                     border: '1px solid #86EFAC',
                     title: lang === 'te' ? 'ఉత్తమ సమయం' : 'Best Time',
                     value: lang === 'te' ? 'ఉదయం వేళలు' : 'Early Morning',
                     color: '#166534'
-                  },
-                  {
-                    icon: <Sparkles size={14} color="#2563EB" />,
-                    bg: '#EFF6FF',
-                    border: '1px solid #BFDBFE',
-                    title: lang === 'te' ? 'ప్రవేశం' : 'Entry Advice',
-                    value: lang === 'te' ? 'నేరుగా ప్రవేశించండి' : 'Direct Entry',
-                    color: '#1E40AF'
                   }
                 ]);
 
