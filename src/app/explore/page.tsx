@@ -663,18 +663,20 @@ function ExploreContent() {
                         </div>
                       )}
 
-                      <p className={styles.description}>{place.description}</p>
-                      
-                      <div className={styles.tags} style={{ marginTop: '8px' }}>
+                      <div className={styles.tags} style={{ marginTop: '6px' }}>
+                        <span className={styles.tag} style={{ backgroundColor: '#F3F4F6', color: '#374151', fontWeight: 700 }}>
+                          {place.category || place.placeType || 'Spot'}
+                        </span>
+
                         {(place as any).computedDistance !== undefined ? (
                           <span className={styles.tag} style={{ backgroundColor: '#E5F3EB', color: '#2F6144', fontWeight: 700, display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
                             <MapPin size={12} style={{ flexShrink: 0 }} />
                             {Number((place as any).computedDistance) < 0.5
-                              ? (lang === 'te' ? '< 0.5 కి.మీ దూరం' : '< 0.5 km away')
-                              : `${Number((place as any).computedDistance).toFixed(1)} ${lang === 'te' ? 'కి.మీ దూరం' : 'km away'}`}
+                              ? (lang === 'te' ? '< 0.5 కి.మీ' : '< 0.5 km')
+                              : `${Math.max(4, Math.round(Number((place as any).computedDistance) * 3))} min away (${Number((place as any).computedDistance).toFixed(1)} km)`}
                           </span>
                         ) : (
-                          <span className={styles.tag}>{place.distanceKms} km from Tirupati</span>
+                          <span className={styles.tag}>{place.distanceKms} km</span>
                         )}
 
                         {festCrowd.hasImpact && festCrowd.isFestivalActive ? (

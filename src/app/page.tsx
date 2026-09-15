@@ -38,7 +38,13 @@ const TEXTS = {
     tonsureStatus: 'Open 24/7',
     stay: 'Stay & PAC Halls',
     staySub: 'Free rest halls at PAC-1 to 5 & CRO room counters',
-    stayStatus: 'Halls Available'
+    stayStatus: 'Halls Available',
+    whatDoYouNeed: 'What do you need?',
+    darshanLabel: 'Darshan',
+    foodLabel: 'Food',
+    stayLabel: 'Stay',
+    exploreLabel: 'Explore',
+    moreChecklists: 'More tools & checklists'
   },
   te: {
     loading: 'మీ సారథి లోడ్ అవుతోంది...',
@@ -60,7 +66,13 @@ const TEXTS = {
     tonsureStatus: '24/7 అందుబాటులో ఉంది',
     stay: 'వసతి & PAC హాళ్ళు',
     staySub: 'PAC 1-5 ఉచిత విశ్రాంతి హాళ్ళు & CRO రూమ్ కౌంటర్లు',
-    stayStatus: 'హాళ్ళు అందుబాటులో ఉన్నాయి'
+    stayStatus: 'హాళ్ళు అందుబాటులో ఉన్నాయి',
+    whatDoYouNeed: 'మీకేమి కావాలి?',
+    darshanLabel: 'దర్శనం',
+    foodLabel: 'భోజనం',
+    stayLabel: 'వసతి',
+    exploreLabel: 'దర్శనీయ స్థలాలు',
+    moreChecklists: 'మరిన్ని సాధనాలు & చెక్‌లిస్టులు'
   }
 };
 
@@ -144,196 +156,202 @@ export default function HomePage() {
       <div className={styles.mobileOnly}>
         <div className={styles.mobileStack}>
           
-          {/* LAYER 1: HERO DECISION ENGINE & GUIDANCE */}
+          {/* LAYER 1: HERO DECISION ENGINE & LIVE CROWD STATUS */}
           <HomeHero {...home.hero} liveStatus={home.status.liveStatus} activeAlertsCount={home.alerts.activeAlertsCount} hideHeader={false} />
 
-          {/* LAYER 2: SSD TOKEN STATUS & COLLECTION CENTRES (IMMEDIATELY AFTER CROWD DETAILS) */}
-          <div style={{ marginTop: '4px', marginBottom: '8px' }}>
-            <QuickChecklist {...home.checklist} liveStatus={home.status.liveStatus} />
-          </div>
+          {/* LAYER 2: WHAT DO YOU NEED? (HIGH-CONTRAST 4-ACTION GRID) */}
+          <div style={{ padding: '0 14px', marginTop: '8px', marginBottom: '16px' }}>
+            <h2 style={{ fontSize: '15px', fontWeight: 900, color: '#0F172A', margin: '0 0 10px 0', letterSpacing: '-0.01em' }}>
+              {(t as any).whatDoYouNeed || 'What do you need?'}
+            </h2>
 
-          {/* LAYER 2.5: YATRA ESSENTIALS COMPLIANCE CHECKLIST */}
-          <YatraChecklist />
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
+              <Link
+                href="/darshan/sarva-darshan"
+                style={{
+                  textDecoration: 'none',
+                  backgroundColor: '#FFFFFF',
+                  borderRadius: '16px',
+                  padding: '14px 16px',
+                  border: '1.5px solid rgba(15, 81, 50, 0.12)',
+                  boxShadow: '0 4px 14px rgba(15, 23, 42, 0.04)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '12px'
+                }}
+              >
+                <div style={{ fontSize: '22px', flexShrink: 0 }}>🛕</div>
+                <div>
+                  <div style={{ fontSize: '14px', fontWeight: 800, color: '#0F172A' }}>
+                    {(t as any).darshanLabel || 'Darshan'}
+                  </div>
+                  <div style={{ fontSize: '10.5px', fontWeight: 600, color: '#0F5132' }}>
+                    {lang === 'te' ? 'క్యూ వివరాలు' : 'Queue Info'}
+                  </div>
+                </div>
+              </Link>
 
-          {/* LAYER 3: PRIMARY PILGRIM SERVICES (ACT) */}
-          <div style={{ padding: '0 14px', marginTop: '2px', marginBottom: '16px' }}>
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '10px' }}>
-              <div>
-                <h2 style={{ fontSize: '15px', fontWeight: 800, color: '#0F172A', margin: 0, letterSpacing: '-0.01em' }}>
-                  {t.primaryServices}
-                </h2>
-                <p style={{ fontSize: '11px', color: '#64748B', margin: '1px 0 0 0', fontWeight: 500 }}>
-                  {t.servicesSub}
-                </p>
-              </div>
-              <Link href="/essentials" style={{ fontSize: '11.5px', fontWeight: 800, color: '#0F5132', textDecoration: 'none' }}>
-                {t.seeAll}
+              <Link
+                href="/essentials/free-meals"
+                style={{
+                  textDecoration: 'none',
+                  backgroundColor: '#FFFFFF',
+                  borderRadius: '16px',
+                  padding: '14px 16px',
+                  border: '1.5px solid rgba(217, 119, 6, 0.12)',
+                  boxShadow: '0 4px 14px rgba(15, 23, 42, 0.04)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '12px'
+                }}
+              >
+                <div style={{ fontSize: '22px', flexShrink: 0 }}>🍛</div>
+                <div>
+                  <div style={{ fontSize: '14px', fontWeight: 800, color: '#0F172A' }}>
+                    {(t as any).foodLabel || 'Food'}
+                  </div>
+                  <div style={{ fontSize: '10.5px', fontWeight: 600, color: '#D97706' }}>
+                    {lang === 'te' ? 'అన్నప్రసాదం' : 'Free Meals'}
+                  </div>
+                </div>
+              </Link>
+
+              <Link
+                href="/essentials/accommodation"
+                style={{
+                  textDecoration: 'none',
+                  backgroundColor: '#FFFFFF',
+                  borderRadius: '16px',
+                  padding: '14px 16px',
+                  border: '1.5px solid rgba(37, 99, 235, 0.12)',
+                  boxShadow: '0 4px 14px rgba(15, 23, 42, 0.04)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '12px'
+                }}
+              >
+                <div style={{ fontSize: '22px', flexShrink: 0 }}>🏨</div>
+                <div>
+                  <div style={{ fontSize: '14px', fontWeight: 800, color: '#0F172A' }}>
+                    {(t as any).stayLabel || 'Stay'}
+                  </div>
+                  <div style={{ fontSize: '10.5px', fontWeight: 600, color: '#2563EB' }}>
+                    {lang === 'te' ? 'వసతి హాళ్ళు' : 'PAC Rest Halls'}
+                  </div>
+                </div>
+              </Link>
+
+              <Link
+                href="/explore"
+                style={{
+                  textDecoration: 'none',
+                  backgroundColor: '#FFFFFF',
+                  borderRadius: '16px',
+                  padding: '14px 16px',
+                  border: '1.5px solid rgba(147, 51, 234, 0.12)',
+                  boxShadow: '0 4px 14px rgba(15, 23, 42, 0.04)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '12px'
+                }}
+              >
+                <div style={{ fontSize: '22px', flexShrink: 0 }}>📍</div>
+                <div>
+                  <div style={{ fontSize: '14px', fontWeight: 800, color: '#0F172A' }}>
+                    {(t as any).exploreLabel || 'Explore'}
+                  </div>
+                  <div style={{ fontSize: '10.5px', fontWeight: 600, color: '#9333EA' }}>
+                    {lang === 'te' ? 'దర్శనీయ స్థలాలు' : 'Nearby Spots'}
+                  </div>
+                </div>
               </Link>
             </div>
+          </div>
 
-            {/* 2x2 Action Grid with Soft Elevation */}
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
-              {PRIMARY_SERVICES.map(srv => {
-                const IconComp = srv.icon;
+          {/* LAYER 3: NEARBY FOR YOU (PHOTO-FIRST CARD WITH DIRECTIONS CTA) */}
+          {nearbyPlaces.length > 0 && (
+            <div style={{ padding: '0 14px 16px' }}>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '8px' }}>
+                <h2 style={{ fontSize: '15px', fontWeight: 900, color: '#0F172A', margin: 0 }}>
+                  {t.nearbyPlaces}
+                </h2>
+                <Link href="/explore" style={{ fontSize: '11.5px', fontWeight: 800, color: '#0F5132', textDecoration: 'none' }}>
+                  {t.seeAll}
+                </Link>
+              </div>
+
+              {/* Primary Featured Nearby Spot */}
+              {(() => {
+                const topSpot = nearbyPlaces[0];
+                const awayMins = topSpot._dist ? Math.max(4, Math.round(Number(topSpot._dist) * 3)) : 12;
                 return (
                   <Link
-                    key={srv.id}
-                    href={srv.link}
+                    href={`/place/${topSpot.id}`}
                     style={{
                       textDecoration: 'none',
                       backgroundColor: '#FFFFFF',
-                      borderRadius: '16px',
+                      borderRadius: '20px',
                       overflow: 'hidden',
-                      border: '1px solid rgba(15, 23, 42, 0.06)',
-                      boxShadow: '0 6px 20px -4px rgba(15, 23, 42, 0.04), 0 2px 6px rgba(15, 23, 42, 0.02)',
-                      display: 'flex',
-                      flexDirection: 'column',
-                      transition: 'transform 0.15s ease'
+                      border: '1.5px solid rgba(15, 23, 42, 0.08)',
+                      boxShadow: '0 8px 24px -4px rgba(15, 23, 42, 0.06)',
+                      display: 'block'
                     }}
                   >
                     <div style={{
-                      height: '74px',
                       width: '100%',
-                      backgroundImage: `url(${srv.image})`,
+                      height: '140px',
+                      backgroundImage: `url(${topSpot.image})`,
                       backgroundSize: 'cover',
                       backgroundPosition: 'center',
-                      backgroundColor: '#F1F5F9',
                       position: 'relative'
                     }}>
                       <div style={{
                         position: 'absolute',
-                        inset: 0,
-                        background: 'linear-gradient(180deg, rgba(0,0,0,0.15) 0%, rgba(0,0,0,0.45) 100%)'
-                      }} />
-                      <div style={{
-                        position: 'absolute',
-                        top: '6px',
-                        left: '6px',
-                        width: '24px',
-                        height: '24px',
-                        borderRadius: '7px',
-                        backgroundColor: 'rgba(15, 81, 50, 0.88)',
-                        boxShadow: '0 2px 6px rgba(0, 0, 0, 0.15)',
+                        bottom: '8px',
+                        left: '8px',
+                        backgroundColor: 'rgba(15, 23, 42, 0.85)',
+                        backdropFilter: 'blur(6px)',
+                        padding: '4px 10px',
+                        borderRadius: '8px',
+                        color: '#FFFFFF',
+                        fontSize: '11px',
+                        fontWeight: 800,
                         display: 'flex',
                         alignItems: 'center',
-                        justifyContent: 'center'
+                        gap: '4px'
                       }}>
-                        <IconComp size={13} color="#FFFFFF" />
+                        <MapPin size={11} />
+                        <span>{awayMins} min away ({topSpot._dist} km)</span>
                       </div>
                     </div>
-
-                    <div style={{ padding: '8px 10px 10px' }}>
-                      <span style={{
-                        display: 'inline-flex',
-                        alignItems: 'center',
-                        gap: '4px',
-                        fontSize: '9.5px',
-                        fontWeight: 700,
-                        color: srv.statusColor,
-                        marginBottom: '2px'
+                    <div style={{ padding: '12px 14px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                      <div>
+                        <h3 style={{ fontSize: '15px', fontWeight: 900, color: '#0F172A', margin: 0 }}>
+                          {topSpot.name}
+                        </h3>
+                        <p style={{ fontSize: '11.5px', color: '#64748B', margin: '2px 0 0 0', fontWeight: 600 }}>
+                          {topSpot.category}
+                        </p>
+                      </div>
+                      <div style={{
+                        padding: '8px 14px',
+                        borderRadius: '12px',
+                        backgroundColor: '#F0FDF4',
+                        color: '#0F5132',
+                        fontSize: '12px',
+                        fontWeight: 800,
+                        border: '1px solid #A7F3D0'
                       }}>
-                        <span style={{ width: '4px', height: '4px', borderRadius: '50%', backgroundColor: 'currentColor' }} />
-                        <span>{srv.status}</span>
-                      </span>
-                      <h3 style={{ fontSize: '12.5px', fontWeight: 800, color: '#0F172A', margin: '0 0 2px', lineHeight: 1.25 }}>
-                        {srv.title}
-                      </h3>
-                      <p style={{ fontSize: '10.5px', color: '#64748B', margin: '0 0 6px', lineHeight: 1.25, fontWeight: 500 }}>
-                        {srv.subtitle}
-                      </p>
-                      <div style={{ fontSize: '10.5px', fontWeight: 800, color: '#0F5132', display: 'flex', alignItems: 'center', gap: '2px' }}>
-                        <span>{t.navigate}</span>
+                        {t.navigate}
                       </div>
                     </div>
                   </Link>
                 );
-              })}
-            </div>
-          </div>
-
-          {/* LAYER 4: EXPLORE AROUND YOU (PHOTO-FIRST CARDS) */}
-          {nearbyPlaces.length > 0 && (
-            <div style={{ padding: '0 0 16px' }}>
-              <div style={{ padding: '0 14px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '8px' }}>
-                <p style={{ fontSize: '13px', fontWeight: 800, color: '#0F172A', letterSpacing: '0.2px', margin: 0 }}>
-                  {t.nearbyPlaces}
-                </p>
-                <Link href="/explore" style={{ fontSize: '11px', fontWeight: 800, color: '#0F5132', textDecoration: 'none' }}>
-                  {t.seeAll}
-                </Link>
-              </div>
-              <div className="noScrollbar" style={{ display: 'flex', gap: '10px', overflowX: 'auto', padding: '0 14px 4px', scrollbarWidth: 'none', msOverflowStyle: 'none' as any, WebkitOverflowScrolling: 'touch' }}>
-                {nearbyPlaces.map(p => (
-                  <Link 
-                    key={p.id} 
-                    href={`/place/${p.id}`} 
-                    style={{ 
-                      textDecoration: 'none', 
-                      flexShrink: 0, 
-                      width: 'clamp(138px, 40vw, 150px)',
-                      backgroundColor: '#FFFFFF',
-                      borderRadius: '16px',
-                      overflow: 'hidden',
-                      border: '1px solid rgba(15, 23, 42, 0.06)',
-                      boxShadow: '0 6px 20px -4px rgba(15, 23, 42, 0.04), 0 2px 6px rgba(15, 23, 42, 0.02)'
-                    }}
-                  >
-                    {/* PHOTO BANNER */}
-                    <div style={{
-                      width: '100%', 
-                      height: '84px', 
-                      backgroundImage: `url(${p.image})`, 
-                      backgroundSize: 'cover', 
-                      backgroundPosition: 'center',
-                      backgroundColor: '#E2E8F0',
-                      position: 'relative'
-                    }}>
-                      <div style={{
-                        position: 'absolute',
-                        bottom: '5px',
-                        left: '5px',
-                        backgroundColor: 'rgba(15, 23, 42, 0.75)',
-                        backdropFilter: 'blur(4px)',
-                        padding: '2px 6px',
-                        borderRadius: '5px',
-                        display: 'flex',
-                        alignItems: 'center',
-                        gap: '3px',
-                        color: '#FFFFFF',
-                        fontSize: '9.5px',
-                        fontWeight: 700
-                      }}>
-                        <MapPin size={9} />
-                        <span>{p._dist} km</span>
-                      </div>
-                    </div>
-
-                    <div style={{ padding: '7px 8px 9px' }}>
-                      <p style={{
-                        fontSize: '12px', 
-                        fontWeight: 800, 
-                        color: '#0F172A', 
-                        margin: '0 0 2px', 
-                        lineHeight: 1.25,
-                        height: '2.5em',
-                        overflow: 'hidden', 
-                        display: '-webkit-box', 
-                        WebkitLineClamp: 2, 
-                        WebkitBoxOrient: 'vertical' as const
-                      }}>
-                        {p.name}
-                      </p>
-                      <span style={{ fontSize: '10px', color: '#64748B', fontWeight: 600 }}>
-                        {p._dist ? `${Math.max(4, Math.round(Number(p._dist) * 3))} min away` : 'Nearby'}
-                      </span>
-                    </div>
-                  </Link>
-                ))}
-              </div>
+              })()}
             </div>
           )}
 
-          {/* LAYER 5: DEVOTIONAL TRADITIONS & SACRED LORE (Single Consolidated Drawer) */}
+          {/* LAYER 4: COLLAPSIBLE CHECKLISTS & TOOLS */}
           <div style={{ padding: '0 14px 14px' }}>
             <button
               onClick={() => setShowLoreDrawer(!showLoreDrawer)}
@@ -342,29 +360,21 @@ export default function HomePage() {
                 padding: '12px 14px',
                 borderRadius: '16px',
                 backgroundColor: '#FFFFFF',
-                border: '1px solid rgba(200, 155, 60, 0.3)',
-                background: 'linear-gradient(135deg, #FFFFFF 0%, #FFFDF7 100%)',
+                border: '1px solid rgba(15, 81, 50, 0.2)',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'space-between',
                 cursor: 'pointer',
-                boxShadow: '0 6px 20px -4px rgba(200, 155, 60, 0.08), 0 2px 6px rgba(15, 23, 42, 0.02)'
+                boxShadow: '0 4px 14px rgba(15, 23, 42, 0.03)'
               }}
             >
               <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                <div style={{ width: '24px', height: '24px', borderRadius: '6px', background: '#FEF9C3', border: '1px solid #FDE047', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                  <Sparkles size={13} color="#CA8A04" />
-                </div>
-                <div style={{ textAlign: 'left' }}>
-                  <span style={{ fontSize: '12.5px', fontWeight: 800, color: '#0F172A', display: 'block', lineHeight: 1.2 }}>
-                    {lang === 'te' ? 'స్వామివారి విశేషాలు & ఆధ్యాత్మిక విశేషాలు' : 'Sacred Lore, Chants & Traditions'}
-                  </span>
-                  <span style={{ fontSize: '10px', color: '#854D0E', fontWeight: 600 }}>
-                    {lang === 'te' ? 'నేటి సుప్రభాతం, శ్లోకాలు, ప్రసాద విశేషాలు' : 'Daily Shloka, Suprabhatam & Tirumala lore'}
-                  </span>
-                </div>
+                <Sparkles size={16} color="#0F5132" />
+                <span style={{ fontSize: '13px', fontWeight: 800, color: '#0F172A' }}>
+                  {(t as any).moreChecklists || 'More tools & checklists'}
+                </span>
               </div>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '4px', fontSize: '11px', fontWeight: 800, color: '#0F5132' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '4px', fontSize: '11.5px', fontWeight: 800, color: '#0F5132' }}>
                 <span>{showLoreDrawer ? (lang === 'te' ? 'దాచు' : 'Hide') : (lang === 'te' ? 'చూడు' : 'View')}</span>
                 {showLoreDrawer ? <ChevronUp size={14} /> : <ChevronDown size={14} />}
               </div>
@@ -372,6 +382,8 @@ export default function HomePage() {
 
             {showLoreDrawer && (
               <div style={{ marginTop: '10px', display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                <QuickChecklist {...home.checklist} liveStatus={home.status.liveStatus} />
+                <YatraChecklist />
                 <DailyContent {...home.daily} liveStatus={home.status.liveStatus} variant="mobile" />
               </div>
             )}

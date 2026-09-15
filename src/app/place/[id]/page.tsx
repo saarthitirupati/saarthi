@@ -307,9 +307,54 @@ export default function PlaceDetails() {
     </div>
   ) : null;
 
-  // 2. QUICK FACTS
+  // 0. TOP 4 PRIMARY METRIC PILLS
+  const topMetricsNode = (
+    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, minmax(0, 1fr))', gap: '8px' }}>
+      <div style={{ backgroundColor: '#FFFFFF', border: '1.5px solid rgba(15, 81, 50, 0.15)', borderRadius: '14px', padding: '10px 4px', textAlign: 'center', boxShadow: '0 2px 8px rgba(0,0,0,0.02)' }}>
+        <div style={{ fontSize: '14px', fontWeight: 900, color: '#0F5132', lineHeight: 1.1 }}>
+          {formattedDriveTime || `${driveTimeMins} m`}
+        </div>
+        <div style={{ fontSize: '10px', fontWeight: 700, color: '#64748B', marginTop: '3px' }}>
+          {lang === 'te' ? 'సమీపంలో' : 'Away'}
+        </div>
+      </div>
+
+      <div style={{ backgroundColor: '#FFFFFF', border: `1.5px solid ${isOpenNow ? 'rgba(34, 197, 94, 0.3)' : 'rgba(239, 68, 68, 0.3)'}`, borderRadius: '14px', padding: '10px 4px', textAlign: 'center', boxShadow: '0 2px 8px rgba(0,0,0,0.02)' }}>
+        <div style={{ fontSize: '14px', fontWeight: 900, color: isOpenNow ? '#16A34A' : '#DC2626', lineHeight: 1.1 }}>
+          {isOpenNow ? (lang === 'te' ? 'తెరిచి' : 'Open') : (lang === 'te' ? 'మూసివేత' : 'Closed')}
+        </div>
+        <div style={{ fontSize: '10px', fontWeight: 700, color: '#64748B', marginTop: '3px' }}>
+          {lang === 'te' ? 'ఇప్పుడు' : 'Now'}
+        </div>
+      </div>
+
+      <div style={{ backgroundColor: '#FFFFFF', border: '1.5px solid rgba(217, 119, 6, 0.2)', borderRadius: '14px', padding: '10px 4px', textAlign: 'center', boxShadow: '0 2px 8px rgba(0,0,0,0.02)' }}>
+        <div style={{ fontSize: '14px', fontWeight: 900, color: '#D97706', lineHeight: 1.1 }}>
+          {place.durationMins ? `${place.durationMins} m` : '45 m'}
+        </div>
+        <div style={{ fontSize: '10px', fontWeight: 700, color: '#64748B', marginTop: '3px' }}>
+          {lang === 'te' ? 'సమయం' : 'Visit'}
+        </div>
+      </div>
+
+      <div style={{ backgroundColor: '#FFFFFF', border: '1.5px solid rgba(37, 99, 235, 0.2)', borderRadius: '14px', padding: '10px 4px', textAlign: 'center', boxShadow: '0 2px 8px rgba(0,0,0,0.02)' }}>
+        <div style={{ fontSize: '14px', fontWeight: 900, color: '#2563EB', lineHeight: 1.1 }}>
+          {place.entryFeeNum === 0 || !place.entryFeeNum ? (lang === 'te' ? 'ఉచితం' : 'Free') : `₹${place.entryFeeNum}`}
+        </div>
+        <div style={{ fontSize: '10px', fontWeight: 700, color: '#64748B', marginTop: '3px' }}>
+          {lang === 'te' ? 'ప్రవేశం' : 'Entry'}
+        </div>
+      </div>
+    </div>
+  );
+
+  // 2. QUICK FACTS ("Before you go")
   const quickFactsNode = (
-    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, minmax(0, 1fr))', gap: '8px' }}>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+      <h2 style={{ fontSize: '14px', fontWeight: 900, color: '#0F172A', margin: '2px 0 2px 0' }}>
+        {lang === 'te' ? 'సందర్శించే ముందు (ముఖ్య వివరాలు)' : 'Before you go'}
+      </h2>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, minmax(0, 1fr))', gap: '8px' }}>
       {/* Timings */}
       <div style={{ backgroundColor: '#FFFFFF', border: '1px solid rgba(15, 23, 42, 0.06)', borderRadius: '14px', padding: '11px 12px', boxShadow: '0 3px 10px rgba(15,23,42,0.03)', minWidth: 0, overflow: 'hidden' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '4px' }}>
@@ -400,6 +445,7 @@ export default function PlaceDetails() {
             ? (place.id === 'venkateswara' ? 'ఖచ్చితంగా నిషేధం' : 'గర్భగుడి వెలుపల అనుమతి')
             : (place.id === 'venkateswara' ? 'Strictly Prohibited' : 'Allowed Outside Sanctum')}
         </div>
+      </div>
       </div>
     </div>
   );
@@ -1264,6 +1310,7 @@ export default function PlaceDetails() {
           ═══════════════════════════════════════════════════ */}
       <div className="place-mobile-container">
         {closureAlertNode}
+        {topMetricsNode}
         {quickFactsNode}
         {saarthiSuggestsNode}
         {ctaButtonsNode}
@@ -1289,6 +1336,7 @@ export default function PlaceDetails() {
 
         {/* Right Column: Sticky Quick Action & Briefing Sidebar */}
         <div className="place-desktop-sidebar">
+          {topMetricsNode}
           {quickFactsNode}
           {saarthiSuggestsNode}
           {ctaButtonsNode}
