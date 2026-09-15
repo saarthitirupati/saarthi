@@ -94,14 +94,14 @@ export function getFestivalCrowdIntelligence(
         isDirectCenter,
         badgeTextEn: isDirectCenter ? '🔥 Peak Rush Today' : '🟡 High Devotee Rush',
         badgeTextTe: isDirectCenter ? '🔥 నేడు అత్యధిక రద్దీ' : '🟡 అధిక భక్తుల రద్దీ',
-        alertTitleEn: isDirectCenter ? `Festival Day: ${fest.name}` : `Spillover Devotee Rush: ${fest.name}`,
-        alertTitleTe: isDirectCenter ? `పండుగ దినం: ${fest.name}` : `భక్తుల రద్దీ హెచ్చరిక: ${fest.name}`,
+        alertTitleEn: fest.name,
+        alertTitleTe: fest.name,
         alertMessageEn: isDirectCenter
-          ? `Primary sacred celebrations for ${fest.name} are taking place today at this temple. Devotee footfall and queue lines are at peak levels.`
-          : `High pilgrim footfall expected today due to devotees visiting in connection with ${fest.name}.`,
+          ? `Primary celebrations active today. Devotee footfall and queues are at peak levels.`
+          : `High pilgrim footfall expected today due to festival celebrations.`,
         alertMessageTe: isDirectCenter
-          ? `నేడు ఈ ఆలయంలో ${fest.name} ప్రధాన ఉత్సవాలు జరుగుతున్నాయి. దర్శనానికి భక్తుల రద్దీ అత్యధికంగా ఉంటుంది.`
-          : `${fest.name} సందర్భంగా ఈ ఆలయానికి భక్తుల రద్దీ అధికంగా ఉండే అవకాశం ఉంది.`,
+          ? `నేడు ఈ ఆలయంలో ప్రధాన ఉత్సవాలు జరుగుతున్నాయి. భక్తుల రద్దీ అత్యధికంగా ఉంటుంది.`
+          : `పండుగ సందర్భంగా నేడు భక్తుల రద్దీ అధికంగా ఉండే అవకాశం ఉంది.`,
         recommendedTime: fest.recommendedTime || 'Early morning before 7:00 AM or late evening after 8:00 PM',
         specialTips: fest.specialTips
       };
@@ -128,10 +128,10 @@ export function getFestivalCrowdIntelligence(
         isDirectCenter,
         badgeTextEn: diff === 1 ? '⏳ Festival Tomorrow' : '⏳ Festival in 2 Days',
         badgeTextTe: diff === 1 ? '⏳ రేపు పండుగ' : '⏳ 2 రోజుల్లో పండుగ',
-        alertTitleEn: `Upcoming Festival: ${fest.name} (${dayLabelEn})`,
-        alertTitleTe: `రాబోయే ఉత్సవం: ${fest.name} (${dayLabelTe})`,
-        alertMessageEn: `${fest.name} is scheduled for ${fest.date} (${dayLabelEn}). Pilgrim arrivals and weekend rush are expected to increase.`,
-        alertMessageTe: `${fest.date} (${dayLabelTe}) న ${fest.name} వేడుకలు ప్రారంభం కానున్నాయి. భక్తుల రాక పెరిగే అవకాశం ఉంది.`,
+        alertTitleEn: `${fest.name} (${dayLabelEn})`,
+        alertTitleTe: `${fest.name} (${dayLabelTe})`,
+        alertMessageEn: `Pilgrim arrivals and rush expected to increase for upcoming festival.`,
+        alertMessageTe: `రాబోయే ఉత్సవం సందర్భంగా భక్తుల రాక పెరిగే అవకాశం ఉంది.`,
         recommendedTime: fest.recommendedTime || 'Morning hours recommended before festival rush begins',
         specialTips: fest.specialTips
       };

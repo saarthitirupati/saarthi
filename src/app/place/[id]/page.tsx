@@ -311,38 +311,38 @@ export default function PlaceDetails() {
   const topMetricsNode = (
     <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, minmax(0, 1fr))', gap: '8px' }}>
       <div style={{ backgroundColor: '#FFFFFF', border: '1.5px solid rgba(15, 81, 50, 0.15)', borderRadius: '14px', padding: '10px 4px', textAlign: 'center', boxShadow: '0 2px 8px rgba(0,0,0,0.02)' }}>
-        <div style={{ fontSize: '14px', fontWeight: 900, color: '#0F5132', lineHeight: 1.1 }}>
-          {formattedDriveTime || `${driveTimeMins} m`}
+        <div style={{ fontSize: '13.5px', fontWeight: 900, color: '#0F5132', lineHeight: 1.1 }}>
+          {formattedDriveTime ? formattedDriveTime.replace(/\bm\b/, 'min') : `${driveTimeMins} min`}
         </div>
-        <div style={{ fontSize: '10px', fontWeight: 700, color: '#64748B', marginTop: '3px' }}>
-          {lang === 'te' ? 'సమీపంలో' : 'Away'}
+        <div style={{ fontSize: '9.5px', fontWeight: 700, color: '#64748B', marginTop: '3px' }}>
+          {lang === 'te' ? 'దూరం' : 'Distance'}
         </div>
       </div>
 
       <div style={{ backgroundColor: '#FFFFFF', border: `1.5px solid ${isOpenNow ? 'rgba(34, 197, 94, 0.3)' : 'rgba(239, 68, 68, 0.3)'}`, borderRadius: '14px', padding: '10px 4px', textAlign: 'center', boxShadow: '0 2px 8px rgba(0,0,0,0.02)' }}>
-        <div style={{ fontSize: '14px', fontWeight: 900, color: isOpenNow ? '#16A34A' : '#DC2626', lineHeight: 1.1 }}>
-          {isOpenNow ? (lang === 'te' ? 'తెరిచి' : 'Open') : (lang === 'te' ? 'మూసివేత' : 'Closed')}
+        <div style={{ fontSize: '13.5px', fontWeight: 900, color: isOpenNow ? '#16A34A' : '#DC2626', lineHeight: 1.1 }}>
+          {isOpenNow ? (lang === 'te' ? 'తెరిచి ఉంది' : 'Open') : (lang === 'te' ? 'మూసివేత' : 'Closed')}
         </div>
-        <div style={{ fontSize: '10px', fontWeight: 700, color: '#64748B', marginTop: '3px' }}>
-          {lang === 'te' ? 'ఇప్పుడు' : 'Now'}
+        <div style={{ fontSize: '9.5px', fontWeight: 700, color: '#64748B', marginTop: '3px' }}>
+          {lang === 'te' ? 'స్థితి' : 'Status'}
         </div>
       </div>
 
       <div style={{ backgroundColor: '#FFFFFF', border: '1.5px solid rgba(217, 119, 6, 0.2)', borderRadius: '14px', padding: '10px 4px', textAlign: 'center', boxShadow: '0 2px 8px rgba(0,0,0,0.02)' }}>
-        <div style={{ fontSize: '14px', fontWeight: 900, color: '#D97706', lineHeight: 1.1 }}>
-          {place.durationMins ? `${place.durationMins} m` : '45 m'}
+        <div style={{ fontSize: '13.5px', fontWeight: 900, color: '#D97706', lineHeight: 1.1 }}>
+          {place.durationMins ? `${place.durationMins} min` : '45 min'}
         </div>
-        <div style={{ fontSize: '10px', fontWeight: 700, color: '#64748B', marginTop: '3px' }}>
-          {lang === 'te' ? 'సమయం' : 'Visit'}
+        <div style={{ fontSize: '9.5px', fontWeight: 700, color: '#64748B', marginTop: '3px' }}>
+          {lang === 'te' ? 'సందర్శన సమయం' : 'Visit Time'}
         </div>
       </div>
 
       <div style={{ backgroundColor: '#FFFFFF', border: '1.5px solid rgba(37, 99, 235, 0.2)', borderRadius: '14px', padding: '10px 4px', textAlign: 'center', boxShadow: '0 2px 8px rgba(0,0,0,0.02)' }}>
-        <div style={{ fontSize: '14px', fontWeight: 900, color: '#2563EB', lineHeight: 1.1 }}>
+        <div style={{ fontSize: '13.5px', fontWeight: 900, color: '#2563EB', lineHeight: 1.1 }}>
           {place.entryFeeNum === 0 || !place.entryFeeNum ? (lang === 'te' ? 'ఉచితం' : 'Free') : `₹${place.entryFeeNum}`}
         </div>
-        <div style={{ fontSize: '10px', fontWeight: 700, color: '#64748B', marginTop: '3px' }}>
-          {lang === 'te' ? 'ప్రవేశం' : 'Entry'}
+        <div style={{ fontSize: '9.5px', fontWeight: 700, color: '#64748B', marginTop: '3px' }}>
+          {lang === 'te' ? 'ప్రవేశ రుసుము' : 'Entry Fee'}
         </div>
       </div>
     </div>

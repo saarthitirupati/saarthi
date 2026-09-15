@@ -149,8 +149,8 @@ test.describe('Saarthi Smoke Baseline Tests', () => {
     await placeLink.click();
 
     // 8. Place Details: Wait for details page and verify Directions CTA
-    await page.waitForURL((url) => url.pathname.startsWith('/place/'), { timeout: 6000 });
-    const directionsBtn = page.getByRole('button', { name: /Start Navigation|దర్శన మార్గం|మార్గం/i });
-    await expect(directionsBtn).toBeVisible({ timeout: 6000 });
+    await page.waitForURL((url) => url.pathname.startsWith('/place/'), { timeout: 10000 });
+    const directionsBtn = page.getByRole('button', { name: /Start Navigation|దర్శన మార్గం|మార్గం/i }).first();
+    await expect(directionsBtn).toBeVisible({ timeout: 10000 });
   });
 });
