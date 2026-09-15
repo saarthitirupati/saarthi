@@ -1,10 +1,10 @@
 {
-  "waitTime": "24 Hours ",
+  "waitTime": "2-4 Hours ",
   "bestTime": "",
   "crowdLevel": "high",
   "sevaStatus": "All sevas open",
   "notice": "",
-  "lastUpdated": "2026-09-13T02:07:14.192+00:00",
+  "lastUpdated": "2026-09-15T06:22:23.033+00:00",
   "darshanSpeed": "normal",
   "accommodationStatus": "available",
   "ladduAvailability": "available",
@@ -12,17 +12,17 @@
   "darshans": [
     {
       "name": "Sarva Darshan (Free)",
-      "waitTime": "24 Hours ",
+      "waitTime": "2-4 Hours ",
       "peakHours": "Daily 10 AM - 6 PM"
     },
     {
       "name": "Special Entry (₹300)",
-      "waitTime": "4-6 Hours ",
+      "waitTime": "1-2 Hours ",
       "peakHours": "Daily 9 AM - 3 PM"
     },
     {
       "name": "Divya Darshan (Footpath)",
-      "waitTime": "5-7 Hours ",
+      "waitTime": "-",
       "peakHours": "Daily 8 AM - 4 PM"
     },
     {
@@ -32,7 +32,7 @@
     }
   ],
   "ssdTokenStatus": "closed-for-day",
-  "ssdNextTokenTime": "12 :05 AM",
+  "ssdNextTokenTime": "SSD & DD Tokens cancelled",
   "ssdTokenSlots": [
     {
       "slotTime": "5:00 AM - 7:00 AM",
@@ -65,8 +65,8 @@
       "tokensLeft": "Full"
     }
   ],
-  "ssdNotice": "SSD & DD Tokens are Completed ",
-  "ssdTimingsGuide": "13th Sep –SSD 10K & DD 2K Tokens Issue Started @ 12:05Am  \nSSD Tokens – Current Status*\n  ✅ • Quota Completed @ 1.15AM\n Srivari Mettu Divya Darshan Tokens*\n  ✅ • Quota Completed @ 1.29Am\n",
+  "ssdNotice": "SSD & DD Tokens are Cancelled from 14th Sep due to Bhramostshavam  ",
+  "ssdTimingsGuide": "",
   "ssdCounters": [
     {
       "name": "Vishnu Nivasam Counter",
