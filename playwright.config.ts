@@ -10,9 +10,10 @@ export default defineConfig({
     trace: 'on-first-retry',
   },
   webServer: {
-    command: 'npm run start -- -p 3005',
+    command: 'npx next start -p 3005',
     port: 3005,
     reuseExistingServer: true,
+    timeout: 120 * 1000,
   },
   projects: [
     {
