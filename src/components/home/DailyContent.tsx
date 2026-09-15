@@ -71,99 +71,112 @@ export function DailyContent(props: any) {
         </span>
       </div>
 
-      {/* ── DIVINE MOMENT CARD ── */}
+      {/* ── SIDE-BY-SIDE TWIN VISUAL MICRO-CARDS GRID ── */}
       <div style={{
-        background: 'linear-gradient(135deg, #FFFBEB 0%, #FEF3C7 100%)',
-        border: '1.5px solid #FDE68A',
-        borderRadius: '16px',
-        padding: '14px 14px',
-        marginBottom: '10px',
-        boxShadow: '0 4px 14px rgba(217, 119, 6, 0.08)'
+        display: 'grid',
+        gridTemplateColumns: isDesktop ? '1fr 1fr' : 'repeat(auto-fit, minmax(270px, 1fr))',
+        gap: '10px',
+        marginBottom: '10px'
       }}>
-        {/* Theme tag + duration */}
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '8px' }}>
-          <span style={{ fontSize: '10px', fontWeight: 900, color: '#B45309', textTransform: 'uppercase', letterSpacing: '0.5px', backgroundColor: '#FEF3C7', border: '1px solid #FDE68A', padding: '2px 7px', borderRadius: '5px' }}>
-            {companionData.theme}
-          </span>
-          <span style={{ fontSize: '10.5px', color: '#78350F', fontWeight: 700, display: 'flex', alignItems: 'center', gap: '3px' }}>
-            <Sparkles size={12} color="#D97706" />
-            <span>{companionData.divineMoment.duration}</span>
-          </span>
-        </div>
-
-        {/* Headline */}
-        <div style={{ fontSize: '12.5px', fontWeight: 800, color: '#92400E', marginBottom: '6px' }}>
-          {companionData.headline}
-        </div>
-
-        {/* Quote */}
-        <blockquote style={{
-          fontSize: '13.5px',
-          fontWeight: 700,
-          color: '#78350F',
-          margin: '0 0 8px 0',
-          lineHeight: '1.4',
-          fontStyle: 'italic',
-          borderLeft: '3px solid #FCD34D',
-          paddingLeft: '10px'
+        {/* ── CARD 1: DIVINE GUIDANCE ── */}
+        <div style={{
+          background: 'linear-gradient(135deg, #FFFBEB 0%, #FEF3C7 100%)',
+          border: '1.5px solid #FDE68A',
+          borderRadius: '16px',
+          padding: '14px',
+          boxShadow: '0 3px 12px rgba(217, 119, 6, 0.06)',
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'space-between'
         }}>
-          "{companionData.divineMoment.quote}"
-        </blockquote>
+          <div>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '8px' }}>
+              <span style={{ fontSize: '10px', fontWeight: 900, color: '#B45309', textTransform: 'uppercase', letterSpacing: '0.5px', backgroundColor: '#FEF3C7', border: '1px solid #FDE68A', padding: '2px 7px', borderRadius: '5px' }}>
+                {companionData.theme}
+              </span>
+              <span style={{ fontSize: '10.5px', color: '#78350F', fontWeight: 700, display: 'flex', alignItems: 'center', gap: '3px' }}>
+                <Sparkles size={12} color="#D97706" />
+                <span>{companionData.divineMoment.duration}</span>
+              </span>
+            </div>
 
-        {/* Author + Share */}
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: '8px', paddingTop: '6px', borderTop: '1px dashed #FDE68A' }}>
-          <div style={{ fontSize: '11.5px', fontWeight: 800, color: '#B45309' }}>
-            ~ {companionData.divineMoment.author}
-          </div>
-          <button
-            onClick={() => setIsShareModalOpen(true)}
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: '5px',
-              backgroundColor: '#FFFFFF',
-              border: '1px solid #FCD34D',
-              borderRadius: '10px',
-              padding: '4px 8px',
-              fontSize: '10.5px',
-              fontWeight: 800,
-              color: '#B45309',
-              cursor: 'pointer',
-              boxShadow: '0 2px 4px rgba(0,0,0,0.03)'
-            }}
-          >
-            <Share2 size={12} />
-            <span>{t.share}</span>
-          </button>
-        </div>
-      </div>
+            <div style={{ fontSize: '12.5px', fontWeight: 800, color: '#92400E', marginBottom: '6px' }}>
+              {companionData.headline}
+            </div>
 
-      {/* ── DID YOU KNOW ── */}
-      <div style={{
-        backgroundColor: '#FFFFFF',
-        border: '1px solid #E2E8F0',
-        borderRadius: '14px',
-        padding: '12px 14px',
-        marginBottom: '10px',
-        boxShadow: '0 2px 6px rgba(0,0,0,0.02)'
-      }}>
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '6px' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
-            <Compass size={14} color="#D97706" />
-            <span style={{ fontSize: '11px', fontWeight: 800, color: '#D97706', textTransform: 'uppercase', letterSpacing: '0.4px' }}>
-              {t.didYouKnow}
-            </span>
+            <blockquote style={{
+              fontSize: '13px',
+              fontWeight: 700,
+              color: '#78350F',
+              margin: '0 0 8px 0',
+              lineHeight: '1.4',
+              fontStyle: 'italic',
+              borderLeft: '3px solid #FCD34D',
+              paddingLeft: '10px'
+            }}>
+              "{companionData.divineMoment.quote}"
+            </blockquote>
           </div>
-          <span style={{ fontSize: '9.5px', fontWeight: 800, color: '#0284C7', backgroundColor: '#E0F2FE', padding: '2px 6px', borderRadius: '6px' }}>
-            {companionData.significance.category}
-          </span>
+
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: '8px', paddingTop: '6px', borderTop: '1px dashed #FDE68A' }}>
+            <div style={{ fontSize: '11px', fontWeight: 800, color: '#B45309' }}>
+              ~ {companionData.divineMoment.author}
+            </div>
+            <button
+              onClick={() => setIsShareModalOpen(true)}
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '4px',
+                backgroundColor: '#FFFFFF',
+                border: '1px solid #FCD34D',
+                borderRadius: '8px',
+                padding: '3px 8px',
+                fontSize: '10.5px',
+                fontWeight: 800,
+                color: '#B45309',
+                cursor: 'pointer'
+              }}
+            >
+              <Share2 size={11} />
+              <span>{t.share}</span>
+            </button>
+          </div>
         </div>
-        <div style={{ fontSize: '12.5px', fontWeight: 800, color: '#1E293B', lineHeight: '1.35', marginBottom: '3px' }}>
-          {companionData.significance.title}
+
+        {/* ── CARD 2: DID YOU KNOW? ── */}
+        <div style={{
+          backgroundColor: '#FFFFFF',
+          border: '1.5px solid #E2E8F0',
+          borderRadius: '16px',
+          padding: '14px',
+          boxShadow: '0 3px 12px rgba(0,0,0,0.03)',
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'space-between'
+        }}>
+          <div>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '8px' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
+                <Compass size={14} color="#D97706" />
+                <span style={{ fontSize: '11px', fontWeight: 800, color: '#D97706', textTransform: 'uppercase', letterSpacing: '0.4px' }}>
+                  {t.didYouKnow}
+                </span>
+              </div>
+              <span style={{ fontSize: '9.5px', fontWeight: 800, color: '#0284C7', backgroundColor: '#E0F2FE', padding: '2px 7px', borderRadius: '6px' }}>
+                {companionData.significance.category}
+              </span>
+            </div>
+
+            <div style={{ fontSize: '12.5px', fontWeight: 800, color: '#1E293B', lineHeight: '1.35', marginBottom: '6px' }}>
+              {companionData.significance.title}
+            </div>
+
+            <p style={{ fontSize: '11.5px', color: '#475569', margin: 0, lineHeight: '1.45' }}>
+              {companionData.significance.description}
+            </p>
+          </div>
         </div>
-        <p style={{ fontSize: '11.5px', color: '#475569', margin: 0, lineHeight: '1.4' }}>
-          {companionData.significance.description}
-        </p>
       </div>
 
       {/* ── DAILY BHAGAVAD GITA SHLOKA CARD ── */}
@@ -176,7 +189,7 @@ export function DailyContent(props: any) {
         background: 'linear-gradient(135deg, #FFFBEB 0%, #FEF3C7 100%)',
         border: '1px solid #FDE68A',
         borderRadius: '14px',
-        padding: '11px 16px',
+        padding: '10px 16px',
         textAlign: 'center',
         fontSize: '12px',
         fontWeight: 800,
@@ -185,7 +198,7 @@ export function DailyContent(props: any) {
         alignItems: 'center',
         justifyContent: 'center',
         gap: '7px',
-        boxShadow: '0 2px 8px rgba(217, 119, 6, 0.06)'
+        boxShadow: '0 2px 8px rgba(217, 119, 6, 0.05)'
       }}>
         <Sparkles size={14} color="#D97706" style={{ flexShrink: 0 }} />
         <span>{companionData.habitPrompt.text}</span>
