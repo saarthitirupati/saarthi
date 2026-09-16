@@ -257,6 +257,28 @@ export function HomeHero({ userName, locationName, weatherTemp, liveStatus, acti
   const [selectedLocation, setSelectedLocation] = useState<string>(locationName || 'Tirupati');
   const [isLocating, setIsLocating] = useState<boolean>(false);
   const [isLocationModalOpen, setIsLocationModalOpen] = useState<boolean>(false);
+  const bannerVideoRef = React.useRef<HTMLVideoElement>(null);
+
+  React.useEffect(() => {
+    const v = bannerVideoRef.current;
+    if (v) {
+      v.defaultMuted = true;
+      v.muted = true;
+      const playPromise = v.play();
+      if (playPromise !== undefined) {
+        playPromise.catch(() => {
+          const handleGesture = () => {
+            if (bannerVideoRef.current) {
+              bannerVideoRef.current.muted = true;
+              bannerVideoRef.current.play().catch(() => {});
+            }
+          };
+          window.addEventListener('touchstart', handleGesture, { once: true });
+          window.addEventListener('click', handleGesture, { once: true });
+        });
+      }
+    }
+  }, []);
 
   const handleAutoDetectLocation = () => {
     setIsLocating(true);
@@ -2009,15 +2031,24 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
         maxHeight: 'clamp(180px, 32vw, 240px)'
       }}>
         <video
+          ref={bannerVideoRef}
           autoPlay
           loop
           muted
           playsInline
+          preload="auto"
+          controls={false}
+          onCanPlay={(e) => {
+            e.currentTarget.defaultMuted = true;
+            e.currentTarget.muted = true;
+            e.currentTarget.play().catch(() => {});
+          }}
           style={{
             width: '100%',
             height: '100%',
             objectFit: 'cover',
-            display: 'block'
+            display: 'block',
+            pointerEvents: 'none'
           }}
         >
           <source src="/banner/Absolutely_For_the_Saarthi_SV.mp4" type="video/mp4" />
