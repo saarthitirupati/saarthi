@@ -1,12 +1,11 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { ShieldCheck, ChevronDown, ChevronUp } from 'lucide-react';
+import { ShieldCheck, ChevronDown, ChevronUp, IdCard, Shirt, Coins, Pill, Smartphone, Check, Briefcase } from 'lucide-react';
 import { useLanguage } from '@/lib/useLanguage';
 
 interface ChecklistItem {
   id: string;
-  icon: string;
   titleEn: string;
   titleTe: string;
   shortEn: string;
@@ -20,7 +19,6 @@ interface ChecklistItem {
 const CHECKLIST_ITEMS: ChecklistItem[] = [
   {
     id: 'aadhaar',
-    icon: '🪪',
     titleEn: 'Original Physical Aadhaar Card',
     titleTe: 'అసలు ఆధార్ కార్డు (ఒరిజినల్)',
     shortEn: 'ID Card',
@@ -32,7 +30,6 @@ const CHECKLIST_ITEMS: ChecklistItem[] = [
   },
   {
     id: 'dress',
-    icon: '👕',
     titleEn: 'Traditional Dress Code Compliant',
     titleTe: 'సాంప్రదాయ వస్త్రధారణ నియమావళి',
     shortEn: 'Dress Code',
@@ -44,7 +41,6 @@ const CHECKLIST_ITEMS: ChecklistItem[] = [
   },
   {
     id: 'cash',
-    icon: '🪙',
     titleEn: 'Physical Cash & ₹50 Notes',
     titleTe: 'నగదు & ₹50 నోట్లు',
     shortEn: 'Cash & Coins',
@@ -56,7 +52,6 @@ const CHECKLIST_ITEMS: ChecklistItem[] = [
   },
   {
     id: 'medicine',
-    icon: '💊',
     titleEn: 'Personal Medication & Water',
     titleTe: 'వ్యక్తిగత మందులు & నీరు',
     shortEn: 'Meds & Water',
@@ -68,7 +63,6 @@ const CHECKLIST_ITEMS: ChecklistItem[] = [
   },
   {
     id: 'powerbank',
-    icon: '📱',
     titleEn: 'Charged Phone & Power Bank',
     titleTe: 'ఫోన్ & పవర్ బ్యాంక్',
     shortEn: 'Phone & Power',
@@ -111,6 +105,18 @@ export function YatraChecklist() {
       }
       return next;
     });
+  };
+
+  const getItemIcon = (id: string, isChecked: boolean, color = '#D97706') => {
+    if (isChecked) return <Check size={16} color="#16A34A" />;
+    switch (id) {
+      case 'aadhaar': return <IdCard size={16} color={color} />;
+      case 'dress': return <Shirt size={16} color={color} />;
+      case 'cash': return <Coins size={16} color={color} />;
+      case 'medicine': return <Pill size={16} color={color} />;
+      case 'powerbank': return <Smartphone size={16} color={color} />;
+      default: return <Briefcase size={16} color={color} />;
+    }
   };
 
   const completedCount = CHECKLIST_ITEMS.filter(item => checkedIds[item.id]).length;
@@ -162,7 +168,7 @@ export function YatraChecklist() {
               color: '#0F172A',
               letterSpacing: '-0.01em'
             }}>
-              {lang === 'te' ? '🧳 యాత్ర అత్యవసర చెక్‌లిస్ట్' : '🧳 Yatra Essentials'}
+              {lang === 'te' ? 'యాత్ర అత్యవసర చెక్‌లిస్ట్' : 'Yatra Essentials'}
             </span>
           </div>
 
@@ -182,7 +188,7 @@ export function YatraChecklist() {
           </div>
         </div>
 
-        {/* 🪪 FAST ICON CHIPS ROW (ALWAYS VISIBLE & TAP-FRIENDLY) */}
+        {/* FAST SVG ICON CHIPS ROW (STRICTLY NO EMOJIS) */}
         <div style={{
           padding: '10px 12px 12px 12px',
           display: 'grid',
@@ -213,9 +219,9 @@ export function YatraChecklist() {
                   transition: 'all 0.15s ease'
                 }}
               >
-                <span style={{ fontSize: '18px', lineHeight: 1.1, marginBottom: '3px' }}>
-                  {isChecked ? '✓' : item.icon}
-                </span>
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '22px', marginBottom: '2px' }}>
+                  {getItemIcon(item.id, isChecked, isChecked ? '#15803D' : '#D97706')}
+                </div>
                 <span style={{
                   fontSize: '9.5px',
                   fontWeight: 800,
@@ -252,7 +258,9 @@ export function YatraChecklist() {
                     cursor: 'pointer'
                   }}
                 >
-                  <span style={{ fontSize: '16px' }}>{isChecked ? '✓' : item.icon}</span>
+                  <div style={{ marginTop: '2px', flexShrink: 0 }}>
+                    {getItemIcon(item.id, isChecked, isChecked ? '#16A34A' : '#475569')}
+                  </div>
                   <div style={{ flex: 1, minWidth: 0 }}>
                     <div style={{ fontSize: '12px', fontWeight: 700, color: isChecked ? '#166534' : '#0F172A', textDecoration: isChecked ? 'line-through' : 'none' }}>
                       {lang === 'te' ? item.titleTe : item.titleEn}

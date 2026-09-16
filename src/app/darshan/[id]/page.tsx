@@ -11,7 +11,7 @@ import {
   MapPin, Sparkles, Shirt, Lightbulb, Droplet, UtensilsCrossed, 
   Toilet, Hospital, Accessibility, Baby, Clock, Share2, Check,
   Navigation, Ticket, Users, Zap, ShieldCheck, ChevronDown, Lock,
-  RefreshCw, AlertCircle, Compass, Gift
+  RefreshCw, AlertCircle, Compass, Gift, Train, Bus, Mountain
 } from 'lucide-react';
 import { TirumalaStatus } from '@/lib/statusDb';
 import { useLanguage } from '@/lib/useLanguage';
@@ -246,6 +246,52 @@ export default function DarshanDetailsPage() {
               </span>
             </div>
 
+            {/* 🌟 WHAT IT IS ABOUT OVERVIEW BOX */}
+            <div style={{
+              background: 'linear-gradient(135deg, #F8FAFC 0%, #F1F5F9 100%)',
+              border: '1px solid #E2E8F0',
+              borderRadius: '14px',
+              padding: '12px 14px',
+              marginTop: '10px',
+              marginBottom: '12px'
+            }}>
+              <p style={{
+                fontSize: '12.5px',
+                lineHeight: 1.5,
+                color: '#334155',
+                margin: 0,
+                fontWeight: 500
+              }}>
+                {data.description}
+              </p>
+
+              {/* At a Glance Specs (Strictly Zero Emojis) */}
+              <div style={{
+                display: 'grid',
+                gridTemplateColumns: 'repeat(2, 1fr)',
+                gap: '8px',
+                marginTop: '10px',
+                paddingTop: '10px',
+                borderTop: '1px solid #E2E8F0'
+              }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                  <Coins size={14} color={themeColor} />
+                  <div>
+                    <div style={{ fontSize: '9.5px', color: '#64748B', fontWeight: 700, textTransform: 'uppercase' }}>Cost / Access</div>
+                    <div style={{ fontSize: '11px', fontWeight: 800, color: '#0F172A' }}>{data.cost}</div>
+                  </div>
+                </div>
+
+                <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                  <Navigation size={14} color={themeColor} />
+                  <div>
+                    <div style={{ fontSize: '9.5px', color: '#64748B', fontWeight: 700, textTransform: 'uppercase' }}>Entry Point</div>
+                    <div style={{ fontSize: '11px', fontWeight: 800, color: '#0F172A' }}>{(data.entryGate || 'Tirumala Gate').split(',')[0]}</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
             {/* Highlight Banner (Next Release / Key Metric) */}
             <div className={styles.highlightActionBanner}>
               <div className={styles.clockIconWrap}>
@@ -274,11 +320,12 @@ export default function DarshanDetailsPage() {
                 : 'Direct walk-in available 24/7 via Vaikuntam Queue Complex II'}
             </p>
 
-            {/* 🎟️ VISUAL ICON TILES FOR COLLECTION CENTRES */}
+            {/* VISUAL ICON TILES FOR COLLECTION CENTRES (STRICTLY NO EMOJIS) */}
             {data.tokenLocations && data.tokenLocations.length > 0 && (
               <div style={{ marginTop: '12px' }}>
-                <span style={{ fontSize: '12px', fontWeight: 800, color: '#0F172A', letterSpacing: '0.02em', display: 'block', marginBottom: '8px' }}>
-                  {lang === 'te' ? '🎟️ SSD టోకెన్ కేంద్రాలు' : '🎟️ Get SSD Tokens'}
+                <span style={{ fontSize: '12px', fontWeight: 800, color: '#0F172A', letterSpacing: '0.02em', display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '8px' }}>
+                  <Ticket size={14} color="#0F172A" />
+                  <span>{lang === 'te' ? 'SSD టోకెన్ కేంద్రాలు' : 'Get SSD Tokens'}</span>
                 </span>
                 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '8px' }}>
                   <a href="https://maps.google.com/?q=Vishnu+Nivasam+Tirupati" target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none' }}>
@@ -291,7 +338,9 @@ export default function DarshanDetailsPage() {
                       boxShadow: '0 2px 6px rgba(0,0,0,0.03)',
                       transition: 'transform 0.15s ease'
                     }}>
-                      <div style={{ fontSize: '20px', lineHeight: 1, marginBottom: '4px' }}>🚆</div>
+                      <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '4px' }}>
+                        <Train size={20} color="#0F5132" />
+                      </div>
                       <div style={{ fontSize: '11px', fontWeight: 800, color: '#0F172A', lineHeight: 1.2 }}>Vishnu Nivasam</div>
                     </div>
                   </a>
@@ -306,7 +355,9 @@ export default function DarshanDetailsPage() {
                       boxShadow: '0 2px 6px rgba(0,0,0,0.03)',
                       transition: 'transform 0.15s ease'
                     }}>
-                      <div style={{ fontSize: '20px', lineHeight: 1, marginBottom: '4px' }}>🚌</div>
+                      <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '4px' }}>
+                        <Bus size={20} color="#0F5132" />
+                      </div>
                       <div style={{ fontSize: '11px', fontWeight: 800, color: '#0F172A', lineHeight: 1.2 }}>Srinivasam</div>
                     </div>
                   </a>
@@ -321,7 +372,9 @@ export default function DarshanDetailsPage() {
                       boxShadow: '0 2px 6px rgba(0,0,0,0.03)',
                       transition: 'transform 0.15s ease'
                     }}>
-                      <div style={{ fontSize: '20px', lineHeight: 1, marginBottom: '4px' }}>⛰️</div>
+                      <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '4px' }}>
+                        <Mountain size={20} color="#0F5132" />
+                      </div>
                       <div style={{ fontSize: '11px', fontWeight: 800, color: '#0F172A', lineHeight: 1.2 }}>Bhudevi</div>
                     </div>
                   </a>
