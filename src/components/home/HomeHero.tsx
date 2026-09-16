@@ -2017,7 +2017,7 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
           </>
         )}
 
-      {/* 🎬 HIGH-FIDELITY SAARTHI HERO ANIMATED MP4 VIDEO BANNER (CLEAN NO-GREETING UI/UX WITH QUICK ACTIONS) */}
+      {/* 🎬 HIGH-FIDELITY SAARTHI HERO ANIMATED MP4 VIDEO BANNER */}
       <div style={{
         position: 'relative',
         width: '100%',
@@ -2026,7 +2026,7 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
         marginBottom: '14px',
         boxShadow: '0 12px 32px rgba(15, 23, 42, 0.14)',
         border: '1.5px solid rgba(212, 175, 55, 0.45)',
-        background: '#0F172A',
+        background: '#FAF8F4',
         aspectRatio: '16 / 9',
         maxHeight: 'clamp(180px, 32vw, 240px)'
       }}>
@@ -2047,6 +2047,9 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
             width: '100%',
             height: '100%',
             objectFit: 'cover',
+            objectPosition: 'left center',
+            transform: 'scale(1.12)',
+            transformOrigin: 'left center',
             display: 'block',
             pointerEvents: 'none'
           }}
@@ -2085,88 +2088,62 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
           <span>{lang === 'te' ? 'తిరుమల లైవ్ మార్గదర్శి' : 'Tirumala Srivari Guide'}</span>
         </div>
 
-        {/* Right Side Quick Action Pills Overlay (Matching Image Banner Mockup) */}
+        {/* Right Side Transparent Touch Hotspots (Matching Video's Built-in Buttons) */}
         <div style={{
           position: 'absolute',
-          right: '12px',
-          top: '50%',
+          right: '8px',
+          top: '52%',
           transform: 'translateY(-50%)',
           display: 'flex',
           flexDirection: 'column',
           gap: '6px',
-          zIndex: 2
+          zIndex: 5
         }}>
           <Link
             href="/darshan/sarva-darshan"
+            aria-label={lang === 'te' ? 'దర్శనం' : 'Darshan'}
+            title={lang === 'te' ? 'దర్శనం' : 'Darshan'}
             style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: '6px',
-              padding: '6px 12px',
+              width: '105px',
+              height: '32px',
               borderRadius: '20px',
-              background: 'rgba(255, 255, 255, 0.88)',
-              backdropFilter: 'blur(8px)',
-              WebkitBackdropFilter: 'blur(8px)',
-              border: '1px solid rgba(255, 255, 255, 0.6)',
-              boxShadow: '0 4px 12px rgba(0, 0, 0, 0.15)',
-              color: '#0F2D22',
-              fontSize: '11.5px',
-              fontWeight: 700,
+              background: 'transparent',
+              display: 'block',
               textDecoration: 'none',
-              transition: 'transform 0.15s ease, background 0.15s ease'
+              WebkitTapHighlightColor: 'transparent',
+              cursor: 'pointer'
             }}
-          >
-            <Building2 size={13} color="#0F5132" />
-            <span>{lang === 'te' ? 'దర్శనం' : 'Darshan'}</span>
-          </Link>
-
+          />
           <Link
             href="/darshan/ssd-token"
+            aria-label={lang === 'te' ? 'టోకెన్లు' : 'Tokens'}
+            title={lang === 'te' ? 'టోకెన్లు' : 'Tokens'}
             style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: '6px',
-              padding: '6px 12px',
+              width: '105px',
+              height: '32px',
               borderRadius: '20px',
-              background: 'rgba(255, 255, 255, 0.88)',
-              backdropFilter: 'blur(8px)',
-              WebkitBackdropFilter: 'blur(8px)',
-              border: '1px solid rgba(255, 255, 255, 0.6)',
-              boxShadow: '0 4px 12px rgba(0, 0, 0, 0.15)',
-              color: '#0F2D22',
-              fontSize: '11.5px',
-              fontWeight: 700,
+              background: 'transparent',
+              display: 'block',
               textDecoration: 'none',
-              transition: 'transform 0.15s ease, background 0.15s ease'
+              WebkitTapHighlightColor: 'transparent',
+              cursor: 'pointer'
             }}
-          >
-            <Ticket size={13} color="#0F5132" />
-            <span>{lang === 'te' ? 'టోకెన్లు' : 'Tokens'}</span>
-          </Link>
-
+          />
           <Link
             href="/explore"
+            aria-label={lang === 'te' ? 'సమీపంలోనివి' : 'Nearby'}
+            title={lang === 'te' ? 'సమీపంలోనివి' : 'Nearby'}
             style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: '6px',
-              padding: '6px 12px',
+              width: '105px',
+              height: '32px',
               borderRadius: '20px',
-              background: 'rgba(255, 255, 255, 0.88)',
-              backdropFilter: 'blur(8px)',
-              WebkitBackdropFilter: 'blur(8px)',
-              border: '1px solid rgba(255, 255, 255, 0.6)',
-              boxShadow: '0 4px 12px rgba(0, 0, 0, 0.15)',
-              color: '#0F2D22',
-              fontSize: '11.5px',
-              fontWeight: 700,
+              background: 'transparent',
+              display: 'block',
               textDecoration: 'none',
-              transition: 'transform 0.15s ease, background 0.15s ease'
+              WebkitTapHighlightColor: 'transparent',
+              cursor: 'pointer'
             }}
-          >
-            <MapPin size={13} color="#0F5132" />
-            <span>{lang === 'te' ? 'సమీపంలోనివి' : 'Nearby'}</span>
-          </Link>
+          />
         </div>
       </div>
 
