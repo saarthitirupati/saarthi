@@ -2,30 +2,65 @@
 
 import React, { useEffect, useState, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { Volume2, VolumeX } from 'lucide-react';
+import {
+  playSaarthiSonicIdent,
+  stopSaarthiSonicIdent,
+  isAudioGloballyEnabled,
+  setAudioGloballyEnabled
+} from '@/lib/audioIdentity';
 import styles from './Splash.module.css';
 
 const SMOOTH_EASE = [0.16, 1, 0.3, 1] as const;
 
 export default function SplashScreen({ onFinish }: { onFinish: () => void }) {
   const [isVisible, setIsVisible] = useState(true);
+  const [isAudioActive, setIsAudioActive] = useState(true);
 
   const handleFinish = useCallback(() => {
+    stopSaarthiSonicIdent();
     setIsVisible(false);
   }, []);
 
   useEffect(() => {
     let isMounted = true;
+
+    // Trigger sacred opening sonic ident on splash mount
+    if (isAudioGloballyEnabled()) {
+      playSaarthiSonicIdent(true).then((started) => {
+        if (isMounted) {
+          setIsAudioActive(started);
+        }
+      });
+    } else {
+      setIsAudioActive(false);
+    }
+
     const timer = setTimeout(() => {
       if (isMounted) {
         handleFinish();
       }
-    }, 2400);
+    }, 2800);
 
     return () => {
       isMounted = false;
       clearTimeout(timer);
+      stopSaarthiSonicIdent();
     };
   }, [handleFinish]);
+
+  const toggleAudio = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (isAudioActive) {
+      stopSaarthiSonicIdent();
+      setAudioGloballyEnabled(false);
+      setIsAudioActive(false);
+    } else {
+      setAudioGloballyEnabled(true);
+      setIsAudioActive(true);
+      playSaarthiSonicIdent(true);
+    }
+  };
 
   return (
     <AnimatePresence onExitComplete={onFinish}>
@@ -37,6 +72,29 @@ export default function SplashScreen({ onFinish }: { onFinish: () => void }) {
           transition={{ duration: 0.35, ease: SMOOTH_EASE }}
           onClick={handleFinish}
         >
+          {/* Top Bar Audio Sound Control */}
+          <motion.button
+            type="button"
+            className={styles.audioTogglePill}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.4, delay: 0.3 }}
+            onClick={toggleAudio}
+            aria-label={isAudioActive ? 'Mute Splash Sound' : 'Play Sacred Splash Sound'}
+          >
+            {isAudioActive ? (
+              <>
+                <Volume2 size={16} color="#E5B246" />
+                <span>Sound On</span>
+              </>
+            ) : (
+              <>
+                <VolumeX size={16} color="rgba(255, 255, 255, 0.6)" />
+                <span>Muted</span>
+              </>
+            )}
+          </motion.button>
+
           {/* Central Brand Identity */}
           <motion.div
             className={styles.brandContent}
@@ -52,7 +110,7 @@ export default function SplashScreen({ onFinish }: { onFinish: () => void }) {
                 fill="none"
                 xmlns="http://www.w3.org/2000/svg"
               >
-                {/* White Namam U-Pillars (Fade and subtle slide in) */}
+                {/* White Namam U-Pillars */}
                 <motion.g
                   initial={{ opacity: 0, y: -6 }}
                   animate={{ opacity: 1, y: 0 }}
@@ -70,7 +128,7 @@ export default function SplashScreen({ onFinish }: { onFinish: () => void }) {
                   />
                 </motion.g>
 
-                {/* Central Red Tilak (Sacred Kasturi Spindle, animates top-down) */}
+                {/* Central Red Tilak (Sacred Kasturi Spindle) */}
                 <motion.path
                   d="M 80 12 C 82.5 40 84.5 70 84.5 95 C 84.5 109 82 119 80 121 C 78 119 75.5 109 75.5 95 C 75.5 70 77.5 40 80 12 Z"
                   fill="#E52E2E"
@@ -80,7 +138,7 @@ export default function SplashScreen({ onFinish }: { onFinish: () => void }) {
                   style={{ transformOrigin: '80px 12px' }}
                 />
 
-                {/* Golden Base Dot (Pops in at bottom base) */}
+                {/* Golden Base Dot */}
                 <motion.circle
                   cx="80"
                   cy="137"
