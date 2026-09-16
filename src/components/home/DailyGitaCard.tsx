@@ -1,9 +1,11 @@
 'use client';
 
 import React, { useState } from 'react';
-import { BookOpen, Share2, Sparkles, Check, HeartHandshake } from 'lucide-react';
+import { BookOpen, Share2, Sparkles, Check, HeartHandshake, Volume2, VolumeX } from 'lucide-react';
 import { getDailyGitaShloka, GitaShloka } from '@/data/bhagavadGita';
 import { useLanguage } from '@/lib/useLanguage';
+import { useSpeechSynthesis } from '@/utils/useSpeechSynthesis';
+import { playSaarthiSonicIdent } from '@/lib/audioIdentity';
 
 interface DailyGitaCardProps {
   date?: Date;
@@ -16,6 +18,18 @@ export function DailyGitaCard({ date, variant = 'desktop' }: DailyGitaCardProps)
   const [script, setScript] = useState<'te' | 'sa' | 'en'>(lang === 'te' ? 'te' : 'en');
   const [activeTab, setActiveTab] = useState<'meaning' | 'practice'>('meaning');
   const [copied, setCopied] = useState(false);
+  const { isSpeaking, toggleSpeak, stop } = useSpeechSynthesis();
+
+  const handleAudioPlay = () => {
+    if (isSpeaking) {
+      stop();
+    } else {
+      playSaarthiSonicIdent(true);
+      const textToRecite = script === 'en' ? shloka.transliteration : script === 'sa' ? shloka.shlokaSanskrit : shloka.shlokaTelugu;
+      const speechLang = script === 'te' ? 'te-IN' : script === 'sa' ? 'hi-IN' : 'en-IN';
+      toggleSpeak(textToRecite, speechLang);
+    }
+  };
 
   const handleShare = async () => {
     const activeShlokaText = script === 'en' ? shloka.transliteration : script === 'sa' ? shloka.shlokaSanskrit : shloka.shlokaTelugu;
@@ -332,27 +346,51 @@ export function DailyGitaCard({ date, variant = 'desktop' }: DailyGitaCardProps)
           {lang === 'te' ? shloka.themeTe : shloka.themeEn}
         </span>
 
-        <button
-          onClick={handleShare}
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: '5px',
-            backgroundColor: '#FFFFFF',
-            border: '1px solid #FCD34D',
-            borderRadius: '9px',
-            padding: '4px 10px',
-            fontSize: '11px',
-            fontWeight: 800,
-            color: '#92400E',
-            cursor: 'pointer',
-            boxShadow: '0 2px 4px rgba(0,0,0,0.03)',
-            transition: 'background 0.15s ease'
-          }}
-        >
-          {copied ? <Check size={12} color="#059669" /> : <Share2 size={12} color="#D97706" />}
-          <span>{copied ? (lang === 'te' ? 'కాపీ చేయబడింది!' : 'Copied!') : (lang === 'te' ? 'శ్లోకం షేర్ చేయండి' : 'Share Shloka')}</span>
-        </button>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+          <button
+            onClick={handleAudioPlay}
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '4px',
+              backgroundColor: isSpeaking ? '#FEF3C7' : '#FFFFFF',
+              border: `1px solid ${isSpeaking ? '#D97706' : '#FCD34D'}`,
+              borderRadius: '9px',
+              padding: '4px 10px',
+              fontSize: '11px',
+              fontWeight: 800,
+              color: '#92400E',
+              cursor: 'pointer',
+              boxShadow: '0 2px 4px rgba(0,0,0,0.03)',
+              transition: 'all 0.15s ease'
+            }}
+          >
+            {isSpeaking ? <VolumeX size={12} color="#DC2626" /> : <Volume2 size={12} color="#D97706" />}
+            <span>{isSpeaking ? (lang === 'te' ? 'ఆపండి' : 'Stop Audio') : (lang === 'te' ? 'శ్లోకం వినండి' : 'Listen Shloka')}</span>
+          </button>
+
+          <button
+            onClick={handleShare}
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '5px',
+              backgroundColor: '#FFFFFF',
+              border: '1px solid #FCD34D',
+              borderRadius: '9px',
+              padding: '4px 10px',
+              fontSize: '11px',
+              fontWeight: 800,
+              color: '#92400E',
+              cursor: 'pointer',
+              boxShadow: '0 2px 4px rgba(0,0,0,0.03)',
+              transition: 'background 0.15s ease'
+            }}
+          >
+            {copied ? <Check size={12} color="#059669" /> : <Share2 size={12} color="#D97706" />}
+            <span>{copied ? (lang === 'te' ? 'కాపీ చేయబడింది!' : 'Copied!') : (lang === 'te' ? 'శ్లోకం షేర్ చేయండి' : 'Share Shloka')}</span>
+          </button>
+        </div>
       </div>
     </div>
   );

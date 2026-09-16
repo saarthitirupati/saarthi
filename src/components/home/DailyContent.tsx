@@ -1,9 +1,11 @@
 import React, { useState, useMemo } from 'react';
-import { Sparkles, Flame, Share2, Compass } from 'lucide-react';
+import { Sparkles, Flame, Share2, Compass, Volume2, VolumeX } from 'lucide-react';
 import { getTodaysCompanion, TodaysCompanionData } from '@/data/dailySpiritualEngine';
 import { ShareableQuoteCardModal } from './ShareableQuoteCardModal';
 import { DailyGitaCard } from './DailyGitaCard';
 import { useLanguage } from '@/lib/useLanguage';
+import { useSpeechSynthesis } from '@/utils/useSpeechSynthesis';
+import { playSaarthiSonicIdent } from '@/lib/audioIdentity';
 
 const TEXTS = {
   en: {
@@ -33,6 +35,16 @@ export function DailyContent(props: any) {
   }, [dailyContent, liveStatus, todayFestival]);
 
   const [isShareModalOpen, setIsShareModalOpen] = useState(false);
+  const { isSpeaking, toggleSpeak, stop } = useSpeechSynthesis();
+
+  const handleAudioPlay = () => {
+    if (isSpeaking) {
+      stop();
+    } else {
+      playSaarthiSonicIdent(true);
+      toggleSpeak(companionData.divineMoment.quote, lang === 'te' ? 'te-IN' : 'en-IN');
+    }
+  };
 
   // Priority badge colour
   const priorityColors = {
@@ -122,25 +134,48 @@ export function DailyContent(props: any) {
             <div style={{ fontSize: '11px', fontWeight: 800, color: '#B45309' }}>
               ~ {companionData.divineMoment.author}
             </div>
-            <button
-              onClick={() => setIsShareModalOpen(true)}
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: '4px',
-                backgroundColor: '#FFFFFF',
-                border: '1px solid #FCD34D',
-                borderRadius: '8px',
-                padding: '3px 8px',
-                fontSize: '10.5px',
-                fontWeight: 800,
-                color: '#B45309',
-                cursor: 'pointer'
-              }}
-            >
-              <Share2 size={11} />
-              <span>{t.share}</span>
-            </button>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
+              <button
+                onClick={handleAudioPlay}
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '4px',
+                  backgroundColor: isSpeaking ? '#FEF3C7' : '#FFFFFF',
+                  border: `1px solid ${isSpeaking ? '#D97706' : '#FCD34D'}`,
+                  borderRadius: '8px',
+                  padding: '3px 8px',
+                  fontSize: '10.5px',
+                  fontWeight: 800,
+                  color: '#B45309',
+                  cursor: 'pointer',
+                  boxShadow: '0 1px 3px rgba(0,0,0,0.03)'
+                }}
+              >
+                {isSpeaking ? <VolumeX size={11} color="#DC2626" /> : <Volume2 size={11} color="#D97706" />}
+                <span>{isSpeaking ? (lang === 'te' ? 'ఆపండి' : 'Stop') : (lang === 'te' ? 'వినండి' : 'Listen')}</span>
+              </button>
+
+              <button
+                onClick={() => setIsShareModalOpen(true)}
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '4px',
+                  backgroundColor: '#FFFFFF',
+                  border: '1px solid #FCD34D',
+                  borderRadius: '8px',
+                  padding: '3px 8px',
+                  fontSize: '10.5px',
+                  fontWeight: 800,
+                  color: '#B45309',
+                  cursor: 'pointer'
+                }}
+              >
+                <Share2 size={11} />
+                <span>{t.share}</span>
+              </button>
+            </div>
           </div>
         </div>
 
