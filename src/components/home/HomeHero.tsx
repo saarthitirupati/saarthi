@@ -2020,131 +2020,68 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
           </>
         )}
 
-      {/* 🎬 INTEGRATED SAARTHI HERO ANIMATED VIDEO BANNER CARD */}
+      {/* 🌟 VECTOR PROMOTIONAL HERO BANNER (PhonePe / GPay Style Layout) */}
       <div style={{
         position: 'relative',
         width: '100%',
         borderRadius: '20px',
         overflow: 'hidden',
         marginBottom: '14px',
-        boxShadow: '0 12px 32px rgba(15, 23, 42, 0.16)',
-        border: '1.5px solid rgba(212, 175, 55, 0.45)',
-        background: '#0F172A',
-        minHeight: '190px',
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'space-between',
+        boxShadow: '0 8px 24px rgba(120, 53, 15, 0.08)',
+        border: '1.5px solid #FDE68A',
+        background: 'linear-gradient(135deg, #FEF3C7 0%, #FDE68A 100%)',
         padding: '16px',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        gap: '12px',
         boxSizing: 'border-box'
       }}>
-        {/* Ambient Looping Video Background */}
-        <video
-          autoPlay
-          loop
-          muted
-          playsInline
-          style={{
-            position: 'absolute',
-            top: 0,
-            left: 0,
-            width: '100%',
-            height: '100%',
-            objectFit: 'cover',
-            pointerEvents: 'none',
-            zIndex: 1
-          }}
-        >
-          <source src="/banner/Absolutely_For_the_Saarthi_SV.mp4" type="video/mp4" />
-        </video>
-
-        {/* Dark Gradient Overlay for High Text Contrast */}
-        <div style={{
-          position: 'absolute',
-          inset: 0,
-          background: 'linear-gradient(180deg, rgba(15, 23, 42, 0.35) 0%, rgba(15, 23, 42, 0.82) 100%)',
-          zIndex: 2,
-          pointerEvents: 'none'
-        }} />
-
-        {/* Banner Header Row: Live Badges */}
-        <div style={{
-          position: 'relative',
-          zIndex: 3,
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          gap: '8px'
-        }}>
+        {/* Left Side: Text + Pill CTA */}
+        <div style={{ flex: 1, minWidth: 0, zIndex: 2 }}>
+          {/* Top Pill Chip */}
           <div style={{
             display: 'inline-flex',
             alignItems: 'center',
-            gap: '6px',
-            padding: '4px 10px',
-            borderRadius: '20px',
-            background: 'rgba(15, 23, 42, 0.75)',
-            backdropFilter: 'blur(10px)',
-            border: '1px solid rgba(255, 255, 255, 0.25)',
-            color: '#FFFFFF',
-            fontSize: '11px',
-            fontWeight: 700
+            gap: '5px',
+            padding: '3px 8px',
+            borderRadius: '12px',
+            background: 'rgba(255, 255, 255, 0.85)',
+            border: '1px solid rgba(217, 119, 6, 0.3)',
+            color: '#B45309',
+            fontSize: '10px',
+            fontWeight: 800,
+            marginBottom: '8px'
           }}>
-            <span style={{
-              width: '7px',
-              height: '7px',
-              borderRadius: '50%',
-              background: '#22C55E',
-              boxShadow: '0 0 8px #22C55E'
-            }} />
-            <span>{lang === 'te' ? 'తిరుమల లైవ్ మార్గదర్శి' : 'Tirumala Srivari Guide'}</span>
+            <Sparkles size={11} color="#D97706" />
+            <span>{lang === 'te' ? 'లైవ్ దర్శనం గైడ్' : 'Live Srivari Guide'}</span>
           </div>
 
-          <div style={{
-            display: 'inline-flex',
-            alignItems: 'center',
-            gap: '4px',
-            padding: '4px 8px',
-            borderRadius: '14px',
-            background: 'rgba(212, 175, 55, 0.25)',
-            border: '1px solid rgba(253, 224, 71, 0.4)',
-            color: '#FEF08A',
-            fontSize: '10.5px',
-            fontWeight: 800
-          }}>
-            <Sparkles size={12} color="#FDE047" />
-            <span>{lang === 'te' ? 'లైవ్ అప్‌డేట్' : 'LIVE'}</span>
-          </div>
-        </div>
-
-        {/* Banner Content: Headline, Description & Call To Action */}
-        <div style={{
-          position: 'relative',
-          zIndex: 3,
-          marginTop: '28px'
-        }}>
+          {/* Bold Title */}
           <h2 style={{
-            fontSize: lang === 'te' ? '18px' : '17px',
+            fontSize: lang === 'te' ? '18px' : '19px',
             fontWeight: 900,
-            color: '#FFFFFF',
-            margin: '0 0 6px 0',
-            lineHeight: 1.25,
-            textShadow: '0 2px 8px rgba(0,0,0,0.6)',
-            letterSpacing: '-0.01em'
+            color: '#78350F',
+            margin: '0 0 4px 0',
+            lineHeight: 1.2,
+            letterSpacing: '-0.02em'
           }}>
-            {lang === 'te' ? 'శ్రీవారి దర్శనం & యాత్రా మార్గదర్శి' : 'Official Srivari Yatra Companion'}
+            {lang === 'te' ? 'సర్వ దర్శనం నిరీక్షణ సమయం' : 'Live Srivari Queue Timings'}
           </h2>
+
           <p style={{
-            fontSize: '12px',
-            color: '#E2E8F0',
+            fontSize: '11.5px',
+            fontWeight: 600,
+            color: '#92400E',
             margin: '0 0 12px 0',
-            lineHeight: 1.35,
-            opacity: 0.9,
-            textShadow: '0 1px 4px rgba(0,0,0,0.6)'
+            lineHeight: 1.3
           }}>
-            {lang === 'te' 
-              ? 'రియల్-టైమ్ క్యూ సమయాలు, వాతావరణం & సులభ దర్శన మార్గాలు' 
-              : 'Real-time queue wait times, weather alerts & smart darshan guidance'}
+            {lang === 'te'
+              ? 'రియల్-టైమ్ క్యూ వివరాలు & శీఘ్ర దర్శన మార్గాలు'
+              : 'Real-time queue status & smart temple guidance'}
           </p>
 
+          {/* Pill Action Button */}
           <Link
             href="/darshan/sarva-darshan"
             style={{
@@ -2152,19 +2089,45 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
               alignItems: 'center',
               gap: '6px',
               padding: '8px 14px',
-              borderRadius: '12px',
-              background: 'linear-gradient(135deg, #D97706 0%, #B45309 100%)',
+              borderRadius: '20px',
+              background: '#78350F',
               color: '#FFFFFF',
-              fontSize: '12px',
+              fontSize: '11.5px',
               fontWeight: 800,
               textDecoration: 'none',
-              boxShadow: '0 4px 12px rgba(217, 119, 6, 0.4)',
-              border: '1px solid rgba(253, 224, 71, 0.4)'
+              boxShadow: '0 4px 12px rgba(120, 53, 15, 0.25)',
+              transition: 'transform 0.15s ease'
             }}
           >
-            <span>{lang === 'te' ? 'క్యూ సమయం తనిఖీ చేయండి' : 'Check Darshan Timings'}</span>
-            <ChevronRight size={14} />
+            <span>{lang === 'te' ? 'సమయం చూడండి' : 'Check Wait Time'}</span>
+            <ChevronRight size={14} color="#FFFFFF" />
           </Link>
+        </div>
+
+        {/* Right Side: Circular Vector Artwork Illustration */}
+        <div style={{
+          width: '88px',
+          height: '88px',
+          borderRadius: '50%',
+          background: 'radial-gradient(circle, #FFFDF7 0%, #FDE68A 100%)',
+          border: '2px solid rgba(255, 255, 255, 0.8)',
+          boxShadow: '0 6px 18px rgba(180, 83, 9, 0.15)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          flexShrink: 0,
+          position: 'relative',
+          overflow: 'hidden'
+        }}>
+          <img
+            src="/assets/splash_vimana_art.png"
+            alt="Srivari Temple Vector"
+            style={{
+              width: '75%',
+              height: '75%',
+              objectFit: 'contain'
+            }}
+          />
         </div>
       </div>
 

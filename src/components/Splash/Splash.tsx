@@ -2,11 +2,6 @@
 
 import React, { useEffect, useState, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import {
-  playSaarthiSonicIdent,
-  stopSaarthiSonicIdent,
-  isAudioGloballyEnabled
-} from '@/lib/audioIdentity';
 import styles from './Splash.module.css';
 
 const SMOOTH_EASE = [0.16, 1, 0.3, 1] as const;
@@ -15,18 +10,13 @@ export default function SplashScreen({ onFinish }: { onFinish: () => void }) {
   const [isVisible, setIsVisible] = useState(true);
 
   const handleFinish = useCallback(() => {
-    stopSaarthiSonicIdent();
     setIsVisible(false);
   }, []);
 
   useEffect(() => {
     let isMounted = true;
 
-    // Trigger sacred opening sonic ident on splash mount
-    if (isAudioGloballyEnabled()) {
-      playSaarthiSonicIdent(true).catch(() => {});
-    }
-
+    // First Principles: Pure visual vector splash screen with ZERO background audio playback
     const timer = setTimeout(() => {
       if (isMounted) {
         handleFinish();
@@ -36,7 +26,6 @@ export default function SplashScreen({ onFinish }: { onFinish: () => void }) {
     return () => {
       isMounted = false;
       clearTimeout(timer);
-      stopSaarthiSonicIdent();
     };
   }, [handleFinish]);
 
@@ -49,118 +38,131 @@ export default function SplashScreen({ onFinish }: { onFinish: () => void }) {
           exit={{ opacity: 0 }}
           transition={{ duration: 0.35, ease: SMOOTH_EASE }}
           onClick={handleFinish}
+          style={{
+            background: 'radial-gradient(circle at 50% 40%, #08251B 0%, #04150F 70%, #020C08 100%)'
+          }}
         >
-          {/* Central Brand Identity */}
+          {/* Central Brand Identity & Sacred Vector Artwork */}
           <motion.div
             className={styles.brandContent}
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.6, ease: SMOOTH_EASE }}
           >
-            {/* Pure SVG Vector Tirumala Namam */}
-            <div className={styles.namamFrame}>
-              <svg
-                viewBox="0 0 160 160"
-                className={styles.namamSvg}
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                {/* White Namam U-Pillars */}
-                <motion.g
-                  initial={{ opacity: 0, y: -6 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, ease: SMOOTH_EASE }}
-                >
-                  {/* Left White Pillar */}
-                  <path
-                    d="M 42 22 L 62 22 C 64 62 70 95 76 117 C 73 120 66 120 61 116 C 53 95 46 60 42 22 Z"
-                    fill="#F8F9FA"
-                  />
-                  {/* Right White Pillar */}
-                  <path
-                    d="M 118 22 L 98 22 C 96 62 90 95 84 117 C 87 120 94 120 99 116 C 107 95 114 60 118 22 Z"
-                    fill="#F8F9FA"
-                  />
-                </motion.g>
-
-                {/* Central Red Tilak (Sacred Kasturi Spindle) */}
-                <motion.path
-                  d="M 80 12 C 82.5 40 84.5 70 84.5 95 C 84.5 109 82 119 80 121 C 78 119 75.5 109 75.5 95 C 75.5 70 77.5 40 80 12 Z"
-                  fill="#E52E2E"
-                  initial={{ scaleY: 0, opacity: 0 }}
-                  animate={{ scaleY: 1, opacity: 1 }}
-                  transition={{ duration: 0.5, delay: 0.2, ease: SMOOTH_EASE }}
-                  style={{ transformOrigin: '80px 12px' }}
-                />
-
-                {/* Golden Base Dot */}
-                <motion.circle
-                  cx="80"
-                  cy="137"
-                  r="7.5"
-                  fill="#E5B246"
-                  initial={{ scale: 0, opacity: 0 }}
-                  animate={{ scale: 1, opacity: 1 }}
-                  transition={{ duration: 0.35, delay: 0.4, ease: [0.34, 1.56, 0.64, 1] }}
-                  style={{ transformOrigin: '80px 137px' }}
-                />
-              </svg>
-            </div>
-
-            {/* Wordmark: SAARTHI */}
-            <motion.h1
-              className={styles.brandTitle}
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.25, ease: SMOOTH_EASE }}
-            >
-              SAARTHI
-            </motion.h1>
-
-            {/* Telugu Script: సారథి */}
+            {/* Vector Sacred Temple Vimana Art */}
             <motion.div
-              className={styles.brandTelugu}
-              initial={{ opacity: 0, y: 8 }}
+              style={{
+                width: 'min(240px, 60vw)',
+                height: 'min(240px, 60vw)',
+                marginBottom: '16px',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                position: 'relative'
+              }}
+              initial={{ opacity: 0, y: -10 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.35, ease: SMOOTH_EASE }}
+              transition={{ duration: 0.7, ease: SMOOTH_EASE }}
             >
-              సారథి
+              <img
+                src="/assets/splash_vimana_art.png"
+                alt="Saarthi Guide Sacred Temple Vector"
+                style={{
+                  width: '100%',
+                  height: '100%',
+                  objectFit: 'contain',
+                  filter: 'drop-shadow(0 0 20px rgba(229, 178, 70, 0.25))'
+                }}
+              />
             </motion.div>
 
-            {/* Gold Divider Line */}
-            <motion.div
-              className={styles.divider}
-              initial={{ scaleX: 0, opacity: 0 }}
-              animate={{ scaleX: 1, opacity: 1 }}
-              transition={{ duration: 0.4, delay: 0.45, ease: SMOOTH_EASE }}
-            />
-
-            {/* Tagline */}
-            <motion.p
-              className={styles.tagline}
-              initial={{ opacity: 0, y: 6 }}
-              animate={{ opacity: 0.8, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.5, ease: SMOOTH_EASE }}
+            {/* Wordmark: Saarthi Guide */}
+            <motion.h1
+              style={{
+                fontFamily: "'Cinzel', Georgia, serif",
+                fontSize: 'clamp(28px, 6.5vw, 38px)',
+                fontWeight: 700,
+                color: '#FFFFFF',
+                letterSpacing: '0.12em',
+                margin: '0 0 6px 0',
+                lineHeight: 1.15
+              }}
+              initial={{ opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.2, ease: SMOOTH_EASE }}
             >
-              From Free Time to Meaningful Memories
-            </motion.p>
-          </motion.div>
+              Saarthi Guide
+            </motion.h1>
 
-          {/* Skip Action (Bottom Right) */}
-          <motion.button
-            type="button"
-            className={styles.skipPill}
-            aria-label="Skip splash screen and open app"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.4, delay: 0.6 }}
-            onClick={(e) => {
-              e.stopPropagation();
-              handleFinish();
-            }}
-          >
-            Skip &rarr;
-          </motion.button>
+            {/* Subtitle: Spiritual Pilgrim Companion */}
+            <motion.div
+              style={{
+                fontSize: 'clamp(12px, 3vw, 13.5px)',
+                fontWeight: 600,
+                color: '#E5B246',
+                letterSpacing: '0.08em',
+                margin: '0 0 14px 0',
+                textTransform: 'none'
+              }}
+              initial={{ opacity: 0, y: 6 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.3, ease: SMOOTH_EASE }}
+            >
+              Spiritual Pilgrim Companion
+            </motion.div>
+
+            {/* Sacred Three Gold Dots */}
+            <motion.div
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '12px',
+                color: '#E5B246',
+                fontSize: '10px',
+                opacity: 0.8,
+                marginBottom: '28px'
+              }}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 0.8 }}
+              transition={{ duration: 0.5, delay: 0.4 }}
+            >
+              <span>•</span>
+              <span style={{ fontSize: '12px' }}>🌸</span>
+              <span>•</span>
+            </motion.div>
+
+            {/* SKIP Pill Action Button (Centered Bottom as in Image 2) */}
+            <motion.button
+              type="button"
+              aria-label="Skip splash screen and open app"
+              initial={{ opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.4, delay: 0.45 }}
+              onClick={(e) => {
+                e.stopPropagation();
+                handleFinish();
+              }}
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                padding: '8px 22px',
+                borderRadius: '20px',
+                background: 'rgba(4, 21, 15, 0.6)',
+                border: '1px solid rgba(229, 178, 70, 0.45)',
+                color: '#E5B246',
+                fontSize: '12px',
+                fontWeight: 700,
+                letterSpacing: '0.08em',
+                cursor: 'pointer',
+                backdropFilter: 'blur(8px)',
+                boxShadow: '0 4px 12px rgba(0,0,0,0.3)',
+                transition: 'all 0.2s ease'
+              }}
+            >
+              SKIP &rarr;
+            </motion.button>
+          </motion.div>
 
           {/* Subdued Bottom Progress Line */}
           <div className={styles.loadingBarContainer}>
