@@ -1995,7 +1995,7 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
           </>
         )}
 
-      {/* 🎬 HIGH-FIDELITY SAARTHI HERO ANIMATED MP4 VIDEO BANNER (CLEAN NO-GREETING UI/UX) */}
+      {/* 🎬 HIGH-FIDELITY SAARTHI HERO ANIMATED MP4 VIDEO BANNER (CLEAN NO-GREETING UI/UX WITH QUICK ACTIONS) */}
       <div style={{
         position: 'relative',
         width: '100%',
@@ -2041,7 +2041,8 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
           fontWeight: 700,
           letterSpacing: '0.03em',
           pointerEvents: 'none',
-          boxShadow: '0 2px 8px rgba(0,0,0,0.3)'
+          boxShadow: '0 2px 8px rgba(0,0,0,0.3)',
+          zIndex: 2
         }}>
           <span style={{
             width: '6.5px',
@@ -2051,6 +2052,90 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
             boxShadow: '0 0 8px #22C55E'
           }} />
           <span>{lang === 'te' ? 'తిరుమల లైవ్ మార్గదర్శి' : 'Tirumala Srivari Guide'}</span>
+        </div>
+
+        {/* Right Side Quick Action Pills Overlay (Matching Image Banner Mockup) */}
+        <div style={{
+          position: 'absolute',
+          right: '12px',
+          top: '50%',
+          transform: 'translateY(-50%)',
+          display: 'flex',
+          flexDirection: 'column',
+          gap: '6px',
+          zIndex: 2
+        }}>
+          <Link
+            href="/darshan/sarva-darshan"
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '6px',
+              padding: '6px 12px',
+              borderRadius: '20px',
+              background: 'rgba(255, 255, 255, 0.88)',
+              backdropFilter: 'blur(8px)',
+              WebkitBackdropFilter: 'blur(8px)',
+              border: '1px solid rgba(255, 255, 255, 0.6)',
+              boxShadow: '0 4px 12px rgba(0, 0, 0, 0.15)',
+              color: '#0F2D22',
+              fontSize: '11.5px',
+              fontWeight: 700,
+              textDecoration: 'none',
+              transition: 'transform 0.15s ease, background 0.15s ease'
+            }}
+          >
+            <Building2 size={13} color="#0F5132" />
+            <span>{lang === 'te' ? 'దర్శనం' : 'Darshan'}</span>
+          </Link>
+
+          <Link
+            href="/darshan/ssd-token"
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '6px',
+              padding: '6px 12px',
+              borderRadius: '20px',
+              background: 'rgba(255, 255, 255, 0.88)',
+              backdropFilter: 'blur(8px)',
+              WebkitBackdropFilter: 'blur(8px)',
+              border: '1px solid rgba(255, 255, 255, 0.6)',
+              boxShadow: '0 4px 12px rgba(0, 0, 0, 0.15)',
+              color: '#0F2D22',
+              fontSize: '11.5px',
+              fontWeight: 700,
+              textDecoration: 'none',
+              transition: 'transform 0.15s ease, background 0.15s ease'
+            }}
+          >
+            <Ticket size={13} color="#0F5132" />
+            <span>{lang === 'te' ? 'టోకెన్లు' : 'Tokens'}</span>
+          </Link>
+
+          <Link
+            href="/explore"
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '6px',
+              padding: '6px 12px',
+              borderRadius: '20px',
+              background: 'rgba(255, 255, 255, 0.88)',
+              backdropFilter: 'blur(8px)',
+              WebkitBackdropFilter: 'blur(8px)',
+              border: '1px solid rgba(255, 255, 255, 0.6)',
+              boxShadow: '0 4px 12px rgba(0, 0, 0, 0.15)',
+              color: '#0F2D22',
+              fontSize: '11.5px',
+              fontWeight: 700,
+              textDecoration: 'none',
+              transition: 'transform 0.15s ease, background 0.15s ease'
+            }}
+          >
+            <MapPin size={13} color="#0F5132" />
+            <span>{lang === 'te' ? 'సమీపంలోనివి' : 'Nearby'}</span>
+          </Link>
         </div>
       </div>
 
