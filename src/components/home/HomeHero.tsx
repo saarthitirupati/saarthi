@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Menu, Bell, MapPin, Sun, Sparkles, Ticket, TicketX, ShieldAlert, Car, Gift, CloudRain, Bus, Clock, Route, Users, Zap, Check, ChevronDown, Navigation, Flame, Moon, Languages, RotateCcw, Share2, X, Volume2, VolumeX, ChevronLeft, ChevronRight, Pause } from 'lucide-react';
+import { Menu, Bell, MapPin, Sun, Sparkles, Ticket, TicketX, ShieldAlert, Car, Gift, CloudRain, Bus, Clock, Route, Users, Zap, Check, ChevronDown, Navigation, Flame, Moon, Languages, RotateCcw, Share2, X, Volume2, VolumeX, ChevronLeft, ChevronRight, Pause, Building2, Calendar } from 'lucide-react';
 import Link from 'next/link';
 import Logo from '@/components/Logo/Logo';
 import { useLanguage, setAppLanguage } from '@/lib/useLanguage';
@@ -2043,203 +2043,84 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
           opacity: 0.85
         }} />
 
-        {/* 🌟 HEADER: LIVE BEACON & TITLE */}
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '10px', marginBottom: '14px', position: 'relative', zIndex: 2 }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '10px', minWidth: 0, flex: 1 }}>
-            <div style={{
-              width: '36px',
-              height: '36px',
-              borderRadius: '10px',
-              background: 'rgba(217, 119, 6, 0.12)',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              border: '1.5px solid #0F172A',
-              boxShadow: '0 2px 6px rgba(217, 119, 6, 0.15)',
-              flexShrink: 0
+        {/* 🌟 HEADER: LIVE STATUS BEACON & TITLE */}
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '10px', marginBottom: '12px', position: 'relative', zIndex: 2 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <span style={{
+              width: '8px',
+              height: '8px',
+              borderRadius: '50%',
+              backgroundColor: '#EF4444',
+              boxShadow: '0 0 8px rgba(239, 68, 68, 0.8)',
+              display: 'inline-block'
+            }} />
+            <h2 style={{
+              fontSize: '15px',
+              fontWeight: 900,
+              letterSpacing: '-0.01em',
+              color: '#0F172A',
+              margin: 0,
+              lineHeight: 1.2
             }}>
-              <Flame size={18} color="#D97706" />
-            </div>
-            <div style={{ minWidth: 0, flex: 1 }}>
-              <div style={{
-                fontSize: lang === 'te' ? '14px' : '13px',
-                fontWeight: 900,
-                letterSpacing: lang === 'te' ? 'normal' : '0.5px',
-                textTransform: 'uppercase',
-                color: '#0F172A',
-                lineHeight: lang === 'te' ? 1.3 : '1.2'
-              }}>
-                {lang === 'te' ? 'నేడు తిరుమలలో' : 'TODAY IN TIRUMALA'}
-              </div>
-              <div style={{ 
-                fontSize: '11px', 
-                color: '#047857', 
-                fontWeight: 700, 
-                display: 'flex', 
-                alignItems: 'flex-start', 
-                gap: '5px', 
-                marginTop: '2px',
-                lineHeight: 1.3
-              }}>
-                <span style={{ 
-                  width: '6px', 
-                  height: '6px', 
-                  borderRadius: '50%', 
-                  backgroundColor: '#10B981', 
-                  boxShadow: '0 0 6px #10B981', 
-                  flexShrink: 0,
-                  marginTop: '4px'
-                }} />
-                <span style={{ fontWeight: 700 }}>{whyThatNowText}</span>
-              </div>
-            </div>
+              {lang === 'te' ? 'తిరుమల లైవ్ స్టేటస్' : 'Tirumala Live Status'}
+            </h2>
           </div>
 
           <div style={{
-            display: 'inline-flex',
+            display: 'flex',
             alignItems: 'center',
-            gap: '4px',
-            backgroundColor: 'rgba(16, 185, 129, 0.12)',
-            border: '1.5px solid #0F172A',
-            padding: '3px 8px',
-            borderRadius: '12px',
-            fontSize: '10px',
-            fontWeight: 800,
-            color: '#065F46',
-            letterSpacing: '0.5px',
-            flexShrink: 0,
-            whiteSpace: 'nowrap'
+            gap: '5px',
+            fontSize: '11px',
+            fontWeight: 600,
+            color: '#64748B'
           }}>
-            <span style={{ width: '5px', height: '5px', borderRadius: '50%', backgroundColor: '#059669', flexShrink: 0 }} />
-            <span>LIVE</span>
+            <span>{lang === 'te' ? '2 నిమి క్రితం తాజాకరించబడింది' : 'Updated 2 min ago'}</span>
+            <RotateCcw size={13} color="#64748B" style={{ cursor: 'pointer' }} onClick={() => window.location.reload()} />
           </div>
         </div>
 
-        {/* 1️⃣ THREE EXPRESSIVE SACRED QUEUE TILES (HIGHLIGHTED AS PER CROWD STATUS) */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', marginBottom: '14px', position: 'relative', zIndex: 2 }}>
+        {/* 1️⃣ THREE SIDE-BY-SIDE DARSHAN CARDS (MATCHING SPEC) */}
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '8px', marginBottom: '14px', position: 'relative', zIndex: 2 }}>
           {(() => {
             const sarvaWait = getDarshanWait('sarva');
             const specialWait = getDarshanWait('special');
             const ssdWait = getDarshanWait('ssd');
 
-            const getMaxHours = (text: string): number => {
-              const matches = text.match(/\d+/g);
-              if (!matches || matches.length === 0) return 0;
-              return Math.max(...matches.map(Number));
-            };
-
-            // Helper to get luminous sacred status styling
-            const getStatusStyle = (type: 'extreme' | 'high' | 'moderate' | 'normal') => {
-              if (type === 'extreme') {
-                return {
-                  color: '#E11D48',
-                  waitColor: '#BE123C',
-                  bg: 'linear-gradient(135deg, #FFFFFF 0%, #FFF5F5 100%)',
-                  border: '#FECDD3',
-                  badgeBg: '#E11D48',
-                  badgeText: '#FFFFFF',
-                  iconBg: '#FFE4E6',
-                  iconBorder: '#F43F5E',
-                  shadow: '0 4px 14px rgba(225, 29, 72, 0.08), 0 1px 3px rgba(0, 0, 0, 0.03)',
-                  label: lang === 'te' ? 'తీవ్రమైన రద్దీ' : 'EXTREME',
-                  meter: 5
-                };
-              }
-              if (type === 'high') {
-                return {
-                  color: '#D97706',
-                  waitColor: '#B45309',
-                  bg: 'linear-gradient(135deg, #FFFFFF 0%, #FFFDF5 50%, #FEF9C3 100%)',
-                  border: '#FDE68A',
-                  badgeBg: '#D97706',
-                  badgeText: '#FFFFFF',
-                  iconBg: '#FEF3C7',
-                  iconBorder: '#FACC15',
-                  shadow: '0 4px 14px rgba(217, 119, 6, 0.09), 0 1px 3px rgba(0, 0, 0, 0.03)',
-                  label: lang === 'te' ? 'రద్దీ ఎక్కువ' : 'HIGH',
-                  meter: 4
-                };
-              }
-              if (type === 'moderate') {
-                return {
-                  color: '#D97706',
-                  waitColor: '#92400E',
-                  bg: 'linear-gradient(135deg, #FFFFFF 0%, #FFFDF8 50%, #FEF9C3 100%)',
-                  border: '#FEF08A',
-                  badgeBg: '#CA8A04',
-                  badgeText: '#FFFFFF',
-                  iconBg: '#FEF9C3',
-                  iconBorder: '#FDE047',
-                  shadow: '0 4px 14px rgba(202, 138, 4, 0.08), 0 1px 3px rgba(0, 0, 0, 0.03)',
-                  label: lang === 'te' ? 'మితమైన రద్దీ' : 'MODERATE',
-                  meter: 3
-                };
-              }
-              return {
-                color: '#059669',
-                waitColor: '#047857',
-                bg: 'linear-gradient(135deg, #FFFFFF 0%, #F0FDF4 100%)',
-                border: '#A7F3D0',
-                badgeBg: '#059669',
-                badgeText: '#FFFFFF',
-                iconBg: '#D1FAE5',
-                iconBorder: '#34D399',
-                shadow: '0 4px 14px rgba(5, 150, 105, 0.08), 0 1px 3px rgba(0, 0, 0, 0.03)',
-                label: lang === 'te' ? 'సాధారణం' : 'NORMAL',
-                meter: 1
-              };
-            };
-
-            // 1. Sarva State (Normal, Moderate, High, Extreme)
-            const sarvaHours = getMaxHours(sarvaWait);
-            const isSarvaExtreme = sarvaHours >= 12 || sarvaWait.includes('24') || sarvaWait.includes('30');
-            const sarvaStatus = getStatusStyle(
-              isSarvaExtreme ? 'extreme' : sarvaHours > 6 ? 'high' : sarvaHours > 2 ? 'moderate' : 'normal'
-            );
-
-            // 2. Special Entry State (Normal, Moderate, High, Extreme)
-            const specialHours = getMaxHours(specialWait);
-            const specialStatus = getStatusStyle(
-              specialHours > 7 ? 'extreme' : specialHours > 4 ? 'high' : specialHours >= 2 ? 'moderate' : 'normal'
-            );
-
-            // 3. SSD Token State (Dynamic Admin Text & Unified Crowd Pill)
-            const ssdHours = getMaxHours(ssdWait);
-            const isSsdExtreme = /cancel|full|heavy|rush|crowd|closed|stop/i.test(ssdWait) || ssdTokenStatus === 'closed-for-day' || ssdTokenStatus === 'closed';
-            const resolvedSsdStatus = getStatusStyle(
-              (ssdHours > 7 || isSsdExtreme) ? 'extreme' : ssdHours > 4 ? 'high' : (ssdHours >= 2 || ssdTokenStatus === 'paused') ? 'moderate' : 'normal'
-            );
+            const isSsdClosed = /cancel|full|heavy|rush|crowd|closed|stop/i.test(ssdWait) || ssdTokenStatus === 'closed-for-day' || ssdTokenStatus === 'closed';
 
             const queueCards = [
               {
                 id: 'sarva',
                 href: '/darshan/sarva-darshan',
-                icon: <Users size={16} color={sarvaStatus.color} />,
+                icon: <Building2 size={24} color="#D97706" />,
                 title: lang === 'te' ? 'సర్వదర్శనం' : 'Sarva Darshan',
-                subtitle: lang === 'te' ? 'ఉచిత సాధారణ దర్శనం' : 'Free General Queue',
                 wait: sarvaWait,
-                ...sarvaStatus,
-                isClosed: false
+                bg: '#FFFDF0',
+                border: '#FDE68A',
+                badgeBg: '#FEF3C7',
+                badgeText: '#92400E'
               },
               {
                 id: 'special',
                 href: '/darshan/special-entry',
-                icon: <Zap size={16} color={specialStatus.color} />,
-                title: lang === 'te' ? '₹300 ప్రత్యేక ప్రవేశం' : '₹300 Special Entry',
-                subtitle: lang === 'te' ? 'ఆన్‌లైన్ బుకింగ్ స్లాట్' : 'Online Booked Slot',
+                icon: <Ticket size={24} color="#059669" />,
+                title: lang === 'te' ? '₹300 ప్రవేశం' : '₹300 Entry',
                 wait: specialWait,
-                ...specialStatus,
-                isClosed: false
+                bg: '#F0FDF4',
+                border: '#BBF7D0',
+                badgeBg: '#DCFCE7',
+                badgeText: '#166534'
               },
               {
                 id: 'ssd',
                 href: '/darshan/ssd-token',
-                icon: <Ticket size={16} color={resolvedSsdStatus.color} />,
-                title: lang === 'te' ? 'SSD టోకెన్ దర్శనం' : 'SSD Token Darshan',
-                subtitle: lang === 'te' ? 'ఉచిత సమయ స్లాట్ టోకెన్లు' : 'Time-Slotted Free Darshan',
-                wait: ssdWait,
-                ...resolvedSsdStatus,
-                isClosed: false
+                icon: isSsdClosed ? <TicketX size={24} color="#DC2626" /> : <Ticket size={24} color="#DC2626" />,
+                title: lang === 'te' ? 'SSD టోకెన్లు' : 'SSD Tokens',
+                wait: isSsdClosed ? (lang === 'te' ? 'నేడు ముగిసింది' : 'Closed Today') : ssdWait,
+                bg: '#FEF2F2',
+                border: '#FECDD3',
+                badgeBg: '#FEE2E2',
+                badgeText: '#991B1B'
               }
             ];
 
@@ -2248,128 +2129,67 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
                 key={card.id}
                 href={card.href}
                 style={{
-                  background: card.bg,
-                  border: `1.5px solid ${card.border}`,
-                  borderRadius: '14px',
-                  padding: '10px 10px 10px 14px',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'space-between',
-                  minHeight: '52px',
-                  width: '100%',
-                  maxWidth: '100%',
-                  boxSizing: 'border-box',
-                  gap: '8px',
-                  boxShadow: card.shadow,
-                  position: 'relative',
-                  overflow: 'hidden',
                   textDecoration: 'none',
-                  color: 'inherit',
-                  cursor: 'pointer',
-                  transition: 'transform 0.18s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.18s ease'
+                  backgroundColor: card.bg,
+                  border: `1.5px solid ${card.border}`,
+                  borderRadius: '16px',
+                  padding: '12px 6px 10px',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                  textAlign: 'center',
+                  justifyContent: 'space-between',
+                  minHeight: '118px',
+                  boxSizing: 'border-box',
+                  transition: 'transform 0.15s ease',
+                  cursor: 'pointer'
                 }}
                 className="darshan-home-card"
               >
-                {/* Clean Vertical Indicator Strip (Eliminating corner glitches) */}
+                {/* Top Vector Icon */}
                 <div style={{
-                  position: 'absolute',
-                  left: 0,
-                  top: 0,
-                  bottom: 0,
-                  width: '5px',
-                  backgroundColor: card.color
-                }} />
-
-                {/* Left Info with Icon Accent */}
-                <div style={{ display: 'flex', alignItems: 'center', gap: '9px', position: 'relative', zIndex: 2, minWidth: 0, flex: 1 }}>
-                  <div style={{
-                    width: '32px',
-                    height: '32px',
-                    borderRadius: '9px',
-                    backgroundColor: card.iconBg,
-                    border: `1.5px solid ${card.iconBorder}`,
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    boxShadow: '0 2px 6px rgba(0, 0, 0, 0.04)',
-                    flexShrink: 0
-                  }}>
-                    {card.icon}
-                  </div>
-                  <div style={{ minWidth: 0, flex: 1 }}>
-                    <div style={{
-                      fontSize: lang === 'te' ? '14px' : '13.5px',
-                      fontWeight: lang === 'te' ? 700 : 800,
-                      color: '#0F172A',
-                      letterSpacing: lang === 'te' ? 'normal' : '-0.01em',
-                      lineHeight: lang === 'te' ? 1.35 : '1.2',
-                      wordBreak: 'break-word',
-                    }}>
-                      {card.title}
-                    </div>
-                    <div style={{
-                      fontSize: '10.5px',
-                      color: card.isClosed ? '#92400E' : '#475569',
-                      fontWeight: 600,
-                      marginTop: '2px',
-                      lineHeight: lang === 'te' ? 1.35 : '1.2',
-                      letterSpacing: 'normal',
-                      wordBreak: 'break-word',
-                    }}>
-                      {card.subtitle}
-                    </div>
-                  </div>
+                  height: '32px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  marginBottom: '4px'
+                }}>
+                  {card.icon}
                 </div>
 
-                {/* Right Wait Time & Status Meter */}
-                <div style={{ textAlign: 'right', display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '3px', position: 'relative', zIndex: 2, flexShrink: 0 }}>
-                  <div style={{
-                    fontSize: 'clamp(15px, 4.4vw, 17px)',
-                    fontWeight: 900,
-                    color: card.waitColor,
-                    letterSpacing: '-0.02em',
-                    fontVariantNumeric: 'tabular-nums'
-                  }}>
-                    {card.wait}
-                  </div>
-
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                    {/* 5-Step Consistent Visual Crowd Meter */}
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '2px', marginRight: '2px' }}>
-                      {[1, 2, 3, 4, 5].map((seg) => (
-                        <span
-                          key={seg}
-                          style={{
-                            width: '4px',
-                            height: '7px',
-                            borderRadius: '1px',
-                            backgroundColor: seg <= card.meter ? card.color : 'rgba(15, 23, 42, 0.18)',
-                            boxShadow: seg <= card.meter ? `0 0 4px ${card.color}` : 'none'
-                          }}
-                        />
-                      ))}
-                    </div>
-
-                    {/* Status Pill */}
-                    <span style={{
-                      fontSize: '9.5px',
-                      fontWeight: lang === 'te' ? 700 : 800,
-                      color: card.badgeText,
-                      background: card.badgeBg,
-                      border: `1px solid ${card.border}`,
-                      padding: '2.5px 8px',
-                      borderRadius: '6px',
-                      letterSpacing: lang === 'te' ? 'normal' : '0.04em',
-                      whiteSpace: 'nowrap',
-                      boxShadow: '0 1px 3px rgba(0, 0, 0, 0.08)'
-                    }}>
-                      {card.label}
-                    </span>
-                  </div>
+                {/* Title */}
+                <div style={{
+                  fontSize: lang === 'te' ? '12px' : '11.5px',
+                  fontWeight: 800,
+                  color: '#0F172A',
+                  marginBottom: '6px',
+                  lineHeight: 1.2
+                }}>
+                  {card.title}
                 </div>
+
+                {/* Status Badge Pill */}
+                <div style={{
+                  backgroundColor: card.badgeBg,
+                  color: card.badgeText,
+                  fontSize: '10.5px',
+                  fontWeight: 800,
+                  padding: '3px 8px',
+                  borderRadius: '12px',
+                  marginBottom: '6px',
+                  width: '100%',
+                  maxWidth: '92%',
+                  whiteSpace: 'nowrap',
+                  overflow: 'hidden',
+                  textOverflow: 'ellipsis'
+                }}>
+                  {card.wait}
+                </div>
+
+                {/* Bottom Chevron Arrow */}
+                <ChevronRight size={13} color="#64748B" />
               </Link>
             ));
-
           })()}
         </div>
 
