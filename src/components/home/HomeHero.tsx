@@ -1992,142 +1992,65 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
                 </div>
               </div>
             )}
-
-            {/* Personalized Greeting */}
-            <div style={{ marginBottom: '12px' }}>
-              <h1 style={{ 
-                fontSize: lang === 'te' ? 'clamp(18px, 5.4vw, 21px)' : 'clamp(17px, 5.1vw, 20px)', 
-                fontWeight: lang === 'te' ? 700 : 800, 
-                color: '#0F172A', 
-                margin: 0, 
-                letterSpacing: lang === 'te' ? 'normal' : '-0.02em',
-                lineHeight: lang === 'te' ? 1.4 : 1.2
-              }}>
-                <span>{getGreetingPrefix()}</span>, <span className="notranslate">{userName || 'Pilgrim'}</span>
-              </h1>
-              <p style={{ 
-                fontSize: lang === 'te' ? 'clamp(11px, 3.2vw, 12.5px)' : 'clamp(11px, 3vw, 12px)', 
-                color: '#0F5132', 
-                margin: '3px 0 0 0', 
-                fontWeight: lang === 'te' ? 600 : 700, 
-                lineHeight: lang === 'te' ? 1.5 : 1.3,
-                letterSpacing: 'normal',
-                textWrap: 'balance' as any
-              }}>
-                {t.tagline}
-              </p>
-            </div>
           </>
         )}
 
-      {/* 🌟 VECTOR PROMOTIONAL HERO BANNER (PhonePe / GPay Style Layout) */}
+      {/* 🎬 HIGH-FIDELITY SAARTHI HERO ANIMATED MP4 VIDEO BANNER (CLEAN NO-GREETING UI/UX) */}
       <div style={{
         position: 'relative',
         width: '100%',
         borderRadius: '20px',
         overflow: 'hidden',
         marginBottom: '14px',
-        boxShadow: '0 8px 24px rgba(120, 53, 15, 0.08)',
-        border: '1.5px solid #FDE68A',
-        background: 'linear-gradient(135deg, #FEF3C7 0%, #FDE68A 100%)',
-        padding: '16px',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        gap: '12px',
-        boxSizing: 'border-box'
+        boxShadow: '0 12px 32px rgba(15, 23, 42, 0.14)',
+        border: '1.5px solid rgba(212, 175, 55, 0.45)',
+        background: '#0F172A',
+        aspectRatio: '16 / 9',
+        maxHeight: 'clamp(180px, 32vw, 240px)'
       }}>
-        {/* Left Side: Text + Pill CTA */}
-        <div style={{ flex: 1, minWidth: 0, zIndex: 2 }}>
-          {/* Top Pill Chip */}
-          <div style={{
-            display: 'inline-flex',
-            alignItems: 'center',
-            gap: '5px',
-            padding: '3px 8px',
-            borderRadius: '12px',
-            background: 'rgba(255, 255, 255, 0.85)',
-            border: '1px solid rgba(217, 119, 6, 0.3)',
-            color: '#B45309',
-            fontSize: '10px',
-            fontWeight: 800,
-            marginBottom: '8px'
-          }}>
-            <Sparkles size={11} color="#D97706" />
-            <span>{lang === 'te' ? 'లైవ్ దర్శనం గైడ్' : 'Live Srivari Guide'}</span>
-          </div>
+        <video
+          autoPlay
+          loop
+          muted
+          playsInline
+          style={{
+            width: '100%',
+            height: '100%',
+            objectFit: 'cover',
+            display: 'block'
+          }}
+        >
+          <source src="/banner/Absolutely_For_the_Saarthi_SV.mp4" type="video/mp4" />
+        </video>
 
-          {/* Bold Title */}
-          <h2 style={{
-            fontSize: lang === 'te' ? '18px' : '19px',
-            fontWeight: 900,
-            color: '#78350F',
-            margin: '0 0 4px 0',
-            lineHeight: 1.2,
-            letterSpacing: '-0.02em'
-          }}>
-            {lang === 'te' ? 'సర్వ దర్శనం నిరీక్షణ సమయం' : 'Live Srivari Queue Timings'}
-          </h2>
-
-          <p style={{
-            fontSize: '11.5px',
-            fontWeight: 600,
-            color: '#92400E',
-            margin: '0 0 12px 0',
-            lineHeight: 1.3
-          }}>
-            {lang === 'te'
-              ? 'రియల్-టైమ్ క్యూ వివరాలు & శీఘ్ర దర్శన మార్గాలు'
-              : 'Real-time queue status & smart temple guidance'}
-          </p>
-
-          {/* Pill Action Button */}
-          <Link
-            href="/darshan/sarva-darshan"
-            style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: '6px',
-              padding: '8px 14px',
-              borderRadius: '20px',
-              background: '#78350F',
-              color: '#FFFFFF',
-              fontSize: '11.5px',
-              fontWeight: 800,
-              textDecoration: 'none',
-              boxShadow: '0 4px 12px rgba(120, 53, 15, 0.25)',
-              transition: 'transform 0.15s ease'
-            }}
-          >
-            <span>{lang === 'te' ? 'సమయం చూడండి' : 'Check Wait Time'}</span>
-            <ChevronRight size={14} color="#FFFFFF" />
-          </Link>
-        </div>
-
-        {/* Right Side: Circular Vector Artwork Illustration */}
+        {/* Top-Left Live Devotional Badge */}
         <div style={{
-          width: '88px',
-          height: '88px',
-          borderRadius: '50%',
-          background: 'radial-gradient(circle, #FFFDF7 0%, #FDE68A 100%)',
-          border: '2px solid rgba(255, 255, 255, 0.8)',
-          boxShadow: '0 6px 18px rgba(180, 83, 9, 0.15)',
+          position: 'absolute',
+          top: '12px',
+          left: '12px',
           display: 'flex',
           alignItems: 'center',
-          justifyContent: 'center',
-          flexShrink: 0,
-          position: 'relative',
-          overflow: 'hidden'
+          gap: '6px',
+          padding: '4px 10px',
+          borderRadius: '20px',
+          background: 'rgba(15, 23, 42, 0.65)',
+          backdropFilter: 'blur(8px)',
+          border: '1px solid rgba(255, 255, 255, 0.25)',
+          color: '#FFFFFF',
+          fontSize: '11px',
+          fontWeight: 700,
+          letterSpacing: '0.03em',
+          pointerEvents: 'none',
+          boxShadow: '0 2px 8px rgba(0,0,0,0.3)'
         }}>
-          <img
-            src="/assets/splash_vimana_art.png"
-            alt="Srivari Temple Vector"
-            style={{
-              width: '75%',
-              height: '75%',
-              objectFit: 'contain'
-            }}
-          />
+          <span style={{
+            width: '6.5px',
+            height: '6.5px',
+            borderRadius: '50%',
+            background: '#22C55E',
+            boxShadow: '0 0 8px #22C55E'
+          }} />
+          <span>{lang === 'te' ? 'తిరుమల లైవ్ మార్గదర్శి' : 'Tirumala Srivari Guide'}</span>
         </div>
       </div>
 
