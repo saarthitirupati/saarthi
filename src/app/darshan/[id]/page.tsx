@@ -95,7 +95,8 @@ export default function DarshanDetailsPage() {
           if (match) {
             setLiveWaitTime(match.waitTime);
             const matchWait = match.waitTime || '';
-            const matchNum = parseInt(matchWait.replace(/\D+/g, '')) || 0;
+            const matches = matchWait.match(/\d+/g);
+            const matchNum = matches ? Math.max(...matches.map(Number)) : 0;
             if (matchNum >= 12 || /extreme|full|closed|heavy/i.test(matchWait)) {
               setCrowdLevel('EXTREME');
             } else if (matchNum >= 6 || /high|rush/i.test(matchWait)) {
@@ -235,8 +236,8 @@ export default function DarshanDetailsPage() {
               <span 
                 className={styles.statusPill}
                 style={{
-                  backgroundColor: id === 'ssd-token' && ssdTokenStatus === 'closed-for-day' ? '#FEE2E2' : '#DCFCE7',
-                  color: id === 'ssd-token' && ssdTokenStatus === 'closed-for-day' ? '#DC2626' : '#15803D'
+                  backgroundColor: id === 'ssd-token' && ssdTokenStatus === 'closed-for-day' ? '#FEE2E2' : crowdLevel === 'EXTREME' ? '#FEE2E2' : crowdLevel === 'HIGH' || crowdLevel === 'MODERATE' ? '#FEF3C7' : '#DCFCE7',
+                  color: id === 'ssd-token' && ssdTokenStatus === 'closed-for-day' ? '#DC2626' : crowdLevel === 'EXTREME' ? '#DC2626' : crowdLevel === 'HIGH' || crowdLevel === 'MODERATE' ? '#B45309' : '#15803D'
                 }}
               >
                 {id === 'ssd-token' 
