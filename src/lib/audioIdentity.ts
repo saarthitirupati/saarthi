@@ -133,7 +133,7 @@ async function playSyntheticOpeningIdent(): Promise<boolean> {
     syntheticAudioCtx = ctx;
 
     if (ctx.state === 'suspended') {
-      await ctx.resume();
+      await ctx.resume().catch(() => {});
     }
 
     const now = ctx.currentTime;

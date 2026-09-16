@@ -1,7 +1,7 @@
 // Saarthi Guide Service Worker v1
 // Caches app shell & visited pages for full offline support on Tirumala hill
 
-const CACHE_NAME = 'saarthi-v3';
+const CACHE_NAME = 'saarthi-v4';
 const APP_SHELL = [
   '/',
   '/explore',
@@ -54,13 +54,15 @@ self.addEventListener('fetch', (event) => {
   const { request } = event;
   const url = new URL(request.url);
 
-  // Skip non-GET, chrome-extension, admin routes, analytics
+  // Skip non-GET, chrome-extension, admin routes, analytics, and video streams (.mp4)
   if (
     request.method !== 'GET' ||
     url.protocol === 'chrome-extension:' ||
     url.pathname.startsWith('/saarthiadmin') ||
     url.pathname.startsWith('/api/v1/analytics') ||
-    url.pathname.startsWith('/api/admin')
+    url.pathname.startsWith('/api/admin') ||
+    url.pathname.match(/\.(mp4|webm|ogv|mov)$/i) ||
+    url.pathname.startsWith('/banner/')
   ) {
     return;
   }
