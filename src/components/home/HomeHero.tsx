@@ -258,32 +258,6 @@ export function HomeHero({ userName, locationName, weatherTemp, liveStatus, acti
   const [isLocating, setIsLocating] = useState<boolean>(false);
   const [isLocationModalOpen, setIsLocationModalOpen] = useState<boolean>(false);
 
-  // Video banner interactive control state
-  const [isVideoMuted, setIsVideoMuted] = useState<boolean>(true);
-  const [isVideoPlaying, setIsVideoPlaying] = useState<boolean>(true);
-  const bannerVideoRef = React.useRef<HTMLVideoElement | null>(null);
-
-  const toggleVideoMute = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    if (bannerVideoRef.current) {
-      bannerVideoRef.current.muted = !isVideoMuted;
-      setIsVideoMuted(!isVideoMuted);
-    }
-  };
-
-  const toggleVideoPlay = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    if (bannerVideoRef.current) {
-      if (isVideoPlaying) {
-        bannerVideoRef.current.pause();
-        setIsVideoPlaying(false);
-      } else {
-        bannerVideoRef.current.play().catch(() => {});
-        setIsVideoPlaying(true);
-      }
-    }
-  };
-
   const handleAutoDetectLocation = () => {
     setIsLocating(true);
     detectCoordinates(
@@ -2046,119 +2020,151 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
           </>
         )}
 
-      {/* 🎬 HIGH-FIDELITY RESPONSIVE SAARTHI MP4 VIDEO BANNER */}
+      {/* 🎬 INTEGRATED SAARTHI HERO ANIMATED VIDEO BANNER CARD */}
       <div style={{
         position: 'relative',
         width: '100%',
-        borderRadius: '18px',
+        borderRadius: '20px',
         overflow: 'hidden',
         marginBottom: '14px',
-        boxShadow: '0 10px 30px rgba(15, 23, 42, 0.14)',
-        border: '1.5px solid rgba(212, 175, 55, 0.4)',
+        boxShadow: '0 12px 32px rgba(15, 23, 42, 0.16)',
+        border: '1.5px solid rgba(212, 175, 55, 0.45)',
         background: '#0F172A',
-        aspectRatio: '16 / 9',
-        maxHeight: 'clamp(180px, 32vw, 240px)'
+        minHeight: '190px',
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'space-between',
+        padding: '16px',
+        boxSizing: 'border-box'
       }}>
+        {/* Ambient Looping Video Background */}
         <video
-          ref={bannerVideoRef}
           autoPlay
           loop
-          muted={isVideoMuted}
+          muted
           playsInline
           style={{
+            position: 'absolute',
+            top: 0,
+            left: 0,
             width: '100%',
             height: '100%',
             objectFit: 'cover',
-            display: 'block'
+            pointerEvents: 'none',
+            zIndex: 1
           }}
         >
           <source src="/banner/Absolutely_For_the_Saarthi_SV.mp4" type="video/mp4" />
         </video>
 
-        {/* Top-Left Live Devotional Badge */}
+        {/* Dark Gradient Overlay for High Text Contrast */}
         <div style={{
           position: 'absolute',
-          top: '10px',
-          left: '10px',
+          inset: 0,
+          background: 'linear-gradient(180deg, rgba(15, 23, 42, 0.35) 0%, rgba(15, 23, 42, 0.82) 100%)',
+          zIndex: 2,
+          pointerEvents: 'none'
+        }} />
+
+        {/* Banner Header Row: Live Badges */}
+        <div style={{
+          position: 'relative',
+          zIndex: 3,
           display: 'flex',
           alignItems: 'center',
-          gap: '6px',
-          padding: '4px 10px',
-          borderRadius: '20px',
-          background: 'rgba(15, 23, 42, 0.65)',
-          backdropFilter: 'blur(8px)',
-          border: '1px solid rgba(255, 255, 255, 0.2)',
-          color: '#FFFFFF',
-          fontSize: '10.5px',
-          fontWeight: 700,
-          letterSpacing: '0.03em',
-          pointerEvents: 'none',
-          boxShadow: '0 2px 8px rgba(0,0,0,0.3)'
+          justifyContent: 'space-between',
+          gap: '8px'
         }}>
-          <span style={{
-            width: '6px',
-            height: '6px',
-            borderRadius: '50%',
-            background: '#22C55E',
-            boxShadow: '0 0 8px #22C55E'
-          }} />
-          <span>{lang === 'te' ? 'తిరుమల దివ్య దర్శన గైడ్' : 'Tirumala Srivari Guide'}</span>
+          <div style={{
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: '6px',
+            padding: '4px 10px',
+            borderRadius: '20px',
+            background: 'rgba(15, 23, 42, 0.75)',
+            backdropFilter: 'blur(10px)',
+            border: '1px solid rgba(255, 255, 255, 0.25)',
+            color: '#FFFFFF',
+            fontSize: '11px',
+            fontWeight: 700
+          }}>
+            <span style={{
+              width: '7px',
+              height: '7px',
+              borderRadius: '50%',
+              background: '#22C55E',
+              boxShadow: '0 0 8px #22C55E'
+            }} />
+            <span>{lang === 'te' ? 'తిరుమల లైవ్ మార్గదర్శి' : 'Tirumala Srivari Guide'}</span>
+          </div>
+
+          <div style={{
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: '4px',
+            padding: '4px 8px',
+            borderRadius: '14px',
+            background: 'rgba(212, 175, 55, 0.25)',
+            border: '1px solid rgba(253, 224, 71, 0.4)',
+            color: '#FEF08A',
+            fontSize: '10.5px',
+            fontWeight: 800
+          }}>
+            <Sparkles size={12} color="#FDE047" />
+            <span>{lang === 'te' ? 'లైవ్ అప్‌డేట్' : 'LIVE'}</span>
+          </div>
         </div>
 
-        {/* Bottom-Right Interactive Controls (Mute/Unmute & Play/Pause) */}
+        {/* Banner Content: Headline, Description & Call To Action */}
         <div style={{
-          position: 'absolute',
-          bottom: '10px',
-          right: '10px',
-          display: 'flex',
-          alignItems: 'center',
-          gap: '6px',
-          zIndex: 3
+          position: 'relative',
+          zIndex: 3,
+          marginTop: '28px'
         }}>
-          <button
-            type="button"
-            onClick={toggleVideoPlay}
-            aria-label={isVideoPlaying ? 'Pause video' : 'Play video'}
-            title={isVideoPlaying ? 'Pause video' : 'Play video'}
+          <h2 style={{
+            fontSize: lang === 'te' ? '18px' : '17px',
+            fontWeight: 900,
+            color: '#FFFFFF',
+            margin: '0 0 6px 0',
+            lineHeight: 1.25,
+            textShadow: '0 2px 8px rgba(0,0,0,0.6)',
+            letterSpacing: '-0.01em'
+          }}>
+            {lang === 'te' ? 'శ్రీవారి దర్శనం & యాత్రా మార్గదర్శి' : 'Official Srivari Yatra Companion'}
+          </h2>
+          <p style={{
+            fontSize: '12px',
+            color: '#E2E8F0',
+            margin: '0 0 12px 0',
+            lineHeight: 1.35,
+            opacity: 0.9,
+            textShadow: '0 1px 4px rgba(0,0,0,0.6)'
+          }}>
+            {lang === 'te' 
+              ? 'రియల్-టైమ్ క్యూ సమయాలు, వాతావరణం & సులభ దర్శన మార్గాలు' 
+              : 'Real-time queue wait times, weather alerts & smart darshan guidance'}
+          </p>
+
+          <Link
+            href="/darshan/sarva-darshan"
             style={{
               display: 'inline-flex',
               alignItems: 'center',
-              justifyContent: 'center',
-              width: '32px',
-              height: '32px',
-              borderRadius: '50%',
-              background: 'rgba(15, 23, 42, 0.72)',
-              backdropFilter: 'blur(8px)',
-              border: '1px solid rgba(255, 255, 255, 0.3)',
+              gap: '6px',
+              padding: '8px 14px',
+              borderRadius: '12px',
+              background: 'linear-gradient(135deg, #D97706 0%, #B45309 100%)',
               color: '#FFFFFF',
-              cursor: 'pointer',
-              transition: 'transform 0.15s ease, background 0.2s ease'
+              fontSize: '12px',
+              fontWeight: 800,
+              textDecoration: 'none',
+              boxShadow: '0 4px 12px rgba(217, 119, 6, 0.4)',
+              border: '1px solid rgba(253, 224, 71, 0.4)'
             }}
           >
-            {isVideoPlaying ? <Pause size={14} /> : <Play size={14} style={{ marginLeft: '1px' }} />}
-          </button>
-          <button
-            type="button"
-            onClick={toggleVideoMute}
-            aria-label={isVideoMuted ? 'Unmute video audio' : 'Mute video audio'}
-            title={isVideoMuted ? 'Unmute sound' : 'Mute sound'}
-            style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              width: '32px',
-              height: '32px',
-              borderRadius: '50%',
-              background: 'rgba(15, 23, 42, 0.72)',
-              backdropFilter: 'blur(8px)',
-              border: '1px solid rgba(255, 255, 255, 0.3)',
-              color: '#FFFFFF',
-              cursor: 'pointer',
-              transition: 'transform 0.15s ease, background 0.2s ease'
-            }}
-          >
-            {isVideoMuted ? <VolumeX size={14} /> : <Volume2 size={14} />}
-          </button>
+            <span>{lang === 'te' ? 'క్యూ సమయం తనిఖీ చేయండి' : 'Check Darshan Timings'}</span>
+            <ChevronRight size={14} />
+          </Link>
         </div>
       </div>
 
