@@ -150,6 +150,7 @@ export default function SplashScreen({ onFinish }: { onFinish: () => void }) {
           <motion.button
             type="button"
             className={styles.skipPill}
+            aria-label="Skip splash screen and open app"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.4, delay: 0.6 }}
