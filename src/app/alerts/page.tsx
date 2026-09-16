@@ -23,6 +23,7 @@ import {
   getNotificationPermission,
   subscribeToPushNotifications,
   sendTestNotification,
+  isNativeAndroidApp,
   PushPermissionState
 } from '@/lib/pushClient';
 
@@ -32,11 +33,13 @@ export default function AlertsPage() {
   const { alerts, loading: alertsLoading } = useRealtimeAlerts();
 
   const [permission, setPermission] = useState<PushPermissionState>('default');
+  const [isNative, setIsNative] = useState(false);
   const [isSubscribing, setIsSubscribing] = useState(false);
   const [testStatus, setTestStatus] = useState<'idle' | 'sending' | 'sent' | 'failed'>('idle');
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
+      setIsNative(isNativeAndroidApp());
       setPermission(getNotificationPermission());
     }
   }, []);
@@ -135,17 +138,19 @@ export default function AlertsPage() {
                   alignItems: 'center',
                   gap: 4
                 }}>
-                  <Check size={12} strokeWidth={3} /> Live Alerts Active
+                  <Check size={12} strokeWidth={3} /> {isNative ? 'Android App Push Active' : 'Live Alerts Active'}
                 </span>
                 <span style={{ fontSize: '11px', color: '#166534', fontWeight: 600 }}>
-                  Phone Subscribed
+                  {isNative ? 'App Active' : 'Phone Subscribed'}
                 </span>
               </div>
               <h3 style={{ fontSize: 15, fontWeight: 800, color: '#14532D', margin: '0 0 4px 0' }}>
-                Srivari Darshan Alerts are Running
+                {isNative ? 'Android Lock-Screen Push Active' : 'Srivari Darshan Alerts are Running'}
               </h3>
               <p style={{ fontSize: 13, color: '#166534', lineHeight: 1.45, margin: '0 0 12px 0' }}>
-                You will receive instant alerts for SSD token quota releases, queue drops, and Tirumala hill advisories.
+                {isNative
+                  ? 'You will receive instant lock-screen alerts for SSD token drops, queue wait times, and Tirumala advisories directly on your phone.'
+                  : 'You will receive instant alerts for SSD token quota releases, queue drops, and Tirumala hill advisories.'}
               </p>
 
               <div style={{ display: 'flex', alignItems: 'center', gap: 10, flexWrap: 'wrap' }}>

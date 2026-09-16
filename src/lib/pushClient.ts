@@ -18,10 +18,25 @@ function urlBase64ToUint8Array(base64String: string): BufferSource {
 }
 
 /**
+ * Check if running inside native Android App (WebView).
+ */
+export function isNativeAndroidApp(): boolean {
+  if (typeof window === 'undefined') return false;
+  const ua = navigator.userAgent || '';
+  return /wv/i.test(ua) || Boolean((window as any).isSaarthiApp) || Boolean((window as any).Android);
+}
+
+/**
  * Check current notification permission status.
  */
 export function getNotificationPermission(): PushPermissionState {
-  if (typeof window === 'undefined' || !('Notification' in window) || !('serviceWorker' in navigator)) {
+  if (typeof window === 'undefined') {
+    return 'unsupported';
+  }
+  if (isNativeAndroidApp()) {
+    return 'granted';
+  }
+  if (!('Notification' in window) || !('serviceWorker' in navigator)) {
     return 'unsupported';
   }
   return Notification.permission as PushPermissionState;
@@ -106,20 +121,22 @@ export async function subscribeToPushNotifications(): Promise<{
  * Trigger an immediate test notification to verify device receipt.
  */
 export async function sendTestNotification(): Promise<boolean> {
-  if (typeof window === 'undefined' || !('Notification' in window)) return false;
+  if (typeof window === 'undefined') return false;
+  const native = isNativeAndroidApp();
+  if (!native && !('Notification' in window)) return false;
 
   try {
-    if (Notification.permission !== 'granted') {
+    if (!native && Notification.permission !== 'granted') {
       const res = await subscribeToPushNotifications();
       return res.success;
     }
 
-    const reg = 'serviceWorker' in navigator ? await navigator.serviceWorker.ready : null;
+    const reg = 'serviceWorker' in navigator ? await navigator.serviceWorker.ready.catch(() => null) : null;
     await showLocalNotification(
       reg,
-      '🛕 Live Temple Alert Test',
+      'Live Temple Alert Test',
       'Govinda Govinda! Live alerts are active. You will receive real-time queue drops and token announcements.'
-    );
+    ).catch(() => {});
     return true;
   } catch (err) {
     console.error('Test notification failed:', err);
