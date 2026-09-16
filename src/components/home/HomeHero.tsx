@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Menu, Bell, MapPin, Sun, Sparkles, Ticket, TicketX, ShieldAlert, Car, Gift, CloudRain, Bus, Clock, Route, Users, Zap, Check, ChevronDown, Navigation, Flame, Moon, Languages, RotateCcw, Share2, X, Volume2, VolumeX, ChevronLeft, ChevronRight, Pause, Building2, Calendar } from 'lucide-react';
+import { Menu, Bell, MapPin, Sun, Sparkles, Ticket, TicketX, ShieldAlert, Car, Gift, CloudRain, Bus, Clock, Route, Users, Zap, Check, ChevronDown, Navigation, Flame, Moon, Languages, RotateCcw, Share2, X, Volume2, VolumeX, ChevronLeft, ChevronRight, Pause, Play, Building2, Calendar } from 'lucide-react';
 import Link from 'next/link';
 import Logo from '@/components/Logo/Logo';
 import { useLanguage, setAppLanguage } from '@/lib/useLanguage';
@@ -257,6 +257,32 @@ export function HomeHero({ userName, locationName, weatherTemp, liveStatus, acti
   const [selectedLocation, setSelectedLocation] = useState<string>(locationName || 'Tirupati');
   const [isLocating, setIsLocating] = useState<boolean>(false);
   const [isLocationModalOpen, setIsLocationModalOpen] = useState<boolean>(false);
+
+  // Video banner interactive control state
+  const [isVideoMuted, setIsVideoMuted] = useState<boolean>(true);
+  const [isVideoPlaying, setIsVideoPlaying] = useState<boolean>(true);
+  const bannerVideoRef = React.useRef<HTMLVideoElement | null>(null);
+
+  const toggleVideoMute = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (bannerVideoRef.current) {
+      bannerVideoRef.current.muted = !isVideoMuted;
+      setIsVideoMuted(!isVideoMuted);
+    }
+  };
+
+  const toggleVideoPlay = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (bannerVideoRef.current) {
+      if (isVideoPlaying) {
+        bannerVideoRef.current.pause();
+        setIsVideoPlaying(false);
+      } else {
+        bannerVideoRef.current.play().catch(() => {});
+        setIsVideoPlaying(true);
+      }
+    }
+  };
 
   const handleAutoDetectLocation = () => {
     setIsLocating(true);
@@ -2020,32 +2046,120 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
           </>
         )}
 
-      {/* 🎬 HIGH-FIDELITY SAARTHI MP4 VIDEO BANNER */}
+      {/* 🎬 HIGH-FIDELITY RESPONSIVE SAARTHI MP4 VIDEO BANNER */}
       <div style={{
         position: 'relative',
         width: '100%',
         borderRadius: '18px',
         overflow: 'hidden',
-        marginBottom: '12px',
-        boxShadow: '0 8px 24px rgba(15, 23, 42, 0.12)',
-        border: '1.5px solid rgba(212, 175, 55, 0.35)',
-        background: '#0F172A'
+        marginBottom: '14px',
+        boxShadow: '0 10px 30px rgba(15, 23, 42, 0.14)',
+        border: '1.5px solid rgba(212, 175, 55, 0.4)',
+        background: '#0F172A',
+        aspectRatio: '16 / 9',
+        maxHeight: 'clamp(180px, 32vw, 240px)'
       }}>
         <video
+          ref={bannerVideoRef}
           autoPlay
           loop
-          muted
+          muted={isVideoMuted}
           playsInline
           style={{
             width: '100%',
-            height: 'auto',
-            maxHeight: '220px',
+            height: '100%',
             objectFit: 'cover',
             display: 'block'
           }}
         >
           <source src="/banner/Absolutely_For_the_Saarthi_SV.mp4" type="video/mp4" />
         </video>
+
+        {/* Top-Left Live Devotional Badge */}
+        <div style={{
+          position: 'absolute',
+          top: '10px',
+          left: '10px',
+          display: 'flex',
+          alignItems: 'center',
+          gap: '6px',
+          padding: '4px 10px',
+          borderRadius: '20px',
+          background: 'rgba(15, 23, 42, 0.65)',
+          backdropFilter: 'blur(8px)',
+          border: '1px solid rgba(255, 255, 255, 0.2)',
+          color: '#FFFFFF',
+          fontSize: '10.5px',
+          fontWeight: 700,
+          letterSpacing: '0.03em',
+          pointerEvents: 'none',
+          boxShadow: '0 2px 8px rgba(0,0,0,0.3)'
+        }}>
+          <span style={{
+            width: '6px',
+            height: '6px',
+            borderRadius: '50%',
+            background: '#22C55E',
+            boxShadow: '0 0 8px #22C55E'
+          }} />
+          <span>{lang === 'te' ? 'తిరుమల దివ్య దర్శన గైడ్' : 'Tirumala Srivari Guide'}</span>
+        </div>
+
+        {/* Bottom-Right Interactive Controls (Mute/Unmute & Play/Pause) */}
+        <div style={{
+          position: 'absolute',
+          bottom: '10px',
+          right: '10px',
+          display: 'flex',
+          alignItems: 'center',
+          gap: '6px',
+          zIndex: 3
+        }}>
+          <button
+            type="button"
+            onClick={toggleVideoPlay}
+            aria-label={isVideoPlaying ? 'Pause video' : 'Play video'}
+            title={isVideoPlaying ? 'Pause video' : 'Play video'}
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              width: '32px',
+              height: '32px',
+              borderRadius: '50%',
+              background: 'rgba(15, 23, 42, 0.72)',
+              backdropFilter: 'blur(8px)',
+              border: '1px solid rgba(255, 255, 255, 0.3)',
+              color: '#FFFFFF',
+              cursor: 'pointer',
+              transition: 'transform 0.15s ease, background 0.2s ease'
+            }}
+          >
+            {isVideoPlaying ? <Pause size={14} /> : <Play size={14} style={{ marginLeft: '1px' }} />}
+          </button>
+          <button
+            type="button"
+            onClick={toggleVideoMute}
+            aria-label={isVideoMuted ? 'Unmute video audio' : 'Mute video audio'}
+            title={isVideoMuted ? 'Unmute sound' : 'Mute sound'}
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              width: '32px',
+              height: '32px',
+              borderRadius: '50%',
+              background: 'rgba(15, 23, 42, 0.72)',
+              backdropFilter: 'blur(8px)',
+              border: '1px solid rgba(255, 255, 255, 0.3)',
+              color: '#FFFFFF',
+              cursor: 'pointer',
+              transition: 'transform 0.15s ease, background 0.2s ease'
+            }}
+          >
+            {isVideoMuted ? <VolumeX size={14} /> : <Volume2 size={14} />}
+          </button>
+        </div>
       </div>
 
       {/* 🛕 SIGNATURE LIVE TEMPLE PULSE (BLACK OUTLINE INSIDE WHITE GLASS) */}
