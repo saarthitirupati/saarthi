@@ -274,39 +274,70 @@ export default function DarshanDetailsPage() {
                 : 'Direct walk-in available 24/7 via Vaikuntam Queue Complex II'}
             </p>
 
-            {/* Collection Centres / Landmark Spots */}
+            {/* 🎟️ VISUAL ICON TILES FOR COLLECTION CENTRES */}
             {data.tokenLocations && data.tokenLocations.length > 0 && (
-              <div className={styles.collectionCentresBlock}>
-                <span className={styles.centresHeading}>Collection Centres</span>
-                <div className={styles.centresList}>
-                  {data.tokenLocations.map((loc, idx) => (
-                    <div key={idx} className={styles.centreItem}>
-                      <MapPin size={14} className={styles.centrePinIcon} />
-                      <div className={styles.centreText}>
-                        <strong className={styles.centreName}>{loc.name.split(' Complex')[0]}</strong>
-                        <span className={styles.centreLandmark}> • {loc.landmark.replace('Directly opposite ', 'Opp. ').replace('Opposite ', 'Opp. ').split('(')[0].trim()}</span>
-                      </div>
+              <div style={{ marginTop: '12px' }}>
+                <span style={{ fontSize: '12px', fontWeight: 800, color: '#0F172A', letterSpacing: '0.02em', display: 'block', marginBottom: '8px' }}>
+                  {lang === 'te' ? '🎟️ SSD టోకెన్ కేంద్రాలు' : '🎟️ Get SSD Tokens'}
+                </span>
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '8px' }}>
+                  <a href="https://maps.google.com/?q=Vishnu+Nivasam+Tirupati" target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none' }}>
+                    <div style={{
+                      background: 'linear-gradient(135deg, #FFFFFF 0%, #F8FAFC 100%)',
+                      border: '1.5px solid #E2E8F0',
+                      borderRadius: '14px',
+                      padding: '10px 6px',
+                      textAlign: 'center',
+                      boxShadow: '0 2px 6px rgba(0,0,0,0.03)',
+                      transition: 'transform 0.15s ease'
+                    }}>
+                      <div style={{ fontSize: '20px', lineHeight: 1, marginBottom: '4px' }}>🚆</div>
+                      <div style={{ fontSize: '11px', fontWeight: 800, color: '#0F172A', lineHeight: 1.2 }}>Vishnu Nivasam</div>
                     </div>
-                  ))}
+                  </a>
+
+                  <a href="https://maps.google.com/?q=Srinivasam+Complex+Tirupati" target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none' }}>
+                    <div style={{
+                      background: 'linear-gradient(135deg, #FFFFFF 0%, #F8FAFC 100%)',
+                      border: '1.5px solid #E2E8F0',
+                      borderRadius: '14px',
+                      padding: '10px 6px',
+                      textAlign: 'center',
+                      boxShadow: '0 2px 6px rgba(0,0,0,0.03)',
+                      transition: 'transform 0.15s ease'
+                    }}>
+                      <div style={{ fontSize: '20px', lineHeight: 1, marginBottom: '4px' }}>🚌</div>
+                      <div style={{ fontSize: '11px', fontWeight: 800, color: '#0F172A', lineHeight: 1.2 }}>Srinivasam</div>
+                    </div>
+                  </a>
+
+                  <a href="https://maps.google.com/?q=Bhudevi+Complex+Alipiri+Tirupati" target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none' }}>
+                    <div style={{
+                      background: 'linear-gradient(135deg, #FFFFFF 0%, #F8FAFC 100%)',
+                      border: '1.5px solid #E2E8F0',
+                      borderRadius: '14px',
+                      padding: '10px 6px',
+                      textAlign: 'center',
+                      boxShadow: '0 2px 6px rgba(0,0,0,0.03)',
+                      transition: 'transform 0.15s ease'
+                    }}>
+                      <div style={{ fontSize: '20px', lineHeight: 1, marginBottom: '4px' }}>⛰️</div>
+                      <div style={{ fontSize: '11px', fontWeight: 800, color: '#0F172A', lineHeight: 1.2 }}>Bhudevi</div>
+                    </div>
+                  </a>
                 </div>
               </div>
             )}
 
-            {/* Ground Truth Notice Box */}
-            <div className={styles.groundNoticeBox}>
-              <Clock size={16} className={styles.groundNoticeIcon} />
-              <div className={styles.groundNoticeText}>
-                {ssdNotice ? (
-                  <span>{ssdNotice}</span>
-                ) : id === 'ssd-token' ? (
-                  <span>* 🔹 SSD Tokens – Current Status* Quota Opens @ 2:00 AM daily across all Tirupati centers until quota exhausts.</span>
-                ) : id === 'special-entry' ? (
-                  <span>* 🔹 ₹300 Special Entry* Strict biometric check at Supatham/ATC gate. Only original IDs accepted.</span>
-                ) : (
-                  <span>* 🔹 Sarva Darshan* Free meals, hot beverages, and drinking water served continuously in all compartments.</span>
-                )}
+            {/* DYNAMIC NOTICE BANNER (ONLY SHOWS WHEN SPECIAL NOTICE OR REASON IS ACTIVE) */}
+            {(ssdNotice || id === 'ssd-token') && (
+              <div className={styles.groundNoticeBox} style={{ marginTop: '12px' }}>
+                <Clock size={16} className={styles.groundNoticeIcon} />
+                <div className={styles.groundNoticeText}>
+                  <span>{ssdNotice || (lang === 'te' ? 'ఉచిత టోకెన్లు ప్రతిరోజు ఉదయం తిరుపతి కేంద్రాలలో జారీ చేయబడతాయి.' : 'Free slotted tokens issue daily across all 3 Tirupati centers until quota exhausts.')}</span>
+                </div>
               </div>
-            </div>
+            )}
 
           </section>
         </div>
