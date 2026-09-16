@@ -37,12 +37,12 @@ export default function DarshanDetailsPage() {
   const [ssdNextTokenTime, setSsdNextTokenTime] = useState<string>('2:00 AM');
   const [ssdNotice, setSsdNotice] = useState<string>('');
 
-  // Minimal Collapsible Sections (Roadmap open by default)
+  // Collapsible Sections (Roadmap & Why Wait open by default)
   const [openSections, setOpenSections] = useState<Record<string, boolean>>({
     roadmap: true,
     dress: false,
     amenities: false,
-    whyWait: false
+    whyWait: true
   });
 
   const toggleSection = (key: string) => {
@@ -183,7 +183,7 @@ export default function DarshanDetailsPage() {
   return (
     <div className={styles.container}>
       
-      {/* ── 1. MINIMAL APP BAR ── */}
+      {/* ── 1. MINIMAL APP BAR (SINGLE HEADER LOCKUP) ── */}
       <header className={styles.topAppBar}>
         <button onClick={() => router.back()} className={styles.iconButton} aria-label="Go back">
           <ArrowLeft size={18} />
@@ -191,7 +191,7 @@ export default function DarshanDetailsPage() {
         <div className={styles.appBarTitleBlock}>
           <span className={styles.livePulseIndicator} />
           <h1 className={`${styles.appBarTitle} ${lang === 'te' ? styles.teluguFont : ''}`}>
-            {lang === 'te' ? (data.teluguTitle || data.title) : data.title}
+            {lang === 'te' ? 'తిరుమల దర్శన మార్గదర్శి' : 'Srivari Pilgrim Guide'}
           </h1>
         </div>
         <div className={styles.appBarActions}>
@@ -290,6 +290,26 @@ export default function DarshanDetailsPage() {
                   </div>
                 </div>
               </div>
+
+              {/* Pro-Tip Highlight Callout */}
+              {data.bestTimeToVisit && (
+                <div style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '8px',
+                  background: '#FEF3C7',
+                  border: '1px solid #FDE68A',
+                  color: '#78350F',
+                  padding: '8px 12px',
+                  borderRadius: '10px',
+                  marginTop: '10px',
+                  fontSize: '11.5px',
+                  fontWeight: 700
+                }}>
+                  <Lightbulb size={15} color="#D97706" style={{ flexShrink: 0 }} />
+                  <span><strong>Pro-Tip:</strong> {data.bestTimeToVisit}</span>
+                </div>
+              )}
             </div>
 
             {/* Highlight Banner (Next Release / Key Metric) */}
@@ -320,8 +340,8 @@ export default function DarshanDetailsPage() {
                 : 'Direct walk-in available 24/7 via Vaikuntam Queue Complex II'}
             </p>
 
-            {/* VISUAL ICON TILES FOR COLLECTION CENTRES (STRICTLY NO EMOJIS) */}
-            {data.tokenLocations && data.tokenLocations.length > 0 && (
+            {/* VISUAL ICON TILES FOR COLLECTION CENTRES (STRICTLY NO EMOJIS - SSD TOKEN ONLY) */}
+            {id === 'ssd-token' && data.tokenLocations && data.tokenLocations.length > 0 && (
               <div style={{ marginTop: '12px' }}>
                 <span style={{ fontSize: '12px', fontWeight: 800, color: '#0F172A', letterSpacing: '0.02em', display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '8px' }}>
                   <Ticket size={14} color="#0F172A" />
@@ -382,12 +402,12 @@ export default function DarshanDetailsPage() {
               </div>
             )}
 
-            {/* DYNAMIC NOTICE BANNER (ONLY SHOWS WHEN SPECIAL NOTICE OR REASON IS ACTIVE) */}
-            {(ssdNotice || id === 'ssd-token') && (
+            {/* DYNAMIC NOTICE BANNER (STRICTLY SCOPED TO SSD TOKENS PAGE ONLY WHEN ACTIVE) */}
+            {id === 'ssd-token' && ssdNotice && (
               <div className={styles.groundNoticeBox} style={{ marginTop: '12px' }}>
                 <Clock size={16} className={styles.groundNoticeIcon} />
                 <div className={styles.groundNoticeText}>
-                  <span>{ssdNotice || (lang === 'te' ? 'ఉచిత టోకెన్లు ప్రతిరోజు ఉదయం తిరుపతి కేంద్రాలలో జారీ చేయబడతాయి.' : 'Free slotted tokens issue daily across all 3 Tirupati centers until quota exhausts.')}</span>
+                  <span>{ssdNotice}</span>
                 </div>
               </div>
             )}
