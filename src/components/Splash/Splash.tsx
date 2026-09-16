@@ -2,12 +2,10 @@
 
 import React, { useEffect, useState, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Volume2, VolumeX } from 'lucide-react';
 import {
   playSaarthiSonicIdent,
   stopSaarthiSonicIdent,
-  isAudioGloballyEnabled,
-  setAudioGloballyEnabled
+  isAudioGloballyEnabled
 } from '@/lib/audioIdentity';
 import styles from './Splash.module.css';
 
@@ -15,7 +13,6 @@ const SMOOTH_EASE = [0.16, 1, 0.3, 1] as const;
 
 export default function SplashScreen({ onFinish }: { onFinish: () => void }) {
   const [isVisible, setIsVisible] = useState(true);
-  const [isAudioActive, setIsAudioActive] = useState(true);
 
   const handleFinish = useCallback(() => {
     stopSaarthiSonicIdent();
@@ -27,13 +24,7 @@ export default function SplashScreen({ onFinish }: { onFinish: () => void }) {
 
     // Trigger sacred opening sonic ident on splash mount
     if (isAudioGloballyEnabled()) {
-      playSaarthiSonicIdent(true).then((started) => {
-        if (isMounted) {
-          setIsAudioActive(started);
-        }
-      });
-    } else {
-      setIsAudioActive(false);
+      playSaarthiSonicIdent(true).catch(() => {});
     }
 
     const timer = setTimeout(() => {
@@ -49,19 +40,6 @@ export default function SplashScreen({ onFinish }: { onFinish: () => void }) {
     };
   }, [handleFinish]);
 
-  const toggleAudio = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    if (isAudioActive) {
-      stopSaarthiSonicIdent();
-      setAudioGloballyEnabled(false);
-      setIsAudioActive(false);
-    } else {
-      setAudioGloballyEnabled(true);
-      setIsAudioActive(true);
-      playSaarthiSonicIdent(true);
-    }
-  };
-
   return (
     <AnimatePresence onExitComplete={onFinish}>
       {isVisible && (
@@ -72,29 +50,6 @@ export default function SplashScreen({ onFinish }: { onFinish: () => void }) {
           transition={{ duration: 0.35, ease: SMOOTH_EASE }}
           onClick={handleFinish}
         >
-          {/* Top Bar Audio Sound Control */}
-          <motion.button
-            type="button"
-            className={styles.audioTogglePill}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.4, delay: 0.3 }}
-            onClick={toggleAudio}
-            aria-label={isAudioActive ? 'Mute Splash Sound' : 'Play Sacred Splash Sound'}
-          >
-            {isAudioActive ? (
-              <>
-                <Volume2 size={16} color="#E5B246" />
-                <span>Sound On</span>
-              </>
-            ) : (
-              <>
-                <VolumeX size={16} color="rgba(255, 255, 255, 0.6)" />
-                <span>Muted</span>
-              </>
-            )}
-          </motion.button>
-
           {/* Central Brand Identity */}
           <motion.div
             className={styles.brandContent}

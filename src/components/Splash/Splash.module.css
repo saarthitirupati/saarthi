@@ -126,33 +126,6 @@
   opacity: 1;
 }
 
-/* Sound Toggle Button — Top Right */
-.audioTogglePill {
-  position: absolute;
-  top: max(20px, env(safe-area-inset-top, 20px));
-  right: max(20px, env(safe-area-inset-right, 20px));
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  color: rgba(255, 255, 255, 0.9);
-  font-size: 12px;
-  font-weight: 600;
-  letter-spacing: 0.03em;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  padding: 6px 12px;
-  border-radius: 20px;
-  backdrop-filter: blur(8px);
-  transition: all 0.2s ease;
-  z-index: 20;
-}
-
-.audioTogglePill:hover {
-  background: rgba(255, 255, 255, 0.15);
-  color: #FFFFFF;
-}
-
 /* Subtle Progress Loading Line */
 .loadingBarContainer {
   position: absolute;
