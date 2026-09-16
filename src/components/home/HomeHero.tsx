@@ -2074,53 +2074,87 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
             fontWeight: 600,
             color: '#64748B'
           }}>
-            <span>{lang === 'te' ? '2 నిమి క్రితం తాజాకరించబడింది' : 'Updated 2 min ago'}</span>
+            <span>{updatedLabel}</span>
             <RotateCcw size={13} color="#64748B" style={{ cursor: 'pointer' }} onClick={() => window.location.reload()} />
           </div>
         </div>
 
-        {/* 1️⃣ THREE SIDE-BY-SIDE DARSHAN CARDS (MATCHING SPEC) */}
+        {/* 1️⃣ THREE SIDE-BY-SIDE DARSHAN CARDS (100% DYNAMIC FROM ADMIN DB) */}
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '8px', marginBottom: '14px', position: 'relative', zIndex: 2 }}>
           {(() => {
             const sarvaWait = getDarshanWait('sarva');
             const specialWait = getDarshanWait('special');
             const ssdWait = getDarshanWait('ssd');
 
+            const getMaxHours = (text: string): number => {
+              const matches = text.match(/\d+/g);
+              if (!matches || matches.length === 0) return 0;
+              return Math.max(...matches.map(Number));
+            };
+
+            // 1. Dynamic Sarva Card Styling
+            const sarvaHrs = getMaxHours(sarvaWait);
+            const sarvaTheme = sarvaHrs >= 8 || sarvaWait.includes('24') || sarvaWait.includes('30')
+              ? { bg: '#FEF2F2', border: '#FECDD3', badgeBg: '#FEE2E2', badgeText: '#991B1B', iconColor: '#DC2626' }
+              : sarvaHrs >= 4
+              ? { bg: '#FFFDF0', border: '#FDE68A', badgeBg: '#FEF3C7', badgeText: '#92400E', iconColor: '#D97706' }
+              : { bg: '#F0FDF4', border: '#BBF7D0', badgeBg: '#DCFCE7', badgeText: '#166534', iconColor: '#059669' };
+
+            // 2. Dynamic Special Entry Card Styling
+            const specialHrs = getMaxHours(specialWait);
+            const specialTheme = specialHrs > 6
+              ? { bg: '#FEF2F2', border: '#FECDD3', badgeBg: '#FEE2E2', badgeText: '#991B1B', iconColor: '#DC2626' }
+              : specialHrs >= 3
+              ? { bg: '#FFFDF0', border: '#FDE68A', badgeBg: '#FEF3C7', badgeText: '#92400E', iconColor: '#D97706' }
+              : { bg: '#F0FDF4', border: '#BBF7D0', badgeBg: '#DCFCE7', badgeText: '#166534', iconColor: '#059669' };
+
+            // 3. Dynamic SSD Tokens Card State & Styling (Admin liveStatus.ssdTokenStatus)
             const isSsdClosed = /cancel|full|heavy|rush|crowd|closed|stop/i.test(ssdWait) || ssdTokenStatus === 'closed-for-day' || ssdTokenStatus === 'closed';
+            const isSsdPaused = ssdTokenStatus === 'paused';
+            const isSsdIssuing = ssdTokenStatus === 'issuing' || liveSSD.toLowerCase().includes('issuing') || liveSSD.toLowerCase().includes('open');
+
+            let ssdTheme = { bg: '#FEF2F2', border: '#FECDD3', badgeBg: '#FEE2E2', badgeText: '#991B1B', iconColor: '#DC2626', iconComp: <TicketX size={24} color="#DC2626" />, waitText: lang === 'te' ? 'నేడు ముగిసింది' : 'Closed Today' };
+            if (isSsdIssuing) {
+              ssdTheme = { bg: '#F0FDF4', border: '#BBF7D0', badgeBg: '#DCFCE7', badgeText: '#166534', iconColor: '#059669', iconComp: <Ticket size={24} color="#059669" />, waitText: ssdWait !== '2–4 hrs' ? ssdWait : (lang === 'te' ? 'జారీ అవుతున్నాయి' : 'Issuing Now') };
+            } else if (isSsdPaused) {
+              ssdTheme = { bg: '#FFFDF0', border: '#FDE68A', badgeBg: '#FEF3C7', badgeText: '#92400E', iconColor: '#D97706', iconComp: <Ticket size={24} color="#D97706" />, waitText: lang === 'te' ? 'తాత్కాలికంగా ఆపబడింది' : 'Paused' };
+            } else if (liveSSD !== 'Closed' && liveSSD !== 'Check Counter') {
+              ssdTheme.waitText = liveSSD;
+            }
 
             const queueCards = [
               {
                 id: 'sarva',
                 href: '/darshan/sarva-darshan',
-                icon: <Building2 size={24} color="#D97706" />,
+                icon: <Building2 size={24} color={sarvaTheme.iconColor} />,
                 title: lang === 'te' ? 'సర్వదర్శనం' : 'Sarva Darshan',
                 wait: sarvaWait,
-                bg: '#FFFDF0',
-                border: '#FDE68A',
-                badgeBg: '#FEF3C7',
-                badgeText: '#92400E'
+                bg: sarvaTheme.bg,
+                border: sarvaTheme.border,
+                badgeBg: sarvaTheme.badgeBg,
+                badgeText: sarvaTheme.badgeText
               },
               {
                 id: 'special',
                 href: '/darshan/special-entry',
-                icon: <Ticket size={24} color="#059669" />,
+                icon: <Ticket size={24} color={specialTheme.iconColor} />,
                 title: lang === 'te' ? '₹300 ప్రవేశం' : '₹300 Entry',
                 wait: specialWait,
-                bg: '#F0FDF4',
-                border: '#BBF7D0',
-                badgeBg: '#DCFCE7',
-                badgeText: '#166534'
+                bg: specialTheme.bg,
+                border: specialTheme.border,
+                badgeBg: specialTheme.badgeBg,
+                badgeText: specialTheme.badgeText
               },
               {
                 id: 'ssd',
                 href: '/darshan/ssd-token',
-                icon: isSsdClosed ? <TicketX size={24} color="#DC2626" /> : <Ticket size={24} color="#DC2626" />,
+                icon: ssdTheme.iconComp,
                 title: lang === 'te' ? 'SSD టోకెన్లు' : 'SSD Tokens',
-                wait: isSsdClosed ? (lang === 'te' ? 'నేడు ముగిసింది' : 'Closed Today') : ssdWait,
-                bg: '#FEF2F2',
-                border: '#FECDD3',
-                badgeBg: '#FEE2E2',
-                badgeText: '#991B1B'
+                wait: ssdTheme.waitText,
+                bg: ssdTheme.bg,
+                border: ssdTheme.border,
+                badgeBg: ssdTheme.badgeBg,
+                badgeText: ssdTheme.badgeText
               }
             ];
 
