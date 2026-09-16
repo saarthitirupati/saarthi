@@ -171,8 +171,8 @@ export default function HomePage() {
               </Link>
             </div>
 
-            {/* 2x2 Action Grid with Soft Elevation */}
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
+            {/* 2x2 Action Grid with Soft Elevation & Responsive Auto-Fit */}
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(135px, 1fr))', gap: '10px' }}>
               {PRIMARY_SERVICES.map(srv => {
                 const IconComp = srv.icon;
                 return (
@@ -188,6 +188,7 @@ export default function HomePage() {
                       boxShadow: '0 6px 20px -4px rgba(15, 23, 42, 0.04), 0 2px 6px rgba(15, 23, 42, 0.02)',
                       display: 'flex',
                       flexDirection: 'column',
+                      minWidth: 0,
                       transition: 'transform 0.15s ease'
                     }}
                   >
@@ -424,7 +425,7 @@ export default function HomePage() {
                 </Link>
               </div>
 
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: '12px' }}>
                 {PRIMARY_SERVICES.map(srv => {
                   const IconComp = srv.icon;
                   return (
@@ -439,6 +440,7 @@ export default function HomePage() {
                         border: '1px solid rgba(15, 23, 42, 0.07)',
                         display: 'flex',
                         flexDirection: 'column',
+                        minWidth: 0,
                         transition: 'transform 0.15s ease, box-shadow 0.15s ease'
                       }}
                     >
@@ -487,7 +489,7 @@ export default function HomePage() {
               </div>
             </div>
 
-            {/* Explore Around You (Desktop 3-Column Grid) */}
+            {/* Explore Around You (Desktop Auto-Fit Grid) */}
             {nearbyPlaces.length > 0 && (
               <div style={{ backgroundColor: '#FFFFFF', borderRadius: '24px', padding: '20px', border: '1px solid #E2E8F0', boxShadow: '0 4px 16px rgba(15, 23, 42, 0.03)' }}>
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '12px' }}>
@@ -498,7 +500,7 @@ export default function HomePage() {
                     {t.seeAll}
                   </Link>
                 </div>
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '10px' }}>
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(150px, 1fr))', gap: '10px' }}>
                   {nearbyPlaces.slice(0, 6).map(p => (
                     <Link
                       key={p.id}
@@ -510,7 +512,8 @@ export default function HomePage() {
                         overflow: 'hidden',
                         border: '1px solid #E2E8F0',
                         display: 'flex',
-                        flexDirection: 'column'
+                        flexDirection: 'column',
+                        minWidth: 0
                       }}
                     >
                       <div style={{
