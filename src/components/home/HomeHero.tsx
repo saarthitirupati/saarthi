@@ -2020,6 +2020,34 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
           </>
         )}
 
+      {/* 🎬 HIGH-FIDELITY SAARTHI MP4 VIDEO BANNER */}
+      <div style={{
+        position: 'relative',
+        width: '100%',
+        borderRadius: '18px',
+        overflow: 'hidden',
+        marginBottom: '12px',
+        boxShadow: '0 8px 24px rgba(15, 23, 42, 0.12)',
+        border: '1.5px solid rgba(212, 175, 55, 0.35)',
+        background: '#0F172A'
+      }}>
+        <video
+          autoPlay
+          loop
+          muted
+          playsInline
+          style={{
+            width: '100%',
+            height: 'auto',
+            maxHeight: '220px',
+            objectFit: 'cover',
+            display: 'block'
+          }}
+        >
+          <source src="/banner/Absolutely_For_the_Saarthi_SV.mp4" type="video/mp4" />
+        </video>
+      </div>
+
       {/* 🛕 SIGNATURE LIVE TEMPLE PULSE (BLACK OUTLINE INSIDE WHITE GLASS) */}
       <div style={{
         background: 'linear-gradient(165deg, rgba(255, 255, 255, 0.95) 0%, rgba(248, 250, 252, 0.88) 100%)',
