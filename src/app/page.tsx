@@ -28,20 +28,16 @@ const TEXTS = {
     openDrawer: 'More for your pilgrimage',
     closeDrawer: 'Close',
     lockers: 'Lockers & Luggage',
-    lockersSub: 'PAC 1–5 & VQC counters',
-    lockersWhy: 'Store phones, bags & leather before queue',
+    lockersSub: 'Deposit phones & bags before queue',
     lockersStatus: '6 Locations Open',
     meals: 'Free Annaprasadam',
-    mealsSub: 'Vengamamba Complex',
-    mealsWhy: 'Free hot meals served continuously',
+    mealsSub: 'Free hot meals at Vengamamba',
     mealsStatus: 'Serving Continuously',
     tonsure: 'Kalyana Katta (Tonsure)',
-    tonsureSub: 'Near Pushkarini (24/7)',
-    tonsureWhy: 'Sacred hair offering before darshan',
+    tonsureSub: 'Sacred hair offering before darshan',
     tonsureStatus: 'Open 24/7',
     stay: 'Stay & PAC Halls',
-    staySub: 'PAC 1–5 & CRO counters',
-    stayWhy: 'Free resting halls & hot water baths',
+    staySub: 'Free resting & hot water halls',
     stayStatus: 'Halls Available'
   },
   te: {
@@ -54,20 +50,16 @@ const TEXTS = {
     openDrawer: 'మరిన్ని వివరాలు & సమాచారం',
     closeDrawer: 'మూసివేయి',
     lockers: 'లాకర్లు & లగేజీ',
-    lockersSub: 'PAC 1-5, VQC కౌంటర్లు',
-    lockersWhy: 'క్యూ లోకి వెళ్లేముందు ఫోన్లు, లగేజీ డిపాజిట్ చేయండి',
+    lockersSub: 'క్యూ లోకి వెళ్లేముందు ఫోన్లు, లగేజీ డిపాజిట్ చేయండి',
     lockersStatus: '6 కేంద్రాలు ఓపెన్',
     meals: 'ఉచిత అన్నప్రసాదం',
-    mealsSub: 'వెంగమాంబ సముదాయం',
-    mealsWhy: 'రోజంతా ఉచిత వేడి అన్నప్రసాదం & పాలు',
+    mealsSub: 'వెంగమాంబ సముదాయంలో ఉచిత భోజనం',
     mealsStatus: 'అందుబాటులో ఉంది',
     tonsure: 'కళ్యాణకట్ట (తలనీలాలు)',
-    tonsureSub: 'పుష్కరిణి వద్ద (24/7)',
-    tonsureWhy: 'దర్శనానికి ముందు ఉచిత తలనీలాల సమర్పణ',
+    tonsureSub: 'దర్శనానికి ముందు ఉచిత తలనీలాల సమర్పణ',
     tonsureStatus: '24/7 అందుబాటులో ఉంది',
     stay: 'వసతి & PAC హాళ్ళు',
-    staySub: 'PAC 1-5 & CRO కౌంటర్లు',
-    stayWhy: 'ఉచిత విశ్రాంతి హాళ్ళు & వేడి నీటి స్నానాలు',
+    staySub: 'ఉచిత విశ్రాంతి హాళ్ళు & వేడి నీటి స్నానాలు',
     stayStatus: 'హాళ్ళు అందుబాటులో ఉన్నాయి'
   }
 };
@@ -107,7 +99,6 @@ export default function HomePage() {
       id: 'lockers',
       title: t.lockers,
       subtitle: t.lockersSub,
-      whyNeeded: t.lockersWhy,
       status: t.lockersStatus,
       statusColor: '#16A34A',
       icon: Lock,
@@ -118,7 +109,6 @@ export default function HomePage() {
       id: 'meals',
       title: t.meals,
       subtitle: t.mealsSub,
-      whyNeeded: t.mealsWhy,
       status: t.mealsStatus,
       statusColor: '#16A34A',
       icon: Utensils,
@@ -129,7 +119,6 @@ export default function HomePage() {
       id: 'tonsure',
       title: t.tonsure,
       subtitle: t.tonsureSub,
-      whyNeeded: t.tonsureWhy,
       status: t.tonsureStatus,
       statusColor: '#16A34A',
       icon: Scissors,
@@ -140,7 +129,6 @@ export default function HomePage() {
       id: 'stay',
       title: t.stay,
       subtitle: t.staySub,
-      whyNeeded: t.stayWhy,
       status: t.stayStatus,
       statusColor: '#D97706',
       icon: Bed,
@@ -251,22 +239,9 @@ export default function HomePage() {
                       <h3 style={{ fontSize: '12.5px', fontWeight: 800, color: '#0F172A', margin: '0 0 2px', lineHeight: 1.25 }}>
                         {srv.title}
                       </h3>
-                      <p style={{ fontSize: '10.5px', color: '#64748B', margin: '0 0 4px', lineHeight: 1.25, fontWeight: 500 }}>
+                      <p style={{ fontSize: '10.5px', color: '#64748B', margin: '0 0 6px', lineHeight: 1.25, fontWeight: 500 }}>
                         {srv.subtitle}
                       </p>
-                      <div style={{
-                        fontSize: '9.5px',
-                        fontWeight: 700,
-                        color: '#0F5132',
-                        backgroundColor: '#F0FDF4',
-                        border: '1px solid #DCFCE7',
-                        padding: '3px 6px',
-                        borderRadius: '6px',
-                        marginBottom: '6px',
-                        lineHeight: 1.3
-                      }}>
-                        💡 {srv.whyNeeded}
-                      </div>
                       <div style={{ fontSize: '10.5px', fontWeight: 800, color: '#0F5132', display: 'flex', alignItems: 'center', gap: '2px' }}>
                         <span>{t.navigate}</span>
                       </div>
@@ -504,21 +479,11 @@ export default function HomePage() {
                         <h3 style={{ fontSize: '13.5px', fontWeight: 800, color: '#0F172A', margin: '0 0 2px' }}>
                           {srv.title}
                         </h3>
-                        <p style={{ fontSize: '11px', color: '#64748B', margin: '0 0 4px', lineHeight: 1.3 }}>
+                        <p style={{ fontSize: '11px', color: '#64748B', margin: '0 0 6px', lineHeight: 1.3 }}>
                           {srv.subtitle}
                         </p>
-                        <div style={{
-                          fontSize: '10px',
-                          fontWeight: 700,
-                          color: '#0F5132',
-                          backgroundColor: '#F0FDF4',
-                          border: '1px solid #DCFCE7',
-                          padding: '3px 8px',
-                          borderRadius: '6px',
-                          marginTop: '4px',
-                          lineHeight: 1.3
-                        }}>
-                          💡 {srv.whyNeeded}
+                        <div style={{ fontSize: '11px', fontWeight: 800, color: '#0F5132', display: 'flex', alignItems: 'center', gap: '2px' }}>
+                          <span>{t.navigate}</span>
                         </div>
                       </div>
                     </Link>
