@@ -10,3 +10,4 @@ export { JourneyOverviewPanel } from './JourneyOverviewPanel';
 export { PanchangamBar } from './PanchangamBar';
 export { DailyGitaCard } from './DailyGitaCard';
 export { YatraChecklist } from './YatraChecklist';
+export { DesktopSidebarWidget } from './DesktopSidebarWidget';

@@ -13,7 +13,8 @@ import {
   RecommendationCard,
   DailyContent,
   QuickChecklist,
-  YatraChecklist
+  YatraChecklist,
+  DesktopSidebarWidget
 } from '@/components/home';
 import styles from './Home.module.css';
 
@@ -571,6 +572,9 @@ export default function HomePage() {
 
             {/* Real-time SSD Free Token Quota, Slots & Counters Checklist */}
             <QuickChecklist {...home.checklist} liveStatus={home.status.liveStatus} />
+
+            {/* Desktop Column 2 Fill: Annaprasadam, Helpline Deck & Trek Radar */}
+            <DesktopSidebarWidget />
           </div>
         </div>
       </div>
