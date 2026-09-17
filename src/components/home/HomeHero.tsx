@@ -2678,35 +2678,40 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
                 return (
                   <div style={{
                     display: 'grid',
-                    gridTemplateColumns: 'repeat(3, 1fr)',
-                    gap: '8px',
-                    marginBottom: '10px'
+                    gridTemplateColumns: 'repeat(3, minmax(0, 1fr))',
+                    gap: '6px',
+                    marginBottom: '10px',
+                    width: '100%'
                   }}>
                     {visualCards.map((card, idx) => (
                       <div key={idx} style={{
                         backgroundColor: card.bg,
                         border: card.border,
                         borderRadius: '12px',
-                        padding: '9px 6px',
+                        padding: '8px 4px',
                         display: 'flex',
                         flexDirection: 'column',
                         alignItems: 'center',
                         justifyContent: 'center',
                         textAlign: 'center',
-                        minWidth: 0
+                        minWidth: 0,
+                        overflow: 'hidden'
                       }}>
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '4px', marginBottom: '3px' }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '3px', marginBottom: '2px', minWidth: 0, maxWidth: '100%' }}>
                           {card.icon}
-                          <span style={{ fontSize: '9.5px', fontWeight: 800, color: '#64748B', whiteSpace: 'nowrap' }}>
+                          <span style={{ fontSize: '9.5px', fontWeight: 800, color: '#64748B', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
                             {card.title}
                           </span>
                         </div>
                         <div style={{
-                          fontSize: '11px',
+                          fontSize: '10.5px',
                           fontWeight: 800,
                           color: card.color,
                           lineHeight: 1.2,
-                          wordBreak: 'break-word'
+                          whiteSpace: 'nowrap',
+                          overflow: 'hidden',
+                          textOverflow: 'ellipsis',
+                          maxWidth: '100%'
                         }}>
                           {card.value}
                         </div>
