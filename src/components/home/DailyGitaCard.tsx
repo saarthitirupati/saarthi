@@ -27,7 +27,7 @@ export function DailyGitaCard({ date, variant = 'desktop' }: DailyGitaCardProps)
       playSaarthiSonicIdent(true);
       const textToRecite = script === 'en' ? shloka.transliteration : script === 'sa' ? shloka.shlokaSanskrit : shloka.shlokaTelugu;
       const speechLang = script === 'te' ? 'te-IN' : script === 'sa' ? 'hi-IN' : 'en-IN';
-      toggleSpeak(textToRecite, speechLang);
+      toggleSpeak(textToRecite, { lang: speechLang, mode: 'devotional' });
     }
   };
 

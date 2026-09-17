@@ -42,7 +42,7 @@ export function DailyContent(props: any) {
       stop();
     } else {
       playSaarthiSonicIdent(true);
-      toggleSpeak(companionData.divineMoment.quote, lang === 'te' ? 'te-IN' : 'en-IN');
+      toggleSpeak(companionData.divineMoment.quote, { lang: lang === 'te' ? 'te-IN' : 'en-IN', mode: 'explainer' });
     }
   };
 
