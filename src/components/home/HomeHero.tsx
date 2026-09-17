@@ -2124,37 +2124,6 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
           }}
         />
 
-        {/* Top-Left Live Devotional Badge */}
-        <div style={{
-          position: 'absolute',
-          top: '10px',
-          left: '10px',
-          display: 'flex',
-          alignItems: 'center',
-          gap: '6px',
-          padding: '4px 10px',
-          borderRadius: '20px',
-          background: 'rgba(15, 23, 42, 0.75)',
-          backdropFilter: 'blur(8px)',
-          WebkitBackdropFilter: 'blur(8px)',
-          border: '1px solid rgba(255, 255, 255, 0.25)',
-          color: '#FFFFFF',
-          fontSize: '11px',
-          fontWeight: 700,
-          letterSpacing: '0.02em',
-          pointerEvents: 'none',
-          boxShadow: '0 2px 8px rgba(0,0,0,0.3)',
-          zIndex: 2
-        }}>
-          <span style={{
-            width: '7px',
-            height: '7px',
-            borderRadius: '50%',
-            background: '#22C55E',
-            boxShadow: '0 0 6px #22C55E'
-          }} />
-          <span>{lang === 'te' ? 'తిరుమల లైవ్ మార్గదర్శి' : 'Tirumala Srivari Guide'}</span>
-        </div>
 
         {/* Right Side Transparent Touch Hotspots (Matching Video's Built-in Buttons) */}
         <div style={{
