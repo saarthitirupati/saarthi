@@ -112,6 +112,8 @@ class MainActivity : AppCompatActivity() {
         val settings = webView.settings
         settings.javaScriptEnabled = true
         settings.domStorageEnabled = true
+        settings.databaseEnabled = true
+        settings.mediaPlaybackRequiresUserGesture = false
 
         // Responsive viewport handling for all screen densities and sizes
         settings.useWideViewPort = true
