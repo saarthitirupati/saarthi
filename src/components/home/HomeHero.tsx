@@ -2044,7 +2044,7 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
         marginBottom: '14px',
         boxShadow: '0 12px 32px rgba(15, 23, 42, 0.14)',
         border: '1.5px solid rgba(212, 175, 55, 0.45)',
-        background: '#FAF8F4 url(/banner/banner_poster.webp) left center / cover no-repeat',
+        background: '#FAF8F4 url(/banner/banner_poster.webp) center center / cover no-repeat',
         aspectRatio: '16 / 9',
         maxHeight: 'clamp(180px, 32vw, 240px)'
       }}>
@@ -2079,9 +2079,7 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
               width: '100%',
               height: '100%',
               objectFit: 'cover',
-              objectPosition: 'left center',
-              transform: 'scale(1.12)',
-              transformOrigin: 'left center',
+              objectPosition: 'center center',
               display: 'block',
               pointerEvents: 'none',
               opacity: isVideoLoaded ? 1 : 0,
