@@ -348,9 +348,9 @@ function placesToPlan(places: Place[], type: 'best' | 'budget' | 'premium', star
   });
 
   const meta = {
-    best:    { title: 'Best Match',  emoji: '⭐', tagline: 'Balanced plan — highest value with smart routing.' },
-    budget:  { title: 'Budget Pick', emoji: '💰', tagline: 'Spend smart — free & cheap spots, more stops.' },
-    premium: { title: 'Premium Path', emoji: '✨', tagline: 'Exclusive picks — high-rated, unique, and rare.' },
+    best:    { title: 'Best Match',  emoji: '', tagline: 'Balanced plan — highest value with smart routing.' },
+    budget:  { title: 'Budget Pick', emoji: '', tagline: 'Spend smart — free & cheap spots, more stops.' },
+    premium: { title: 'Premium Path', emoji: '', tagline: 'Exclusive picks — high-rated, unique, and rare.' },
   };
 
   return {

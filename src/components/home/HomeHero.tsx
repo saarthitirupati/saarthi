@@ -2039,14 +2039,13 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
       <div style={{
         position: 'relative',
         width: '100%',
-        borderRadius: '20px',
+        borderRadius: '16px',
         overflow: 'hidden',
         marginBottom: '14px',
-        boxShadow: '0 12px 32px rgba(15, 23, 42, 0.14)',
-        border: '1.5px solid rgba(212, 175, 55, 0.45)',
+        boxShadow: '0 6px 20px rgba(15, 23, 42, 0.08)',
+        border: '1px solid rgba(212, 175, 55, 0.35)',
         background: '#FAF8F4 url(/banner/banner_poster.webp) center center / cover no-repeat',
-        aspectRatio: '16 / 9',
-        maxHeight: 'clamp(180px, 32vw, 240px)'
+        aspectRatio: '16 / 9'
       }}>
         {!hasVideoError && (
           <video
@@ -2094,30 +2093,31 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
         {/* Top-Left Live Devotional Badge */}
         <div style={{
           position: 'absolute',
-          top: '12px',
-          left: '12px',
+          top: '10px',
+          left: '10px',
           display: 'flex',
           alignItems: 'center',
           gap: '6px',
           padding: '4px 10px',
           borderRadius: '20px',
-          background: 'rgba(15, 23, 42, 0.65)',
+          background: 'rgba(15, 23, 42, 0.75)',
           backdropFilter: 'blur(8px)',
+          WebkitBackdropFilter: 'blur(8px)',
           border: '1px solid rgba(255, 255, 255, 0.25)',
           color: '#FFFFFF',
           fontSize: '11px',
           fontWeight: 700,
-          letterSpacing: '0.03em',
+          letterSpacing: '0.02em',
           pointerEvents: 'none',
           boxShadow: '0 2px 8px rgba(0,0,0,0.3)',
           zIndex: 2
         }}>
           <span style={{
-            width: '6.5px',
-            height: '6.5px',
+            width: '7px',
+            height: '7px',
             borderRadius: '50%',
             background: '#22C55E',
-            boxShadow: '0 0 8px #22C55E'
+            boxShadow: '0 0 6px #22C55E'
           }} />
           <span>{lang === 'te' ? 'తిరుమల లైవ్ మార్గదర్శి' : 'Tirumala Srivari Guide'}</span>
         </div>
@@ -2126,7 +2126,7 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
         <div style={{
           position: 'absolute',
           right: '8px',
-          top: '52%',
+          top: '50%',
           transform: 'translateY(-50%)',
           display: 'flex',
           flexDirection: 'column',
