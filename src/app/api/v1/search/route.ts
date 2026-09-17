@@ -17,7 +17,7 @@ export async function GET(req: Request) {
       supabase
         .from('places')
         .select('*')
-        .or(`name.ilike.%${cleanQuery}%,description.ilike.%${cleanQuery}%,history.ilike.%${cleanQuery}%,location.ilike.%${cleanQuery}%`),
+        .or(`name.ilike.%${cleanQuery}%,id.ilike.%${cleanQuery}%,slug.ilike.%${cleanQuery}%,description.ilike.%${cleanQuery}%,shortIntro.ilike.%${cleanQuery}%,history.ilike.%${cleanQuery}%,location.ilike.%${cleanQuery}%,address.ilike.%${cleanQuery}%`),
       supabase
         .from('stories')
         .select('*')

@@ -3238,7 +3238,12 @@ export const PLACES: Place[] = [
     reviewCount: 18500,
     image: 'https://res.cloudinary.com/kniegqlj/image/upload/v1789663650/suruttapalli1_copy_yraale.jpg',
     coordinates: { lat: 13.3344873, lng: 79.8746719 },
-    tags: ['Shiva', 'Pradosham', 'Reclining Shiva', 'Vijayanagara', 'Surutapalli', 'Tirupati'],
+    tags: ['Shiva', 'Pradosham', 'Reclining Shiva', 'Vijayanagara', 'Surutapalli', 'Pallikondeswara', 'Tirupati'],
+    searchIntelligence: {
+      aliases: ['Surutapalli', 'Suruttapalli', 'Pallikonda', 'Pallikondeswara', 'Suruttapalle', 'Bhoga Sayana Shiva', 'Reclining Shiva', 'Pradosham Temple', 'Suruttapalli Temple', 'pallikondeswara-surutapalli'],
+      intentQueries: ['surutapalli temple', 'pallikondeswara surutapalli', 'reclining shiva temple', 'pradosham shiva temple', 'pallikondeswara-surutapalli', 'suruttapalli'],
+      misspellings: ['surutapali', 'surutapally', 'palikondeswara', 'suruttapalli']
+    },
     bestTime: 'Trayodashi Pradosham (twilight 4:30 PM - 6:30 PM) & Saturday Shani Pradosham',
     practicalInfo: {
       dressCode: 'Traditional South Indian attire required (Dhoti/Kurta for men, Saree/Chudidhar for women)',

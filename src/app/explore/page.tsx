@@ -144,12 +144,13 @@ function ExploreContent() {
       const normalize = (str: string) => (str || '').toLowerCase().replace(/[^a-z0-9]/g, '');
       const q = searchQuery.trim().toLowerCase();
       const qNorm = normalize(q);
-      const qTokens = q.split(/\s+/).filter(Boolean);
+      const qTokens = q.split(/[\s\-_,.!/]+/).filter(Boolean);
 
       // Build comprehensive searchable place text
       const placeBlob = [
         place.name,
         place.id,
+        (place as any).slug,
         place.location,
         place.address,
         place.category,
@@ -168,17 +169,17 @@ function ExploreContent() {
 
       const placeBlobNorm = normalize(placeBlob);
 
-      // 1. Direct substring match or normalized space-insensitive match (e.g. "Govinda Raja" <-> "Govindaraja")
-      const directMatch = placeBlob.includes(q) || placeBlobNorm.includes(qNorm);
+      // 1. Direct substring match or normalized space/hyphen-insensitive match
+      const directMatch = (q && placeBlob.includes(q)) || (qNorm && placeBlobNorm.includes(qNorm));
 
-      // 2. Tokenized word matching (handles multi-word queries)
+      // 2. Tokenized word matching (handles multi-word and hyphenated queries)
       const STOP_WORDS = new Set(['sri', 'shri', 'vari', 'temple', 'the', 'and', 'in', 'at', 'of']);
       const significantTokens = qTokens.filter(t => !STOP_WORDS.has(t) && t.length > 1);
       const tokensMatch = significantTokens.length > 0
         ? significantTokens.every(token => placeBlob.includes(token) || placeBlobNorm.includes(normalize(token)))
         : qTokens.every(token => placeBlob.includes(token));
 
-      // 3. Pilgrim intent alias matching
+      // 3. Pilgrim intent & landmark alias matching
       let aliasMatch = false;
       if (q.includes('hanuman') || q.includes('anjaneya')) {
         aliasMatch = placeBlob.includes('japali') || placeBlob.includes('anjaneya') || placeBlob.includes('hanuman');
@@ -188,6 +189,8 @@ function ExploreContent() {
         aliasMatch = placeBlobNorm.includes('govindaraja');
       } else if (q.includes('jain') || q.includes('parshwanath')) {
         aliasMatch = placeBlob.includes('jain') || placeBlob.includes('parshwanath');
+      } else if (q.includes('suruta') || q.includes('pallikond') || q.includes('reclining shiva')) {
+        aliasMatch = placeBlobNorm.includes('surutapalli') || placeBlobNorm.includes('pallikondeswara');
       }
 
       const toStr = (v: any) => typeof v === 'string' ? v : (v?.name || v?.slug || String(v || ''));
