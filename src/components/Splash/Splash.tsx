@@ -23,22 +23,38 @@ export default function SplashScreen({ onFinish }: { onFinish: () => void }) {
       playTempleBellChime();
     }, 200);
 
-    // Ensure video plays programmatically
-    const v = videoRef.current;
-    if (v) {
-      v.defaultMuted = true;
-      v.muted = true;
-      v.play().catch(() => {});
-    }
+    const playVideo = () => {
+      const v = videoRef.current;
+      if (v) {
+        v.setAttribute('muted', '');
+        v.setAttribute('playsinline', 'true');
+        v.setAttribute('webkit-playsinline', 'true');
+        v.setAttribute('x5-playsinline', 'true');
+        v.defaultMuted = true;
+        v.muted = true;
+        v.play().catch(() => {});
+      }
+    };
 
-    // Safety fallback timer (5.5s) in case video onEnded fails or autoplay is delayed
+    playVideo();
+
+    const handleGesture = () => {
+      playVideo();
+    };
+
+    window.addEventListener('touchstart', handleGesture, { passive: true });
+    window.addEventListener('click', handleGesture, { passive: true });
+
+    // Safety fallback timer (12s) - allows full 9.4s video to finish naturally via onEnded
     const safetyTimer = setTimeout(() => {
       handleFinish();
-    }, 5500);
+    }, 12000);
 
     return () => {
       clearTimeout(soundTimer);
       clearTimeout(safetyTimer);
+      window.removeEventListener('touchstart', handleGesture);
+      window.removeEventListener('click', handleGesture);
     };
   }, [handleFinish]);
 
@@ -50,7 +66,12 @@ export default function SplashScreen({ onFinish }: { onFinish: () => void }) {
           initial={{ opacity: 1 }}
           exit={{ opacity: 0, scale: 1.02 }}
           transition={{ duration: 0.35, ease: [0.4, 0, 0.2, 1] }}
-          onClick={handleFinish}
+          onClick={() => {
+            const v = videoRef.current;
+            if (v && v.paused) {
+              v.play().catch(() => {});
+            }
+          }}
         >
           <video
             ref={videoRef}
@@ -69,9 +90,22 @@ export default function SplashScreen({ onFinish }: { onFinish: () => void }) {
             disableRemotePlayback
             controls={false}
             controlsList="nodownload nofallback noremoteplayback noplaybackrate"
+            poster="/banner/banner_poster.webp"
             preload="auto"
             aria-hidden="true"
             tabIndex={-1}
+            onCanPlay={(e) => {
+              e.currentTarget.setAttribute('muted', '');
+              e.currentTarget.defaultMuted = true;
+              e.currentTarget.muted = true;
+              e.currentTarget.play().catch(() => {});
+            }}
+            onLoadedData={(e) => {
+              e.currentTarget.setAttribute('muted', '');
+              e.currentTarget.defaultMuted = true;
+              e.currentTarget.muted = true;
+              e.currentTarget.play().catch(() => {});
+            }}
             onEnded={handleFinish}
             onError={handleFinish}
             className={styles.splashVideo}

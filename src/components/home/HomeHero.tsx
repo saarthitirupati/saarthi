@@ -266,8 +266,10 @@ export function HomeHero({ userName, locationName, weatherTemp, liveStatus, acti
       if (v) {
         v.defaultMuted = true;
         v.muted = true;
-        if (v.paused) {
-          v.play().catch(() => {});
+        if (!v.paused && v.currentTime > 0) {
+          setIsVideoPlaying(true);
+        } else {
+          v.play().then(() => setIsVideoPlaying(true)).catch(() => {});
         }
       }
     };
@@ -2070,7 +2072,12 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
           onCanPlay={(e) => {
             e.currentTarget.defaultMuted = true;
             e.currentTarget.muted = true;
-            e.currentTarget.play().catch(() => {});
+            e.currentTarget.play().then(() => setIsVideoPlaying(true)).catch(() => {});
+          }}
+          onLoadedData={(e) => {
+            e.currentTarget.defaultMuted = true;
+            e.currentTarget.muted = true;
+            e.currentTarget.play().then(() => setIsVideoPlaying(true)).catch(() => {});
           }}
           onPlaying={() => setIsVideoPlaying(true)}
           onTimeUpdate={(e) => {
@@ -2078,17 +2085,15 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
               setIsVideoPlaying(true);
             }
           }}
-          onWaiting={() => setIsVideoPlaying(false)}
-          onStalled={() => setIsVideoPlaying(false)}
           onError={() => setIsVideoPlaying(false)}
           onPause={(e) => {
             e.currentTarget.defaultMuted = true;
             e.currentTarget.muted = true;
-            e.currentTarget.play().catch(() => {});
+            e.currentTarget.play().then(() => setIsVideoPlaying(true)).catch(() => {});
           }}
           onEnded={(e) => {
             e.currentTarget.currentTime = 0;
-            e.currentTarget.play().catch(() => {});
+            e.currentTarget.play().then(() => setIsVideoPlaying(true)).catch(() => {});
           }}
           style={{
             width: '100%',

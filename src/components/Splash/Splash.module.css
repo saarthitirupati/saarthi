@@ -1,12 +1,17 @@
 /* =========================================================
-   SAARTHI SACRED OPENING SPLASH SCREEN (Video Splash Screen)
+   SAARTHI SACRED OPENING SPLASH SCREEN (Full Screen Cover)
    ========================================================= */
 
 .splashContainer {
   position: fixed;
-  inset: 0;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100vw;
+  height: 100vh;
   z-index: 999999;
-  background: #F7F2E8; /* Matching warm cream background of the deity video */
+  background: #FAF8F5; /* Divine cream matching video background */
   display: flex;
   align-items: center;
   justify-content: center;
@@ -22,11 +27,14 @@
 }
 
 .splashVideo {
-  width: 100%;
-  height: 100%;
-  max-width: 100vw;
-  max-height: 100vh;
-  object-fit: cover; /* Cover full screen seamlessly without black bars */
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  min-width: 100vw;
+  min-height: 100vh;
+  object-fit: cover; /* Cover 100% of viewport on ALL screens (mobile, tablet, desktop, ultra-wide) */
   object-position: center center;
   display: block;
   pointer-events: none;
@@ -35,14 +43,16 @@
   -webkit-touch-callout: none;
 }
 
-/* On Desktop / Large Screens: Keep Deity perfectly centered with seamless cream background */
-@media (min-width: 768px) {
-  .splashVideo {
-    width: auto;
-    height: 100vh;
-    max-width: 100vw;
-    object-fit: contain; /* On desktop, display deity proportionally without distortion */
-  }
+.splashVideo::-webkit-media-controls,
+.splashVideo::-webkit-media-controls-start-playback-button,
+.splashVideo::-webkit-media-controls-play-button,
+.splashVideo::-webkit-media-controls-overlay-play-button,
+.splashVideo::-webkit-media-controls-panel,
+.splashVideo::-webkit-media-controls-enclosure {
+  display: none !important;
+  -webkit-appearance: none !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
 }
 
 /* Skip Button Pill - Sacred Cream & Gold Theme */
