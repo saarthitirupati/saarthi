@@ -1252,7 +1252,32 @@ export async function shareOrDownloadCard(
   const isMobile = /android|iphone|ipad|ipod|mobile/i.test(userAgent);
   const isIOS = /iphone|ipad|ipod/i.test(userAgent);
 
-  // 1. Construct File strictly with correct PNG mime type and name
+  // 1. Native Mobile App Bridge Detection (Capacitor / Android Native / iOS WebKit)
+  const win = window as any;
+  if (win.Android && typeof win.Android.shareText === 'function') {
+    try {
+      win.Android.shareText(fullCaption, title);
+      return true;
+    } catch (e) {
+      console.warn('[Share] Android bridge share failed:', e);
+    }
+  }
+
+  if (win.Capacitor?.Plugins?.Share && typeof win.Capacitor.Plugins.Share.share === 'function') {
+    try {
+      await win.Capacitor.Plugins.Share.share({
+        title,
+        text: fullCaption,
+        url,
+        dialogTitle: title
+      });
+      return true;
+    } catch (e) {
+      console.warn('[Share] Capacitor plugin share failed:', e);
+    }
+  }
+
+  // 2. Construct File strictly with correct PNG mime type and name
   let file: File;
   try {
     file = new File([blob], filename, { type: 'image/png', lastModified: Date.now() });
@@ -1264,7 +1289,7 @@ export async function shareOrDownloadCard(
     file = b as File;
   }
 
-  // 2. Native Web Share API Level 2 (Mobile Chrome, Samsung Internet, iOS Safari)
+  // 3. Native Web Share API Level 2 (Image File + Text + URL)
   if (typeof navigator !== 'undefined' && typeof navigator.share === 'function') {
     let canShareFile = false;
     try {
@@ -1281,49 +1306,68 @@ export async function shareOrDownloadCard(
       try {
         const sharePayload: ShareData = isIOS
           ? { files: [file], title, text: fullCaption }
-          : { files: [file], title };
+          : { files: [file], title, text: fullCaption, url };
 
         await navigator.share(sharePayload);
         return true;
       } catch (err: any) {
         // User explicitly cancelled the share dialog
-        if (err?.name === 'AbortError' || err?.message?.includes('abort')) {
+        if (err?.name === 'AbortError' || err?.message?.includes('abort') || err?.message?.includes('cancel')) {
           return true;
         }
-        console.warn('[Share] Native file share failed in WebView/Browser, proceeding to direct image download + clipboard copy:', err);
+        console.warn('[Share] File share failed, falling back to Web Share API text payload:', err);
       }
+    }
+
+    // 4. Web Share API Level 1 Fallback (Text + URL - Works 100% in Mobile Apps, WebViews, PWAs)
+    try {
+      await navigator.share({
+        title,
+        text: fullCaption,
+        url
+      });
+      return true;
+    } catch (err: any) {
+      if (err?.name === 'AbortError' || err?.message?.includes('abort') || err?.message?.includes('cancel')) {
+        return true;
+      }
+      console.warn('[Share] Web Share API text share failed, trying clipboard and app link:', err);
     }
   }
 
-  // 3. Guaranteed Image PNG Delivery Fallback: Direct Download + Clipboard Copy
+  // 5. Guaranteed Image PNG & Text Fallback: Copy to Clipboard + Direct Download + App Links
   try {
-    // A. Always trigger direct image PNG download so user gets visual poster
-    downloadCard(blob, filename);
-
-    // B. Copy Image PNG to Clipboard if supported
-    if (typeof navigator !== 'undefined' && navigator.clipboard && typeof window.ClipboardItem === 'function') {
+    // A. Copy Image PNG & Text to Clipboard
+    if (typeof navigator !== 'undefined' && navigator.clipboard) {
+      if (typeof window.ClipboardItem === 'function') {
+        try {
+          await navigator.clipboard.write([
+            new ClipboardItem({ 'image/png': blob })
+          ]);
+        } catch {
+          // Clipboard image write requiring focus
+        }
+      }
       try {
-        await navigator.clipboard.write([
-          new ClipboardItem({ 'image/png': blob })
-        ]);
+        await navigator.clipboard.writeText(fullCaption);
       } catch {
-        // Clipboard write requires active document focus
+        // Clipboard text write
       }
     }
 
-    // C. If on mobile device, open WhatsApp with caption so user can paste/attach downloaded card
+    // B. Trigger image PNG file download on desktop / browser
+    downloadCard(blob, filename);
+
+    // C. Mobile WhatsApp link launcher
     const encoded = encodeURIComponent(fullCaption);
     if (isMobile) {
-      window.location.href = `whatsapp://send?text=${encoded}`;
-      setTimeout(() => {
-        window.open(`https://api.whatsapp.com/send?text=${encoded}`, '_blank');
-      }, 700);
+      window.open(`https://api.whatsapp.com/send?text=${encoded}`, '_blank');
     } else {
       window.open(`https://api.whatsapp.com/send?text=${encoded}`, '_blank');
     }
     return true;
   } catch (err) {
-    console.error('[Share] Fallback sharing error:', err);
+    console.error('[Share] Universal fallback error:', err);
     downloadCard(blob, filename);
     return true;
   }
