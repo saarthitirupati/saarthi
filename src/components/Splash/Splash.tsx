@@ -78,7 +78,7 @@ export default function SplashScreen({ onFinish }: { onFinish: () => void }) {
         >
           <video
             ref={videoRef}
-            src="/banner/saarthi-splashscreen.mp4?v=1080p_v3"
+            src="/banner/saarthi-splashscreen.mp4"
             autoPlay
             loop={false}
             muted
