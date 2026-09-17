@@ -34,10 +34,18 @@ function LayoutContent({
   const isAdmin = pathname?.startsWith('/saarthiadmin');
   const isStudio = pathname?.startsWith('/studio');
   const { locationPermission, isInitialized } = useTrip();
-  const [needsOnboarding, setNeedsOnboarding] = useState<boolean | null>(null);
+  const [needsOnboarding, setNeedsOnboarding] = useState<boolean | null>(() => {
+    if (typeof window === 'undefined') return null;
+    const isApp = window.matchMedia('(display-mode: standalone)').matches;
+    const obKey = isApp ? 'hasSeenOnboarding_app' : 'hasSeenOnboarding';
+    const hasSeenOnboarding = localStorage.getItem(obKey);
+    const hasName = localStorage.getItem(isApp ? 'saarthi_user_name_app' : 'saarthi_user_name');
+    return !hasSeenOnboarding || !hasName;
+  });
   const alertsHook = useAlerts();
 
   useEffect(() => {
+    if (typeof window === 'undefined') return;
     const isApp = window.matchMedia('(display-mode: standalone)').matches;
     const obKey = isApp ? 'hasSeenOnboarding_app' : 'hasSeenOnboarding';
     const hasSeenOnboarding = localStorage.getItem(obKey);
@@ -59,10 +67,10 @@ function LayoutContent({
   }, [setIsMenuOpen, isMenuOpen]);
 
   const isExcluded = pathname === '/onboarding' || pathname === '/splash' || isAdmin || isStudio;
-  const isCheckingOrNeedsOnboarding = !isExcluded && (needsOnboarding === null || needsOnboarding === true);
+  const isCheckingOrNeedsOnboarding = !isExcluded && (needsOnboarding === true);
   const showLocationPrompt = isInitialized && !showSplash && !isAdmin && pathname === '/' && locationPermission === 'default';
   const showBottomNav = !showSplash && !showLocationPrompt && !isAdmin && (['/', '/explore', '/saved', '/profile', '/essentials'].includes(pathname) || pathname?.startsWith('/essentials/'));
-  const hideContent = !isAdmin && (showSplash || showLocationPrompt || isCheckingOrNeedsOnboarding);
+  const hideContent = !isAdmin && (showLocationPrompt || isCheckingOrNeedsOnboarding);
 
   return (
     <>

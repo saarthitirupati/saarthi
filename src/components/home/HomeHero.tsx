@@ -2054,7 +2054,7 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
       }}>
         <video
           ref={bannerVideoRef}
-          src="/banner/Absolutely_For_the_Saarthi_SV.mp4"
+          src="/banner/homescreen-banner.mp4"
           autoPlay
           loop
           muted
@@ -2113,8 +2113,7 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
             width: '100%',
             height: '100%',
             objectFit: 'cover',
-            objectPosition: 'center top',
-            transform: 'scale(1.30) translateY(-7.5%)',
+            objectPosition: 'center center',
             display: 'block',
             pointerEvents: 'none',
             userSelect: 'none',
