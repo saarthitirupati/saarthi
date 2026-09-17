@@ -262,24 +262,40 @@ export function HomeHero({ userName, locationName, weatherTemp, liveStatus, acti
   const bannerVideoRef = React.useRef<HTMLVideoElement>(null);
 
   React.useEffect(() => {
-    const v = bannerVideoRef.current;
-    if (v) {
-      v.defaultMuted = true;
-      v.muted = true;
-      const playPromise = v.play();
-      if (playPromise !== undefined) {
-        playPromise.catch(() => {
-          const handleGesture = () => {
-            if (bannerVideoRef.current) {
-              bannerVideoRef.current.muted = true;
-              bannerVideoRef.current.play().catch(() => {});
-            }
-          };
-          window.addEventListener('touchstart', handleGesture, { once: true });
-          window.addEventListener('click', handleGesture, { once: true });
-        });
+    const playVideo = () => {
+      const v = bannerVideoRef.current;
+      if (v) {
+        v.defaultMuted = true;
+        v.muted = true;
+        if (v.paused) {
+          v.play().catch(() => {});
+        }
       }
-    }
+    };
+
+    playVideo();
+
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === 'visible') {
+        playVideo();
+      }
+    };
+
+    const handleGesture = () => {
+      playVideo();
+    };
+
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+    window.addEventListener('focus', handleGesture);
+    window.addEventListener('touchstart', handleGesture, { passive: true });
+    window.addEventListener('click', handleGesture, { passive: true });
+
+    return () => {
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+      window.removeEventListener('focus', handleGesture);
+      window.removeEventListener('touchstart', handleGesture);
+      window.removeEventListener('click', handleGesture);
+    };
   }, []);
 
   const handleAutoDetectLocation = () => {
@@ -2049,6 +2065,15 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
               e.currentTarget.play().catch(() => {});
             }}
             onLoadedData={() => setIsVideoLoaded(true)}
+            onPause={(e) => {
+              e.currentTarget.defaultMuted = true;
+              e.currentTarget.muted = true;
+              e.currentTarget.play().catch(() => {});
+            }}
+            onEnded={(e) => {
+              e.currentTarget.currentTime = 0;
+              e.currentTarget.play().catch(() => {});
+            }}
             onError={() => setHasVideoError(true)}
             style={{
               width: '100%',
