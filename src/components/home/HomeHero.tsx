@@ -264,6 +264,10 @@ export function HomeHero({ userName, locationName, weatherTemp, liveStatus, acti
     const playVideo = () => {
       const v = bannerVideoRef.current;
       if (v) {
+        v.setAttribute('muted', '');
+        v.setAttribute('playsinline', 'true');
+        v.setAttribute('webkit-playsinline', 'true');
+        v.setAttribute('x5-playsinline', 'true');
         v.defaultMuted = true;
         v.muted = true;
         if (!v.paused && v.currentTime > 0) {
@@ -2050,7 +2054,7 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
       }}>
         <video
           ref={bannerVideoRef}
-          src="/banner/hero_banner_compressed.mp4"
+          src="/banner/Absolutely_For_the_Saarthi_SV.mp4"
           autoPlay
           loop
           muted
@@ -2072,11 +2076,21 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
           onCanPlay={(e) => {
             e.currentTarget.defaultMuted = true;
             e.currentTarget.muted = true;
+            if (e.currentTarget.textTracks) {
+              for (let i = 0; i < e.currentTarget.textTracks.length; i++) {
+                e.currentTarget.textTracks[i].mode = 'disabled';
+              }
+            }
             e.currentTarget.play().then(() => setIsVideoPlaying(true)).catch(() => {});
           }}
           onLoadedData={(e) => {
             e.currentTarget.defaultMuted = true;
             e.currentTarget.muted = true;
+            if (e.currentTarget.textTracks) {
+              for (let i = 0; i < e.currentTarget.textTracks.length; i++) {
+                e.currentTarget.textTracks[i].mode = 'disabled';
+              }
+            }
             e.currentTarget.play().then(() => setIsVideoPlaying(true)).catch(() => {});
           }}
           onPlaying={() => setIsVideoPlaying(true)}
@@ -2100,6 +2114,7 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
             height: '100%',
             objectFit: 'cover',
             objectPosition: 'center center',
+            transform: 'scale(1.14) translateY(-2.5%)',
             display: 'block',
             pointerEvents: 'none',
             userSelect: 'none',

@@ -90,7 +90,7 @@ export default function SplashScreen({ onFinish }: { onFinish: () => void }) {
             disableRemotePlayback
             controls={false}
             controlsList="nodownload nofallback noremoteplayback noplaybackrate"
-            poster="/banner/banner_poster.webp"
+            poster="/banner/splash_poster.webp"
             preload="auto"
             aria-hidden="true"
             tabIndex={-1}
@@ -110,20 +110,6 @@ export default function SplashScreen({ onFinish }: { onFinish: () => void }) {
             onError={handleFinish}
             className={styles.splashVideo}
           />
-
-          {/* ⚡ Skip button */}
-          <motion.button
-            className={styles.skipPill}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.3, duration: 0.3 }}
-            onClick={(e) => {
-              e.stopPropagation();
-              handleFinish();
-            }}
-          >
-            Skip →
-          </motion.button>
         </motion.div>
       )}
     </AnimatePresence>
