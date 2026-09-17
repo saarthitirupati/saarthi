@@ -255,6 +255,7 @@ export function HomeHero({ userName, locationName, weatherTemp, liveStatus, acti
   const { setUserLocation } = useTrip();
   const [overrideScenario, setOverrideScenario] = useState<string>('auto');
   const [selectedLocation, setSelectedLocation] = useState<string>(locationName || 'Tirupati');
+  const [isLocating, setIsLocating] = useState<boolean>(false);
   const [isLocationModalOpen, setIsLocationModalOpen] = useState<boolean>(false);
   const [isVideoPlaying, setIsVideoPlaying] = useState<boolean>(false);
   const bannerVideoRef = React.useRef<HTMLVideoElement>(null);
@@ -2052,14 +2053,34 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
           loop
           muted
           playsInline
+          {...{
+            'webkit-playsinline': 'true',
+            'x5-playsinline': 'true',
+            'x5-video-player-type': 'h5',
+            'x5-video-player-fullscreen': 'false'
+          } as any}
+          disablePictureInPicture
+          disableRemotePlayback
+          controls={false}
+          controlsList="nodownload nofallback noremoteplayback noplaybackrate"
           poster="/banner/banner_poster.webp"
           preload="auto"
-          controls={false}
+          aria-hidden="true"
+          tabIndex={-1}
           onCanPlay={(e) => {
             e.currentTarget.defaultMuted = true;
             e.currentTarget.muted = true;
             e.currentTarget.play().catch(() => {});
           }}
+          onPlaying={() => setIsVideoPlaying(true)}
+          onTimeUpdate={(e) => {
+            if (e.currentTarget.currentTime > 0 && !isVideoPlaying) {
+              setIsVideoPlaying(true);
+            }
+          }}
+          onWaiting={() => setIsVideoPlaying(false)}
+          onStalled={() => setIsVideoPlaying(false)}
+          onError={() => setIsVideoPlaying(false)}
           onPause={(e) => {
             e.currentTarget.defaultMuted = true;
             e.currentTarget.muted = true;
@@ -2076,8 +2097,11 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
             objectPosition: 'center center',
             display: 'block',
             pointerEvents: 'none',
-            opacity: 1,
-            transition: 'opacity 0.4s ease-in-out'
+            userSelect: 'none',
+            WebkitUserSelect: 'none',
+            WebkitTouchCallout: 'none',
+            opacity: isVideoPlaying ? 1 : 0,
+            transition: 'opacity 0.5s ease-in-out'
           }}
         />
 
@@ -2593,14 +2617,6 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
                     title: lang === 'te' ? 'నేటి విశేషం' : 'Sacred Shrine',
                     value: lang === 'te' ? shrineNameTe : shrineNameEn,
                     color: '#92400E'
-                  },
-                  {
-                    icon: <Clock size={14} color="#0F5132" />,
-                    bg: '#F0FDF4',
-                    border: '1px solid #BBF7D0',
-                    title: lang === 'te' ? 'క్యూ రద్దీ' : 'Queue Crowd',
-                    value: lang === 'te' ? '12 PM తర్వాత తక్కువ రద్దీ' : 'Less Crowd After 12 PM',
-                    color: '#166534'
                   },
                   {
                     icon: <Navigation size={14} color="#2563EB" />,
