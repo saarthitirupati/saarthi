@@ -124,10 +124,10 @@ export default function ClientLayout({
   const router = useRouter();
 
   const [showSplash, setShowSplash] = useState<boolean>(() => {
-    if (typeof window === 'undefined') return false;
+    if (typeof window === 'undefined') return true;
     const splashShown = sessionStorage.getItem('splashShown');
     const path = window.location.pathname;
-    const isHome = path === '/' || path === '';
+    const isHome = path === '/' || path === '' || path === '/splash';
     return !splashShown && isHome;
   });
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -137,10 +137,13 @@ export default function ClientLayout({
   useEffect(() => {
     if (typeof window === 'undefined') return;
     const splashShown = sessionStorage.getItem('splashShown');
-    if (!splashShown && pathname === '/') {
+    const isHome = pathname === '/' || pathname === '' || pathname === '/splash';
+    if (!splashShown && isHome) {
       setShowSplash(true);
+    } else if (splashShown && isHome && showSplash) {
+      setShowSplash(false);
     }
-  }, [pathname]);
+  }, [pathname, showSplash]);
 
   // Register service worker + sync push subscription if permission was already granted
   useEffect(() => {

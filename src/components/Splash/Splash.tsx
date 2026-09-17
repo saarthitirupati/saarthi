@@ -7,6 +7,7 @@ import styles from './Splash.module.css';
 
 export default function SplashScreen({ onFinish }: { onFinish: () => void }) {
   const [isVisible, setIsVisible] = useState(true);
+  const [isVideoReady, setIsVideoReady] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
   const isFinishedRef = useRef(false);
 
@@ -49,7 +50,6 @@ export default function SplashScreen({ onFinish }: { onFinish: () => void }) {
           initial={{ opacity: 1 }}
           exit={{ opacity: 0, scale: 1.02 }}
           transition={{ duration: 0.35, ease: [0.4, 0, 0.2, 1] }}
-          onClick={handleFinish}
         >
           <video
             ref={videoRef}
@@ -76,9 +76,19 @@ export default function SplashScreen({ onFinish }: { onFinish: () => void }) {
               e.currentTarget.muted = true;
               e.currentTarget.play().catch(() => {});
             }}
+            onPlaying={() => setIsVideoReady(true)}
+            onTimeUpdate={(e) => {
+              if (e.currentTarget.currentTime > 0 && !isVideoReady) {
+                setIsVideoReady(true);
+              }
+            }}
             onEnded={handleFinish}
             onError={handleFinish}
             className={styles.splashVideo}
+            style={{
+              opacity: isVideoReady ? 1 : 0,
+              transition: 'opacity 0.4s ease-in-out'
+            }}
           />
         </motion.div>
       )}
