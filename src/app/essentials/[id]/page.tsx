@@ -48,6 +48,7 @@ export default function EssentialDetailPage({ params }: { params: Promise<{ id: 
   const [isMounted, setIsMounted] = useState(false);
   const [expandedFaqId, setExpandedFaqId] = useState<string | null>(null);
   const [showShareToast, setShowShareToast] = useState(false);
+  const [selectedCategoryFilter, setSelectedCategoryFilter] = useState<string>('all');
 
   useEffect(() => {
     setIsMounted(true);
@@ -78,6 +79,13 @@ export default function EssentialDetailPage({ params }: { params: Promise<{ id: 
       walkMins: Math.max(1, Math.round(distKm * 12)),
     };
   }, [effectiveLocation, item, isTirumalaSpot]);
+
+  // Filtered categories breakdown
+  const displayedCategories = useMemo(() => {
+    if (!item?.itemCategories) return [];
+    if (selectedCategoryFilter === 'all') return item.itemCategories;
+    return item.itemCategories.filter(c => c.title.toLowerCase().includes(selectedCategoryFilter.toLowerCase()));
+  }, [item?.itemCategories, selectedCategoryFilter]);
 
   if (!isMounted) {
     return (
@@ -165,19 +173,29 @@ export default function EssentialDetailPage({ params }: { params: Promise<{ id: 
 
       <div className={styles.scrollArea}>
         
-        {/* INSIDE HERO BANNER CARD */}
-        <div className={styles.insideHeader}>
+        {/* HERO BANNER CARD */}
+        <div className={styles.insideHeader} style={{ background: 'linear-gradient(135deg, #FFFFFF 0%, #F8FAFC 100%)', boxShadow: '0 4px 16px rgba(15,23,42,0.04)' }}>
           <div className={styles.insideHeroTitle}>
-            <div className={styles.primaryCardIconBox} style={{ width: '48px', height: '48px', background: '#FEF3C7', color: '#D97706', border: 'none' }}>
-              <IconComp size={26} />
+            <div className={styles.primaryCardIconBox} style={{ width: '52px', height: '52px', background: '#FEF3C7', color: '#D97706', border: '1px solid #FDE68A', borderRadius: '16px' }}>
+              <IconComp size={28} />
             </div>
             <div>
-              <span style={{ fontSize: '20px', display: 'block' }}>{item.name}</span>
-              <span style={{ fontSize: '12px', fontWeight: 600, color: '#64748B', display: 'block' }}>{item.location}</span>
+              <span style={{ fontSize: '22px', fontWeight: 900, display: 'block', color: '#0F172A', letterSpacing: '-0.01em' }}>{item.name}</span>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginTop: '2px' }}>
+                <MapPin size={12} color="#64748B" />
+                <span style={{ fontSize: '12px', fontWeight: 600, color: '#64748B' }}>{item.location}</span>
+                {liveDistance && (
+                  <span style={{ background: '#FEF3C7', color: '#B45309', padding: '1px 7px', borderRadius: '6px', fontSize: '11px', fontWeight: 800 }}>
+                    {liveDistance.label} • {liveDistance.walkMins}m walk
+                  </span>
+                )}
+              </div>
             </div>
           </div>
 
-          <p className={styles.insideHeroSubtitle}>{item.description}</p>
+          <p className={styles.insideHeroSubtitle} style={{ fontSize: '13.5px', color: '#475569', lineHeight: 1.5 }}>
+            {item.description}
+          </p>
 
           <div className={styles.insideBadges}>
             <span className={styles.badgeOpen}>{item.status}</span>
@@ -229,12 +247,44 @@ export default function EssentialDetailPage({ params }: { params: Promise<{ id: 
           </section>
         )}
 
-        {/* DEPOSIT & STORAGE CATEGORIES BREAKDOWN ("WHAT YOU CAN DEPOSIT") */}
+        {/* INTERACTIVE ITEM SELECTOR ("WHAT ARE YOU CARRYING?") */}
         {item.itemCategories && item.itemCategories.length > 0 && (
           <section className={styles.itemCategoriesSection}>
-            <h3 className={styles.sectionTitle}>What You Can Deposit & Store</h3>
-            <div className={styles.itemCategoriesGrid}>
+            <div className={styles.sectionHeaderRow}>
+              <div>
+                <h3 className={styles.sectionTitle}>What Are You Carrying?</h3>
+                <p style={{ fontSize: '12px', color: '#64748B', margin: '2px 0 0 0', fontWeight: 600 }}>
+                  Tap an item category to filter rules & deposit counters
+                </p>
+              </div>
+            </div>
+
+            {/* Category Filter Tabs */}
+            <div className={styles.categoryFilterTabs}>
+              <button 
+                className={`${styles.categoryFilterTab} ${selectedCategoryFilter === 'all' ? styles.categoryFilterTabActive : ''}`}
+                onClick={() => setSelectedCategoryFilter('all')}
+              >
+                All Items ({item.itemCategories.length})
+              </button>
               {item.itemCategories.map((cat, idx) => {
+                const isActive = selectedCategoryFilter.toLowerCase() === cat.title.toLowerCase() || 
+                                 (selectedCategoryFilter !== 'all' && cat.title.toLowerCase().includes(selectedCategoryFilter.toLowerCase()));
+                return (
+                  <button 
+                    key={idx}
+                    className={`${styles.categoryFilterTab} ${isActive ? styles.categoryFilterTabActive : ''}`}
+                    onClick={() => setSelectedCategoryFilter(isActive ? 'all' : cat.title)}
+                  >
+                    {cat.title.split('&')[0].trim()}
+                  </button>
+                );
+              })}
+            </div>
+
+            {/* Filtered Item Cards Grid */}
+            <div className={styles.itemCategoriesGrid}>
+              {displayedCategories.map((cat, idx) => {
                 const CIcon = ICON_MAP[cat.iconName] || Lock;
                 return (
                   <div key={idx} className={styles.itemCategoryCard}>
@@ -258,7 +308,15 @@ export default function EssentialDetailPage({ params }: { params: Promise<{ id: 
         {/* SUB-LOCATIONS LIST & COUNTER FINDER */}
         {item.subLocations && item.subLocations.length > 0 && (
           <section className={styles.subLocationsSection}>
-            <h3 className={styles.sectionTitle}>Official Locations & Counters</h3>
+            <div className={styles.sectionHeaderRow}>
+              <div>
+                <h3 className={styles.sectionTitle}>Official Deposit Locations & Counters</h3>
+                <p style={{ fontSize: '12px', color: '#64748B', margin: '2px 0 0 0', fontWeight: 600 }}>
+                  Free TTD counters around Tirumala transit hubs
+                </p>
+              </div>
+            </div>
+
             <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
               {item.subLocations.map((loc, idx) => {
                 const distVal = userLocation ? calculateDrivingDistance(userLocation.lat, userLocation.lng, item.coordinates.lat, item.coordinates.lng, Boolean(isTirumalaSpot)) : null;
@@ -277,11 +335,11 @@ export default function EssentialDetailPage({ params }: { params: Promise<{ id: 
                       onClick={() => handleOpenMap(loc.name)}
                       style={{
                         background: '#F0FDF4', border: '1px solid #BBF7D0', borderRadius: '10px',
-                        padding: '8px 12px', fontSize: '12px', fontWeight: 800, color: '#059669',
-                        cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '4px', flexShrink: 0
+                        padding: '8px 14px', fontSize: '12px', fontWeight: 800, color: '#059669',
+                        cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '5px', flexShrink: 0
                       }}
                     >
-                      <Navigation size={12} />
+                      <Navigation size={13} />
                       Directions
                     </button>
                   </div>
@@ -294,7 +352,7 @@ export default function EssentialDetailPage({ params }: { params: Promise<{ id: 
         {/* STEP-BY-STEP PROCEDURE TIMELINE */}
         {item.procedureTimeline && item.procedureTimeline.length > 0 && (
           <section className={styles.timelineSection}>
-            <h3 className={styles.sectionTitle}>Step-by-Step Procedure</h3>
+            <h3 className={styles.sectionTitle}>Step-by-Step Deposit & Retrieval Flow</h3>
             <div className={styles.timelineList}>
               {item.procedureTimeline.map((step) => (
                 <div key={step.stepNumber} className={styles.timelineItem}>
