@@ -11,6 +11,7 @@ import {
 } from 'lucide-react';
 import { TirumalaStatus } from '@/lib/statusDb';
 import { useLanguage } from '@/lib/useLanguage';
+import SaarthiGuidanceCard from '@/components/SaarthiGuidanceCard';
 
 const COLLECTION_CENTRES = [
   {
@@ -288,6 +289,9 @@ export default function SsdTokensStandalonePage() {
             </span>
           </div>
         </section>
+
+        {/* ✨ SAARTHI GUIDANCE CARD */}
+        <SaarthiGuidanceCard />
 
         {/* ── 2. COLLECTION CENTRES (TIRUPATI COUNTERS WITH DIRECT MAPS) ── */}
         <section>

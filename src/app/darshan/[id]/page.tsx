@@ -15,6 +15,7 @@ import {
 } from 'lucide-react';
 import { TirumalaStatus } from '@/lib/statusDb';
 import { useLanguage } from '@/lib/useLanguage';
+import SaarthiGuidanceCard from '@/components/SaarthiGuidanceCard';
 
 export default function DarshanDetailsPage() {
   const params = useParams();
@@ -371,6 +372,9 @@ export default function DarshanDetailsPage() {
                 ? 'Report directly to ATC Car Parking entry with your original Aadhaar and printout'
                 : 'Direct walk-in available 24/7 via Vaikuntam Queue Complex II'}
             </p>
+
+            {/* ✨ SAARTHI GUIDANCE CARD */}
+            <SaarthiGuidanceCard />
 
             {/* OFFICIAL TTD BOOKING ACTION CARD (FOR SPECIAL ENTRY ₹300 ONLY) */}
             {id === 'special-entry' && (

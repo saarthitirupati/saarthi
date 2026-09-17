@@ -10,6 +10,7 @@ import {
   Share2, AlertTriangle, CheckCircle2, XCircle, ChevronDown, ChevronUp, Sparkles, ShieldCheck
 } from 'lucide-react';
 import styles from '../Essentials.module.css';
+import SaarthiGuidanceCard from '@/components/SaarthiGuidanceCard';
 
 import { KNOWLEDGE_ITEMS, FAQ_ITEMS, SubLocation } from '@/content/knowledge';
 import { useTrip } from '@/components/TripContext';
@@ -203,6 +204,9 @@ export default function EssentialDetailPage({ params }: { params: Promise<{ id: 
             </p>
           </div>
         )}
+
+        {/* ✨ SAARTHI GUIDANCE CARD */}
+        <SaarthiGuidanceCard />
 
         {/* FEATURE HIGHLIGHTS MATRIX (4 PILLARS) */}
         {item.highlights && item.highlights.length > 0 && (
