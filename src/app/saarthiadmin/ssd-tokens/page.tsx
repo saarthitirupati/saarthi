@@ -30,6 +30,12 @@ export default function AdminSsdTokensPage() {
     { slotTime: '4:00 PM - 6:00 PM', status: 'available', tokensLeft: 'Available' },
   ]);
 
+  const [ssdCounters, setSsdCounters] = useState<Array<{ name: string; description: string }>>([
+    { name: 'Vishnu Nivasam Counter', description: 'Opposite Tirupati Railway Station' },
+    { name: 'Srinivasam Complex Counter', description: 'Opposite Tirupati RTC Central Bus Stand' },
+    { name: 'Bhudevi Complex Counter', description: 'Near Alipiri Footpath Link Road' }
+  ]);
+
   const fetchSsdData = async () => {
     try {
       setLoading(true);
@@ -40,6 +46,7 @@ export default function AdminSsdTokensPage() {
         if (data.ssdNotice !== undefined) setSsdNotice(data.ssdNotice);
         if (data.ssdTimingsGuide !== undefined) setSsdTimingsGuide(data.ssdTimingsGuide);
         if (Array.isArray(data.ssdTokenSlots)) setSsdSlots(data.ssdTokenSlots);
+        if (Array.isArray(data.ssdCounters) && data.ssdCounters.length > 0) setSsdCounters(data.ssdCounters);
       }
     } catch (e) {
       console.error('Failed to load SSD data:', e);
@@ -69,7 +76,8 @@ export default function AdminSsdTokensPage() {
           ssdNextTokenTime,
           ssdNotice,
           ssdTimingsGuide,
-          ssdTokenSlots: ssdSlots
+          ssdTokenSlots: ssdSlots,
+          ssdCounters
         })
       });
 
@@ -80,6 +88,7 @@ export default function AdminSsdTokensPage() {
         if (data.ssdNotice !== undefined) setSsdNotice(data.ssdNotice);
         if (data.ssdTimingsGuide !== undefined) setSsdTimingsGuide(data.ssdTimingsGuide);
         if (Array.isArray(data.ssdTokenSlots)) setSsdSlots(data.ssdTokenSlots);
+        if (Array.isArray(data.ssdCounters)) setSsdCounters(data.ssdCounters);
 
         setMessage('SSD Token updates published live successfully!');
         notifyRealtimeUpdate();
