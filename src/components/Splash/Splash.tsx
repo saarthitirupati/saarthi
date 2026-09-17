@@ -7,6 +7,7 @@ import styles from './Splash.module.css';
 
 export default function SplashScreen({ onFinish }: { onFinish: () => void }) {
   const [isVisible, setIsVisible] = useState(true);
+  const [isVideoPlaying, setIsVideoPlaying] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
   const isFinishedRef = useRef(false);
 
@@ -32,7 +33,9 @@ export default function SplashScreen({ onFinish }: { onFinish: () => void }) {
         v.setAttribute('x5-playsinline', 'true');
         v.defaultMuted = true;
         v.muted = true;
-        v.play().catch(() => {});
+        v.play().then(() => {
+          setIsVideoPlaying(true);
+        }).catch(() => {});
       }
     };
 
@@ -69,13 +72,13 @@ export default function SplashScreen({ onFinish }: { onFinish: () => void }) {
           onClick={() => {
             const v = videoRef.current;
             if (v && v.paused) {
-              v.play().catch(() => {});
+              v.play().then(() => setIsVideoPlaying(true)).catch(() => {});
             }
           }}
         >
           <video
             ref={videoRef}
-            src="/banner/saarthi-splashscreen.mp4"
+            src="/banner/saarthi-splashscreen.mp4?v=1080p_v3"
             autoPlay
             loop={false}
             muted
@@ -97,17 +100,27 @@ export default function SplashScreen({ onFinish }: { onFinish: () => void }) {
               e.currentTarget.setAttribute('muted', '');
               e.currentTarget.defaultMuted = true;
               e.currentTarget.muted = true;
-              e.currentTarget.play().catch(() => {});
+              e.currentTarget.play().then(() => setIsVideoPlaying(true)).catch(() => {});
             }}
             onLoadedData={(e) => {
               e.currentTarget.setAttribute('muted', '');
               e.currentTarget.defaultMuted = true;
               e.currentTarget.muted = true;
-              e.currentTarget.play().catch(() => {});
+              e.currentTarget.play().then(() => setIsVideoPlaying(true)).catch(() => {});
+            }}
+            onPlaying={() => setIsVideoPlaying(true)}
+            onTimeUpdate={(e) => {
+              if (e.currentTarget.currentTime > 0 && !isVideoPlaying) {
+                setIsVideoPlaying(true);
+              }
             }}
             onEnded={handleFinish}
             onError={handleFinish}
             className={styles.splashVideo}
+            style={{
+              opacity: isVideoPlaying ? 1 : 0,
+              transition: 'opacity 0.25s ease-in-out'
+            }}
           />
         </motion.div>
       )}

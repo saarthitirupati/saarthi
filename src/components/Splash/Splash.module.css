@@ -11,19 +11,19 @@
   width: 100vw;
   height: 100vh;
   z-index: 999999;
-  background: #FAF8F5; /* Divine cream matching video background */
+  background: #FAF8F5 !important; /* Divine cream matching video background */
   display: flex;
   align-items: center;
   justify-content: center;
   overflow: hidden;
   user-select: none;
-  cursor: pointer;
+  -webkit-user-select: none;
+  cursor: default;
   -webkit-tap-highlight-color: transparent;
   transform: translateZ(0);
   -webkit-transform: translateZ(0);
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
-  will-change: opacity, transform;
 }
 
 .splashVideo {
@@ -34,7 +34,7 @@
   height: 100vh;
   min-width: 100vw;
   min-height: 100vh;
-  object-fit: cover; /* Cover 100% of viewport on ALL screens (mobile, tablet, desktop, ultra-wide) */
+  object-fit: cover; /* Cover 100% of viewport on ALL screens (mobile, tablet, desktop) */
   object-position: center center;
   display: block;
   pointer-events: none;
@@ -43,14 +43,21 @@
   -webkit-touch-callout: none;
 }
 
+/* Completely suppress all WebKit media controls, play buttons, and overlays */
 .splashVideo::-webkit-media-controls,
 .splashVideo::-webkit-media-controls-start-playback-button,
 .splashVideo::-webkit-media-controls-play-button,
 .splashVideo::-webkit-media-controls-overlay-play-button,
 .splashVideo::-webkit-media-controls-panel,
-.splashVideo::-webkit-media-controls-enclosure {
+.splashVideo::-webkit-media-controls-enclosure,
+.splashVideo::-webkit-media-text-track-container,
+.splashVideo::-webkit-media-text-track-display,
+.splashVideo::-webkit-media-text-track-region {
   display: none !important;
   -webkit-appearance: none !important;
   opacity: 0 !important;
+  visibility: hidden !important;
+  width: 0 !important;
+  height: 0 !important;
   pointer-events: none !important;
 }
