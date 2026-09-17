@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useMemo } from 'react';
-import { MapPin, Navigation, Search, X, Check, Compass, Building, Map, Sparkles } from 'lucide-react';
+import { MapPin, Navigation, Search, X, Check, Compass, Building, Map, Sparkles, ChevronDown } from 'lucide-react';
 import { useTrip } from '@/components/TripContext';
 import { detectCoordinates, isCoordinateOnTirumalaHill, TIRUPATI_CENTER, TIRUMALA_CENTER } from '@/lib/location';
 import { useLanguage } from '@/lib/useLanguage';
@@ -541,44 +541,99 @@ export function LocationPickerModal({
  * Drop-in Location Pill Button matching exact warm amber UI:
  * [📍 Location ⌄]
  */
+export interface LocationPillProps {
+  locationName: string;
+  onClick: () => void;
+  isGpsActive?: boolean;
+  style?: React.CSSProperties;
+}
+
+/**
+ * Drop-in Location Pill Button matching exact warm amber / emerald UI:
+ * [📍 Location ⌄]
+ */
 export function LocationPill({
   locationName,
   onClick,
+  isGpsActive = false,
   style
-}: {
-  locationName: string;
-  onClick: () => void;
-  style?: React.CSSProperties;
-}) {
+}: LocationPillProps) {
+  const lang = useLanguage();
+  
+  // Look up Telugu name if language is set to Telugu
+  const matchedLoc = PRESET_LOCATIONS.find(l => l.shortName.toLowerCase() === (locationName || 'Tirupati').toLowerCase());
+  const displayName = lang === 'te' && matchedLoc ? matchedLoc.shortName : (locationName || 'Tirupati');
+
   return (
-    <div
+    <button
+      type="button"
       onClick={onClick}
-      title="Change Starting Location"
+      aria-label={`Current starting location: ${displayName}. Click to change starting location.`}
+      title={lang === 'te' ? 'ప్రారంభ ప్రాంతాన్ని మార్చండి' : 'Change Starting Location'}
       style={{
         display: 'inline-flex',
         alignItems: 'center',
-        gap: '3px',
-        backgroundColor: '#FEF3C7',
-        border: '1px solid #FDE68A',
-        color: '#92400E',
-        padding: '4px 8px',
+        gap: '4px',
+        backgroundColor: isGpsActive ? '#ECFDF5' : '#FEF3C7',
+        border: `1px solid ${isGpsActive ? '#A7F3D0' : '#FDE68A'}`,
+        color: isGpsActive ? '#065F46' : '#92400E',
+        padding: '4px 10px',
         borderRadius: '9999px',
         fontSize: '11.5px',
         fontWeight: 800,
         cursor: 'pointer',
-        boxShadow: '0 1px 2px rgba(180, 83, 9, 0.08)',
+        boxShadow: isGpsActive 
+          ? '0 1px 3px rgba(16, 185, 129, 0.12)' 
+          : '0 1px 3px rgba(180, 83, 9, 0.08)',
         userSelect: 'none',
         whiteSpace: 'nowrap',
         flexShrink: 1,
         minWidth: '50px',
         overflow: 'hidden',
-        transition: 'all 0.15s ease',
+        transition: 'all 0.18s cubic-bezier(0.4, 0, 0.2, 1)',
+        outline: 'none',
         ...style
       }}
+      onMouseEnter={(e) => {
+        e.currentTarget.style.transform = 'translateY(-1px)';
+        e.currentTarget.style.backgroundColor = isGpsActive ? '#D1FAE5' : '#FDE68A';
+      }}
+      onMouseLeave={(e) => {
+        e.currentTarget.style.transform = 'none';
+        e.currentTarget.style.backgroundColor = isGpsActive ? '#ECFDF5' : '#FEF3C7';
+      }}
+      onMouseDown={(e) => {
+        e.currentTarget.style.transform = 'scale(0.96)';
+      }}
+      onMouseUp={(e) => {
+        e.currentTarget.style.transform = 'none';
+      }}
     >
-      <MapPin size={11} color="#B45309" strokeWidth={2.2} />
-      <span style={{ color: '#92400E', letterSpacing: '-0.01em', overflow: 'hidden', textOverflow: 'ellipsis' }}>{locationName || 'Tirupati'}</span>
-      <span style={{ color: '#B45309', fontSize: '8.5px', display: 'flex', alignItems: 'center', opacity: 0.85 }}>▼</span>
-    </div>
+      <MapPin size={12} color={isGpsActive ? '#059669' : '#B45309'} strokeWidth={2.2} style={{ flexShrink: 0 }} />
+      <span style={{ 
+        color: isGpsActive ? '#065F46' : '#92400E', 
+        letterSpacing: '-0.01em', 
+        overflow: 'hidden', 
+        textOverflow: 'ellipsis',
+        maxWidth: '110px'
+      }}>
+        {displayName}
+      </span>
+      {isGpsActive && (
+        <span 
+          style={{ 
+            width: '6px', 
+            height: '6px', 
+            borderRadius: '50%', 
+            backgroundColor: '#10B981', 
+            display: 'inline-block',
+            boxShadow: '0 0 6px #10B981',
+            flexShrink: 0
+          }} 
+          title="Live GPS Location Active"
+        />
+      )}
+      <ChevronDown size={11} color={isGpsActive ? '#059669' : '#B45309'} strokeWidth={2.5} style={{ flexShrink: 0, opacity: 0.85 }} />
+    </button>
   );
 }

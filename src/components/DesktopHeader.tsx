@@ -20,7 +20,7 @@ interface DesktopHeaderProps {
 export function DesktopHeader({ weather, temperature }: DesktopHeaderProps) {
   const displayWeather = weather && temperature ? `${temperature} · ${weather}` : '☀ 24°C · Sunny';
   const { activeAlertsCount } = useAlerts();
-  const { locationName } = useTrip();
+  const { locationName, locationPermission } = useTrip();
   const pathname = usePathname();
   const lang = useLanguage();
 
@@ -53,7 +53,8 @@ export function DesktopHeader({ weather, temperature }: DesktopHeaderProps) {
             <span className={styles.brandName}>Saarthi Guide</span>
           </Link>
           <LocationPill 
-            locationName={selectedLocation} 
+            locationName={selectedLocation}
+            isGpsActive={locationPermission === 'granted'}
             onClick={() => setIsLocationModalOpen(true)} 
           />
         </div>

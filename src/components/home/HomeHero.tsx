@@ -252,7 +252,7 @@ const METRIC_ICON: Record<string, React.ReactNode> = {
 export function HomeHero({ userName, locationName, weatherTemp, liveStatus, activeAlertsCount, hideHeader = false }: any) {
   const lang = useLanguage();
   const t = TEXTS[lang];
-  const { setUserLocation } = useTrip();
+  const { setUserLocation, locationPermission } = useTrip();
   const [overrideScenario, setOverrideScenario] = useState<string>('auto');
   const [selectedLocation, setSelectedLocation] = useState<string>(locationName || 'Tirupati');
   const [isLocating, setIsLocating] = useState<boolean>(false);
@@ -1221,6 +1221,7 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
             <div style={{ display: 'flex', alignItems: 'center', gap: '5px', minWidth: 0, flexShrink: 1 }}>
               <LocationPill 
                 locationName={selectedLocation} 
+                isGpsActive={locationPermission === 'granted'}
                 onClick={() => setIsLocationModalOpen(true)} 
                 style={{ padding: '5px 8px', fontSize: '11.5px', gap: '3px', maxWidth: 'clamp(80px, 23vw, 130px)' }}
               />
