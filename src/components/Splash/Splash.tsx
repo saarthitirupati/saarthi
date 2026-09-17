@@ -90,7 +90,6 @@ export default function SplashScreen({ onFinish }: { onFinish: () => void }) {
             disableRemotePlayback
             controls={false}
             controlsList="nodownload nofallback noremoteplayback noplaybackrate"
-            poster="/banner/splash_poster.webp"
             preload="auto"
             aria-hidden="true"
             tabIndex={-1}
