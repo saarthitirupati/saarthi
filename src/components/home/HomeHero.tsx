@@ -2614,6 +2614,14 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
                     title: lang === 'te' ? 'ఉత్తమ మార్గం' : 'Best Route',
                     value: lang === 'te' ? 'స్థానిక క్షేత్రాలు' : 'Local Shrines',
                     color: '#1E40AF'
+                  },
+                  {
+                    icon: <Clock size={14} color="#059669" />,
+                    bg: '#ECFDF5',
+                    border: '1px solid #A7F3D0',
+                    title: lang === 'te' ? 'అనుకూల సమయం' : 'Optimal Time',
+                    value: lang === 'te' ? 'ఉదయం సమయం' : 'Best Morning Hours',
+                    color: '#065F46'
                   }
                 ] : (isSsdOpen ? [
                   {

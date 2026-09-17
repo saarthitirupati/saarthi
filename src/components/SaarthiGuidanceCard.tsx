@@ -18,6 +18,7 @@ interface SaarthiGuidanceCardProps {
   quote?: string;
   primaryPill?: GuidancePill;
   secondaryPill?: GuidancePill;
+  tertiaryPill?: GuidancePill;
   footerNote?: string;
   className?: string;
 }
@@ -28,6 +29,7 @@ export default function SaarthiGuidanceCard({
   quote = '"In calm faith, seek Srivari"',
   primaryPill,
   secondaryPill,
+  tertiaryPill,
   footerNote = 'Based on live queue data • Verified recently',
   className
 }: SaarthiGuidanceCardProps) {
@@ -55,8 +57,15 @@ export default function SaarthiGuidanceCard({
     url: '/explore'
   };
 
+  const defaultTertiaryPill: GuidancePill = {
+    label: 'Optimal Time',
+    title: 'Best Morning Hours',
+    url: '/route'
+  };
+
   const pPill = primaryPill || defaultPrimaryPill;
   const sPill = secondaryPill || defaultSecondaryPill;
+  const tPill = tertiaryPill || defaultTertiaryPill;
 
   const handlePillClick = (pill: GuidancePill) => {
     if (pill.onClick) {
@@ -101,53 +110,86 @@ export default function SaarthiGuidanceCard({
         {displayTitle}
       </h3>
 
-      {/* Two Action Pills Grid */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '10px' }}>
-        {/* Left Pill (Gold / Sacred Shrine) */}
+      {/* Three Action Pills Grid */}
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '8px' }}>
+        {/* Card 1 (Gold / Sacred Shrine) */}
         <div 
           onClick={() => handlePillClick(pPill)}
           style={{
             backgroundColor: '#FFFBEB',
             border: '1px solid #FDE68A',
             borderRadius: '14px',
-            padding: '10px 12px',
+            padding: '9px 8px',
             cursor: 'pointer',
             display: 'flex',
             flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: 'center',
+            textAlign: 'center',
             gap: '2px',
             transition: 'transform 0.15s ease, border-color 0.15s ease'
           }}
         >
-          <div style={{ display: 'flex', alignItems: 'center', gap: '5px', color: '#D97706', fontSize: '11px', fontWeight: 800 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '4px', color: '#D97706', fontSize: '10.5px', fontWeight: 800 }}>
             <Flame size={13} color="#D97706" />
             <span style={{ color: '#B45309' }}>{pPill.label}</span>
           </div>
-          <span style={{ fontSize: '12.5px', fontWeight: 800, color: '#78350F', lineHeight: 1.25 }}>
+          <span style={{ fontSize: '11.5px', fontWeight: 800, color: '#78350F', lineHeight: 1.2, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', maxWidth: '100%' }}>
             {pPill.title}
           </span>
         </div>
 
-        {/* Right Pill (Soft Blue / Best Route) */}
+        {/* Card 2 (Soft Blue / Best Route) */}
         <div 
           onClick={() => handlePillClick(sPill)}
           style={{
             backgroundColor: '#EFF6FF',
             border: '1px solid #BFDBFE',
             borderRadius: '14px',
-            padding: '10px 12px',
+            padding: '9px 8px',
             cursor: 'pointer',
             display: 'flex',
             flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: 'center',
+            textAlign: 'center',
             gap: '2px',
             transition: 'transform 0.15s ease, border-color 0.15s ease'
           }}
         >
-          <div style={{ display: 'flex', alignItems: 'center', gap: '5px', color: '#2563EB', fontSize: '11px', fontWeight: 800 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '4px', color: '#2563EB', fontSize: '10.5px', fontWeight: 800 }}>
             <Navigation size={13} color="#2563EB" />
             <span style={{ color: '#1D4ED8' }}>{sPill.label}</span>
           </div>
-          <span style={{ fontSize: '12.5px', fontWeight: 800, color: '#1E40AF', lineHeight: 1.25 }}>
+          <span style={{ fontSize: '11.5px', fontWeight: 800, color: '#1E40AF', lineHeight: 1.2, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', maxWidth: '100%' }}>
             {sPill.title}
+          </span>
+        </div>
+
+        {/* Card 3 (Soft Emerald / Optimal Time) */}
+        <div 
+          onClick={() => handlePillClick(tPill)}
+          style={{
+            backgroundColor: '#ECFDF5',
+            border: '1px solid #A7F3D0',
+            borderRadius: '14px',
+            padding: '9px 8px',
+            cursor: 'pointer',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: 'center',
+            textAlign: 'center',
+            gap: '2px',
+            transition: 'transform 0.15s ease, border-color 0.15s ease'
+          }}
+        >
+          <div style={{ display: 'flex', alignItems: 'center', gap: '4px', color: '#059669', fontSize: '10.5px', fontWeight: 800 }}>
+            <Sparkles size={13} color="#059669" />
+            <span style={{ color: '#047857' }}>{tPill.label}</span>
+          </div>
+          <span style={{ fontSize: '11.5px', fontWeight: 800, color: '#065F46', lineHeight: 1.2, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', maxWidth: '100%' }}>
+            {tPill.title}
           </span>
         </div>
       </div>
