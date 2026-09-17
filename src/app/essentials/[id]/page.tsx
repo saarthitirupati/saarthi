@@ -7,7 +7,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { 
   ArrowLeft, MapPin, Clock, ShieldAlert, Navigation, Info, Check, X,
   Lock, Utensils, Scissors, Bed, ShoppingBag, Phone, HelpCircle, ChevronRight, FileText,
-  Share2, AlertTriangle, CheckCircle2, ChevronDown, ChevronUp, Sparkles, ShieldCheck
+  Share2, AlertTriangle, CheckCircle2, XCircle, ChevronDown, ChevronUp, Sparkles, ShieldCheck
 } from 'lucide-react';
 import styles from '../Essentials.module.css';
 
@@ -305,14 +305,17 @@ export default function EssentialDetailPage({ params }: { params: Promise<{ id: 
           </section>
         )}
 
-        {/* REQUIREMENTS CHECKLIST (✓ ALLOWED / ✗ PROHIBITED) */}
+        {/* REQUIREMENTS CHECKLIST (ALLOWED / PROHIBITED) */}
         {item.requirements && (
           <section style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
             <h3 className={styles.sectionTitle}>Need to Carry / Rules</h3>
             <div className={styles.requirementsContainer}>
               {/* Allowed / Required */}
               <div className={styles.reqBoxAllowed}>
-                <h4 className={styles.reqTitle} style={{ color: '#16A34A' }}>✓ What to Carry</h4>
+                <h4 className={styles.reqTitle} style={{ color: '#16A34A', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                  <CheckCircle2 size={16} color="#16A34A" />
+                  What to Carry
+                </h4>
                 {item.requirements.carry.map((req, idx) => (
                   <div key={idx} className={styles.reqItem} style={{ color: '#15803D' }}>
                     <Check size={14} color="#16A34A" />
@@ -323,7 +326,10 @@ export default function EssentialDetailPage({ params }: { params: Promise<{ id: 
 
               {/* Prohibited */}
               <div className={styles.reqBoxProhibited}>
-                <h4 className={styles.reqTitle} style={{ color: '#DC2626' }}>✗ Do Not Carry</h4>
+                <h4 className={styles.reqTitle} style={{ color: '#DC2626', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                  <XCircle size={16} color="#DC2626" />
+                  Do Not Carry
+                </h4>
                 {item.requirements.prohibited.map((req, idx) => (
                   <div key={idx} className={styles.reqItem} style={{ color: '#B91C1C' }}>
                     <X size={14} color="#DC2626" />
@@ -341,8 +347,8 @@ export default function EssentialDetailPage({ params }: { params: Promise<{ id: 
             <h3 className={styles.sectionTitle}>Pilgrim Advice & Pro-Tips</h3>
             <div style={{ background: '#FFFBEB', border: '1px solid #FDE68A', borderRadius: '18px', padding: '16px', display: 'flex', flexDirection: 'column', gap: '10px' }}>
               {item.tips.map((tip, idx) => (
-                <div key={idx} style={{ display: 'flex', gap: '10px', fontSize: '13px', color: '#92400E', lineHeight: 1.45, fontWeight: 500 }}>
-                  <span style={{ color: '#D97706', fontWeight: 900 }}>✓</span>
+                <div key={idx} style={{ display: 'flex', gap: '10px', fontSize: '13px', color: '#92400E', lineHeight: 1.45, fontWeight: 500, alignItems: 'flex-start' }}>
+                  <CheckCircle2 size={16} color="#D97706" style={{ flexShrink: 0, marginTop: '2px' }} />
                   <span>{tip}</span>
                 </div>
               ))}
