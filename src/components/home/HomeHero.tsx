@@ -255,10 +255,8 @@ export function HomeHero({ userName, locationName, weatherTemp, liveStatus, acti
   const { setUserLocation } = useTrip();
   const [overrideScenario, setOverrideScenario] = useState<string>('auto');
   const [selectedLocation, setSelectedLocation] = useState<string>(locationName || 'Tirupati');
-  const [isLocating, setIsLocating] = useState<boolean>(false);
   const [isLocationModalOpen, setIsLocationModalOpen] = useState<boolean>(false);
-  const [isVideoLoaded, setIsVideoLoaded] = useState<boolean>(false);
-  const [hasVideoError, setHasVideoError] = useState<boolean>(false);
+  const [isVideoPlaying, setIsVideoPlaying] = useState<boolean>(false);
   const bannerVideoRef = React.useRef<HTMLVideoElement>(null);
 
   React.useEffect(() => {
@@ -2047,48 +2045,41 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
         background: '#FAF8F4 url(/banner/banner_poster.webp) center center / cover no-repeat',
         aspectRatio: '16 / 9'
       }}>
-        {!hasVideoError && (
-          <video
-            ref={bannerVideoRef}
-            autoPlay
-            loop
-            muted
-            playsInline
-            poster="/banner/banner_poster.webp"
-            preload="metadata"
-            controls={false}
-            onCanPlay={(e) => {
-              setIsVideoLoaded(true);
-              e.currentTarget.defaultMuted = true;
-              e.currentTarget.muted = true;
-              e.currentTarget.play().catch(() => {});
-            }}
-            onLoadedData={() => setIsVideoLoaded(true)}
-            onPause={(e) => {
-              e.currentTarget.defaultMuted = true;
-              e.currentTarget.muted = true;
-              e.currentTarget.play().catch(() => {});
-            }}
-            onEnded={(e) => {
-              e.currentTarget.currentTime = 0;
-              e.currentTarget.play().catch(() => {});
-            }}
-            onError={() => setHasVideoError(true)}
-            style={{
-              width: '100%',
-              height: '100%',
-              objectFit: 'cover',
-              objectPosition: 'center center',
-              display: 'block',
-              pointerEvents: 'none',
-              opacity: isVideoLoaded ? 1 : 0,
-              transition: 'opacity 0.4s ease-in-out'
-            }}
-          >
-            <source src="/banner/hero_banner_compressed.mp4" type="video/mp4" />
-            <source src="/banner/Absolutely_For_the_Saarthi_SV.mp4" type="video/mp4" />
-          </video>
-        )}
+        <video
+          ref={bannerVideoRef}
+          src="/banner/hero_banner_compressed.mp4"
+          autoPlay
+          loop
+          muted
+          playsInline
+          poster="/banner/banner_poster.webp"
+          preload="auto"
+          controls={false}
+          onCanPlay={(e) => {
+            e.currentTarget.defaultMuted = true;
+            e.currentTarget.muted = true;
+            e.currentTarget.play().catch(() => {});
+          }}
+          onPause={(e) => {
+            e.currentTarget.defaultMuted = true;
+            e.currentTarget.muted = true;
+            e.currentTarget.play().catch(() => {});
+          }}
+          onEnded={(e) => {
+            e.currentTarget.currentTime = 0;
+            e.currentTarget.play().catch(() => {});
+          }}
+          style={{
+            width: '100%',
+            height: '100%',
+            objectFit: 'cover',
+            objectPosition: 'center center',
+            display: 'block',
+            pointerEvents: 'none',
+            opacity: 1,
+            transition: 'opacity 0.4s ease-in-out'
+          }}
+        />
 
         {/* Top-Left Live Devotional Badge */}
         <div style={{
@@ -2607,8 +2598,8 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
                     icon: <Clock size={14} color="#0F5132" />,
                     bg: '#F0FDF4',
                     border: '1px solid #BBF7D0',
-                    title: lang === 'te' ? 'క్యూ రద్దీ' : 'Queue Trend',
-                    value: lang === 'te' ? 'మధ్యాహ్నం అనుకూలం' : 'Eases Post-Noon',
+                    title: lang === 'te' ? 'క్యూ రద్దీ' : 'Queue Crowd',
+                    value: lang === 'te' ? '12 PM తర్వాత తక్కువ రద్దీ' : 'Less Crowd After 12 PM',
                     color: '#166534'
                   },
                   {
