@@ -3,16 +3,17 @@
 import { use, useState, useEffect, useMemo } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { 
   ArrowLeft, MapPin, Clock, ShieldAlert, Navigation, Info, Check, X,
-  Lock, Utensils, Scissors, Bed, ShoppingBag, Phone, HelpCircle, ChevronRight, FileText
+  Lock, Utensils, Scissors, Bed, ShoppingBag, Phone, HelpCircle, ChevronRight, FileText,
+  Share2, AlertTriangle, CheckCircle2, ChevronDown, ChevronUp, Sparkles, ShieldCheck
 } from 'lucide-react';
 import styles from '../Essentials.module.css';
 
 import { KNOWLEDGE_ITEMS, FAQ_ITEMS, SubLocation } from '@/content/knowledge';
 import { useTrip } from '@/components/TripContext';
-import { calculateDistance, calculateDrivingDistance, TIRUPATI_CENTER, isCoordinateOnTirumalaHill, isWithinTirupatiRegion } from '@/utils/location';
+import { calculateDrivingDistance, TIRUPATI_CENTER, isCoordinateOnTirumalaHill, isWithinTirupatiRegion } from '@/utils/location';
 
 // Map iconName strings to Lucide React components
 import { 
@@ -34,13 +35,18 @@ const ICON_MAP: Record<string, React.ComponentType<any>> = {
   hospital: Hospital,
   bus: Bus,
   shirt: Shirt,
-  camera: Camera
+  camera: Camera,
+  'file-text': FileText,
+  clock: Clock,
+  'map-pin': MapPin
 };
 
 export default function EssentialDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params);
   const router = useRouter();
   const [isMounted, setIsMounted] = useState(false);
+  const [expandedFaqId, setExpandedFaqId] = useState<string | null>(null);
+  const [showShareToast, setShowShareToast] = useState(false);
 
   useEffect(() => {
     setIsMounted(true);
@@ -89,8 +95,8 @@ export default function EssentialDetailPage({ params }: { params: Promise<{ id: 
     return (
       <div className={styles.container} style={{ justifyContent: 'center', alignItems: 'center', padding: '40px', textAlign: 'center' }}>
         <ShieldAlert size={48} color="#DC2626" style={{ marginBottom: '16px' }} />
-        <h2 style={{ fontSize: '18px', fontWeight: 800, margin: 0, color: '#0F172A' }}>Essential Intent Not Found</h2>
-        <p style={{ fontSize: '13px', color: '#64748B', margin: '8px 0 20px 0' }}>The requested facility or intent action does not exist in our directory.</p>
+        <h2 style={{ fontSize: '18px', fontWeight: 800, margin: 0, color: '#0F172A' }}>Essential Facility Not Found</h2>
+        <p style={{ fontSize: '13px', color: '#64748B', margin: '8px 0 20px 0' }}>The requested facility does not exist in our directory.</p>
         <button onClick={() => router.push('/essentials')} className={styles.ctaButton} style={{ width: 'auto', padding: '0 24px' }}>
           Back to Essentials
         </button>
@@ -100,7 +106,6 @@ export default function EssentialDetailPage({ params }: { params: Promise<{ id: 
 
   const IconComp = ICON_MAP[item.iconName] || Info;
 
-  // Handle Google Maps navigation with dynamic turn-by-turn routing
   const handleOpenMap = (customQuery?: string) => {
     if (item.coordinates) {
       const dest = customQuery 
@@ -115,10 +120,18 @@ export default function EssentialDetailPage({ params }: { params: Promise<{ id: 
     window.location.href = 'tel:108';
   };
 
+  const handleShare = () => {
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(window.location.href);
+      setShowShareToast(true);
+      setTimeout(() => setShowShareToast(false), 2500);
+    }
+  };
+
   // Related FAQs
   const relatedFaqs = FAQ_ITEMS.filter(faq => 
     faq.searchAliases.some(alias => item.searchAliases.includes(alias)) || faq.category === item.category
-  ).slice(0, 3);
+  ).slice(0, 4);
 
   return (
     <div className={styles.container}>
@@ -127,22 +140,40 @@ export default function EssentialDetailPage({ params }: { params: Promise<{ id: 
         <button className={styles.backButton} onClick={() => router.push('/essentials')} aria-label="Back">
           <ArrowLeft size={20} />
         </button>
-        <div style={{ textOverflow: 'ellipsis', overflow: 'hidden', whiteSpace: 'nowrap', padding: '0 8px' }}>
+        <div style={{ textOverflow: 'ellipsis', overflow: 'hidden', whiteSpace: 'nowrap', padding: '0 8px', textAlign: 'center' }}>
           <h1 className={styles.headerTitle}>{item.name}</h1>
           <p className={styles.headerSubtitle}>{item.shortDescription}</p>
         </div>
-        <div style={{ width: '36px' }} />
+        <button className={styles.iconButton} onClick={handleShare} aria-label="Share">
+          <Share2 size={18} />
+        </button>
       </header>
+
+      {/* Share Toast Notification */}
+      {showShareToast && (
+        <div style={{
+          position: 'fixed', top: '70px', left: '50%', transform: 'translateX(-50%)',
+          backgroundColor: '#0F172A', color: '#FFFFFF', padding: '8px 16px', borderRadius: '20px',
+          fontSize: '12px', fontWeight: 700, zIndex: 99, boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
+          display: 'flex', alignItems: 'center', gap: '6px'
+        }}>
+          <CheckCircle2 size={14} color="#22C55E" />
+          Link copied to clipboard!
+        </div>
+      )}
 
       <div className={styles.scrollArea}>
         
         {/* INSIDE HERO BANNER CARD */}
         <div className={styles.insideHeader}>
           <div className={styles.insideHeroTitle}>
-            <div className={styles.primaryCardIconBox} style={{ width: '48px', height: '48px' }}>
+            <div className={styles.primaryCardIconBox} style={{ width: '48px', height: '48px', background: '#FEF3C7', color: '#D97706', border: 'none' }}>
               <IconComp size={26} />
             </div>
-            <span>{item.name}</span>
+            <div>
+              <span style={{ fontSize: '20px', display: 'block' }}>{item.name}</span>
+              <span style={{ fontSize: '12px', fontWeight: 600, color: '#64748B', display: 'block' }}>{item.location}</span>
+            </div>
           </div>
 
           <p className={styles.insideHeroSubtitle}>{item.description}</p>
@@ -150,8 +181,9 @@ export default function EssentialDetailPage({ params }: { params: Promise<{ id: 
           <div className={styles.insideBadges}>
             <span className={styles.badgeOpen}>{item.status}</span>
             <span className={styles.badgeVerified}>Verified Today</span>
+            {item.tag && <span className={styles.badgeVerified} style={{ background: '#FEF3C7', color: '#B45309' }}>{item.tag}</span>}
             {item.requirements?.mandatoryDoc && (
-              <span className={styles.badgeVerified} style={{ background: '#FEF3C7', color: '#B45309', display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
+              <span className={styles.badgeVerified} style={{ background: '#FEE2E2', color: '#991B1B', display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
                 <FileText size={12} />
                 {item.requirements.mandatoryDoc}
               </span>
@@ -159,10 +191,70 @@ export default function EssentialDetailPage({ params }: { params: Promise<{ id: 
           </div>
         </div>
 
-        {/* SUB-LOCATIONS LIST */}
+        {/* EXPLAINABLE RATIONALE CALLOUT ("WHY THIS MATTERS BEFORE DARSHAN") */}
+        {item.whyItMatters && (
+          <div className={styles.whyItMattersCard}>
+            <div className={styles.whyItMattersHeader}>
+              <AlertTriangle size={16} color="#D97706" />
+              <span>Why This is Required Before Queue Entry</span>
+            </div>
+            <p className={styles.whyItMattersText}>
+              {item.whyItMatters}
+            </p>
+          </div>
+        )}
+
+        {/* FEATURE HIGHLIGHTS MATRIX (4 PILLARS) */}
+        {item.highlights && item.highlights.length > 0 && (
+          <section style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+            <h3 className={styles.sectionTitle}>Key Facilities & Features</h3>
+            <div className={styles.highlightsGrid}>
+              {item.highlights.map((hl, idx) => {
+                const HIcon = ICON_MAP[hl.iconName] || ShieldCheck;
+                return (
+                  <div key={idx} className={styles.highlightCard}>
+                    <div className={styles.highlightIconBox}>
+                      <HIcon size={20} />
+                    </div>
+                    <h4 className={styles.highlightTitle}>{hl.title}</h4>
+                    <p className={styles.highlightSub}>{hl.subtitle}</p>
+                  </div>
+                );
+              })}
+            </div>
+          </section>
+        )}
+
+        {/* DEPOSIT & STORAGE CATEGORIES BREAKDOWN ("WHAT YOU CAN DEPOSIT") */}
+        {item.itemCategories && item.itemCategories.length > 0 && (
+          <section className={styles.itemCategoriesSection}>
+            <h3 className={styles.sectionTitle}>What You Can Deposit & Store</h3>
+            <div className={styles.itemCategoriesGrid}>
+              {item.itemCategories.map((cat, idx) => {
+                const CIcon = ICON_MAP[cat.iconName] || Lock;
+                return (
+                  <div key={idx} className={styles.itemCategoryCard}>
+                    <div className={styles.itemCategoryHeader}>
+                      <div className={styles.itemCategoryLeft}>
+                        <div className={styles.itemCategoryIconBox}>
+                          <CIcon size={20} />
+                        </div>
+                        <h4 className={styles.itemCategoryTitle}>{cat.title}</h4>
+                      </div>
+                      <span className={styles.itemCategoryTag}>{cat.tag}</span>
+                    </div>
+                    <p className={styles.itemCategoryDesc}>{cat.desc}</p>
+                  </div>
+                );
+              })}
+            </div>
+          </section>
+        )}
+
+        {/* SUB-LOCATIONS LIST & COUNTER FINDER */}
         {item.subLocations && item.subLocations.length > 0 && (
           <section className={styles.subLocationsSection}>
-            <h3 className={styles.sectionTitle}>Locations & Counters</h3>
+            <h3 className={styles.sectionTitle}>Official Locations & Counters</h3>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
               {item.subLocations.map((loc, idx) => {
                 const distVal = userLocation ? calculateDrivingDistance(userLocation.lat, userLocation.lng, item.coordinates.lat, item.coordinates.lng, Boolean(isTirumalaSpot)) : null;
@@ -174,15 +266,15 @@ export default function EssentialDetailPage({ params }: { params: Promise<{ id: 
                       <div className={styles.subLocationMeta}>
                         {isCloseBy && <span className={styles.subLocationWalk}>Walk • {loc.walkTime}</span>}
                         <span>{distVal !== null ? `${distVal} km` : loc.distance}</span>
-                        <span style={{ color: '#16A34A', fontWeight: 600 }}>• {loc.status}</span>
+                        <span style={{ color: '#16A34A', fontWeight: 700 }}>• {loc.status}</span>
                       </div>
                     </div>
                     <button 
                       onClick={() => handleOpenMap(loc.name)}
                       style={{
-                        background: '#F8F8F8', border: '1px solid #E5E5E5', borderRadius: '10px',
-                        padding: '8px 12px', fontSize: '12px', fontWeight: 700, color: '#0E6B72',
-                        cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '4px'
+                        background: '#F0FDF4', border: '1px solid #BBF7D0', borderRadius: '10px',
+                        padding: '8px 12px', fontSize: '12px', fontWeight: 800, color: '#059669',
+                        cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '4px', flexShrink: 0
                       }}
                     >
                       <Navigation size={12} />
@@ -213,7 +305,7 @@ export default function EssentialDetailPage({ params }: { params: Promise<{ id: 
           </section>
         )}
 
-        {/* REQUIREMENTS CHECKLIST (✓ / ✗) */}
+        {/* REQUIREMENTS CHECKLIST (✓ ALLOWED / ✗ PROHIBITED) */}
         {item.requirements && (
           <section style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
             <h3 className={styles.sectionTitle}>Need to Carry / Rules</h3>
@@ -246,11 +338,11 @@ export default function EssentialDetailPage({ params }: { params: Promise<{ id: 
         {/* VISITOR GUIDELINES & TIPS */}
         {item.tips && item.tips.length > 0 && (
           <section style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-            <h3 className={styles.sectionTitle}>Pilgrim Tips & Advice</h3>
-            <div style={{ background: '#F8F8F8', border: '1px solid #E5E5E5', borderRadius: '16px', padding: '16px', display: 'flex', flexDirection: 'column', gap: '10px' }}>
+            <h3 className={styles.sectionTitle}>Pilgrim Advice & Pro-Tips</h3>
+            <div style={{ background: '#FFFBEB', border: '1px solid #FDE68A', borderRadius: '18px', padding: '16px', display: 'flex', flexDirection: 'column', gap: '10px' }}>
               {item.tips.map((tip, idx) => (
-                <div key={idx} style={{ display: 'flex', gap: '10px', fontSize: '13px', color: '#475569', lineHeight: 1.45 }}>
-                  <span style={{ color: '#D97706', fontWeight: 800 }}>✓</span>
+                <div key={idx} style={{ display: 'flex', gap: '10px', fontSize: '13px', color: '#92400E', lineHeight: 1.45, fontWeight: 500 }}>
+                  <span style={{ color: '#D97706', fontWeight: 900 }}>✓</span>
                   <span>{tip}</span>
                 </div>
               ))}
@@ -258,17 +350,30 @@ export default function EssentialDetailPage({ params }: { params: Promise<{ id: 
           </section>
         )}
 
-        {/* RELATED FAQS */}
+        {/* RELATED FAQS ACCORDION */}
         {relatedFaqs.length > 0 && (
-          <section className={styles.faqSection}>
-            <h3 className={styles.sectionTitle} style={{ marginBottom: '12px' }}>Related Questions</h3>
-            <div className={styles.faqList}>
-              {relatedFaqs.map((faq) => (
-                <div key={faq.id} className={styles.faqItem}>
-                  <h4 style={{ fontSize: '14px', fontWeight: 700, margin: '0 0 4px 0', color: '#0F172A' }}>{faq.question}</h4>
-                  <p style={{ fontSize: '13px', color: '#475569', margin: 0, lineHeight: 1.4 }}>{faq.answer}</p>
-                </div>
-              ))}
+          <section style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+            <h3 className={styles.sectionTitle}>Frequently Asked Questions</h3>
+            <div className={styles.faqAccordionList}>
+              {relatedFaqs.map((faq) => {
+                const isExpanded = expandedFaqId === faq.id;
+                return (
+                  <div key={faq.id} className={`${styles.faqAccordionItem} ${isExpanded ? styles.faqAccordionItemActive : ''}`}>
+                    <div 
+                      className={styles.faqAccordionQuestion}
+                      onClick={() => setExpandedFaqId(isExpanded ? null : faq.id)}
+                    >
+                      <span>{faq.question}</span>
+                      {isExpanded ? <ChevronUp size={18} color="#D97706" /> : <ChevronDown size={18} color="#64748B" />}
+                    </div>
+                    {isExpanded && (
+                      <div className={styles.faqAccordionAnswer}>
+                        {faq.answer}
+                      </div>
+                    )}
+                  </div>
+                );
+              })}
             </div>
           </section>
         )}

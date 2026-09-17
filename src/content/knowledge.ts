@@ -1,3 +1,16 @@
+export interface FeatureHighlight {
+  title: string;
+  subtitle: string;
+  iconName: string;
+}
+
+export interface ItemCategorySpec {
+  title: string;
+  desc: string;
+  tag: string;
+  iconName: string;
+}
+
 export interface SubLocation {
   name: string;
   walkTime: string;
@@ -40,6 +53,8 @@ export interface KnowledgeItem {
   subLocations?: SubLocation[];
   procedureTimeline?: ProcedureStep[];
   requirements?: RequirementsSpec;
+  highlights?: FeatureHighlight[];
+  itemCategories?: ItemCategorySpec[];
 }
 
 export interface FAQItem {
@@ -68,7 +83,7 @@ export const KNOWLEDGE_ITEMS: KnowledgeItem[] = [
     status: 'Open Now',
     shortDescription: 'Free luggage lockers, mobile phone deposit, and electronics storage.',
     description: 'Store your heavy bags, mobile phones, cameras, and leather items safely before entering the Vaikuntam Queue Complex. Free TTD counters are available at 6 major transit points.',
-    whyItMatters: 'Mobiles and heavy bags are strictly prohibited inside the main temple. Depositing them at authorized counters before queue entry avoids being turned back by security.',
+    whyItMatters: 'Mobiles, smartwatches, cameras, and heavy bags are strictly prohibited inside the main temple. Depositing them at authorized TTD counters before queue entry avoids being turned back by security checkpoints at VQC-II gates.',
     distance: '120 m',
     walkingTime: '4 min walk',
     image: '/assets/nature/udyanavanam.png',
@@ -79,6 +94,18 @@ export const KNOWLEDGE_ITEMS: KnowledgeItem[] = [
       'phone', 'mobile', 'cellphone', 'deposit', 'gadget', 'electronic', 'watch',
       'locker', 'lockers', 'luggage', 'bags', 'baggage', 'store', 'secure', 'belongings',
       'aadhaar', 'camera', 'laptop', 'belt', 'footwear', 'shoes'
+    ],
+    highlights: [
+      { title: '100% Free TTD', subtitle: 'Zero fee for lockers & pouches', iconName: 'lock' },
+      { title: 'Aadhaar Required', subtitle: 'Mandatory original ID for receipt', iconName: 'file-text' },
+      { title: 'Sealed Phone Pouch', subtitle: 'Tamper-evident barcode protection', iconName: 'smartphone' },
+      { title: '24/7 PAC Hubs', subtitle: 'Round-the-clock storage & collection', iconName: 'clock' }
+    ],
+    itemCategories: [
+      { title: 'Mobile Phones & Smartwatches', desc: 'Sealed in tamper-evident barcode pouches at VQC Entrance deposit counters.', tag: 'Instant Sealing', iconName: 'smartphone' },
+      { title: 'Heavy Luggage & Laptops', desc: 'Stored in free TTD lockers at PAC-1, PAC-2 (Madhava Nilayam), PAC-3, PAC-5, & Padmanabha Nilayam.', tag: 'Physical Token', iconName: 'briefcase' },
+      { title: 'Footwear & Shoes', desc: 'Free footwear stands near Alipiri Mettu, Srivari Mettu & Tirumala Main Temple entrance.', tag: 'Free Stand', iconName: 'footprints' },
+      { title: 'Cameras & Electronic Gadgets', desc: 'Cataloged and scanned at PAC luggage halls prior to entering security queue.', tag: 'Barcode Scanned', iconName: 'camera' }
     ],
     subLocations: [
       { name: 'Madhava Nilayam (PAC-2 Locker Hub)', walkTime: '4 mins', distance: '120 m', status: 'Open Now' },
