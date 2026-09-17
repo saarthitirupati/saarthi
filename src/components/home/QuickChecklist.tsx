@@ -1,6 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
-import { Clock, MapPin, Ticket, Flag, CheckCircle2, ArrowRight, Circle, Compass, ChevronRight } from 'lucide-react';
+import { Clock, MapPin, Ticket, Flag, CheckCircle2, ArrowRight, Circle, Compass, ChevronRight, Train, Bus, Mountain, ShieldAlert } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useLanguage } from '@/lib/useLanguage';
 
@@ -123,84 +123,143 @@ export function QuickChecklist(props: any) {
             </div>
           </div>
 
-          {/* DYNAMIC ISSUING TIME BOX */}
-          <div style={{
-            background: liveStatus.ssdTokenStatus === 'issuing' ? '#F0FDF4' : liveStatus.ssdTokenStatus === 'paused' ? '#FFFBEB' : '#FEF2F2',
-            border: `1px solid ${liveStatus.ssdTokenStatus === 'issuing' ? '#BBF7D0' : liveStatus.ssdTokenStatus === 'paused' ? '#FDE68A' : '#FECACA'}`,
-            borderRadius: '12px',
-            padding: '10px 12px',
-            marginBottom: '8px',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            gap: '10px'
-          }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-              <Clock size={16} color={liveStatus.ssdTokenStatus === 'issuing' ? '#16A34A' : liveStatus.ssdTokenStatus === 'paused' ? '#D97706' : '#DC2626'} style={{ flexShrink: 0 }} />
-              <div>
-                <span style={{ fontSize: '10.5px', fontWeight: 600, color: '#64748B', display: 'block' }}>
-                  {t.nextRelease}
+          {/* DYNAMIC ISSUING TIME OR ADVISORY BANNER (SINGLE NON-REDUNDANT ALERT) */}
+          {cleanNotice ? (
+            <div style={{
+              background: '#FEF2F2',
+              border: '1px solid #FECACA',
+              borderRadius: '12px',
+              padding: '10px 12px',
+              marginBottom: '10px',
+              display: 'flex',
+              alignItems: 'flex-start',
+              gap: '10px'
+            }}>
+              <ShieldAlert size={18} color="#DC2626" style={{ flexShrink: 0, marginTop: '2px' }} />
+              <div style={{ flex: 1, minWidth: 0 }}>
+                <span style={{ fontSize: '10px', fontWeight: 800, color: '#991B1B', letterSpacing: '0.04em', textTransform: 'uppercase', display: 'block' }}>
+                  {lang === 'te' ? 'ముఖ్యమైన సమాచారం' : 'Important Advisory'}
                 </span>
-                <span style={{ fontSize: '14px', fontWeight: 800, color: liveStatus.ssdTokenStatus === 'issuing' ? '#15803D' : liveStatus.ssdTokenStatus === 'paused' ? '#B45309' : '#991B1B', marginTop: '1px', display: 'block' }}>
-                  {formattedNextTime ? formattedNextTime : (liveStatus.ssdTokenStatus === 'issuing' ? t.tokensBeingIssued : '4:00 AM')}
+                <span style={{ fontSize: '12.5px', fontWeight: 700, color: '#7F1D1D', lineHeight: 1.4, display: 'block', marginTop: '1px' }}>
+                  {cleanNotice}
                 </span>
               </div>
             </div>
-            {cleanNotice && (
-              <span style={{
-                fontSize: '11px',
-                fontWeight: 700,
-                color: '#991B1B',
-                background: '#FFFFFF',
-                border: '1px solid #FECACA',
-                padding: '4px 10px',
-                borderRadius: '8px',
-                lineHeight: 1.3,
-                textAlign: 'center',
-                boxShadow: '0 1px 3px rgba(153, 27, 27, 0.06)'
+          ) : (
+            <>
+              <div style={{
+                background: liveStatus.ssdTokenStatus === 'issuing' ? '#F0FDF4' : liveStatus.ssdTokenStatus === 'paused' ? '#FFFBEB' : '#FEF2F2',
+                border: `1px solid ${liveStatus.ssdTokenStatus === 'issuing' ? '#BBF7D0' : liveStatus.ssdTokenStatus === 'paused' ? '#FDE68A' : '#FECACA'}`,
+                borderRadius: '12px',
+                padding: '10px 12px',
+                marginBottom: '8px',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                gap: '10px'
               }}>
-                {cleanNotice}
-              </span>
-            )}
-          </div>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                  <Clock size={16} color={liveStatus.ssdTokenStatus === 'issuing' ? '#16A34A' : liveStatus.ssdTokenStatus === 'paused' ? '#D97706' : '#DC2626'} style={{ flexShrink: 0 }} />
+                  <div>
+                    <span style={{ fontSize: '10.5px', fontWeight: 600, color: '#64748B', display: 'block' }}>
+                      {t.nextRelease}
+                    </span>
+                    <span style={{ fontSize: '14px', fontWeight: 800, color: liveStatus.ssdTokenStatus === 'issuing' ? '#15803D' : liveStatus.ssdTokenStatus === 'paused' ? '#B45309' : '#991B1B', marginTop: '1px', display: 'block' }}>
+                      {formattedNextTime ? formattedNextTime : (liveStatus.ssdTokenStatus === 'issuing' ? t.tokensBeingIssued : '4:00 AM')}
+                    </span>
+                  </div>
+                </div>
+              </div>
 
-          {/* Non-redundant status helper text */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: '5px', marginBottom: '10px' }}>
-            <span style={{ fontSize: '11.5px', color: '#64748B', fontWeight: 500, lineHeight: 1.35 }}>
-              {liveStatus.ssdTokenStatus === 'issuing'
-                ? t.activelyIssuing
-                : liveStatus.ssdTokenStatus === 'paused'
-                ? t.issuingPaused
-                : t.quotaCompleted}
+              {/* Status helper text */}
+              <div style={{ display: 'flex', alignItems: 'center', gap: '5px', marginBottom: '10px' }}>
+                <span style={{ fontSize: '11.5px', color: '#64748B', fontWeight: 500, lineHeight: 1.35 }}>
+                  {liveStatus.ssdTokenStatus === 'issuing'
+                    ? t.activelyIssuing
+                    : liveStatus.ssdTokenStatus === 'paused'
+                    ? t.issuingPaused
+                    : t.quotaCompleted}
+                </span>
+              </div>
+            </>
+          )}
+
+          {/* VISUAL TILES FOR COLLECTION CENTRES (STRICTLY NO EMOJIS, LUCIDE ICONS) */}
+          <div style={{ borderTop: '1px solid #F1F5F9', paddingTop: '10px', marginTop: '4px' }}>
+            <span style={{ fontSize: '10.5px', fontWeight: 800, color: '#64748B', letterSpacing: '0.03em', textTransform: 'uppercase', display: 'block', marginBottom: '8px' }}>
+              {t.collectionCentres}
             </span>
-          </div>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '6px' }}>
+              {/* Vishnu Nivasam (Train/Station) */}
+              <div style={{
+                background: '#F8FAFC',
+                border: '1px solid #E2E8F0',
+                borderRadius: '10px',
+                padding: '8px 4px',
+                textAlign: 'center',
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                gap: '3px'
+              }}>
+                <div style={{ width: '26px', height: '26px', borderRadius: '50%', background: '#EFF6FF', color: '#2563EB', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                  <Train size={13} />
+                </div>
+                <span style={{ fontSize: '11px', fontWeight: 700, color: '#0F172A', lineHeight: 1.2 }}>
+                  {lang === 'te' ? 'విష్ణు నివాసం' : 'Vishnu Nivasam'}
+                </span>
+                <span style={{ fontSize: '9.5px', color: '#64748B', fontWeight: 500 }}>
+                  {lang === 'te' ? 'రైల్వే స్టేషన్' : 'Opp. Railway'}
+                </span>
+              </div>
 
-          {/* Counter locations */}
-          {liveStatus.ssdCounters && liveStatus.ssdCounters.length > 0 && (
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', borderTop: '1px solid #F1F5F9', paddingTop: '8px' }}>
-              <span style={{ fontSize: '10.5px', fontWeight: 700, color: '#64748B' }}>
-                {t.collectionCentres}
-              </span>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '5px' }}>
-                {liveStatus.ssdCounters.map((c: any, i: number) => {
-                  const counterLocations: Record<string, string> = {
-                    'Vishnu Nivasam Counter': lang === 'te' ? 'రైల్వే స్టేషన్ ఎదురుగా' : 'Opp. Railway Station',
-                    'Srinivasam Complex Counter': lang === 'te' ? 'బస్ స్టాండ్ ఎదురుగా' : 'Opp. Central Bus Stand',
-                    'Bhudevi Complex Counter': lang === 'te' ? 'అలిపిరి వద్ద' : 'Near Alipiri',
-                  };
-                  const loc = counterLocations[c.name] || c.description;
-                  const name = lang === 'te' ? (c.name.includes('Vishnu') ? 'విష్ణు నివాసం' : c.name.includes('Srinivasam') ? 'శ్రీనివాసం' : c.name.includes('Bhudevi') ? 'భూదేవి' : c.name) : c.name.replace(' Counter', '');
-                  return (
-                    <div key={i} style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '12px' }}>
-                      <MapPin size={12} color="#0F5132" style={{ flexShrink: 0 }} />
-                      <span style={{ fontWeight: 700, color: '#0F172A' }}>{name}</span>
-                      <span style={{ color: '#64748B', fontSize: '11px', fontWeight: 500 }}>• {loc}</span>
-                    </div>
-                  );
-                })}
+              {/* Srinivasam (Bus Stand) */}
+              <div style={{
+                background: '#F8FAFC',
+                border: '1px solid #E2E8F0',
+                borderRadius: '10px',
+                padding: '8px 4px',
+                textAlign: 'center',
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                gap: '3px'
+              }}>
+                <div style={{ width: '26px', height: '26px', borderRadius: '50%', background: '#F0FDF4', color: '#16A34A', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                  <Bus size={13} />
+                </div>
+                <span style={{ fontSize: '11px', fontWeight: 700, color: '#0F172A', lineHeight: 1.2 }}>
+                  {lang === 'te' ? 'శ్రీనివాసం' : 'Srinivasam'}
+                </span>
+                <span style={{ fontSize: '9.5px', color: '#64748B', fontWeight: 500 }}>
+                  {lang === 'te' ? 'బస్ స్టాండ్' : 'Opp. Bus Stand'}
+                </span>
+              </div>
+
+              {/* Bhudevi (Alipiri Footpath) */}
+              <div style={{
+                background: '#F8FAFC',
+                border: '1px solid #E2E8F0',
+                borderRadius: '10px',
+                padding: '8px 4px',
+                textAlign: 'center',
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                gap: '3px'
+              }}>
+                <div style={{ width: '26px', height: '26px', borderRadius: '50%', background: '#FFFBEB', color: '#D97706', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                  <Mountain size={13} />
+                </div>
+                <span style={{ fontSize: '11px', fontWeight: 700, color: '#0F172A', lineHeight: 1.2 }}>
+                  {lang === 'te' ? 'భూదేవి కాంప్లెక్స్' : 'Bhudevi Complex'}
+                </span>
+                <span style={{ fontSize: '9.5px', color: '#64748B', fontWeight: 500 }}>
+                  {lang === 'te' ? 'అలిపిరి వద్ద' : 'Near Alipiri'}
+                </span>
               </div>
             </div>
-          )}
+          </div>
 
           {/* Daily timing guide / Custom Admin Info */}
           {liveStatus.ssdTimingsGuide && (() => {
