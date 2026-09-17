@@ -102,9 +102,9 @@ export function detectCoordinates(
   if (typeof window === 'undefined') return;
 
   if (navigator.geolocation) {
-    console.log("[LocationPipeline] Requesting hardware GPS (maximumAge: 0)...");
+    console.log("[LocationPipeline] Requesting hardware GPS (smart cache 3m, 3.5s timeout)...");
 
-    // 1. Try High Accuracy Hardware GPS (maximumAge: 0 prevents stale cached positions)
+    // 1. Try High Accuracy Hardware GPS with smart caching (maximumAge: 180000 allows instant 0ms cached position return)
     navigator.geolocation.getCurrentPosition(
       (position) => {
         const lat = Number(position.coords.latitude.toFixed(6));
@@ -143,10 +143,10 @@ export function detectCoordinates(
             console.warn("[LocationPipeline] Standard geolocation failed, falling back to IP location:", stdErr);
             fallbackToIP();
           },
-          { enableHighAccuracy: false, timeout: 8000, maximumAge: 15000 }
+          { enableHighAccuracy: false, timeout: 3500, maximumAge: 300000 }
         );
       },
-      { enableHighAccuracy: true, timeout: 12000, maximumAge: 0 }
+      { enableHighAccuracy: true, timeout: 3500, maximumAge: 180000 }
     );
   } else {
     fallbackToIP();

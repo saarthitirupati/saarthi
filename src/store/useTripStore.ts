@@ -61,45 +61,49 @@ export function useTripStore() {
       setState(prev => ({ ...prev, isInitialized: true }));
     }
 
-    // Refresh coordinates dynamically on mount — always resolve to EXACT location
+    // Refresh coordinates dynamically on mount (non-blocking deferral after initial UI render)
     if (typeof window !== 'undefined') {
       const permission = saved ? loadedState.locationPermission : 'default';
       if (permission !== 'denied') {
-        import('@/lib/location').then(({ detectCoordinates, watchCoordinates, getIPLocation, TIRUPATI_CENTER, isCoordinateOnTirumalaHill }) => {
-          detectCoordinates(
-            (coords, source, isApproximate, accuracyMeters) => {
-              const region = isCoordinateOnTirumalaHill(coords.lat, coords.lng) ? 'Tirumala' : 'Tirupati';
-              setState(prev => ({
-                ...prev,
-                userLocation: coords,
-                locationPermission: 'granted',
-                locationSource: source,
-                locationAccuracyMeters: accuracyMeters,
-                locationName: region
-              }));
-              // If IP-based, try to get real city name
-              if (source === 'ip') {
-                getIPLocation().then(({ city }) => {
-                  if (city) setState(prev => ({ ...prev, locationName: city }));
-                }).catch(() => {});
+        const timer = setTimeout(() => {
+          import('@/lib/location').then(({ detectCoordinates, watchCoordinates, getIPLocation, TIRUPATI_CENTER, isCoordinateOnTirumalaHill }) => {
+            detectCoordinates(
+              (coords, source, isApproximate, accuracyMeters) => {
+                const region = isCoordinateOnTirumalaHill(coords.lat, coords.lng) ? 'Tirumala' : 'Tirupati';
+                setState(prev => ({
+                  ...prev,
+                  userLocation: coords,
+                  locationPermission: 'granted',
+                  locationSource: source,
+                  locationAccuracyMeters: accuracyMeters,
+                  locationName: region
+                }));
+                // If IP-based, try to get real city name
+                if (source === 'ip') {
+                  getIPLocation().then(({ city }) => {
+                    if (city) setState(prev => ({ ...prev, locationName: city }));
+                  }).catch(() => {});
+                }
+              },
+              () => {
+                // All detection failed — default to Tirupati Center so the app always has a location
+                setState(prev => ({
+                  ...prev,
+                  userLocation: prev.userLocation || TIRUPATI_CENTER,
+                  locationPermission: 'denied'
+                }));
               }
-            },
-            () => {
-              // All detection failed — default to Tirupati Center so the app always has a location
-              setState(prev => ({
-                ...prev,
-                userLocation: prev.userLocation || TIRUPATI_CENTER,
-                locationPermission: 'denied'
-              }));
-            }
-          );
+            );
 
-          // Watch real-time GPS hardware updates
-          watchCoordinates((coords) => {
-            const region = isCoordinateOnTirumalaHill(coords.lat, coords.lng) ? 'Tirumala' : 'Tirupati';
-            setState(prev => ({ ...prev, userLocation: coords, locationPermission: 'granted', locationName: region }));
-          });
-        }).catch(() => {});
+            // Watch real-time GPS hardware updates
+            watchCoordinates((coords) => {
+              const region = isCoordinateOnTirumalaHill(coords.lat, coords.lng) ? 'Tirumala' : 'Tirupati';
+              setState(prev => ({ ...prev, userLocation: coords, locationPermission: 'granted', locationName: region }));
+            });
+          }).catch(() => {});
+        }, 400);
+
+        return () => clearTimeout(timer);
       } else if (!loadedState.userLocation) {
         // Permission was denied before and no cached location — set Tirupati Center
         import('@/lib/location').then(({ TIRUPATI_CENTER }) => {

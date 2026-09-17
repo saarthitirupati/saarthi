@@ -34,14 +34,7 @@ function LayoutContent({
   const isAdmin = pathname?.startsWith('/saarthiadmin');
   const isStudio = pathname?.startsWith('/studio');
   const { locationPermission, isInitialized } = useTrip();
-  const [needsOnboarding, setNeedsOnboarding] = useState<boolean | null>(() => {
-    if (typeof window === 'undefined') return null;
-    const isApp = window.matchMedia('(display-mode: standalone)').matches;
-    const obKey = isApp ? 'hasSeenOnboarding_app' : 'hasSeenOnboarding';
-    const hasSeenOnboarding = localStorage.getItem(obKey);
-    const hasName = localStorage.getItem(isApp ? 'saarthi_user_name_app' : 'saarthi_user_name');
-    return !hasSeenOnboarding || !hasName;
-  });
+  const [needsOnboarding, setNeedsOnboarding] = useState<boolean | null>(null);
   const alertsHook = useAlerts();
 
   useEffect(() => {
@@ -123,13 +116,8 @@ export default function ClientLayout({
   const pathname = usePathname();
   const router = useRouter();
 
-  const [showSplash, setShowSplash] = useState<boolean>(() => {
-    if (typeof window === 'undefined') return true;
-    const splashShown = sessionStorage.getItem('splashShown');
-    const path = window.location.pathname;
-    const isHome = path === '/' || path === '' || path === '/splash';
-    return !splashShown && isHome;
-  });
+  const isHome = pathname === '/' || pathname === '' || pathname === '/splash';
+  const [showSplash, setShowSplash] = useState<boolean>(isHome);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const isAdmin = pathname?.startsWith('/saarthiadmin');
@@ -137,13 +125,11 @@ export default function ClientLayout({
   useEffect(() => {
     if (typeof window === 'undefined') return;
     const splashShown = sessionStorage.getItem('splashShown');
-    const isHome = pathname === '/' || pathname === '' || pathname === '/splash';
-    if (!splashShown && isHome) {
-      setShowSplash(true);
-    } else if (splashShown && isHome && showSplash) {
+    const isHomePage = pathname === '/' || pathname === '' || pathname === '/splash';
+    if (splashShown && isHomePage) {
       setShowSplash(false);
     }
-  }, [pathname, showSplash]);
+  }, [pathname]);
 
   // Register service worker + sync push subscription if permission was already granted
   useEffect(() => {
