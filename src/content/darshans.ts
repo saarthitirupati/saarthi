@@ -16,6 +16,12 @@ export const darshanRegistry: Record<string, DarshanDetail> = {
     entryGate: "Vaikuntam Queue Complex II (VQC-II), Tirumala",
     bookingMode: "Direct Walk-in (No prior online or offline booking required)",
     description: "Sarva Darshan ('Darshan for All') is the revered, completely free queue channel open 24/7 to all pilgrims without advance online tickets or offline tokens. Pilgrims are accommodated in 31 sequential, climate-buffered holding compartments in VQC-II, equipped with free continuous Annaprasadam hot meals, RO water, milk, and medical care.",
+    highlights: [
+      { title: "100% Free Walk-in", subtitle: "No ticket or token required 24/7", icon: "ticket" },
+      { title: "VQC-II Entry Gate", subtitle: "Direct entry at Tirumala hill top", icon: "navigation" },
+      { title: "31 Climate Halls", subtitle: "Free Annaprasadam, water & medical", icon: "users" },
+      { title: "Free Srivari Laddu", subtitle: "1 complimentary laddu post-darshan", icon: "gift" }
+    ],
     whyWaitTimeExplanation: "Wait time directly correlates to the number of active VQC-II compartments occupied (approx. 45-60 mins per compartment release cycle) and intermittent priority clearances for mandatory VIP and Seva rituals.",
     
     accessibility: [
@@ -111,6 +117,12 @@ export const darshanRegistry: Record<string, DarshanDetail> = {
     entryGate: "ATC Car Parking / Supatham Entry Point, Tirumala",
     bookingMode: "Advance Online Reservation via official TTD portal (ttdevasthanams.ap.gov.in)",
     description: "Special Entry Darshan (SED / ₹300 Ticket) provides an expedited, fixed 1-hour reporting window for devotees who plan in advance. Pilgrims book online on the official TTD portal and enter via the dedicated ATC Car Parking entrance, bypassing 90% of outer holding warehouses to reach the inner temple prakaram in 2 to 4 hours.",
+    highlights: [
+      { title: "₹300 Online Ticket", subtitle: "Book on ttdevasthanams.ap.gov.in", icon: "ticket" },
+      { title: "ATC Parking Gate", subtitle: "Direct reporting at Supatham gate", icon: "navigation" },
+      { title: "Fixed 1-Hr Window", subtitle: "Report within allotted time slot", icon: "clock" },
+      { title: "1 Free Srivari Laddu", subtitle: "Included per ₹300 ticket voucher", icon: "gift" }
+    ],
     whyWaitTimeExplanation: "Wait time is strictly regulated by allocated 1-hour slot batches. Minor delays only occur during auspicious Kainkaryam rituals or VIP protocol clearances inside the inner sanctum.",
     
     accessibility: [
@@ -218,6 +230,12 @@ export const darshanRegistry: Record<string, DarshanDetail> = {
       }
     ],
     description: "Slotted Sarva Darshan (SSD) tokens are free biometric tokens issued in Tirupati city to prevent pilgrims from having to wait 12-16 hours in general standing queue halls. Devotees receive a token printed with an exact reporting time slot, allowing them to rest or explore Tirupati before reporting to Tirumala.",
+    highlights: [
+      { title: "Free Offline Token", subtitle: "Issued with original Aadhaar Card", icon: "ticket" },
+      { title: "3 Tirupati Counters", subtitle: "Vishnu Nivasam, Srinivasam & Bhudevi", icon: "map-pin" },
+      { title: "Slotted Time Window", subtitle: "Reduces standing wait to 3-5 hrs", icon: "clock" },
+      { title: "30-Day Rule", subtitle: "1 token per Aadhaar every 30 days", icon: "shield-check" }
+    ],
     whyWaitTimeExplanation: "Receiving an SSD token reduces continuous queue standing time in Tirumala from 12-16 hours down to 3-5 hours because pilgrims report strictly during their assigned 1-hour window.",
     
     accessibility: [

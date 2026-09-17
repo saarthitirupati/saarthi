@@ -246,44 +246,76 @@ export default function DarshanDetailsPage() {
               </span>
             </div>
 
-            {/* 🌟 WHAT IT IS ABOUT OVERVIEW BOX */}
+            {/* VISUAL HIGHLIGHTS GRID & AT A GLANCE SPECS */}
             <div style={{
-              background: 'linear-gradient(135deg, #F8FAFC 0%, #F1F5F9 100%)',
+              background: '#FFFFFF',
               border: '1px solid #E2E8F0',
-              borderRadius: '14px',
-              padding: '12px 14px',
-              marginTop: '10px',
-              marginBottom: '12px'
+              borderRadius: '16px',
+              padding: '14px',
+              marginTop: '12px',
+              marginBottom: '14px',
+              boxShadow: '0 2px 8px rgba(0,0,0,0.02)'
             }}>
-              <p style={{
-                fontSize: '12.5px',
-                lineHeight: 1.5,
-                color: '#334155',
-                margin: 0,
-                fontWeight: 500
-              }}>
-                {data.description}
-              </p>
+              {/* 4 Visual Pill Cards */}
+              {data.highlights && data.highlights.length > 0 && (
+                <div style={{
+                  display: 'grid',
+                  gridTemplateColumns: 'repeat(2, 1fr)',
+                  gap: '10px',
+                  marginBottom: '12px'
+                }}>
+                  {data.highlights.map((hl, idx) => {
+                    const HIcon = hl.icon === 'ticket' ? Ticket 
+                                : hl.icon === 'navigation' ? Navigation 
+                                : hl.icon === 'users' ? Users 
+                                : hl.icon === 'gift' ? Gift 
+                                : hl.icon === 'clock' ? Clock 
+                                : hl.icon === 'map-pin' ? MapPin 
+                                : hl.icon === 'shield-check' ? ShieldCheck 
+                                : Sparkles;
+                    return (
+                      <div key={idx} style={{
+                        background: '#F8FAFC',
+                        border: '1px solid #E2E8F0',
+                        borderRadius: '12px',
+                        padding: '10px 12px',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        gap: '2px'
+                      }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '6px', color: themeColor }}>
+                          <HIcon size={14} />
+                          <span style={{ fontSize: '12px', fontWeight: 800, color: '#0F172A' }}>{hl.title}</span>
+                        </div>
+                        <span style={{ fontSize: '10.5px', color: '#64748B', fontWeight: 500 }}>{hl.subtitle}</span>
+                      </div>
+                    );
+                  })}
+                </div>
+              )}
 
-              {/* At a Glance Specs (Strictly Zero Emojis) */}
+              {/* At a Glance Specs */}
               <div style={{
                 display: 'grid',
                 gridTemplateColumns: 'repeat(2, 1fr)',
                 gap: '8px',
-                marginTop: '10px',
                 paddingTop: '10px',
-                borderTop: '1px solid #E2E8F0'
+                borderTop: '1px solid #F1F5F9'
               }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                  <Coins size={14} color={themeColor} />
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                  <div style={{ width: '28px', height: '28px', borderRadius: '8px', background: '#FEF3C7', color: '#D97706', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                    <Coins size={14} />
+                  </div>
                   <div>
                     <div style={{ fontSize: '9.5px', color: '#64748B', fontWeight: 700, textTransform: 'uppercase' }}>Cost / Access</div>
                     <div style={{ fontSize: '11px', fontWeight: 800, color: '#0F172A' }}>{data.cost}</div>
                   </div>
                 </div>
 
-                <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                  <Navigation size={14} color={themeColor} />
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                  <div style={{ width: '28px', height: '28px', borderRadius: '8px', background: '#E0F2FE', color: '#0284C7', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                    <Navigation size={14} />
+                  </div>
                   <div>
                     <div style={{ fontSize: '9.5px', color: '#64748B', fontWeight: 700, textTransform: 'uppercase' }}>Entry Point</div>
                     <div style={{ fontSize: '11px', fontWeight: 800, color: '#0F172A' }}>{(data.entryGate || 'Tirumala Gate').split(',')[0]}</div>
@@ -297,9 +329,9 @@ export default function DarshanDetailsPage() {
                   display: 'flex',
                   alignItems: 'center',
                   gap: '8px',
-                  background: '#FEF3C7',
+                  background: '#FFFBEB',
                   border: '1px solid #FDE68A',
-                  color: '#78350F',
+                  color: '#92400E',
                   padding: '8px 12px',
                   borderRadius: '10px',
                   marginTop: '10px',

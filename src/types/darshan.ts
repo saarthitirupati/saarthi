@@ -19,6 +19,11 @@ export interface DarshanDetail {
     quotaInfo: string;
   }[];
   description: string;
+  highlights?: {
+    title: string;
+    subtitle: string;
+    icon: string;
+  }[];
   
   accessibility: string[];
   facilities: { 
