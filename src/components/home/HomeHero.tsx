@@ -257,6 +257,8 @@ export function HomeHero({ userName, locationName, weatherTemp, liveStatus, acti
   const [selectedLocation, setSelectedLocation] = useState<string>(locationName || 'Tirupati');
   const [isLocating, setIsLocating] = useState<boolean>(false);
   const [isLocationModalOpen, setIsLocationModalOpen] = useState<boolean>(false);
+  const [isVideoLoaded, setIsVideoLoaded] = useState<boolean>(false);
+  const [hasVideoError, setHasVideoError] = useState<boolean>(false);
   const bannerVideoRef = React.useRef<HTMLVideoElement>(null);
 
   React.useEffect(() => {
@@ -2017,7 +2019,7 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
           </>
         )}
 
-      {/* 🎬 HIGH-FIDELITY SAARTHI HERO ANIMATED MP4 VIDEO BANNER */}
+      {/* 🎬 HIGH-FIDELITY SAARTHI HERO ANIMATED BANNER (OFFLINE WEBP POSTER + MP4 HYBRID) */}
       <div style={{
         position: 'relative',
         width: '100%',
@@ -2026,36 +2028,45 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
         marginBottom: '14px',
         boxShadow: '0 12px 32px rgba(15, 23, 42, 0.14)',
         border: '1.5px solid rgba(212, 175, 55, 0.45)',
-        background: '#FAF8F4',
+        background: '#FAF8F4 url(/banner/banner_poster.webp) left center / cover no-repeat',
         aspectRatio: '16 / 9',
         maxHeight: 'clamp(180px, 32vw, 240px)'
       }}>
-        <video
-          ref={bannerVideoRef}
-          autoPlay
-          loop
-          muted
-          playsInline
-          preload="auto"
-          controls={false}
-          onCanPlay={(e) => {
-            e.currentTarget.defaultMuted = true;
-            e.currentTarget.muted = true;
-            e.currentTarget.play().catch(() => {});
-          }}
-          style={{
-            width: '100%',
-            height: '100%',
-            objectFit: 'cover',
-            objectPosition: 'left center',
-            transform: 'scale(1.12)',
-            transformOrigin: 'left center',
-            display: 'block',
-            pointerEvents: 'none'
-          }}
-        >
-          <source src="/banner/Absolutely_For_the_Saarthi_SV.mp4" type="video/mp4" />
-        </video>
+        {!hasVideoError && (
+          <video
+            ref={bannerVideoRef}
+            autoPlay
+            loop
+            muted
+            playsInline
+            poster="/banner/banner_poster.webp"
+            preload="metadata"
+            controls={false}
+            onCanPlay={(e) => {
+              setIsVideoLoaded(true);
+              e.currentTarget.defaultMuted = true;
+              e.currentTarget.muted = true;
+              e.currentTarget.play().catch(() => {});
+            }}
+            onLoadedData={() => setIsVideoLoaded(true)}
+            onError={() => setHasVideoError(true)}
+            style={{
+              width: '100%',
+              height: '100%',
+              objectFit: 'cover',
+              objectPosition: 'left center',
+              transform: 'scale(1.12)',
+              transformOrigin: 'left center',
+              display: 'block',
+              pointerEvents: 'none',
+              opacity: isVideoLoaded ? 1 : 0,
+              transition: 'opacity 0.4s ease-in-out'
+            }}
+          >
+            <source src="/banner/hero_banner_compressed.mp4" type="video/mp4" />
+            <source src="/banner/Absolutely_For_the_Saarthi_SV.mp4" type="video/mp4" />
+          </video>
+        )}
 
         {/* Top-Left Live Devotional Badge */}
         <div style={{
