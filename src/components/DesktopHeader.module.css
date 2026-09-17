@@ -1,12 +1,14 @@
 .desktopHeaderContainer {
   display: none;
   width: 100%;
-  background: #FFFFFF;
+  background: rgba(255, 255, 255, 0.96);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   border-bottom: 1px solid #E2E8F0;
   position: sticky;
   top: 0;
   z-index: 50;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+  box-shadow: 0 2px 10px rgba(15, 23, 42, 0.04);
 }
 
 @media (min-width: 768px) {
@@ -16,28 +18,39 @@
 }
 
 .innerHeader {
-  max-width: 1600px;
+  max-width: 1440px;
   margin: 0 auto;
-  padding: 14px 24px;
+  padding: 11px 24px;
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 16px;
 }
 
+@media (min-width: 1280px) {
+  .innerHeader {
+    padding: 11px 32px;
+  }
+}
+
 .leftBrand {
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: 14px;
   flex-shrink: 0;
 }
 
 .logoWrapper {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 9px;
   text-decoration: none;
   color: #0F172A;
+  transition: opacity 0.15s ease;
+}
+
+.logoWrapper:hover {
+  opacity: 0.9;
 }
 
 .brandName {
@@ -45,26 +58,7 @@
   font-weight: 800;
   color: #0F5132;
   letter-spacing: -0.3px;
-}
-
-.locationBadge {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  background: #F1F5F9;
-  border: 1px solid #E2E8F0;
-  border-radius: 20px;
-  padding: 5px 12px;
-  font-size: 12.5px;
-  font-weight: 700;
-  color: #0F172A;
-  cursor: pointer;
-  transition: background 0.2s;
-  flex-shrink: 0;
-}
-
-.locationBadge:hover {
-  background: #E2E8F0;
+  font-family: inherit;
 }
 
 /* ── CENTER NAVIGATION MENU ── */
@@ -72,13 +66,14 @@
 .centerNav {
   display: flex;
   align-items: center;
-  gap: 4px;
+  gap: 3px;
   background: #F8FAF7;
   border: 1px solid #E2E8F0;
-  border-radius: 24px;
-  padding: 4px 6px;
+  border-radius: 9999px;
+  padding: 4px 5px;
   overflow-x: auto;
   scrollbar-width: none;
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.02);
 }
 
 .centerNav::-webkit-scrollbar {
@@ -89,30 +84,30 @@
   display: flex;
   align-items: center;
   gap: 6px;
-  padding: 6px 12px;
-  border-radius: 18px;
+  padding: 6.5px 14px;
+  border-radius: 9999px;
   text-decoration: none;
-  font-size: 12.5px;
+  font-size: 13px;
   font-weight: 700;
   color: #475569;
-  transition: all 0.2s ease;
+  transition: all 0.18s ease;
   white-space: nowrap;
 }
 
 .navItem:hover {
   color: #0F5132;
-  background: rgba(15, 81, 50, 0.06);
+  background: rgba(15, 81, 50, 0.08);
 }
 
 .navItemActive {
   background: #0F5132 !important;
   color: #FFFFFF !important;
-  box-shadow: 0 2px 8px rgba(15, 81, 50, 0.2);
+  box-shadow: 0 2px 8px rgba(15, 81, 50, 0.22);
 }
 
 .navIcon {
   color: #64748B;
-  transition: color 0.2s;
+  transition: color 0.18s ease;
 }
 
 .navItem:hover .navIcon {
@@ -123,62 +118,73 @@
   color: #FFFFFF;
 }
 
+/* ── RIGHT META ACTIONS ── */
+
 .rightMeta {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 10px;
   flex-shrink: 0;
 }
 
 .weatherBadge {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
   background: #FFF7ED;
-  border: 1px solid #FFEDD5;
-  border-radius: 20px;
-  padding: 6px 14px;
-  font-size: 13px;
+  border: 1px solid #FED7AA;
+  border-radius: 9999px;
+  padding: 5.5px 13px;
+  font-size: 12.5px;
   font-weight: 700;
   color: #C2410C;
+  box-shadow: 0 1px 2px rgba(194, 65, 12, 0.05);
 }
 
-.updatedBadge {
-  display: flex;
+.langButton {
+  display: inline-flex;
   align-items: center;
-  gap: 6px;
+  gap: 5px;
+  padding: 5.5px 12px;
+  border-radius: 9999px;
+  border: 1px solid #E2E8F0;
+  background: #F8FAFC;
+  color: #0F5132;
   font-size: 12.5px;
-  font-weight: 600;
-  color: #64748B;
+  font-weight: 700;
+  cursor: pointer;
+  user-select: none;
+  transition: all 0.18s ease;
 }
 
-.updatedDot {
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  background: #10B981;
-  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.2);
+.langButton:hover {
+  background: #F1F5F9;
+  border-color: #CBD5E1;
+  transform: translateY(-1px);
 }
 
 .notifButton {
-  width: 38px;
-  height: 38px;
-  border-radius: 12px;
+  width: 36px;
+  height: 36px;
+  border-radius: 11px;
   border: 1px solid #E2E8F0;
   background: #FFFFFF;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #0F172A;
+  color: #475569;
   cursor: pointer;
   position: relative;
   text-decoration: none;
-  transition: all 0.2s;
+  transition: all 0.18s ease;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
 }
 
 .notifButton:hover {
   background: #F8FAFC;
   border-color: #CBD5E1;
+  color: #0F5132;
+  transform: translateY(-1px);
 }
 
 .notifBadge {
@@ -187,7 +193,7 @@
   right: -3px;
   min-width: 16px;
   height: 16px;
-  padding: 0 3px;
+  padding: 0 4px;
   border-radius: 8px;
   background: #DC2626;
   border: 1.5px solid #FFFFFF;

@@ -88,21 +88,7 @@ export function DesktopHeader({ weather, temperature }: DesktopHeaderProps) {
             onClick={() => setAppLanguage(lang === 'en' ? 'te' : 'en')}
             aria-label={lang === 'en' ? 'Switch to Telugu' : 'Switch to English'}
             title={lang === 'en' ? 'తెలుగులోకి మార్చండి' : 'Switch to English'}
-            style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: '5px',
-              padding: '5px 11px',
-              borderRadius: '9999px',
-              border: '1px solid #E2E8F0',
-              background: '#F8FAFC',
-              color: '#0F5132',
-              fontSize: '12px',
-              fontWeight: 700,
-              cursor: 'pointer',
-              userSelect: 'none',
-              transition: 'all 0.15s ease',
-            }}
+            className={styles.langButton}
           >
             <Languages size={14} color="#0F5132" strokeWidth={2} />
             <span>{lang === 'en' ? 'తెలుగు' : 'English'}</span>
