@@ -3212,6 +3212,66 @@ export const PLACES: Place[] = [
       ]
     },
     relatedPlaces: ['talakona', 'kailasa-kona', 'srikalahasti', 'parasareswara-temple-gudimallam']
+  },
+  {
+    id: 'pallikondeswara-surutapalli',
+    name: 'Sri Pallikondeswara Swamy Temple (Surutapalli)',
+    category: 'Regional Kshethram',
+    placeType: 'spiritual',
+    location: 'Surutapalli, Tirupati District',
+    distanceKms: 73,
+    durationMins: 85,
+    budgetLevel: 'budget',
+    entryFeeNum: 0,
+    interests: ['spiritual'],
+    openFrom: 6,
+    openTo: 20,
+    isMustVisit: true,
+    description: 'The world\'s only temple where Lord Shiva is worshipped in a human reclining posture (Bhoga Sayana) resting on Goddess Parvati\'s lap after drinking Halahala poison.',
+    shortIntro: 'Located at Surutapalli near the Andhra-Tamil Nadu border, Pallikondeswara Temple is globally unique. Unlike all Shiva shrines that house a Lingam, here Shiva is enshrined in human vigraha form, reclining peacefully on the lap of his consort Sarvamangalambika (Parvati) after consuming the lethal Halahala poison during Samudra Manthan.',
+    whyVisit: 'Famed as the origin shrine of Pradosham worship. Devotees experience the rare Bhoga Sayana Shiva reclining on Parvati\'s lap surrounded by 33 crore devas and rishis. Uniquely, worshippers receive sacred Teertham and Shadaari (crown blessing) just like Vaishnavite shrines.',
+    history: 'Built in the 14th century during the Vijayanagara Empire by kings Harihara and Bukka Raya (1344–1347 AD). Legend tells that after consuming the lethal Halahala poison to save creation, Lord Shiva felt exhausted. He rested at Surutapalli with his head on Goddess Parvati\'s lap. Devas and rishis gathered around in awe, establishing the Pradosha Kalam prayer tradition.',
+    timings: '6:00 AM – 1:00 PM & 4:00 PM – 8:00 PM (Pradosham days: 6:00 AM – 8:30 PM continuously)',
+    entryFee: 'Free (Special Pradosha Puja queue & Archana passes available at counter)',
+    address: 'NH 716, Surutapalli Village, Nagalapuram Mandal, Tirupati District, Andhra Pradesh - 517589',
+    rating: 4.8,
+    reviewCount: 18500,
+    image: 'https://res.cloudinary.com/kniegqlj/image/upload/v1789663650/suruttapalli1_copy_yraale.jpg',
+    coordinates: { lat: 13.3344873, lng: 79.8746719 },
+    tags: ['Shiva', 'Pradosham', 'Reclining Shiva', 'Vijayanagara', 'Surutapalli', 'Tirupati'],
+    bestTime: 'Trayodashi Pradosham (twilight 4:30 PM - 6:30 PM) & Saturday Shani Pradosham',
+    practicalInfo: {
+      dressCode: 'Traditional South Indian attire required (Dhoti/Kurta for men, Saree/Chudidhar for women)',
+      food: 'Devasthanam prasadam, veg canteens, and local eateries near main highway',
+      parking: 'Dedicated vehicle parking plaza available near temple gopuram entrance'
+    },
+    travelEstimates: {
+      'tirupati': '80 mins (73 km via NH 716 / Chennai Highway)',
+      'chennai': '75 mins (65 km via Thiruvallur → Uthukkottai)',
+      'uthukkottai': '5 mins (2 km)'
+    },
+    rituals: {
+      daily: [
+        'Ushathkalam Abhishekam & Temple Opening (6:00 AM – 6:30 AM)',
+        'Kalasanthi Puja & Alankaram (8:00 AM – 8:30 AM)',
+        'Uchikalam Puja (12:00 PM – 12:30 PM)',
+        'Midday Sanctum Repose (1:00 PM – 4:00 PM)',
+        'Sayarakshai Evening Harathi (5:00 PM – 6:00 PM)',
+        'Ardha Jamam & Night Closure (8:00 PM)'
+      ],
+      weekly: [
+        'Somavaram Special Shiva Abhishekam (Mondays)',
+        'Sukravaram Maragathambigai Special Puja (Fridays)'
+      ],
+      annual: [
+        'Fortnightly Pradosha Puja (15,000+ devotees)',
+        'Saturday Shani Pradosham (Special obstacles removal prayers)',
+        'Maha Shivaratri All-Night Vigil & 4 Prahar Abhishekam (30,000+ devotees)',
+        'Aippasi Annabhishekam (Cooked rice decoration on Lord Shiva)',
+        'Margazhi Thiruvadhirai Arudra Darisanam'
+      ]
+    },
+    relatedPlaces: ['srikalahasti', 'srinivasa-mangapuram', 'kanipakam', 'kailasa-kona']
   }
 ];
 

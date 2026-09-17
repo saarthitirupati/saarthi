@@ -101,6 +101,16 @@ export const PRESET_LOCATIONS: LocationOption[] = [
     subtextTe: 'శ్రీ ప్రసన్న వేంకటేశ్వర స్వామి సన్నిధి (~16 కి.మీ)',
     coords: { lat: 13.5374, lng: 79.4776 }
   },
+  {
+    id: 'surutapalli',
+    nameEn: 'Surutapalli (Pallikondeswara)',
+    nameTe: 'సురుటుపల్లె (పళ్ళికొండేశ్వరుడు)',
+    shortName: 'Surutapalli',
+    category: 'kshethram',
+    subtextEn: 'Rare Reclining Bhoga Sayana Shiva (~73 km)',
+    subtextTe: 'అరుదైన శయన శివ పరిహార క్షేత్రం (~73 కి.మీ)',
+    coords: { lat: 13.3344, lng: 79.8746 }
+  },
 
   // ── MAJOR PLANNING HUBS (PLANNING FROM HOME) ──
   {
