@@ -40,7 +40,7 @@ export function useDailyContent(places: any[]) {
   const todayStory = useMemo(() => {
     let storyData = dailyContent?.learn?.storyOfTheDay || dailyContent?.story;
     if (!storyData && STORIES.length > 0) {
-      const day = typeof window !== 'undefined' ? new Date().getDate() : 1;
+      const day = new Date().getDate();
       storyData = STORIES[day % STORIES.length];
     }
     return storyData;

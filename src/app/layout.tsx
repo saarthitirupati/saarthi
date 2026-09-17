@@ -167,7 +167,7 @@ export default function RootLayout({
   const gtmId = process.env.NEXT_PUBLIC_GTM_ID || 'GTM-NFJVHVBK';
 
   return (
-    <html lang="en" style={{ backgroundColor: '#FAF8F5' }} className={`${dmSerifDisplay.variable} ${plusJakartaSans.variable} ${inter.variable} ${notoSansTelugu.variable}`}>
+    <html lang="en" suppressHydrationWarning style={{ backgroundColor: '#FAF8F5' }} className={`${dmSerifDisplay.variable} ${plusJakartaSans.variable} ${inter.variable} ${notoSansTelugu.variable}`}>
       <head>
         <link rel="shortcut icon" href="/favicon.ico" />
         <link rel="icon" type="image/png" sizes="48x48" href="/icon-48.png" />
@@ -200,7 +200,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdSchema) }}
         />
       </head>
-      <body style={{ backgroundColor: '#FAF8F5' }}>
+      <body suppressHydrationWarning style={{ backgroundColor: '#FAF8F5' }}>
         {/* Google Tag Manager (noscript) */}
         <noscript>
           <iframe
