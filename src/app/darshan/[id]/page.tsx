@@ -348,7 +348,7 @@ export default function DarshanDetailsPage() {
                   <span>{lang === 'te' ? 'SSD టోకెన్ కేంద్రాలు' : 'Get SSD Tokens'}</span>
                 </span>
                 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '8px' }}>
-                  <a href="https://maps.google.com/?q=Vishnu+Nivasam+Tirupati" target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none' }}>
+                  <a href="https://www.google.com/maps/place/Vishnu+Nivasam/@13.6281932,79.4205053,17z/data=!3m1!5s0x3a4d4b0898df978f:0x10422b2c2d88f4e3!4m20!1m10!3m9!1s0x3a4d4bbbe2ad2eff:0x6b655eee58504269!2sVishnu+Nivasam!5m2!4m1!1i2!8m2!3d13.6292776!4d79.4215889!16s%2Fg%2F11g1q7vspv!3m8!1s0x3a4d4bbbe2ad2eff:0x6b655eee58504269!5m2!4m1!1i2!8m2!3d13.6292776!4d79.4215889!16s%2Fg%2F11g1q7vspv" target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none' }}>
                     <div style={{
                       background: 'linear-gradient(135deg, #FFFFFF 0%, #F8FAFC 100%)',
                       border: '1.5px solid #E2E8F0',
@@ -365,7 +365,7 @@ export default function DarshanDetailsPage() {
                     </div>
                   </a>
 
-                  <a href="https://maps.google.com/?q=Srinivasam+Complex+Tirupati" target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none' }}>
+                  <a href="https://www.google.com/maps/place/Srinivasam/@13.6311961,79.4266529,17z/data=!3m1!5s0x3a4d4b0898df978f:0x10422b2c2d88f4e3!4m20!1m10!3m9!1s0x3a4d4bbbe2ad2eff:0x6b655eee58504269!2sVishnu+Nivasam!5m2!4m1!1i2!8m2!3d13.6292776!4d79.4215889!16s%2Fg%2F11g1q7vspv!3m8!1s0x3a4d4b1372b4101d:0x5da265ff8e42d9fa!5m2!4m1!1i2!8m2!3d13.6315627!4d79.4288389!16s%2Fg%2F1pyqs92yw" target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none' }}>
                     <div style={{
                       background: 'linear-gradient(135deg, #FFFFFF 0%, #F8FAFC 100%)',
                       border: '1.5px solid #E2E8F0',
@@ -382,7 +382,7 @@ export default function DarshanDetailsPage() {
                     </div>
                   </a>
 
-                  <a href="https://maps.google.com/?q=Bhudevi+Complex+Alipiri+Tirupati" target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none' }}>
+                  <a href="https://www.google.com/maps/place/Bhudevi+complex+Padayatra+tickets+counter/@13.6466715,79.4085658,18.14z/data=!3m1!5s0x3a4d4b0898df978f:0x10422b2c2d88f4e3!4m17!1m10!3m9!1s0x3a4d4bbbe2ad2eff:0x6b655eee58504269!2sVishnu+Nivasam!5m2!4m1!1i2!8m2!3d13.6292776!4d79.4215889!16s%2Fg%2F11g1q7vspv!3m5!1s0x3a4d4b002440a9d1:0x22ccbb84b1c113d2!8m2!3d13.6464948!4d79.4097309!16s%2Fg%2F11wb01cp7t" target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none' }}>
                     <div style={{
                       background: 'linear-gradient(135deg, #FFFFFF 0%, #F8FAFC 100%)',
                       border: '1.5px solid #E2E8F0',

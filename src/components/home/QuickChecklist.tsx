@@ -191,73 +191,97 @@ export function QuickChecklist(props: any) {
             </span>
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '6px' }}>
               {/* Vishnu Nivasam (Train/Station) */}
-              <div style={{
-                background: '#F8FAFC',
-                border: '1px solid #E2E8F0',
-                borderRadius: '10px',
-                padding: '8px 4px',
-                textAlign: 'center',
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                gap: '3px'
-              }}>
-                <div style={{ width: '26px', height: '26px', borderRadius: '50%', background: '#EFF6FF', color: '#2563EB', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                  <Train size={13} />
+              <a
+                href="https://www.google.com/maps/place/Vishnu+Nivasam/@13.6281932,79.4205053,17z/data=!3m1!5s0x3a4d4b0898df978f:0x10422b2c2d88f4e3!4m20!1m10!3m9!1s0x3a4d4bbbe2ad2eff:0x6b655eee58504269!2sVishnu+Nivasam!5m2!4m1!1i2!8m2!3d13.6292776!4d79.4215889!16s%2Fg%2F11g1q7vspv!3m8!1s0x3a4d4bbbe2ad2eff:0x6b655eee58504269!5m2!4m1!1i2!8m2!3d13.6292776!4d79.4215889!16s%2Fg%2F11g1q7vspv"
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={(e) => e.stopPropagation()}
+                style={{ textDecoration: 'none', color: 'inherit' }}
+              >
+                <div style={{
+                  background: '#F8FAFC',
+                  border: '1px solid #E2E8F0',
+                  borderRadius: '10px',
+                  padding: '8px 4px',
+                  textAlign: 'center',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                  gap: '3px'
+                }}>
+                  <div style={{ width: '26px', height: '26px', borderRadius: '50%', background: '#EFF6FF', color: '#2563EB', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                    <Train size={13} />
+                  </div>
+                  <span style={{ fontSize: '11px', fontWeight: 700, color: '#0F172A', lineHeight: 1.2 }}>
+                    {lang === 'te' ? 'విష్ణు నివాసం' : 'Vishnu Nivasam'}
+                  </span>
+                  <span style={{ fontSize: '9.5px', color: '#64748B', fontWeight: 500 }}>
+                    {lang === 'te' ? 'రైల్వే స్టేషన్' : 'Opp. Railway'}
+                  </span>
                 </div>
-                <span style={{ fontSize: '11px', fontWeight: 700, color: '#0F172A', lineHeight: 1.2 }}>
-                  {lang === 'te' ? 'విష్ణు నివాసం' : 'Vishnu Nivasam'}
-                </span>
-                <span style={{ fontSize: '9.5px', color: '#64748B', fontWeight: 500 }}>
-                  {lang === 'te' ? 'రైల్వే స్టేషన్' : 'Opp. Railway'}
-                </span>
-              </div>
+              </a>
 
               {/* Srinivasam (Bus Stand) */}
-              <div style={{
-                background: '#F8FAFC',
-                border: '1px solid #E2E8F0',
-                borderRadius: '10px',
-                padding: '8px 4px',
-                textAlign: 'center',
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                gap: '3px'
-              }}>
-                <div style={{ width: '26px', height: '26px', borderRadius: '50%', background: '#F0FDF4', color: '#16A34A', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                  <Bus size={13} />
+              <a
+                href="https://www.google.com/maps/place/Srinivasam/@13.6311961,79.4266529,17z/data=!3m1!5s0x3a4d4b0898df978f:0x10422b2c2d88f4e3!4m20!1m10!3m9!1s0x3a4d4bbbe2ad2eff:0x6b655eee58504269!2sVishnu+Nivasam!5m2!4m1!1i2!8m2!3d13.6292776!4d79.4215889!16s%2Fg%2F11g1q7vspv!3m8!1s0x3a4d4b1372b4101d:0x5da265ff8e42d9fa!5m2!4m1!1i2!8m2!3d13.6315627!4d79.4288389!16s%2Fg%2F1pyqs92yw"
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={(e) => e.stopPropagation()}
+                style={{ textDecoration: 'none', color: 'inherit' }}
+              >
+                <div style={{
+                  background: '#F8FAFC',
+                  border: '1px solid #E2E8F0',
+                  borderRadius: '10px',
+                  padding: '8px 4px',
+                  textAlign: 'center',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                  gap: '3px'
+                }}>
+                  <div style={{ width: '26px', height: '26px', borderRadius: '50%', background: '#F0FDF4', color: '#16A34A', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                    <Bus size={13} />
+                  </div>
+                  <span style={{ fontSize: '11px', fontWeight: 700, color: '#0F172A', lineHeight: 1.2 }}>
+                    {lang === 'te' ? 'శ్రీనివాసం' : 'Srinivasam'}
+                  </span>
+                  <span style={{ fontSize: '9.5px', color: '#64748B', fontWeight: 500 }}>
+                    {lang === 'te' ? 'బస్ స్టాండ్' : 'Opp. Bus Stand'}
+                  </span>
                 </div>
-                <span style={{ fontSize: '11px', fontWeight: 700, color: '#0F172A', lineHeight: 1.2 }}>
-                  {lang === 'te' ? 'శ్రీనివాసం' : 'Srinivasam'}
-                </span>
-                <span style={{ fontSize: '9.5px', color: '#64748B', fontWeight: 500 }}>
-                  {lang === 'te' ? 'బస్ స్టాండ్' : 'Opp. Bus Stand'}
-                </span>
-              </div>
+              </a>
 
               {/* Bhudevi (Alipiri Footpath) */}
-              <div style={{
-                background: '#F8FAFC',
-                border: '1px solid #E2E8F0',
-                borderRadius: '10px',
-                padding: '8px 4px',
-                textAlign: 'center',
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                gap: '3px'
-              }}>
-                <div style={{ width: '26px', height: '26px', borderRadius: '50%', background: '#FFFBEB', color: '#D97706', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                  <Mountain size={13} />
+              <a
+                href="https://www.google.com/maps/place/Bhudevi+complex+Padayatra+tickets+counter/@13.6466715,79.4085658,18.14z/data=!3m1!5s0x3a4d4b0898df978f:0x10422b2c2d88f4e3!4m17!1m10!3m9!1s0x3a4d4bbbe2ad2eff:0x6b655eee58504269!2sVishnu+Nivasam!5m2!4m1!1i2!8m2!3d13.6292776!4d79.4215889!16s%2Fg%2F11g1q7vspv!3m5!1s0x3a4d4b002440a9d1:0x22ccbb84b1c113d2!8m2!3d13.6464948!4d79.4097309!16s%2Fg%2F11wb01cp7t"
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={(e) => e.stopPropagation()}
+                style={{ textDecoration: 'none', color: 'inherit' }}
+              >
+                <div style={{
+                  background: '#F8FAFC',
+                  border: '1px solid #E2E8F0',
+                  borderRadius: '10px',
+                  padding: '8px 4px',
+                  textAlign: 'center',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                  gap: '3px'
+                }}>
+                  <div style={{ width: '26px', height: '26px', borderRadius: '50%', background: '#FFFBEB', color: '#D97706', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                    <Mountain size={13} />
+                  </div>
+                  <span style={{ fontSize: '11px', fontWeight: 700, color: '#0F172A', lineHeight: 1.2 }}>
+                    {lang === 'te' ? 'భూదేవి కాంప్లెక్స్' : 'Bhudevi Complex'}
+                  </span>
+                  <span style={{ fontSize: '9.5px', color: '#64748B', fontWeight: 500 }}>
+                    {lang === 'te' ? 'అలిపిరి వద్ద' : 'Near Alipiri'}
+                  </span>
                 </div>
-                <span style={{ fontSize: '11px', fontWeight: 700, color: '#0F172A', lineHeight: 1.2 }}>
-                  {lang === 'te' ? 'భూదేవి కాంప్లెక్స్' : 'Bhudevi Complex'}
-                </span>
-                <span style={{ fontSize: '9.5px', color: '#64748B', fontWeight: 500 }}>
-                  {lang === 'te' ? 'అలిపిరి వద్ద' : 'Near Alipiri'}
-                </span>
-              </div>
+              </a>
             </div>
           </div>
 
