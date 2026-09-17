@@ -11,7 +11,7 @@ import {
   MapPin, Sparkles, Shirt, Lightbulb, Droplet, UtensilsCrossed, 
   Toilet, Hospital, Accessibility, Baby, Clock, Share2, Check,
   Navigation, Ticket, Users, Zap, ShieldCheck, ChevronDown, Lock,
-  RefreshCw, AlertCircle, Compass, Gift, Train, Bus, Mountain
+  RefreshCw, AlertCircle, Compass, Gift, Train, Bus, Mountain, ExternalLink
 } from 'lucide-react';
 import { TirumalaStatus } from '@/lib/statusDb';
 import { useLanguage } from '@/lib/useLanguage';
@@ -334,70 +334,94 @@ export default function DarshanDetailsPage() {
             {/* Anxiety Relief Subtext */}
             <p className={styles.guidanceSubtext}>
               {id === 'ssd-token'
-                ? 'Daily quota completed — next token release time indicated above'
+                ? 'Daily token quota in progress — reach token counters early in Tirupati'
                 : id === 'special-entry'
                 ? 'Report directly to ATC Car Parking entry with your original Aadhaar and printout'
                 : 'Direct walk-in available 24/7 via Vaikuntam Queue Complex II'}
             </p>
 
-            {/* VISUAL ICON TILES FOR COLLECTION CENTRES (STRICTLY NO EMOJIS - SSD TOKEN ONLY) */}
+            {/* OFFICIAL TTD BOOKING ACTION CARD (FOR SPECIAL ENTRY ₹300 ONLY) */}
+            {id === 'special-entry' && (
+              <a
+                href="https://ttdevasthanams.ap.gov.in"
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{ textDecoration: 'none' }}
+              >
+                <div style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  background: 'linear-gradient(135deg, #4F46E5 0%, #4338CA 100%)',
+                  color: '#FFFFFF',
+                  padding: '12px 14px',
+                  borderRadius: '12px',
+                  marginTop: '10px',
+                  boxShadow: '0 4px 14px rgba(79, 70, 229, 0.25)',
+                  transition: 'all 0.2s ease'
+                }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                    <div style={{
+                      width: '32px', height: '32px', borderRadius: '8px',
+                      background: 'rgba(255,255,255,0.2)', display: 'flex', alignItems: 'center', justifyContent: 'center'
+                    }}>
+                      <Ticket size={18} color="#FFFFFF" />
+                    </div>
+                    <div>
+                      <div style={{ fontSize: '12.5px', fontWeight: 800 }}>Book ₹300 Ticket on Official TTD Portal</div>
+                      <div style={{ fontSize: '10.5px', opacity: 0.9 }}>ttdevasthanams.ap.gov.in</div>
+                    </div>
+                  </div>
+                  <ExternalLink size={16} color="#FFFFFF" />
+                </div>
+              </a>
+            )}
+
+            {/* TIRUPATI SSD TOKEN COUNTER TILES WITH DIRECT GOOGLE MAPS DIRECTIONS (SSD TOKEN ONLY) */}
             {id === 'ssd-token' && data.tokenLocations && data.tokenLocations.length > 0 && (
-              <div style={{ marginTop: '12px' }}>
+              <div style={{ marginTop: '14px' }}>
                 <span style={{ fontSize: '12px', fontWeight: 800, color: '#0F172A', letterSpacing: '0.02em', display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '8px' }}>
-                  <Ticket size={14} color="#0F172A" />
-                  <span>{lang === 'te' ? 'SSD టోకెన్ కేంద్రాలు' : 'Get SSD Tokens'}</span>
+                  <Ticket size={14} color="#E11D48" />
+                  <span>{lang === 'te' ? 'SSD ఉచిత టోకెన్ కేంద్రాలు (తిరుపతి)' : 'Tirupati SSD Token Counters'}</span>
                 </span>
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '8px' }}>
-                  <a href="https://www.google.com/maps/place/Vishnu+Nivasam/@13.6281932,79.4205053,17z/data=!3m1!5s0x3a4d4b0898df978f:0x10422b2c2d88f4e3!4m20!1m10!3m9!1s0x3a4d4bbbe2ad2eff:0x6b655eee58504269!2sVishnu+Nivasam!5m2!4m1!1i2!8m2!3d13.6292776!4d79.4215889!16s%2Fg%2F11g1q7vspv!3m8!1s0x3a4d4bbbe2ad2eff:0x6b655eee58504269!5m2!4m1!1i2!8m2!3d13.6292776!4d79.4215889!16s%2Fg%2F11g1q7vspv" target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none' }}>
-                    <div style={{
-                      background: 'linear-gradient(135deg, #FFFFFF 0%, #F8FAFC 100%)',
-                      border: '1.5px solid #E2E8F0',
-                      borderRadius: '14px',
-                      padding: '10px 6px',
-                      textAlign: 'center',
-                      boxShadow: '0 2px 6px rgba(0,0,0,0.03)',
-                      transition: 'transform 0.15s ease'
-                    }}>
-                      <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '4px' }}>
-                        <Train size={20} color="#0F5132" />
-                      </div>
-                      <div style={{ fontSize: '11px', fontWeight: 800, color: '#0F172A', lineHeight: 1.2 }}>Vishnu Nivasam</div>
-                    </div>
-                  </a>
-
-                  <a href="https://www.google.com/maps/place/Srinivasam/@13.6311961,79.4266529,17z/data=!3m1!5s0x3a4d4b0898df978f:0x10422b2c2d88f4e3!4m20!1m10!3m9!1s0x3a4d4bbbe2ad2eff:0x6b655eee58504269!2sVishnu+Nivasam!5m2!4m1!1i2!8m2!3d13.6292776!4d79.4215889!16s%2Fg%2F11g1q7vspv!3m8!1s0x3a4d4b1372b4101d:0x5da265ff8e42d9fa!5m2!4m1!1i2!8m2!3d13.6315627!4d79.4288389!16s%2Fg%2F1pyqs92yw" target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none' }}>
-                    <div style={{
-                      background: 'linear-gradient(135deg, #FFFFFF 0%, #F8FAFC 100%)',
-                      border: '1.5px solid #E2E8F0',
-                      borderRadius: '14px',
-                      padding: '10px 6px',
-                      textAlign: 'center',
-                      boxShadow: '0 2px 6px rgba(0,0,0,0.03)',
-                      transition: 'transform 0.15s ease'
-                    }}>
-                      <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '4px' }}>
-                        <Bus size={20} color="#0F5132" />
-                      </div>
-                      <div style={{ fontSize: '11px', fontWeight: 800, color: '#0F172A', lineHeight: 1.2 }}>Srinivasam</div>
-                    </div>
-                  </a>
-
-                  <a href="https://www.google.com/maps/place/Bhudevi+complex+Padayatra+tickets+counter/@13.6466715,79.4085658,18.14z/data=!3m1!5s0x3a4d4b0898df978f:0x10422b2c2d88f4e3!4m17!1m10!3m9!1s0x3a4d4bbbe2ad2eff:0x6b655eee58504269!2sVishnu+Nivasam!5m2!4m1!1i2!8m2!3d13.6292776!4d79.4215889!16s%2Fg%2F11g1q7vspv!3m5!1s0x3a4d4b002440a9d1:0x22ccbb84b1c113d2!8m2!3d13.6464948!4d79.4097309!16s%2Fg%2F11wb01cp7t" target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none' }}>
-                    <div style={{
-                      background: 'linear-gradient(135deg, #FFFFFF 0%, #F8FAFC 100%)',
-                      border: '1.5px solid #E2E8F0',
-                      borderRadius: '14px',
-                      padding: '10px 6px',
-                      textAlign: 'center',
-                      boxShadow: '0 2px 6px rgba(0,0,0,0.03)',
-                      transition: 'transform 0.15s ease'
-                    }}>
-                      <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '4px' }}>
-                        <Mountain size={20} color="#0F5132" />
-                      </div>
-                      <div style={{ fontSize: '11px', fontWeight: 800, color: '#0F172A', lineHeight: 1.2 }}>Bhudevi</div>
-                    </div>
-                  </a>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                  {data.tokenLocations.map((loc, idx) => {
+                    const mapsUrl = idx === 0 
+                      ? "https://www.google.com/maps/place/Vishnu+Nivasam/@13.6292776,79.4215889"
+                      : idx === 1
+                      ? "https://www.google.com/maps/place/Srinivasam/@13.6315627,79.4288389"
+                      : "https://www.google.com/maps/place/Bhudevi+complex/@13.6464948,79.4097309";
+                    const icon = idx === 0 ? <Train size={16} color="#E11D48" /> : idx === 1 ? <Bus size={16} color="#E11D48" /> : <Mountain size={16} color="#E11D48" />;
+                    return (
+                      <a key={idx} href={mapsUrl} target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none' }}>
+                        <div style={{
+                          background: '#FFFFFF',
+                          border: '1px solid #E2E8F0',
+                          borderRadius: '12px',
+                          padding: '10px 12px',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'space-between',
+                          boxShadow: '0 2px 5px rgba(0,0,0,0.02)'
+                        }}>
+                          <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                            <div style={{
+                              width: '32px', height: '32px', borderRadius: '8px',
+                              background: '#FFE4E6', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0
+                            }}>
+                              {icon}
+                            </div>
+                            <div>
+                              <div style={{ fontSize: '12.5px', fontWeight: 800, color: '#0F172A' }}>{loc.name}</div>
+                              <div style={{ fontSize: '11px', color: '#64748B', fontWeight: 500 }}>{loc.landmark}</div>
+                              <div style={{ fontSize: '10.5px', color: '#E11D48', fontWeight: 700, marginTop: '2px' }}>⏱ {loc.counterHours}</div>
+                            </div>
+                          </div>
+                          <Compass size={16} color="#64748B" style={{ flexShrink: 0 }} />
+                        </div>
+                      </a>
+                    );
+                  })}
                 </div>
               </div>
             )}

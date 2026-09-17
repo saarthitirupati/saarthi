@@ -4,31 +4,31 @@ export const darshanRegistry: Record<string, DarshanDetail> = {
   "sarva-darshan": {
     id: "sarva-darshan",
     title: "Sarva Darshan",
-    teluguTitle: "సర్వ దర్శనం",
-    badge: "Free General Queue",
+    teluguTitle: "సర్వ దర్శనం (ఉచిత సాధారణ ప్రవేశం)",
+    badge: "Free General Walk-in Queue",
     badgeTelugu: "ఉచిత సాధారణ దర్శనం",
     themeColor: "#D97706",
     accentGradient: "linear-gradient(135deg, #FEF3C7 0%, #FDE68A 50%, #F59E0B 100%)",
-    cost: "Free (No Prior Booking / Token Required)",
+    cost: "Free (No Ticket or Token Required)",
     waitTime: "8 - 14 hours",
-    peakHours: "Daily 8:00 AM – 7:00 PM (Highest on Fri, Sat, Sun & Festivals)",
-    bestTimeToVisit: "Tuesdays & Wednesdays between 11:00 PM – 4:00 AM (Least rush)",
+    peakHours: "Daily 8:00 AM – 7:00 PM (Highest rush on Fri, Sat, Sun & Brahmotsavam / Festivals)",
+    bestTimeToVisit: "Tuesdays & Wednesdays between 11:00 PM – 4:00 AM (Least crowd)",
     entryGate: "Vaikuntam Queue Complex II (VQC-II), Tirumala",
-    bookingMode: "Direct Walk-in (No ticket or token needed)",
-    description: "Sarva Darshan translates to 'Darshan for All'. It is the revered, completely free queue channel open round the clock to all pilgrims without advance online reservations or offline tokens. Pilgrims are accommodated in 31 sequential holding compartments in VQC-II, equipped with free meals, beverages, and medical amenities.",
-    whyWaitTimeExplanation: "Wait time directly correlates to the number of active VQC-II compartments occupied (approx. 45-60 mins per compartment release) and intermittent priority clearances for VIP/Seva slots.",
+    bookingMode: "Direct Walk-in (No prior online or offline booking required)",
+    description: "Sarva Darshan ('Darshan for All') is the revered, completely free queue channel open 24/7 to all pilgrims without advance online tickets or offline tokens. Pilgrims are accommodated in 31 sequential, climate-buffered holding compartments in VQC-II, equipped with free continuous Annaprasadam hot meals, RO water, milk, and medical care.",
+    whyWaitTimeExplanation: "Wait time directly correlates to the number of active VQC-II compartments occupied (approx. 45-60 mins per compartment release cycle) and intermittent priority clearances for mandatory VIP and Seva rituals.",
     
     accessibility: [
-      "Wheelchair ramp access is available at designated entry points, with dedicated attendant pathways.",
-      "Dedicated infant feeding and resting cabins inside compartments for mothers with infants under 1 year.",
-      "Senior citizen priority is strictly managed during non-festival designated morning hours."
+      "Wheelchair ramp access is available at VQC-II entry points with dedicated attendant pathways.",
+      "Dedicated infant feeding cabins and resting bays inside compartments for mothers with infants under 1 year.",
+      "Senior citizen priority is strictly managed during non-peak morning hours."
     ],
     facilities: [
       { type: 'water', available: true, notes: "Purified RO drinking water points every 10 meters inside holding halls." },
-      { type: 'food', available: true, notes: "Free hot Annaprasadam (Sambar rice, Curd rice), hot milk, and tea served round the clock." },
-      { type: 'restroom', available: true, notes: "Clean, continuously sanitized restrooms and wash areas attached to each compartment." },
+      { type: 'food', available: true, notes: "Free hot Annaprasadam (Sambar rice, Curd rice), tea, coffee, and hot milk served round the clock." },
+      { type: 'restroom', available: true, notes: "Clean, continuously sanitized restrooms attached to each holding compartment." },
       { type: 'medical', available: true, notes: "24x7 TTD Medical booths with doctors, emergency paramedics, and first-aid kits." },
-      { type: 'infant', available: true, notes: "Free warm milk distribution specifically prioritized for babies and infants." }
+      { type: 'infant', available: true, notes: "Free warm milk distribution prioritized for infants and toddlers." }
     ],
     dressCodeRules: {
       allowed: [
@@ -39,37 +39,37 @@ export const darshanRegistry: Record<string, DarshanDetail> = {
         "Shorts, T-Shirts, Jeans, Bermudas, Track Pants",
         "Sleeveless tops, Mini-skirts, Modern western casuals"
       ],
-      exceptions: "Children under 10 years are permitted neat casual clothing. Medical footwear permitted up to outer locker bays."
+      exceptions: "Children under 10 years are permitted neat casual clothing. Footwear must be deposited in free stalls outside VQC."
     },
     journeySteps: [
       { 
         step: 1, 
         title: "Report at VQC-II Entry Gate", 
-        desc: "Arrive at the main Vaikuntam Queue Complex II arch. Free shoe keeper and locker counters available outside.",
+        desc: "Arrive at Vaikuntam Queue Complex II arch. Deposit shoes and luggage at free TTD counters outside.",
         estimatedTime: "15 - 30 Mins"
       },
       { 
         step: 2, 
         title: "Luggage & Electronic Security Scanning", 
-        desc: "Strict biometric and baggage screening. Phones, smartwatches, cameras, and metal objects must be deposited.",
+        desc: "Strict baggage and metal screening. Phones, smartwatches, and cameras must be deposited in lockers.",
         estimatedTime: "20 - 40 Mins"
       },
       { 
         step: 3, 
-        title: "Compartment Seating & Refreshment", 
-        desc: "Pilgrims enter numbered compartments. Enjoy continuous free hot meals, drinking water, and spiritual broadcasts.",
+        title: "Compartment Seating & Care", 
+        desc: "Pilgrims rest in numbered compartments. Enjoy free hot Annaprasadam, drinks, and Saptagiri channel broadcasts.",
         estimatedTime: "6 - 10 Hours"
       },
       { 
         step: 4, 
-        title: "Overhead Covered Foot Bridge (VQC to Temple)", 
-        desc: "Gates open progressively into the stainless-steel bridge corridor heading into the Anand Nilayam temple perimeter.",
+        title: "Overhead Covered Footbridge", 
+        desc: "Compartment gates open in sequence into the stainless-steel bridge corridor towards Anand Nilayam.",
         estimatedTime: "45 - 60 Mins"
       },
       { 
         step: 5, 
-        title: "Sanctum Sanctorum (Garbhagriha) Srivari Darshan", 
-        desc: "Move through the Jaya-Vijaya dwara into the inner sanctum for the divine darshan of Lord Sri Venkateswara.",
+        title: "Garbhagriha Srivari Darshan", 
+        desc: "Proceed through Jaya-Vijaya Dwara into the inner sanctum for the divine darshan of Lord Sri Venkateswara.",
         estimatedTime: "10 - 20 Mins"
       },
       { 
@@ -81,13 +81,13 @@ export const darshanRegistry: Record<string, DarshanDetail> = {
     ],
     rulesAndRequirements: [
       "No physical ticket or advance reservation is required.",
-      "Original Aadhaar card or Government Photo ID is recommended for security verification.",
+      "Original Aadhaar card or Government Photo ID recommended for security verification.",
       "Luggage should be deposited at free TTD luggage counters before entering the main queue.",
       "Footwear must be deposited at free shoe stalls near VQC-II."
     ],
     guidelines: [
       "Carry prescribed prescription medicines inside the queue complex.",
-      "Wear traditional ethnic attire from the start as dress inspection is strict at Entry Gate 1.",
+      "Wear traditional ethnic attire from the start as dress inspection is strict at Gate 1.",
       "Follow announcements regarding compartment gate release times."
     ],
     tips: [
@@ -100,18 +100,18 @@ export const darshanRegistry: Record<string, DarshanDetail> = {
     id: "special-entry",
     title: "₹300 Special Entry Darshan (SED)",
     teluguTitle: "₹300 ప్రత్యేక ప్రవేశ దర్శనం (ఆన్‌లైన్ స్లాట్)",
-    badge: "Online Booked Slot",
+    badge: "Advance Online Booked Slot",
     badgeTelugu: "ముందస్తు ఆన్‌లైన్ బుకింగ్",
     themeColor: "#4F46E5",
     accentGradient: "linear-gradient(135deg, #EEF2FF 0%, #E0E7FF 50%, #6366F1 100%)",
-    cost: "₹300 per pilgrim (Advance Online Booking Only)",
+    cost: "₹300 per pilgrim (Includes 1 Free Laddu)",
     waitTime: "2 - 4 hours",
     peakHours: "10:00 AM – 4:00 PM slots (High congestion near ATC car parking)",
-    bestTimeToVisit: "Early morning slots (9:00 AM) or late evening slots (6:00 PM – 9:00 PM)",
+    bestTimeToVisit: "Early morning slots (9:00 AM) or evening slots (6:00 PM – 9:00 PM)",
     entryGate: "ATC Car Parking / Supatham Entry Point, Tirumala",
-    bookingMode: "Advance Online Reservation via official website (ttdevasthanams.ap.gov.in)",
-    description: "Special Entry Darshan (SED / ₹300 Ticket) was introduced to provide an expedited, fixed-slot darshan experience for devotees planning in advance. Pilgrims book a specific 1-hour reporting window on the official TTD portal and experience direct streamlined access into the inner temple corridor.",
-    whyWaitTimeExplanation: "Wait time is regulated by allocated slot batches. Delays only occur during auspicious Kainkaryam rituals or VIP protocol merges inside the inner sanctum.",
+    bookingMode: "Advance Online Reservation via official TTD portal (ttdevasthanams.ap.gov.in)",
+    description: "Special Entry Darshan (SED / ₹300 Ticket) provides an expedited, fixed 1-hour reporting window for devotees who plan in advance. Pilgrims book online on the official TTD portal and enter via the dedicated ATC Car Parking entrance, bypassing 90% of outer holding warehouses to reach the inner temple prakaram in 2 to 4 hours.",
+    whyWaitTimeExplanation: "Wait time is strictly regulated by allocated 1-hour slot batches. Minor delays only occur during auspicious Kainkaryam rituals or VIP protocol clearances inside the inner sanctum.",
     
     accessibility: [
       "Bypasses 90% of outer holding warehouses, minimizing standing fatigue significantly.",
@@ -139,7 +139,7 @@ export const darshanRegistry: Record<string, DarshanDetail> = {
       { 
         step: 1, 
         title: "Report at ATC Entry Point", 
-        desc: "Arrive 30 minutes before your printed slot time at the ATC Car Parking complex.",
+        desc: "Arrive 30 minutes before your printed slot time at the ATC Car Parking complex in Tirumala.",
         estimatedTime: "15 Mins"
       },
       { 
@@ -150,28 +150,28 @@ export const darshanRegistry: Record<string, DarshanDetail> = {
       },
       { 
         step: 3, 
-        title: "Fast-Track Dedicated Corridor", 
-        desc: "Walk along the covered, climate-buffered SED corridor directly bypassing the general VQC warehouses.",
+        title: "Fast-Track Covered Corridor", 
+        desc: "Walk along the covered, climate-buffered SED corridor directly bypassing general VQC warehouses.",
         estimatedTime: "45 - 90 Mins"
       },
       { 
         step: 4, 
         title: "Sanctum Progression (Mahadwaram)", 
-        desc: "Enter the grand temple gates into the inner prakaram and proceed directly towards Sri Srivari Garbhagriha.",
+        desc: "Enter the grand temple gates into the inner prakaram and proceed directly towards Garbhagriha.",
         estimatedTime: "20 - 30 Mins"
       },
       { 
         step: 5, 
-        title: "Srivari Laddu Prasadam Counter", 
+        title: "Collect Srivari Laddu Prasadam", 
         desc: "Each ₹300 ticket includes 1 free delicious Tirumala Laddu prasadam redeemable at dedicated SED counters.",
         estimatedTime: "10 Mins"
       }
     ],
     rulesAndRequirements: [
       "Physical printout or clear digital copy of the ₹300 SED confirmation with QR code is mandatory.",
-      "The exact original Government Photo ID (Aadhaar / Voter ID / Passport) used at the time of booking MUST be presented.",
-      "Reporting after the slot closing grace period (usually +45 mins) will lead to ticket invalidation.",
-      "1 Complimentary Laddu included per ticket."
+      "The exact original Government Photo ID (Aadhaar / Voter ID / Passport) used during booking MUST be presented.",
+      "Reporting after the grace period (usually +45 mins) will lead to ticket invalidation.",
+      "1 Complimentary Srivari Laddu included per ticket."
     ],
     guidelines: [
       "Do not carry mobile phones or cameras past the ATC luggage locker booths.",
@@ -187,15 +187,15 @@ export const darshanRegistry: Record<string, DarshanDetail> = {
     id: "ssd-token",
     title: "SSD Token Darshan",
     teluguTitle: "SSD టోకెన్ దర్శనం (స్లాటెడ్ సర్వదర్శనం)",
-    badge: "Time-Slotted Free Darshan",
+    badge: "Time-Slotted Free Token",
     badgeTelugu: "ఉచిత సమయ స్లాట్ టోకెన్లు",
     themeColor: "#E11D48",
     accentGradient: "linear-gradient(135deg, #FFE4E6 0%, #FECDD3 50%, #E11D48 100%)",
-    cost: "Free (Biometric Aadhaar Token Required)",
+    cost: "Free (Original Aadhaar Biometric Scan Required)",
     waitTime: "3 - 6 hours (at allotted slot)",
-    peakHours: "Tokens issue starts early morning (usually 2:00 AM); quotas often exhaust by 7:00 AM – 11:00 AM",
-    bestTimeToVisit: "Reach token counters in Tirupati by 2:00 AM – 4:00 AM to secure a same-day or next-day morning slot",
-    entryGate: "Vaikuntam Queue Complex / Designated SSD entry line in Tirumala at allotted time slot",
+    peakHours: "Token distribution starts early morning (~2:00 AM); quotas (~25,000 daily) exhaust by 7:00 AM – 10:00 AM",
+    bestTimeToVisit: "Reach token counters in Tirupati by 1:30 AM – 3:00 AM to secure a same-day or next-day morning slot",
+    entryGate: "Designated SSD Queue Line at Tirumala (at printed slot time)",
     bookingMode: "Offline In-Person Biometric Scan at Tirupati Token Counters",
     tokenLocations: [
       {
@@ -217,8 +217,8 @@ export const darshanRegistry: Record<string, DarshanDetail> = {
         quotaInfo: "Recommended for private vehicle travelers and footpath pilgrims"
       }
     ],
-    description: "Slotted Sarva Darshan (SSD) tokens are free biometric tokens issued in Tirupati to prevent pilgrims from having to wait 12-20 hours in standing holding halls. Devotees receive a token stamped with an exact reporting time slot, allowing them to explore Tirupati or rest before reporting to Tirumala.",
-    whyWaitTimeExplanation: "Once you receive an SSD token, you only wait 3-5 hours in Tirumala during your specific allotted reporting window instead of the 10-15+ hours endured in general Sarva Darshan.",
+    description: "Slotted Sarva Darshan (SSD) tokens are free biometric tokens issued in Tirupati city to prevent pilgrims from having to wait 12-16 hours in general standing queue halls. Devotees receive a token printed with an exact reporting time slot, allowing them to rest or explore Tirupati before reporting to Tirumala.",
+    whyWaitTimeExplanation: "Receiving an SSD token reduces continuous queue standing time in Tirumala from 12-16 hours down to 3-5 hours because pilgrims report strictly during their assigned 1-hour window.",
     
     accessibility: [
       "Significantly reduces continuous standing queue time for families and seniors compared to free Sarva Darshan.",
@@ -250,8 +250,8 @@ export const darshanRegistry: Record<string, DarshanDetail> = {
       },
       { 
         step: 2, 
-        title: "Rest or Travel up to Tirumala", 
-        desc: "Relax in Tirupati or ascend to Tirumala via ghat road or footpath 2-3 hours ahead of your slotted time.",
+        title: "Rest or Travel to Tirumala", 
+        desc: "Relax in Tirupati or ascend to Tirumala via ghat road or footpath 2 hours ahead of your slotted time.",
         estimatedTime: "2 - 4 Hours"
       },
       { 
@@ -262,19 +262,19 @@ export const darshanRegistry: Record<string, DarshanDetail> = {
       },
       { 
         step: 4, 
-        title: "Security Scan & Token Barcode Verification", 
-        desc: "Biometric authentication matches the fingerprint taken during token collection in Tirupati.",
+        title: "Security Scan & Biometric Re-Verification", 
+        desc: "Biometric fingerprint check matches the scan taken during token collection in Tirupati.",
         estimatedTime: "20 Mins"
       },
       { 
         step: 5, 
         title: "Short Compartment Holding & Srivari Darshan", 
-        desc: "Fast-tracked through minimal compartments into the Garbhagriha for the darshan of Lord Venkateswara.",
+        desc: "Fast-tracked through minimal compartments into Garbhagriha for the divine darshan of Lord Venkateswara.",
         estimatedTime: "2.5 - 4 Hours"
       },
       { 
         step: 6, 
-        title: "Collect Laddu Prasadam", 
+        title: "Collect Srivari Laddu Prasadam", 
         desc: "Obtain your complimentary Laddu prasadam from the laddu complex counters using your token.",
         estimatedTime: "15 Mins"
       }
@@ -287,10 +287,10 @@ export const darshanRegistry: Record<string, DarshanDetail> = {
     ],
     guidelines: [
       "Arrive at the token counters in Tirupati before 3:00 AM as queues form well before opening.",
-      "Do not buy tokens from unauthorized touts or middlemen — biometric scanning makes tokens strictly non-transferable."
+      "Do not buy tokens from unauthorized touts — biometric scanning makes tokens strictly non-transferable."
     ],
     tips: [
-      "Bhudevi Complex at Alipiri generally has shorter wait lines than the station-facing Vishnu Nivasam.",
+      "Bhudevi Complex at Alipiri generally has shorter wait lines than station-facing Vishnu Nivasam.",
       "Check our live SSD Token Monitor before heading to counters to verify real-time counter status and quota balance."
     ]
   },
