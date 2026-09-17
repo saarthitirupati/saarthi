@@ -401,14 +401,91 @@ export default function HomePage() {
 
         {/* ROW 1: 2-COLUMN DASHBOARD GRID */}
         <div className={styles.dashboardGrid}>
-          {/* COLUMN 1: LIVE DECISION ENGINE & DEVOTIONAL WISDOM */}
+          {/* COLUMN 1: LIVE DECISION ENGINE & DEVOTIONAL WISDOM & EXPLORE */}
           <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
             <HomeHero {...home.hero} liveStatus={home.status.liveStatus} activeAlertsCount={home.alerts.activeAlertsCount} hideHeader={true} />
             <YatraChecklist />
             <DailyContent {...home.daily} liveStatus={home.status.liveStatus} variant="desktop" />
+
+            {/* Explore Around You (Desktop Balanced Grid) */}
+            {nearbyPlaces.length > 0 && (
+              <div style={{ backgroundColor: '#FFFFFF', borderRadius: '24px', padding: '20px', border: '1px solid #E2E8F0', boxShadow: '0 4px 16px rgba(15, 23, 42, 0.03)' }}>
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '12px' }}>
+                  <h2 style={{ fontSize: '17px', fontWeight: 800, color: '#0F172A', margin: 0 }}>
+                    {t.nearbyPlaces}
+                  </h2>
+                  <Link href="/explore" style={{ fontSize: '12.5px', fontWeight: 800, color: '#0F5132', textDecoration: 'none' }}>
+                    {t.seeAll}
+                  </Link>
+                </div>
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(150px, 1fr))', gap: '10px' }}>
+                  {nearbyPlaces.slice(0, 6).map(p => (
+                    <Link
+                      key={p.id}
+                      href={`/place/${p.id}`}
+                      style={{
+                        textDecoration: 'none',
+                        backgroundColor: '#F8FAFC',
+                        borderRadius: '14px',
+                        overflow: 'hidden',
+                        border: '1px solid #E2E8F0',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        minWidth: 0
+                      }}
+                    >
+                      <div style={{
+                        height: '70px',
+                        width: '100%',
+                        backgroundImage: `url(${p.image})`,
+                        backgroundSize: 'cover',
+                        backgroundPosition: 'center',
+                        position: 'relative'
+                      }}>
+                        <div style={{
+                          position: 'absolute',
+                          bottom: '4px',
+                          left: '4px',
+                          backgroundColor: 'rgba(15, 23, 42, 0.75)',
+                          padding: '2px 6px',
+                          borderRadius: '4px',
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: '2px',
+                          color: '#FFFFFF',
+                          fontSize: '9.5px',
+                          fontWeight: 700
+                        }}>
+                          <MapPin size={8} />
+                          <span>{p._dist} km</span>
+                        </div>
+                      </div>
+                      <div style={{ padding: '6px 8px' }}>
+                        <p style={{
+                          fontSize: '12px',
+                          fontWeight: 800,
+                          color: '#0F172A',
+                          margin: 0,
+                          lineHeight: 1.2,
+                          overflow: 'hidden',
+                          display: '-webkit-box',
+                          WebkitLineClamp: 1,
+                          WebkitBoxOrient: 'vertical'
+                        }}>
+                          {p.name}
+                        </p>
+                        <span style={{ fontSize: '10px', color: '#64748B', fontWeight: 600 }}>
+                          {p._dist ? `${Math.max(4, Math.round(Number(p._dist) * 3))} min away` : 'Nearby'}
+                        </span>
+                      </div>
+                    </Link>
+                  ))}
+                </div>
+              </div>
+            )}
           </div>
 
-          {/* COLUMN 2: PRIMARY SERVICES + EXPLORE AROUND YOU + SSD TOKEN RADAR */}
+          {/* COLUMN 2: PRIMARY SERVICES + SSD TOKEN RADAR + DESKTOP SIDEBAR DECK */}
           <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
             {/* Primary Pilgrim Services */}
             <div style={{ backgroundColor: '#FFFFFF', borderRadius: '24px', padding: '20px', border: '1px solid #E2E8F0', boxShadow: '0 4px 16px rgba(15, 23, 42, 0.03)' }}>
@@ -492,83 +569,6 @@ export default function HomePage() {
                 })}
               </div>
             </div>
-
-            {/* Explore Around You (Desktop Auto-Fit Grid) */}
-            {nearbyPlaces.length > 0 && (
-              <div style={{ backgroundColor: '#FFFFFF', borderRadius: '24px', padding: '20px', border: '1px solid #E2E8F0', boxShadow: '0 4px 16px rgba(15, 23, 42, 0.03)' }}>
-                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '12px' }}>
-                  <h2 style={{ fontSize: '17px', fontWeight: 800, color: '#0F172A', margin: 0 }}>
-                    {t.nearbyPlaces}
-                  </h2>
-                  <Link href="/explore" style={{ fontSize: '12.5px', fontWeight: 800, color: '#0F5132', textDecoration: 'none' }}>
-                    {t.seeAll}
-                  </Link>
-                </div>
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(150px, 1fr))', gap: '10px' }}>
-                  {nearbyPlaces.slice(0, 6).map(p => (
-                    <Link
-                      key={p.id}
-                      href={`/place/${p.id}`}
-                      style={{
-                        textDecoration: 'none',
-                        backgroundColor: '#F8FAFC',
-                        borderRadius: '14px',
-                        overflow: 'hidden',
-                        border: '1px solid #E2E8F0',
-                        display: 'flex',
-                        flexDirection: 'column',
-                        minWidth: 0
-                      }}
-                    >
-                      <div style={{
-                        height: '70px',
-                        width: '100%',
-                        backgroundImage: `url(${p.image})`,
-                        backgroundSize: 'cover',
-                        backgroundPosition: 'center',
-                        position: 'relative'
-                      }}>
-                        <div style={{
-                          position: 'absolute',
-                          bottom: '4px',
-                          left: '4px',
-                          backgroundColor: 'rgba(15, 23, 42, 0.75)',
-                          padding: '2px 6px',
-                          borderRadius: '4px',
-                          display: 'flex',
-                          alignItems: 'center',
-                          gap: '2px',
-                          color: '#FFFFFF',
-                          fontSize: '9.5px',
-                          fontWeight: 700
-                        }}>
-                          <MapPin size={8} />
-                          <span>{p._dist} km</span>
-                        </div>
-                      </div>
-                      <div style={{ padding: '6px 8px' }}>
-                        <p style={{
-                          fontSize: '12px',
-                          fontWeight: 800,
-                          color: '#0F172A',
-                          margin: 0,
-                          lineHeight: 1.2,
-                          overflow: 'hidden',
-                          display: '-webkit-box',
-                          WebkitLineClamp: 1,
-                          WebkitBoxOrient: 'vertical'
-                        }}>
-                          {p.name}
-                        </p>
-                        <span style={{ fontSize: '10px', color: '#64748B', fontWeight: 600 }}>
-                          {p._dist ? `${Math.max(4, Math.round(Number(p._dist) * 3))} min away` : 'Nearby'}
-                        </span>
-                      </div>
-                    </Link>
-                  ))}
-                </div>
-              </div>
-            )}
 
             {/* Real-time SSD Free Token Quota, Slots & Counters Checklist */}
             <QuickChecklist {...home.checklist} liveStatus={home.status.liveStatus} />
