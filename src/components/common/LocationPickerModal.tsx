@@ -619,20 +619,6 @@ export function LocationPill({
       }}>
         {displayName}
       </span>
-      {isGpsActive && (
-        <span 
-          style={{ 
-            width: '6px', 
-            height: '6px', 
-            borderRadius: '50%', 
-            backgroundColor: '#10B981', 
-            display: 'inline-block',
-            boxShadow: '0 0 6px #10B981',
-            flexShrink: 0
-          }} 
-          title="Live GPS Location Active"
-        />
-      )}
       <ChevronDown size={11} color={isGpsActive ? '#059669' : '#B45309'} strokeWidth={2.5} style={{ flexShrink: 0, opacity: 0.85 }} />
     </button>
   );
