@@ -70,7 +70,7 @@ function LayoutContent({
   const isCheckingOrNeedsOnboarding = !isExcluded && (needsOnboarding === true);
   const showLocationPrompt = isInitialized && !showSplash && !isAdmin && pathname === '/' && locationPermission === 'default';
   const showBottomNav = !showSplash && !showLocationPrompt && !isAdmin && (['/', '/explore', '/saved', '/profile', '/essentials'].includes(pathname) || pathname?.startsWith('/essentials/'));
-  const hideContent = !isAdmin && (showLocationPrompt || isCheckingOrNeedsOnboarding);
+  const hideContent = !isAdmin && (showSplash || showLocationPrompt || isCheckingOrNeedsOnboarding);
 
   return (
     <>
