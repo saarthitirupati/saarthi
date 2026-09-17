@@ -38,7 +38,7 @@ export function useRealtimePlaces(initialPlaces: Place[] = []) {
   useEffect(() => {
     // 1. Fetch initial data
     const fetchPlaces = async () => {
-      setLoading(true);
+      if (!initialPlaces.length) setLoading(true);
       try {
         const apiRes = await safeFetchJson<any>('/api/v1/places');
         if (apiRes && apiRes.data) {

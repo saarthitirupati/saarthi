@@ -119,9 +119,7 @@ class MainActivity : AppCompatActivity() {
         settings.useWideViewPort = true
         settings.loadWithOverviewMode = true
 
-        // Security & permissions
-        settings.allowFileAccess = false
-        settings.allowContentAccess = false
+        webView.setLayerType(View.LAYER_TYPE_HARDWARE, null)
         settings.mixedContentMode = WebSettings.MIXED_CONTENT_NEVER_ALLOW
         settings.setGeolocationEnabled(true)
 

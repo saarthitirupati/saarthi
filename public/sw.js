@@ -13,6 +13,7 @@ const APP_SHELL = [
   '/apple-touch-icon.png',
   '/banner/banner_poster.webp',
   '/banner/hero_banner_compressed.mp4',
+  '/banner/saarthi-splashscreen.mp4',
   '/audio/saarthi-opening-ident.wav',
   '/audio/saarthi-courtyard-ambient.wav',
   '/audio/japa-ambient-loop.wav',
