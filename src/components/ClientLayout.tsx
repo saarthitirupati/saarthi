@@ -120,14 +120,22 @@ export default function ClientLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const [showSplash, setShowSplash] = useState(false);
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const pathname = usePathname();
   const router = useRouter();
+
+  const [showSplash, setShowSplash] = useState<boolean>(() => {
+    if (typeof window === 'undefined') return false;
+    const splashShown = sessionStorage.getItem('splashShown');
+    const path = window.location.pathname;
+    const isHome = path === '/' || path === '';
+    return !splashShown && isHome;
+  });
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const isAdmin = pathname?.startsWith('/saarthiadmin');
 
   useEffect(() => {
+    if (typeof window === 'undefined') return;
     const splashShown = sessionStorage.getItem('splashShown');
     if (!splashShown && pathname === '/') {
       setShowSplash(true);

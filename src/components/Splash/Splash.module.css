@@ -37,6 +37,7 @@
   object-fit: cover; /* Cover 100% of viewport on ALL screens (mobile, tablet, desktop) */
   object-position: center center;
   display: block;
+  background: #FAF8F5 !important; /* Divine cream matching video background */
   pointer-events: none;
   user-select: none;
   -webkit-user-select: none;
