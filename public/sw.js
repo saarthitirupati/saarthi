@@ -1,7 +1,7 @@
 // Saarthi Guide Service Worker v1
 // Caches app shell & visited pages for full offline support on Tirumala hill
 
-const CACHE_NAME = 'saarthi-v6';
+const CACHE_NAME = 'saarthi-v7';
 const APP_SHELL = [
   '/',
   '/explore',
@@ -11,8 +11,7 @@ const APP_SHELL = [
   '/icon-192.png',
   '/icon-512.png',
   '/apple-touch-icon.png',
-  '/banner/banner_poster.webp',
-  '/banner/hero_banner_compressed.mp4',
+  '/banner/Absolutely_For_the_Saarthi_SV.mp4',
   '/banner/saarthi-splashscreen.mp4',
   '/audio/saarthi-opening-ident.wav',
   '/audio/saarthi-courtyard-ambient.wav',
@@ -29,19 +28,23 @@ const APP_SHELL = [
 // Helper to serve HTTP 206 Partial Content for cached offline video streams
 async function handleMediaRangeRequest(request) {
   const cache = await caches.open(CACHE_NAME);
-  const cachedResponse = (await cache.match(request)) || (await cache.match('/banner/hero_banner_compressed.mp4'));
+  let cachedResponse = await cache.match(request);
   
   if (!cachedResponse) {
     try {
       const netRes = await fetch(request);
-      if (netRes && netRes.status === 200) {
+      if (netRes && (netRes.status === 200 || netRes.status === 206)) {
         const clone = netRes.clone();
         cache.put(request, clone);
+        return netRes;
       }
-      return netRes;
     } catch (e) {
-      return new Response(null, { status: 504, statusText: 'Offline Video Not Cached' });
+      // Fetch failed, proceed to cached check or 504
     }
+  }
+
+  if (!cachedResponse) {
+    return new Response(null, { status: 504, statusText: 'Offline Video Not Cached' });
   }
 
   const rangeHeader = request.headers.get('Range');
