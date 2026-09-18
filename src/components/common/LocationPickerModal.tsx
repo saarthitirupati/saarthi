@@ -600,7 +600,7 @@ export function LocationPill({
         flexShrink: 1,
         minWidth: '50px',
         overflow: 'hidden',
-        transition: 'all 0.18s cubic-bezier(0.4, 0, 0.2, 1)',
+        transition: 'transform 0.16s cubic-bezier(0.23, 1, 0.32, 1), background-color 0.16s, box-shadow 0.16s',
         outline: 'none',
         ...style
       }}

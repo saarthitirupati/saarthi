@@ -96,8 +96,9 @@ export function QuickChecklist(props: any) {
             padding: '14px 14px',
             boxShadow: '0 6px 20px -4px rgba(15, 23, 42, 0.04), 0 2px 6px rgba(15, 23, 42, 0.02)',
             fontFamily: 'var(--font-sans, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Inter, sans-serif)',
-            transition: 'transform 0.15s ease, box-shadow 0.15s ease'
+            transition: 'transform 0.16s cubic-bezier(0.23, 1, 0.32, 1), box-shadow 0.16s cubic-bezier(0.23, 1, 0.32, 1)'
           }}
+          className="active:scale-[0.985] transition-transform duration-150"
         >
           {/* Header row */}
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '10px' }}>
