@@ -15,7 +15,8 @@ import {
   BellOff,
   Check,
   Loader2,
-  Sparkles
+  Sparkles,
+  ExternalLink
 } from 'lucide-react';
 import { useRealtimeStatus } from '@/lib/useRealtimeStatus';
 import { useRealtimeAlerts, LiveAlert } from '@/lib/useRealtimeAlerts';
@@ -319,9 +320,26 @@ export default function AlertsPage() {
                   In-App Alerts
                 </span>
               </div>
-              <p style={{ fontSize: 12.5, color: '#334155', lineHeight: 1.45, margin: 0 }}>
-                Web push is not supported in this browser mode. Add Saarthi to your Home Screen (PWA) or open in Chrome to receive lock-screen alerts.
+              <p style={{ fontSize: 12.5, color: '#334155', lineHeight: 1.45, margin: '0 0 10px 0' }}>
+                Web push requires Chrome or the updated Play Store app to receive lock-screen alerts on your top bar.
               </p>
+              <a
+                href="intent://www.saarthiguide.in/alerts#Intent;scheme=https;package=com.android.chrome;end"
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: 6,
+                  backgroundColor: '#1E293B',
+                  color: '#FFFFFF',
+                  padding: '7px 12px',
+                  borderRadius: 8,
+                  fontSize: '12px',
+                  fontWeight: 700,
+                  textDecoration: 'none'
+                }}
+              >
+                <ExternalLink size={13} /> Open in Chrome to Enable Top-Bar Alerts
+              </a>
             </div>
           ) : (
             <div>
