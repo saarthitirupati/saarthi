@@ -23,6 +23,7 @@ import {
   getNotificationPermission,
   subscribeToPushNotifications,
   sendTestNotification,
+  sendDelayedBackgroundTestNotification,
   isNativeAndroidApp,
   PushPermissionState
 } from '@/lib/pushClient';
@@ -36,6 +37,8 @@ export default function AlertsPage() {
   const [isNative, setIsNative] = useState(false);
   const [isSubscribing, setIsSubscribing] = useState(false);
   const [testStatus, setTestStatus] = useState<'idle' | 'sending' | 'sent' | 'failed'>('idle');
+  const [bgTestStatus, setBgTestStatus] = useState<'idle' | 'scheduled' | 'sent' | 'failed'>('idle');
+  const [countdown, setCountdown] = useState(5);
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -58,6 +61,30 @@ export default function AlertsPage() {
     setTimeout(() => {
       setTestStatus('idle');
     }, 4000);
+  };
+
+  const handleBackgroundTestAlert = async () => {
+    setBgTestStatus('scheduled');
+    setCountdown(5);
+
+    const timer = setInterval(() => {
+      setCountdown((prev) => {
+        if (prev <= 1) {
+          clearInterval(timer);
+          setBgTestStatus('sent');
+          setTimeout(() => setBgTestStatus('idle'), 6000);
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+
+    const success = await sendDelayedBackgroundTestNotification(5);
+    if (!success) {
+      clearInterval(timer);
+      setBgTestStatus('failed');
+      setTimeout(() => setBgTestStatus('idle'), 4000);
+    }
   };
 
   const isLoading = statusLoading && alertsLoading;
@@ -116,7 +143,7 @@ export default function AlertsPage() {
 
       <div style={{ padding: '16px', maxWidth: '500px', margin: '0 auto' }}>
         
-        {/* 🔔 PUSH NOTIFICATION PREFERENCE & TEST CARD */}
+        {/* PUSH NOTIFICATION PREFERENCE & TEST CARD */}
         <div style={{
           background: permission === 'granted'
             ? 'linear-gradient(135deg, #F0FDF4 0%, #DCFCE7 100%)'
@@ -204,6 +231,49 @@ export default function AlertsPage() {
                   )}
                 </button>
 
+                <button
+                  onClick={handleBackgroundTestAlert}
+                  disabled={bgTestStatus === 'scheduled'}
+                  style={{
+                    backgroundColor: '#047857',
+                    color: '#FFFFFF',
+                    border: 'none',
+                    borderRadius: 10,
+                    padding: '8px 14px',
+                    fontSize: '12.5px',
+                    fontWeight: 700,
+                    cursor: bgTestStatus === 'scheduled' ? 'not-allowed' : 'pointer',
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: 6,
+                    boxShadow: '0 2px 6px rgba(4, 120, 87, 0.25)',
+                    transition: 'all 0.15s ease'
+                  }}
+                >
+                  {bgTestStatus === 'scheduled' ? (
+                    <>
+                      <Loader2 size={14} className="animate-spin" />
+                      <span>Close app in {countdown}s...</span>
+                    </>
+                  ) : bgTestStatus === 'sent' ? (
+                    <>
+                      <Check size={14} />
+                      <span>Push Fired! Check Top Bar</span>
+                    </>
+                  ) : (
+                    <>
+                      <BellRing size={14} />
+                      <span>Test Background Push (in 5s)</span>
+                    </>
+                  )}
+                </button>
+
+                {bgTestStatus === 'scheduled' && (
+                  <p style={{ width: '100%', fontSize: '12px', color: '#065F46', margin: '6px 0 0 0', fontWeight: 600 }}>
+                    Close or minimize this app right now! The server will deliver a high-urgency push to your top bar in {countdown} seconds.
+                  </p>
+                )}
+
                 {testStatus === 'sent' && (
                   <span style={{ fontSize: '11.5px', color: '#15803D', fontWeight: 700 }}>
                     Notification delivered to your device!
@@ -212,6 +282,11 @@ export default function AlertsPage() {
                 {testStatus === 'failed' && (
                   <span style={{ fontSize: '11.5px', color: '#DC2626', fontWeight: 600 }}>
                     Could not display notification. Check phone DND/alert permissions.
+                  </span>
+                )}
+                {bgTestStatus === 'failed' && (
+                  <span style={{ fontSize: '11.5px', color: '#DC2626', fontWeight: 600 }}>
+                    Could not dispatch background push. Ensure notification permission is granted.
                   </span>
                 )}
               </div>

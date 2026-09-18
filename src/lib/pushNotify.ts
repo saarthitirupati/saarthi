@@ -53,7 +53,13 @@ export async function pushNotifyAll(payload: PushPayload) {
             keys: { p256dh: sub.keys_p256dh, auth: sub.keys_auth },
           },
           body,
-          { TTL: 3600 }
+          {
+            TTL: 86400,
+            headers: {
+              Urgency: 'high',
+              Topic: payload.tag || 'saarthi-alert',
+            },
+          }
         );
       } catch (err: any) {
         // Prune 404 (Not Found), 410 (Gone), 403 (Invalid VAPID credentials / rotated key)

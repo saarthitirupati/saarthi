@@ -35,13 +35,13 @@ export function getNotificationPermission(): PushPermissionState {
   if (typeof window === 'undefined') {
     return 'unsupported';
   }
+  if ('Notification' in window && 'serviceWorker' in navigator) {
+    return Notification.permission as PushPermissionState;
+  }
   if (isNativeAndroidApp()) {
-    return 'granted';
+    return localStorage.getItem('saarthi_notifications_enabled') === 'true' ? 'granted' : 'default';
   }
-  if (!('Notification' in window) || !('serviceWorker' in navigator)) {
-    return 'unsupported';
-  }
-  return Notification.permission as PushPermissionState;
+  return 'unsupported';
 }
 
 /**
@@ -134,11 +134,40 @@ export async function sendTestNotification(): Promise<boolean> {
     }
 
     const reg = 'serviceWorker' in navigator ? await navigator.serviceWorker.ready.catch(() => null) : null;
-    await showLocalNotification(
-      reg,
-      'Live Temple Alert Test',
-      'Govinda Govinda! Live alerts are active. You will receive real-time queue drops and token announcements.'
-    ).catch(() => {});
+    let serverPushTriggered = false;
+
+    // Dispatch real high-priority push through server to test FCM delivery to status bar
+    if (reg?.pushManager) {
+      try {
+        const sub = await reg.pushManager.getSubscription();
+        if (sub) {
+          const resp = await fetch('/api/push/send', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              endpoint: sub.endpoint,
+              title: 'Live Temple Alert Test',
+              body: 'Govinda Govinda! Live alerts are active on your device top bar.',
+              url: '/alerts',
+              tag: 'test-push-' + Date.now(),
+            }),
+          });
+          serverPushTriggered = resp.ok;
+        }
+      } catch (_e) {
+        // Fallback to local notification
+      }
+    }
+
+    // If server push was not triggered (e.g. offline/no sub), show local notification
+    if (!serverPushTriggered) {
+      await showLocalNotification(
+        reg,
+        'Live Temple Alert Test',
+        'Govinda Govinda! Live alerts are active on your device top bar.'
+      ).catch(() => {});
+    }
+
     return true;
   } catch (err) {
     console.error('Test notification failed:', err);
@@ -190,6 +219,45 @@ export async function syncExistingPushSubscription(): Promise<void> {
 }
 
 /**
+ * Schedules a delayed high-priority push notification so user can close or minimize
+ * the app and verify that the notification appears on the device top bar / lock screen.
+ */
+export async function sendDelayedBackgroundTestNotification(delaySeconds: number = 5): Promise<boolean> {
+  if (typeof window === 'undefined') return false;
+
+  try {
+    if (Notification.permission !== 'granted') {
+      const res = await subscribeToPushNotifications();
+      if (!res.success) return false;
+    }
+
+    const reg = 'serviceWorker' in navigator ? await navigator.serviceWorker.ready.catch(() => null) : null;
+    if (!reg?.pushManager) return false;
+
+    const sub = await reg.pushManager.getSubscription();
+    if (!sub) return false;
+
+    const resp = await fetch('/api/push/send', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        endpoint: sub.endpoint,
+        delay: delaySeconds,
+        title: 'Tirumala Live Darshan Alert',
+        body: 'Govinda Govinda! Live background alert delivered to your phone status bar.',
+        url: '/alerts',
+        tag: 'bg-test-' + Date.now(),
+      }),
+    });
+
+    return resp.ok;
+  } catch (err) {
+    console.error('Background test push error:', err);
+    return false;
+  }
+}
+
+/**
  * Show notification helper with fallback to new Notification()
  */
 async function showLocalNotification(
@@ -197,12 +265,15 @@ async function showLocalNotification(
   title: string,
   body: string
 ): Promise<void> {
+  const origin = typeof window !== 'undefined' ? window.location.origin : 'https://www.saarthiguide.in';
   const options = {
     body,
-    icon: '/icon-192.png',
-    badge: '/icon-192.png',
+    icon: new URL('/icon-192.png', origin).href,
+    badge: new URL('/icon-96.png', origin).href,
     tag: 'saarthi-alert',
+    renotify: true,
     data: { url: '/alerts' },
+    vibrate: [200, 100, 200],
   };
 
   if (reg && 'showNotification' in reg) {

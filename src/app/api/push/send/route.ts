@@ -88,6 +88,13 @@ async function handlePushDispatch(type: string, endpoint?: string, daysSince?: n
         await webpush.sendNotification(
           { endpoint: sub.endpoint, keys: { p256dh: sub.keys_p256dh, auth: sub.keys_auth } },
           JSON.stringify(payload),
+          {
+            TTL: 86400,
+            headers: {
+              Urgency: 'high',
+              Topic: payload.tag || 'saarthi-alert',
+            },
+          }
         );
         sent++;
       } catch (err: any) {
@@ -138,11 +145,18 @@ export async function GET(req: Request) {
 }
 
 export async function POST(req: Request) {
-  if (!(await checkAuth(req))) {
+  const bodyData = await req.json().catch(() => ({}));
+  const { type = 'daily_spot', endpoint, daysSince, title, body, url, image, tag, delay } = bodyData;
+
+  // Allow self-targeted device test pushes, otherwise enforce admin/cron auth for broadcasts
+  const isSelfTargetedTest = Boolean(endpoint && typeof endpoint === 'string' && endpoint.startsWith('https://'));
+  if (!isSelfTargetedTest && !(await checkAuth(req))) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
-  const bodyData = await req.json().catch(() => ({}));
-  const { type = 'daily_spot', endpoint, daysSince, title, body, url, image, tag } = bodyData;
+  if (typeof delay === 'number' && delay > 0) {
+    await new Promise((resolve) => setTimeout(resolve, Math.min(delay, 15) * 1000));
+  }
+
   return handlePushDispatch(type, endpoint, daysSince, { title, body, url, image, tag });
 }

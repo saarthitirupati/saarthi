@@ -1,7 +1,7 @@
 // Saarthi Guide Service Worker v1
 // Caches app shell & visited pages for full offline support on Tirumala hill
 
-const CACHE_NAME = 'saarthi-v8';
+const CACHE_NAME = 'saarthi-v9';
 const APP_SHELL = [
   '/',
   '/explore',
@@ -133,40 +133,59 @@ self.addEventListener('fetch', (event) => {
 // ── Push Notifications ──────────────────────────────────────────────────────
 
 self.addEventListener('push', (event) => {
-  if (!event.data) return;
-  try {
-    const payload = event.data.json();
-    const options = {
-      body: payload.body || '',
-      icon: payload.icon || '/icon-192.png',
-      badge: '/icon-192.png',
-      tag: payload.tag || 'saarthi-alert',
-      data: { url: payload.url || '/' },
-      vibrate: [200, 100, 200],
-      requireInteraction: true,
-    };
-    event.waitUntil(self.registration.showNotification(payload.title || 'Saarthi', options));
-  } catch (e) {
-    // If not JSON, show raw text
-    const text = event.data.text();
-    event.waitUntil(self.registration.showNotification('Saarthi', { body: text, icon: '/icon-192.png' }));
+  let title = 'Saarthi Live Alert';
+  let body = 'Live Tirumala darshan and temple advisory available.';
+  let url = '/alerts';
+  let icon = '/icon-192.png';
+  let badge = '/icon-96.png';
+  let tag = 'saarthi-alert-' + Date.now();
+
+  if (event.data) {
+    try {
+      const payload = event.data.json();
+      if (payload.title) title = payload.title;
+      if (payload.body) body = payload.body;
+      if (payload.url) url = payload.url;
+      if (payload.icon) icon = payload.icon;
+      if (payload.badge) badge = payload.badge;
+      if (payload.tag) tag = payload.tag;
+    } catch (_err) {
+      const text = event.data.text();
+      if (text) body = text;
+    }
   }
+
+  const origin = self.location.origin || 'https://www.saarthiguide.in';
+  const iconUrl = icon.startsWith('http') ? icon : new URL(icon, origin).href;
+  const badgeUrl = badge.startsWith('http') ? badge : new URL(badge, origin).href;
+
+  const options = {
+    body: body,
+    icon: iconUrl,
+    badge: badgeUrl,
+    tag: tag,
+    renotify: true,
+    data: { url: url },
+    vibrate: [200, 100, 200],
+    requireInteraction: false,
+    silent: false,
+  };
+
+  event.waitUntil(self.registration.showNotification(title, options));
 });
 
 self.addEventListener('notificationclick', (event) => {
   event.notification.close();
-  const url = event.notification.data?.url || '/';
+  const targetUrl = event.notification.data?.url || '/alerts';
   event.waitUntil(
     self.clients.matchAll({ type: 'window', includeUncontrolled: true }).then((clientList) => {
-      // Focus existing window if open
       for (const client of clientList) {
         if (client.url.includes(self.location.origin) && 'focus' in client) {
-          client.navigate(url);
+          client.navigate(targetUrl);
           return client.focus();
         }
       }
-      // Otherwise open new window
-      return self.clients.openWindow(url);
+      return self.clients.openWindow(targetUrl);
     })
   );
 });

@@ -55,6 +55,8 @@ class SaarthiFirebaseService : FirebaseMessagingService() {
             ).apply {
                 description = "Urgent crowd, temple timing, and travel updates"
                 enableVibration(true)
+                lockscreenVisibility = android.app.Notification.VISIBILITY_PUBLIC
+                setShowBadge(true)
             }
             notificationManager.createNotificationChannel(channel)
         }
@@ -75,7 +77,9 @@ class SaarthiFirebaseService : FirebaseMessagingService() {
             .setSmallIcon(R.mipmap.ic_launcher)
             .setContentTitle(title)
             .setContentText(body)
-            .setPriority(NotificationCompat.PRIORITY_HIGH)
+            .setPriority(NotificationCompat.PRIORITY_MAX)
+            .setCategory(NotificationCompat.CATEGORY_ALARM)
+            .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
             .setAutoCancel(true)
             .setContentIntent(pendingIntent)
             .build()
