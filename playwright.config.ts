@@ -6,12 +6,12 @@ export default defineConfig({
   workers: process.env.CI ? 1 : 2,
   reporter: 'list',
   use: {
-    baseURL: process.env.PLAYWRIGHT_TEST_BASE_URL || 'http://127.0.0.1:3005',
+    baseURL: process.env.PLAYWRIGHT_TEST_BASE_URL || 'http://localhost:3000',
     trace: 'on-first-retry',
   },
   webServer: {
-    command: 'npx next start -p 3005',
-    url: 'http://127.0.0.1:3005',
+    command: 'npx next dev',
+    url: 'http://localhost:3000',
     reuseExistingServer: true,
     timeout: 300 * 1000,
   },

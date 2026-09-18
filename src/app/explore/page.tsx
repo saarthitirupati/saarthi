@@ -1,7 +1,7 @@
 'use client';
 
 import { PLACES, Place } from '@/data/places';
-import { Search, Star, Filter, ArrowLeft, BookOpen, GraduationCap, MapPin, Sparkles, AlertTriangle, Compass, Bell } from 'lucide-react';
+import { Search, Star, Filter, ArrowLeft, BookOpen, GraduationCap, MapPin, Sparkles, AlertTriangle, Compass, Bell, Heart } from 'lucide-react';
 import { useState, useMemo, Suspense, useEffect, useCallback, useRef } from 'react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
@@ -13,10 +13,12 @@ import { useRealtimePlaces } from '@/lib/useRealtimePlaces';
 import { useLanguage } from '@/lib/useLanguage';
 import { LocationPickerModal, LocationPill } from '@/components/common/LocationPickerModal';
 import { getFestivalCrowdIntelligence } from '@/utils/festivalCrowd';
+import { SrivariNamamVector } from '@/components/common/DevotionalSvgIcons';
 
 const FILTERS_DATA = [
   { key: 'All', labelEn: 'All', labelTe: 'అన్నీ' },
   { key: 'Nearby', labelEn: 'Nearby', labelTe: 'సమీపంలో' },
+  { key: 'Saved', labelEn: 'Saved', labelTe: 'దాచినవి' },
   { key: 'Spiritual', labelEn: 'Spiritual', labelTe: 'ఆధ్యాత్మికం' },
   { key: 'Nature', labelEn: 'Nature', labelTe: 'ప్రకృతి' },
   { key: 'Water', labelEn: 'Theerthams', labelTe: 'తీర్థాలు' },
@@ -37,7 +39,35 @@ function ExploreContent() {
   const [activeFilter, setActiveFilter] = useState('All');
   const [locationError, setLocationError] = useState(false);
   const [isLocationModalOpen, setIsLocationModalOpen] = useState(false);
+  const [savedPlaceIds, setSavedPlaceIds] = useState<string[]>([]);
   const { userLocation, setUserLocation, setLocationPermission, locationName } = useTrip();
+
+  useEffect(() => {
+    try {
+      if (typeof window === 'undefined') return;
+      const saved = localStorage.getItem('saarthi_saved_places');
+      if (saved) setSavedPlaceIds(JSON.parse(saved));
+    } catch {
+      // Ignore storage errors
+    }
+  }, []);
+
+  const toggleSavePlace = (id: string, e?: React.MouseEvent) => {
+    if (e) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
+    setSavedPlaceIds(prev => {
+      const isSaved = prev.includes(id);
+      const next = isSaved ? prev.filter(i => i !== id) : [...prev, id];
+      try {
+        localStorage.setItem('saarthi_saved_places', JSON.stringify(next));
+      } catch {
+        // Ignore storage errors
+      }
+      return next;
+    });
+  };
 
   // Cross-collection search results from Supabase
   const [crossResults, setCrossResults] = useState<{ stories: any[]; encyclopedia: any[] }>({ stories: [], encyclopedia: [] });
@@ -201,6 +231,8 @@ function ExploreContent() {
       let matchesFilter = false;
       if (f === 'all' || f === 'nearby') {
         matchesFilter = true;
+      } else if (f === 'saved') {
+        matchesFilter = savedPlaceIds.includes(place.id);
       } else {
         const pType = toStr(place.placeType).toLowerCase();
         const pCat = toStr(place.category).toLowerCase();
@@ -251,7 +283,7 @@ function ExploreContent() {
     result.sort((a: any, b: any) => (a.computedDistance ?? 999) - (b.computedDistance ?? 999));
 
     return result;
-  }, [searchQuery, activeFilter, places, userLocation, isAlternativeQuery, isTirupatiQuery]);
+  }, [searchQuery, activeFilter, places, userLocation, isAlternativeQuery, isTirupatiQuery, savedPlaceIds]);
 
   const nearbyPlaces = useMemo(() => {
     return [...filteredPlaces]
@@ -291,6 +323,7 @@ function ExploreContent() {
     const counts: Record<string, number> = {
       All: rawSource.length,
       Nearby: 0,
+      Saved: savedPlaceIds.length,
       Spiritual: 0,
       Nature: 0,
       Water: 0,
@@ -327,7 +360,12 @@ function ExploreContent() {
         <Link href="/" className={styles.backButton}>
           <ArrowLeft size={24} />
         </Link>
-        <h1>{lang === 'te' ? 'దర్శనీయ ప్రదేశాలు & ఆలయాలు' : 'Explore Places'}</h1>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <SrivariNamamVector size={26} />
+          <h1 style={{ margin: 0, fontFamily: "var(--font-sacred-serif), 'Cinzel', Georgia, serif" }}>
+            {lang === 'te' ? 'దర్శనీయ ప్రదేశాలు & ఆలయాలు' : 'Explore Places'}
+          </h1>
+        </div>
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
           <Link href="/alerts" aria-label="Notifications" style={{ position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'center', width: '36px', height: '36px', textDecoration: 'none', color: '#0F5132' }}>
             <Bell size={20} />
@@ -637,9 +675,31 @@ function ExploreContent() {
                         <h3 style={{ fontSize: '15px', fontWeight: 800, color: '#0F172A', margin: 0 }}>
                           {place.name}
                         </h3>
-                        <div className={styles.rating}>
-                          <Star size={14} fill="#FF9933" color="#FF9933" />
-                          <span>{place.rating}</span>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                          <button
+                            type="button"
+                            onClick={(e) => toggleSavePlace(place.id, e)}
+                            title={savedPlaceIds.includes(place.id) ? 'Remove from Saved' : 'Save Place'}
+                            style={{
+                              background: 'none',
+                              border: 'none',
+                              padding: '2px',
+                              cursor: 'pointer',
+                              display: 'flex',
+                              alignItems: 'center',
+                              justifyContent: 'center'
+                            }}
+                          >
+                            <Heart
+                              size={16}
+                              fill={savedPlaceIds.includes(place.id) ? '#E11D48' : 'none'}
+                              color={savedPlaceIds.includes(place.id) ? '#E11D48' : '#94A3B8'}
+                            />
+                          </button>
+                          <div className={styles.rating}>
+                            <Star size={14} fill="#FF9933" color="#FF9933" />
+                            <span>{place.rating}</span>
+                          </div>
                         </div>
                       </div>
 

@@ -1,0 +1,97 @@
+# Saarthi — Comprehensive Pilgrimage Guide & Technical Knowledge Base
+
+> Saarthi (https://www.saarthiguide.in) is the comprehensive pilgrimage companion and intelligence platform for devotees visiting the sacred shrines of Tirupati and Tirumala in Andhra Pradesh, India.
+
+---
+
+## 1. Real-Time Darshan Waiting Times & Token Systems
+
+### Sarva Darshan (Free General Queue)
+- **Overview**: Unreserved free darshan available to all pilgrims without pre-booking.
+- **Queue Location**: Vaikuntham Queue Complex II (VQC-II), Tirumala.
+- **Normal Wait Times**: 8 to 18 hours depending on day of week and festivals. Can reach 24-30 hours during Brahmotsavams and summer vacation months.
+- **Facilities Inside Compartments**: Free hot Annaprasadam meals, milk for infants, drinking water, medical staff, and sanitized restrooms provided by TTD.
+
+### Free Slotted Sarva Darshan (SSD) Tokens
+- **Counters in Tirupati**:
+  1. **Bhudevi Complex**: Near Alipiri Bus Station / Toll Gate. Ideal for pilgrims arriving via private vehicles or direct highway buses.
+  2. **Srinivasam Complex**: Directly opposite Tirupati Central Bus Station (RTC Bus Stand). Open early morning (usually 2:00 AM - 4:00 AM until quota exhausted).
+  3. **Vishnu Nivasam Complex**: Directly opposite Tirupati Central Railway Station. High pilgrim demand.
+  4. **Govindaraja Swamy Choultries**: Behind Tirupati Railway Station.
+- **Quota & Identification**: Strict Aadhaar Card biometric verification per individual. Tokens are non-transferable and issued on a same-day or next-day basis.
+
+### Special Entry Darshan (SED / Rs. 300 Quick Darshan)
+- Bookable exclusively online at the official TTD portal (ttdevasthanams.ap.gov.in) generally released on the 24th or 25th of every month for the subsequent month.
+- Average darshan duration: 2 to 4 hours.
+
+---
+
+## 2. Tirumala Ghat Road Regulations & Safety Rules
+
+To minimize accidents along the steep hairpin curves of the Seshachalam range, the Andhra Pradesh Forest and Police Departments enforce strict transit time limits monitored via RFID toll tags:
+
+- **Upward Ghat Road (Tirupati to Tirumala - 18 km)**:
+  - Minimum Allowed Driving Duration: **28 minutes**.
+  - Entering Tirumala in less than 28 minutes results in automatic speed fines and vehicle impound warnings.
+- **Downward Ghat Road (Tirumala to Tirupati - 18 km)**:
+  - Minimum Allowed Driving Duration: **28 minutes** (40 minutes for heavy vehicles/buses).
+- **Ghat Road Operating Hours**:
+  - Open: 3:00 AM to 12:00 Midnight.
+  - Closed to all traffic between 12:00 AM and 3:00 AM for forest wildlife migration.
+- **Two-Wheeler Restrictions**: Two-wheelers are prohibited between 10:00 PM and 5:00 AM on both ghat roads.
+
+---
+
+## 3. Official TTD Dress Code Standards
+
+Strictly enforced at Supadham, Vaikuntham Queue Complex, and all darshan entry points:
+
+### Men
+- **Permitted**: Traditional White Dhoti with Uttareeyam (angavastram), or White Kurta-Pyjama.
+- **Prohibited**: Western pants, jeans, shorts, Bermuda shorts, lungis, graphic T-shirts, or sleeveless apparel.
+
+### Women
+- **Permitted**: Saree, Half-Saree, or Churidar/Salwar Kameez with Dupatta securely draped.
+- **Prohibited**: Jeans, sleeveless tops, western skirts, nightwear, or transparent fabrics.
+
+---
+
+## 4. Key Places & Coordinates
+
+1. **Sri Venkateswara Swamy Temple (Tirumala)**:
+   - Coordinates: 13.6833° N, 79.3472° E
+   - Primary Deity: Lord Venkateswara (Balaji, Srinivasa, Malayappa Swamy)
+   - Sanctum Elevation: ~860 meters above sea level
+   - URL: https://www.saarthiguide.in/place/venkateswara
+
+2. **Sri Padmavathi Ammavari Temple (Tiruchanur)**:
+   - Coordinates: 13.6061° N, 79.4449° E
+   - Distance: 5 km south of Tirupati railway station
+   - Significance: The celestial consort of Lord Venkateswara; darshan is traditionally considered incomplete without offering prayers here.
+   - URL: https://www.saarthiguide.in/place/padmavathi-temple
+
+3. **Sri Govindaraja Swamy Temple (Tirupati)**:
+   - Coordinates: 13.6291° N, 79.4184° E
+   - Deity: Sri Govindaraja Swamy (Lord Vishnu in Yoga Nidra posture)
+   - Historic Significance: Idol protected by Saint Ramanuja from invaders in Chidambaram.
+   - URL: https://www.saarthiguide.in/place/govindaraja
+
+4. **Sri Kapileswara Swamy Temple (Kapila Theertham)**:
+   - Coordinates: 13.6543° N, 79.4189° E
+   - Deity: Lord Shiva (Kapileswara) and Goddess Kamakshi
+   - Natural Feature: Holy mountain waterfall fed by the sacred hills of Tirumala.
+   - URL: https://www.saarthiguide.in/place/kapila-theertham
+
+5. **Matrusri Tarigonda Vengamamba Annaprasadam Complex**:
+   - Location: Adjacent to Srivari Temple, Tirumala
+   - Service: Free, hygienically prepared sanctified satvik meals served continuously to over 100,000 pilgrims daily.
+
+---
+
+## 5. Emergency Contacts & Helplines
+
+- **TTD Pilgrim Toll-Free Helpline**: 1800-425-4141 / 1800-425-333333
+- **Tirumala Police Station**: 0877-2277777 / 100
+- **Tirumala Emergency Medical Center (Ashwini Hospital)**: 0877-2263444 / 108
+- **Tirupati RTC Central Bus Stand**: 0877-2289901
+- **Tirupati Railway Enquiry**: 139

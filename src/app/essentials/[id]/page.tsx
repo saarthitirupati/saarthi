@@ -15,6 +15,7 @@ import SaarthiGuidanceCard from '@/components/SaarthiGuidanceCard';
 import { KNOWLEDGE_ITEMS, FAQ_ITEMS, SubLocation } from '@/content/knowledge';
 import { useTrip } from '@/components/TripContext';
 import { calculateDrivingDistance, TIRUPATI_CENTER, isCoordinateOnTirumalaHill, isWithinTirupatiRegion } from '@/utils/location';
+import { SrivariNamamVector, LotusMandalaVector, TempleArchVector } from '@/components/common/DevotionalSvgIcons';
 
 // Map iconName strings to Lucide React components
 import { 
@@ -174,14 +175,21 @@ export default function EssentialDetailPage({ params }: { params: Promise<{ id: 
       <div className={styles.scrollArea}>
         
         {/* HERO BANNER CARD */}
-        <div className={styles.insideHeader} style={{ background: 'linear-gradient(135deg, #FFFFFF 0%, #F8FAFC 100%)', boxShadow: '0 4px 16px rgba(15,23,42,0.04)' }}>
+        <div className={styles.insideHeader} style={{ background: 'linear-gradient(135deg, #FFFFFF 0%, #FFFBEB 100%)', boxShadow: '0 4px 16px rgba(15,23,42,0.04)', position: 'relative', overflow: 'hidden' }}>
+          {/* Subtle Devotional Background Watermark */}
+          <div style={{ position: 'absolute', right: '-10px', top: '-10px', opacity: 0.1, pointerEvents: 'none' }}>
+            <LotusMandalaVector size={130} opacity={0.9} />
+          </div>
           <div className={styles.insideHeroTitle}>
-            <div className={styles.primaryCardIconBox} style={{ width: '52px', height: '52px', background: '#FEF3C7', color: '#D97706', border: '1px solid #FDE68A', borderRadius: '16px' }}>
+            <div className={styles.primaryCardIconBox} style={{ width: '52px', height: '52px', background: '#FEF3C7', color: '#D97706', border: '1px solid #FDE68A', borderRadius: '16px', position: 'relative', zIndex: 1 }}>
               <IconComp size={28} />
             </div>
-            <div>
-              <span style={{ fontSize: '22px', fontWeight: 900, display: 'block', color: '#0F172A', letterSpacing: '-0.01em' }}>{item.name}</span>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginTop: '2px' }}>
+            <div style={{ position: 'relative', zIndex: 1 }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
+                <span style={{ fontSize: '22px', fontWeight: 900, color: '#0F172A', letterSpacing: '-0.01em' }}>{item.name}</span>
+                <SrivariNamamVector size={20} />
+              </div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginTop: '2px', flexWrap: 'wrap' }}>
                 <MapPin size={12} color="#64748B" />
                 <span style={{ fontSize: '12px', fontWeight: 600, color: '#64748B' }}>{item.location}</span>
                 {liveDistance && (
@@ -352,6 +360,9 @@ export default function EssentialDetailPage({ params }: { params: Promise<{ id: 
         {/* STEP-BY-STEP PROCEDURE TIMELINE */}
         {item.procedureTimeline && item.procedureTimeline.length > 0 && (
           <section className={styles.timelineSection}>
+            <div style={{ display: 'flex', justifyContent: 'center', margin: '4px 0' }}>
+              <TempleArchVector height={16} />
+            </div>
             <h3 className={styles.sectionTitle}>Step-by-Step Deposit & Retrieval Flow</h3>
             <div className={styles.timelineList}>
               {item.procedureTimeline.map((step) => (

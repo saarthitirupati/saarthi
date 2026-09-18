@@ -120,9 +120,11 @@ export default function OfflineTempleMap({
   const [activePin, setActivePin] = useState<MapPin | null>(null);
   const [isCached, setIsCached] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
+  const [mounted, setMounted] = useState(false);
 
   // Update active pin when layout changes
   useEffect(() => {
+    setMounted(true);
     if (layout?.pins && layout.pins.length > 0) {
       setActivePin(layout.pins[0]);
     }
@@ -1065,6 +1067,57 @@ export default function OfflineTempleMap({
                 strokeLinecap="round"
                 strokeLinejoin="round"
               />
+
+              {/* Animated Walking Pilgrim Along Route (client-only to avoid hydration mismatch) */}
+              {mounted && (
+              <g>
+                {/* Pulsing glow ring behind the walker */}
+                <circle r="14" fill="rgba(245, 158, 11, 0.18)" stroke="rgba(245, 158, 11, 0.35)" strokeWidth="1.5">
+                  <animateMotion dur="14s" repeatCount="indefinite" path={routePathString} />
+                  <animate attributeName="r" values="12;16;12" dur="2s" repeatCount="indefinite" />
+                  <animate attributeName="opacity" values="0.3;0.6;0.3" dur="2s" repeatCount="indefinite" />
+                </circle>
+                {/* Floating label pill — "Walk Route" */}
+                <g>
+                  <animateMotion dur="14s" repeatCount="indefinite" path={routePathString} />
+                  <rect x="-22" y="-28" width="44" height="13" rx="6.5" fill="#92400E" opacity="0.9" />
+                  <text x="0" y="-19" fontSize="7" fontWeight="700" textAnchor="middle" fill="#FFFFFF" style={{ fontFamily: 'system-ui, sans-serif' }}>
+                    {lang === 'te' ? 'మార్గం' : 'Walk Route'}
+                  </text>
+                </g>
+                {/* Walking pilgrim figure — larger, recognizable person */}
+                <g fill="none" stroke="#92400E" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                  <animateMotion dur="14s" repeatCount="indefinite" path={routePathString} />
+                  {/* Head */}
+                  <circle cx="0" cy="-10" r="4" fill="#FBBF24" stroke="#92400E" strokeWidth="1.2" />
+                  {/* Hair bun / devotee mark */}
+                  <circle cx="0" cy="-14" r="1.5" fill="#92400E" />
+                  {/* Body */}
+                  <line x1="0" y1="-6" x2="0" y2="3" />
+                  {/* Arms swinging */}
+                  <line x1="0" y1="-3" x2="-5" y2="1">
+                    <animate attributeName="x2" values="-5;-2;-5" dur="0.7s" repeatCount="indefinite" />
+                    <animate attributeName="y2" values="1;-1;1" dur="0.7s" repeatCount="indefinite" />
+                  </line>
+                  <line x1="0" y1="-3" x2="5" y2="1">
+                    <animate attributeName="x2" values="5;2;5" dur="0.7s" repeatCount="indefinite" />
+                    <animate attributeName="y2" values="-1;1;-1" dur="0.7s" repeatCount="indefinite" />
+                  </line>
+                  {/* Left leg */}
+                  <line x1="0" y1="3" x2="-4" y2="10">
+                    <animate attributeName="x2" values="-4;2;-4" dur="0.7s" repeatCount="indefinite" />
+                  </line>
+                  {/* Right leg */}
+                  <line x1="0" y1="3" x2="4" y2="10">
+                    <animate attributeName="x2" values="4;-2;4" dur="0.7s" repeatCount="indefinite" />
+                  </line>
+                  {/* Direction arrow */}
+                  <polygon points="8,-6 12,-3 8,0" fill="#F59E0B" stroke="none" opacity="0.8">
+                    <animate attributeName="opacity" values="0.5;1;0.5" dur="1s" repeatCount="indefinite" />
+                  </polygon>
+                </g>
+              </g>
+              )}
             </g>
           )}
 

@@ -327,12 +327,124 @@ export function stopJapaAmbient(fadeMs: number = 400) {
   }
 }
 
+let sharedAudioCtx: AudioContext | null = null;
+let userGestureReceived = false;
+
+function attachUserGestureListener() {
+  if (typeof window === 'undefined' || userGestureReceived) return;
+  const unlockAudio = () => {
+    userGestureReceived = true;
+    if (sharedAudioCtx && sharedAudioCtx.state === 'suspended') {
+      sharedAudioCtx.resume().catch(() => {});
+    }
+    window.removeEventListener('pointerdown', unlockAudio);
+    window.removeEventListener('click', unlockAudio);
+    window.removeEventListener('keydown', unlockAudio);
+    window.removeEventListener('touchstart', unlockAudio);
+  };
+  window.addEventListener('pointerdown', unlockAudio, { passive: true });
+  window.addEventListener('click', unlockAudio, { passive: true });
+  window.addEventListener('keydown', unlockAudio, { passive: true });
+  window.addEventListener('touchstart', unlockAudio, { passive: true });
+}
+
+function getAudioContext(): AudioContext | null {
+  if (typeof window === 'undefined') return null;
+  attachUserGestureListener();
+  if (!sharedAudioCtx) {
+    const AudioCtxClass = window.AudioContext || (window as any).webkitAudioContext;
+    if (AudioCtxClass) {
+      sharedAudioCtx = new AudioCtxClass();
+    }
+  }
+  if (sharedAudioCtx && sharedAudioCtx.state === 'suspended' && userGestureReceived) {
+    sharedAudioCtx.resume().catch(() => {});
+  }
+  return sharedAudioCtx;
+}
+
+/**
+ * 🪕 Real-time Web Audio API Veena Pluck Synthesizer
+ * Generates an acoustic Veena string pluck + tactile wooden bead click
+ * tuned to sacred Raga pentatonic scale frequencies.
+ */
+export function synthesizeVeenaPluck(beadNumber: number = 1) {
+  const ctx = getAudioContext();
+  if (!ctx || ctx.state === 'suspended') return;
+
+  try {
+    const now = ctx.currentTime;
+
+    // Sacred Raga Pentatonic Frequencies (Sa, Ri, Ga, Pa, Dha)
+    const scale = [220, 234.6, 275, 330, 366.6, 440, 469.3, 550, 660, 733.3];
+    const baseFreq = scale[(beadNumber - 1) % scale.length];
+
+    // 1. Tactile Wooden Bead Snap (8ms noise burst)
+    const bufferSize = Math.floor(ctx.sampleRate * 0.008);
+    const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
+    const data = buffer.getChannelData(0);
+    for (let i = 0; i < bufferSize; i++) {
+      data[i] = (Math.random() * 2 - 1) * Math.exp(-i / (bufferSize * 0.3));
+    }
+    const noiseNode = ctx.createBufferSource();
+    noiseNode.buffer = buffer;
+    const filter = ctx.createBiquadFilter();
+    filter.type = 'bandpass';
+    filter.frequency.setValueAtTime(1800, now);
+    filter.Q.setValueAtTime(3.0, now);
+
+    const noiseGain = ctx.createGain();
+    noiseGain.gain.setValueAtTime(0.18, now);
+    noiseGain.gain.exponentialRampToValueAtTime(0.001, now + 0.008);
+
+    noiseNode.connect(filter);
+    filter.connect(noiseGain);
+    noiseGain.connect(ctx.destination);
+    noiseNode.start(now);
+
+    // 2. Fundamental Veena Osc (Triangle Wave - 650ms decay)
+    const oscMain = ctx.createOscillator();
+    oscMain.type = 'triangle';
+    oscMain.frequency.setValueAtTime(baseFreq, now);
+
+    const gainMain = ctx.createGain();
+    gainMain.gain.setValueAtTime(0.001, now);
+    gainMain.gain.linearRampToValueAtTime(0.32, now + 0.004);
+    gainMain.gain.exponentialRampToValueAtTime(0.0001, now + 0.65);
+
+    oscMain.connect(gainMain);
+    gainMain.connect(ctx.destination);
+    oscMain.start(now);
+    oscMain.stop(now + 0.65);
+
+    // 3. Ethereal Overtone Osc (Sine Wave 2x frequency)
+    const oscHarmonic = ctx.createOscillator();
+    oscHarmonic.type = 'sine';
+    oscHarmonic.frequency.setValueAtTime(baseFreq * 2, now);
+
+    const gainHarmonic = ctx.createGain();
+    gainHarmonic.gain.setValueAtTime(0.001, now);
+    gainHarmonic.gain.linearRampToValueAtTime(0.12, now + 0.003);
+    gainHarmonic.gain.exponentialRampToValueAtTime(0.0001, now + 0.35);
+
+    oscHarmonic.connect(gainHarmonic);
+    gainHarmonic.connect(ctx.destination);
+    oscHarmonic.start(now);
+    oscHarmonic.stop(now + 0.35);
+  } catch (err) {
+    console.error(err);
+  }
+}
+
 /**
  * 🪕 Interaction: Single Bead Complete
  * Tactile mala bead click + single pure Veena note
  */
-export function playBeadComplete() {
+export function playBeadComplete(beadNumber: number = 1) {
   if (!isAudioGloballyEnabled() || typeof window === 'undefined') return;
+
+  // Real-time Web Audio API synthesis for zero latency and pitch progression
+  synthesizeVeenaPluck(beadNumber);
 
   try {
     const audio = new Audio('/audio/bead-complete.wav');
@@ -416,12 +528,86 @@ export function stopAllAudio() {
   stopScreen1Opening();
   stopScreen1Ambient(100);
   stopJapaAmbient(100);
+  stopSpeechDevotionalAmbient();
   if (activeSFXAudio) {
     try {
       activeSFXAudio.pause();
       activeSFXAudio.currentTime = 0;
     } catch {}
     activeSFXAudio = null;
+  }
+}
+
+let speechAmbientCtx: AudioContext | null = null;
+let speechMasterGain: GainNode | null = null;
+let speechOscs: OscillatorNode[] = [];
+
+/**
+ * Extended Devotional Background Ambient Soundscape Bed
+ * Continuous 136.1Hz Cosmic OM Tanpura + soft acoustic Veena harmonics bed
+ * for text-to-speech reading sections. Zero external network dependencies.
+ */
+export function startSpeechDevotionalAmbient() {
+  if (typeof window === 'undefined') return;
+  const ctx = getAudioContext();
+  if (!ctx || ctx.state === 'suspended') return;
+
+  stopSpeechDevotionalAmbient();
+
+  try {
+    const now = ctx.currentTime;
+    const masterGain = ctx.createGain();
+    masterGain.gain.setValueAtTime(0.001, now);
+    masterGain.gain.linearRampToValueAtTime(0.14, now + 0.6);
+    masterGain.connect(ctx.destination);
+
+    speechAmbientCtx = ctx;
+    speechMasterGain = masterGain;
+
+    const freqs = [136.1, 204.15, 272.2];
+    speechOscs = [];
+
+    freqs.forEach((freq, idx) => {
+      const osc = ctx.createOscillator();
+      const oscGain = ctx.createGain();
+      osc.type = idx === 0 ? 'sine' : 'triangle';
+      osc.frequency.setValueAtTime(freq, now);
+
+      oscGain.gain.setValueAtTime(0.001, now);
+      oscGain.gain.linearRampToValueAtTime(0.12 / (idx + 1), now + 0.5);
+
+      osc.connect(oscGain);
+      oscGain.connect(masterGain);
+      osc.start(now);
+      speechOscs.push(osc);
+    });
+  } catch {}
+}
+
+export function stopSpeechDevotionalAmbient() {
+  if (!speechMasterGain || !speechAmbientCtx) return;
+  try {
+    const now = speechAmbientCtx.currentTime;
+    const currentGain = speechMasterGain.gain.value;
+    speechMasterGain.gain.setValueAtTime(currentGain, now);
+    speechMasterGain.gain.exponentialRampToValueAtTime(0.0001, now + 0.8);
+
+    const oscsToStop = [...speechOscs];
+    speechOscs = [];
+    speechMasterGain = null;
+    speechAmbientCtx = null;
+
+    setTimeout(() => {
+      oscsToStop.forEach(osc => {
+        try {
+          osc.stop();
+        } catch {}
+      });
+    }, 850);
+  } catch {
+    speechOscs = [];
+    speechMasterGain = null;
+    speechAmbientCtx = null;
   }
 }
 
@@ -433,3 +619,4 @@ export const playSaarthiSonicIdent = playScreen1Opening;
 export const stopSaarthiSonicIdent = stopScreen1Opening;
 export const playVeenaPluck = playBeadComplete;
 export const playMalaCompletionSonicIdent = playJapa108Complete;
+

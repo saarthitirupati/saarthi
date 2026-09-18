@@ -194,7 +194,8 @@ export function YatraChecklist() {
           display: 'grid',
           gridTemplateColumns: 'repeat(5, 1fr)',
           gap: '6px',
-          backgroundColor: '#FAF8F4'
+          backgroundColor: isAllDone ? '#F0FDF4' : '#FAF8F4',
+          transition: 'background-color 0.25s ease'
         }}>
           {CHECKLIST_ITEMS.map(item => {
             const isChecked = isClient && !!checkedIds[item.id];
@@ -216,8 +217,9 @@ export function YatraChecklist() {
                   boxShadow: isChecked ? '0 2px 6px rgba(22, 163, 74, 0.12)' : '0 1px 3px rgba(0,0,0,0.03)',
                   cursor: 'pointer',
                   userSelect: 'none',
-                  transition: 'all 0.15s ease'
+                  transition: 'transform 0.12s cubic-bezier(0.23, 1, 0.32, 1), background-color 0.15s ease'
                 }}
+                className="active:scale-95"
               >
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '22px', marginBottom: '2px' }}>
                   {getItemIcon(item.id, isChecked, isChecked ? '#15803D' : '#D97706')}
@@ -237,6 +239,30 @@ export function YatraChecklist() {
             );
           })}
         </div>
+
+        {/* 🌟 100% COMPLETION CELEBRATION BADGE */}
+        {isAllDone && (
+          <div style={{
+            backgroundColor: '#DCFCE7',
+            borderTop: '1px solid #86EFAC',
+            padding: '8px 12px',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            gap: '6px',
+            color: '#14532D',
+            fontSize: '11px',
+            fontWeight: 800,
+            textAlign: 'center'
+          }}>
+            <ShieldCheck size={14} color="#15803D" />
+            <span>
+              {lang === 'te'
+                ? 'యాత్ర సన్నద్ధత 100% పూర్తయింది! శ్రీవారి దర్శనానికి మీ యాత్ర సిద్ధంగా ఉంది.'
+                : '100% Ready for Srivari Darshan! All essentials verified.'}
+            </span>
+          </div>
+        )}
 
         {/* Expandable Details for Each Item */}
         {isExpanded && (

@@ -52,9 +52,9 @@ export const metadata: Metadata = {
     siteName: "Saarthi Guide",
     images: [
       {
-        url: "/logo.png",
+        url: `${baseUrl}/opengraph-image`,
         width: 1200,
-        height: 1200,
+        height: 630,
         alt: "Saarthi: Tirupati & Tirumala Pilgrim Guide",
       },
     ],
@@ -65,7 +65,10 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Saarthi: Tirumala & Tirupati Pilgrim Guide",
     description: "Live TTD darshan wait times, free SSD token counters, offline maps & temple guides for Tirupati & Tirumala.",
-    images: ["/logo.png"],
+    images: [`${baseUrl}/twitter-image`],
+  },
+  verification: {
+    google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION || 'G-SAARTHI-VERIFY',
   },
   robots: {
     index: true,
@@ -186,12 +189,12 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
           }}
         />
         {/* End Google Tag Manager */}
-        {/* Preconnect and Load Crisp Google Fonts including Noto Sans Telugu */}
+        {/* Preconnect and Load Crisp Google Fonts including Noto Serif Telugu and Cinzel */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         {/* eslint-disable-next-line @next/next/no-page-custom-font */}
         <link
-          href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Noto+Sans+Telugu:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@500;600;700;800;900&display=swap"
+          href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&family=Inter:wght@400;500;600;700;800;900&family=Noto+Sans+Telugu:wght@400;500;600;700;800;900&family=Noto+Serif+Telugu:wght@500;600;700;800;900&family=Plus+Jakarta+Sans:wght@500;600;700;800;900&display=swap"
           rel="stylesheet"
         />
         <meta name="google" content="notranslate" />

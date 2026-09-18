@@ -18,7 +18,32 @@ export function DailyGitaCard({ date, variant = 'desktop' }: DailyGitaCardProps)
   const [script, setScript] = useState<'te' | 'sa' | 'en'>(lang === 'te' ? 'te' : 'en');
   const [activeTab, setActiveTab] = useState<'meaning' | 'practice'>('meaning');
   const [copied, setCopied] = useState(false);
+  const [streak, setStreak] = useState(1);
   const { isSpeaking, toggleSpeak, stop } = useSpeechSynthesis();
+
+  React.useEffect(() => {
+    try {
+      if (typeof window === 'undefined') return;
+      const lastRead = localStorage.getItem('saarthi_gita_last_read');
+      const currentStreak = parseInt(localStorage.getItem('saarthi_gita_streak') || '1', 10);
+      const todayStr = new Date().toISOString().slice(0, 10);
+
+      if (lastRead === todayStr) {
+        setStreak(currentStreak);
+      } else {
+        const yesterday = new Date();
+        yesterday.setDate(yesterday.getDate() - 1);
+        const yesterdayStr = yesterday.toISOString().slice(0, 10);
+
+        const newStreak = lastRead === yesterdayStr ? currentStreak + 1 : 1;
+        localStorage.setItem('saarthi_gita_last_read', todayStr);
+        localStorage.setItem('saarthi_gita_streak', newStreak.toString());
+        setStreak(newStreak);
+      }
+    } catch {
+      // Ignore storage errors
+    }
+  }, []);
 
   const handleAudioPlay = () => {
     if (isSpeaking) {
@@ -26,8 +51,13 @@ export function DailyGitaCard({ date, variant = 'desktop' }: DailyGitaCardProps)
     } else {
       playSaarthiSonicIdent(true);
       const textToRecite = script === 'en' ? shloka.transliteration : script === 'sa' ? shloka.shlokaSanskrit : shloka.shlokaTelugu;
-      const speechLang = script === 'te' ? 'te-IN' : script === 'sa' ? 'hi-IN' : 'en-IN';
-      toggleSpeak(textToRecite, { lang: speechLang, mode: 'devotional' });
+      const speechLang = script === 'te' ? 'te-IN' : script === 'sa' ? 'sa-IN' : 'en-IN';
+      const speechMode = script === 'sa' ? 'sanskrit' : 'devotional';
+      toggleSpeak(textToRecite, {
+        lang: speechLang,
+        mode: speechMode,
+        fallbackText: shloka.transliteration
+      });
     }
   };
 
@@ -114,8 +144,22 @@ export function DailyGitaCard({ date, variant = 'desktop' }: DailyGitaCardProps)
             <BookOpen size={16} color="#B45309" />
           </div>
           <div>
-            <div style={{ fontSize: '13px', fontWeight: 900, color: '#92400E', letterSpacing: '-0.01em', lineHeight: '1.2' }}>
-              {lang === 'te' ? 'భగవద్గీత నిత్య శ్లోకం' : 'Daily Gita Shloka'}
+            <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+              <div style={{ fontSize: '13px', fontWeight: 900, color: '#92400E', letterSpacing: '-0.01em', lineHeight: '1.2' }}>
+                {lang === 'te' ? 'భగవద్గీత నిత్య శ్లోకం' : 'Daily Gita Shloka'}
+              </div>
+              <span style={{
+                fontSize: '9.5px',
+                fontWeight: 900,
+                color: '#78350F',
+                backgroundColor: '#FEF3C7',
+                border: '1px solid #FCD34D',
+                padding: '1px 6px',
+                borderRadius: '8px',
+                lineHeight: 1.2
+              }}>
+                {streak} {lang === 'te' ? 'రోజు సాధన' : (streak === 1 ? 'Day Streak' : 'Days Streak')}
+              </span>
             </div>
             <div style={{ fontSize: '11px', fontWeight: 700, color: '#B45309', marginTop: '1px' }}>
               {lang === 'te' ? shloka.referenceTe : shloka.referenceEn}

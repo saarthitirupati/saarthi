@@ -84,10 +84,14 @@ export function QuickChecklist(props: any) {
           SSD TOKEN CARD (SOFT ELEVATION, HARMONIOUS TOKENS)
           ═══════════════════════════════════════════════════ */}
       <div style={{ padding: '0 14px 2px 14px' }}>
-        <Link
-          href="/darshan/ssd-token"
+        <div
+          onClick={() => router.push('/darshan/ssd-token')}
+          role="button"
+          tabIndex={0}
+          onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') router.push('/darshan/ssd-token'); }}
           style={{
             display: 'block',
+            cursor: 'pointer',
             textDecoration: 'none',
             color: 'inherit',
             background: '#FFFFFF',
@@ -332,7 +336,7 @@ export function QuickChecklist(props: any) {
               </div>
             );
           })()}
-        </Link>
+        </div>
       </div>
     </>
   );

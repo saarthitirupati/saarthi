@@ -311,16 +311,25 @@ export default function PlaceDetails() {
   const topMetricsNode = (
     <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, minmax(0, 1fr))', gap: '8px' }}>
       <div suppressHydrationWarning style={{ backgroundColor: '#FFFFFF', border: '1.5px solid rgba(15, 81, 50, 0.15)', borderRadius: '14px', padding: '10px 4px', textAlign: 'center', boxShadow: '0 2px 8px rgba(0,0,0,0.02)' }}>
-        <div suppressHydrationWarning style={{ fontSize: '13.5px', fontWeight: 900, color: '#0F5132', lineHeight: 1.1 }}>
-          {formattedDriveTime ? formattedDriveTime.replace(/\bm\b/, 'min') : `${driveTimeMins} min`}
+        <div suppressHydrationWarning style={{ fontSize: '13px', fontWeight: 900, color: '#0F5132', lineHeight: 1.1 }}>
+          {drivingDistance < 0.5 ? '< 0.5 km' : `${drivingDistance.toFixed(1)} km`}
         </div>
         <div suppressHydrationWarning style={{ fontSize: '9.5px', fontWeight: 700, color: '#64748B', marginTop: '3px' }}>
           {lang === 'te' ? 'దూరం' : 'Distance'}
         </div>
       </div>
 
+      <div suppressHydrationWarning style={{ backgroundColor: '#FFFFFF', border: '1.5px solid rgba(217, 119, 6, 0.2)', borderRadius: '14px', padding: '10px 4px', textAlign: 'center', boxShadow: '0 2px 8px rgba(0,0,0,0.02)' }}>
+        <div suppressHydrationWarning style={{ fontSize: '13px', fontWeight: 900, color: '#D97706', lineHeight: 1.1 }}>
+          {formattedDriveTime ? formattedDriveTime.replace(/\bm\b/, 'min') : `${driveTimeMins} min`}
+        </div>
+        <div suppressHydrationWarning style={{ fontSize: '9.5px', fontWeight: 700, color: '#64748B', marginTop: '3px' }}>
+          {lang === 'te' ? 'ప్రయాణ సమయం' : 'Travel Time'}
+        </div>
+      </div>
+
       <div suppressHydrationWarning style={{ backgroundColor: '#FFFFFF', border: `1.5px solid ${isOpenNow ? 'rgba(34, 197, 94, 0.3)' : 'rgba(239, 68, 68, 0.3)'}`, borderRadius: '14px', padding: '10px 4px', textAlign: 'center', boxShadow: '0 2px 8px rgba(0,0,0,0.02)' }}>
-        <div suppressHydrationWarning style={{ fontSize: '13.5px', fontWeight: 900, color: isOpenNow ? '#16A34A' : '#DC2626', lineHeight: 1.1 }}>
+        <div suppressHydrationWarning style={{ fontSize: '13px', fontWeight: 900, color: isOpenNow ? '#16A34A' : '#DC2626', lineHeight: 1.1 }}>
           {isOpenNow ? (lang === 'te' ? 'తెరిచి ఉంది' : 'Open') : (lang === 'te' ? 'మూసివేత' : 'Closed')}
         </div>
         <div suppressHydrationWarning style={{ fontSize: '9.5px', fontWeight: 700, color: '#64748B', marginTop: '3px' }}>
@@ -328,17 +337,8 @@ export default function PlaceDetails() {
         </div>
       </div>
 
-      <div suppressHydrationWarning style={{ backgroundColor: '#FFFFFF', border: '1.5px solid rgba(217, 119, 6, 0.2)', borderRadius: '14px', padding: '10px 4px', textAlign: 'center', boxShadow: '0 2px 8px rgba(0,0,0,0.02)' }}>
-        <div suppressHydrationWarning style={{ fontSize: '13.5px', fontWeight: 900, color: '#D97706', lineHeight: 1.1 }}>
-          {place.durationMins ? `${place.durationMins} min` : '45 min'}
-        </div>
-        <div suppressHydrationWarning style={{ fontSize: '9.5px', fontWeight: 700, color: '#64748B', marginTop: '3px' }}>
-          {lang === 'te' ? 'సందర్శన సమయం' : 'Visit Time'}
-        </div>
-      </div>
-
       <div suppressHydrationWarning style={{ backgroundColor: '#FFFFFF', border: '1.5px solid rgba(37, 99, 235, 0.2)', borderRadius: '14px', padding: '10px 4px', textAlign: 'center', boxShadow: '0 2px 8px rgba(0,0,0,0.02)' }}>
-        <div suppressHydrationWarning style={{ fontSize: '13.5px', fontWeight: 900, color: '#2563EB', lineHeight: 1.1 }}>
+        <div suppressHydrationWarning style={{ fontSize: '13px', fontWeight: 900, color: '#2563EB', lineHeight: 1.1 }}>
           {place.entryFeeNum === 0 || !place.entryFeeNum ? (lang === 'te' ? 'ఉచితం' : 'Free') : `₹${place.entryFeeNum}`}
         </div>
         <div suppressHydrationWarning style={{ fontSize: '9.5px', fontWeight: 700, color: '#64748B', marginTop: '3px' }}>
@@ -350,22 +350,24 @@ export default function PlaceDetails() {
 
   // 2. QUICK FACTS ("Before you go")
   const quickFactsNode = (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
       <h2 style={{ fontSize: '14px', fontWeight: 900, color: '#0F172A', margin: '2px 0 2px 0' }}>
         {lang === 'te' ? 'సందర్శించే ముందు (ముఖ్య వివరాలు)' : 'Before you go'}
       </h2>
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, minmax(0, 1fr))', gap: '8px' }}>
-      {/* Timings */}
-      <div style={{ backgroundColor: '#FFFFFF', border: '1px solid rgba(15, 23, 42, 0.06)', borderRadius: '14px', padding: '11px 12px', boxShadow: '0 3px 10px rgba(15,23,42,0.03)', minWidth: 0, overflow: 'hidden' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '4px' }}>
-          <Clock size={14} color="#0F5132" style={{ flexShrink: 0 }} />
-          <span style={{ fontSize: '10.5px', fontWeight: 700, color: '#64748B', whiteSpace: 'nowrap' }}>{lang === 'te' ? 'దర్శన సమయాలు' : 'Timings'}</span>
+
+      {/* Full-Width Timings Banner Card */}
+      <div style={{ backgroundColor: '#FFFFFF', border: '1px solid rgba(15, 23, 42, 0.08)', borderRadius: '16px', padding: '12px 14px', boxShadow: '0 3px 10px rgba(15,23,42,0.03)', minWidth: 0 }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '6px' }}>
+          <Clock size={16} color="#0F5132" style={{ flexShrink: 0 }} />
+          <span style={{ fontSize: '11px', fontWeight: 800, color: '#0F5132', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
+            {lang === 'te' ? 'దర్శన సమయాలు & పూజ నిర్వహణ' : 'Timings & Schedule'}
+          </span>
         </div>
-        <div style={{ fontSize: '12px', fontWeight: 800, color: '#0F172A', lineHeight: 1.35, wordBreak: 'break-word' }}>
+        <div style={{ fontSize: '13px', fontWeight: 800, color: '#0F172A', lineHeight: 1.5, wordBreak: 'break-word' }}>
           {timingsStr.includes('(') ? (
             <div>
-              <span>{timingsStr.split('(')[0].trim()}</span>
-              <div style={{ fontSize: '10px', fontWeight: 600, color: '#64748B', marginTop: '2px' }}>
+              <div style={{ color: '#0F172A', fontWeight: 800 }}>{timingsStr.split('(')[0].trim()}</div>
+              <div style={{ fontSize: '11.5px', fontWeight: 600, color: '#64748B', marginTop: '4px', backgroundColor: '#F8FAFC', padding: '4px 8px', borderRadius: '6px' }}>
                 ({timingsStr.split('(')[1]}
               </div>
             </div>
@@ -375,6 +377,7 @@ export default function PlaceDetails() {
         </div>
       </div>
 
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, minmax(0, 1fr))', gap: '8px' }}>
       {/* Dress Code */}
       <div style={{ backgroundColor: '#FFFFFF', border: '1px solid rgba(15, 23, 42, 0.06)', borderRadius: '14px', padding: '11px 12px', boxShadow: '0 3px 10px rgba(15,23,42,0.03)', minWidth: 0, overflow: 'hidden' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '4px' }}>

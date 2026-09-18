@@ -37,6 +37,8 @@ const ICON_MAP: Record<string, React.ComponentType<any>> = {
   camera: Camera
 };
 
+import { SrivariNamamVector } from '@/components/common/DevotionalSvgIcons';
+
 export default function PilgrimEssentialsPage() {
   const router = useRouter();
   const { status } = useRealtimeStatus();
@@ -205,9 +207,12 @@ export default function PilgrimEssentialsPage() {
         <button className={styles.backButton} onClick={() => router.push('/')} aria-label="Back">
           <ArrowLeft size={20} />
         </button>
-        <div>
-          <h1 className={styles.headerTitle}>Pilgrim Essentials</h1>
-          <p className={styles.headerSubtitle}>Everything you need before your visit</p>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <SrivariNamamVector size={28} />
+          <div>
+            <h1 className={styles.headerTitle}>Pilgrim Essentials</h1>
+            <p className={styles.headerSubtitle}>Everything you need before your visit</p>
+          </div>
         </div>
         <div className={styles.headerActions}>
           <Link href="/alerts" aria-label="Notifications" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '36px', height: '36px', textDecoration: 'none', color: '#0F172A' }}>

@@ -14,7 +14,8 @@ import {
   DailyContent,
   QuickChecklist,
   YatraChecklist,
-  DesktopSidebarWidget
+  DesktopSidebarWidget,
+  HomeSkeleton
 } from '@/components/home';
 import styles from './Home.module.css';
 
@@ -92,7 +93,7 @@ export default function HomePage() {
   }, [home.places?.allPlaces, origin.lat, origin.lng]);
 
   if (home.loading) {
-    return <LoadingState message={t.loading} />;
+    return <HomeSkeleton />;
   }
 
   const PRIMARY_SERVICES = [
