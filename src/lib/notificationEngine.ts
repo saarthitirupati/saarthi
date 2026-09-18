@@ -1,4 +1,5 @@
 import { supabase } from '@/lib/supabase';
+import { sendFCMNotification } from '@/lib/fcmService';
 
 export type NotificationType = 'temple_update' | 'crowd_alert' | 'travel_alert' | 'daily_guidance';
 export type SeverityLevel = 'high' | 'medium' | 'low';
@@ -79,6 +80,27 @@ export async function dispatchNotificationEvent(
     const audienceCount = targetDevices?.length || 0;
     console.log(`[NotificationEngine] Dispatching event "${payload.eventId}" to ${audienceCount} target devices.`);
 
+    let fcmSuccessCount = 0;
+    if (targetDevices && targetDevices.length > 0) {
+      await Promise.allSettled(
+        targetDevices.map(async (dev) => {
+          if (dev.fcm_token) {
+            const res = await sendFCMNotification({
+              token: dev.fcm_token,
+              title: payload.title,
+              body: payload.body,
+              deepLink: payload.deepLink,
+              data: {
+                eventId: payload.eventId,
+                severity: payload.severity,
+              }
+            });
+            if (res.success) fcmSuccessCount++;
+          }
+        })
+      );
+    }
+
     // 3. Log Observability & Telemetry Entry
     await supabase.from('notification_telemetry').insert({
       event_id: payload.eventId,
@@ -86,8 +108,8 @@ export async function dispatchNotificationEvent(
       title: payload.title,
       body: payload.body,
       audience_count: audienceCount,
-      fcm_accepted: audienceCount, // Will be updated during FCM Admin SDK batch dispatch
-      invalid_tokens: 0,
+      fcm_accepted: fcmSuccessCount,
+      invalid_tokens: audienceCount - fcmSuccessCount,
       created_at: payload.createdAt,
     });
 

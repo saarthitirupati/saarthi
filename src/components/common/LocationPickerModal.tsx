@@ -3,197 +3,10 @@
 import React, { useState, useMemo } from 'react';
 import { MapPin, Navigation, Search, X, Check, Compass, Building, Map, Sparkles, ChevronDown } from 'lucide-react';
 import { useTrip } from '@/components/TripContext';
-import { detectCoordinates, isCoordinateOnTirumalaHill, TIRUPATI_CENTER, TIRUMALA_CENTER } from '@/lib/location';
+import { detectCoordinates, resolveLocationName, PRESET_LOCATIONS, type LocationOption } from '@/lib/location';
 import { useLanguage } from '@/lib/useLanguage';
 
-export interface LocationOption {
-  id: string;
-  nameEn: string;
-  nameTe: string;
-  shortName: string;
-  category: 'local-hub' | 'kshethram' | 'transit-hub' | 'planning-city';
-  subtextEn: string;
-  subtextTe: string;
-  coords: { lat: number; lng: number };
-}
-
-export const PRESET_LOCATIONS: LocationOption[] = [
-  // ── LOCAL PILGRIM HUBS ──
-  {
-    id: 'tirupati',
-    nameEn: 'Tirupati (City & Foothills)',
-    nameTe: 'తిరుపతి (నగరం & అలిపిరి దిగువ)',
-    shortName: 'Tirupati',
-    category: 'local-hub',
-    subtextEn: 'Alipiri, Railway Station, Central RTC Bus Stand',
-    subtextTe: 'అలిపిరి, రైల్వే స్టేషన్, సెంట్రల్ బస్టాండ్',
-    coords: TIRUPATI_CENTER
-  },
-  {
-    id: 'tirumala',
-    nameEn: 'Tirumala (Hill Top & Sanctum)',
-    nameTe: 'తిరుమల (కొండపై & శ్రీవారి సన్నిధి)',
-    shortName: 'Tirumala',
-    category: 'local-hub',
-    subtextEn: 'Venkateswara Temple, CRO, Balaji Nagar, Mada Streets',
-    subtextTe: 'శ్రీవారి ఆలయం, సీఆర్వో, బాలాజీ నగర్, మాడ వీధులు',
-    coords: TIRUMALA_CENTER
-  },
-  {
-    id: 'renigunta',
-    nameEn: 'Renigunta (Airport & Rail Hub)',
-    nameTe: 'రేణిగుంట (విమానాశ్రయం & రైల్వే జంక్షన్)',
-    shortName: 'Renigunta',
-    category: 'transit-hub',
-    subtextEn: 'Tirupati Airport (TIR) & Major Rail Junction',
-    subtextTe: 'తిరుపతి ఎయిర్‌పోర్ట్ మరియు రైల్వే జంక్షన్',
-    coords: { lat: 13.6477, lng: 79.5167 }
-  },
-  {
-    id: 'chandragiri',
-    nameEn: 'Chandragiri (Fort & Suburbs)',
-    nameTe: 'చంద్రగిరి (కోట & చుట్టుపక్కల)',
-    shortName: 'Chandragiri',
-    category: 'transit-hub',
-    subtextEn: 'Historic Raja Mahal Fort & Valley',
-    subtextTe: 'రాజమహల్ కోట మరియు పరిసరాలు',
-    coords: { lat: 13.5843, lng: 79.3158 }
-  },
-
-  // ── NEARBY KSHETHRAMS ──
-  {
-    id: 'srikalahasti',
-    nameEn: 'Srikalahasti (Vayu Lingam)',
-    nameTe: 'శ్రీకాళహస్తి (వాయు లింగేశ్వరుడు)',
-    shortName: 'Srikalahasti',
-    category: 'kshethram',
-    subtextEn: 'Rahu-Ketu Kshethram (~38 km from Tirupati)',
-    subtextTe: 'రాహు-కేతు పరిహార క్షేత్రం (తిరుపతికి ~38 కి.మీ)',
-    coords: { lat: 13.7500, lng: 79.7000 }
-  },
-  {
-    id: 'kanipakam',
-    nameEn: 'Kanipakam (Varasiddhi Vinayaka)',
-    nameTe: 'కాణిపాకం (వరసిద్ధి వినాయక క్షేత్రం)',
-    shortName: 'Kanipakam',
-    category: 'kshethram',
-    subtextEn: 'Swayambhu Vinayaka Temple (~70 km from Tirupati)',
-    subtextTe: 'స్వయంభూ వినాయక ఆలయం (తిరుపతికి ~70 కి.మీ)',
-    coords: { lat: 13.2845, lng: 79.0345 }
-  },
-  {
-    id: 'srinivasa-mangapuram',
-    nameEn: 'Srinivasa Mangapuram',
-    nameTe: 'శ్రీనివాస మంగాపురం',
-    shortName: 'Srinivasa Mangapuram',
-    category: 'kshethram',
-    subtextEn: 'Sri Kalyana Venkateswara Swamy Temple (~12 km)',
-    subtextTe: 'శ్రీ కల్యాణ వేంకటేశ్వర స్వామి సన్నిధి (~12 కి.మీ)',
-    coords: { lat: 13.6108, lng: 79.3277 }
-  },
-  {
-    id: 'appalayagunta',
-    nameEn: 'Appalayagunta',
-    nameTe: 'అప్పలాయగుంట',
-    shortName: 'Appalayagunta',
-    category: 'kshethram',
-    subtextEn: 'Sri Prasanna Venkateswara Swamy (~16 km)',
-    subtextTe: 'శ్రీ ప్రసన్న వేంకటేశ్వర స్వామి సన్నిధి (~16 కి.మీ)',
-    coords: { lat: 13.5374, lng: 79.4776 }
-  },
-  {
-    id: 'surutapalli',
-    nameEn: 'Surutapalli (Pallikondeswara)',
-    nameTe: 'సురుటుపల్లె (పళ్ళికొండేశ్వరుడు)',
-    shortName: 'Surutapalli',
-    category: 'kshethram',
-    subtextEn: 'Rare Reclining Bhoga Sayana Shiva (~73 km)',
-    subtextTe: 'అరుదైన శయన శివ పరిహార క్షేత్రం (~73 కి.మీ)',
-    coords: { lat: 13.3344, lng: 79.8746 }
-  },
-
-  // ── MAJOR PLANNING HUBS (PLANNING FROM HOME) ──
-  {
-    id: 'bengaluru',
-    nameEn: 'Bengaluru (Planning Trip)',
-    nameTe: 'బెంగళూరు (యాత్ర ప్లానింగ్)',
-    shortName: 'Bengaluru',
-    category: 'planning-city',
-    subtextEn: 'Majestic / Kempegowda Intl Airport (~250 km)',
-    subtextTe: 'మెజెస్టిక్ / విమానాశ్రయం (~250 కి.మీ)',
-    coords: { lat: 12.9716, lng: 77.5946 }
-  },
-  {
-    id: 'chennai',
-    nameEn: 'Chennai (Planning Trip)',
-    nameTe: 'చెన్నై (యాత్ర ప్లానింగ్)',
-    shortName: 'Chennai',
-    category: 'planning-city',
-    subtextEn: 'Central / Koyambedu / Airport (~135 km)',
-    subtextTe: 'సెంట్రల్ / కోయంబేడు / ఎయిర్‌పోర్ట్ (~135 కి.మీ)',
-    coords: { lat: 13.0827, lng: 80.2707 }
-  },
-  {
-    id: 'hyderabad',
-    nameEn: 'Hyderabad (Planning Trip)',
-    nameTe: 'హైదరాబాద్ (యాత్ర ప్లానింగ్)',
-    shortName: 'Hyderabad',
-    category: 'planning-city',
-    subtextEn: 'Secunderabad / Shamshabad Airport (~550 km)',
-    subtextTe: 'సికింద్రాబాద్ / శంషాబాద్ ఎయిర్‌పోర్ట్ (~550 కి.మీ)',
-    coords: { lat: 17.3850, lng: 78.4867 }
-  },
-  {
-    id: 'vijayawada',
-    nameEn: 'Vijayawada (Planning Trip)',
-    nameTe: 'విజయవాడ (యాత్ర ప్లానింగ్)',
-    shortName: 'Vijayawada',
-    category: 'planning-city',
-    subtextEn: 'Central Junction / Kanaka Durga (~380 km)',
-    subtextTe: 'రైల్వే జంక్షన్ / కనకదుర్గ (~380 కి.మీ)',
-    coords: { lat: 16.5062, lng: 80.6480 }
-  },
-  {
-    id: 'nellore',
-    nameEn: 'Nellore',
-    nameTe: 'నెల్లూరు',
-    shortName: 'Nellore',
-    category: 'planning-city',
-    subtextEn: 'NH16 Corridor (~130 km)',
-    subtextTe: 'జాతీయ రహదారి 16 కారిడార్ (~130 కి.మీ)',
-    coords: { lat: 14.4426, lng: 79.9865 }
-  },
-  {
-    id: 'kadapa',
-    nameEn: 'Kadapa (Devuni Kadapa)',
-    nameTe: 'కడప (దేవుని కడప)',
-    shortName: 'Kadapa',
-    category: 'planning-city',
-    subtextEn: 'Gateway to Tirumala (~140 km)',
-    subtextTe: 'శ్రీవారి ముఖద్వారం కడప (~140 కి.మీ)',
-    coords: { lat: 14.4673, lng: 78.8242 }
-  },
-  {
-    id: 'anantapur',
-    nameEn: 'Anantapur',
-    nameTe: 'అనంతపురం',
-    shortName: 'Anantapur',
-    category: 'planning-city',
-    subtextEn: 'Rayalaseema Gateway (~290 km)',
-    subtextTe: 'రాయలసీమ ముఖద్వారం (~290 కి.మీ)',
-    coords: { lat: 14.6819, lng: 77.6006 }
-  },
-  {
-    id: 'vellore',
-    nameEn: 'Vellore (Golden Temple)',
-    nameTe: 'వెల్లూరు (స్వర్ణ దేవాలయం)',
-    shortName: 'Vellore',
-    category: 'planning-city',
-    subtextEn: 'Sripuram & Katpadi Junction (~105 km)',
-    subtextTe: 'శ్రీపురం మరియు కాట్పాడి (~105 కి.మీ)',
-    coords: { lat: 12.9165, lng: 79.1325 }
-  }
-];
+export { PRESET_LOCATIONS, type LocationOption };
 
 export interface LocationPickerModalProps {
   isOpen: boolean;
@@ -237,7 +50,7 @@ export function LocationPickerModal({
   }, [searchQuery, activeTab]);
 
   const handleSelectLocation = (loc: LocationOption) => {
-    setUserLocation(loc.coords);
+    setUserLocation(loc.coords, 'manual');
     setLocationName(loc.shortName);
     setLocationPermission('granted');
     if (typeof window !== 'undefined') {
@@ -254,13 +67,12 @@ export function LocationPickerModal({
     setStatusMessage(lang === 'te' ? 'జీపీఎస్ సిగ్నల్ శోధిస్తోంది...' : 'Acquiring high-accuracy GPS...');
     
     detectCoordinates(
-      (coords) => {
+      (coords, source) => {
         setIsLocating(false);
-        setUserLocation(coords);
+        setUserLocation(coords, source || 'gps');
         setLocationPermission('granted');
         
-        const isTirumala = isCoordinateOnTirumalaHill(coords.lat, coords.lng);
-        const resolvedName = isTirumala ? 'Tirumala' : 'Tirupati';
+        const resolvedName = resolveLocationName(coords.lat, coords.lng);
         setLocationName(resolvedName);
         
         if (typeof window !== 'undefined') {

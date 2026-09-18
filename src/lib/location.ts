@@ -6,9 +6,13 @@ import {
   isWithinTirupatiRegion,
   formatTravelTime,
   estimateDriveDuration,
+  isValidCoordinates,
+  resolveLocationName,
   ALIPIRI_GATE,
   TIRUMALA_CENTER,
-  TIRUPATI_CENTER
+  TIRUPATI_CENTER,
+  PRESET_LOCATIONS,
+  type LocationOption
 } from '@/utils/location';
 
 export { 
@@ -19,9 +23,13 @@ export {
   isWithinTirupatiRegion,
   formatTravelTime,
   estimateDriveDuration,
+  isValidCoordinates,
+  resolveLocationName,
   ALIPIRI_GATE,
   TIRUMALA_CENTER,
-  TIRUPATI_CENTER
+  TIRUPATI_CENTER,
+  PRESET_LOCATIONS,
+  type LocationOption
 };
 
 export interface LatLng {
@@ -29,7 +37,7 @@ export interface LatLng {
   lng: number;
 }
 
-export type LocationSource = 'gps' | 'ip' | 'fallback';
+export type LocationSource = 'gps' | 'ip' | 'fallback' | 'manual';
 
 export interface LocationResult {
   coords: LatLng;
@@ -38,14 +46,6 @@ export interface LocationResult {
   isApproximate: boolean;
 }
 
-/**
- * Validates coordinate ranges and order (WGS84 standard)
- */
-export function isValidCoordinates(lat: number, lng: number): boolean {
-  if (typeof lat !== 'number' || typeof lng !== 'number' || isNaN(lat) || isNaN(lng)) return false;
-  if (lat < -90 || lat > 90 || lng < -180 || lng > 180) return false;
-  return true;
-}
 
 export async function getIPLocation(): Promise<{ coords: LatLng; city?: string }> {
   // Try ipapi.co first
@@ -102,7 +102,7 @@ export function detectCoordinates(
   if (typeof window === 'undefined') return;
 
   if (navigator.geolocation) {
-    console.log("[LocationPipeline] Requesting hardware GPS (smart cache 3m, 3.5s timeout)...");
+    console.log("[LocationPipeline] Requesting hardware GPS (smart cache 3m, 8s timeout)...");
 
     // 1. Try High Accuracy Hardware GPS with smart caching (maximumAge: 180000 allows instant 0ms cached position return)
     navigator.geolocation.getCurrentPosition(
@@ -143,10 +143,10 @@ export function detectCoordinates(
             console.warn("[LocationPipeline] Standard geolocation failed, falling back to IP location:", stdErr);
             fallbackToIP();
           },
-          { enableHighAccuracy: false, timeout: 3500, maximumAge: 300000 }
+          { enableHighAccuracy: false, timeout: 5000, maximumAge: 300000 }
         );
       },
-      { enableHighAccuracy: true, timeout: 3500, maximumAge: 180000 }
+      { enableHighAccuracy: true, timeout: 8000, maximumAge: 180000 }
     );
   } else {
     fallbackToIP();

@@ -15,7 +15,7 @@ interface TripContextType extends TripState {
   savePlan: (plan: Plan) => void;
   removePlan: (id: string) => void;
   resetTrip: () => void;
-  setUserLocation: (loc: { lat: number; lng: number } | null) => void;
+  setUserLocation: (loc: { lat: number; lng: number } | null, source?: 'gps' | 'ip' | 'fallback' | 'manual') => void;
   setLocationPermission: (status: 'default' | 'granted' | 'denied') => void;
   setLocationName: (name: string) => void;
 }

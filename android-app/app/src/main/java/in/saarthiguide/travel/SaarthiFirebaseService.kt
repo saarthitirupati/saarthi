@@ -24,6 +24,47 @@ class SaarthiFirebaseService : FirebaseMessagingService() {
             .edit()
             .putString("fcm_token", token)
             .apply()
+
+        // Sync with Saarthi backend
+        registerTokenWithBackend(this, token)
+    }
+
+    companion object {
+        fun registerTokenWithBackend(context: Context, token: String) {
+            kotlin.concurrent.thread {
+                try {
+                    val androidId = android.provider.Settings.Secure.getString(
+                        context.contentResolver,
+                        android.provider.Settings.Secure.ANDROID_ID
+                    ) ?: "android_device"
+
+                    val url = java.net.URL("https://www.saarthiguide.in/api/v1/devices/register")
+                    val conn = url.openConnection() as java.net.HttpURLConnection
+                    conn.requestMethod = "POST"
+                    conn.setRequestProperty("Content-Type", "application/json")
+                    conn.doOutput = true
+                    conn.connectTimeout = 10000
+                    conn.readTimeout = 10000
+
+                    val payload = org.json.JSONObject().apply {
+                        put("deviceId", androidId)
+                        put("platform", "android")
+                        put("fcmToken", token)
+                        put("isInTirupati", true)
+                        put("language", "en")
+                    }
+
+                    conn.outputStream.use { os ->
+                        os.write(payload.toString().toByteArray(Charsets.UTF_8))
+                    }
+
+                    val code = conn.responseCode
+                    conn.disconnect()
+                } catch (e: Exception) {
+                    // Handled gracefully
+                }
+            }
+        }
     }
 
     override fun onMessageReceived(remoteMessage: RemoteMessage) {

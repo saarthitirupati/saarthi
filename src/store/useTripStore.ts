@@ -64,12 +64,15 @@ export function useTripStore() {
     // Refresh coordinates dynamically on mount (non-blocking deferral after initial UI render)
     if (typeof window !== 'undefined') {
       const permission = saved ? loadedState.locationPermission : 'default';
-      if (permission !== 'denied') {
+      const isManual = loadedState.locationSource === 'manual';
+
+      // If user manually chose a planning location, preserve it. Only auto-detect if not manually chosen.
+      if (!isManual && permission !== 'denied') {
         const timer = setTimeout(() => {
-          import('@/lib/location').then(({ detectCoordinates, watchCoordinates, getIPLocation, TIRUPATI_CENTER, isCoordinateOnTirumalaHill }) => {
+          import('@/lib/location').then(({ detectCoordinates, watchCoordinates, getIPLocation, TIRUPATI_CENTER, resolveLocationName }) => {
             detectCoordinates(
               (coords, source, isApproximate, accuracyMeters) => {
-                const region = isCoordinateOnTirumalaHill(coords.lat, coords.lng) ? 'Tirumala' : 'Tirupati';
+                const region = resolveLocationName(coords.lat, coords.lng);
                 setState(prev => ({
                   ...prev,
                   userLocation: coords,
@@ -78,10 +81,13 @@ export function useTripStore() {
                   locationAccuracyMeters: accuracyMeters,
                   locationName: region
                 }));
-                // If IP-based, try to get real city name
+                // If IP-based, try to get real city name and refine
                 if (source === 'ip') {
                   getIPLocation().then(({ city }) => {
-                    if (city) setState(prev => ({ ...prev, locationName: city }));
+                    if (city) {
+                      const refined = resolveLocationName(coords.lat, coords.lng, city);
+                      setState(prev => ({ ...prev, locationName: refined }));
+                    }
                   }).catch(() => {});
                 }
               },
@@ -97,7 +103,7 @@ export function useTripStore() {
 
             // Watch real-time GPS hardware updates
             watchCoordinates((coords) => {
-              const region = isCoordinateOnTirumalaHill(coords.lat, coords.lng) ? 'Tirumala' : 'Tirupati';
+              const region = resolveLocationName(coords.lat, coords.lng);
               setState(prev => ({ ...prev, userLocation: coords, locationPermission: 'granted', locationName: region }));
             });
           }).catch(() => {});
@@ -252,12 +258,19 @@ export function useTripStore() {
     setState(prev => (prev.viewedPlaces.length === 0 ? prev : { ...prev, viewedPlaces: [] }));
   }, []);
 
-  const setUserLocation = useCallback((userLocation: { lat: number; lng: number } | null) => {
+  const setUserLocation = useCallback((
+    userLocation: { lat: number; lng: number } | null,
+    source: 'gps' | 'ip' | 'fallback' | 'manual' = 'manual'
+  ) => {
     setState(prev => {
-      if (prev.userLocation?.lat === userLocation?.lat && prev.userLocation?.lng === userLocation?.lng) {
+      if (
+        prev.userLocation?.lat === userLocation?.lat &&
+        prev.userLocation?.lng === userLocation?.lng &&
+        prev.locationSource === source
+      ) {
         return prev;
       }
-      return { ...prev, userLocation };
+      return { ...prev, userLocation, locationSource: source };
     });
   }, []);
 

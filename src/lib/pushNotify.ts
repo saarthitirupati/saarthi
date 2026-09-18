@@ -1,5 +1,6 @@
 import webpush from 'web-push';
 import { supabase } from '@/lib/supabase';
+import { sendFCMNotification } from '@/lib/fcmService';
 
 let vapidConfigured = false;
 function ensureVapid(): boolean {
@@ -29,49 +30,101 @@ interface PushPayload {
 }
 
 /**
- * Send a push notification to all subscribed users.
+ * Send a push notification to all subscribed users (Web Push + Native Android FCM).
  * Silently removes expired/invalid subscriptions.
  */
 export async function pushNotifyAll(payload: PushPayload) {
-  if (!ensureVapid()) return;
+  // 1. Web Push Dispatch
+  if (ensureVapid()) {
+    try {
+      const { data: subs, error } = await supabase
+        .from('push_subscriptions')
+        .select('id, endpoint, keys_p256dh, keys_auth');
 
-  const { data: subs, error } = await supabase
-    .from('push_subscriptions')
-    .select('id, endpoint, keys_p256dh, keys_auth');
+      if (!error && subs?.length) {
+        const body = JSON.stringify(payload);
+        const gone: number[] = [];
 
-  if (error || !subs?.length) return;
-
-  const body = JSON.stringify(payload);
-  const gone: number[] = [];
-
-  await Promise.allSettled(
-    subs.map(async (sub) => {
-      try {
-        await webpush.sendNotification(
-          {
-            endpoint: sub.endpoint,
-            keys: { p256dh: sub.keys_p256dh, auth: sub.keys_auth },
-          },
-          body,
-          {
-            TTL: 86400,
-            headers: {
-              Urgency: 'high',
-              Topic: payload.tag || 'saarthi-alert',
-            },
-          }
+        await Promise.allSettled(
+          subs.map(async (sub) => {
+            try {
+              await webpush.sendNotification(
+                {
+                  endpoint: sub.endpoint,
+                  keys: { p256dh: sub.keys_p256dh, auth: sub.keys_auth },
+                },
+                body,
+                {
+                  TTL: 86400,
+                  headers: {
+                    Urgency: 'high',
+                    Topic: payload.tag || 'saarthi-alert',
+                  },
+                }
+              );
+            } catch (err: any) {
+              if (err.statusCode === 404 || err.statusCode === 410 || err.statusCode === 403) {
+                gone.push(sub.id);
+              }
+            }
+          })
         );
-      } catch (err: any) {
-        // Prune 404 (Not Found), 410 (Gone), 403 (Invalid VAPID credentials / rotated key)
-        if (err.statusCode === 404 || err.statusCode === 410 || err.statusCode === 403) {
-          gone.push(sub.id);
+
+        if (gone.length) {
+          await supabase.from('push_subscriptions').delete().in('id', gone);
         }
       }
-    })
-  );
+    } catch (wpErr) {
+      console.error('[PushNotifyAll] Web push dispatch exception:', wpErr);
+    }
+  }
 
-  if (gone.length) {
-    await supabase.from('push_subscriptions').delete().in('id', gone);
+  // 2. Native Android FCM Push Dispatch
+  try {
+    const { data: devices, error: devErr } = await supabase
+      .from('user_devices')
+      .select('device_id, fcm_token')
+      .eq('is_active', true)
+      .not('fcm_token', 'is', null);
+
+    if (!devErr && devices?.length) {
+      const deadDevices: string[] = [];
+      const deepLink = payload.url
+        ? (payload.url.startsWith('http') ? payload.url : `https://www.saarthiguide.in${payload.url}`)
+        : 'https://www.saarthiguide.in';
+
+      await Promise.allSettled(
+        devices.map(async (dev) => {
+          if (!dev.fcm_token) return;
+          const res = await sendFCMNotification({
+            token: dev.fcm_token,
+            title: payload.title,
+            body: payload.body,
+            deepLink,
+            data: {
+              tag: payload.tag || 'saarthi-alert',
+              url: deepLink,
+            },
+          });
+
+          if (
+            !res.success &&
+            res.error &&
+            (res.error.includes('registration-token-not-registered') ||
+              res.error.includes('UNREGISTERED') ||
+              res.error.includes('404'))
+          ) {
+            deadDevices.push(dev.device_id);
+          }
+        })
+      );
+
+      if (deadDevices.length) {
+        await supabase.from('user_devices').update({ is_active: false }).in('device_id', deadDevices);
+      }
+    }
+  } catch (fcmErr) {
+    console.error('[PushNotifyAll] FCM dispatch exception:', fcmErr);
   }
 }
 

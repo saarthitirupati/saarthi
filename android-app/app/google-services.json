@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "819207947958",
+    "project_id": "saarthi-b5ab7",
+    "storage_bucket": "saarthi-b5ab7.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:819207947958:android:d7ce68516bd48f87d68817",
+        "android_client_info": {
+          "package_name": "in.saarthiguide.travel"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyADd9c10WS_gcyMk4WcYtUhhowPnbnLYxY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

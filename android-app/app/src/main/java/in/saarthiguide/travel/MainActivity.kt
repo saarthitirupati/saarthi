@@ -2,12 +2,15 @@ package `in`.saarthiguide.travel
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.webkit.GeolocationPermissions
+import android.webkit.JavascriptInterface
 import android.webkit.ValueCallback
 import android.webkit.WebChromeClient
 import android.webkit.WebSettings
@@ -18,6 +21,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import com.google.firebase.messaging.FirebaseMessaging
 
 class MainActivity : AppCompatActivity() {
 
@@ -66,8 +70,10 @@ class MainActivity : AppCompatActivity() {
 
     private val notificationPermissionLauncher = registerForActivityResult(
         ActivityResultContracts.RequestPermission()
-    ) { _ ->
-        // Notification permission response handled
+    ) { granted ->
+        if (granted) {
+            fetchAndRegisterFcmToken()
+        }
     }
 
     private fun checkNotificationPermission() {
@@ -78,11 +84,31 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    private fun fetchAndRegisterFcmToken() {
+        try {
+            FirebaseMessaging.getInstance().token.addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    val token = task.result
+                    if (!token.isNullOrEmpty()) {
+                        getSharedPreferences("saarthi_prefs", Context.MODE_PRIVATE)
+                            .edit()
+                            .putString("fcm_token", token)
+                            .apply()
+                        SaarthiFirebaseService.registerTokenWithBackend(this, token)
+                    }
+                }
+            }
+        } catch (e: Exception) {
+            Log.w("Saarthi", "Firebase initialization pending google-services.json", e)
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
         checkNotificationPermission()
+        fetchAndRegisterFcmToken()
 
         webView = findViewById(R.id.webView)
         swipeRefresh = findViewById(R.id.swipeRefresh)
@@ -140,6 +166,8 @@ class MainActivity : AppCompatActivity() {
         settings.setGeolocationEnabled(true)
 
         WebView.setWebContentsDebuggingEnabled(BuildConfig.DEBUG)
+
+        webView.addJavascriptInterface(SaarthiNativeBridge(this), "SaarthiNative")
 
         webView.webViewClient = SaarthiWebViewClient(
             onPageStartedListener = {
@@ -233,5 +261,21 @@ class MainActivity : AppCompatActivity() {
         webView.stopLoading()
         webView.destroy()
         super.onDestroy()
+    }
+
+    class SaarthiNativeBridge(private val activity: MainActivity) {
+        @JavascriptInterface
+        fun isNativeApp(): Boolean = true
+
+        @JavascriptInterface
+        fun getFcmToken(): String {
+            return activity.getSharedPreferences("saarthi_prefs", Context.MODE_PRIVATE)
+                .getString("fcm_token", "") ?: ""
+        }
+
+        @JavascriptInterface
+        fun registerDeviceToken(token: String) {
+            SaarthiFirebaseService.registerTokenWithBackend(activity, token)
+        }
     }
 }
