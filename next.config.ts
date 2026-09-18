@@ -6,6 +6,15 @@ const nextConfig: NextConfig = {
       { protocol: 'https', hostname: '**' },
     ],
   },
+  outputFileTracingExcludes: {
+    '*': [
+      './public/banner/**',
+      './public/audio/**',
+      './public/assets/**',
+      './tests/**',
+      './scripts/**',
+    ],
+  },
   async headers() {
     return [
       {
