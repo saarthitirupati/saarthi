@@ -27,21 +27,23 @@
 }
 
 .backButton, .filterIcon {
-  width: 40px;
-  height: 40px;
+  width: 48px;
+  height: 48px;
+  min-width: 48px;
+  min-height: 48px;
   display: flex;
   align-items: center;
   justify-content: center;
   background: none;
   border: none;
-  border-radius: 50%;
+  border-radius: var(--md-sys-shape-corner-full, 999px);
   color: #334155;
   cursor: pointer;
-  transition: background 0.2s;
+  transition: background var(--md-sys-motion-duration-short, 150ms) var(--md-sys-motion-easing-standard);
 }
 
 .backButton:hover, .filterIcon:hover {
-  background: #F1F5F9;
+  background: var(--md-sys-color-surface-container-low, #F1F5F9);
 }
 
 .stickyControls {
@@ -50,29 +52,32 @@
   position: sticky;
   top: 56px;
   z-index: 30;
-  border-bottom: 1px solid #F1F5F9;
+  border-bottom: 1px solid var(--md-sys-color-surface-container-low, #F1F5F9);
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
 .searchBar {
-  background: #F1F5F9;
-  padding: 8px 14px;
-  border-radius: 12px;
+  background: var(--md-sys-color-surface-container-low, #F6F3EE);
+  height: 52px;
+  padding: 0 18px;
+  border-radius: var(--md-sys-shape-corner-full, 999px);
   display: flex;
   align-items: center;
-  gap: 8px;
-  margin-bottom: 8px;
+  gap: 12px;
+  margin-bottom: 10px;
   width: 100%;
-  border: 1px solid #E2E8F0;
-  transition: all 0.2s ease;
+  border: 1px solid var(--md-sys-color-outline-variant, #D5C3B6);
+  box-shadow: var(--md-sys-elevation-level1, 0 1px 3px rgba(0,0,0,0.04));
+  transition: all var(--md-sys-motion-duration-short, 150ms) var(--md-sys-motion-easing-standard);
+  box-sizing: border-box;
 }
 
 .searchBar:focus-within {
   background: #FFFFFF;
-  border-color: #059669;
-  box-shadow: 0 0 0 3px rgba(5,150,105,0.12);
+  border-color: var(--md-sys-color-primary, #853F00);
+  box-shadow: 0 0 0 3px rgba(133, 63, 0, 0.12), var(--md-sys-elevation-level2);
 }
 
 .searchBar input {
@@ -80,7 +85,7 @@
   border: none;
   outline: none;
   flex: 1;
-  font-size: 13.5px;
+  font-size: 14px;
   font-weight: 500;
   color: #0F172A;
   padding: 2px 0;
@@ -92,11 +97,11 @@
 
 .filterList {
   display: flex;
-  gap: 6px;
+  gap: 8px;
   width: 100%;
   overflow-x: auto;
   scrollbar-width: none;
-  padding-bottom: 2px;
+  padding-bottom: 4px;
 }
 
 .filterList::-webkit-scrollbar {
@@ -105,27 +110,34 @@
 
 .filterItem {
   flex: 0 0 auto;
-  padding: 5px 12px;
-  border-radius: 16px;
+  height: 34px;
+  padding: 0 14px;
+  border-radius: var(--md-sys-shape-corner-small, 8px);
   font-size: 12px;
-  font-weight: 600;
-  background: #F1F5F9;
-  color: #64748B;
-  border: 1px solid transparent;
+  font-weight: 700;
+  background: var(--md-sys-color-surface-container-lowest, #FFFFFF);
+  color: var(--md-sys-color-on-surface-variant, #50453D);
+  border: 1px solid var(--md-sys-color-outline-variant, #E2E8F0);
   cursor: pointer;
-  transition: all 0.2s;
+  transition: all var(--md-sys-motion-duration-short, 150ms) var(--md-sys-motion-easing-standard);
   white-space: nowrap;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
 }
 
 .filterItem:hover {
-  background: #E2E8F0;
+  background: var(--md-sys-color-surface-container-low, #F6F3EE);
+  border-color: var(--md-sys-color-outline, #82756B);
 }
 
 .activeFilter {
-  background: #059669;
-  color: #FFFFFF;
-  border-color: #059669;
-  box-shadow: 0 2px 8px rgba(5,150,105,0.25);
+  background: var(--md-sys-color-primary-container, #FEF3C7);
+  color: var(--md-sys-color-on-primary-container, #78350F);
+  border-color: var(--md-sys-color-primary, #853F00);
+  font-weight: 800;
+  box-shadow: var(--md-sys-elevation-level1);
 }
 
 .content {

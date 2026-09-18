@@ -91,10 +91,23 @@ export default function AlertsPage() {
       }}>
         <button 
           onClick={() => router.back()} 
-          style={{ border: 'none', background: 'none', cursor: 'pointer', padding: '4px', display: 'flex', alignItems: 'center' }}
+          style={{ 
+            border: '1px solid var(--md-sys-color-outline-variant, #E2E8F0)', 
+            background: 'var(--md-sys-color-surface-container-low, #F8FAFC)', 
+            borderRadius: 'var(--md-sys-shape-corner-full, 9999px)',
+            width: 48,
+            height: 48,
+            minWidth: 48,
+            minHeight: 48,
+            cursor: 'pointer', 
+            display: 'flex', 
+            alignItems: 'center',
+            justifyContent: 'center',
+            transition: 'background-color 0.2s, transform 0.15s'
+          }}
           aria-label="Go Back"
         >
-          <ChevronLeft size={24} color="#0F172A" />
+          <ChevronLeft size={22} color="#0F172A" />
         </button>
         <h1 style={{ fontSize: 18, fontWeight: 800, margin: 0, color: '#0F172A', display: 'flex', alignItems: 'center', gap: 8 }}>
           <Bell size={20} color="#2563EB" /> Temple Alerts & Notifications

@@ -8,9 +8,9 @@ export async function GET(request: Request) {
     const city = searchParams.get('city') || 'tirupati';
     
     const [updates, darshans, alerts] = await Promise.all([
-      getLiveUpdates(city),
-      getDarshanTypes(city),
-      getAlerts(city)
+      getLiveUpdates(city).catch(() => []),
+      getDarshanTypes(city).catch(() => []),
+      getAlerts(city).catch(() => [])
     ]);
     
     const response: ApiResponse<any> = {

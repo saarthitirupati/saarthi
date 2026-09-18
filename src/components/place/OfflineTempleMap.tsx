@@ -146,6 +146,16 @@ export default function OfflineTempleMap({
     return layout.routePath.map((pt, i) => `${i === 0 ? 'M' : 'L'} ${pt[0]} ${pt[1]}`).join(' ');
   }, [layout?.routePath]);
 
+  // Gestalt Figure/Ground: Ensure active selected pin is rendered last so it sits visually on top
+  const sortedPins = React.useMemo(() => {
+    if (!layout?.pins) return [];
+    return [...layout.pins].sort((a, b) => {
+      if (a.id === activePin?.id) return 1;
+      if (b.id === activePin?.id) return -1;
+      return 0;
+    });
+  }, [layout?.pins, activePin?.id]);
+
   if (!layout) {
     return null;
   }
@@ -1057,7 +1067,7 @@ export default function OfflineTempleMap({
                 strokeLinecap="round" 
                 strokeLinejoin="round" 
               />
-              {/* Primary Guided Vector Ribbon */}
+              {/* Primary Guided Vector Ribbon (Gestalt Continuity: Forward Direction Flow) */}
               <path 
                 d={routePathString} 
                 fill="none" 
@@ -1066,32 +1076,36 @@ export default function OfflineTempleMap({
                 strokeDasharray="8 5"
                 strokeLinecap="round"
                 strokeLinejoin="round"
-              />
+              >
+                {mounted && (
+                  <animate attributeName="stroke-dashoffset" from="26" to="0" dur="1.4s" repeatCount="indefinite" />
+                )}
+              </path>
 
-              {/* Animated Walking Pilgrim Along Route (client-only to avoid hydration mismatch) */}
+              {/* Animated Walking Pilgrim Along Route (Gestalt Figure/Ground) */}
               {mounted && (
               <g>
                 {/* Pulsing glow ring behind the walker */}
-                <circle r="14" fill="rgba(245, 158, 11, 0.18)" stroke="rgba(245, 158, 11, 0.35)" strokeWidth="1.5">
+                <circle r="14" fill="rgba(245, 158, 11, 0.22)" stroke="rgba(245, 158, 11, 0.45)" strokeWidth="1.5">
                   <animateMotion dur="14s" repeatCount="indefinite" path={routePathString} />
                   <animate attributeName="r" values="12;16;12" dur="2s" repeatCount="indefinite" />
-                  <animate attributeName="opacity" values="0.3;0.6;0.3" dur="2s" repeatCount="indefinite" />
+                  <animate attributeName="opacity" values="0.3;0.7;0.3" dur="2s" repeatCount="indefinite" />
                 </circle>
-                {/* Floating label pill — "Walk Route" */}
-                <g>
+                {/* Floating label pill — "Walk Route" (Sharp Figure/Ground contrast) */}
+                <g filter="url(#pinShadow)">
                   <animateMotion dur="14s" repeatCount="indefinite" path={routePathString} />
-                  <rect x="-22" y="-28" width="44" height="13" rx="6.5" fill="#92400E" opacity="0.9" />
-                  <text x="0" y="-19" fontSize="7" fontWeight="700" textAnchor="middle" fill="#FFFFFF" style={{ fontFamily: 'system-ui, sans-serif' }}>
+                  <rect x="-24" y="-30" width="48" height="15" rx="7.5" fill="#78350F" stroke="#FDE68A" strokeWidth="1" />
+                  <text x="0" y="-19.5" fontSize="7.5" fontWeight="800" textAnchor="middle" fill="#FFFBEB" style={{ fontFamily: 'system-ui, sans-serif' }}>
                     {lang === 'te' ? 'మార్గం' : 'Walk Route'}
                   </text>
                 </g>
-                {/* Walking pilgrim figure — larger, recognizable person */}
-                <g fill="none" stroke="#92400E" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                {/* Walking pilgrim figure — recognizable devotee silhouette */}
+                <g fill="none" stroke="#78350F" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
                   <animateMotion dur="14s" repeatCount="indefinite" path={routePathString} />
                   {/* Head */}
-                  <circle cx="0" cy="-10" r="4" fill="#FBBF24" stroke="#92400E" strokeWidth="1.2" />
+                  <circle cx="0" cy="-10" r="4" fill="#FBBF24" stroke="#78350F" strokeWidth="1.2" />
                   {/* Hair bun / devotee mark */}
-                  <circle cx="0" cy="-14" r="1.5" fill="#92400E" />
+                  <circle cx="0" cy="-14" r="1.5" fill="#78350F" />
                   {/* Body */}
                   <line x1="0" y1="-6" x2="0" y2="3" />
                   {/* Arms swinging */}
@@ -1112,8 +1126,8 @@ export default function OfflineTempleMap({
                     <animate attributeName="x2" values="4;-2;4" dur="0.7s" repeatCount="indefinite" />
                   </line>
                   {/* Direction arrow */}
-                  <polygon points="8,-6 12,-3 8,0" fill="#F59E0B" stroke="none" opacity="0.8">
-                    <animate attributeName="opacity" values="0.5;1;0.5" dur="1s" repeatCount="indefinite" />
+                  <polygon points="8,-6 12,-3 8,0" fill="#F59E0B" stroke="none" opacity="0.9">
+                    <animate attributeName="opacity" values="0.6;1;0.6" dur="1s" repeatCount="indefinite" />
                   </polygon>
                 </g>
               </g>
@@ -1134,9 +1148,9 @@ export default function OfflineTempleMap({
           </g>
 
           {/* ═══════════════════════════════════════════════════
-              GLASSMORPHIC FLOATING PIN BADGES (Pretty Maps Style)
+              GLASSMORPHIC FLOATING PIN BADGES (Gestalt Z-Ordering)
               ═══════════════════════════════════════════════════ */}
-          {layout.pins.map((pin) => {
+          {sortedPins.map((pin) => {
             const cat = CATEGORY_STYLES[pin.category] || CATEGORY_STYLES.info;
             const isSelected = activePin?.id === pin.id;
             const rawPx = pin.svgX || 270;
@@ -1390,6 +1404,36 @@ export default function OfflineTempleMap({
               <span>{lang === 'te' ? activePin.tipTe : activePin.tipEn}</span>
             </div>
           )}
+
+          {layout.pins.length > 1 && (() => {
+            const curIdx = layout.pins.findIndex(p => p.id === activePin.id);
+            const nextP = curIdx >= 0 && curIdx < layout.pins.length - 1 ? layout.pins[curIdx + 1] : layout.pins[0];
+            return (
+              <div style={{ marginTop: '10px', display: 'flex', justifyContent: 'flex-end' }}>
+                <button
+                  type="button"
+                  onClick={() => setActivePin(nextP)}
+                  style={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '6px',
+                    padding: '5px 12px',
+                    borderRadius: '999px',
+                    background: 'linear-gradient(135deg, #FFFDF7 0%, #FEF3C7 100%)',
+                    border: '1px solid #D97706',
+                    color: '#78350F',
+                    fontSize: '11px',
+                    fontWeight: 800,
+                    cursor: 'pointer',
+                    boxShadow: '0 1px 3px rgba(217, 119, 6, 0.12)',
+                  }}
+                >
+                  <span>{lang === 'te' ? 'తదుపరి స్థానం' : 'Next Step on Circuit'}: {lang === 'te' ? nextP.nameTe : nextP.nameEn}</span>
+                  <span style={{ fontSize: '12px' }}>→</span>
+                </button>
+              </div>
+            );
+          })()}
         </div>
       )}
 

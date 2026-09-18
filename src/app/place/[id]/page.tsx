@@ -591,7 +591,8 @@ export default function PlaceDetails() {
           color: '#1E293B',
           border: '1px solid rgba(15, 23, 42, 0.1)',
           borderRadius: '14px',
-          padding: '11px 14px',
+          padding: '12px 14px',
+          minHeight: '48px',
           fontSize: '12.5px',
           fontWeight: 700,
           display: 'flex',
@@ -606,7 +607,7 @@ export default function PlaceDetails() {
           wordBreak: 'break-word'
         }}
       >
-        <Fuel size={15} color="#059669" style={{ flexShrink: 0 }} />
+        <Fuel size={16} color="#059669" style={{ flexShrink: 0 }} />
         <span>{lang === 'te' ? 'ఇంధనం & ప్రయాణ ఖర్చు అంచనా (బైక్ / కారు)' : 'Estimate Fuel & Trip Cost (Bike / Car)'}</span>
       </Link>
 
@@ -617,7 +618,8 @@ export default function PlaceDetails() {
             backgroundColor: isSaved ? '#FFF1F2' : '#FFFFFF',
             border: isSaved ? '1px solid #FECDD3' : '1px solid rgba(15, 23, 42, 0.08)',
             borderRadius: '14px',
-            padding: '11px 8px',
+            padding: '12px 8px',
+            minHeight: '48px',
             fontSize: '12px',
             fontWeight: 700,
             color: isSaved ? '#E11D48' : '#0F172A',
@@ -631,7 +633,7 @@ export default function PlaceDetails() {
             boxSizing: 'border-box'
           }}
         >
-          <Heart size={15} fill={isSaved ? '#E11D48' : 'none'} style={{ flexShrink: 0 }} />
+          <Heart size={16} fill={isSaved ? '#E11D48' : 'none'} style={{ flexShrink: 0 }} />
           <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{isSaved ? (lang === 'te' ? 'సేవ్ చేయబడింది' : 'Saved') : (lang === 'te' ? (isTemple ? 'ఆలయాన్ని సేవ్ చేయండి' : 'ప్రదేశాన్ని సేవ్ చేయండి') : (isTemple ? 'Save Temple' : 'Save Place'))}</span>
         </button>
 
@@ -641,7 +643,8 @@ export default function PlaceDetails() {
             backgroundColor: '#FFFFFF',
             border: '1px solid rgba(15, 23, 42, 0.08)',
             borderRadius: '14px',
-            padding: '11px 8px',
+            padding: '12px 8px',
+            minHeight: '48px',
             fontSize: '12px',
             fontWeight: 700,
             color: '#0F172A',
@@ -655,7 +658,7 @@ export default function PlaceDetails() {
             boxSizing: 'border-box'
           }}
         >
-          <Share2 size={15} color="#0F172A" style={{ flexShrink: 0 }} />
+          <Share2 size={16} color="#0F172A" style={{ flexShrink: 0 }} />
           <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{lang === 'te' ? 'షేర్ చేయండి' : 'Share Place'}</span>
         </button>
       </div>
@@ -1127,10 +1130,12 @@ export default function PlaceDetails() {
           <Link
             href="/explore"
             style={{
-              width: '42px',
-              height: '42px',
+              width: '48px',
+              height: '48px',
+              minWidth: '48px',
+              minHeight: '48px',
               borderRadius: '50%',
-              backgroundColor: 'rgba(255, 255, 255, 0.92)',
+              backgroundColor: 'rgba(255, 255, 255, 0.94)',
               backdropFilter: 'blur(10px)',
               border: '1px solid rgba(255, 255, 255, 0.6)',
               display: 'flex',
@@ -1141,17 +1146,19 @@ export default function PlaceDetails() {
               boxShadow: '0 4px 14px rgba(0, 0, 0, 0.18)'
             }}
           >
-            <ArrowLeft size={20} color="#0F172A" />
+            <ArrowLeft size={22} color="#0F172A" />
           </Link>
 
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
             <button
               onClick={handleShare}
               style={{
-                width: '42px',
-                height: '42px',
+                width: '48px',
+                height: '48px',
+                minWidth: '48px',
+                minHeight: '48px',
                 borderRadius: '50%',
-                backgroundColor: 'rgba(255, 255, 255, 0.92)',
+                backgroundColor: 'rgba(255, 255, 255, 0.94)',
                 backdropFilter: 'blur(10px)',
                 border: '1px solid rgba(255, 255, 255, 0.6)',
                 display: 'flex',
@@ -1162,16 +1169,18 @@ export default function PlaceDetails() {
                 boxShadow: '0 4px 14px rgba(0, 0, 0, 0.18)'
               }}
             >
-              <Share2 size={18} color="#0F172A" />
+              <Share2 size={20} color="#0F172A" />
             </button>
 
             <button
               onClick={() => togglePlace(place.id)}
               style={{
-                width: '42px',
-                height: '42px',
+                width: '48px',
+                height: '48px',
+                minWidth: '48px',
+                minHeight: '48px',
                 borderRadius: '50%',
-                backgroundColor: 'rgba(255, 255, 255, 0.92)',
+                backgroundColor: 'rgba(255, 255, 255, 0.94)',
                 backdropFilter: 'blur(10px)',
                 border: '1px solid rgba(255, 255, 255, 0.6)',
                 display: 'flex',
@@ -1182,7 +1191,7 @@ export default function PlaceDetails() {
                 boxShadow: '0 4px 14px rgba(0, 0, 0, 0.18)'
               }}
             >
-              <Heart size={18} fill={isSaved ? '#E11D48' : 'none'} color={isSaved ? '#E11D48' : '#0F172A'} />
+              <Heart size={20} fill={isSaved ? '#E11D48' : 'none'} color={isSaved ? '#E11D48' : '#0F172A'} />
             </button>
           </div>
         </div>

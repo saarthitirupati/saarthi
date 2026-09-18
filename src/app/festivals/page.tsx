@@ -109,15 +109,20 @@ export default function FestivalsPage() {
           <button 
             onClick={() => router.back()} 
             style={{ 
-              border: 'none', 
-              background: '#F8FAFC', 
-              borderRadius: '12px',
-              padding: '8px',
+              border: '1px solid var(--md-sys-color-outline-variant, #E2E8F0)', 
+              background: 'var(--md-sys-color-surface-container-low, #F8FAFC)', 
+              borderRadius: 'var(--md-sys-shape-corner-full, 9999px)',
+              width: 48,
+              height: 48,
+              minWidth: 48,
+              minHeight: 48,
               cursor: 'pointer',
               display: 'flex',
               alignItems: 'center',
-              justifyContent: 'center'
+              justifyContent: 'center',
+              transition: 'background-color 0.2s, transform 0.15s'
             }}
+            aria-label="Back"
           >
             <ChevronLeft size={22} color="#0F172A" />
           </button>
@@ -131,9 +136,9 @@ export default function FestivalsPage() {
           </div>
         </div>
 
-        {/* Search Bar */}
+        {/* MD3 Search Bar */}
         <div style={{ marginTop: 14, position: 'relative' }}>
-          <Search size={16} color="#94A3B8" style={{ position: 'absolute', left: 14, top: '50%', transform: 'translateY(-50%)' }} />
+          <Search size={18} color="#94A3B8" style={{ position: 'absolute', left: 16, top: '50%', transform: 'translateY(-50%)' }} />
           <input
             type="text"
             placeholder="Search festival, temple, or ritual (e.g. Onam, ISKCON)..."
@@ -141,17 +146,20 @@ export default function FestivalsPage() {
             onChange={(e) => setSearchQuery(e.target.value)}
             style={{
               width: '100%',
-              padding: '10px 14px 10px 38px',
-              borderRadius: '12px',
-              border: '1px solid #E2E8F0',
-              backgroundColor: '#F8FAFC',
-              fontSize: '13px',
-              outline: 'none'
+              height: 48,
+              padding: '0 16px 0 44px',
+              borderRadius: 'var(--md-sys-shape-corner-full, 9999px)',
+              border: '1.5px solid var(--md-sys-color-outline-variant, #E2E8F0)',
+              backgroundColor: 'var(--md-sys-color-surface-container-low, #F8FAFC)',
+              fontSize: '13.5px',
+              fontWeight: 500,
+              outline: 'none',
+              boxSizing: 'border-box'
             }}
           />
         </div>
 
-        {/* Month Filter Chips */}
+        {/* MD3 Month Filter Chips */}
         <div style={{
           display: 'flex',
           gap: 8,
@@ -167,15 +175,19 @@ export default function FestivalsPage() {
                 key={m.value}
                 onClick={() => setActiveMonth(m.value)}
                 style={{
-                  padding: '6px 14px',
-                  borderRadius: '20px',
-                  border: active ? '1px solid #D97706' : '1px solid #E2E8F0',
-                  background: active ? '#D97706' : '#FFFFFF',
-                  color: active ? '#FFFFFF' : '#475569',
+                  height: 34,
+                  padding: '0 14px',
+                  borderRadius: 'var(--md-sys-shape-corner-small, 8px)',
+                  border: active ? '1.5px solid #D97706' : '1px solid var(--md-sys-color-outline-variant, #E2E8F0)',
+                  background: active ? 'rgba(217, 119, 6, 0.12)' : '#FFFFFF',
+                  color: active ? '#B45309' : '#475569',
                   fontSize: '12px',
-                  fontWeight: active ? 700 : 500,
+                  fontWeight: active ? 700 : 600,
                   whiteSpace: 'nowrap',
                   cursor: 'pointer',
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
                   transition: 'all 0.2s ease'
                 }}
               >

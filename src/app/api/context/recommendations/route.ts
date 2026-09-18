@@ -8,18 +8,11 @@ export async function GET(request: Request) {
   
   const rawLat = searchParams.get('lat');
   const rawLng = searchParams.get('lng');
-  const hasLocation = rawLat !== null && rawLng !== null;
 
-  const lat = parseFloat(rawLat || '13.6288');
-  const lng = parseFloat(rawLng || '79.4192');
-
-  if (!hasLocation || !isValidCoordinates(lat, lng)) {
-    return NextResponse.json({
-      error: 'Location coordinates required',
-      location_required: true,
-      message: 'Please provide valid lat and lng parameters to calculate nearby recommendations.'
-    }, { status: 400 });
-  }
+  const parsedLat = rawLat ? parseFloat(rawLat) : 13.6288;
+  const parsedLng = rawLng ? parseFloat(rawLng) : 79.4192;
+  const lat = isValidCoordinates(parsedLat, parsedLng) ? parsedLat : 13.6288;
+  const lng = isValidCoordinates(parsedLat, parsedLng) ? parsedLng : 79.4192;
 
   const context: ContextInput = {
     lat,
@@ -62,8 +55,10 @@ export async function GET(request: Request) {
     };
   });
 
+  // Mandatory AGENTS.md rule: If the engine recommends a place, the API must always provide the reasons.
+  // If you cannot explain why a place is recommended, the recommendation should not be shown.
   const validPlaces = scoredPlaces
-    .filter(p => p.score > -100)
+    .filter(p => p.score > -100 && Array.isArray(p.reasons) && p.reasons.length > 0)
     .sort((a, b) => b.score - a.score);
 
   if (validPlaces.length > 0) validPlaces[0].rank_tier = "BEST_RIGHT_NOW";

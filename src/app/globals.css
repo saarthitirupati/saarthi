@@ -47,6 +47,70 @@
   --primary: var(--color-emerald);
   --secondary: var(--color-saffron);
 
+  /* ==============================================================
+     MATERIAL DESIGN 3 (MD3) SYSTEM TOKENS
+     Mapped to Sacred Tirumala Saffron, Temple Earth & Gold Seeds
+     ============================================================== */
+
+  /* --- MD3 Color Roles (Light / High Contrast Safe) --- */
+  --md-sys-color-primary: #853F00;
+  --md-sys-color-on-primary: #FFFFFF;
+  --md-sys-color-primary-container: #FEF3C7;
+  --md-sys-color-on-primary-container: #78350F;
+
+  --md-sys-color-secondary: #78350F;
+  --md-sys-color-on-secondary: #FFFFFF;
+  --md-sys-color-secondary-container: #FDE68A;
+  --md-sys-color-on-secondary-container: #451A03;
+
+  --md-sys-color-tertiary: #0F5132;
+  --md-sys-color-on-tertiary: #FFFFFF;
+  --md-sys-color-tertiary-container: #DCFCE7;
+  --md-sys-color-on-tertiary-container: #064E3B;
+
+  --md-sys-color-error: #BA1A1A;
+  --md-sys-color-on-error: #FFFFFF;
+  --md-sys-color-error-container: #FFDAD6;
+  --md-sys-color-on-error-container: #410002;
+
+  --md-sys-color-surface: #FAF8F5;
+  --md-sys-color-on-surface: #1E1B18;
+  --md-sys-color-on-surface-variant: #50453D;
+
+  /* --- MD3 Tonal Surface Containers (Depth without heavy drop-shadows) --- */
+  --md-sys-color-surface-container-lowest: #FFFFFF;
+  --md-sys-color-surface-container-low: #F6F3EE;
+  --md-sys-color-surface-container: #F1ECE5;
+  --md-sys-color-surface-container-high: #ECE5DC;
+  --md-sys-color-surface-container-highest: #E6DFD4;
+
+  --md-sys-color-outline: #82756B;
+  --md-sys-color-outline-variant: #D5C3B6;
+
+  /* --- MD3 Shape Scale --- */
+  --md-sys-shape-none: 0px;
+  --md-sys-shape-corner-extra-small: 4px;
+  --md-sys-shape-corner-small: 8px;
+  --md-sys-shape-corner-medium: 12px;
+  --md-sys-shape-corner-large: 16px;
+  --md-sys-shape-corner-extra-large: 28px;
+  --md-sys-shape-corner-full: 999px;
+
+  /* --- MD3 Elevation Tonal Shadows (Soft ambient depth) --- */
+  --md-sys-elevation-level0: none;
+  --md-sys-elevation-level1: 0 1px 3px 1px rgba(69, 26, 3, 0.04), 0 1px 2px 0 rgba(69, 26, 3, 0.06);
+  --md-sys-elevation-level2: 0 2px 6px 2px rgba(69, 26, 3, 0.05), 0 1px 2px 0 rgba(69, 26, 3, 0.07);
+  --md-sys-elevation-level3: 0 4px 10px 3px rgba(69, 26, 3, 0.07), 0 1px 3px 0 rgba(69, 26, 3, 0.09);
+  --md-sys-elevation-level4: 0 6px 14px 4px rgba(69, 26, 3, 0.08), 0 2px 4px 0 rgba(69, 26, 3, 0.11);
+  --md-sys-elevation-level5: 0 8px 20px 5px rgba(69, 26, 3, 0.09), 0 4px 6px 0 rgba(69, 26, 3, 0.13);
+
+  /* --- MD3 Motion Scheme (Standard & Emphasized Curves) --- */
+  --md-sys-motion-easing-standard: cubic-bezier(0.2, 0.0, 0, 1.0);
+  --md-sys-motion-easing-emphasized: cubic-bezier(0.2, 0.0, 0, 1.25);
+  --md-sys-motion-duration-short: 150ms;
+  --md-sys-motion-duration-medium: 300ms;
+  --md-sys-motion-duration-long: 500ms;
+
   /* =========================================
      JEEVAPATH DESIGN SYSTEM — TRAVEL MODERNISM
      ========================================= */

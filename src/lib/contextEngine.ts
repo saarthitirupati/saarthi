@@ -65,12 +65,12 @@ export function getBestForToday(
     if (isRain) {
       if (place.placeType === 'spiritual' || place.tags.includes('Indoor')) {
         score += 30;
-        reasons.push('🌧 Indoor venue — ideal during rain');
+        reasons.push('Indoor venue — ideal during rain');
       }
     } else if (isHot) {
       if (place.tags.includes('Forest') || place.tags.includes('Shade') || place.placeType === 'nature') {
         score += 30;
-        reasons.push('🌳 Forest shade — cooler during summer heat');
+        reasons.push('Forest shade — cooler during summer heat');
       } else {
         score += 10;
       }
@@ -78,9 +78,9 @@ export function getBestForToday(
       score += 25;
       if (place.placeType === 'nature' || place.placeType === 'water') {
         score += 5;
-        reasons.push('☀ Pleasant weather — perfect for outdoors');
+        reasons.push('Pleasant weather — perfect for outdoors');
       } else {
-        reasons.push('☀ Pleasant weather — great for visiting');
+        reasons.push('Pleasant weather — great for visiting');
       }
     }
 
@@ -91,12 +91,12 @@ export function getBestForToday(
       }
       if (place.isHiddenGem || place.placeType === 'nature' || place.placeType === 'water' || place.placeType === 'hidden') {
         score += 10;
-        reasons.push('🏞 Less crowded alternative');
+        reasons.push('Less crowded alternative');
       }
     } else if (crowdLevel === 'low') {
       if (place.isMustVisit) {
         score += 25;
-        reasons.push('🟢 Low crowd right now');
+        reasons.push('Low crowd right now');
       } else {
         score += 15;
       }
@@ -108,16 +108,16 @@ export function getBestForToday(
     const isOpen = hour >= place.openFrom && hour < place.openTo;
     if (isOpen) {
       score += 20;
-      reasons.push('🕒 Open now');
+      reasons.push('Open now');
     }
 
     // --- D. Distance (15 points) ---
     const distScore = 15 * Math.max(0, 1 - place.distanceKms / 50);
     score += distScore;
     if (place.distanceKms <= 5) {
-      reasons.push(`🚗 Only ${place.distanceKms} km away`);
+      reasons.push(`Only ${place.distanceKms} km away`);
     } else if (place.distanceKms <= 15) {
-      reasons.push(`🚗 ${place.distanceKms} km away`);
+      reasons.push(`${place.distanceKms} km away`);
     }
 
     // --- E. User Profile / Accessibility Scoring (SOP Principles) ---
@@ -130,7 +130,7 @@ export function getBestForToday(
           score -= 50; // Heavily penalize high-strain places (steps, steep climbs)
         } else if (place.difficulty === 'easy') {
           score += 20;
-          reasons.push('👴 Easy, low-strain access');
+          reasons.push('Easy, low-strain access');
         }
         if (place.distanceKms < 10 && place.durationMins <= 120) {
           score += 10;
@@ -141,11 +141,11 @@ export function getBestForToday(
       if (groupType === 'solo' && budgetTier === 'budget') {
         if (place.budgetLevel === 'budget' || place.entryFeeNum === 0) {
           score += 25;
-          reasons.push('💰 Free / Budget-friendly');
+          reasons.push('Free / Budget-friendly');
         }
         if (place.placeType === 'nature' || place.placeType === 'hidden') {
           score += 15;
-          reasons.push('🥾 Great for adventure');
+          reasons.push('Great for adventure');
         }
       }
 
@@ -153,7 +153,7 @@ export function getBestForToday(
       if (budgetTier === 'premium') {
         if (place.budgetLevel === 'premium' || place.rating >= 4.8) {
           score += 20;
-          reasons.push('⭐ Top-rated premium experience');
+          reasons.push('Top-rated premium experience');
         }
       }
     }
@@ -235,16 +235,16 @@ export function scorePlace(place: any, liveStatus: any, alerts: any[], context: 
   // --- A. Distance Reason ---
   if (distanceKm <= 3) {
     score += 35;
-    reasons.push(`🚗 Only ${distanceKm.toFixed(1)} km away (${travelTimeMins} mins)`);
+    reasons.push(`Only ${distanceKm.toFixed(1)} km away (${travelTimeMins} mins)`);
   } else if (distanceKm <= 10) {
     score += 25;
-    reasons.push(`🚗 Nearby — ${distanceKm.toFixed(1)} km away (${travelTimeMins} mins)`);
+    reasons.push(`Nearby — ${distanceKm.toFixed(1)} km away (${travelTimeMins} mins)`);
   } else if (distanceKm <= 25) {
     score += 15;
-    reasons.push(`🚗 ${distanceKm.toFixed(1)} km transit (${travelTimeMins} mins)`);
+    reasons.push(`${distanceKm.toFixed(1)} km transit (${travelTimeMins} mins)`);
   } else {
     score += 5;
-    reasons.push(`📍 Day trip destination (${distanceKm.toFixed(1)} km)`);
+    reasons.push(`Day trip destination (${distanceKm.toFixed(1)} km)`);
   }
 
   // --- B. Open Hours & Status ---
@@ -255,7 +255,7 @@ export function scorePlace(place: any, liveStatus: any, alerts: any[], context: 
 
   if (isOpen) {
     score += 20;
-    reasons.push('🕒 Currently Open');
+    reasons.push('Currently Open');
   } else {
     score -= 30; // Closed places heavily penalized
   }
@@ -264,13 +264,13 @@ export function scorePlace(place: any, liveStatus: any, alerts: any[], context: 
   const crowd = liveStatus?.crowd_level || context?.crowdLevel || 'LOW';
   if (crowd === 'LOW') {
     score += 20;
-    reasons.push('🟢 Low crowd level right now');
+    reasons.push('Low crowd level right now');
   } else if (crowd === 'MEDIUM' || crowd === 'MODERATE') {
     score += 10;
-    reasons.push('🟡 Moderate crowd flow');
+    reasons.push('Moderate crowd flow');
   } else if (crowd === 'EXTREME' || crowd === 'VERY_HIGH') {
     score -= 20;
-    reasons.push('🔴 Heavy crowd reported');
+    reasons.push('Heavy crowd reported');
   }
 
   // --- D. Weather Suitability ---
@@ -281,14 +281,14 @@ export function scorePlace(place: any, liveStatus: any, alerts: any[], context: 
   if (isRain) {
     if (isIndoor) {
       score += 20;
-      reasons.push('🌧 Indoor facility — protected from rain');
+      reasons.push('Indoor facility — protected from rain');
     } else {
       score -= 10;
     }
   } else {
     if (!isIndoor) {
       score += 10;
-      reasons.push('☀ Great outdoor weather today');
+      reasons.push('Great outdoor weather today');
     }
   }
 

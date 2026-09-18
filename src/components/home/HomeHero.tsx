@@ -1318,22 +1318,22 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
                 whiteSpace: 'nowrap', 
                 flexShrink: 1,
                 minWidth: 0,
-                padding: '4px 8px',
-                borderRadius: '16px',
-                background: 'rgba(255, 255, 255, 0.9)',
+                padding: '5px 10px',
+                borderRadius: '20px',
+                background: 'rgba(255, 255, 255, 0.95)',
                 border: '1.5px solid #E2E8F0',
-                boxShadow: '0 1px 3px rgba(0,0,0,0.03)',
+                boxShadow: '0 1px 3px rgba(0,0,0,0.04)',
                 boxSizing: 'border-box'
               }}>
                 <span style={{ fontWeight: 800, color: '#B45309' }}>
                   {dayShort}, {todayDateStr}
                 </span>
                 <span style={{ opacity: 0.35 }}>•</span>
-                <Sun size={12} color="#D97706" style={{ flexShrink: 0 }} />
+                <Sun size={13} color="#D97706" style={{ flexShrink: 0 }} />
                 <span style={{ fontWeight: 700, color: '#334155' }}>{weatherTemp || '26°C'}</span>
               </div>
 
-              {/* Right: Dedicated Srivari 108 Japa Mala Button (Image 1 Refinement) */}
+              {/* Right: Dedicated Srivari 108 Japa Mala Button (Gestalt Focal Point & Affordance) */}
               <button
                 type="button"
                 onClick={handleOpenBlessing}
@@ -1341,12 +1341,12 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
                 style={{
                   display: 'inline-flex',
                   alignItems: 'center',
-                  gap: '5px',
-                  padding: '4px 8px',
-                  borderRadius: '18px',
+                  gap: '6px',
+                  padding: '4px 10px',
+                  borderRadius: '20px',
                   background: 'linear-gradient(135deg, #FFFDF7 0%, #FEF3C7 55%, #FDE68A 100%)',
                   border: '1.5px solid #D97706',
-                  boxShadow: '0 2px 8px rgba(217, 119, 6, 0.18)',
+                  boxShadow: '0 2px 6px rgba(217, 119, 6, 0.16)',
                   fontSize: 'clamp(10px, 2.7vw, 11.5px)',
                   fontWeight: 800,
                   color: '#78350F',
@@ -1359,12 +1359,12 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
                   boxSizing: 'border-box'
                 }}
               >
-                <Sparkles size={11} color="#D97706" style={{ animation: isChanting ? 'spin 0.4s ease' : 'none', flexShrink: 0 }} />
+                <Sparkles size={12} color="#D97706" style={{ animation: isChanting ? 'spin 0.4s ease' : 'none', flexShrink: 0 }} />
                 <span style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: '0px', flexShrink: 0 }}>
                   <span style={{ whiteSpace: 'nowrap', lineHeight: 1.2 }}>
                     {lang === 'te' ? 'ఓం నమో వేంకటేశాయ' : 'Om Namo Venkatesaya'}
                   </span>
-                  <span style={{ fontSize: '7.5px', fontWeight: 600, color: '#92400E', opacity: 0.7, lineHeight: 1, letterSpacing: '0.04em' }}>
+                  <span style={{ fontSize: '7.5px', fontWeight: 600, color: '#92400E', opacity: 0.75, lineHeight: 1, letterSpacing: '0.03em' }}>
                     {lang === 'te' ? 'జప మాల - నొక్కండి' : 'Japa Mala - Tap to Chant'}
                   </span>
                 </span>
@@ -1373,7 +1373,7 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
                   fontWeight: 900,
                   color: '#FEF3C7',
                   background: '#78350F',
-                  padding: '1.5px 6px',
+                  padding: '2px 6.5px',
                   borderRadius: '10px',
                   border: '1px solid rgba(253, 224, 71, 0.4)',
                   lineHeight: 1.2,

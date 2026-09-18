@@ -26,20 +26,25 @@
 }
 
 .backButton {
-  background: #F8F8F8;
-  border: 1px solid #E5E5E5;
+  background: var(--md-sys-color-surface-container-low, #F8F8F8);
+  border: 1px solid var(--md-sys-color-outline-variant, #E5E5E5);
   color: #0F172A;
-  border-radius: 12px;
+  border-radius: var(--md-sys-shape-corner-full, 9999px);
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 8px;
-  transition: background-color 0.2s;
+  width: 48px;
+  height: 48px;
+  min-width: 48px;
+  min-height: 48px;
+  padding: 0;
+  transition: background-color 0.2s, transform 0.15s;
 }
 
 .backButton:active {
-  background-color: #F1F5F9;
+  background-color: var(--md-sys-color-surface-container-high, #E2E8F0);
+  transform: scale(0.96);
 }
 
 .headerTitle {
@@ -65,15 +70,25 @@
 }
 
 .iconButton {
-  background: #F8F8F8;
-  border: 1px solid #E5E5E5;
+  background: var(--md-sys-color-surface-container-low, #F8F8F8);
+  border: 1px solid var(--md-sys-color-outline-variant, #E5E5E5);
   color: #0F172A;
-  border-radius: 12px;
+  border-radius: var(--md-sys-shape-corner-full, 9999px);
   cursor: pointer;
-  padding: 8px;
+  width: 48px;
+  height: 48px;
+  min-width: 48px;
+  min-height: 48px;
+  padding: 0;
   display: flex;
   align-items: center;
   justify-content: center;
+  transition: background-color 0.2s, transform 0.15s;
+}
+
+.iconButton:active {
+  background-color: var(--md-sys-color-surface-container-high, #E2E8F0);
+  transform: scale(0.96);
 }
 
 .scrollArea {
@@ -237,11 +252,11 @@
   gap: 16px;
 }
 
-/* 20px Radius Primary Action Card */
+/* MD3 Tonal Surface Action Card */
 .primaryCard {
-  background: #F8F8F8;
-  border: 1px solid #E5E5E5;
-  border-radius: 20px;
+  background: var(--md-sys-color-surface-container-low, #F8F8F8);
+  border: 1px solid var(--md-sys-color-outline-variant, #E5E5E5);
+  border-radius: var(--md-sys-shape-corner-large, 16px);
   padding: 20px;
   display: flex;
   flex-direction: column;
@@ -253,9 +268,9 @@
 }
 
 .primaryCard:hover {
-  border-color: #D97706;
-  background-color: #FFFFFF;
-  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.06);
+  border-color: var(--md-sys-color-primary, #D97706);
+  background-color: var(--md-sys-color-surface-container-lowest, #FFFFFF);
+  box-shadow: var(--md-sys-elevation-level1, 0 4px 12px rgba(15, 23, 42, 0.06));
 }
 
 .primaryCard:active {
