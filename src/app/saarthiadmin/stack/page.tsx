@@ -1,6 +1,6 @@
 'use client';
 import { useState, useEffect } from 'react';
-import { Cpu, DollarSign, ShieldAlert, CheckCircle2, AlertCircle, ArrowUpRight, Plus, Trash2, Edit2, Play } from 'lucide-react';
+import { Cpu, DollarSign, ShieldAlert, CheckCircle2, AlertCircle, ArrowUpRight, Plus, Trash2, Edit2, Play, Layers, Wrench } from 'lucide-react';
 import styles from '../admin.module.css';
 
 interface StackItem {
@@ -99,7 +99,9 @@ export default function StartupStackPage() {
       
       {/* Header */}
       <div className={styles.pageHeader}>
-        <h1 className={styles.pageTitle}>🛠️ Startup Stack & Cost Controller</h1>
+        <h1 className={styles.pageTitle} style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <Wrench size={22} color="#2DD4BF" /> Startup Stack & Cost Controller
+        </h1>
         <p className={styles.pageSubtitle}>Maintain high velocity and zero runway burn using the $20/month 2026 stack</p>
       </div>
 
@@ -134,8 +136,8 @@ export default function StartupStackPage() {
       <div className={styles.chartCard} style={{ padding: '24px' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px', flexWrap: 'wrap', gap: '10px' }}>
           <div>
-            <h2 style={{ fontSize: '16px', fontWeight: 800, color: '#F1F5F9', margin: 0 }}>
-              🚀 Live Stack Directory
+            <h2 style={{ fontSize: '16px', fontWeight: 800, color: '#F1F5F9', margin: 0, display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <Layers size={18} color="#2DD4BF" /> Live Stack Directory
             </h2>
             <p style={{ fontSize: '12px', color: '#94A3B8', margin: '4px 0 0' }}>Manage active developer tools, APIs, and monthly subscriptions</p>
           </div>

@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
-import { Coins, Save, CheckCircle, Flame, Car, Bike, Bus, Zap, Sparkles } from 'lucide-react';
+import { Coins, Save, CheckCircle, Flame, Car, Bike, Bus, Zap, Sparkles, AlertTriangle } from 'lucide-react';
 import styles from '../Dashboard.module.css';
 
 export default function AdminFuelManager() {
@@ -54,9 +54,14 @@ export default function AdminFuelManager() {
     }
 
     try {
+      const adminToken = typeof window !== 'undefined' ? (localStorage.getItem('saarthi_admin_token') || 'saarthi_admin_token_2026') : 'saarthi_admin_token_2026';
       const res = await fetch('/api/admin/fuel', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${adminToken}`
+        },
+        credentials: 'include',
         body: JSON.stringify({ petrol: petrolNum, diesel: dieselNum, cng: cngNum })
       });
 
@@ -160,8 +165,8 @@ export default function AdminFuelManager() {
             </div>
 
             {error && (
-              <div style={{ color: '#DC2626', background: '#FEE2E2', padding: '12px', borderRadius: '8px', fontSize: '12px', fontWeight: 600 }}>
-                ⚠️ {error}
+              <div style={{ color: '#DC2626', background: '#FEE2E2', padding: '12px', borderRadius: '8px', fontSize: '12px', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '6px' }}>
+                <AlertTriangle size={14} /> {error}
               </div>
             )}
 

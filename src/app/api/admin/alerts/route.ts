@@ -28,11 +28,12 @@ export async function POST(req: Request) {
     const alert = await saveLiveAlert(data);
 
     const alertBody = alert.description || (alert as any).message;
-    if (alert && (alert.status === 'Published' || (alert as any).active) && alertBody) {
+    const shouldSendPush = data.sendPush !== false;
+    if (shouldSendPush && alert && (alert.status === 'Published' || (alert as any).active) && alertBody) {
       pushNotifyAll({
-        title: alert.title ? `🚨 ${alert.title}` : '🚨 Tirumala Operational Alert',
+        title: alert.title ? alert.title : 'Tirumala Operational Alert',
         body: alertBody,
-        url: '/live',
+        url: '/alerts',
         tag: `alert-${alert.id || 'live'}`
       }).catch((err) => {
         console.error('[PushNotify] Error broadcasting emergency alert:', err);

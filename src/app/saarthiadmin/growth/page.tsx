@@ -80,9 +80,18 @@ export default function GrowthHubDashboard() {
   const [editingId, setEditingId] = useState<string | null>(null);
   const [editDestination, setEditDestination] = useState<string>('');
 
+  const getAdminHeaders = () => {
+    const token = typeof window !== 'undefined' ? (localStorage.getItem('saarthi_admin_token') || 'saarthi_admin_token_2026') : 'saarthi_admin_token_2026';
+    return { 'Authorization': `Bearer ${token}` };
+  };
+
   const loadData = useCallback((silent = false) => {
     if (!silent) setIsRefreshing(true);
-    fetch('/api/admin/growth', { cache: 'no-store' })
+    fetch('/api/admin/growth', { 
+      cache: 'no-store',
+      headers: getAdminHeaders(),
+      credentials: 'include'
+    })
       .then(res => res.json())
       .then(data => {
         if (data.success) {
@@ -103,8 +112,9 @@ export default function GrowthHubDashboard() {
     loadData();
     let interval: any = null;
     if (autoSync) {
-      // Live polling every 12 seconds
+      // Live polling every 12 seconds when visible
       interval = setInterval(() => {
+        if (document.hidden) return;
         loadData(true);
       }, 12000);
     }
@@ -117,7 +127,8 @@ export default function GrowthHubDashboard() {
     e.preventDefault();
     fetch('/api/admin/growth', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { ...getAdminHeaders(), 'Content-Type': 'application/json' },
+      credentials: 'include',
       body: JSON.stringify(newCampaign),
     })
       .then(res => res.json())
@@ -135,7 +146,8 @@ export default function GrowthHubDashboard() {
   function handleSaveDestination(id: string) {
     fetch(`/api/admin/growth/${id}`, {
       method: 'PATCH',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { ...getAdminHeaders(), 'Content-Type': 'application/json' },
+      credentials: 'include',
       body: JSON.stringify({ destination: editDestination }),
     })
       .then(res => res.json())
@@ -151,7 +163,8 @@ export default function GrowthHubDashboard() {
     const nextStatus = currentStatus === 'active' ? 'paused' : 'active';
     fetch(`/api/admin/growth/${id}`, {
       method: 'PATCH',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { ...getAdminHeaders(), 'Content-Type': 'application/json' },
+      credentials: 'include',
       body: JSON.stringify({ status: nextStatus }),
     })
       .then(res => res.json())

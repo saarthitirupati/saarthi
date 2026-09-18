@@ -28,7 +28,7 @@ export function ActiveAlerts({ activePopupAlert, dismissAlert }: any) {
 
   const handleCtaClick = () => {
     dismissAlert(activePopupAlert.id);
-    if (activePopupAlert.cta === 'Open Queue') router.push('/essentials');
+    if (activePopupAlert.cta === 'Open Queue') router.push('/alerts');
     else if (activePopupAlert.cta === 'Open Essentials') router.push('/essentials');
     else if (activePopupAlert.cta === 'Open Maps') router.push('/explore');
     else if (activePopupAlert.cta === 'Open Parking') router.push('/explore?q=Parking');

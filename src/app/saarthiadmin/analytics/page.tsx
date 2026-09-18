@@ -72,10 +72,11 @@ export default function AdminAnalyticsPage() {
 
   useEffect(() => {
     fetchAnalytics(true);
-    // Realtime dynamic polling every 5 seconds
+    // Realtime polling every 10 seconds when visible
     const interval = setInterval(() => {
+      if (document.hidden) return;
       fetchAnalytics(false);
-    }, 5000);
+    }, 10000);
 
     return () => clearInterval(interval);
   }, []);
@@ -191,11 +192,11 @@ export default function AdminAnalyticsPage() {
             </div>
           </div>
           <div style={{ display: 'flex', gap: '6px', marginTop: '4px' }}>
-            <span style={{ fontSize: '12px', fontWeight: 800, color: '#1D4ED8', background: '#DBEAFE', padding: '3px 8px', borderRadius: '6px' }}>
-              📱 Mobile {summary.deviceBreakdown.mobile}%
+            <span style={{ fontSize: '12px', fontWeight: 800, color: '#1D4ED8', background: '#DBEAFE', padding: '3px 8px', borderRadius: '6px', display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
+              <Smartphone size={13} /> Mobile {summary.deviceBreakdown.mobile}%
             </span>
-            <span style={{ fontSize: '12px', fontWeight: 800, color: '#4C1D95', background: '#EDE9FE', padding: '3px 8px', borderRadius: '6px' }}>
-              💻 Desktop {summary.deviceBreakdown.desktop}%
+            <span style={{ fontSize: '12px', fontWeight: 800, color: '#4C1D95', background: '#EDE9FE', padding: '3px 8px', borderRadius: '6px', display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
+              <Monitor size={13} /> Desktop {summary.deviceBreakdown.desktop}%
             </span>
           </div>
         </div>

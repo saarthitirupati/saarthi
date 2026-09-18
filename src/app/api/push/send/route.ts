@@ -9,8 +9,27 @@ import {
   buildWelcomeNotification,
   type NotificationPayload,
 } from '@/lib/notifications';
+import { isAuthorizedAdmin } from '@/lib/authGuard';
 
-function buildPayload(type: string, daysSince?: number): NotificationPayload | null {
+interface CustomPushData {
+  title?: string;
+  body?: string;
+  url?: string;
+  image?: string;
+  tag?: string;
+}
+
+function buildPayload(type: string, daysSince?: number, custom?: CustomPushData): NotificationPayload | null {
+  if (custom && custom.title && custom.body) {
+    return {
+      title: custom.title,
+      body: custom.body,
+      icon: '/icon-192.png',
+      tag: custom.tag || 'saarthi-alert',
+      url: custom.url || '/alerts',
+    };
+  }
+
   switch (type) {
     case 'daily_spot':   return buildDailySpotNotification();
     case 'festival':     return buildFestivalReminder();
@@ -21,8 +40,8 @@ function buildPayload(type: string, daysSince?: number): NotificationPayload | n
   }
 }
 
-async function handlePushDispatch(type: string, endpoint?: string, daysSince?: number) {
-  const pub = process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY;
+async function handlePushDispatch(type: string, endpoint?: string, daysSince?: number, custom?: CustomPushData) {
+  const pub = process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY || 'BG66lKYjVyCTBCyVvgT0qpmwpFaJ414JqzVUVNZ14KRQlcC5UdqDUOp9USQElQ2r7vO6P4fzYlX3oFRuu4oR5V8';
   const priv = process.env.VAPID_PRIVATE_KEY;
 
   if (!pub || !priv) {
@@ -37,7 +56,7 @@ async function handlePushDispatch(type: string, endpoint?: string, daysSince?: n
     return NextResponse.json({ error: 'Failed to initialize VAPID credentials' }, { status: 500 });
   }
 
-  const payload = buildPayload(type, daysSince);
+  const payload = buildPayload(type, daysSince, custom);
   if (!payload) return NextResponse.json({ ok: true, sent: 0, reason: 'No payload generated' });
 
   // Fetch subscriptions — specific endpoint or all; re-engagement filters by inactivity
@@ -88,8 +107,14 @@ async function handlePushDispatch(type: string, endpoint?: string, daysSince?: n
   return NextResponse.json({ ok: true, sent, pruned: dead.length });
 }
 
-function checkAuth(req: Request): boolean {
-  if (!process.env.CRON_SECRET) return true; // Allow in local dev if no secret configured
+async function checkAuth(req: Request): Promise<boolean> {
+  // 1. Allow authenticated admin session from admin panel
+  if (await isAuthorizedAdmin(req)) return true;
+
+  // 2. Allow in local dev if no secret configured
+  if (!process.env.CRON_SECRET) return true;
+
+  // 3. Allow valid CRON_SECRET from cron triggers
   const authHeader = req.headers.get('authorization');
   const cronSecretHeader = req.headers.get('x-cron-secret');
   const url = new URL(req.url);
@@ -103,7 +128,7 @@ function checkAuth(req: Request): boolean {
 }
 
 export async function GET(req: Request) {
-  if (!checkAuth(req)) {
+  if (!(await checkAuth(req))) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
   const url = new URL(req.url);
@@ -113,10 +138,11 @@ export async function GET(req: Request) {
 }
 
 export async function POST(req: Request) {
-  if (!checkAuth(req)) {
+  if (!(await checkAuth(req))) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
-  const { type = 'daily_spot', endpoint, daysSince } = await req.json().catch(() => ({}));
-  return handlePushDispatch(type, endpoint, daysSince);
+  const bodyData = await req.json().catch(() => ({}));
+  const { type = 'daily_spot', endpoint, daysSince, title, body, url, image, tag } = bodyData;
+  return handlePushDispatch(type, endpoint, daysSince, { title, body, url, image, tag });
 }

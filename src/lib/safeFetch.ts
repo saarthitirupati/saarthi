@@ -14,7 +14,7 @@ export async function safeFetchJson<T = any>(input: RequestInfo | URL, init?: Re
       'ngrok-skip-browser-warning': 'true',
       ...(init?.headers || {})
     };
-    const res = await fetch(urlString, { ...init, headers: mergedHeaders });
+    const res = await fetch(urlString, { credentials: 'include', ...init, headers: mergedHeaders });
     if (!res.ok) {
       console.warn(`safeFetchJson: Request to ${urlString} returned status ${res.status}`);
       return null;

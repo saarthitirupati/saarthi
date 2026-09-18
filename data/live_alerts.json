@@ -1,1 +1,50 @@
-[]
+[
+  {
+    "id": "tirumala-darshan-advisory",
+    "title": "Tirumala Live Darshan & SSD Token Advisory",
+    "description": "Sarva Darshan queue wait time is normal. SSD offline token counters at Vishnu Nivasam and Srinivasam open daily. Carry original Aadhaar cards.",
+    "image": "https://res.cloudinary.com/kniegqlj/image/upload/v1785644411/Kanipakam-Temple_bz4lzw.jpg",
+    "category": "Information",
+    "severity": "Medium",
+    "popup_type": "Banner",
+    "cta": "Open Queue",
+    "status": "Published",
+    "target_location": "All Users",
+    "start_time": "2026-09-01T00:00:00.000Z",
+    "expiry_time": "2027-12-31T23:59:59.000Z",
+    "created_at": "2026-09-18T12:00:00.000Z",
+    "updated_at": "2026-09-18T12:00:00.000Z"
+  },
+  {
+    "id": "ghat-road-safety-rules",
+    "title": "Ghat Road Safe Driving & Timings",
+    "description": "Up-Ghat road is open 3:00 AM to 11:00 PM. Down-Ghat road closes at 12:00 midnight. Minimum journey time of 28 minutes is strictly monitored at toll gates.",
+    "image": "",
+    "category": "Advisory",
+    "severity": "Low",
+    "popup_type": "Banner",
+    "cta": "Open Maps",
+    "status": "Published",
+    "target_location": "All Users",
+    "start_time": "2026-09-01T00:00:00.000Z",
+    "expiry_time": "2027-12-31T23:59:59.000Z",
+    "created_at": "2026-09-18T12:00:00.000Z",
+    "updated_at": "2026-09-18T12:00:00.000Z"
+  },
+  {
+    "id": "annaprasadam-amenities-alert",
+    "title": "Free Annaprasadam & Pilgrim Amenities Active",
+    "description": "Tarigonda Vengamamba Annaprasadam Complex serves hot hygienic meals from 9:00 AM to 11:00 PM. Free drinking water and medical centers active along ring road.",
+    "image": "",
+    "category": "Information",
+    "severity": "Low",
+    "popup_type": "Banner",
+    "cta": "Open Essentials",
+    "status": "Published",
+    "target_location": "All Users",
+    "start_time": "2026-09-01T00:00:00.000Z",
+    "expiry_time": "2027-12-31T23:59:59.000Z",
+    "created_at": "2026-09-18T12:00:00.000Z",
+    "updated_at": "2026-09-18T12:00:00.000Z"
+  }
+]

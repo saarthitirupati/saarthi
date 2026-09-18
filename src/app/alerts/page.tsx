@@ -67,10 +67,10 @@ export default function AlertsPage() {
 
   const getCtaHref = (cta?: string) => {
     switch (cta) {
-      case 'Open Queue': return '/route';
+      case 'Open Queue': return '/darshan/ssd-token';
       case 'Open Essentials': return '/essentials';
       case 'Open Maps': return '/explore';
-      case 'Open Parking': return '/route';
+      case 'Open Parking': return '/explore?q=Parking';
       default: return null;
     }
   };
@@ -206,7 +206,7 @@ export default function AlertsPage() {
 
                 {testStatus === 'sent' && (
                   <span style={{ fontSize: '11.5px', color: '#15803D', fontWeight: 700 }}>
-                    🔔 Notification delivered to your device!
+                    Notification delivered to your device!
                   </span>
                 )}
                 {testStatus === 'failed' && (

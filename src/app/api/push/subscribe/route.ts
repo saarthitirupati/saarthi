@@ -1,5 +1,21 @@
 import { NextResponse } from 'next/server';
 import { supabase } from '@/lib/supabase';
+import { isAuthorizedAdmin } from '@/lib/authGuard';
+
+export async function GET(req: Request) {
+  try {
+    const isAuthed = await isAuthorizedAdmin(req);
+    if (!isAuthed) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+    const { count, error } = await supabase
+      .from('push_subscriptions')
+      .select('*', { count: 'exact', head: true });
+    return NextResponse.json({ count: count || 0 });
+  } catch (err: any) {
+    return NextResponse.json({ count: 0 });
+  }
+}
 
 export async function POST(req: Request) {
   try {

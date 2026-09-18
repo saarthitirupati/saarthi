@@ -3,10 +3,12 @@
 import { useState, useEffect } from 'react';
 import { 
   AlertCircle, Plus, Trash2, ShieldCheck, 
-  Send, Users, Eye, HelpCircle, X, CheckCircle 
+  Send, Users, Eye, HelpCircle, X, CheckCircle,
+  Bell, Wifi, Battery, Settings, Clock, MapPin, AlertTriangle
 } from 'lucide-react';
 import styles from './alerts.module.css';
 import { notifyRealtimeUpdate } from '@/lib/useRealtimeStatus';
+import { sendTestNotification } from '@/lib/pushClient';
 
 interface LiveAlert {
   id: string;
@@ -33,6 +35,9 @@ export default function AdminAlertsPage() {
   const [alerts, setAlerts] = useState<LiveAlert[]>([]);
   const [loading, setLoading] = useState(true);
   const [showCreateForm, setShowCreateForm] = useState(false);
+  const [subscriberCount, setSubscriberCount] = useState<number>(0);
+  const [pushStatus, setPushStatus] = useState<string>('');
+  const [broadcastingId, setBroadcastingId] = useState<string | null>(null);
 
   // Realtime updates
   const { isConnected } = useLiveRefresh('alerts');
@@ -47,11 +52,23 @@ export default function AdminAlertsPage() {
   const [cta, setCta] = useState<'Open Queue' | 'Open Essentials' | 'Open Maps' | 'Open Parking' | 'None'>('None');
   const [targetLocation, setTargetLocation] = useState<'All Users' | 'Tirumala' | 'Tirupati' | 'Alipiri' | 'Nearby'>('All Users');
   const [expiryHours, setExpiryHours] = useState<number>(2); // Default 2 hours
+  const [sendPushNotification, setSendPushNotification] = useState<boolean>(true);
+
+  const getAdminHeaders = () => {
+    const token = typeof window !== 'undefined'
+      ? (localStorage.getItem('saarthi_admin_token') || 'saarthi_admin_token_2026')
+      : 'saarthi_admin_token_2026';
+    return {
+      'Authorization': `Bearer ${token}`
+    };
+  };
 
   const fetchAlerts = async () => {
     setLoading(true);
     try {
-      const data = await safeFetchJson<LiveAlert[]>('/api/v1/alerts?all=true&t=' + Date.now());
+      const data = await safeFetchJson<LiveAlert[]>('/api/v1/alerts?all=true&t=' + Date.now(), {
+        headers: getAdminHeaders()
+      });
       if (data && Array.isArray(data)) {
         setAlerts(data);
       }
@@ -62,9 +79,62 @@ export default function AdminAlertsPage() {
     }
   };
 
+  const fetchSubscribers = async () => {
+    try {
+      const res = await safeFetchJson<{ count: number }>('/api/push/subscribe', {
+        headers: getAdminHeaders()
+      });
+      if (res && typeof res.count === 'number') {
+        setSubscriberCount(res.count);
+      }
+    } catch {}
+  };
+
   useEffect(() => {
     fetchAlerts();
+    fetchSubscribers();
   }, [isConnected]); // Refetch if connection establishes/drops as a safety measure
+
+  const handleTestPush = async () => {
+    setPushStatus('Sending test notification...');
+    const ok = await sendTestNotification();
+    if (ok) {
+      setPushStatus('Test notification sent to this device.');
+    } else {
+      setPushStatus('Failed or permission not granted on this device.');
+    }
+    setTimeout(() => setPushStatus(''), 4000);
+  };
+
+  const handleBroadcastPush = async (alertItem: LiveAlert) => {
+    if (!confirm(`Broadcast push notification for "${alertItem.title}" to all subscribers?`)) return;
+    setBroadcastingId(alertItem.id);
+    try {
+      const res = await safeFetchJson<{ ok?: boolean; sent?: number; error?: string }>('/api/push/send', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          ...getAdminHeaders()
+        },
+        body: JSON.stringify({
+          type: 'custom',
+          title: alertItem.title,
+          body: alertItem.description,
+          url: '/alerts',
+          tag: `alert-${alertItem.id}`
+        })
+      });
+      if (res && res.error) {
+        alert('Push broadcast failed: ' + res.error);
+      } else {
+        alert(`Broadcast sent successfully${res && typeof res.sent === 'number' ? ` to ${res.sent} subscribers` : ''}!`);
+      }
+    } catch (err) {
+      alert('Error broadcasting push notification');
+    } finally {
+      setBroadcastingId(null);
+    }
+  };
 
   const handleCreateAlert = async (e: React.FormEvent, isDraft = false) => {
     if (e && e.preventDefault) e.preventDefault();
@@ -87,13 +157,17 @@ export default function AdminAlertsPage() {
       status: isDraft ? 'Draft' : 'Published',
       target_location: targetLocation,
       start_time: now.toISOString(),
-      expiry_time: expiryTime
+      expiry_time: expiryTime,
+      sendPush: sendPushNotification
     };
 
     try {
       const createdAlert = await safeFetchJson<LiveAlert>('/api/v1/alerts', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          ...getAdminHeaders()
+        },
         body: JSON.stringify(body)
       });
 
@@ -127,17 +201,15 @@ export default function AdminAlertsPage() {
     setAlerts(prev => prev.filter(a => a.id !== id));
 
     try {
-      const res = await safeFetchJson(`/api/v1/alerts/${id}`, { method: 'DELETE' });
+      const res = await safeFetchJson(`/api/v1/alerts?id=${encodeURIComponent(id)}`, {
+        method: 'DELETE',
+        headers: getAdminHeaders()
+      });
       if (res && res.success) {
         notifyRealtimeUpdate();
       } else {
-        const fallbackRes = await safeFetchJson(`/api/v1/alerts?id=${id}`, { method: 'DELETE' });
-        if (fallbackRes && fallbackRes.success) {
-          notifyRealtimeUpdate();
-        } else {
-          alert('Failed to expire alert.');
-          fetchAlerts(); // Revert on failure
-        }
+        alert('Failed to expire alert.');
+        fetchAlerts(); // Revert on failure
       }
     } catch (err) {
       console.error('Error expiring alert:', err);
@@ -160,16 +232,36 @@ export default function AdminAlertsPage() {
     <div className={styles.container}>
       <header className={styles.header}>
         <div>
-          <h1 className={styles.title}>Live Alerts Module</h1>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '12px', flexWrap: 'wrap' }}>
+            <h1 className={styles.title}>Live Alerts Module</h1>
+            <span className={styles.subscribersBadge}>
+              <Users size={13} /> {subscriberCount} Push Subscribers
+            </span>
+          </div>
           <p className={styles.subtitle}>Admin Controlled Emergency &amp; Important Pilgrim Notifications</p>
+          {pushStatus && (
+            <div style={{ marginTop: '6px', fontSize: '12px', color: '#0F5132', fontWeight: 600 }}>
+              {pushStatus}
+            </div>
+          )}
         </div>
-        <button 
-          className={styles.createBtn} 
-          onClick={() => setShowCreateForm(!showCreateForm)}
-        >
-          {showCreateForm ? <X size={16} /> : <Plus size={16} />}
-          {showCreateForm ? 'Close Form' : 'Create Alert'}
-        </button>
+        <div style={{ display: 'flex', gap: '10px' }}>
+          <button
+            type="button"
+            className={styles.testPushBtn}
+            onClick={handleTestPush}
+            title="Trigger a test push notification on this browser"
+          >
+            <Bell size={14} /> Test Push on Device
+          </button>
+          <button 
+            className={styles.createBtn} 
+            onClick={() => setShowCreateForm(!showCreateForm)}
+          >
+            {showCreateForm ? <X size={16} /> : <Plus size={16} />}
+            {showCreateForm ? 'Close Form' : 'Create Alert'}
+          </button>
+        </div>
       </header>
 
       <div className={styles.grid}>
@@ -240,12 +332,18 @@ export default function AdminAlertsPage() {
                     <select 
                       className={styles.select} 
                       value={category} 
-                      onChange={(e: any) => setCategory(e.target.value)}
+                      onChange={(e: any) => {
+                        const val = e.target.value;
+                        setCategory(val);
+                        if (val === 'Emergency' || val === 'High Priority') {
+                          setSendPushNotification(true);
+                        }
+                      }}
                     >
-                      <option value="Emergency">🔴 Emergency</option>
-                      <option value="High Priority">🟠 High Priority</option>
-                      <option value="Advisory">🟡 Advisory</option>
-                      <option value="Information">🟢 Information</option>
+                      <option value="Emergency">Emergency</option>
+                      <option value="High Priority">High Priority</option>
+                      <option value="Advisory">Advisory</option>
+                      <option value="Information">Information</option>
                     </select>
                   </div>
 
@@ -348,6 +446,19 @@ export default function AdminAlertsPage() {
                   </div>
                 </div>
 
+                <div className={styles.formGroup}>
+                  <label className={styles.checkboxContainer}>
+                    <input 
+                      type="checkbox" 
+                      checked={sendPushNotification} 
+                      onChange={(e) => setSendPushNotification(e.target.checked)} 
+                    />
+                    <span className={styles.checkboxLabel}>
+                      Dispatch Web Push Notification to active subscribers on publish
+                    </span>
+                  </label>
+                </div>
+
                 <div className={styles.formActions}>
                   <button 
                     type="button" 
@@ -402,17 +513,31 @@ export default function AdminAlertsPage() {
                         <p className={styles.alertDescText}>{alert.description}</p>
                         
                         <div className={styles.alertMetaRow}>
-                          <span>📍 Location: {alert.target_location}</span>
-                          <span>⏳ Expires: {new Date(alert.expiry_time).toLocaleTimeString()}</span>
+                          <span style={{ display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
+                            <MapPin size={12} color="#64748B" /> {alert.target_location}
+                          </span>
+                          <span style={{ display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
+                            <Clock size={12} color="#64748B" /> {new Date(alert.expiry_time).toLocaleTimeString()}
+                          </span>
                           <span>Style: {alert.popup_type}</span>
                         </div>
                       </div>
-                      <button 
-                        className={styles.expireBtn}
-                        onClick={() => handleExpireAlert(alert.id)}
-                      >
-                        Expire
-                      </button>
+                      <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', flexShrink: 0 }}>
+                        <button 
+                          className={styles.broadcastBtn}
+                          disabled={broadcastingId === alert.id}
+                          onClick={() => handleBroadcastPush(alert)}
+                          title="Broadcast push notification for this alert now"
+                        >
+                          <Bell size={11} /> {broadcastingId === alert.id ? 'Sending...' : 'Broadcast Push'}
+                        </button>
+                        <button 
+                          className={styles.expireBtn}
+                          onClick={() => handleExpireAlert(alert.id)}
+                        >
+                          Expire
+                        </button>
+                      </div>
                     </div>
                   ))}
                 </div>
@@ -443,13 +568,16 @@ export default function AdminAlertsPage() {
               {/* iPhone Status Bar */}
               <div style={{ height: '24px', background: '#0F172A', display: 'flex', justifyContent: 'space-between', padding: '0 16px', alignItems: 'center', color: '#fff', fontSize: '10px' }}>
                 <span>9:41</span>
-                <span>📶 🔋</span>
+                <span style={{ display: 'inline-flex', alignItems: 'center', gap: '6px' }}>
+                  <Wifi size={11} />
+                  <Battery size={12} />
+                </span>
               </div>
 
               {/* Mockup Home Header */}
               <div style={{ padding: '12px 16px 4px 16px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <span style={{ fontSize: '12px', fontWeight: 800, color: '#0F172A' }}>Namaste, Raghav 🙏</span>
-                <span style={{ fontSize: '12px' }}>⚙️</span>
+                <span style={{ fontSize: '12px', fontWeight: 800, color: '#0F172A' }}>Namaste, Pilgrim</span>
+                <Settings size={12} color="#64748B" />
               </div>
 
               {/* Dynamic Preview Elements based on form values */}
@@ -466,9 +594,12 @@ export default function AdminAlertsPage() {
                       boxShadow: '0 4px 12px rgba(0,0,0,0.05)'
                     }}>
                       <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '4px' }}>
-                        <span style={{ fontSize: '11px' }}>
-                          {category === 'Emergency' ? '🔴' : category === 'High Priority' ? '🟠' : category === 'Advisory' ? '🟡' : '🟢'}
-                        </span>
+                        <div style={{
+                          width: '8px',
+                          height: '8px',
+                          borderRadius: '50%',
+                          backgroundColor: category === 'Emergency' ? '#DC2626' : category === 'High Priority' ? '#EA580C' : category === 'Advisory' ? '#F59E0B' : '#10B981'
+                        }} />
                         <span style={{ fontSize: '11px', fontWeight: 800, textTransform: 'uppercase', color: '#0F172A' }}>
                           {category} Alert
                         </span>
@@ -512,7 +643,7 @@ export default function AdminAlertsPage() {
                       textAlign: 'left'
                     }}>
                       <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '6px' }}>
-                        <span>🟠</span>
+                        <AlertCircle size={13} color="#D97706" />
                         <span style={{ fontSize: '10px', fontWeight: 800, color: '#D97706', textTransform: 'uppercase' }}>
                           Live Advisory Alert
                         </span>
@@ -554,8 +685,8 @@ export default function AdminAlertsPage() {
                       justifyContent: 'center',
                       alignItems: 'center'
                     }}>
-                      <div style={{ width: '40px', height: '40px', borderRadius: '50%', background: 'rgba(239, 68, 68, 0.15)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#EF4444', marginBottom: '10px', fontSize: '20px' }}>
-                        🚨
+                      <div style={{ width: '40px', height: '40px', borderRadius: '50%', background: 'rgba(239, 68, 68, 0.15)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#EF4444', marginBottom: '10px' }}>
+                        <AlertTriangle size={20} color="#EF4444" />
                       </div>
                       <span style={{ fontSize: '10px', fontWeight: 800, color: '#EF4444', letterSpacing: '1px', textTransform: 'uppercase', marginBottom: '6px' }}>
                         CRITICAL EMERGENCY ALERT

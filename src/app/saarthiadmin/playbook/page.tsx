@@ -1,6 +1,6 @@
 'use client';
 import { useEffect, useState } from 'react';
-import { Send, Mail, Copy, Check, ExternalLink, Bookmark, HelpCircle, TrendingUp, Info } from 'lucide-react';
+import { Send, Mail, Copy, Check, ExternalLink, Bookmark, HelpCircle, TrendingUp, Info, Sparkles, Lightbulb } from 'lucide-react';
 import styles from '../admin.module.css';
 import { safeFetchJson } from '@/lib/safeFetch';
 
@@ -85,14 +85,14 @@ CEO & Founder, Saarthi`;
       
       {/* Header */}
       <div className={styles.pageHeader}>
-        <h1 className={styles.pageTitle}>🚀 Founder&apos;s Investor Playbook</h1>
+        <h1 className={styles.pageTitle}>Founder&apos;s Investor Playbook</h1>
         <p className={styles.pageSubtitle}>Dawa24x7 outreach system pre-populated with live Saarthi metrics</p>
       </div>
 
       {/* Main Pitch Generator Card */}
       <div className={styles.chartCard} style={{ padding: '24px', border: '1px solid rgba(233, 128, 29, 0.15)' }}>
         <h2 style={{ fontSize: '16px', fontWeight: 800, color: '#F1F5F9', marginBottom: '16px', display: 'flex', alignItems: 'center', gap: '8px' }}>
-          ✨ Live Outreach Generator
+          <Sparkles size={16} color="#E9801D" /> Live Outreach Generator
         </h2>
         <p style={{ fontSize: '13px', color: '#94A3B8', marginBottom: '20px', lineHeight: 1.5 }}>
           Modify the parameters below. The templates will automatically update with your live dashboard analytics and metrics to form a compelling pitch.
@@ -158,8 +158,8 @@ CEO & Founder, Saarthi`;
             <div style={{ background: '#1E293B', borderRadius: '8px', padding: '12px', fontSize: '13px', color: '#E2E8F0', fontFamily: 'monospace', whiteSpace: 'pre-wrap', lineHeight: 1.5 }}>
               {linkedInTemplate}
             </div>
-            <span style={{ display: 'block', fontSize: '11px', color: '#64748B', marginTop: '8px' }}>
-              💡 Rule: No deck in the first DM. If they reply, then share the pitch deck link.
+            <span style={{ display: 'flex', alignItems: 'center', gap: '5px', fontSize: '11px', color: '#64748B', marginTop: '8px' }}>
+              <Lightbulb size={12} color="#F59E0B" /> Rule: No deck in the first DM. If they reply, then share the pitch deck link.
             </span>
           </div>
 
@@ -180,8 +180,8 @@ CEO & Founder, Saarthi`;
             <div style={{ background: '#1E293B', borderRadius: '8px', padding: '12px', fontSize: '13px', color: '#E2E8F0', fontFamily: 'monospace', whiteSpace: 'pre-wrap', lineHeight: 1.5 }}>
               {coldEmailTemplate}
             </div>
-            <span style={{ display: 'block', fontSize: '11px', color: '#64748B', marginTop: '8px' }}>
-              💡 Rule: Keep the subject line clean: <strong>&quot;Saarthi | Real-Time Pilgrimage Intelligence | Pitch Deck Attached&quot;</strong>.
+            <span style={{ display: 'flex', alignItems: 'center', gap: '5px', fontSize: '11px', color: '#64748B', marginTop: '8px' }}>
+              <Lightbulb size={12} color="#F59E0B" /> Rule: Keep the subject line clean: <strong>&quot;Saarthi | Real-Time Pilgrimage Intelligence | Pitch Deck Attached&quot;</strong>.
             </span>
           </div>
 

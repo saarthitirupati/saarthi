@@ -5,7 +5,8 @@ import { motion } from 'framer-motion';
 import { 
   ArrowRight, Clock, Compass, HelpCircle, Shield, 
   MapPin, Calendar, Users, User, Heart, Sparkles, Globe, 
-  Check, ShieldCheck, Bell, Download, Layers, Play, AlertCircle
+  Check, ShieldCheck, Bell, Download, Layers, Play, AlertCircle,
+  Landmark, Battery, Wifi, Sun, Car, Footprints, Package, Settings, Home, BookOpen
 } from 'lucide-react';
 import styles from './presentation.module.css';
 
@@ -171,9 +172,9 @@ export default function OnboardingPresentation() {
                 {/* Status Bar */}
                 <div className={`${styles.statusBar} ${scr.id === 1 ? styles.statusBarDark : styles.statusBarLight}`}>
                   <span>9:41</span>
-                  <div className={styles.statusIcons}>
-                    <span>📶</span>
-                    <span>🔋</span>
+                  <div className={styles.statusIcons} style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                    <Wifi size={11} />
+                    <Battery size={11} />
                   </div>
                 </div>
 
@@ -222,18 +223,18 @@ export default function OnboardingPresentation() {
                           <path d="M52 105V93C52 88.5817 55.5817 85 60 85C64.4183 85 68 88.5817 68 93V105" stroke="#0F172A" strokeWidth="3.5" strokeLinejoin="round"/>
                         </svg>
                       </div>
-                      <h3 className={styles.welcomeTitle}>Welcome to Saarthi 🙏</h3>
+                      <h3 className={styles.welcomeTitle}>Welcome to Saarthi</h3>
                       <p className={styles.welcomeDesc}>Your trusted companion for a peaceful, informed and meaningful pilgrimage.</p>
                       
                       <div className={styles.featuresGrid}>
                         {[
-                          { emoji: '⏱️', title: 'Live Crowd Updates', desc: 'Realtime wait times and statuses.' },
-                          { emoji: '🧭', title: 'Smart Recommendations', desc: 'Personalized routes tailored for you.' },
-                          { emoji: '🛕', title: 'Pilgrim Essentials', desc: 'Local guidelines, maps and checklists.' },
-                          { emoji: '💾', title: 'Offline Support', desc: 'Access guides without cell reception.' }
+                          { icon: <Clock size={12} color="#D97706" />, title: 'Live Crowd Updates', desc: 'Realtime wait times and statuses.' },
+                          { icon: <Compass size={12} color="#2563EB" />, title: 'Smart Recommendations', desc: 'Personalized routes tailored for you.' },
+                          { icon: <Landmark size={12} color="#16A34A" />, title: 'Pilgrim Essentials', desc: 'Local guidelines, maps and checklists.' },
+                          { icon: <Download size={12} color="#7C3AED" />, title: 'Offline Support', desc: 'Access guides without cell reception.' }
                         ].map((f, i) => (
                           <div key={i} className={styles.featureRow}>
-                            <div className={styles.featureDot}>{f.emoji}</div>
+                            <div className={styles.featureDot} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>{f.icon}</div>
                             <div style={{ display: 'flex', flexDirection: 'column' }}>
                               <span className={styles.featureLabel}>{f.title}</span>
                               <span className={styles.featureDescText}>{f.desc}</span>
@@ -387,10 +388,10 @@ export default function OnboardingPresentation() {
 
                       <div style={{ display: 'flex', flexDirection: 'column', width: '100%' }}>
                         {[
-                          { title: '🙏 First Time Visitor', desc: 'Step-by-step darshan rules, route guidelines and maps.', active: false },
-                          { title: '👨‍👩‍👧 Family Pilgrim', desc: 'Rest buffers, child friendly points and low-strain routing.', active: true },
-                          { title: '🛕 Devout Pilgrim', desc: 'Strict ritual timings, secondary shrine history, mantras.', active: false },
-                          { title: '🎒 Budget Student', desc: 'Free lockers, cheap eats, scenic trekking routes.', active: false }
+                          { title: 'First Time Visitor', desc: 'Step-by-step darshan rules, route guidelines and maps.', active: false },
+                          { title: 'Family Pilgrim', desc: 'Rest buffers, child friendly points and low-strain routing.', active: true },
+                          { title: 'Devout Pilgrim', desc: 'Strict ritual timings, secondary shrine history, mantras.', active: false },
+                          { title: 'Budget Student', desc: 'Free lockers, cheap eats, scenic trekking routes.', active: false }
                         ].map((prof, i) => (
                           <div key={i} className={`${styles.profileCard} ${prof.active ? styles.profileCardActive : ''}`}>
                             <div className={styles.profileInfo}>
@@ -489,13 +490,13 @@ export default function OnboardingPresentation() {
 
                       <div className={styles.oracleLoaderGrid}>
                         {[
-                          { icon: '☀️', label: 'Weather: Clear' },
-                          { icon: '👥', label: 'Crowd: Normal' },
-                          { icon: '🚗', label: 'Parking: Available' },
-                          { icon: '🛕', label: 'Personalization' }
+                          { icon: <Sun size={12} color="#F59E0B" />, label: 'Weather: Clear' },
+                          { icon: <Users size={12} color="#2563EB" />, label: 'Crowd: Normal' },
+                          { icon: <Car size={12} color="#10B981" />, label: 'Parking: Available' },
+                          { icon: <Sparkles size={12} color="#8B5CF6" />, label: 'Personalization' }
                         ].map((load, i) => (
                           <div key={i} className={styles.oracleLoaderItem}>
-                            <span style={{ fontSize: '10px' }}>{load.icon}</span>
+                            <span style={{ display: 'flex', alignItems: 'center' }}>{load.icon}</span>
                             <span className={styles.oracleLoaderText}>{load.label}</span>
                           </div>
                         ))}
@@ -508,13 +509,15 @@ export default function OnboardingPresentation() {
                     <>
                       {/* Top Header */}
                       <div className={styles.miniHomeHeader}>
-                        <span className={styles.miniHomeGreeting}>Namaste, Raghav 🙏</span>
-                        <span style={{ fontSize: '14px' }}>⚙️</span>
+                        <span className={styles.miniHomeGreeting}>Namaste, Raghav</span>
+                        <Settings size={14} color="#475569" />
                       </div>
 
                       {/* Hero Banner */}
                       <div className={styles.miniHero}>
-                        <span className={styles.miniHeroTitle}>🟢 GOOD CONDITIONS NOW</span>
+                        <span className={styles.miniHeroTitle} style={{ display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
+                          <span style={{ width: 6, height: 6, borderRadius: '50%', background: '#10B981', display: 'inline-block' }} /> GOOD CONDITIONS NOW
+                        </span>
                         <h4 className={styles.miniHeroBody}>Queue is 2 hours. Good time to proceed.</h4>
                         <span className={styles.miniHeroWait}>Wait time: 2 hours | Weather: Pleasant</span>
                       </div>
@@ -523,12 +526,12 @@ export default function OnboardingPresentation() {
                       <span className={styles.miniSectionTitle}>Pilgrim Essentials</span>
                       <div className={styles.miniGrid}>
                         {[
-                          { emoji: '🎒', text: 'Free Lockers' },
-                          { emoji: '🚶‍♂️', text: 'Walk Routes' },
-                          { emoji: '🚗', text: 'Car Parking' }
+                          { icon: <Package size={14} color="#F59E0B" />, text: 'Free Lockers' },
+                          { icon: <Footprints size={14} color="#2563EB" />, text: 'Walk Routes' },
+                          { icon: <Car size={14} color="#10B981" />, text: 'Car Parking' }
                         ].map((grid, i) => (
                           <div key={i} className={styles.miniGridCard}>
-                            <span className={styles.miniGridIcon}>{grid.emoji}</span>
+                            <span className={styles.miniGridIcon} style={{ display: 'flex', justifyContent: 'center' }}>{grid.icon}</span>
                             <span className={styles.miniGridText}>{grid.text}</span>
                           </div>
                         ))}
@@ -547,13 +550,13 @@ export default function OnboardingPresentation() {
                       {/* Bottom Tab Bar */}
                       <div className={styles.miniNav}>
                         {[
-                          { icon: '🏠', text: 'Home', active: true },
-                          { icon: '🧭', text: 'Explore', active: false },
-                          { icon: '📝', text: 'Journey', active: false },
-                          { icon: '👤', text: 'Profile', active: false }
+                          { icon: <Home size={13} />, text: 'Home', active: true },
+                          { icon: <Compass size={13} />, text: 'Explore', active: false },
+                          { icon: <BookOpen size={13} />, text: 'Journey', active: false },
+                          { icon: <User size={13} />, text: 'Profile', active: false }
                         ].map((nav, i) => (
                           <div key={i} className={`${styles.miniNavItem} ${nav.active ? styles.miniNavItemActive : ''}`}>
-                            <span className={styles.miniNavIcon}>{nav.icon}</span>
+                            <span className={styles.miniNavIcon} style={{ display: 'flex', justifyContent: 'center' }}>{nav.icon}</span>
                             <span className={styles.miniNavText}>{nav.text}</span>
                           </div>
                         ))}

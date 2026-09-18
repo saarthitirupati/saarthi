@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect, useMemo } from 'react';
-import { Calendar, Plus, Search, CheckCircle, Clock, Trash2, Edit3, X, Save, RefreshCw } from 'lucide-react';
+import { Calendar, Plus, Search, CheckCircle, Clock, Trash2, Edit3, X, Save, RefreshCw, Shirt, Car, Bot, Sparkles } from 'lucide-react';
 import styles from '../Dashboard.module.css';
 import { notifyRealtimeUpdate } from '@/lib/useRealtimeStatus';
 import { safeFetchJson } from '@/lib/safeFetch';
@@ -50,9 +50,14 @@ export default function AdminFestivalsPage() {
 
     setSaving(true);
     try {
+      const adminToken = typeof window !== 'undefined' ? (localStorage.getItem('saarthi_admin_token') || 'saarthi_admin_token_2026') : 'saarthi_admin_token_2026';
       const res = await fetch('/api/admin/festivals', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${adminToken}`
+        },
+        credentials: 'include',
         body: JSON.stringify({
           name,
           festival_type: festivalType,
@@ -133,8 +138,8 @@ export default function AdminFestivalsPage() {
 
       {/* Autonomous Festival Push Alert Preview & Connection */}
       <div className={styles.dataQualitySection} style={{ marginBottom: '24px', backgroundColor: '#EFF6FF', border: '1px solid #BFDBFE' }}>
-        <h3 className={styles.sectionTitle} style={{ color: '#1E40AF', margin: '0 0 6px 0' }}>
-          🤖 Connected Autonomous Festival Alert (6:30 AM – 9:30 AM IST)
+        <h3 className={styles.sectionTitle} style={{ color: '#1E40AF', margin: '0 0 6px 0', display: 'flex', alignItems: 'center', gap: '6px' }}>
+          <Bot size={16} /> Connected Autonomous Festival Alert (6:30 AM – 9:30 AM IST)
         </h3>
         <p style={{ fontSize: '12px', color: '#1D4ED8', margin: '0 0 10px 0' }}>
           When you add or schedule a festival for today’s date, the autonomous engine automatically broadcasts it to pilgrims in the morning without requiring manual push:
@@ -148,8 +153,8 @@ export default function AdminFestivalsPage() {
           color: '#0F172A',
           lineHeight: 1.4
         }}>
-          <div style={{ fontWeight: 800, color: '#1E40AF', marginBottom: '2px' }}>
-            🪔 Today in Tirumala: [Active Festival Name]
+          <div style={{ fontWeight: 800, color: '#1E40AF', marginBottom: '2px', display: 'flex', alignItems: 'center', gap: '6px' }}>
+            <Sparkles size={14} color="#D97706" /> Today in Tirumala: [Active Festival Name]
           </div>
           <div style={{ fontSize: '12px', color: '#475569' }}>
             [Location] • [Visitor Notes / Description]. Special sevas & rituals today. Check live wait times before traveling.
@@ -192,10 +197,10 @@ export default function AdminFestivalsPage() {
                     {fest.description}
                   </p>
 
-                  <div style={{ display: 'flex', gap: '16px', fontSize: '12px', color: '#64748B', marginTop: '6px' }}>
-                    <span>📅 Date: <strong>{fest.date}</strong></span>
-                    <span>👗 Dress: <strong>{fest.dress_code || 'Traditional'}</strong></span>
-                    <span>🚗 Parking: <strong>{fest.parking_status || 'Available'}</strong></span>
+                  <div style={{ display: 'flex', gap: '16px', fontSize: '12px', color: '#64748B', marginTop: '6px', alignItems: 'center' }}>
+                    <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}><Calendar size={13} /> Date: <strong>{fest.date}</strong></span>
+                    <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}><Shirt size={13} /> Dress: <strong>{fest.dress_code || 'Traditional'}</strong></span>
+                    <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}><Car size={13} /> Parking: <strong>{fest.parking_status || 'Available'}</strong></span>
                   </div>
                 </div>
 

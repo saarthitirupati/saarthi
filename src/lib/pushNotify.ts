@@ -4,7 +4,7 @@ import { supabase } from '@/lib/supabase';
 let vapidConfigured = false;
 function ensureVapid(): boolean {
   if (vapidConfigured) return true;
-  const pub = process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY;
+  const pub = process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY || 'BG66lKYjVyCTBCyVvgT0qpmwpFaJ414JqzVUVNZ14KRQlcC5UdqDUOp9USQElQ2r7vO6P4fzYlX3oFRuu4oR5V8';
   const priv = process.env.VAPID_PRIVATE_KEY;
   if (!pub || !priv) {
     console.warn('[PushNotify] VAPID keys not configured in environment');
@@ -96,21 +96,21 @@ export async function notifySsdUpdates(
   if (updated.ssdTokenStatus && updated.ssdTokenStatus !== prev.ssdTokenStatus) {
     if (updated.ssdTokenStatus === 'issuing') {
       pushNotifyAll({
-        title: '🎫 SSD Tokens are LIVE!',
+        title: 'SSD Tokens are LIVE!',
         body: 'Srivari Seva Darshanam offline tokens are being issued now at Tirumala & Tirupati counters.',
         url: '/darshan/ssd-token',
         tag: 'ssd-status',
       }).catch(() => {});
     } else if (updated.ssdTokenStatus === 'paused') {
       pushNotifyAll({
-        title: '⏸️ SSD Tokens Paused',
+        title: 'SSD Tokens Paused',
         body: (updated.ssdNotice || '').trim() || 'Token issuing has been temporarily paused. Please check back shortly.',
         url: '/darshan/ssd-token',
         tag: 'ssd-status',
       }).catch(() => {});
     } else if (updated.ssdTokenStatus === 'closed-for-day') {
       pushNotifyAll({
-        title: '⚠️ Today’s SSD Quota Closed',
+        title: 'Today’s SSD Quota Closed',
         body: (updated.ssdNotice || '').trim() || `Today's offline SSD token quota is complete. Next issuance: ${updated.ssdNextTokenTime || 'tomorrow morning'}.`,
         url: '/darshan/ssd-token',
         tag: 'ssd-status',
@@ -124,7 +124,7 @@ export async function notifySsdUpdates(
   if (nextTime && nextTime !== prevTime) {
     const noticeExtra = (updated.ssdNotice || '').trim() ? ` • ${updated.ssdNotice!.trim()}` : '';
     pushNotifyAll({
-      title: '⏰ SSD Token Timings Updated',
+      title: 'SSD Token Timings Updated',
       body: `Next token batch release: ${nextTime}.${noticeExtra} Counters open at Vishnu Nivasam & Srinivasam.`,
       url: '/darshan/ssd-token',
       tag: 'ssd-timings',
@@ -141,7 +141,7 @@ export async function notifySsdUpdates(
         ? `Open slots: ${available.map(s => s.slotTime).slice(0, 3).join(', ')}.`
         : 'Slot availability and timings have been refreshed.';
       pushNotifyAll({
-        title: '🎫 SSD Darshan Slots Updated',
+        title: 'SSD Darshan Slots Updated',
         body: `${slotText} Check live counter timings now.`,
         url: '/darshan/ssd-token',
         tag: 'ssd-slots',
@@ -154,7 +154,7 @@ export async function notifySsdUpdates(
   const nextNotice = (updated.ssdNotice || '').trim();
   if (nextNotice && nextNotice !== prevNotice && updated.ssdTokenStatus === prev.ssdTokenStatus) {
     pushNotifyAll({
-      title: '📢 SSD Token Update',
+      title: 'SSD Token Update',
       body: nextNotice,
       url: '/darshan/ssd-token',
       tag: 'ssd-notice',
@@ -177,9 +177,9 @@ export async function notifyLiveStatusUpdates(
   const nextNotice = (updated.notice || '').trim();
   if (nextNotice && nextNotice !== prevNotice) {
     pushNotifyAll({
-      title: '📢 Tirumala Live Update',
+      title: 'Tirumala Live Update',
       body: nextNotice,
-      url: '/live',
+      url: '/alerts',
       tag: 'tirumala-notice',
     }).catch(() => {});
   }
@@ -202,17 +202,17 @@ export async function notifyLiveStatusUpdates(
   if (darshanChanges.length > 0) {
     const crowdInfo = updated.crowdLevel ? ` • Crowd: ${updated.crowdLevel}` : '';
     pushNotifyAll({
-      title: '⏱️ Live Darshan Timings Updated',
+      title: 'Live Darshan Timings Updated',
       body: `Live update: ${darshanChanges.slice(0, 2).join(' • ')}${crowdInfo}.`,
-      url: '/live',
+      url: '/alerts',
       tag: 'live-darshan-timings',
     }).catch(() => {});
   } else if (waitChanged) {
     const crowdInfo = updated.crowdLevel ? ` (${updated.crowdLevel} crowd)` : '';
     pushNotifyAll({
-      title: '⏱️ Darshan Wait Time Updated',
+      title: 'Darshan Wait Time Updated',
       body: `Current wait time updated to ${nextWait}${crowdInfo}. Plan your darshan visit accordingly.`,
-      url: '/live',
+      url: '/alerts',
       tag: 'live-darshan-timings',
     }).catch(() => {});
   }
@@ -223,24 +223,24 @@ export async function notifyLiveStatusUpdates(
   if (nextCrowd && nextCrowd !== prevCrowd) {
     if (nextCrowd === 'low') {
       pushNotifyAll({
-        title: '🟢 Low Crowd at Tirumala!',
+        title: 'Low Crowd at Tirumala!',
         body: `Wait time: ${nextWait || prevWait || 'minimal'}. Favorable conditions for smooth, peaceful darshan.`,
-        url: '/live',
+        url: '/alerts',
         tag: 'live-crowd',
       }).catch(() => {});
     } else if (nextCrowd === 'high' || nextCrowd === 'very-high') {
       const label = nextCrowd === 'very-high' ? 'Very High' : 'High';
       pushNotifyAll({
-        title: '🔴 Heavy Rush at Tirumala',
+        title: 'Heavy Rush at Tirumala',
         body: `Crowd level is now ${label}. Wait time: ${nextWait || prevWait || 'extended'}. Expect compartment delays.`,
-        url: '/live',
+        url: '/alerts',
         tag: 'live-crowd',
       }).catch(() => {});
     } else if (nextCrowd === 'moderate') {
       pushNotifyAll({
-        title: '🟡 Moderate Crowd at Tirumala',
+        title: 'Moderate Crowd at Tirumala',
         body: `Crowd has normalized to Moderate. Current wait time: ${nextWait || prevWait || '2-3 hours'}.`,
-        url: '/live',
+        url: '/alerts',
         tag: 'live-crowd',
       }).catch(() => {});
     }

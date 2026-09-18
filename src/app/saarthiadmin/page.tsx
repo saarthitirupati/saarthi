@@ -13,11 +13,25 @@ export default function AdminDashboard() {
   const [alerts, setAlerts] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
+  const getAdminHeaders = () => {
+    const token = typeof window !== 'undefined'
+      ? (localStorage.getItem('saarthi_admin_token') || 'saarthi_admin_token_2026')
+      : 'saarthi_admin_token_2026';
+    return {
+      'Authorization': `Bearer ${token}`
+    };
+  };
+
   const fetchDashboardData = async () => {
     try {
       setLoading(true);
-      // 1. Fetch live places from admin API
-      const placesData = await safeFetchJson<any>('/api/admin/places');
+      const headers = getAdminHeaders();
+      // Fetch live places and alerts concurrently
+      const [placesData, alertsData] = await Promise.all([
+        safeFetchJson<any>('/api/admin/places', { headers }),
+        safeFetchJson<any>('/api/v1/alerts?all=true', { headers })
+      ]);
+
       if (placesData && placesData.places && placesData.places.length > 0) {
         const dbMap = new Map((placesData.places || []).map((p: any) => [p.id, p]));
         const merged = PLACES.map(staticPlace => {
@@ -32,6 +46,10 @@ export default function AdminDashboard() {
           };
         });
         setPlaces(merged);
+      }
+
+      if (alertsData && Array.isArray(alertsData)) {
+        setAlerts(alertsData);
       }
     } catch (e) {
       console.error('Failed to load dashboard metrics:', e);
@@ -285,8 +303,8 @@ export default function AdminDashboard() {
                 <span className={styles.warningPlace}>{w.name}</span>
                 <div className={styles.warningTags}>
                   {w.missing.map((tag, tIdx) => (
-                    <span key={tIdx} className={styles.warningTag}>
-                      ⚠️ {tag}
+                    <span key={tIdx} className={styles.warningTag} style={{ display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
+                      <AlertTriangle size={11} color="#D97706" /> {tag}
                     </span>
                   ))}
                 </div>

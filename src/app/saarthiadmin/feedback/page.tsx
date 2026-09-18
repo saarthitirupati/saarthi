@@ -49,10 +49,11 @@ export default function AdminFeedbackPage() {
   useEffect(() => {
     fetchFeedback(true);
 
-    // Dynamic auto-sync every 8 seconds
+    // Dynamic auto-sync every 12 seconds when visible
     const interval = setInterval(() => {
+      if (document.hidden) return;
       fetchFeedback(false);
-    }, 8000);
+    }, 12000);
 
     // Listen to local Broadcast/CustomEvent realtime updates
     const handleRealtimeUpdate = () => {
@@ -183,8 +184,8 @@ export default function AdminFeedbackPage() {
             <span className={styles.statLabel}>Pilgrim Satisfaction Rate</span>
           </div>
           <div className={styles.subStats}>
-            <span className={styles.subStatSuccess}>{positiveCount} Helpful 👍</span>
-            {negativeCount > 0 && <span className={styles.subStatWarning}>{negativeCount} Corrections 👎</span>}
+            <span className={styles.subStatSuccess}>{positiveCount} Helpful</span>
+            {negativeCount > 0 && <span className={styles.subStatWarning}>{negativeCount} Corrections</span>}
           </div>
         </div>
       </div>
@@ -208,10 +209,11 @@ export default function AdminFeedbackPage() {
             padding: '6px 14px', borderRadius: '20px', fontSize: '12px', fontWeight: 700, cursor: 'pointer',
             background: filterType === 'positive' ? '#DCFCE7' : '#F1F5F9',
             color: filterType === 'positive' ? '#15803D' : '#475569',
-            border: filterType === 'positive' ? '1px solid #86EFAC' : 'none'
+            border: filterType === 'positive' ? '1px solid #86EFAC' : 'none',
+            display: 'inline-flex', alignItems: 'center', gap: '5px'
           }}
         >
-          👍 Helpful ({positiveCount})
+          <ThumbsUp size={13} /> Helpful ({positiveCount})
         </button>
         <button
           onClick={() => setFilterType('negative')}
@@ -219,10 +221,11 @@ export default function AdminFeedbackPage() {
             padding: '6px 14px', borderRadius: '20px', fontSize: '12px', fontWeight: 700, cursor: 'pointer',
             background: filterType === 'negative' ? '#FEE2E2' : '#F1F5F9',
             color: filterType === 'negative' ? '#B91C1C' : '#475569',
-            border: filterType === 'negative' ? '1px solid #FCA5A5' : 'none'
+            border: filterType === 'negative' ? '1px solid #FCA5A5' : 'none',
+            display: 'inline-flex', alignItems: 'center', gap: '5px'
           }}
         >
-          👎 Corrections ({negativeCount})
+          <ThumbsDown size={13} /> Corrections ({negativeCount})
         </button>
       </div>
 
@@ -239,7 +242,7 @@ export default function AdminFeedbackPage() {
               <div key={item.id} className={styles.warningItem} style={{ borderBottom: '1px solid #E2E8F0', paddingBottom: '14px', marginBottom: '14px' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', width: '100%', alignItems: 'center' }}>
                   <span className={styles.warningPlace} style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                    <span style={{ fontSize: '16px' }}>{item.isPositive ? '👍' : '👎'}</span>
+                    {item.isPositive ? <ThumbsUp size={16} color="#16A34A" /> : <ThumbsDown size={16} color="#DC2626" />}
                     <strong style={{ fontSize: '14px', color: '#0F172A' }}>{item.placeName || 'General Feedback'}</strong>
                   </span>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
@@ -306,7 +309,7 @@ export default function AdminFeedbackPage() {
                       background: isPositive ? '#DCFCE7' : '#F8FAFC', color: isPositive ? '#15803D' : '#64748B', fontWeight: 700, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px'
                     }}
                   >
-                    <ThumbsUp size={16} /> Helpful 👍
+                    <ThumbsUp size={16} /> Helpful
                   </button>
                   <button
                     type="button"
@@ -316,7 +319,7 @@ export default function AdminFeedbackPage() {
                       background: !isPositive ? '#FEE2E2' : '#F8FAFC', color: !isPositive ? '#B91C1C' : '#64748B', fontWeight: 700, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px'
                     }}
                   >
-                    <ThumbsDown size={16} /> Needs Update 👎
+                    <ThumbsDown size={16} /> Needs Update
                   </button>
                 </div>
               </div>

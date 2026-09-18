@@ -1,7 +1,7 @@
 'use client';
 import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
-import { Activity, Clock, Bell, Save, Users } from 'lucide-react';
+import { Activity, Clock, Bell, Save, Users, Ticket, Footprints, Star, Landmark, MapPin } from 'lucide-react';
 import styles from '../admin.module.css';
 import { notifyRealtimeUpdate } from '@/lib/useRealtimeStatus';
 
@@ -66,7 +66,16 @@ export default function LiveStatusEditor() {
 
   useEffect(() => {
     setMounted(true);
-    fetch('/api/admin/status').then(r => r.json()).then(setStatus);
+    const adminToken = typeof window !== 'undefined' ? (localStorage.getItem('saarthi_admin_token') || 'saarthi_admin_token_2026') : 'saarthi_admin_token_2026';
+    fetch('/api/admin/status', {
+      headers: { 'Authorization': `Bearer ${adminToken}` },
+      credentials: 'include'
+    })
+      .then(r => r.json())
+      .then(data => {
+        if (data && !data.error) setStatus(data);
+      })
+      .catch(console.error);
   }, []);
 
   if (!mounted) return null;
@@ -150,10 +159,10 @@ export default function LiveStatusEditor() {
               onChange={e => setStatus(s => ({ ...s, crowdLevel: e.target.value as any }))}
               style={{ width: '100%', padding: '8px 10px', borderRadius: 8, border: '1px solid #334155', background: '#1E293B', color: '#E2E8F0', fontSize: 13 }}
             >
-              <option value="low">🟢 Less Crowded</option>
-              <option value="moderate">🟡 Moderate</option>
-              <option value="high">🟠 Heavy Crowd</option>
-              <option value="very-high">🔴 Very Heavy</option>
+              <option value="low">Low (Less Crowded)</option>
+              <option value="moderate">Moderate</option>
+              <option value="high">High (Heavy Crowd)</option>
+              <option value="very-high">Extreme (Very Heavy)</option>
             </select>
           </div>
 
@@ -186,20 +195,22 @@ export default function LiveStatusEditor() {
             <div style={{ fontSize: 10, color: '#475569', marginTop: 4 }}>Shown as "BEST TIME" on user home screen</div>
           </div>
           <div style={{ gridColumn: '1 / -1', marginTop: 12, borderTop: '1px solid #334155', paddingTop: 16 }}>
-            <label style={{ fontSize: 11, color: '#94A3B8', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.5px', display: 'block', marginBottom: 14 }}>
-              ⏳ Darshan Queue Estimates & Peak Crowd Hours
+            <label style={{ fontSize: 11, color: '#94A3B8', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.5px', display: 'flex', alignItems: 'center', gap: 6, marginBottom: 14 }}>
+              <Clock size={13} /> Darshan Queue Estimates & Peak Crowd Hours
             </label>
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: 14 }}>
               {(status.darshans || []).map((d, index) => {
-                let icon = '🛕';
-                if (d.name.includes('300') || d.name.toLowerCase().includes('special')) icon = '🎫';
-                else if (d.name.toLowerCase().includes('footpath') || d.name.toLowerCase().includes('divya')) icon = '🚶‍♂️';
-                else if (d.name.toLowerCase().includes('vip') || d.name.toLowerCase().includes('srivani')) icon = '🌟';
+                const getDarshanIcon = () => {
+                  if (d.name.includes('300') || d.name.toLowerCase().includes('special')) return <Ticket size={16} color="#38BDF8" />;
+                  if (d.name.toLowerCase().includes('footpath') || d.name.toLowerCase().includes('divya')) return <Footprints size={16} color="#34D399" />;
+                  if (d.name.toLowerCase().includes('vip') || d.name.toLowerCase().includes('srivani')) return <Star size={16} color="#FBBF24" />;
+                  return <Landmark size={16} color="#E9801D" />;
+                };
 
                 return (
                   <div key={index} style={{ background: '#1E293B', padding: '14px', borderRadius: '12px', border: '1px solid #334155', display: 'flex', flexDirection: 'column', gap: '10px' }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                      <span style={{ fontSize: '16px' }}>{icon}</span>
+                      {getDarshanIcon()}
                       <span style={{ fontSize: '13px', fontWeight: 700, color: '#F1F5F9' }}>{d.name}</span>
                     </div>
 
@@ -282,8 +293,8 @@ export default function LiveStatusEditor() {
                           }}
                           style={{ width: '100%', padding: '8px 10px', borderRadius: '8px', border: '1px solid #475569', background: '#0F172A', color: '#E2E8F0', fontSize: '12px', boxSizing: 'border-box' }}
                         >
-                          <option value="down">Decreasing 📉</option>
-                          <option value="up">Increasing 📈</option>
+                          <option value="down">Decreasing</option>
+                          <option value="up">Increasing</option>
                         </select>
                       </div>
                     </div>
@@ -295,8 +306,8 @@ export default function LiveStatusEditor() {
 
           {/* SSD Token Timing Management */}
           <div style={{ gridColumn: '1 / -1', marginTop: 12, borderTop: '1px solid #334155', paddingTop: 16 }}>
-            <label style={{ fontSize: 11, color: '#94A3B8', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.5px', display: 'block', marginBottom: 14 }}>
-              🎟 SSD Token Timing Management
+            <label style={{ fontSize: 11, color: '#94A3B8', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.5px', display: 'flex', alignItems: 'center', gap: 6, marginBottom: 14 }}>
+              <Ticket size={13} /> SSD Token Timing Management
             </label>
 
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: 12, marginBottom: 12 }}>
@@ -309,9 +320,9 @@ export default function LiveStatusEditor() {
                   onChange={e => setStatus(s => ({ ...s, ssdTokenStatus: e.target.value as any }))}
                   style={{ width: '100%', padding: '8px 10px', borderRadius: 8, border: '1px solid #475569', background: '#0F172A', color: '#E2E8F0', fontSize: 12 }}
                 >
-                  <option value="issuing">🟢 Issuing Tokens</option>
-                  <option value="paused">🟡 Paused</option>
-                  <option value="closed-for-day">🔴 Closed for Day</option>
+                  <option value="issuing">Issuing Tokens</option>
+                  <option value="paused">Paused</option>
+                  <option value="closed-for-day">Closed for Day</option>
                 </select>
               </div>
 
@@ -358,8 +369,8 @@ export default function LiveStatusEditor() {
             {/* Counters Locations (Where to get tokens) */}
             <div style={{ marginBottom: 16, borderTop: '1px dashed #334155', paddingTop: 12 }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 10 }}>
-                <label style={{ fontSize: 11, color: '#94A3B8', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.5px' }}>
-                  📍 SSD Counter Location Settings
+                <label style={{ fontSize: 11, color: '#94A3B8', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.5px', display: 'flex', alignItems: 'center', gap: 6 }}>
+                  <MapPin size={13} /> SSD Counter Location Settings
                 </label>
                 <button
                   onClick={() => setStatus(s => ({ ...s, ssdCounters: [...(s.ssdCounters || []), { name: '', description: '' }] }))}
@@ -424,8 +435,8 @@ export default function LiveStatusEditor() {
             </div>
 
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 10 }}>
-              <label style={{ fontSize: 11, color: '#94A3B8', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.5px' }}>
-                🕒 SSD Token Slots
+              <label style={{ fontSize: 11, color: '#94A3B8', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.5px', display: 'flex', alignItems: 'center', gap: 6 }}>
+                <Clock size={13} /> SSD Token Slots
               </label>
               <button
                 onClick={() => setStatus(s => ({ ...s, ssdTokenSlots: [...(s.ssdTokenSlots || []), { slotTime: '', status: 'available', tokensLeft: '' }] }))}

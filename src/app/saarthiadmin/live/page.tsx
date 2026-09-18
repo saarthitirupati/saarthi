@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import styles from './LiveUpdates.module.css';
-import { Activity, Clock, Zap, AlertTriangle, RefreshCw, CheckCircle2 } from 'lucide-react';
+import { Activity, Clock, Zap, AlertTriangle, RefreshCw, CheckCircle2, Users, Ticket } from 'lucide-react';
 import { notifyRealtimeUpdate } from '@/lib/useRealtimeStatus';
 import { safeFetchJson } from '@/lib/safeFetch';
 
@@ -20,11 +20,21 @@ export default function AdminLiveUpdates() {
     setTimeout(() => setToastMessage(null), 3000);
   };
 
+  const getAdminHeaders = () => {
+    const token = typeof window !== 'undefined'
+      ? (localStorage.getItem('saarthi_admin_token') || 'saarthi_admin_token_2026')
+      : 'saarthi_admin_token_2026';
+    return {
+      'Authorization': `Bearer ${token}`
+    };
+  };
+
   const fetchLiveData = useCallback(async () => {
     try {
+      const headers = getAdminHeaders();
       const [fetchedStatus, placesData] = await Promise.all([
-        safeFetchJson<any>('/api/admin/status?t=' + Date.now()),
-        safeFetchJson<any>('/api/admin/live-places?t=' + Date.now())
+        safeFetchJson<any>('/api/admin/status?t=' + Date.now(), { headers }),
+        safeFetchJson<any>('/api/admin/live-places?t=' + Date.now(), { headers })
       ]);
 
       if (fetchedStatus) {
@@ -48,7 +58,11 @@ export default function AdminLiveUpdates() {
 
   useEffect(() => {
     fetchLiveData();
-    const interval = setInterval(fetchLiveData, 5000);
+    const interval = setInterval(() => {
+      if (typeof document === 'undefined' || !document.hidden) {
+        fetchLiveData();
+      }
+    }, 10000);
 
     const handleCustomEvent = () => fetchLiveData();
     window.addEventListener('saarthi:live_update', handleCustomEvent);
@@ -64,7 +78,8 @@ export default function AdminLiveUpdates() {
     try {
       await fetch('/api/admin/status', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', ...getAdminHeaders() },
+        credentials: 'include',
         body: JSON.stringify({ weather })
       });
       notifyRealtimeUpdate();
@@ -79,20 +94,23 @@ export default function AdminLiveUpdates() {
     if (!alertMsg) return;
 
     try {
+      const headers = { 'Content-Type': 'application/json', ...getAdminHeaders() };
       await fetch('/api/admin/alerts', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers,
+        credentials: 'include',
         body: JSON.stringify({
           title: 'Emergency Operational Alert',
-          message: alertMsg,
-          type: 'emergency',
-          location: 'Tirumala / Tirupati',
-          active: true
+          description: alertMsg,
+          category: 'Emergency',
+          severity: 'Critical',
+          status: 'Published'
         })
       });
       await fetch('/api/admin/status', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers,
+        credentials: 'include',
         body: JSON.stringify({ notice: alertMsg })
       });
       notifyRealtimeUpdate();
@@ -106,9 +124,11 @@ export default function AdminLiveUpdates() {
   const handlePlaceUpdate = async (id: string, updates: any) => {
     setPlaceUpdateStatus(prev => ({ ...prev, [id]: 'Updating...' }));
     try {
+      const headers = { ...getAdminHeaders(), 'Content-Type': 'application/json' };
       const data = await safeFetchJson<any>('/api/admin/live-places', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers,
+        credentials: 'include',
         body: JSON.stringify({ id, updates })
       });
 
@@ -156,7 +176,8 @@ export default function AdminLiveUpdates() {
           
           await fetch('/api/admin/status', {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers,
+            credentials: 'include',
             body: JSON.stringify(globalStatusUpdates)
           });
         }
@@ -315,7 +336,9 @@ export default function AdminLiveUpdates() {
               {(place.id === 'uuid-1' || place.name.includes('Tirumala')) && (
                 <>
                   <div className={styles.controlGroup} style={{ borderTop: '1px solid #E2E8F0', paddingTop: '10px', marginTop: '6px' }}>
-                    <label style={{ color: '#D97706', fontWeight: 800 }}>👥 Sarva Darshan Wait</label>
+                    <label style={{ color: '#D97706', fontWeight: 800, display: 'flex', alignItems: 'center', gap: '4px' }}>
+                      <Users size={13} /> Sarva Darshan Wait
+                    </label>
                     <input 
                       name="sarva" 
                       type="text" 
@@ -327,7 +350,9 @@ export default function AdminLiveUpdates() {
                     />
                   </div>
                   <div className={styles.controlGroup}>
-                    <label style={{ color: '#0284C7', fontWeight: 800 }}>🎫 SSD / DD Wait</label>
+                    <label style={{ color: '#0284C7', fontWeight: 800, display: 'flex', alignItems: 'center', gap: '4px' }}>
+                      <Ticket size={13} /> SSD / DD Wait
+                    </label>
                     <input 
                       name="ssd" 
                       type="text" 
@@ -339,7 +364,9 @@ export default function AdminLiveUpdates() {
                     />
                   </div>
                   <div className={styles.controlGroup}>
-                    <label style={{ color: '#CA8A04', fontWeight: 800 }}>⚡ ₹300 Special Entry Wait</label>
+                    <label style={{ color: '#CA8A04', fontWeight: 800, display: 'flex', alignItems: 'center', gap: '4px' }}>
+                      <Zap size={13} /> ₹300 Special Entry Wait
+                    </label>
                     <input 
                       name="special" 
                       type="text" 

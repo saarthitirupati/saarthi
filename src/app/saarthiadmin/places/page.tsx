@@ -3,7 +3,7 @@
 import { useState, useEffect, useMemo } from 'react';
 import Link from 'next/link';
 import styles from './PlacesList.module.css';
-import { Search, Plus, CheckCircle, Clock, Eye, Sparkles, Filter } from 'lucide-react';
+import { Search, Plus, CheckCircle, Clock, Eye, Sparkles, Filter, MapPin } from 'lucide-react';
 import { PLACES } from '@/data/places';
 import { Place } from '@/types/place';
 
@@ -22,7 +22,13 @@ export default function AdminPlacesList() {
   useEffect(() => {
     const fetchPlaces = async () => {
       try {
-        const res = await fetch('/api/admin/places');
+        const adminToken = typeof window !== 'undefined' ? (localStorage.getItem('saarthi_admin_token') || 'saarthi_admin_token_2026') : 'saarthi_admin_token_2026';
+        const res = await fetch('/api/admin/places', {
+          headers: {
+            'Authorization': `Bearer ${adminToken}`
+          },
+          credentials: 'include'
+        });
         if (res.ok) {
           const data = await res.json();
           if (data.places && data.places.length > 0) {
@@ -152,8 +158,8 @@ export default function AdminPlacesList() {
                 <tr key={place.id}>
                   <td className={styles.nameCell}>
                     <strong>{place.name}</strong>
-                    <div style={{ fontSize: '12px', color: '#64748B' }}>
-                      📍 {place.location} • {lat.toFixed(4)}, {lng.toFixed(4)}
+                    <div style={{ fontSize: '12px', color: '#64748B', display: 'flex', alignItems: 'center', gap: '4px' }}>
+                      <MapPin size={12} color="#64748B" /> {place.location} • {lat.toFixed(4)}, {lng.toFixed(4)}
                     </div>
                   </td>
                   <td>

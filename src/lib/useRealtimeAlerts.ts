@@ -76,9 +76,11 @@ export function useRealtimeAlerts() {
         .channel(channelName)
         .on(
           'postgres_changes',
-          { event: '*', schema: 'public', table: 'live_alerts' },
-          () => {
-            fetchAlerts();
+          { event: '*', schema: 'public', table: 'live_updates' },
+          (payload: any) => {
+            if (!payload?.new?.module || payload.new.module === 'live_alerts') {
+              fetchAlerts();
+            }
           }
         )
         .subscribe();

@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Ticket, Clock, CheckCircle2, PauseCircle, XCircle, Save, RefreshCw, AlertCircle } from 'lucide-react';
+import { Ticket, Clock, CheckCircle2, PauseCircle, XCircle, Save, RefreshCw, AlertCircle, Bot, AlertTriangle } from 'lucide-react';
 import styles from '../Dashboard.module.css';
 import { notifyRealtimeUpdate } from '@/lib/useRealtimeStatus';
 import { safeFetchJson } from '@/lib/safeFetch';
@@ -222,8 +222,8 @@ export default function AdminSsdTokensPage() {
 
       {/* Autonomous Push Notification Preview & Connection */}
       <div className={styles.dataQualitySection} style={{ marginBottom: '24px', backgroundColor: '#F0FDF4', border: '1px solid #BBF7D0' }}>
-        <h3 className={styles.sectionTitle} style={{ color: '#166534', margin: '0 0 6px 0' }}>
-          🤖 Connected Autonomous 5:00 AM Push Alert
+        <h3 className={styles.sectionTitle} style={{ color: '#166534', margin: '0 0 6px 0', display: 'flex', alignItems: 'center', gap: '6px' }}>
+          <Bot size={16} /> Connected Autonomous 5:00 AM Push Alert
         </h3>
         <p style={{ fontSize: '12px', color: '#15803D', margin: '0 0 10px 0' }}>
           The autonomous engine broadcasts this message to subscribers at 5:00 AM IST without requiring any manual clicks. It updates dynamically with your panel settings above:
@@ -237,10 +237,18 @@ export default function AdminSsdTokensPage() {
           color: '#0F172A',
           lineHeight: 1.4
         }}>
-          <div style={{ fontWeight: 800, color: '#166534', marginBottom: '2px' }}>
-            {ssdTokenStatus === 'closed-for-day' 
-              ? '⚠️ Today’s SSD Token Quota Closed'
-              : `🎫 Free SSD Counters Opening at ${ssdNextTokenTime || '5:00 AM'}`}
+          <div style={{ fontWeight: 800, color: '#166534', marginBottom: '2px', display: 'flex', alignItems: 'center', gap: '6px' }}>
+            {ssdTokenStatus === 'closed-for-day' ? (
+              <>
+                <AlertTriangle size={14} color="#D97706" />
+                <span>Today’s SSD Token Quota Closed</span>
+              </>
+            ) : (
+              <>
+                <Ticket size={14} color="#166534" />
+                <span>Free SSD Counters Opening at {ssdNextTokenTime || '5:00 AM'}</span>
+              </>
+            )}
           </div>
           <div style={{ fontSize: '12px', color: '#475569' }}>
             {ssdTokenStatus === 'closed-for-day'

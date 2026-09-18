@@ -4,7 +4,7 @@ import React, { useState, useEffect, use } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import styles from './PlaceEditor.module.css';
-import { ArrowLeft, Save, MapPin, Image as ImageIcon, Sparkles, Check, Clock, Eye, Trash2, Plus } from 'lucide-react';
+import { ArrowLeft, Save, MapPin, Image as ImageIcon, Sparkles, Check, Clock, Eye, Trash2, Plus, Star } from 'lucide-react';
 import { PLACE_TYPES, CATEGORIES } from '@/constants/categories';
 import { PLACES } from '@/data/places';
 
@@ -130,9 +130,14 @@ export default function AdminPlaceEditor({ params }: { params: Promise<{ id: str
         verification: { status: form.verificationStatus }
       };
 
+      const adminToken = typeof window !== 'undefined' ? (localStorage.getItem('saarthi_admin_token') || 'saarthi_admin_token_2026') : 'saarthi_admin_token_2026';
       const res = await fetch(`/api/admin/places/${id}`, {
         method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${adminToken}`
+        },
+        credentials: 'include',
         body: JSON.stringify(payload)
       });
 
@@ -377,7 +382,7 @@ export default function AdminPlaceEditor({ params }: { params: Promise<{ id: str
               rel="noreferrer"
               style={{ fontSize: '12px', fontWeight: 700, color: '#2563EB', textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: '4px', marginTop: '4px' }}
             >
-              📍 Test Coordinates on Google Maps &rarr;
+              <MapPin size={13} /> Test Coordinates on Google Maps &rarr;
             </a>
           </section>
 
@@ -395,22 +400,22 @@ export default function AdminPlaceEditor({ params }: { params: Promise<{ id: str
             </div>
 
             <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', marginTop: '14px' }}>
-              <label className={styles.checkboxLabel}>
+              <label className={styles.checkboxLabel} style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
                 <input 
                   type="checkbox" 
                   checked={form.isMustVisit} 
                   onChange={(e) => set('isMustVisit', e.target.checked)} 
                 /> 
-                ⭐ Mark as Must-Visit
+                <Star size={13} color="#F59E0B" /> Mark as Must-Visit
               </label>
 
-              <label className={styles.checkboxLabel}>
+              <label className={styles.checkboxLabel} style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
                 <input 
                   type="checkbox" 
                   checked={form.isHiddenGem} 
                   onChange={(e) => set('isHiddenGem', e.target.checked)} 
                 /> 
-                💎 Mark as Hidden Gem
+                <Sparkles size={13} color="#8B5CF6" /> Mark as Hidden Gem
               </label>
             </div>
           </section>

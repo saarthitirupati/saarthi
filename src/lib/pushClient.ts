@@ -3,7 +3,9 @@
 
 export type PushPermissionState = 'granted' | 'denied' | 'default' | 'unsupported';
 
-const VAPID_KEY = process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY || '';
+const VAPID_KEY =
+  process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY ||
+  'BG66lKYjVyCTBCyVvgT0qpmwpFaJ414JqzVUVNZ14KRQlcC5UdqDUOp9USQElQ2r7vO6P4fzYlX3oFRuu4oR5V8';
 
 function urlBase64ToUint8Array(base64String: string): BufferSource {
   const padding = '='.repeat((4 - (base64String.length % 4)) % 4);
@@ -64,7 +66,7 @@ export async function subscribeToPushNotifications(): Promise<{
     const reg = await navigator.serviceWorker.ready;
     if (!reg.pushManager) {
       // Notification API works even if pushManager is not supported (e.g. some webviews)
-      await showLocalNotification(reg, '🔔 Darshan Alerts Active', 'Saarthi will notify you of Tirumala queue & SSD updates.');
+      await showLocalNotification(reg, 'Darshan Alerts Active', 'Saarthi will notify you of Tirumala queue & SSD updates.');
       return { success: true, permission: 'granted' };
     }
 
@@ -102,7 +104,7 @@ export async function subscribeToPushNotifications(): Promise<{
     // Trigger instant confirmation notification
     await showLocalNotification(
       reg,
-      '🔔 Srivari Darshan Alerts Active',
+      'Srivari Darshan Alerts Active',
       'You are subscribed to live Tirumala queue wait times, SSD token drops, and temple advisories.'
     );
 

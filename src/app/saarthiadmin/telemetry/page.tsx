@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
-import { Zap, RefreshCw, Eye, Bookmark, HelpCircle, Compass, ShieldAlert, Award } from 'lucide-react';
+import { Zap, RefreshCw, Eye, Bookmark, HelpCircle, Compass, ShieldAlert, Award, Car, MessageSquare } from 'lucide-react';
 import styles from '../admin.module.css';
 import { supabase } from '@/lib/supabase';
 
@@ -131,7 +131,7 @@ export default function TelemetryPage() {
               onChange={(e) => setAutoRefresh(e.target.checked)} 
               style={{ accentColor: '#2DD4BF' }}
             />
-            Real-time stream ⚡
+            Real-time stream
           </label>
           <button onClick={fetchEvents} className={styles.btnSecondary} style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
             <RefreshCw size={14} className={loading ? styles.pulse : ''} /> Refresh
@@ -162,7 +162,9 @@ export default function TelemetryPage() {
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(340px, 1fr))', gap: '24px', marginTop: '32px' }}>
         {/* Leaderboard Card */}
         <div className={styles.tableCard} style={{ margin: 0, padding: '20px' }}>
-          <p className={styles.tableTitle} style={{ marginBottom: '16px' }}>🚕 QR Referral Leaderboard</p>
+          <p className={styles.tableTitle} style={{ marginBottom: '16px', display: 'flex', alignItems: 'center', gap: '6px' }}>
+            <Car size={16} color="#2DD4BF" /> QR Referral Leaderboard
+          </p>
           {qrScanCounts.length === 0 ? (
             <div style={{ fontSize: '13px', color: '#94A3B8', textAlign: 'center', padding: '20px' }}>No scans recorded yet.</div>
           ) : (
@@ -181,7 +183,9 @@ export default function TelemetryPage() {
 
         {/* Feedback Logs Card */}
         <div className={styles.tableCard} style={{ margin: 0, padding: '20px' }}>
-          <p className={styles.tableTitle} style={{ marginBottom: '16px' }}>💬 Passenger Feedback Log</p>
+          <p className={styles.tableTitle} style={{ marginBottom: '16px', display: 'flex', alignItems: 'center', gap: '6px' }}>
+            <MessageSquare size={16} color="#2DD4BF" /> Passenger Feedback Log
+          </p>
           {feedbackLogs.length === 0 ? (
             <div style={{ fontSize: '13px', color: '#94A3B8', textAlign: 'center', padding: '20px' }}>No feedback submitted yet.</div>
           ) : (

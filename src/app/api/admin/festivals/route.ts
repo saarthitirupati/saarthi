@@ -104,7 +104,7 @@ export async function POST(req: Request) {
 
     // Notify users about new festival
     pushNotifyAll({
-      title: `🪔 ${doc.name}`,
+      title: doc.name,
       body: doc.description || `Upcoming festival at Tirumala — ${doc.date}`,
       url: '/festivals',
       tag: 'festival-new',

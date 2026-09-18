@@ -388,3 +388,77 @@
   letter-spacing: 0.5px;
   margin-bottom: 8px;
 }
+
+.broadcastBtn {
+  background-color: #F8FAFC;
+  color: #0F5132;
+  border: 1px solid #86EFAC;
+  border-radius: 6px;
+  padding: 6px 10px;
+  font-size: 11px;
+  font-weight: 700;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+
+.broadcastBtn:hover {
+  background-color: #DCFCE7;
+  border-color: #22C55E;
+}
+
+.testPushBtn {
+  background-color: #F1F5F9;
+  color: #334155;
+  border: 1px solid #CBD5E1;
+  border-radius: 8px;
+  padding: 10px 14px;
+  font-weight: 700;
+  font-size: 13px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.2s;
+}
+
+.testPushBtn:hover {
+  background-color: #E2E8F0;
+  color: #0F172A;
+}
+
+.subscribersBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  background-color: #F0FDF4;
+  border: 1px solid #BBF7D0;
+  border-radius: 20px;
+  font-size: 11.5px;
+  font-weight: 700;
+  color: #166534;
+}
+
+.checkboxContainer {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 12px;
+  background-color: #F8FAFC;
+  border: 1px solid #E2E8F0;
+  border-radius: 8px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.checkboxLabel {
+  font-size: 13px;
+  font-weight: 600;
+  color: #334155;
+  cursor: pointer;
+}
+

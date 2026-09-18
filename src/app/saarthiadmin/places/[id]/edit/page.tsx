@@ -71,9 +71,14 @@ export default function EditPlace({ params }: { params: Promise<{ id: string }> 
       }
     };
 
+    const adminToken = typeof window !== 'undefined' ? (localStorage.getItem('saarthi_admin_token') || 'saarthi_admin_token_2026') : 'saarthi_admin_token_2026';
     await fetch(`/api/admin/places/${id}`, {
       method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${adminToken}`
+      },
+      credentials: 'include',
       body: JSON.stringify(body),
     });
     

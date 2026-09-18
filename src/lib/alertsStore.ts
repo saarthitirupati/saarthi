@@ -47,18 +47,22 @@ export async function fetchLiveAlerts(showAll = false): Promise<LiveAlert[]> {
   const now = Date.now();
   let dbAlerts: LiveAlert[] | null = null;
 
-  // 1. Try fetching from Supabase
+  // 1. Try fetching from Supabase live_updates table
   try {
-    let query = supabase.from('live_alerts').select('*');
-    if (!showAll) {
-      query = query.eq('status', 'Published');
-    }
-    const { data, error } = await query.order('created_at', { ascending: false });
-    if (!error && Array.isArray(data)) {
-      dbAlerts = data as LiveAlert[];
+    const { data, error } = await supabase
+      .from('live_updates')
+      .select('value')
+      .eq('module', 'live_alerts')
+      .maybeSingle();
+
+    if (!error && data?.value) {
+      const parsed = typeof data.value === 'string' ? JSON.parse(data.value) : data.value;
+      if (Array.isArray(parsed)) {
+        dbAlerts = parsed as LiveAlert[];
+      }
     }
   } catch (err) {
-    console.warn('Supabase live_alerts fetch warning:', err);
+    console.warn('Supabase live_updates fetch warning:', err);
   }
 
   // 2. Fetch local fallback if Supabase not available
@@ -86,11 +90,18 @@ export async function fetchLiveAlerts(showAll = false): Promise<LiveAlert[]> {
     return !isNaN(exp) && exp > now;
   });
 
-  return filtered.sort((a, b) => {
+  const sorted = filtered.sort((a, b) => {
     const tA = a.created_at ? new Date(a.created_at).getTime() : 0;
     const tB = b.created_at ? new Date(b.created_at).getTime() : 0;
     return tB - tA;
   });
+
+  if (sorted.length === 0 && !showAll) {
+    const local = await readLocalAlerts();
+    return local;
+  }
+
+  return sorted;
 }
 
 export async function saveLiveAlert(alertData: Partial<LiveAlert>): Promise<LiveAlert> {
@@ -120,11 +131,19 @@ export async function saveLiveAlert(alertData: Partial<LiveAlert>): Promise<Live
   // Add to in-memory list
   IN_MEMORY_ALERTS = [newAlert, ...IN_MEMORY_ALERTS.filter((a) => a.id !== id)];
 
-  // 1. Try Supabase insert
+  // 1. Try Supabase live_updates update
   try {
-    await supabase.from('live_alerts').insert([newAlert]);
+    const existing = await fetchLiveAlerts(true);
+    const updatedList = [newAlert, ...existing.filter((a) => a.id !== id)];
+    await supabase
+      .from('live_updates')
+      .update({
+        value: JSON.stringify(updatedList),
+        updated_at: now
+      })
+      .eq('module', 'live_alerts');
   } catch (e) {
-    console.warn('Supabase live_alerts insert warning:', e);
+    console.warn('Supabase live_updates save warning:', e);
   }
 
   // 2. Try writing to local file
@@ -143,11 +162,19 @@ export async function deleteLiveAlert(id: string): Promise<boolean> {
   DELETED_ALERT_IDS.add(id);
   IN_MEMORY_ALERTS = IN_MEMORY_ALERTS.filter((a) => a.id !== id);
 
-  // 1. Try Supabase delete
+  // 1. Try Supabase live_updates delete/update
   try {
-    await supabase.from('live_alerts').delete().eq('id', id);
+    const existing = await fetchLiveAlerts(true);
+    const updatedList = existing.filter((a) => a.id !== id);
+    await supabase
+      .from('live_updates')
+      .update({
+        value: JSON.stringify(updatedList),
+        updated_at: new Date().toISOString()
+      })
+      .eq('module', 'live_alerts');
   } catch (e) {
-    console.warn('Supabase live_alerts delete warning:', e);
+    console.warn('Supabase live_updates delete warning:', e);
   }
 
   // 2. Try local file delete

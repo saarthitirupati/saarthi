@@ -61,9 +61,14 @@ export default function AddPlace() {
       }
     };
     
+    const adminToken = typeof window !== 'undefined' ? (localStorage.getItem('saarthi_admin_token') || 'saarthi_admin_token_2026') : 'saarthi_admin_token_2026';
     const res = await fetch('/api/admin/places', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${adminToken}`
+      },
+      credentials: 'include',
       body: JSON.stringify(body),
     });
     
