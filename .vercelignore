@@ -23,7 +23,6 @@ banner/
 tests/
 test-results/
 playwright-report/
-scripts/
 
 # Documentation, scratch scripts, and agent configs
 docs/
