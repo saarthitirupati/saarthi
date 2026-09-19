@@ -30,14 +30,16 @@ export async function POST(req: Request) {
     const alertBody = alert.description || (alert as any).message;
     const shouldSendPush = data.sendPush !== false;
     if (shouldSendPush && alert && (alert.status === 'Published' || (alert as any).active) && alertBody) {
-      pushNotifyAll({
-        title: alert.title ? alert.title : 'Tirumala Operational Alert',
-        body: alertBody,
-        url: '/alerts',
-        tag: `alert-${alert.id || 'live'}`
-      }).catch((err) => {
+      try {
+        await pushNotifyAll({
+          title: alert.title ? alert.title : 'Tirumala Operational Alert',
+          body: alertBody,
+          url: '/alerts',
+          tag: `alert-${alert.id || 'live'}`
+        });
+      } catch (err) {
         console.error('[PushNotify] Error broadcasting emergency alert:', err);
-      });
+      }
     }
 
     return NextResponse.json(alert, { status: 201 });

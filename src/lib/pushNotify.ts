@@ -87,14 +87,16 @@ export async function pushNotifyAll(payload: PushPayload) {
       .eq('is_active', true)
       .not('fcm_token', 'is', null);
 
-    if (!devErr && devices?.length) {
+    const validDevices = (devices || []).filter(d => d.fcm_token && d.fcm_token.trim().length > 20);
+    if (!devErr && validDevices.length) {
+      console.log(`[PushNotifyAll] Dispatching FCM push to ${validDevices.length} active Android devices for "${payload.title}"`);
       const deadDevices: string[] = [];
       const deepLink = payload.url
         ? (payload.url.startsWith('http') ? payload.url : `https://www.saarthiguide.in${payload.url}`)
         : 'https://www.saarthiguide.in';
 
       await Promise.allSettled(
-        devices.map(async (dev) => {
+        validDevices.map(async (dev) => {
           if (!dev.fcm_token) return;
           const res = await sendFCMNotification({
             token: dev.fcm_token,
@@ -122,6 +124,8 @@ export async function pushNotifyAll(payload: PushPayload) {
       if (deadDevices.length) {
         await supabase.from('user_devices').update({ is_active: false }).in('device_id', deadDevices);
       }
+    } else {
+      console.log('[PushNotifyAll] No active Android FCM devices currently registered');
     }
   } catch (fcmErr) {
     console.error('[PushNotifyAll] FCM dispatch exception:', fcmErr);

@@ -5,8 +5,12 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
 import android.net.Uri
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.view.View
 import android.webkit.GeolocationPermissions
@@ -16,6 +20,9 @@ import android.webkit.WebChromeClient
 import android.webkit.WebSettings
 import android.webkit.WebView
 import android.widget.Button
+import android.widget.FrameLayout
+import android.widget.TextView
+import android.widget.VideoView
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
@@ -103,6 +110,70 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    private var isSplashDismissed = false
+
+    private fun isNetworkConnected(): Boolean {
+        return try {
+            val cm = getSystemService(Context.CONNECTIVITY_SERVICE) as? ConnectivityManager
+            val network = cm?.activeNetwork ?: return false
+            val capabilities = cm.getNetworkCapabilities(network) ?: return false
+            capabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
+        } catch (_: Exception) {
+            true
+        }
+    }
+
+    private fun dismissNativeSplash() {
+        if (isSplashDismissed) return
+        isSplashDismissed = true
+        val splashContainer = findViewById<FrameLayout>(R.id.splashContainer) ?: return
+        val splashVideoView = findViewById<VideoView>(R.id.splashVideoView)
+        try {
+            if (splashVideoView != null && splashVideoView.isPlaying) {
+                splashVideoView.stopPlayback()
+            }
+        } catch (_: Exception) {}
+
+        splashContainer.animate()
+            .alpha(0f)
+            .setDuration(350)
+            .withEndAction {
+                splashContainer.visibility = View.GONE
+            }
+            .start()
+    }
+
+    private fun setupNativeSplash() {
+        val splashContainer = findViewById<FrameLayout>(R.id.splashContainer) ?: return
+        val splashVideoView = findViewById<VideoView>(R.id.splashVideoView) ?: return
+        val btnSkipSplash = findViewById<TextView>(R.id.btnSkipSplash)
+
+        btnSkipSplash?.setOnClickListener { dismissNativeSplash() }
+        splashContainer.setOnClickListener { dismissNativeSplash() }
+
+        try {
+            val videoUri = Uri.parse("android.resource://$packageName/${R.raw.splash}")
+            splashVideoView.setVideoURI(videoUri)
+            splashVideoView.setOnPreparedListener { mp ->
+                mp.isLooping = false
+                splashVideoView.start()
+            }
+            splashVideoView.setOnCompletionListener {
+                dismissNativeSplash()
+            }
+            splashVideoView.setOnErrorListener { _, _, _ ->
+                dismissNativeSplash()
+                true
+            }
+            Handler(Looper.getMainLooper()).postDelayed({
+                dismissNativeSplash()
+            }, 10500)
+        } catch (e: Exception) {
+            Log.w("Saarthi", "Native splash playback error", e)
+            dismissNativeSplash()
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -118,10 +189,12 @@ class MainActivity : AppCompatActivity() {
         setupSwipeRefresh()
         setupWebView()
         setupBackNavigation()
+        setupNativeSplash()
 
         btnRetry.setOnClickListener {
             offlineContainer.visibility = View.GONE
             webView.visibility = View.VISIBLE
+            webView.settings.cacheMode = if (isNetworkConnected()) WebSettings.LOAD_DEFAULT else WebSettings.LOAD_CACHE_ELSE_NETWORK
             webView.reload()
         }
 
@@ -161,6 +234,9 @@ class MainActivity : AppCompatActivity() {
         settings.useWideViewPort = true
         settings.loadWithOverviewMode = true
 
+        // Use offline cache when network connectivity is lost
+        settings.cacheMode = if (isNetworkConnected()) WebSettings.LOAD_DEFAULT else WebSettings.LOAD_CACHE_ELSE_NETWORK
+
         webView.setLayerType(View.LAYER_TYPE_HARDWARE, null)
         settings.mixedContentMode = WebSettings.MIXED_CONTENT_NEVER_ALLOW
         settings.setGeolocationEnabled(true)
@@ -181,8 +257,11 @@ class MainActivity : AppCompatActivity() {
             },
             onErrorListener = {
                 swipeRefresh.isRefreshing = false
-                webView.visibility = View.GONE
-                offlineContainer.visibility = View.VISIBLE
+                val currentUrl = webView.url
+                if (currentUrl == null || currentUrl == "about:blank") {
+                    webView.visibility = View.GONE
+                    offlineContainer.visibility = View.VISIBLE
+                }
             }
         )
 
@@ -249,6 +328,11 @@ class MainActivity : AppCompatActivity() {
     private fun setupBackNavigation() {
         onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
+                val splashContainer = findViewById<FrameLayout>(R.id.splashContainer)
+                if (!isSplashDismissed && splashContainer != null && splashContainer.visibility == View.VISIBLE) {
+                    dismissNativeSplash()
+                    return
+                }
                 if (webView.canGoBack()) {
                     webView.goBack()
                 } else {

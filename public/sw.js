@@ -66,7 +66,25 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
-  // API calls: network-only, no caching (darshan times, live data must be fresh)
+  // API calls for v1 content/places/status/alerts: network-first with cache fallback for offline usage
+  if (url.pathname.startsWith('/api/v1/')) {
+    event.respondWith(
+      fetch(request)
+        .then((response) => {
+          if (response && response.status === 200) {
+            const clone = response.clone();
+            caches.open(CACHE_NAME).then((cache) => cache.put(request, clone));
+          }
+          return response;
+        })
+        .catch(() => {
+          return caches.match(request);
+        })
+    );
+    return;
+  }
+
+  // Other API calls (admin, auth): bypass cache
   if (url.pathname.startsWith('/api/')) {
     return;
   }

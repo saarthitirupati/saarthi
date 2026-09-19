@@ -124,6 +124,12 @@ export default function ClientLayout({
 
   useEffect(() => {
     if (typeof window === 'undefined') return;
+    const isNativeApp = Boolean((window as any).SaarthiNative || (window as any).Android);
+    if (isNativeApp) {
+      setShowSplash(false);
+      sessionStorage.setItem('splashShown', 'true');
+      return;
+    }
     const splashShown = sessionStorage.getItem('splashShown');
     const isHomePage = pathname === '/' || pathname === '' || pathname === '/splash';
     if (splashShown && isHomePage) {

@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import webpush from 'web-push';
 import { supabase } from '@/lib/supabase';
 import { sendFCMNotification } from '@/lib/fcmService';
+import { pushNotifyAll } from '@/lib/pushNotify';
 import {
   buildDailySpotNotification,
   buildFestivalReminder,
@@ -59,6 +60,12 @@ async function handlePushDispatch(type: string, endpoint?: string, daysSince?: n
 
   const payload = buildPayload(type, daysSince, custom);
   if (!payload) return NextResponse.json({ ok: true, sent: 0, reason: 'No payload generated' });
+
+  // If broadcasting to all users (no specific web endpoint, not re-engagement), notify both Web Push and Native Android FCM
+  if (!endpoint && type !== 'reengagement') {
+    await pushNotifyAll(payload);
+    return NextResponse.json({ ok: true, sent: 1, broadcast: true });
+  }
 
   // Fetch subscriptions — specific endpoint or all; re-engagement filters by inactivity
   let query = supabase

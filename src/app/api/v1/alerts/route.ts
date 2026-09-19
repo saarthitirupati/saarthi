@@ -29,14 +29,16 @@ export async function POST(request: Request) {
 
     const shouldSendPush = body.sendPush !== false;
     if (shouldSendPush && createdAlert && (createdAlert.status === 'Published' || (createdAlert as any).active)) {
-      pushNotifyAll({
-        title: createdAlert.title ? createdAlert.title : 'Tirumala Operational Alert',
-        body: createdAlert.description || (createdAlert as any).message || '',
-        url: '/alerts',
-        tag: `alert-${createdAlert.id || 'live'}`
-      }).catch((err) => {
+      try {
+        await pushNotifyAll({
+          title: createdAlert.title ? createdAlert.title : 'Tirumala Operational Alert',
+          body: createdAlert.description || (createdAlert as any).message || '',
+          url: '/alerts',
+          tag: `alert-${createdAlert.id || 'live'}`
+        });
+      } catch (err) {
         console.error('[PushNotify] Error broadcasting live alert:', err);
-      });
+      }
     }
 
     return NextResponse.json(createdAlert, { status: 201 });
