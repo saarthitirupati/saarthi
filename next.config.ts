@@ -9,6 +9,12 @@ const nextConfig: NextConfig = {
   },
   outputFileTracingExcludes: {
     '*': [
+      './android-app/**',
+      './awesome-skills/**',
+      './backend/**',
+      './banner/**',
+      './twa-output/**',
+      './docs/**',
       './public/banner/**',
       './public/audio/**',
       './public/assets/**',

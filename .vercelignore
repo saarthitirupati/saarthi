@@ -1,0 +1,33 @@
+# Vercel Deployment Ignore Rules
+# Exclude non-web native mobile apps, offline AI skills, backend Python services, and test artifacts
+
+# Android native source, build artifacts, and keystores
+android-app/
+*.apk
+*.aab
+*.keystore
+*.jks
+twa-output/
+twa-output.zip
+
+# Large offline AI skills library (persona and development tools)
+awesome-skills/
+
+# FastAPI Python backend
+backend/
+
+# Raw video work and temp banner files
+banner/
+
+# Automated tests & reports
+tests/
+test-results/
+playwright-report/
+scripts/
+
+# Documentation, scratch scripts, and agent configs
+docs/
+scratch/
+.agents/
+.windsurf/
+.cursor/
