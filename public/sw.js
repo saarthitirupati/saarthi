@@ -1,7 +1,7 @@
 // Saarthi Guide Service Worker v1
 // Caches app shell & visited pages for full offline support on Tirumala hill
 
-const CACHE_NAME = 'saarthi-v10';
+const CACHE_NAME = 'saarthi-v11';
 const APP_SHELL = [
   '/',
   '/explore',
@@ -11,9 +11,7 @@ const APP_SHELL = [
   '/icon-192.png',
   '/icon-512.png',
   '/apple-touch-icon.png',
-  '/banner/splash-screen-logo.mp4',
   '/banner/splash_poster.webp',
-  '/banner/hero_banner_compressed.mp4',
   '/banner/banner_poster.webp',
   '/audio/saarthi-opening-ident.wav',
   '/audio/saarthi-courtyard-ambient.wav',
@@ -58,14 +56,15 @@ self.addEventListener('fetch', (event) => {
   const { request } = event;
   const url = new URL(request.url);
 
-  // Skip non-GET, chrome-extension, admin routes, analytics, and external video streams
+  // Skip non-GET, chrome-extension, admin routes, analytics, and video streaming files
+  // Video files require native HTTP 206 Partial Content range requests which fail when intercepted by SW
   if (
     request.method !== 'GET' ||
     url.protocol === 'chrome-extension:' ||
     url.pathname.startsWith('/saarthiadmin') ||
     url.pathname.startsWith('/api/v1/analytics') ||
     url.pathname.startsWith('/api/admin') ||
-    (!url.pathname.startsWith('/banner/') && url.pathname.match(/\.(mp4|webm|ogv|mov)$/i))
+    url.pathname.match(/\.(mp4|webm|ogv|mov)$/i)
   ) {
     return;
   }

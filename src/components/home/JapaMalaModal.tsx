@@ -23,6 +23,7 @@ import {
   setAudioGloballyEnabled,
   stopAllAudio,
   startJapaAmbient,
+  ensureJapaAmbientPlaying,
   transitionToJapa,
   returnFromJapa
 } from '../../lib/audioIdentity';
@@ -194,6 +195,7 @@ export function JapaMalaModal({ isOpen, onClose, lang }: JapaMalaModalProps) {
     const isQuarterMilestone = chantCount === 27 || chantCount === 54 || chantCount === 81;
 
     if (isSoundEnabled) {
+      ensureJapaAmbientPlaying(0.35);
       if (is108Reach) {
         playJapa108Complete();
       } else if (isQuarterMilestone) {

@@ -116,7 +116,7 @@ export default function ClientLayout({
   const pathname = usePathname();
   const router = useRouter();
 
-  const isHome = pathname === '/' || pathname === '' || pathname === '/splash';
+  const isHome = pathname === '/' || pathname === '';
   const [showSplash, setShowSplash] = useState<boolean>(isHome);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 

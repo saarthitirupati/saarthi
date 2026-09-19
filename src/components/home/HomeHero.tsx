@@ -1407,7 +1407,7 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
       }}>
         <video
           ref={bannerVideoRef}
-          src="/banner/hero_banner_compressed.mp4"
+          src="/banner/homescreen-banner.mp4"
           autoPlay
           loop
           muted

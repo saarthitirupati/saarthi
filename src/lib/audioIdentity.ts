@@ -278,14 +278,20 @@ export function stopScreen1Opening() {
 export function startScreen1Ambient(targetVol: number = 0.38) {
   if (!isAudioGloballyEnabled() || typeof window === 'undefined') return;
 
-  if (screen1AmbientAudio && !screen1AmbientAudio.paused) return;
-
   try {
     if (!screen1AmbientAudio) {
       screen1AmbientAudio = new Audio('/audio/saarthi-courtyard-ambient.wav');
       screen1AmbientAudio.loop = true;
+      screen1AmbientAudio.onended = () => {
+        if (isAudioGloballyEnabled() && screen1AmbientAudio) {
+          screen1AmbientAudio.currentTime = 0;
+          screen1AmbientAudio.play().catch(() => {});
+        }
+      };
     }
-    fadeIn(screen1AmbientAudio, targetVol, 600);
+    if (screen1AmbientAudio.paused) {
+      fadeIn(screen1AmbientAudio, targetVol, 600);
+    }
   } catch {
     // Ignored
   }
@@ -302,22 +308,35 @@ export function stopScreen1Ambient(fadeMs: number = 400) {
 // ─────────────────────────────────────────────────────────────────────────────
 
 /**
- * 🪔 Screen 2 Sanctum Ambient Bed (20s loop)
- * Meditative breathing bed: Shruti + subtle veena motif + soft bansuri.
+ * 🪔 Screen 2 Sanctum Ambient Bed (Continuous Chant / Veena Loop)
+ * Seamlessly loops without interruption on mobile and desktop browsers.
  */
 export function startJapaAmbient(targetVol: number = 0.35) {
   if (!isAudioGloballyEnabled() || typeof window === 'undefined') return;
-
-  if (japaAmbientAudio && !japaAmbientAudio.paused) return;
 
   try {
     if (!japaAmbientAudio) {
       japaAmbientAudio = new Audio('/audio/japa-ambient-loop.wav');
       japaAmbientAudio.loop = true;
+      japaAmbientAudio.onended = () => {
+        if (isAudioGloballyEnabled() && japaAmbientAudio) {
+          japaAmbientAudio.currentTime = 0;
+          japaAmbientAudio.play().catch(() => {});
+        }
+      };
     }
-    fadeIn(japaAmbientAudio, targetVol, 500);
+    if (japaAmbientAudio.paused) {
+      fadeIn(japaAmbientAudio, targetVol, 500);
+    }
   } catch {
     // Ignored
+  }
+}
+
+export function ensureJapaAmbientPlaying(targetVol: number = 0.35) {
+  if (!isAudioGloballyEnabled() || typeof window === 'undefined') return;
+  if (!japaAmbientAudio || japaAmbientAudio.paused) {
+    startJapaAmbient(targetVol);
   }
 }
 
