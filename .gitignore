@@ -47,6 +47,7 @@ next-env.d.ts
 scratch/
 scratch_*
 banner/
+!public/banner/
 *.log
 twa-output/
 

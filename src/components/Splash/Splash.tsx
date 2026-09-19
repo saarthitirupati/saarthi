@@ -53,7 +53,8 @@ export default function SplashScreen({ onFinish }: { onFinish: () => void }) {
         >
           <video
             ref={videoRef}
-            src="/banner/saarthi-splashscreen.mp4"
+            src="/banner/splash-screen-logo.mp4"
+            poster="/banner/splash_poster.webp"
             autoPlay
             loop={false}
             muted
@@ -83,13 +84,39 @@ export default function SplashScreen({ onFinish }: { onFinish: () => void }) {
               }
             }}
             onEnded={handleFinish}
-            onError={handleFinish}
+            onError={() => {
+              // On video format or loading error, keep poster visible for 1.5s before continuing
+              setTimeout(handleFinish, 1500);
+            }}
             className={styles.splashVideo}
             style={{
-              opacity: isVideoReady ? 1 : 0,
+              opacity: 1,
               transition: 'opacity 0.4s ease-in-out'
             }}
           />
+
+          <button
+            type="button"
+            onClick={handleFinish}
+            style={{
+              position: 'absolute',
+              top: 'max(20px, env(safe-area-inset-top))',
+              right: '20px',
+              zIndex: 9999999,
+              background: 'rgba(0, 0, 0, 0.4)',
+              border: '1px solid rgba(255, 255, 255, 0.25)',
+              color: '#FFFFFF',
+              borderRadius: '9999px',
+              padding: '6px 14px',
+              fontSize: '13px',
+              fontWeight: 500,
+              backdropFilter: 'blur(8px)',
+              WebkitBackdropFilter: 'blur(8px)',
+              cursor: 'pointer'
+            }}
+          >
+            Skip
+          </button>
         </motion.div>
       )}
     </AnimatePresence>

@@ -1,7 +1,7 @@
 // Saarthi Guide Service Worker v1
 // Caches app shell & visited pages for full offline support on Tirumala hill
 
-const CACHE_NAME = 'saarthi-v9';
+const CACHE_NAME = 'saarthi-v10';
 const APP_SHELL = [
   '/',
   '/explore',
@@ -11,6 +11,10 @@ const APP_SHELL = [
   '/icon-192.png',
   '/icon-512.png',
   '/apple-touch-icon.png',
+  '/banner/splash-screen-logo.mp4',
+  '/banner/splash_poster.webp',
+  '/banner/hero_banner_compressed.mp4',
+  '/banner/banner_poster.webp',
   '/audio/saarthi-opening-ident.wav',
   '/audio/saarthi-courtyard-ambient.wav',
   '/audio/japa-ambient-loop.wav',
@@ -54,14 +58,14 @@ self.addEventListener('fetch', (event) => {
   const { request } = event;
   const url = new URL(request.url);
 
-  // Skip non-GET, chrome-extension, admin routes, analytics, and video streams (bypassed for native HTTP range streaming)
+  // Skip non-GET, chrome-extension, admin routes, analytics, and external video streams
   if (
     request.method !== 'GET' ||
     url.protocol === 'chrome-extension:' ||
     url.pathname.startsWith('/saarthiadmin') ||
     url.pathname.startsWith('/api/v1/analytics') ||
     url.pathname.startsWith('/api/admin') ||
-    url.pathname.match(/\.(mp4|webm|ogv|mov)$/i)
+    (!url.pathname.startsWith('/banner/') && url.pathname.match(/\.(mp4|webm|ogv|mov)$/i))
   ) {
     return;
   }
@@ -89,12 +93,13 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
-  // Static assets (_next/static, images, fonts): cache-first
+  // Static assets (_next/static, images, fonts, banner videos, audio): cache-first
   if (
     url.pathname.startsWith('/_next/static') ||
     url.pathname.startsWith('/assets/') ||
+    url.pathname.startsWith('/banner/') ||
     url.pathname.startsWith('/maps/') ||
-    url.pathname.match(/\.(png|jpg|jpeg|webp|svg|ico|woff2?|ttf|css|js)$/)
+    url.pathname.match(/\.(png|jpg|jpeg|webp|svg|ico|woff2?|ttf|css|js|mp4)$/)
   ) {
     event.respondWith(
       caches.match(request).then((cached) => {
@@ -106,8 +111,7 @@ self.addEventListener('fetch', (event) => {
           }
           return response;
         }).catch(() => {
-          // NEVER return HTML for JS or CSS chunk failures!
-          return new Response(null, { status: 404, statusText: 'Chunk Not Found' });
+          return new Response(null, { status: 404, statusText: 'Not Found' });
         });
       })
     );

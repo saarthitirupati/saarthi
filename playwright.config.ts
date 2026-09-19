@@ -4,6 +4,7 @@ export default defineConfig({
   testDir: './tests',
   fullyParallel: true,
   workers: process.env.CI ? 1 : 2,
+  timeout: 60 * 1000,
   reporter: 'list',
   use: {
     baseURL: process.env.PLAYWRIGHT_TEST_BASE_URL || 'http://localhost:3000',

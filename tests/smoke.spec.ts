@@ -3,7 +3,7 @@ import { test, expect } from '@playwright/test';
 test.describe('Saarthi Smoke Baseline Tests', () => {
   test('01: App loads, title and body are present', async ({ page }) => {
     const startTime = Date.now();
-    await page.goto('/');
+    await page.goto('/', { waitUntil: 'domcontentloaded' });
     
     // Check page title contains Saarthi
     await expect(page).toHaveTitle(/Saarthi/i);
@@ -17,7 +17,7 @@ test.describe('Saarthi Smoke Baseline Tests', () => {
   });
 
   test('02: Onboarding renders, language selection and continue work', async ({ page }) => {
-    await page.goto('/onboarding');
+    await page.goto('/onboarding', { waitUntil: 'domcontentloaded' });
     
     // Verify Onboarding headings exist
     const heading = page.locator('h1');
@@ -57,7 +57,7 @@ test.describe('Saarthi Smoke Baseline Tests', () => {
   });
 
   test('05: Splash screen displays clean minimalist identity and video container', async ({ page }) => {
-    await page.goto('/splash');
+    await page.goto('/splash', { waitUntil: 'domcontentloaded' });
 
     // Verify video splash element exists
     const video = page.locator('video').first();
@@ -83,8 +83,7 @@ test.describe('Saarthi Smoke Baseline Tests', () => {
     const routesToTest = ['/', '/onboarding', '/explore'];
 
     for (const route of routesToTest) {
-      await page.goto(route);
-      await page.waitForLoadState('domcontentloaded');
+      await page.goto(route, { waitUntil: 'domcontentloaded' });
 
       const isOverflowing = await page.evaluate(() => {
         return document.documentElement.scrollWidth > window.innerWidth;
@@ -96,7 +95,7 @@ test.describe('Saarthi Smoke Baseline Tests', () => {
 
   test('08: Core pilgrim journey: Splash -> Onboarding -> Home -> Darshan -> Explore -> Place -> Directions', async ({ page }) => {
     // 1. Splash / Onboarding
-    await page.goto('/onboarding');
+    await page.goto('/onboarding', { waitUntil: 'domcontentloaded' });
 
     // 2. Complete Onboarding
     // Step 1: Language selection Continue

@@ -51,58 +51,33 @@ interface CacheEntry {
 const placesCache = new Map<string, CacheEntry>();
 const CACHE_TTL_MS = 60 * 1000;
 
-export async function GET(request: Request) {
-  const { searchParams } = new URL(request.url);
-  const city = searchParams.get('city') || 'tirupati';
-  const category = searchParams.get('category') || '';
-  const cacheKey = `${city}:${category}`;
+// Pre-seed default in-memory cache with verified static places for instantaneous initial response (0ms cold start)
+const defaultPlaces = withVerifiedCoords(PLACES);
+placesCache.set('tirupati:', {
+  data: defaultPlaces,
+  deletedSlugs: [],
+  expiresAt: Date.now() + 10 * 1000 // Revalidate in background after 10s
+});
 
-  // 1. Check in-memory cache first
-  const cached = placesCache.get(cacheKey);
-  if (cached && Date.now() < cached.expiresAt) {
-    return NextResponse.json(
-      { success: true, data: cached.data, deletedSlugs: cached.deletedSlugs },
-      {
-        headers: {
-          'Cache-Control': 'public, max-age=60, s-maxage=60, stale-while-revalidate=300',
-          'X-Cache': 'HIT',
-        },
-      }
-    );
-  }
-
-  // 2. If external backend is explicitly configured, try it
-  if (BACKEND_URL) {
-    try {
-      const url = new URL(`${BACKEND_URL}/api/v1/places`);
-      if (category) url.searchParams.append('category', category);
-
-      const res = await fetch(url.toString(), { next: { revalidate: 60 } });
-      if (res.ok) {
-        const json = await res.json();
-        if (json.success && Array.isArray(json.data)) {
-          const data = withVerifiedCoords(json.data);
-          const deletedSlugs = json.deletedSlugs || [];
-          placesCache.set(cacheKey, { data, deletedSlugs, expiresAt: Date.now() + CACHE_TTL_MS });
-
-          return NextResponse.json(
-            { success: true, data, deletedSlugs },
-            {
-              headers: {
-                'Cache-Control': 'public, max-age=60, s-maxage=60, stale-while-revalidate=300',
-                'X-Cache': 'MISS-BACKEND',
-              },
-            }
-          );
-        }
-      }
-    } catch {
-      // Backend fetch failed, fall through to database
-    }
-  }
-
-  // 3. Query database with static fallback
+async function revalidatePlacesCache(city: string, category: string, cacheKey: string) {
   try {
+    if (BACKEND_URL) {
+      try {
+        const url = new URL(`${BACKEND_URL}/api/v1/places`);
+        if (category) url.searchParams.append('category', category);
+        const res = await fetch(url.toString(), { signal: AbortSignal.timeout(2000), next: { revalidate: 60 } });
+        if (res.ok) {
+          const json = await res.json();
+          if (json.success && Array.isArray(json.data)) {
+            const data = withVerifiedCoords(json.data);
+            const deletedSlugs = json.deletedSlugs || [];
+            placesCache.set(cacheKey, { data, deletedSlugs, expiresAt: Date.now() + CACHE_TTL_MS });
+            return;
+          }
+        }
+      } catch {}
+    }
+
     let places: Place[];
     if (category) {
       places = (await getPlacesByCategory(category)) as Place[];
@@ -118,23 +93,72 @@ export async function GET(request: Request) {
 
     const deletedSlugs = (deletedRows || []).flatMap((r: any) => [r.slug, r.id].filter(Boolean));
     placesCache.set(cacheKey, { data, deletedSlugs, expiresAt: Date.now() + CACHE_TTL_MS });
+  } catch (err: any) {
+    console.warn('Background places revalidation failed:', err?.message || err);
+  }
+}
 
+export async function GET(request: Request) {
+  const { searchParams } = new URL(request.url);
+  const city = searchParams.get('city') || 'tirupati';
+  const category = searchParams.get('category') || '';
+  const cacheKey = `${city}:${category}`;
+
+  // 1. Check in-memory cache first (return immediately if available, or if revalidation in progress)
+  const cached = placesCache.get(cacheKey);
+  if (cached) {
+    // If cache is fresh, return immediately
+    if (Date.now() < cached.expiresAt) {
+      return NextResponse.json(
+        { success: true, data: cached.data, deletedSlugs: cached.deletedSlugs },
+        {
+          headers: {
+            'Cache-Control': 'public, max-age=60, s-maxage=60, stale-while-revalidate=300',
+            'X-Cache': 'HIT',
+          },
+        }
+      );
+    }
+    // If stale, trigger non-blocking background revalidation and still return stale data to eliminate user wait time
+    revalidatePlacesCache(city, category, cacheKey).catch(() => {});
     return NextResponse.json(
-      { success: true, data, deletedSlugs },
+      { success: true, data: cached.data, deletedSlugs: cached.deletedSlugs },
       {
         headers: {
           'Cache-Control': 'public, max-age=60, s-maxage=60, stale-while-revalidate=300',
-          'X-Cache': 'MISS-DB',
+          'X-Cache': 'STALE-REVALIDATING',
         },
       }
     );
-  } catch (fallbackError: any) {
-    console.warn('Database query failed, returning static PLACES fallback:', fallbackError?.message || fallbackError);
-    const data = withVerifiedCoords(PLACES);
-    return NextResponse.json({
-      success: true,
-      data,
-      deletedSlugs: [],
-    });
   }
+
+  // 2. Synchronous first-time populate if specific category is not in cache yet
+  try {
+    await revalidatePlacesCache(city, category, cacheKey);
+    const updated = placesCache.get(cacheKey);
+    if (updated) {
+      return NextResponse.json(
+        { success: true, data: updated.data, deletedSlugs: updated.deletedSlugs },
+        {
+          headers: {
+            'Cache-Control': 'public, max-age=60, s-maxage=60, stale-while-revalidate=300',
+            'X-Cache': 'MISS-RESOLVED',
+          },
+        }
+      );
+    }
+  } catch {}
+
+  // Fallback to static PLACES dataset
+  const filteredPlaces = category
+    ? PLACES.filter(p => p.category?.toLowerCase() === category.toLowerCase())
+    : PLACES;
+  const data = withVerifiedCoords(filteredPlaces);
+  placesCache.set(cacheKey, { data, deletedSlugs: [], expiresAt: Date.now() + CACHE_TTL_MS });
+
+  return NextResponse.json({
+    success: true,
+    data,
+    deletedSlugs: [],
+  });
 }

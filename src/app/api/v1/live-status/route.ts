@@ -1,45 +1,48 @@
 import { NextResponse } from 'next/server';
 import { supabase } from '@/lib/supabase';
 
-let cachedWeather: { temp: number; condition: string; timestamp: number } | null = null;
+let cachedWeather: { temp: number; condition: string; timestamp: number } = {
+  temp: 26,
+  condition: 'Pleasant',
+  timestamp: Date.now()
+};
 
 async function getWeatherFast(): Promise<{ temp: number; condition: string }> {
   const now = Date.now();
-  if (cachedWeather && (now - cachedWeather.timestamp) < 300000) {
+  if ((now - cachedWeather.timestamp) < 300000) {
     return { temp: cachedWeather.temp, condition: cachedWeather.condition };
   }
 
-  const controller = new AbortController();
-  const timeoutId = setTimeout(() => controller.abort(), 600);
-
   try {
     const weatherRes = await fetch(
-      'https://api.openweathermap.org/data/2.5/weather?lat=13.6288&lon=79.4192&appid=ab2b5b5caea6dd0bed58ece8c88a78fb&units=metric',
-      { signal: controller.signal, next: { revalidate: 300 } }
+      'https://api.open-meteo.com/v1/forecast?latitude=13.6288&longitude=79.4192&current=temperature_2m,weather_code',
+      { signal: AbortSignal.timeout(400), next: { revalidate: 300 } }
     );
-    clearTimeout(timeoutId);
-
     if (weatherRes.ok) {
-      const weatherData = await weatherRes.json();
-      const temp = Math.round(weatherData.main?.temp ?? 26);
-      let condition = 'Pleasant';
-      if (weatherData.weather && weatherData.weather.length > 0) {
-        condition = weatherData.weather[0].description.replace(/\b\w/g, (l: string) => l.toUpperCase());
+      const data = await weatherRes.json();
+      if (data?.current) {
+        const temp = Math.round(data.current.temperature_2m ?? 26);
+        const code = data.current.weather_code ?? 0;
+        let condition = 'Pleasant';
+        if (code >= 1 && code <= 3) condition = 'Partly Cloudy';
+        else if (code >= 51 && code <= 82) condition = 'Rainy';
+        cachedWeather = { temp, condition, timestamp: now };
+        return { temp, condition };
       }
-      cachedWeather = { temp, condition, timestamp: now };
-      return { temp, condition };
     }
   } catch {
-    clearTimeout(timeoutId);
+    // Return cached weather immediately on timeout/network failure
   }
 
-  return cachedWeather ? { temp: cachedWeather.temp, condition: cachedWeather.condition } : { temp: 26, condition: 'Pleasant' };
+  return { temp: cachedWeather.temp, condition: cachedWeather.condition };
 }
 
 async function fetchMetrics() {
   try {
-    const { data } = await supabase.from('live_metrics').select('*').eq('id', 1).single();
-    return data;
+    const promise = supabase.from('live_metrics').select('*').eq('id', 1).single();
+    const timeoutPromise = new Promise<{ data: null }>((resolve) => setTimeout(() => resolve({ data: null }), 1500));
+    const res = await Promise.race([promise, timeoutPromise]);
+    return res.data;
   } catch {
     return null;
   }
