@@ -63,59 +63,82 @@ export function useTripStore() {
 
     // Refresh coordinates dynamically on mount (non-blocking deferral after initial UI render)
     if (typeof window !== 'undefined') {
-      const permission = saved ? loadedState.locationPermission : 'default';
       const isManual = loadedState.locationSource === 'manual';
+      let activeWatchId: number | null = null;
 
-      // If user manually chose a planning location, preserve it. Only auto-detect if not manually chosen.
-      if (!isManual && permission !== 'denied') {
-        const timer = setTimeout(() => {
-          import('@/lib/location').then(({ detectCoordinates, watchCoordinates, getIPLocation, TIRUPATI_CENTER, resolveLocationName }) => {
-            detectCoordinates(
-              (coords, source, isApproximate, accuracyMeters) => {
-                const region = resolveLocationName(coords.lat, coords.lng);
-                setState(prev => ({
-                  ...prev,
-                  userLocation: coords,
-                  locationPermission: 'granted',
-                  locationSource: source,
-                  locationAccuracyMeters: accuracyMeters,
-                  locationName: region
-                }));
-                // If IP-based, try to get real city name and refine
-                if (source === 'ip') {
-                  getIPLocation().then(({ city }) => {
-                    if (city) {
-                      const refined = resolveLocationName(coords.lat, coords.lng, city);
-                      setState(prev => ({ ...prev, locationName: refined }));
-                    }
-                  }).catch(() => {});
-                }
-              },
-              () => {
-                // All detection failed — default to Tirupati Center so the app always has a location
-                setState(prev => ({
-                  ...prev,
-                  userLocation: prev.userLocation || TIRUPATI_CENTER,
-                  locationPermission: 'denied'
-                }));
-              }
-            );
+      // Check real browser permission status if supported
+      const checkPermissionAndDetect = async () => {
+        let isBrowserDenied = false;
+        try {
+          if (navigator.permissions && navigator.permissions.query) {
+            const status = await navigator.permissions.query({ name: 'geolocation' });
+            if (status.state === 'denied') isBrowserDenied = true;
+          }
+        } catch {}
 
-            // Watch real-time GPS hardware updates
-            watchCoordinates((coords) => {
+        if (!isManual && !isBrowserDenied) {
+          const { detectCoordinates, watchCoordinates, getIPLocation, TIRUPATI_CENTER, resolveLocationName, syncLocationToServiceWorker } = await import('@/lib/location');
+
+          detectCoordinates(
+            (coords, source, isApproximate, accuracyMeters) => {
               const region = resolveLocationName(coords.lat, coords.lng);
-              setState(prev => ({ ...prev, userLocation: coords, locationPermission: 'granted', locationName: region }));
-            });
-          }).catch(() => {});
-        }, 400);
+              syncLocationToServiceWorker(coords, region);
+              setState(prev => ({
+                ...prev,
+                userLocation: coords,
+                locationPermission: 'granted',
+                locationSource: source,
+                locationAccuracyMeters: accuracyMeters,
+                locationName: region
+              }));
 
-        return () => clearTimeout(timer);
-      } else if (!loadedState.userLocation) {
-        // Permission was denied before and no cached location — set Tirupati Center
-        import('@/lib/location').then(({ TIRUPATI_CENTER }) => {
+              if (source === 'ip') {
+                getIPLocation().then(({ city }) => {
+                  if (city) {
+                    const refined = resolveLocationName(coords.lat, coords.lng, city);
+                    setState(prev => ({ ...prev, locationName: refined }));
+                    syncLocationToServiceWorker(coords, refined);
+                  }
+                }).catch(() => {});
+              }
+            },
+            (err) => {
+              const isExplicitDenial = err && err.code === 1;
+              setState(prev => ({
+                ...prev,
+                userLocation: prev.userLocation || TIRUPATI_CENTER,
+                locationPermission: isExplicitDenial ? 'denied' : prev.locationPermission
+              }));
+            }
+          );
+
+          // Real-time GPS tracking as the pilgrim moves
+          activeWatchId = watchCoordinates((coords, accuracyMeters) => {
+            const region = resolveLocationName(coords.lat, coords.lng);
+            syncLocationToServiceWorker(coords, region);
+            setState(prev => ({
+              ...prev,
+              userLocation: coords,
+              locationPermission: 'granted',
+              locationSource: 'gps',
+              locationAccuracyMeters: accuracyMeters,
+              locationName: region
+            }));
+          });
+        } else if (!loadedState.userLocation) {
+          const { TIRUPATI_CENTER } = await import('@/lib/location');
           setState(prev => ({ ...prev, userLocation: TIRUPATI_CENTER }));
-        }).catch(() => {});
-      }
+        }
+      };
+
+      const timer = setTimeout(checkPermissionAndDetect, 250);
+
+      return () => {
+        clearTimeout(timer);
+        if (activeWatchId !== null && navigator.geolocation) {
+          navigator.geolocation.clearWatch(activeWatchId);
+        }
+      };
     }
   }, []);
 
@@ -269,6 +292,11 @@ export function useTripStore() {
         prev.locationSource === source
       ) {
         return prev;
+      }
+      if (userLocation) {
+        import('@/lib/location').then(({ syncLocationToServiceWorker }) => {
+          syncLocationToServiceWorker(userLocation);
+        }).catch(() => {});
       }
       return { ...prev, userLocation, locationSource: source };
     });

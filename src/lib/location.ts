@@ -5,6 +5,7 @@ import {
   isCoordinateOnTirumalaHill,
   isWithinTirupatiRegion,
   formatTravelTime,
+  formatDistance,
   estimateDriveDuration,
   isValidCoordinates,
   resolveLocationName,
@@ -22,6 +23,7 @@ export {
   isCoordinateOnTirumalaHill,
   isWithinTirupatiRegion,
   formatTravelTime,
+  formatDistance,
   estimateDriveDuration,
   isValidCoordinates,
   resolveLocationName,
@@ -87,11 +89,37 @@ export async function getIPLocation(): Promise<{ coords: LatLng; city?: string }
 }
 
 /**
- * Detects user's real-time location with strict GPS accuracy validation.
+ * Syncs the current user location to the browser's Cache API ('saarthi-user-context').
+ * This allows the Service Worker (sw.js) to deliver location-accurate notifications
+ * directly to mobile devices matching their exact current area (Tirumala, Tirupati, Alipiri, etc.).
+ */
+export function syncLocationToServiceWorker(coords: LatLng, locationName?: string) {
+  if (typeof window === 'undefined' || !('caches' in window)) return;
+  try {
+    const region = locationName || resolveLocationName(coords.lat, coords.lng);
+    caches.open('saarthi-user-context').then((cache) => {
+      cache.put(
+        '/user-location',
+        new Response(
+          JSON.stringify({
+            lat: coords.lat,
+            lng: coords.lng,
+            locationName: region,
+            updatedAt: Date.now()
+          }),
+          { headers: { 'Content-Type': 'application/json' } }
+        )
+      ).catch(() => {});
+    }).catch(() => {});
+  } catch {}
+}
+
+/**
+ * Detects user's real-time location with strict fresh GPS accuracy validation.
  * 
  * Pipeline:
- * 1. High Accuracy Hardware GPS (accuracy <= 50m, maximumAge: 0 to prevent stale positions)
- * 2. Standard Accuracy Geolocation
+ * 1. High Accuracy Hardware GPS (maximumAge: 0 forces fresh satellite/wifi fix, 15s timeout for prompt)
+ * 2. Standard Accuracy Network Geolocation Fallback
  * 3. Coarse IP Location (marked as isApproximate = true)
  * 4. Default Tirupati Center Fallback
  */
@@ -102,14 +130,14 @@ export function detectCoordinates(
   if (typeof window === 'undefined') return;
 
   if (navigator.geolocation) {
-    console.log("[LocationPipeline] Requesting hardware GPS (smart cache 3m, 8s timeout)...");
+    console.log("[LocationPipeline] Requesting fresh hardware GPS (high-accuracy, 15s timeout, 0ms cache)...");
 
-    // 1. Try High Accuracy Hardware GPS with smart caching (maximumAge: 180000 allows instant 0ms cached position return)
+    // 1. High Accuracy Hardware GPS (maximumAge: 0 ensures fresh hardware fix, 15s timeout)
     navigator.geolocation.getCurrentPosition(
       (position) => {
         const lat = Number(position.coords.latitude.toFixed(6));
         const lng = Number(position.coords.longitude.toFixed(6));
-        const accuracy = position.coords.accuracy || 0;
+        const accuracy = Math.round(position.coords.accuracy || 0);
 
         if (!isValidCoordinates(lat, lng)) {
           console.warn("[LocationPipeline] GPS returned invalid coordinates:", lat, lng);
@@ -117,36 +145,44 @@ export function detectCoordinates(
           return;
         }
 
-        // Target accuracy threshold < 150m for valid smartphone city GPS
         const isPrecise = accuracy > 0 && accuracy <= 150;
-        console.log(`[LocationPipeline] GPS acquired: (${lat}, ${lng}), accuracy: ±${Math.round(accuracy)}m, precise: ${isPrecise}`);
+        console.log(`[LocationPipeline] Fresh hardware GPS acquired: (${lat}, ${lng}), accuracy: ±${accuracy}m, precise: ${isPrecise}`);
 
-        onSuccess({ lat, lng }, 'gps', !isPrecise, Math.round(accuracy));
+        syncLocationToServiceWorker({ lat, lng });
+        onSuccess({ lat, lng }, 'gps', !isPrecise, accuracy);
       },
       (highAccErr) => {
-        console.warn("[LocationPipeline] High accuracy GPS failed/timed out, trying standard accuracy:", highAccErr);
-        // 2. Fallback to standard accuracy GPS
+        // If user explicitly clicked "Deny" in browser dialog (code 1 PERMISSION_DENIED), respect decision
+        if (highAccErr && highAccErr.code === 1) {
+          console.warn("[LocationPipeline] Geolocation permission denied by user.");
+          if (onFailure) onFailure(highAccErr);
+          return;
+        }
+
+        console.warn("[LocationPipeline] High accuracy GPS failed/timed out, attempting standard accuracy fallback:", highAccErr);
+        // 2. Standard accuracy fallback (cached max 10s, 8s timeout)
         navigator.geolocation.getCurrentPosition(
           (stdPosition) => {
             const lat = Number(stdPosition.coords.latitude.toFixed(6));
             const lng = Number(stdPosition.coords.longitude.toFixed(6));
-            const accuracy = stdPosition.coords.accuracy || 0;
+            const accuracy = Math.round(stdPosition.coords.accuracy || 0);
 
             if (isValidCoordinates(lat, lng)) {
-              console.log(`[LocationPipeline] Standard GPS acquired: (${lat}, ${lng}), accuracy: ±${Math.round(accuracy)}m`);
-              onSuccess({ lat, lng }, 'gps', accuracy > 100, Math.round(accuracy));
+              console.log(`[LocationPipeline] Standard network GPS acquired: (${lat}, ${lng}), accuracy: ±${accuracy}m`);
+              syncLocationToServiceWorker({ lat, lng });
+              onSuccess({ lat, lng }, 'gps', accuracy > 100, accuracy);
             } else {
               fallbackToIP();
             }
           },
           (stdErr) => {
-            console.warn("[LocationPipeline] Standard geolocation failed, falling back to IP location:", stdErr);
+            console.warn("[LocationPipeline] Standard geolocation failed, falling back to IP estimation:", stdErr);
             fallbackToIP();
           },
-          { enableHighAccuracy: false, timeout: 5000, maximumAge: 300000 }
+          { enableHighAccuracy: false, timeout: 8000, maximumAge: 10000 }
         );
       },
-      { enableHighAccuracy: true, timeout: 8000, maximumAge: 180000 }
+      { enableHighAccuracy: true, timeout: 15000, maximumAge: 0 }
     );
   } else {
     fallbackToIP();
@@ -157,10 +193,12 @@ export function detectCoordinates(
     getIPLocation()
       .then(({ coords }) => {
         console.log(`[LocationPipeline] IP Location acquired: (${coords.lat}, ${coords.lng})`);
+        syncLocationToServiceWorker(coords);
         onSuccess(coords, 'ip', true);
       })
       .catch((err) => {
         console.warn("[LocationPipeline] IP location failed, using default Tirupati center:", err);
+        syncLocationToServiceWorker(TIRUPATI_CENTER, 'Tirupati');
         onSuccess(TIRUPATI_CENTER, 'fallback', true);
         if (onFailure) onFailure(err);
       });
@@ -168,37 +206,54 @@ export function detectCoordinates(
 }
 
 /**
- * Watches real-time GPS coordinates updates as the user moves, filtering out minor GPS drift (< 5 meters).
+ * Watches real-time GPS coordinates updates as the user moves, updating on physical movement (>= 5m)
+ * or when GPS satellite accuracy refines.
  */
 export function watchCoordinates(
-  onUpdate: (coords: LatLng) => void
+  onUpdate: (coords: LatLng, accuracyMeters?: number) => void
 ): number | null {
   if (typeof window === 'undefined' || !navigator.geolocation) return null;
 
   let lastCoords: LatLng | null = null;
+  let bestAccuracy = Infinity;
 
   return navigator.geolocation.watchPosition(
     (position) => {
       const lat = Number(position.coords.latitude.toFixed(6));
       const lng = Number(position.coords.longitude.toFixed(6));
+      const accuracy = Math.round(position.coords.accuracy || 0);
 
       if (!isValidCoordinates(lat, lng)) return;
 
-      if (lastCoords) {
-        // Approximate distance shift in meters
+      let shouldUpdate = false;
+      if (!lastCoords) {
+        shouldUpdate = true;
+      } else {
         const dLat = Math.abs(lat - lastCoords.lat) * 111000;
         const dLng = Math.abs(lng - lastCoords.lng) * 111000 * Math.cos((lat * Math.PI) / 180);
         const distMovedMeters = Math.sqrt(dLat * dLat + dLng * dLng);
 
-        // Ignore micro GPS drift under 5 meters
-        if (distMovedMeters < 5) return;
+        // 1. Position shift of 5 or more meters
+        if (distMovedMeters >= 5) {
+          shouldUpdate = true;
+        }
+        // 2. Or GPS satellite lock refined accuracy significantly
+        else if (accuracy > 0 && accuracy < bestAccuracy - 10) {
+          shouldUpdate = true;
+        }
       }
 
-      lastCoords = { lat, lng };
-      onUpdate({ lat, lng });
+      if (shouldUpdate) {
+        if (accuracy > 0 && accuracy < bestAccuracy) {
+          bestAccuracy = accuracy;
+        }
+        lastCoords = { lat, lng };
+        syncLocationToServiceWorker({ lat, lng });
+        onUpdate({ lat, lng }, accuracy);
+      }
     },
     (err) => console.warn("[LocationPipeline] GPS watch position error:", err),
-    { enableHighAccuracy: true, timeout: 10000, maximumAge: 2000 }
+    { enableHighAccuracy: true, timeout: 20000, maximumAge: 0 }
   );
 }
 

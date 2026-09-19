@@ -14,7 +14,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { PLACES, Place, getPlaceGuideData } from '@/data/places';
 import { useTrip } from '@/components/TripContext';
 import { useRealtimePlaces } from '@/lib/useRealtimePlaces';
-import { calculateDrivingDistance, isCoordinateOnTirumalaHill, isWithinTirupatiRegion, TIRUPATI_CENTER, formatTravelTime, estimateDriveDuration } from '@/utils/location';
+import { calculateDrivingDistance, isCoordinateOnTirumalaHill, isWithinTirupatiRegion, TIRUPATI_CENTER, formatTravelTime, estimateDriveDuration, formatDistance } from '@/utils/location';
 import { findNearestPlaceCandidates } from '@/lib/location';
 import { useLanguage } from '@/lib/useLanguage';
 import { getFestivalCrowdIntelligence } from '@/utils/festivalCrowd';
@@ -93,9 +93,8 @@ export default function PlaceDetails() {
     });
   }, [place, allPlaces]);
 
-  // Distance from user (if local within 22km cluster) or from Tirupati Center
-  const isLocalUser = userLocation && isWithinTirupatiRegion(userLocation.lat, userLocation.lng);
-  const effectiveLocation = isLocalUser ? userLocation! : TIRUPATI_CENTER;
+  // Distance from user or fallback to Tirupati Center
+  const effectiveLocation = userLocation || TIRUPATI_CENTER;
 
   const isDestOnHill = place.category === 'Tirumala Spot' || (place.coordinates ? isCoordinateOnTirumalaHill(place.coordinates.lat, place.coordinates.lng) : false);
   const isOriginOnHill = isCoordinateOnTirumalaHill(effectiveLocation.lat, effectiveLocation.lng);
@@ -312,7 +311,7 @@ export default function PlaceDetails() {
     <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, minmax(0, 1fr))', gap: '8px' }}>
       <div suppressHydrationWarning style={{ backgroundColor: '#FFFFFF', border: '1.5px solid rgba(15, 81, 50, 0.15)', borderRadius: '14px', padding: '10px 4px', textAlign: 'center', boxShadow: '0 2px 8px rgba(0,0,0,0.02)' }}>
         <div suppressHydrationWarning style={{ fontSize: '13px', fontWeight: 900, color: '#0F5132', lineHeight: 1.1 }}>
-          {drivingDistance < 0.5 ? '< 0.5 km' : `${drivingDistance.toFixed(1)} km`}
+          {formatDistance(drivingDistance, lang)}
         </div>
         <div suppressHydrationWarning style={{ fontSize: '9.5px', fontWeight: 700, color: '#64748B', marginTop: '3px' }}>
           {lang === 'te' ? 'దూరం' : 'Distance'}
@@ -1312,7 +1311,7 @@ export default function PlaceDetails() {
             boxSizing: 'border-box'
           }}>
             <MapPin size={14} color="#CBD5E1" style={{ flexShrink: 0 }} />
-            <span style={{ minWidth: 0, wordBreak: 'break-word' }}>{place.location} • ~{formattedDriveTime} {isLocalUser ? (lang === 'te' ? 'మీ నుండి' : 'from you') : (lang === 'te' ? 'తిరుపతి నుండి' : 'from Tirupati')} ({drivingDistance.toFixed(1)} km)</span>
+            <span style={{ minWidth: 0, wordBreak: 'break-word' }}>{place.location} • ~{formattedDriveTime} {userLocation ? (lang === 'te' ? 'మీ నుండి' : 'from you') : (lang === 'te' ? 'తిరుపతి నుండి' : 'from Tirupati')} ({formatDistance(drivingDistance, lang)})</span>
           </div>
         </div>
       </div>

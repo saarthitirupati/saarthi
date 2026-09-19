@@ -27,6 +27,9 @@ interface PushPayload {
   url?: string;
   icon?: string;
   tag?: string;
+  target_location?: string;
+  category?: string;
+  image?: string;
 }
 
 /**

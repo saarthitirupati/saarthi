@@ -7,7 +7,7 @@ import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { useSearchParams } from 'next/navigation';
 import styles from './Explore.module.css';
-import { calculateDrivingDistance, TIRUPATI_CENTER, isWithinTirupatiRegion, formatTravelTime, estimateDriveDuration } from '@/utils/location';
+import { calculateDrivingDistance, TIRUPATI_CENTER, isWithinTirupatiRegion, formatTravelTime, formatDistance, estimateDriveDuration } from '@/utils/location';
 import { useTrip } from '@/components/TripContext';
 import { useRealtimePlaces } from '@/lib/useRealtimePlaces';
 import { useLanguage } from '@/lib/useLanguage';
@@ -264,8 +264,7 @@ function ExploreContent() {
       return matchesSearch && matchesFilter;
     });
 
-    const isLocalUser = userLocation && isWithinTirupatiRegion(userLocation.lat, userLocation.lng);
-    const effectiveLocation = isLocalUser ? userLocation! : TIRUPATI_CENTER;
+    const effectiveLocation = userLocation || TIRUPATI_CENTER;
     result = result.map(p => {
       const toStr = (v: any) => typeof v === 'string' ? v : (v?.name || v?.slug || String(v || ''));
       const lat = p.coordinates?.lat || TIRUPATI_CENTER.lat;
@@ -318,8 +317,7 @@ function ExploreContent() {
 
   const categoryCounts = useMemo(() => {
     const rawSource = places.length > 0 ? places : PLACES;
-    const isLocalUser = userLocation && isWithinTirupatiRegion(userLocation.lat, userLocation.lng);
-    const effectiveLocation = isLocalUser ? userLocation! : TIRUPATI_CENTER;
+    const effectiveLocation = userLocation || TIRUPATI_CENTER;
     const counts: Record<string, number> = {
       All: rawSource.length,
       Nearby: 0,
@@ -517,7 +515,7 @@ function ExploreContent() {
                       <h4>{place.name}</h4>
                       <div style={{ display: 'flex', flexDirection: 'column', gap: '2px', marginTop: '2px' }}>
                         <span style={{ color: '#2F6144', fontWeight: 800, fontSize: '11px' }}>
-                          {dist < 0.5 ? (lang === 'te' ? '< 0.5 కి.మీ దూరం' : '< 0.5 km away') : `${dist.toFixed(1)} ${lang === 'te' ? 'కి.మీ దూరం' : 'km away'}`} • {travelStr}
+                          {formatDistance(dist, lang)} {lang === 'te' ? 'దూరం' : 'away'} • {travelStr}
                         </span>
                       </div>
                     </div>
@@ -550,7 +548,7 @@ function ExploreContent() {
                           <h4 title={place.name}>{place.name}</h4>
                           <div className={styles.curatedDistance}>
                             <MapPin size={10} strokeWidth={2.5} />
-                            {Number((place as any).computedDistance || 0) < 0.5 ? '< 0.5 km' : `${Number((place as any).computedDistance || 0).toFixed(1)} km`}
+                            {formatDistance(Number((place as any).computedDistance || 0), lang)}
                           </div>
                         </div>
                       </Link>
@@ -734,12 +732,12 @@ function ExploreContent() {
                         {(place as any).computedDistance !== undefined ? (
                           <span className={styles.tag} style={{ backgroundColor: '#E5F3EB', color: '#2F6144', fontWeight: 700, display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
                             <MapPin size={12} style={{ flexShrink: 0 }} />
-                            {Number((place as any).computedDistance) < 0.5
-                              ? (lang === 'te' ? '< 0.5 కి.మీ' : '< 0.5 km')
-                              : `${Math.max(4, Math.round(Number((place as any).computedDistance) * 3))} min away (${Number((place as any).computedDistance).toFixed(1)} km)`}
+                            {Number((place as any).computedDistance) < 1.0
+                              ? `${formatDistance(Number((place as any).computedDistance), lang)} ${lang === 'te' ? 'దూరం' : 'away'}`
+                              : `${Math.max(4, Math.round(Number((place as any).computedDistance) * 3))} min away (${formatDistance(Number((place as any).computedDistance), lang)})`}
                           </span>
                         ) : (
-                          <span className={styles.tag}>{place.distanceKms} km</span>
+                          <span className={styles.tag}>{formatDistance(place.distanceKms || 5, lang)}</span>
                         )}
 
                         {festCrowd.hasImpact && festCrowd.isFestivalActive ? (

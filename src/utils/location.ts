@@ -298,7 +298,12 @@ export function resolveLocationName(lat: number, lng: number, fallbackCity?: str
     return 'Tirumala';
   }
 
-  // 2. Check closest preset location
+  // 2. Direct Alipiri check (within 1.8 km of Alipiri Gate / foothills)
+  if (calculateDistance(lat, lng, ALIPIRI_GATE.lat, ALIPIRI_GATE.lng) <= 1.8) {
+    return 'Alipiri';
+  }
+
+  // 3. Check closest preset location
   let closestPreset: LocationOption | null = null;
   let minDistance = Infinity;
 
@@ -360,20 +365,22 @@ export function calculateDrivingDistance(
 
   // ── CASE 1: Both Origin & Destination are on Tirumala Hill ──
   if (isOriginOnHill && isDestOnHill) {
-    // Local hill travel along winding mountain roads
-    const hillFactor = rawDist < 1.0 ? 1.35 : 1.45;
-    return Number(Math.max(0.1, rawDist * hillFactor).toFixed(1));
+    // Local hill travel along winding mountain roads / footpaths
+    const hillFactor = rawDist < 0.5 ? 1.15 : (rawDist < 1.5 ? 1.30 : 1.45);
+    const dist = rawDist * hillFactor;
+    return Number((dist < 1 ? Math.max(0.01, dist) : dist).toFixed(dist < 10 ? 2 : 1));
   }
 
   // ── CASE 2: Origin is Plains & Destination is Tirumala Hill ──
   if (!isOriginOnHill && isDestOnHill) {
     // Step 1: Drive from Origin in plains to Alipiri Toll Gate
-    const distToAlipiri = calculateDistance(lat1, lon1, ALIPIRI_GATE.lat, ALIPIRI_GATE.lng) * 1.25;
+    const rawAlipiri = calculateDistance(lat1, lon1, ALIPIRI_GATE.lat, ALIPIRI_GATE.lng);
+    const distToAlipiri = rawAlipiri < 0.4 ? 0 : rawAlipiri * (rawAlipiri < 5 ? 1.25 : 1.15);
     // Step 2: Up-Ghat Road from Alipiri Gate to Tirumala Center (~18.5 km)
     const ghatRoadKm = 18.5;
     // Step 3: Local hill road from Tirumala Center to destination landmark
     const localHillRaw = calculateDistance(TIRUMALA_CENTER.lat, TIRUMALA_CENTER.lng, lat2, lon2);
-    const localHillDist = localHillRaw > 0.2 ? localHillRaw * (lat2 > 13.685 ? 1.6 : 1.3) : 0;
+    const localHillDist = localHillRaw > 0.2 ? localHillRaw * (lat2 > 13.685 ? 1.5 : 1.25) : 0;
 
     const totalDistance = distToAlipiri + ghatRoadKm + localHillDist;
     return Number(totalDistance.toFixed(1));
@@ -383,27 +390,55 @@ export function calculateDrivingDistance(
   if (isOriginOnHill && !isDestOnHill) {
     // Step 1: Local hill road from Origin on hill to Tirumala Center
     const localHillRaw = calculateDistance(lat1, lon1, TIRUMALA_CENTER.lat, TIRUMALA_CENTER.lng);
-    const localHillDist = localHillRaw > 0.2 ? localHillRaw * (lat1 > 13.685 ? 1.6 : 1.3) : 0;
+    const localHillDist = localHillRaw > 0.2 ? localHillRaw * (lat1 > 13.685 ? 1.5 : 1.25) : 0;
     // Step 2: Down-Ghat Road from Tirumala Center to Alipiri Gate (~19.5 km)
     const ghatRoadKm = 19.5;
     // Step 3: Drive from Alipiri Gate to destination in plains
-    const distFromAlipiri = calculateDistance(ALIPIRI_GATE.lat, ALIPIRI_GATE.lng, lat2, lon2) * 1.25;
+    const rawAlipiri = calculateDistance(ALIPIRI_GATE.lat, ALIPIRI_GATE.lng, lat2, lon2);
+    const distFromAlipiri = rawAlipiri < 0.4 ? 0 : rawAlipiri * (rawAlipiri < 5 ? 1.25 : 1.15);
 
     const totalDistance = localHillDist + ghatRoadKm + distFromAlipiri;
     return Number(totalDistance.toFixed(1));
   }
 
   // ── CASE 4: Both Origin & Destination are in Plains (Tirupati, Renigunta, Chandragiri, Srikalahasti, etc.) ──
-  let factor = 1.15;
-  if (rawDist < 3.0) {
-    factor = 1.30; // City street grid & turns
+  let factor = 1.12;
+  if (rawDist < 0.5) {
+    factor = 1.15; // Immediate walking/street access
+  } else if (rawDist < 3.0) {
+    factor = 1.25; // City street grid & turns
   } else if (rawDist < 12.0) {
-    factor = 1.22; // Arterial town roads
+    factor = 1.20; // Arterial town roads
   } else if (rawDist < 40.0) {
     factor = 1.16; // State highways
   }
 
-  return Number(Math.max(0.1, rawDist * factor).toFixed(1));
+  const dist = rawDist * factor;
+  return Number((dist < 1 ? Math.max(0.01, dist) : dist).toFixed(dist < 10 ? 2 : 1));
+}
+
+/**
+ * Formats a distance in kilometers into a clean, human-readable string.
+ * - Under 1 km: Displays in meters, e.g. "80 m", "250 m", "800 m" (Telugu: "80 మీ.", "250 మీ.")
+ * - 1 to 10 km: Displays 1 decimal place, e.g. "1.2 km", "5.4 km" (Telugu: "1.2 కి.మీ")
+ * - Over 10 km: Displays rounded integer, e.g. "18 km", "135 km" (Telugu: "18 కి.మీ")
+ */
+export function formatDistance(distanceKm: number, lang: string = 'en'): string {
+  if (distanceKm === undefined || distanceKm === null || isNaN(distanceKm) || distanceKm <= 0) {
+    return lang === 'te' ? 'సమీపంలో' : 'Nearby';
+  }
+
+  if (distanceKm < 1) {
+    const meters = Math.max(10, Math.round(distanceKm * 1000));
+    return lang === 'te' ? `${meters} మీ.` : `${meters} m`;
+  }
+
+  if (distanceKm < 10) {
+    return lang === 'te' ? `${distanceKm.toFixed(1)} కి.మీ` : `${distanceKm.toFixed(1)} km`;
+  }
+
+  const rounded = Math.round(distanceKm);
+  return lang === 'te' ? `${rounded} కి.మీ` : `${rounded} km`;
 }
 
 /**

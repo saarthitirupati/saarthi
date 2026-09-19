@@ -65,8 +65,11 @@ export async function fetchLiveAlerts(showAll = false): Promise<LiveAlert[]> {
     console.warn('Supabase live_updates fetch warning:', err);
   }
 
-  // 2. Fetch local fallback if Supabase not available
-  const baseAlerts = dbAlerts !== null ? dbAlerts : await readLocalAlerts();
+  // 2. Fetch local fallback if Supabase not available or empty
+  let baseAlerts = (dbAlerts !== null && dbAlerts.length > 0) ? dbAlerts : await readLocalAlerts();
+  if (baseAlerts.length === 0) {
+    baseAlerts = await readLocalAlerts();
+  }
 
   // 3. Combine with in-memory created alerts, excluding deleted IDs
   const combinedMap = new Map<string, LiveAlert>();
@@ -96,9 +99,11 @@ export async function fetchLiveAlerts(showAll = false): Promise<LiveAlert[]> {
     return tB - tA;
   });
 
-  if (sorted.length === 0 && !showAll) {
+  if (sorted.length === 0) {
     const local = await readLocalAlerts();
-    return local;
+    if (local.length > 0) {
+      return local;
+    }
   }
 
   return sorted;
@@ -107,6 +112,8 @@ export async function fetchLiveAlerts(showAll = false): Promise<LiveAlert[]> {
 export async function saveLiveAlert(alertData: Partial<LiveAlert>): Promise<LiveAlert> {
   const now = new Date().toISOString();
   const id = alertData.id || Math.random().toString(36).substring(2) + Math.random().toString(36).substring(2);
+
+  const existingAlert = IN_MEMORY_ALERTS.find(a => a.id === id);
 
   const newAlert: LiveAlert = {
     id,
@@ -119,13 +126,13 @@ export async function saveLiveAlert(alertData: Partial<LiveAlert>): Promise<Live
     cta: alertData.cta || 'None',
     status: alertData.status || 'Published',
     target_location: alertData.target_location || 'All Users',
-    start_time: alertData.start_time || now,
-    expiry_time: alertData.expiry_time || new Date(Date.now() + 2 * 60 * 60 * 1000).toISOString(),
-    created_at: now,
+    start_time: alertData.start_time || existingAlert?.start_time || now,
+    expiry_time: alertData.expiry_time || existingAlert?.expiry_time || new Date(Date.now() + 2 * 60 * 60 * 1000).toISOString(),
+    created_at: alertData.created_at || existingAlert?.created_at || now,
     updated_at: now
   };
 
-  // Remove from deleted set if re-created
+  // Remove from deleted set if re-created or updated
   DELETED_ALERT_IDS.delete(id);
 
   // Add to in-memory list

@@ -159,6 +159,7 @@ self.addEventListener('push', (event) => {
   let icon = '/icon-192.png';
   let badge = '/icon-96.png';
   let tag = 'saarthi-alert-' + Date.now();
+  let targetLocation = 'All Users';
 
   if (event.data) {
     try {
@@ -169,6 +170,7 @@ self.addEventListener('push', (event) => {
       if (payload.icon) icon = payload.icon;
       if (payload.badge) badge = payload.badge;
       if (payload.tag) tag = payload.tag;
+      if (payload.target_location) targetLocation = payload.target_location;
     } catch (_err) {
       const text = event.data.text();
       if (text) body = text;
@@ -191,7 +193,35 @@ self.addEventListener('push', (event) => {
     silent: false,
   };
 
-  event.waitUntil(self.registration.showNotification(title, options));
+  event.waitUntil((async () => {
+    // Location-targeted notification check against cached pilgrim location
+    if (targetLocation && targetLocation !== 'All Users') {
+      try {
+        const cache = await caches.open('saarthi-user-context');
+        const match = await cache.match('/user-location');
+        if (match) {
+          const loc = await match.json();
+          const userRegion = (loc.locationName || '').toLowerCase();
+          const target = targetLocation.toLowerCase();
+
+          // Targeted delivery matching
+          const matches = 
+            target.includes('all') ||
+            (target.includes('tirumala') && userRegion.includes('tirumala')) ||
+            (target.includes('tirupati') && userRegion.includes('tirupati')) ||
+            (target.includes('alipiri') && (userRegion.includes('alipiri') || userRegion.includes('tirupati'))) ||
+            (target.includes('nearby') && (userRegion.includes('tirumala') || userRegion.includes('tirupati') || userRegion.includes('alipiri')));
+
+          if (!matches) {
+            // Pilgrim is not in target location; skip displaying notification
+            return;
+          }
+        }
+      } catch (_e) {}
+    }
+
+    return self.registration.showNotification(title, options);
+  })());
 });
 
 self.addEventListener('notificationclick', (event) => {

@@ -34,7 +34,10 @@ export async function POST(request: Request) {
           title: createdAlert.title ? createdAlert.title : 'Tirumala Operational Alert',
           body: createdAlert.description || (createdAlert as any).message || '',
           url: '/alerts',
-          tag: `alert-${createdAlert.id || 'live'}`
+          tag: `alert-${createdAlert.id || 'live'}`,
+          target_location: createdAlert.target_location || 'All Users',
+          category: createdAlert.category,
+          image: createdAlert.image || undefined
         });
       } catch (err) {
         console.error('[PushNotify] Error broadcasting live alert:', err);
@@ -45,6 +48,44 @@ export async function POST(request: Request) {
   } catch (error: any) {
     console.error('API Error (/api/v1/alerts POST):', error);
     return NextResponse.json({ error: error?.message || 'Failed to create alert' }, { status: 400 });
+  }
+}
+
+export async function PUT(request: Request) {
+  try {
+    const isAuthed = await isAuthorizedAdmin(request);
+    if (!isAuthed) {
+      return NextResponse.json({ error: 'Unauthorized: Admin authentication required.' }, { status: 401 });
+    }
+
+    const body = await request.json();
+    if (!body.id) {
+      return NextResponse.json({ error: 'Missing alert ID' }, { status: 400 });
+    }
+
+    const updatedAlert = await saveLiveAlert(body);
+
+    const shouldSendPush = body.sendPush === true;
+    if (shouldSendPush && updatedAlert && (updatedAlert.status === 'Published' || (updatedAlert as any).active)) {
+      try {
+        await pushNotifyAll({
+          title: updatedAlert.title ? updatedAlert.title : 'Tirumala Operational Alert',
+          body: updatedAlert.description || (updatedAlert as any).message || '',
+          url: '/alerts',
+          tag: `alert-${updatedAlert.id || 'live'}`,
+          target_location: updatedAlert.target_location || 'All Users',
+          category: updatedAlert.category,
+          image: updatedAlert.image || undefined
+        });
+      } catch (err) {
+        console.error('[PushNotify] Error broadcasting updated alert:', err);
+      }
+    }
+
+    return NextResponse.json(updatedAlert, { status: 200 });
+  } catch (error: any) {
+    console.error('API Error (/api/v1/alerts PUT):', error);
+    return NextResponse.json({ error: error?.message || 'Failed to update alert' }, { status: 400 });
   }
 }
 

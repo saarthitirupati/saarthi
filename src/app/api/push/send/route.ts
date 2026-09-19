@@ -19,9 +19,11 @@ interface CustomPushData {
   url?: string;
   image?: string;
   tag?: string;
+  target_location?: string;
+  category?: string;
 }
 
-function buildPayload(type: string, daysSince?: number, custom?: CustomPushData): NotificationPayload | null {
+function buildPayload(type: string, daysSince?: number, custom?: CustomPushData): any {
   if (custom && custom.title && custom.body) {
     return {
       title: custom.title,
@@ -29,6 +31,9 @@ function buildPayload(type: string, daysSince?: number, custom?: CustomPushData)
       icon: '/icon-192.png',
       tag: custom.tag || 'saarthi-alert',
       url: custom.url || '/alerts',
+      target_location: custom.target_location || 'All Users',
+      category: custom.category,
+      image: custom.image
     };
   }
 
@@ -154,7 +159,7 @@ export async function GET(req: Request) {
 
 export async function POST(req: Request) {
   const bodyData = await req.json().catch(() => ({}));
-  const { type = 'daily_spot', endpoint, fcmToken, daysSince, title, body, url, image, tag, delay } = bodyData;
+  const { type = 'daily_spot', endpoint, fcmToken, daysSince, title, body, url, image, tag, target_location, category, delay } = bodyData;
 
   // Allow self-targeted device test pushes, otherwise enforce admin/cron auth for broadcasts
   const isSelfTargetedTest = Boolean(
@@ -171,7 +176,7 @@ export async function POST(req: Request) {
   }
 
   if (fcmToken) {
-    const payload = buildPayload(type, daysSince, { title, body, url, image, tag }) || {
+    const payload = buildPayload(type, daysSince, { title, body, url, image, tag, target_location, category }) || {
       title: title || 'Tirumala Live Alert',
       body: body || 'Live updates for Darshan and SSD tokens.',
       url: url || '/alerts',
@@ -197,5 +202,5 @@ export async function POST(req: Request) {
     return NextResponse.json({ ok: res.success, sent: res.success ? 1 : 0, error: res.error });
   }
 
-  return handlePushDispatch(type, endpoint, daysSince, { title, body, url, image, tag });
+  return handlePushDispatch(type, endpoint, daysSince, { title, body, url, image, tag, target_location, category });
 }

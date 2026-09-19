@@ -24,6 +24,7 @@ import {
   PILGRIM_FUEL_BUNKS
 } from '@/services/decision/trip.estimator';
 import { useLanguage } from '@/lib/useLanguage';
+import { detectCoordinates } from '@/lib/location';
 
 const MAJOR_HUBS: Record<string, { name: string; lat: number; lng: number }> = {
   'renigunta-junction': { name: 'Tirupati Central / Railway Station', lat: 13.6288, lng: 79.4192 },
@@ -84,12 +85,9 @@ function TripEstimatorContent() {
     setGpsLoading(true);
     setGpsError(null);
 
-    navigator.geolocation.getCurrentPosition(
-      (pos) => {
-        setUserGpsCoords({
-          lat: pos.coords.latitude,
-          lng: pos.coords.longitude
-        });
+    detectCoordinates(
+      (coords) => {
+        setUserGpsCoords(coords);
         setUseLiveGps(true);
         setGpsLoading(false);
       },
@@ -98,8 +96,7 @@ function TripEstimatorContent() {
         setGpsError('GPS location access denied or timed out. Using default starting hub.');
         setUseLiveGps(false);
         setGpsLoading(false);
-      },
-      { enableHighAccuracy: true, timeout: 8000, maximumAge: 30000 }
+      }
     );
   }, []);
 
