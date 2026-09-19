@@ -54,7 +54,6 @@ export default function SplashScreen({ onFinish }: { onFinish: () => void }) {
           <video
             ref={videoRef}
             src="/banner/splash-screen-logo.mp4"
-            poster="/banner/splash_poster.webp"
             autoPlay
             loop={false}
             muted
@@ -77,6 +76,11 @@ export default function SplashScreen({ onFinish }: { onFinish: () => void }) {
               e.currentTarget.muted = true;
               e.currentTarget.play().catch(() => {});
             }}
+            onLoadedData={(e) => {
+              e.currentTarget.defaultMuted = true;
+              e.currentTarget.muted = true;
+              e.currentTarget.play().catch(() => {});
+            }}
             onPlaying={() => setIsVideoReady(true)}
             onTimeUpdate={(e) => {
               if (e.currentTarget.currentTime > 0 && !isVideoReady) {
@@ -84,10 +88,7 @@ export default function SplashScreen({ onFinish }: { onFinish: () => void }) {
               }
             }}
             onEnded={handleFinish}
-            onError={() => {
-              // On video format or loading error, keep poster visible for 1.5s before continuing
-              setTimeout(handleFinish, 1500);
-            }}
+            onError={handleFinish}
             className={styles.splashVideo}
             style={{
               opacity: 1,

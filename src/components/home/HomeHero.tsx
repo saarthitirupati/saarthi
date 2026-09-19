@@ -1423,7 +1423,7 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
           controls={false}
           controlsList="nodownload nofallback noremoteplayback noplaybackrate"
           poster="/banner/banner_poster.webp"
-          preload="metadata"
+          preload="auto"
           aria-hidden="true"
           tabIndex={-1}
           onCanPlay={(e) => {

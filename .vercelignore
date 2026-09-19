@@ -16,8 +16,10 @@ awesome-skills/
 # FastAPI Python backend
 backend/
 
-# Raw video work and temp banner files
-banner/
+# Raw video work and temp banner files in project root only
+/banner/
+!public/banner/
+!public/banner/**
 
 # Automated tests & reports
 tests/
