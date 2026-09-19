@@ -18,6 +18,19 @@ export default function SplashScreen({ onFinish }: { onFinish: () => void }) {
     setTimeout(onFinish, 350); // 350ms smooth exit cross-fade
   }, [onFinish]);
 
+  const attachVideo = useCallback((node: HTMLVideoElement | null) => {
+    if (node) {
+      node.muted = true;
+      node.defaultMuted = true;
+      node.setAttribute('muted', '');
+      node.setAttribute('playsinline', 'true');
+      node.setAttribute('webkit-playsinline', 'true');
+      node.setAttribute('x5-playsinline', 'true');
+      node.play().then(() => setIsVideoReady(true)).catch(() => {});
+    }
+    (videoRef as any).current = node;
+  }, []);
+
   useEffect(() => {
     // 🔔 Sacred bronze temple chime (0.2s)
     const soundTimer = setTimeout(() => {
@@ -28,7 +41,7 @@ export default function SplashScreen({ onFinish }: { onFinish: () => void }) {
     if (v) {
       v.defaultMuted = true;
       v.muted = true;
-      v.play().catch(() => {});
+      v.play().then(() => setIsVideoReady(true)).catch(() => {});
     }
 
     // Safety fallback timer (12s) - allows full 9.4s video to finish naturally via onEnded
@@ -42,6 +55,10 @@ export default function SplashScreen({ onFinish }: { onFinish: () => void }) {
     };
   }, [handleFinish]);
 
+  const tryPlay = useCallback(() => {
+    videoRef.current?.play().then(() => setIsVideoReady(true)).catch(() => {});
+  }, []);
+
   return (
     <AnimatePresence mode="wait">
       {isVisible && (
@@ -50,9 +67,11 @@ export default function SplashScreen({ onFinish }: { onFinish: () => void }) {
           initial={{ opacity: 1 }}
           exit={{ opacity: 0, scale: 1.02 }}
           transition={{ duration: 0.35, ease: [0.4, 0, 0.2, 1] }}
+          onTouchStart={tryPlay}
+          onClick={tryPlay}
         >
           <video
-            ref={videoRef}
+            ref={attachVideo}
             src="/banner/splash-screen-logo.mp4"
             autoPlay
             loop={false}
@@ -74,12 +93,12 @@ export default function SplashScreen({ onFinish }: { onFinish: () => void }) {
             onCanPlay={(e) => {
               e.currentTarget.defaultMuted = true;
               e.currentTarget.muted = true;
-              e.currentTarget.play().catch(() => {});
+              e.currentTarget.play().then(() => setIsVideoReady(true)).catch(() => {});
             }}
             onLoadedData={(e) => {
               e.currentTarget.defaultMuted = true;
               e.currentTarget.muted = true;
-              e.currentTarget.play().catch(() => {});
+              e.currentTarget.play().then(() => setIsVideoReady(true)).catch(() => {});
             }}
             onPlaying={() => setIsVideoReady(true)}
             onTimeUpdate={(e) => {
@@ -91,8 +110,8 @@ export default function SplashScreen({ onFinish }: { onFinish: () => void }) {
             onError={handleFinish}
             className={styles.splashVideo}
             style={{
-              opacity: 1,
-              transition: 'opacity 0.4s ease-in-out'
+              opacity: isVideoReady ? 1 : 0,
+              transition: 'opacity 0.35s ease-in-out'
             }}
           />
 
