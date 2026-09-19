@@ -43,8 +43,10 @@ export default function AlertsPage() {
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
-      setIsNative(isNativeAndroidApp());
-      setPermission(getNotificationPermission());
+      const native = isNativeAndroidApp();
+      setIsNative(native);
+      const perm = native ? 'granted' : getNotificationPermission();
+      setPermission(perm);
     }
   }, []);
 

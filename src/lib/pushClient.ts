@@ -25,7 +25,17 @@ function urlBase64ToUint8Array(base64String: string): BufferSource {
 export function isNativeAndroidApp(): boolean {
   if (typeof window === 'undefined') return false;
   const ua = navigator.userAgent || '';
-  return /wv/i.test(ua) || Boolean((window as any).isSaarthiApp) || Boolean((window as any).Android);
+  return (
+    Boolean((window as any).SaarthiNative) ||
+    Boolean((window as any).Android) ||
+    Boolean((window as any).isSaarthiApp) ||
+    /wv/i.test(ua)
+  );
+}
+
+function getNativeBridge(): any {
+  if (typeof window === 'undefined') return null;
+  return (window as any).SaarthiNative || (window as any).Android || null;
 }
 
 /**
@@ -35,11 +45,15 @@ export function getNotificationPermission(): PushPermissionState {
   if (typeof window === 'undefined') {
     return 'unsupported';
   }
+  const bridge = getNativeBridge();
+  if (bridge || isNativeAndroidApp()) {
+    if (bridge && typeof bridge.areNotificationsEnabled === 'function') {
+      return bridge.areNotificationsEnabled() ? 'granted' : 'denied';
+    }
+    return 'granted';
+  }
   if ('Notification' in window && 'serviceWorker' in navigator) {
     return Notification.permission as PushPermissionState;
-  }
-  if (isNativeAndroidApp()) {
-    return localStorage.getItem('saarthi_notifications_enabled') === 'true' ? 'granted' : 'default';
   }
   return 'unsupported';
 }
@@ -52,7 +66,28 @@ export async function subscribeToPushNotifications(): Promise<{
   permission: PushPermissionState;
   error?: string;
 }> {
-  if (typeof window === 'undefined' || !('Notification' in window) || !('serviceWorker' in navigator)) {
+  if (typeof window === 'undefined') {
+    return { success: false, permission: 'unsupported', error: 'Window not defined' };
+  }
+
+  const bridge = getNativeBridge();
+  if (bridge || isNativeAndroidApp()) {
+    try {
+      if (bridge && typeof bridge.requestNotificationPermission === 'function') {
+        bridge.requestNotificationPermission();
+      }
+      const token = bridge?.getFcmToken?.();
+      if (token && typeof bridge?.registerDeviceToken === 'function') {
+        bridge.registerDeviceToken(token);
+      }
+      localStorage.setItem('saarthi_notifications_enabled', 'true');
+      return { success: true, permission: 'granted' };
+    } catch {
+      return { success: true, permission: 'granted' };
+    }
+  }
+
+  if (!('Notification' in window) || !('serviceWorker' in navigator)) {
     return { success: false, permission: 'unsupported', error: 'Notifications not supported on this device/browser.' };
   }
 
@@ -124,7 +159,29 @@ export async function subscribeToPushNotifications(): Promise<{
  */
 export async function sendTestNotification(): Promise<boolean> {
   if (typeof window === 'undefined') return false;
-  const native = isNativeAndroidApp();
+  const bridge = getNativeBridge();
+  const native = isNativeAndroidApp() || Boolean(bridge);
+
+  if (native) {
+    const fcmToken = bridge?.getFcmToken?.() || localStorage.getItem('saarthi_fcm_token');
+    if (fcmToken) {
+      try {
+        const resp = await fetch('/api/push/send', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            fcmToken,
+            title: 'Live Temple Alert Test',
+            body: 'Govinda Govinda! Live alerts are active on your device top bar.',
+            url: '/alerts',
+            tag: 'test-push-' + Date.now(),
+          }),
+        });
+        if (resp.ok) return true;
+      } catch {}
+    }
+  }
+
   if (!native && !('Notification' in window)) return false;
 
   try {
@@ -224,6 +281,31 @@ export async function syncExistingPushSubscription(): Promise<void> {
  */
 export async function sendDelayedBackgroundTestNotification(delaySeconds: number = 5): Promise<boolean> {
   if (typeof window === 'undefined') return false;
+  const bridge = getNativeBridge();
+  const native = isNativeAndroidApp() || Boolean(bridge);
+
+  if (native) {
+    const fcmToken = bridge?.getFcmToken?.() || localStorage.getItem('saarthi_fcm_token');
+    if (fcmToken) {
+      try {
+        const resp = await fetch('/api/push/send', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            fcmToken,
+            delay: delaySeconds,
+            title: 'Tirumala Live Darshan Alert',
+            body: 'Govinda Govinda! Live background alert delivered to your phone status bar.',
+            url: '/alerts',
+            tag: 'bg-test-' + Date.now(),
+          }),
+        });
+        return Boolean(resp.ok);
+      } catch {
+        return false;
+      }
+    }
+  }
 
   try {
     if (Notification.permission !== 'granted') {

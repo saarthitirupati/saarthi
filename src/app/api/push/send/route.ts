@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import webpush from 'web-push';
 import { supabase } from '@/lib/supabase';
+import { sendFCMNotification } from '@/lib/fcmService';
 import {
   buildDailySpotNotification,
   buildFestivalReminder,
@@ -146,16 +147,47 @@ export async function GET(req: Request) {
 
 export async function POST(req: Request) {
   const bodyData = await req.json().catch(() => ({}));
-  const { type = 'daily_spot', endpoint, daysSince, title, body, url, image, tag, delay } = bodyData;
+  const { type = 'daily_spot', endpoint, fcmToken, daysSince, title, body, url, image, tag, delay } = bodyData;
 
   // Allow self-targeted device test pushes, otherwise enforce admin/cron auth for broadcasts
-  const isSelfTargetedTest = Boolean(endpoint && typeof endpoint === 'string' && endpoint.startsWith('https://'));
+  const isSelfTargetedTest = Boolean(
+    (endpoint && typeof endpoint === 'string' && endpoint.startsWith('https://')) ||
+    (fcmToken && typeof fcmToken === 'string' && fcmToken.length > 20)
+  );
+
   if (!isSelfTargetedTest && !(await checkAuth(req))) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
   if (typeof delay === 'number' && delay > 0) {
     await new Promise((resolve) => setTimeout(resolve, Math.min(delay, 15) * 1000));
+  }
+
+  if (fcmToken) {
+    const payload = buildPayload(type, daysSince, { title, body, url, image, tag }) || {
+      title: title || 'Tirumala Live Alert',
+      body: body || 'Live updates for Darshan and SSD tokens.',
+      url: url || '/alerts',
+      icon: '/icon-192.png',
+      tag: tag || 'saarthi-alert',
+    };
+
+    const deepLink = payload.url
+      ? (payload.url.startsWith('http') ? payload.url : `https://www.saarthiguide.in${payload.url}`)
+      : 'https://www.saarthiguide.in/alerts';
+
+    const res = await sendFCMNotification({
+      token: fcmToken,
+      title: payload.title,
+      body: payload.body,
+      deepLink,
+      data: {
+        tag: payload.tag || 'saarthi-alert',
+        url: deepLink,
+      },
+    });
+
+    return NextResponse.json({ ok: res.success, sent: res.success ? 1 : 0, error: res.error });
   }
 
   return handlePushDispatch(type, endpoint, daysSince, { title, body, url, image, tag });

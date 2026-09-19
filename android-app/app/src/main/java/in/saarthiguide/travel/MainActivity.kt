@@ -76,7 +76,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun checkNotificationPermission() {
+    internal fun checkNotificationPermission() {
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU) {
             if (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
                 notificationPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
@@ -167,7 +167,9 @@ class MainActivity : AppCompatActivity() {
 
         WebView.setWebContentsDebuggingEnabled(BuildConfig.DEBUG)
 
-        webView.addJavascriptInterface(SaarthiNativeBridge(this), "SaarthiNative")
+        val nativeBridge = SaarthiNativeBridge(this)
+        webView.addJavascriptInterface(nativeBridge, "SaarthiNative")
+        webView.addJavascriptInterface(nativeBridge, "Android")
 
         webView.webViewClient = SaarthiWebViewClient(
             onPageStartedListener = {
@@ -266,6 +268,18 @@ class MainActivity : AppCompatActivity() {
     class SaarthiNativeBridge(private val activity: MainActivity) {
         @JavascriptInterface
         fun isNativeApp(): Boolean = true
+
+        @JavascriptInterface
+        fun areNotificationsEnabled(): Boolean {
+            return androidx.core.app.NotificationManagerCompat.from(activity).areNotificationsEnabled()
+        }
+
+        @JavascriptInterface
+        fun requestNotificationPermission() {
+            activity.runOnUiThread {
+                activity.checkNotificationPermission()
+            }
+        }
 
         @JavascriptInterface
         fun getFcmToken(): String {
