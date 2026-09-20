@@ -19,7 +19,27 @@ import { calculateDrivingDistance, isCoordinateOnTirumalaHill, isWithinTirupatiR
 import { findNearestPlaceCandidates } from '@/lib/location';
 import { useLanguage } from '@/lib/useLanguage';
 import { getFestivalCrowdIntelligence } from '@/utils/festivalCrowd';
-import OfflineTempleMap from '@/components/place/OfflineTempleMap';
+import dynamic from 'next/dynamic';
+
+const OfflineTempleMap = dynamic(() => import('@/components/place/OfflineTempleMap'), {
+  ssr: false,
+  loading: () => (
+    <div style={{
+      minHeight: '220px',
+      backgroundColor: '#FFFFFF',
+      borderRadius: '20px',
+      border: '1px solid rgba(15, 23, 42, 0.06)',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      color: '#64748B',
+      fontSize: '12.5px',
+      fontWeight: 600
+    }}>
+      Loading Offline Map...
+    </div>
+  )
+});
 
 export default function PlaceDetails() {
   const routeParams = useParams();
@@ -1906,10 +1926,10 @@ export default function PlaceDetails() {
         {offlineMapNode}
         {saarthiSuggestsNode}
         {aboutTempleNode}
+        {nearbyTemplesNode}
         <div id="temple-heritage-section">
           {heritageAccordionsNode}
         </div>
-        {nearbyTemplesNode}
       </div>
 
       {/* ═══════════════════════════════════════════════════
@@ -1921,10 +1941,10 @@ export default function PlaceDetails() {
           {closureAlertNode}
           {offlineMapNode}
           {aboutTempleNode}
+          {nearbyTemplesNode}
           <div id="temple-heritage-section">
             {heritageAccordionsNode}
           </div>
-          {nearbyTemplesNode}
         </div>
 
         {/* Right Column: Sticky Quick Action & Briefing Sidebar */}
