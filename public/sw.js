@@ -195,7 +195,8 @@ self.addEventListener('push', (event) => {
 
   event.waitUntil((async () => {
     // Location-targeted notification check against cached pilgrim location
-    if (targetLocation && targetLocation !== 'All Users') {
+    const isTestAlert = tag.includes('test') || title.toLowerCase().includes('test');
+    if (targetLocation && targetLocation !== 'All Users' && !isTestAlert) {
       try {
         const cache = await caches.open('saarthi-user-context');
         const match = await cache.match('/user-location');

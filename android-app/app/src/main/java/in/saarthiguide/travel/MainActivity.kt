@@ -97,6 +97,16 @@ class MainActivity : AppCompatActivity() {
                             .putString("fcm_token", token)
                             .apply()
                         SaarthiFirebaseService.registerTokenWithBackend(this, token)
+                        runOnUiThread {
+                            try {
+                                if (::webView.isInitialized) {
+                                    webView.evaluateJavascript(
+                                        "try { localStorage.setItem('saarthi_fcm_token', '$token'); } catch(e){}",
+                                        null
+                                    )
+                                }
+                            } catch (_: Exception) {}
+                        }
                     }
                 }
             }

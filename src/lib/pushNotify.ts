@@ -50,6 +50,37 @@ export async function pushNotifyAll(payload: PushPayload) {
 
         await Promise.allSettled(
           subs.map(async (sub) => {
+            // Handle Native Android FCM endpoints stored in push_subscriptions
+            if (sub.endpoint.startsWith('https://fcm.googleapis.com/fcm/native/')) {
+              const fcmToken = sub.endpoint.replace('https://fcm.googleapis.com/fcm/native/', '');
+              if (fcmToken && fcmToken.length > 20) {
+                const deepLink = payload.url
+                  ? (payload.url.startsWith('http') ? payload.url : `https://www.saarthiguide.in${payload.url}`)
+                  : 'https://www.saarthiguide.in';
+                const fcmRes = await sendFCMNotification({
+                  token: fcmToken,
+                  title: payload.title,
+                  body: payload.body,
+                  deepLink,
+                  data: {
+                    tag: payload.tag || 'saarthi-alert',
+                    url: deepLink,
+                  },
+                });
+                if (
+                  !fcmRes.success &&
+                  fcmRes.error &&
+                  (fcmRes.error.includes('registration-token-not-registered') ||
+                    fcmRes.error.includes('UNREGISTERED') ||
+                    fcmRes.error.includes('404'))
+                ) {
+                  gone.push(sub.id);
+                }
+              }
+              return;
+            }
+
+            // Standard Web Push dispatch
             try {
               await webpush.sendNotification(
                 {

@@ -76,9 +76,32 @@ export async function subscribeToPushNotifications(): Promise<{
       if (bridge && typeof bridge.requestNotificationPermission === 'function') {
         bridge.requestNotificationPermission();
       }
-      const token = bridge?.getFcmToken?.();
-      if (token && typeof bridge?.registerDeviceToken === 'function') {
-        bridge.registerDeviceToken(token);
+      let token = bridge?.getFcmToken?.() || localStorage.getItem('saarthi_fcm_token');
+      // On cold boot, Firebase takes ~500-1500ms to generate the token
+      if (!token && bridge) {
+        for (let i = 0; i < 5; i++) {
+          await new Promise((r) => setTimeout(r, 350));
+          token = bridge?.getFcmToken?.();
+          if (token && token.trim().length > 20) break;
+        }
+      }
+      if (token && token.trim().length > 20) {
+        localStorage.setItem('saarthi_fcm_token', token.trim());
+        if (typeof bridge?.registerDeviceToken === 'function') {
+          bridge.registerDeviceToken(token.trim());
+        }
+        // Direct web client registration to guarantee delivery
+        await fetch('/api/v1/devices/register', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            deviceId: 'android_' + token.substring(0, 16),
+            platform: 'android',
+            fcmToken: token.trim(),
+            isInTirupati: true,
+            language: 'en'
+          }),
+        }).catch(() => {});
       }
       localStorage.setItem('saarthi_notifications_enabled', 'true');
       return { success: true, permission: 'granted' };
