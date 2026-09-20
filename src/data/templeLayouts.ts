@@ -276,6 +276,152 @@ export const CURATED_LAYOUTS: Record<string, Partial<TempleLayoutData>> = {
     ]
   },
 
+  'govindaraja': {
+    placeId: 'govindaraja',
+    titleEn: 'Sri Govindaraja Swamy Temple Precinct Map',
+    titleTe: 'శ్రీ గోవిందరాజ స్వామి ఆలయ ప్రాంగణ మ్యాప్',
+    layoutType: 'grand-temple',
+    centerCoordinates: { lat: 13.629941, lng: 79.4162996 },
+    routePath: [[430, 290], [380, 265], [270, 275], [270, 195], [270, 85], [150, 130], [370, 190], [430, 290]],
+    pins: [
+      {
+        id: 'parking',
+        nameEn: 'Railway Station Road & North Approach Parking',
+        nameTe: 'ఉత్తర ప్రవేశ మార్గం & పార్కింగ్ ప్రదేశం',
+        category: 'parking',
+        lat: 13.6292,
+        lng: 79.4160,
+        svgX: 430,
+        svgY: 290,
+        descEn: 'Designated parking for two-wheelers and cars near Tirupati Railway Station / North Mada Street.',
+        descTe: 'రైల్వే స్టేషన్ సమీపంలోని వాహనాల పార్కింగ్ స్థలం.'
+      },
+      {
+        id: 'footwear',
+        nameEn: 'Free Footwear & Mobile Locker Depot',
+        nameTe: 'ఉచిత పాదరక్షల & ఫోన్ లాకర్ కౌంటర్',
+        category: 'footwear',
+        lat: 13.6295,
+        lng: 79.4161,
+        svgX: 380,
+        svgY: 265,
+        descEn: 'Free footwear stall and mobile locker custody counter near the Raja Gopuram entrance.',
+        descTe: 'రాజగోపురం వద్ద ఉచిత చెప్పుల మరియు మొబైల్ భద్రతా కౌంటర్.'
+      },
+      {
+        id: 'raja-gopuram',
+        nameEn: '7-Tier Raja Gopuram Main Entrance',
+        nameTe: '7 అంతస్తుల రాజగోపురం ప్రధాన ముఖద్వారం',
+        category: 'entry',
+        lat: 13.6297,
+        lng: 79.4163,
+        svgX: 270,
+        svgY: 275,
+        descEn: 'Magnificent 12th-century 7-tiered Raja Gopuram welcoming devotees facing east.',
+        descTe: '12వ శతాబ్దపు అద్భుతమైన 7 అంతస్తుల రాజగోపురం.'
+      },
+      {
+        id: 'dhwajasthambham',
+        nameEn: 'Dhwajasthambham & Balipeetham',
+        nameTe: 'ధ్వజస్తంభం & బలిపీఠం',
+        category: 'info',
+        lat: 13.6298,
+        lng: 79.4163,
+        svgX: 270,
+        svgY: 195,
+        descEn: 'Consecrated gold-plated flagstaff; devotees perform circumambulation and offer prostrations before darshan.',
+        descTe: 'పవిత్ర ధ్వజస్తంభం వద్ద ప్రదక్షిణ మరియు నమస్కారం.'
+      },
+      {
+        id: 'sanctum',
+        nameEn: 'Sri Govindaraja Swamy Moola Virat (Sayana Murti)',
+        nameTe: 'శ్రీ గోవిందరాజ స్వామి మూలవిరాట్టు (శయన మూర్తి)',
+        category: 'sanctum',
+        lat: 13.6301,
+        lng: 79.4163,
+        svgX: 270,
+        svgY: 85,
+        descEn: 'Presiding deity consecrated by Sri Ramanujacharya in reclining Yoga Sayana posture on Adisesha with a wooden measure (marakkal) for Lord Venkateswara’s wedding treasury.',
+        descTe: 'ఆదిశేషునిపై శయన ముద్రలో కొలువైన శ్రీ గోవిందరాజ స్వామి వారి దివ్య దర్శనం.'
+      },
+      {
+        id: 'parivara-shrines',
+        nameEn: 'Sri Pundarikavalli Thayar & Sri Ramanuja Shrines',
+        nameTe: 'శ్రీ పుండరీకవల్లి తాయారు & రామానుజాచార్యుల సన్నిధి',
+        category: 'info',
+        lat: 13.6300,
+        lng: 79.4158,
+        svgX: 150,
+        svgY: 130,
+        descEn: 'Revered shrines of Divine Mother Sri Pundarikavalli Thayar, Sri Parthasarathi, Andal, and Sri Ramanuja within the temple courtyard.',
+        descTe: 'శ్రీ పుండరీకవల్లి తాయారు, ఆళ్వార్లు మరియు శ్రీ రామానుజుల ఉపాలయాలు.'
+      },
+      {
+        id: 'prasadam',
+        nameEn: 'Prasadam & Laddu Distribution Counter',
+        nameTe: 'ప్రసాదం & లడ్డూ విక్రయ కౌంటర్',
+        category: 'laddu',
+        lat: 13.6298,
+        lng: 79.4166,
+        svgX: 370,
+        svgY: 190,
+        descEn: 'Sacred TTD laddu, vadai, pulihora, and consecrated theertham distribution stall near northern exit.',
+        descTe: 'స్వామివారి ప్రసాదం, తీర్థం మరియు లడ్డూ కౌంటర్.'
+      }
+    ],
+    routeSteps: [
+      {
+        stepNumber: 1,
+        titleEn: 'Arrival & Footwear Deposit',
+        titleTe: 'పార్కింగ్ చేరుకోవడం & పాదరక్షల కేంద్రం',
+        distance: '0.0 km',
+        timeMins: 0,
+        descEn: 'Park vehicle along Railway Station / North Mada Street and deposit footwear at the free counter near North/East Raja Gopuram entrance.',
+        descTe: 'వాహనాన్ని పార్క్ చేసి, రాజగోపురం వద్ద ఉన్న ఉచిత పాదరక్షల కౌంటర్లో చెప్పులను సమర్పించండి.'
+      },
+      {
+        stepNumber: 2,
+        titleEn: 'Raja Gopuram & Dhwajasthambham',
+        titleTe: 'రాజగోపురం ప్రవేశం & ధ్వజస్తంభ నమస్కారం',
+        distance: '50m',
+        timeMins: 2,
+        descEn: 'Enter through the iconic 7-tier Raja Gopuram; circumambulate the sacred flagstaff (Dhwajasthambham) and pay initial respects.',
+        descTe: 'ఏడు అంతస్తుల రాజగోపురం గుండా ప్రవేశించి, పవిత్ర ధ్వజస్తంభం చుట్టూ ప్రదక్షిణ చేసి నమస్కరించండి.'
+      },
+      {
+        stepNumber: 3,
+        titleEn: 'Moola Virat Darshan (Sayana Murti)',
+        titleTe: 'శ్రీ గోవిందరాజ స్వామి మూలవిరాట్టు దర్శనం',
+        distance: '80m',
+        timeMins: 15,
+        descEn: 'Proceed through the inner sanctum line to witness Lord Govindaraja Swamy reclining peacefully in Sayana posture resting on Adisesha.',
+        descTe: 'గర్భాలయం లోపలికి ప్రవేశించి, ఆదిశేషునిపై శయన ముద్రలో ఉన్న స్వామివారి దివ్య దర్శనం చేసుకోండి.'
+      },
+      {
+        stepNumber: 4,
+        titleEn: 'Parivara Devatas & Alwars',
+        titleTe: 'పరివార దేవతలు, తాయారు & రామానుజుల సన్నిధి',
+        distance: '100m',
+        timeMins: 10,
+        descEn: 'Visit the sacred shrines of Sri Pundarikavalli Thayar, Sri Parthasarathi, and the consecrated shrine of Sri Ramanujacharya.',
+        descTe: 'శ్రీ పుండరీకవల్లి తాయారు, శ్రీ పార్థసారథి మరియు శ్రీ రామానుజాచార్యుల సన్నిధులను దర్శించండి.'
+      },
+      {
+        stepNumber: 5,
+        titleEn: 'Prasadam Counter & Exit Route',
+        titleTe: 'ప్రసాదం కౌంటర్ & నిష్క్రమణ మార్గం',
+        distance: '120m',
+        timeMins: 5,
+        descEn: 'Collect blessed TTD laddu, pulihora, and holy theertham at the prasadam stall before exiting via the northern gateway.',
+        descTe: 'ఉత్తర ద్వారానికి సమీపంలో ఉన్న కౌంటర్ వద్ద స్వామివారి ప్రసాదం, తీర్థం స్వీకరించి నిష్క్రమించండి.'
+      }
+    ],
+    emergencyContacts: [
+      { titleEn: 'TTD Govindaraja Swamy Temple Office', titleTe: 'గోవిందరాజ స్వామి ఆలయ కార్యాలయం', number: '08772264555' },
+      { titleEn: 'Emergency Helpline', titleTe: 'అత్యవసర హెల్ప్‌లైన్', number: '112' }
+    ]
+  },
+
   'chandragiri-fort': {
     placeId: 'chandragiri-fort',
     titleEn: 'Chandragiri Fort & Raja Mahal Precinct Map',
@@ -4006,10 +4152,15 @@ export function getTempleLayout(placeInput: string | PlaceInputContext, fallback
     sanctumNameTe: `${name} ప్రధాన ప్రదేశం`,
     routePath: generatedRoute,
     pins: generatedPins,
-    routeSteps: [
-      { stepNumber: 1, titleEn: 'Arrival & Parking Bay', titleTe: 'పార్కింగ్ చేరుకోవడం', distance: '0.0 km', timeMins: 0, descEn: 'Park vehicle and proceed to the main entrance.', descTe: 'వాహనాన్ని పార్క్ చేయండి.' },
-      { stepNumber: 2, titleEn: 'Entrance & Exploration', titleTe: 'ప్రవేశం & సందర్శన', distance: '50m', timeMins: 2, descEn: 'Walk through the main walkway.', descTe: 'ప్రధాన మార్గం గుండా వెళ్ళండి.' },
-      { stepNumber: 3, titleEn: 'Main Landmark & Blessings', titleTe: 'ప్రధాన కేంద్రం & దర్శనం', distance: '120m', timeMins: 10, descEn: 'Visit key highlights and view points.', descTe: 'కీలక ప్రదేశాలను సందర్శించండి.' }
+    routeSteps: (layoutType === 'grand-temple' || layoutType === 'city-shrine' || layoutType === 'ancient-shrine') ? [
+      { stepNumber: 1, titleEn: 'Arrival & Footwear Deposit', titleTe: 'పార్కింగ్ & పాదరక్షల కేంద్రం', distance: '0.0 km', timeMins: 0, descEn: 'Park vehicle at designated parking and deposit shoes at the free footwear counter.', descTe: 'వాహనాన్ని పార్క్ చేసి ఉచిత కౌంటర్ వద్ద పాదరక్షలు విడవండి.' },
+      { stepNumber: 2, titleEn: 'Temple Entrance & Pradakshina', titleTe: 'ఆలయ ప్రవేశం & ప్రదక్షిణ', distance: '50m', timeMins: 3, descEn: 'Enter through the main gateway; pay respects at the Dhwajasthambham and follow the clockwise pradakshina corridor.', descTe: 'ప్రధాన ద్వారం గుండా ప్రవేశించి, ధ్వజస్తంభ నమస్కారం చేసి ప్రదక్షిణ మార్గంలో వెళ్ళండి.' },
+      { stepNumber: 3, titleEn: 'Inner Sanctum Darshan', titleTe: 'గర్భాలయం & మూలవిరాట్టు దర్శనం', distance: '80m', timeMins: 15, descEn: 'Join the darshan line to receive the divine blessings of the presiding deity in the inner sanctum.', descTe: 'గర్భగుడి దర్శన మార్గంలో వెళ్లి మూలవిరాట్టు దివ్య ఆశీస్సులు పొందండి.' },
+      { stepNumber: 4, titleEn: 'Prasadam & Theertham Counter', titleTe: 'ప్రసాదం & తీర్థం స్వీకరణ', distance: '120m', timeMins: 5, descEn: 'Receive blessed theertham and collect sacred prasadam at the distribution counter near the exit.', descTe: 'నిష్క్రమణ ద్వారం వద్ద పవిత్ర తీర్థం మరియు ప్రసాదం స్వీకరించండి.' }
+    ] : [
+      { stepNumber: 1, titleEn: 'Arrival & Visitor Parking', titleTe: 'పార్కింగ్ చేరుకోవడం', distance: '0.0 km', timeMins: 0, descEn: 'Park vehicle and proceed to the visitor reception entrance.', descTe: 'వాహనాన్ని పార్క్ చేసి ప్రధాన ద్వారం వైపు వెళ్ళండి.' },
+      { stepNumber: 2, titleEn: 'Main Entrance & Orientation', titleTe: 'ప్రవేశం & ప్రాంగణ నడక', distance: '50m', timeMins: 2, descEn: 'Walk through the main paved walkway and observe directional signage.', descTe: 'ప్రధాన మార్గం గుండా నడుస్తూ సమాచారాన్ని గమనించండి.' },
+      { stepNumber: 3, titleEn: 'Core Attraction & Highlights', titleTe: 'ప్రధాన ఆకర్షణ & విశేషాలు', distance: '120m', timeMins: 10, descEn: 'Experience the primary landmark exhibits, views, and cultural heritage.', descTe: 'ప్రధాన విశేషాలను మరియు ప్రకృతి/సాంస్కృతిక అందాలను తిలకించండి.' }
     ],
     emergencyContacts: [
       { titleEn: 'Tourism / Information Desk', titleTe: 'సమాచార విభాగం', number: '08772264555' },

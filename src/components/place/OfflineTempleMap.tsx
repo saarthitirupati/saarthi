@@ -8,7 +8,11 @@ import {
   PhoneCall, 
   Sparkles, 
   Shield, 
-  Compass
+  Compass,
+  Maximize2,
+  Minimize2,
+  ChevronDown,
+  ChevronUp
 } from 'lucide-react';
 import styles from './OfflineTempleMap.module.css';
 import { getTempleLayout, hasCuratedTempleLayout, MapPin } from '@/data/templeLayouts';
@@ -121,6 +125,8 @@ export default function OfflineTempleMap({
   const [isCached, setIsCached] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
   const [mounted, setMounted] = useState(false);
+  const [isFullscreen, setIsFullscreen] = useState(false);
+  const [isTimelineExpanded, setIsTimelineExpanded] = useState(true);
 
   // Update active pin when layout changes
   useEffect(() => {
@@ -185,7 +191,19 @@ export default function OfflineTempleMap({
   const coordString = `${displayLat.toFixed(4)}° N, ${displayLng.toFixed(4)}° E`;
 
   return (
-    <div className={styles.container}>
+    <div 
+      className={styles.container}
+      style={isFullscreen ? {
+        position: 'fixed',
+        inset: 0,
+        zIndex: 9999,
+        backgroundColor: '#FFFFFF',
+        borderRadius: 0,
+        padding: '16px',
+        overflowY: 'auto',
+        boxShadow: 'none'
+      } : undefined}
+    >
       {/* Header */}
       <div className={styles.header}>
         <div className={styles.headerTop}>
@@ -196,23 +214,36 @@ export default function OfflineTempleMap({
               : (lang === 'te' ? 'ఆఫ్‌లైన్ మ్యాప్' : 'Offline Precinct Map')}
           </span>
 
-          <button 
-            onClick={handleSaveOffline}
-            className={`${styles.saveBtn} ${isCached ? styles.saveBtnSaved : styles.saveBtnUnsaved}`}
-            title="Save vector layout for offline use"
-          >
-            {isCached ? (
-              <>
-                <Check size={13} />
-                <span>{lang === 'te' ? 'సేవ్ చేయబడింది' : 'Saved Offline'}</span>
-              </>
-            ) : (
-              <>
-                <Download size={13} />
-                <span>{isSaving ? (lang === 'te' ? 'సేవ్...' : 'Saving...') : (lang === 'te' ? 'ఆఫ్‌లైన్ సేవ్' : 'Save Offline')}</span>
-              </>
-            )}
-          </button>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+            <button
+              type="button"
+              onClick={() => setIsFullscreen(prev => !prev)}
+              className={styles.saveBtn}
+              style={{ backgroundColor: '#F8FAFC', border: '1px solid #CBD5E1', color: '#334155' }}
+              title={isFullscreen ? 'Exit Full Screen' : 'Full Screen Map'}
+            >
+              {isFullscreen ? <Minimize2 size={13} /> : <Maximize2 size={13} />}
+              <span>{isFullscreen ? (lang === 'te' ? 'మూసివేయి' : 'Exit') : (lang === 'te' ? 'పూర్తి స్క్రీన్' : 'Full Screen')}</span>
+            </button>
+
+            <button 
+              onClick={handleSaveOffline}
+              className={`${styles.saveBtn} ${isCached ? styles.saveBtnSaved : styles.saveBtnUnsaved}`}
+              title="Save vector layout for offline use"
+            >
+              {isCached ? (
+                <>
+                  <Check size={13} />
+                  <span>{lang === 'te' ? 'సేవ్ చేయబడింది' : 'Saved Offline'}</span>
+                </>
+              ) : (
+                <>
+                  <Download size={13} />
+                  <span>{isSaving ? (lang === 'te' ? 'సేవ్...' : 'Saving...') : (lang === 'te' ? 'ఆఫ్‌లైన్ సేవ్' : 'Save Offline')}</span>
+                </>
+              )}
+            </button>
+          </div>
         </div>
 
         <h2 className={styles.title}>
@@ -1439,31 +1470,52 @@ export default function OfflineTempleMap({
 
       {/* Step-by-Step Wayfinding Timeline */}
       <div className={styles.timelineSection}>
-        <div className={styles.sectionHeading}>
-          <Footprints size={16} color="#0F5132" />
-          <span>{lang === 'te' ? 'ఆఫ్‌లైన్ నడక మార్గం (స్టెప్-బై-స్టెప్)' : 'Step-by-Step Wayfinding Route'}</span>
-        </div>
+        <button
+          type="button"
+          onClick={() => setIsTimelineExpanded(prev => !prev)}
+          style={{
+            width: '100%',
+            background: 'none',
+            border: 'none',
+            padding: 0,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            cursor: 'pointer'
+          }}
+        >
+          <div className={styles.sectionHeading} style={{ margin: 0 }}>
+            <Footprints size={16} color="#0F5132" />
+            <span>{lang === 'te' ? 'ఆఫ్‌లైన్ నడక మార్గం (స్టెప్-బై-స్టెప్)' : 'Step-by-Step Wayfinding Route'}</span>
+          </div>
+          <span style={{ fontSize: '11px', fontWeight: 700, color: '#0F5132', display: 'flex', alignItems: 'center', gap: '4px' }}>
+            <span>{layout.routeSteps.length} {lang === 'te' ? 'దశలు' : 'steps'}</span>
+            {isTimelineExpanded ? <ChevronUp size={14} /> : <ChevronDown size={14} />}
+          </span>
+        </button>
 
-        <div className={styles.timelineList}>
-          {layout.routeSteps.map((step) => (
-            <div key={step.stepNumber} className={styles.timelineItem}>
-              <div className={styles.stepNumber}>{step.stepNumber}</div>
-              <div className={styles.stepContent}>
-                <div className={styles.stepHeader}>
-                  <h4 className={styles.stepTitle}>
-                    {lang === 'te' ? step.titleTe : step.titleEn}
-                  </h4>
-                  <span className={styles.stepMeta}>
-                    {step.distance} • {step.timeMins} {lang === 'te' ? 'నిమి.' : 'mins'}
-                  </span>
+        {isTimelineExpanded && (
+          <div className={styles.timelineList} style={{ marginTop: '12px' }}>
+            {layout.routeSteps.map((step) => (
+              <div key={step.stepNumber} className={styles.timelineItem}>
+                <div className={styles.stepNumber}>{step.stepNumber}</div>
+                <div className={styles.stepContent}>
+                  <div className={styles.stepHeader}>
+                    <h4 className={styles.stepTitle}>
+                      {lang === 'te' ? step.titleTe : step.titleEn}
+                    </h4>
+                    <span className={styles.stepMeta}>
+                      {step.distance} • {step.timeMins} {lang === 'te' ? 'నిమి.' : 'mins'}
+                    </span>
+                  </div>
+                  <p className={styles.stepDesc}>
+                    {lang === 'te' ? step.descTe : step.descEn}
+                  </p>
                 </div>
-                <p className={styles.stepDesc}>
-                  {lang === 'te' ? step.descTe : step.descEn}
-                </p>
               </div>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
+        )}
       </div>
 
       {/* Emergency Offline Contacts */}
