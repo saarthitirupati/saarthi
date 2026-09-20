@@ -738,6 +738,43 @@ export default function PlaceDetails() {
     }
   }, [significanceData.traditionType]);
 
+  const significancePills = useMemo(() => {
+    // Dynamic high-signal visual pills by tradition type
+    switch (significanceData.traditionType) {
+      case 'nature':
+        return [
+          { label: lang === 'te' ? 'ప్రకృతి దృశ్యాలు' : 'Panoramic Views', icon: Compass },
+          { label: lang === 'te' ? 'నడక మార్గాలు' : 'Scenic Trails', icon: MapPin },
+          { label: lang === 'te' ? 'స్వచ్ఛమైన గాలి' : 'Fresh Forest Air', icon: Sparkles }
+        ];
+      case 'heritage':
+        return [
+          { label: lang === 'te' ? 'ప్రాచీన శిల్పకళ' : 'Ancient Craftsmanship', icon: Landmark },
+          { label: lang === 'te' ? 'రాజవంశాల చరిత్ర' : 'Dynastic History', icon: Clock },
+          { label: lang === 'te' ? 'వారసత్వ ప్రాంగణం' : 'Heritage Courtyard', icon: MapPin }
+        ];
+      case 'food':
+        return [
+          { label: lang === 'te' ? 'సాంప్రదాయ రుచులు' : 'Traditional Flavors', icon: Utensils },
+          { label: lang === 'te' ? 'తాజా ప్రసాదం' : 'Fresh Meals / Prasadam', icon: Sparkles },
+          { label: lang === 'te' ? 'తీర్థయాత్ర ప్రత్యేకత' : 'Pilgrim Special', icon: CheckCircle2 }
+        ];
+      case 'theertham':
+        return [
+          { label: lang === 'te' ? 'పవిత్ర తీర్థ స్నానం' : 'Sacred Holy Dip', icon: Droplets },
+          { label: lang === 'te' ? 'పాప విమోచనం' : 'Purifying Waters', icon: Sparkles },
+          { label: lang === 'te' ? 'పురాణ నేపథ్యం' : 'Ancient Purana', icon: Landmark }
+        ];
+      case 'temple':
+      default:
+        return [
+          { label: lang === 'te' ? 'మూలవిరాట్ దర్శనం' : 'Main Deity Darshan', icon: Sparkles },
+          { label: lang === 'te' ? 'ఆలయ ప్రదక్షిణ' : 'Sacred Pradakshina', icon: Compass },
+          { label: lang === 'te' ? 'తీర్థ ప్రసాదాలు' : 'Teertham & Prasadam', icon: CheckCircle2 }
+        ];
+    }
+  }, [significanceData.traditionType, lang]);
+
   const placeSignificanceNode = (
     <div style={{
       backgroundColor: '#FFFFFF',
@@ -788,187 +825,81 @@ export default function PlaceDetails() {
         </span>
       </div>
 
-      {/* Visual Highlight: Devotional / Visitor Purpose */}
-      <div style={{
-        backgroundColor: '#FFFFFF',
-        border: '1px solid rgba(15, 23, 42, 0.08)',
-        borderRadius: '12px',
-        padding: '10px 12px',
-        marginBottom: '8px',
-        display: 'flex',
-        alignItems: 'flex-start',
-        gap: '8px'
+      {/* Core Devotional / Visitor Purpose */}
+      <p style={{
+        fontSize: '12.5px',
+        color: '#1E293B',
+        fontWeight: 700,
+        lineHeight: 1.5,
+        margin: '0 0 10px',
+        wordBreak: 'break-word'
       }}>
-        <CheckCircle2 size={15} color={traditionTheme.iconColor} style={{ flexShrink: 0, marginTop: '2px' }} />
-        <p style={{
-          fontSize: '12.5px',
-          color: '#1E293B',
-          fontWeight: 700,
-          lineHeight: 1.45,
-          margin: 0,
-          wordBreak: 'break-word'
-        }}>
-          {lang === 'te' ? significanceData.whyVisitTe : significanceData.whyVisitEn}
-        </p>
-      </div>
+        {lang === 'te' ? significanceData.whyVisitTe : significanceData.whyVisitEn}
+      </p>
 
-      {/* Visual Highlights & Key Actions (Clean, legible, zero ellipsis truncation) */}
+      {/* Visual Attribute Pills (Zero truncation, clean horizontal wrap) */}
       <div style={{
         display: 'flex',
-        flexDirection: 'column',
+        flexWrap: 'wrap',
         gap: '6px',
         marginBottom: '10px'
       }}>
-        {(lang === 'te' ? significanceData.actionsTe : significanceData.actionsEn).slice(0, 3).map((action, idx) => (
-          <div
-            key={idx}
-            style={{
-              backgroundColor: '#FFFFFF',
-              border: '1px solid rgba(15, 23, 42, 0.07)',
-              borderRadius: '11px',
-              padding: '8px 11px',
-              display: 'flex',
-              alignItems: 'flex-start',
-              gap: '8px',
-              boxShadow: '0 1px 3px rgba(0,0,0,0.02)'
-            }}
-          >
-            <div style={{
-              width: '18px',
-              height: '18px',
-              borderRadius: '50%',
-              backgroundColor: traditionTheme.badgeBg,
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              flexShrink: 0,
-              marginTop: '1px'
-            }}>
-              <CheckCircle2 size={12} color={traditionTheme.iconColor} />
+        {significancePills.map((pill, idx) => {
+          const PillIcon = pill.icon;
+          return (
+            <div
+              key={idx}
+              style={{
+                backgroundColor: '#FFFFFF',
+                border: '1px solid rgba(15, 23, 42, 0.09)',
+                borderRadius: '9999px',
+                padding: '4.5px 10px',
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '5px',
+                boxShadow: '0 1px 2px rgba(0,0,0,0.02)'
+              }}
+            >
+              <PillIcon size={12} color={traditionTheme.iconColor} style={{ flexShrink: 0 }} />
+              <span style={{
+                fontSize: '11.5px',
+                fontWeight: 700,
+                color: '#334155',
+                whiteSpace: 'nowrap'
+              }}>
+                {pill.label}
+              </span>
             </div>
-            <span style={{
-              fontSize: '12px',
-              fontWeight: 600,
-              color: '#334155',
-              lineHeight: 1.4,
-              wordBreak: 'break-word'
-            }}>
-              {action}
-            </span>
-          </div>
-        ))}
+          );
+        })}
       </div>
 
-      {/* Dropdown Toggle Button */}
+      {/* Subtle Link to Full Lore & Sthala Puranam */}
       <button
-        onClick={() => setIsSignificanceOpen(!isSignificanceOpen)}
+        type="button"
+        onClick={() => {
+          setOpenDrawer('legend');
+          const el = document.getElementById('temple-heritage-section');
+          if (el) {
+            el.scrollIntoView({ behavior: 'smooth' });
+          }
+        }}
         style={{
-          width: '100%',
-          backgroundColor: '#FFFFFF',
-          border: '1px solid #E2E8F0',
-          borderRadius: '12px',
-          padding: '9px 12px',
-          fontSize: '12.5px',
-          fontWeight: 700,
-          color: '#0F5132',
+          background: 'none',
+          border: 'none',
+          padding: '2px 0 0',
+          fontSize: '11.5px',
+          fontWeight: 800,
+          color: traditionTheme.iconColor,
           cursor: 'pointer',
-          display: 'flex',
+          display: 'inline-flex',
           alignItems: 'center',
-          justifyContent: 'space-between',
-          transition: 'all 0.15s ease',
-          boxShadow: '0 1px 3px rgba(0,0,0,0.02)'
+          gap: '5px'
         }}
       >
-        <span style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-          <BookOpen size={14} color="#0F5132" />
-          <span>
-            {isSignificanceOpen 
-              ? (lang === 'te' ? 'వివరాలను తగ్గించండి' : 'Show Less') 
-              : (lang === 'te' ? traditionTheme.buttonClosedTe : traditionTheme.buttonClosedEn)}
-          </span>
-        </span>
-        {isSignificanceOpen ? <ChevronUp size={15} color="#0F5132" /> : <ChevronDown size={15} color="#64748B" />}
+        <BookOpen size={13} color={traditionTheme.iconColor} />
+        <span>{lang === 'te' ? 'పూర్తి స్థల పురాణం & చరిత్ర చదవండి →' : 'Read Sacred Lore & History →'}</span>
       </button>
-
-      {/* Expandable Deep Dive Body */}
-      {isSignificanceOpen && (
-        <div style={{ marginTop: '12px', display: 'flex', flexDirection: 'column', gap: '10px', paddingTop: '10px', borderTop: '1px solid rgba(0, 0, 0, 0.06)' }}>
-          {/* Section 1: What People Traditionally Do */}
-          <div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '6px' }}>
-              <CheckCircle2 size={13} color="#0F5132" style={{ flexShrink: 0 }} />
-              <span style={{ fontSize: '11.5px', fontWeight: 800, color: '#0F5132', textTransform: 'uppercase', letterSpacing: '0.03em' }}>
-                {lang === 'te' ? traditionTheme.actionTitleTe : traditionTheme.actionTitleEn}
-              </span>
-            </div>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '5px' }}>
-              {(lang === 'te' ? significanceData.actionsTe : significanceData.actionsEn).map((action, idx) => (
-                <div key={idx} style={{ display: 'flex', alignItems: 'flex-start', gap: '7px', fontSize: '12px', color: '#334155', lineHeight: 1.45 }}>
-                  <div style={{ width: '4px', height: '4px', borderRadius: '50%', backgroundColor: '#0F5132', marginTop: '6px', flexShrink: 0 }} />
-                  <span>{action}</span>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Section 2: Cultural Background / Sthala Purana */}
-          <div style={{ backgroundColor: 'rgba(255, 255, 255, 0.85)', padding: '10px 12px', borderRadius: '10px', border: '1px solid #E2E8F0' }}>
-            <div style={{ fontSize: '11px', fontWeight: 800, color: '#475569', marginBottom: '4px', textTransform: 'uppercase', letterSpacing: '0.03em' }}>
-              {lang === 'te' ? traditionTheme.meaningTitleTe : traditionTheme.meaningTitleEn}
-            </div>
-            <p style={{ fontSize: '12px', color: '#334155', lineHeight: 1.5, margin: 0 }}>
-              {lang === 'te' ? significanceData.culturalMeaningTe : significanceData.culturalMeaningEn}
-            </p>
-          </div>
-
-          {/* Section 3: Saarthi Practical Advisory */}
-          <div style={{ backgroundColor: '#FEF3C7', border: '1px solid #FDE68A', padding: '9px 12px', borderRadius: '10px', display: 'flex', alignItems: 'flex-start', gap: '7px' }}>
-            <Info size={14} color="#92400E" style={{ flexShrink: 0, marginTop: '2px' }} />
-            <div style={{ flex: 1, minWidth: 0 }}>
-              <span style={{ fontSize: '10.5px', fontWeight: 800, color: '#92400E', textTransform: 'uppercase', letterSpacing: '0.04em', display: 'block', marginBottom: '2px' }}>
-                {lang === 'te' ? 'సారథి ప్రాక్టికల్ సూచన' : 'Saarthi Practical Advisory'}
-              </span>
-              <p style={{ fontSize: '11.5px', color: '#78350F', fontWeight: 600, lineHeight: 1.45, margin: 0 }}>
-                {lang === 'te' ? significanceData.saarthiTipTe : significanceData.saarthiTipEn}
-              </p>
-            </div>
-          </div>
-
-          {/* Section 4: Read Full Sthala Puranam & Lore */}
-          <button
-            type="button"
-            onClick={() => {
-              setOpenDrawer('legend');
-              const el = document.getElementById('temple-heritage-section');
-              if (el) {
-                el.scrollIntoView({ behavior: 'smooth' });
-              }
-            }}
-            style={{
-              width: '100%',
-              backgroundColor: '#FFFFFF',
-              border: '1px solid #CBD5E1',
-              borderRadius: '10px',
-              padding: '9px 12px',
-              fontSize: '12px',
-              fontWeight: 700,
-              color: '#0F5132',
-              cursor: 'pointer',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-              boxShadow: '0 1px 3px rgba(0,0,0,0.02)',
-              marginTop: '2px'
-            }}
-          >
-            <span style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-              <BookOpen size={14} color="#0F5132" />
-              <span>{lang === 'te' ? 'పూర్తి స్థల పురాణం & చరిత్ర చదవండి' : 'Read Full Sthala Puranam & Lore'}</span>
-            </span>
-            <span style={{ fontSize: '13px' }}>→</span>
-          </button>
-        </div>
-      )}
     </div>
   );
 
