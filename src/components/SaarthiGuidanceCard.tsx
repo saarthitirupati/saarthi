@@ -47,7 +47,7 @@ export default function SaarthiGuidanceCard({
 
   const defaultPrimaryPill: GuidancePill = {
     label: 'Sacred Shrine',
-    title: 'Sri Padmavathi Ammavari',
+    title: 'Padmavathi Temple',
     url: '/place/padmavathi-temple'
   };
 
@@ -59,7 +59,7 @@ export default function SaarthiGuidanceCard({
 
   const defaultTertiaryPill: GuidancePill = {
     label: 'Optimal Time',
-    title: 'Best Morning Hours',
+    title: 'Early Morning',
     url: '/route'
   };
 
@@ -95,12 +95,12 @@ export default function SaarthiGuidanceCard({
       }}
     >
       {/* Top Row Header */}
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '8px' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '6px', color: '#15803D', fontWeight: 900, fontSize: '12px', letterSpacing: '0.6px', textTransform: 'uppercase' }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '6px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '6px', color: '#15803D', fontWeight: 900, fontSize: '12px', letterSpacing: '0.6px', textTransform: 'uppercase', flexShrink: 0 }}>
           <Sparkles size={15} color="#15803D" />
           <span>SAARTHI GUIDANCE</span>
         </div>
-        <span style={{ fontSize: '12px', fontStyle: 'italic', fontWeight: 600, color: '#92400E' }}>
+        <span style={{ fontSize: '12px', fontStyle: 'italic', fontWeight: 600, color: '#92400E', textAlign: 'right' }}>
           {quote}
         </span>
       </div>
@@ -119,24 +119,36 @@ export default function SaarthiGuidanceCard({
             backgroundColor: '#FFFBEB',
             border: '1px solid #FDE68A',
             borderRadius: '12px',
-            padding: '8px 4px',
+            padding: '7px 4px',
+            minHeight: '54px',
+            boxSizing: 'border-box',
             cursor: 'pointer',
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
             justifyContent: 'center',
             textAlign: 'center',
-            gap: '2px',
             minWidth: 0,
-            overflow: 'hidden',
             transition: 'transform 0.15s ease, border-color 0.15s ease'
           }}
         >
-          <div style={{ display: 'flex', alignItems: 'center', gap: '3px', color: '#D97706', fontSize: '9.5px', fontWeight: 800, minWidth: 0, maxWidth: '100%' }}>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '3px', color: '#D97706', fontSize: '9.5px', fontWeight: 800, minWidth: 0, maxWidth: '100%', marginBottom: '2px' }}>
             <Flame size={12} color="#D97706" style={{ flexShrink: 0 }} />
-            <span style={{ color: '#B45309', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{pPill.label}</span>
+            <span style={{ color: '#B45309', whiteSpace: 'nowrap' }}>{pPill.label}</span>
           </div>
-          <span style={{ fontSize: '10.5px', fontWeight: 800, color: '#78350F', lineHeight: 1.2, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', maxWidth: '100%' }}>
+          <span style={{
+            fontSize: '11px',
+            fontWeight: 800,
+            color: '#78350F',
+            lineHeight: 1.2,
+            textAlign: 'center',
+            wordBreak: 'break-word',
+            display: '-webkit-box',
+            WebkitLineClamp: 2,
+            WebkitBoxOrient: 'vertical',
+            overflow: 'hidden',
+            width: '100%'
+          }}>
             {pPill.title}
           </span>
         </div>
@@ -148,24 +160,36 @@ export default function SaarthiGuidanceCard({
             backgroundColor: '#EFF6FF',
             border: '1px solid #BFDBFE',
             borderRadius: '12px',
-            padding: '8px 4px',
+            padding: '7px 4px',
+            minHeight: '54px',
+            boxSizing: 'border-box',
             cursor: 'pointer',
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
             justifyContent: 'center',
             textAlign: 'center',
-            gap: '2px',
             minWidth: 0,
-            overflow: 'hidden',
             transition: 'transform 0.15s ease, border-color 0.15s ease'
           }}
         >
-          <div style={{ display: 'flex', alignItems: 'center', gap: '3px', color: '#2563EB', fontSize: '9.5px', fontWeight: 800, minWidth: 0, maxWidth: '100%' }}>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '3px', color: '#2563EB', fontSize: '9.5px', fontWeight: 800, minWidth: 0, maxWidth: '100%', marginBottom: '2px' }}>
             <Navigation size={12} color="#2563EB" style={{ flexShrink: 0 }} />
-            <span style={{ color: '#1D4ED8', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{sPill.label}</span>
+            <span style={{ color: '#1D4ED8', whiteSpace: 'nowrap' }}>{sPill.label}</span>
           </div>
-          <span style={{ fontSize: '10.5px', fontWeight: 800, color: '#1E40AF', lineHeight: 1.2, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', maxWidth: '100%' }}>
+          <span style={{
+            fontSize: '11px',
+            fontWeight: 800,
+            color: '#1E40AF',
+            lineHeight: 1.2,
+            textAlign: 'center',
+            wordBreak: 'break-word',
+            display: '-webkit-box',
+            WebkitLineClamp: 2,
+            WebkitBoxOrient: 'vertical',
+            overflow: 'hidden',
+            width: '100%'
+          }}>
             {sPill.title}
           </span>
         </div>
@@ -177,24 +201,36 @@ export default function SaarthiGuidanceCard({
             backgroundColor: '#ECFDF5',
             border: '1px solid #A7F3D0',
             borderRadius: '12px',
-            padding: '8px 4px',
+            padding: '7px 4px',
+            minHeight: '54px',
+            boxSizing: 'border-box',
             cursor: 'pointer',
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
             justifyContent: 'center',
             textAlign: 'center',
-            gap: '2px',
             minWidth: 0,
-            overflow: 'hidden',
             transition: 'transform 0.15s ease, border-color 0.15s ease'
           }}
         >
-          <div style={{ display: 'flex', alignItems: 'center', gap: '3px', color: '#059669', fontSize: '9.5px', fontWeight: 800, minWidth: 0, maxWidth: '100%' }}>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '3px', color: '#059669', fontSize: '9.5px', fontWeight: 800, minWidth: 0, maxWidth: '100%', marginBottom: '2px' }}>
             <Sparkles size={12} color="#059669" style={{ flexShrink: 0 }} />
-            <span style={{ color: '#047857', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{tPill.label}</span>
+            <span style={{ color: '#047857', whiteSpace: 'nowrap' }}>{tPill.label}</span>
           </div>
-          <span style={{ fontSize: '10.5px', fontWeight: 800, color: '#065F46', lineHeight: 1.2, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', maxWidth: '100%' }}>
+          <span style={{
+            fontSize: '11px',
+            fontWeight: 800,
+            color: '#065F46',
+            lineHeight: 1.2,
+            textAlign: 'center',
+            wordBreak: 'break-word',
+            display: '-webkit-box',
+            WebkitLineClamp: 2,
+            WebkitBoxOrient: 'vertical',
+            overflow: 'hidden',
+            width: '100%'
+          }}>
             {tPill.title}
           </span>
         </div>

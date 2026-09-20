@@ -1905,7 +1905,14 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
               marginTop: '12px'
             }}>
               {/* Header with Devotional Cue */}
-              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '8px' }}>
+              <div style={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                flexWrap: 'wrap',
+                gap: '6px',
+                marginBottom: '8px'
+              }}>
                 <div style={{
                   fontSize: '11px',
                   fontWeight: 900,
@@ -1914,7 +1921,8 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
                   letterSpacing: lang === 'te' ? 'normal' : '0.6px',
                   display: 'flex',
                   alignItems: 'center',
-                  gap: '5px'
+                  gap: '5px',
+                  flexShrink: 0
                 }}>
                   <Sparkles size={14} color="#0F5132" />
                   <span>{lang === 'te' ? 'సారథి మార్గదర్శనం' : 'SAARTHI GUIDANCE'}</span>
@@ -1923,7 +1931,8 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
                   fontSize: '11px',
                   color: '#92400E',
                   fontWeight: 700,
-                  fontStyle: lang === 'te' ? 'normal' : 'italic'
+                  fontStyle: lang === 'te' ? 'normal' : 'italic',
+                  textAlign: 'right'
                 }}>
                   {lang === 'te' ? '“శాంతితో శ్రీవారిని దర్శించండి”' : '“In calm faith, seek Srivari”'}
                 </span>
@@ -1943,24 +1952,33 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
 
               {/* VISUAL MICRO-CARDS GRID (Non-redundant, High Contrast) */}
               {(() => {
-                const shrineNameEn = dayGuide.placeName
-                  ? dayGuide.placeName.replace(' Temple', '').replace(' Theertham', '').replace(' Sri', '').replace(' (Kapila Theertham)', '').replace(' (Tiruchanur)', '').trim()
-                  : 'Sacred Shrine';
-                const shrineNameTe = dayGuide.placeNameTe
-                  ? dayGuide.placeNameTe.replace(' ఆలయం', '').replace(' తీర్థం', '').replace(' శ్రీ', '').replace(' (కపిలతీర్థం)', '').replace(' (తిరుచానూరు)', '').trim()
-                  : 'పుణ్యక్షేత్రం';
+                const getShortShrine = (en: string, te: string) => {
+                  if (en.includes('Papavinasam')) return { en: 'Papavinasam', te: 'పాపవినాశనం' };
+                  if (en.includes('Kapila')) return { en: 'Kapila Theertham', te: 'కపిలతీర్థం' };
+                  if (en.includes('Japali') || en.includes('Bedi')) return { en: 'Japali Theertham', te: 'జాపాలి తీర్థం' };
+                  if (en.includes('Mangapuram')) return { en: 'Mangapuram', te: 'మంగాపురం' };
+                  if (en.includes('Appalayagunta')) return { en: 'Appalayagunta', te: 'అప్పలాయగుంట' };
+                  if (en.includes('Padmavathi')) return { en: 'Tiruchanur', te: 'తిరుచానూరు' };
+                  if (en.includes('Govindaraja')) return { en: 'Govindaraja', te: 'గోవిందరాజ' };
+                  return {
+                    en: en.replace(/Temple|Theertham|Sri|\(.*\)/gi, '').trim() || 'Sacred Shrine',
+                    te: te.replace(/ఆలయం|తీర్థం|శ్రీ|\(.*\)/gi, '').trim() || 'పుణ్యక్షేత్రం'
+                  };
+                };
+
+                const shortShrine = getShortShrine(dayGuide.placeName || '', dayGuide.placeNameTe || '');
 
                 const visualCards = isSsdClosed ? [
                   {
-                    icon: <Flame size={14} color="#D97706" />,
+                    icon: <Flame size={13} color="#D97706" />,
                     bg: '#FFFDF0',
                     border: '1px solid #FDE68A',
                     title: lang === 'te' ? 'నేటి విశేషం' : 'Sacred Shrine',
-                    value: lang === 'te' ? shrineNameTe : shrineNameEn,
+                    value: lang === 'te' ? shortShrine.te : shortShrine.en,
                     color: '#92400E'
                   },
                   {
-                    icon: <Navigation size={14} color="#2563EB" />,
+                    icon: <Navigation size={13} color="#2563EB" />,
                     bg: '#EFF6FF',
                     border: '1px solid #BFDBFE',
                     title: lang === 'te' ? 'ఉత్తమ మార్గం' : 'Best Route',
@@ -1968,16 +1986,16 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
                     color: '#1E40AF'
                   },
                   {
-                    icon: <Clock size={14} color="#059669" />,
+                    icon: <Clock size={13} color="#059669" />,
                     bg: '#ECFDF5',
                     border: '1px solid #A7F3D0',
                     title: lang === 'te' ? 'అనుకూల సమయం' : 'Optimal Time',
-                    value: lang === 'te' ? 'ఉదయం సమయం' : 'Best Morning Hours',
+                    value: lang === 'te' ? 'ఉదయం వేళలు' : 'Early Morning',
                     color: '#065F46'
                   }
                 ] : (isSsdOpen ? [
                   {
-                    icon: <Ticket size={14} color="#16A34A" />,
+                    icon: <Ticket size={13} color="#16A34A" />,
                     bg: '#F0FDF4',
                     border: '1px solid #BBF7D0',
                     title: lang === 'te' ? 'కౌంటర్లు' : 'SSD Status',
@@ -1985,24 +2003,24 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
                     color: '#166534'
                   },
                   {
-                    icon: <Clock size={14} color="#2563EB" />,
+                    icon: <Clock size={13} color="#2563EB" />,
                     bg: '#EFF6FF',
                     border: '1px solid #BFDBFE',
                     title: lang === 'te' ? 'సమయం ఆదా' : 'Time Saved',
-                    value: lang === 'te' ? '10+ గంటలు' : 'Save 10+ Hours',
+                    value: lang === 'te' ? '10+ గంటలు' : 'Save 10+ Hrs',
                     color: '#1E40AF'
                   },
                   {
-                    icon: <MapPin size={14} color="#D97706" />,
+                    icon: <MapPin size={13} color="#D97706" />,
                     bg: '#FFFDF0',
                     border: '1px solid #FDE68A',
                     title: lang === 'te' ? 'కేంద్రాలు' : 'Counters',
-                    value: lang === 'te' ? 'అలిపిరి & శ్రీనివాసం' : 'Alipiri / Srinivasam',
+                    value: lang === 'te' ? 'అలిపిరి & శ్రీనివాసం' : 'Alipiri & Srinivasam',
                     color: '#92400E'
                   }
                 ] : [
                   {
-                    icon: <Users size={14} color="#D97706" />,
+                    icon: <Users size={13} color="#D97706" />,
                     bg: '#FFFDF0',
                     border: '1px solid #FDE68A',
                     title: lang === 'te' ? 'క్యూ సమయం' : 'Queue Flow',
@@ -2010,15 +2028,15 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
                     color: '#92400E'
                   },
                   {
-                    icon: <Flame size={14} color="#D97706" />,
+                    icon: <Flame size={13} color="#D97706" />,
                     bg: '#FFFDF0',
                     border: '1px solid #FDE68A',
                     title: lang === 'te' ? 'విశేష క్షేత్రం' : 'Sacred Shrine',
-                    value: lang === 'te' ? shrineNameTe : shrineNameEn,
+                    value: lang === 'te' ? shortShrine.te : shortShrine.en,
                     color: '#92400E'
                   },
                   {
-                    icon: <Clock size={14} color="#0F5132" />,
+                    icon: <Clock size={13} color="#0F5132" />,
                     bg: '#F0FDF4',
                     border: '1px solid #BBF7D0',
                     title: lang === 'te' ? 'ఉత్తమ సమయం' : 'Best Time',
@@ -2040,30 +2058,48 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
                         backgroundColor: card.bg,
                         border: card.border,
                         borderRadius: '12px',
-                        padding: '8px 4px',
+                        padding: '7px 4px',
+                        minHeight: '54px',
                         display: 'flex',
                         flexDirection: 'column',
                         alignItems: 'center',
                         justifyContent: 'center',
                         textAlign: 'center',
                         minWidth: 0,
-                        overflow: 'hidden'
+                        boxSizing: 'border-box'
                       }}>
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '3px', marginBottom: '2px', minWidth: 0, maxWidth: '100%' }}>
+                        <div style={{
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          gap: '3px',
+                          marginBottom: '2px',
+                          minWidth: 0,
+                          maxWidth: '100%'
+                        }}>
                           {card.icon}
-                          <span style={{ fontSize: '9.5px', fontWeight: 800, color: '#64748B', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                          <span style={{
+                            fontSize: '9.5px',
+                            fontWeight: 800,
+                            color: '#64748B',
+                            whiteSpace: 'nowrap',
+                            letterSpacing: '0.01em'
+                          }}>
                             {card.title}
                           </span>
                         </div>
                         <div style={{
-                          fontSize: '10.5px',
+                          fontSize: '11px',
                           fontWeight: 800,
                           color: card.color,
                           lineHeight: 1.2,
-                          whiteSpace: 'nowrap',
+                          textAlign: 'center',
+                          wordBreak: 'break-word',
+                          display: '-webkit-box',
+                          WebkitLineClamp: 2,
+                          WebkitBoxOrient: 'vertical',
                           overflow: 'hidden',
-                          textOverflow: 'ellipsis',
-                          maxWidth: '100%'
+                          width: '100%'
                         }}>
                           {card.value}
                         </div>
