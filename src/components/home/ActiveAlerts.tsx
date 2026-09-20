@@ -345,26 +345,36 @@ export function ActiveAlerts({ activePopupAlert, dismissAlert }: any) {
     <AnimatePresence>
       <motion.div
         key="floating-alert-pill"
-        initial={{ opacity: 0, y: -30, scale: 0.95 }}
+        initial={{ opacity: 0, y: -30, scale: 0.96 }}
         animate={{ opacity: 1, y: 0, scale: 1 }}
-        exit={{ opacity: 0, y: -25, scale: 0.95 }}
+        exit={{ opacity: 0, y: -25, scale: 0.96 }}
         transition={{ type: 'spring', damping: 24, stiffness: 350 }}
+        drag="y"
+        dragConstraints={{ top: 0, bottom: 0 }}
+        dragElastic={{ top: 0.5, bottom: 0.1 }}
+        onDragEnd={(_, info) => {
+          if (info.offset.y < -25 || info.velocity.y < -250) {
+            dismissAlert(activePopupAlert.id);
+          }
+        }}
         style={{
           position: 'fixed',
-          top: 'max(14px, env(safe-area-inset-top, 14px))',
-          left: '50%',
-          transform: 'translateX(-50%)',
-          width: 'calc(100% - 28px)',
+          top: 'max(68px, calc(env(safe-area-inset-top, 0px) + 62px))',
+          left: '14px',
+          right: '14px',
+          margin: '0 auto',
           maxWidth: '430px',
+          width: 'auto',
           zIndex: 99999,
-          backgroundColor: 'rgba(255, 255, 255, 0.97)',
+          backgroundColor: 'rgba(255, 255, 255, 0.98)',
           backdropFilter: 'blur(16px)',
           WebkitBackdropFilter: 'blur(16px)',
           borderRadius: '18px',
           border: `1.5px solid ${accentColor}`,
-          boxShadow: '0 12px 36px rgba(15, 23, 42, 0.16), 0 2px 8px rgba(0, 0, 0, 0.04)',
+          boxShadow: '0 12px 36px rgba(15, 23, 42, 0.18), 0 2px 8px rgba(0, 0, 0, 0.06)',
           padding: '12px 14px',
-          boxSizing: 'border-box'
+          boxSizing: 'border-box',
+          touchAction: 'pan-x'
         }}
       >
         <div style={{ display: 'flex', alignItems: 'flex-start', gap: '10px' }}>
@@ -409,9 +419,11 @@ export function ActiveAlerts({ activePopupAlert, dismissAlert }: any) {
               color: '#0F172A',
               margin: '0 0 2px 0',
               lineHeight: 1.25,
-              whiteSpace: 'nowrap',
+              display: '-webkit-box',
+              WebkitLineClamp: 2,
+              WebkitBoxOrient: 'vertical',
               overflow: 'hidden',
-              textOverflow: 'ellipsis'
+              wordBreak: 'break-word'
             }}>
               {activePopupAlert.title}
             </h4>
@@ -483,19 +495,21 @@ export function ActiveAlerts({ activePopupAlert, dismissAlert }: any) {
               background: '#F1F5F9',
               border: 'none',
               borderRadius: '50%',
-              width: '24px',
-              height: '24px',
+              width: '26px',
+              height: '26px',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
               color: '#64748B',
               cursor: 'pointer',
               flexShrink: 0,
+              padding: 0,
               transition: 'background 0.15s ease'
             }}
             title="Dismiss"
+            aria-label="Dismiss alert"
           >
-            <X size={13} />
+            <X size={14} />
           </button>
         </div>
       </motion.div>
