@@ -33,6 +33,7 @@ export default function PlaceDetails() {
   // Collapsible drawers state
   const [openDrawer, setOpenDrawer] = useState<'legend' | 'festivals' | 'architecture' | 'faqs' | null>(null);
   const [isSignificanceOpen, setIsSignificanceOpen] = useState(false);
+  const [activeTab, setActiveTab] = useState<'guide' | 'map' | 'history'>('guide');
 
   const targetId = decodeURIComponent(id || '').trim().toLowerCase();
   const allPlaces = places.length > 0 ? places : PLACES;
@@ -616,17 +617,61 @@ export default function PlaceDetails() {
         </span>
       </div>
 
-      {/* Core Reason: Why People Visit */}
-      <p style={{
-        fontSize: '13px',
-        color: '#1E293B',
-        fontWeight: 700,
-        lineHeight: 1.5,
-        margin: '0 0 10px',
-        wordBreak: 'break-word'
+      {/* Visual Highlight: Devotional / Visitor Purpose */}
+      <div style={{
+        backgroundColor: '#FFFFFF',
+        border: '1px solid rgba(15, 23, 42, 0.08)',
+        borderRadius: '12px',
+        padding: '10px 12px',
+        marginBottom: '8px',
+        display: 'flex',
+        alignItems: 'flex-start',
+        gap: '8px'
       }}>
-        {lang === 'te' ? significanceData.whyVisitTe : significanceData.whyVisitEn}
-      </p>
+        <CheckCircle2 size={15} color="#0F5132" style={{ flexShrink: 0, marginTop: '2px' }} />
+        <p style={{
+          fontSize: '12.5px',
+          color: '#1E293B',
+          fontWeight: 700,
+          lineHeight: 1.45,
+          margin: 0,
+          wordBreak: 'break-word'
+        }}>
+          {lang === 'te' ? significanceData.whyVisitTe : significanceData.whyVisitEn}
+        </p>
+      </div>
+
+      {/* Visual Quick Practice Chips */}
+      <div style={{
+        display: 'grid',
+        gridTemplateColumns: 'repeat(auto-fit, minmax(130px, 1fr))',
+        gap: '6px',
+        marginBottom: '10px'
+      }}>
+        {(lang === 'te' ? significanceData.actionsTe : significanceData.actionsEn).slice(0, 3).map((action, idx) => (
+          <div
+            key={idx}
+            style={{
+              backgroundColor: '#FFFFFF',
+              border: '1px solid rgba(15, 23, 42, 0.07)',
+              borderRadius: '10px',
+              padding: '6px 9px',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '6px',
+              fontSize: '11px',
+              fontWeight: 600,
+              color: '#334155',
+              lineHeight: 1.3
+            }}
+          >
+            <div style={{ width: '5px', height: '5px', borderRadius: '50%', backgroundColor: traditionTheme.iconColor, flexShrink: 0 }} />
+            <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical' }}>
+              {action}
+            </span>
+          </div>
+        ))}
+      </div>
 
       {/* Dropdown Toggle Button */}
       <button
@@ -702,6 +747,38 @@ export default function PlaceDetails() {
               </p>
             </div>
           </div>
+
+          {/* Section 4: Read Full Sthala Puranam & Lore */}
+          <button
+            type="button"
+            onClick={() => {
+              setActiveTab('history');
+              setOpenDrawer('legend');
+              window.scrollTo({ top: 320, behavior: 'smooth' });
+            }}
+            style={{
+              width: '100%',
+              backgroundColor: '#FFFFFF',
+              border: '1px solid #CBD5E1',
+              borderRadius: '10px',
+              padding: '9px 12px',
+              fontSize: '12px',
+              fontWeight: 700,
+              color: '#0F5132',
+              cursor: 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              boxShadow: '0 1px 3px rgba(0,0,0,0.02)',
+              marginTop: '2px'
+            }}
+          >
+            <span style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+              <BookOpen size={14} color="#0F5132" />
+              <span>{lang === 'te' ? 'పూర్తి స్థల పురాణం & చరిత్ర చదవండి' : 'Read Full Sthala Puranam & Lore'}</span>
+            </span>
+            <span style={{ fontSize: '13px' }}>→</span>
+          </button>
         </div>
       )}
     </div>
@@ -1363,8 +1440,112 @@ export default function PlaceDetails() {
     <OfflineTempleMap placeId={place.id} place={place} lang={lang} isTemple={isTemple} coordinates={place.coordinates} />
   );
 
+  // 12. TABBED NAVIGATION BAR (Guide • Precinct Map • History & Lore)
+  const tabBarNode = (
+    <div style={{
+      position: 'sticky',
+      top: 0,
+      zIndex: 35,
+      backgroundColor: 'rgba(250, 248, 245, 0.96)',
+      backdropFilter: 'blur(12px)',
+      WebkitBackdropFilter: 'blur(12px)',
+      padding: '8px 0',
+      marginBottom: '6px'
+    }}>
+      <div style={{
+        display: 'grid',
+        gridTemplateColumns: 'repeat(3, minmax(0, 1fr))',
+        backgroundColor: '#E2E8F0',
+        padding: '3.5px',
+        borderRadius: '14px',
+        gap: '4px'
+      }}>
+        <button
+          type="button"
+          onClick={() => setActiveTab('guide')}
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            gap: '6px',
+            padding: '10px 4px',
+            borderRadius: '11px',
+            border: 'none',
+            cursor: 'pointer',
+            backgroundColor: activeTab === 'guide' ? '#FFFFFF' : 'transparent',
+            color: activeTab === 'guide' ? '#0F5132' : '#475569',
+            fontWeight: activeTab === 'guide' ? 800 : 700,
+            fontSize: '12px',
+            boxShadow: activeTab === 'guide' ? '0 2px 8px rgba(0, 0, 0, 0.08)' : 'none',
+            transition: 'all 0.15s ease',
+            minHeight: '44px'
+          }}
+        >
+          <Compass size={15} color={activeTab === 'guide' ? '#0F5132' : '#475569'} style={{ flexShrink: 0 }} />
+          <span style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+            {lang === 'te' ? 'మార్గదర్శి' : 'Guide'}
+          </span>
+        </button>
+
+        <button
+          type="button"
+          onClick={() => setActiveTab('map')}
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            gap: '6px',
+            padding: '10px 4px',
+            borderRadius: '11px',
+            border: 'none',
+            cursor: 'pointer',
+            backgroundColor: activeTab === 'map' ? '#FFFFFF' : 'transparent',
+            color: activeTab === 'map' ? '#0F5132' : '#475569',
+            fontWeight: activeTab === 'map' ? 800 : 700,
+            fontSize: '12px',
+            boxShadow: activeTab === 'map' ? '0 2px 8px rgba(0, 0, 0, 0.08)' : 'none',
+            transition: 'all 0.15s ease',
+            minHeight: '44px'
+          }}
+        >
+          <MapPin size={15} color={activeTab === 'map' ? '#0F5132' : '#475569'} style={{ flexShrink: 0 }} />
+          <span style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+            {lang === 'te' ? 'ప్రాంగణ మ్యాప్' : 'Precinct Map'}
+          </span>
+        </button>
+
+        <button
+          type="button"
+          onClick={() => setActiveTab('history')}
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            gap: '6px',
+            padding: '10px 4px',
+            borderRadius: '11px',
+            border: 'none',
+            cursor: 'pointer',
+            backgroundColor: activeTab === 'history' ? '#FFFFFF' : 'transparent',
+            color: activeTab === 'history' ? '#0F5132' : '#475569',
+            fontWeight: activeTab === 'history' ? 800 : 700,
+            fontSize: '12px',
+            boxShadow: activeTab === 'history' ? '0 2px 8px rgba(0, 0, 0, 0.08)' : 'none',
+            transition: 'all 0.15s ease',
+            minHeight: '44px'
+          }}
+        >
+          <BookOpen size={15} color={activeTab === 'history' ? '#0F5132' : '#475569'} style={{ flexShrink: 0 }} />
+          <span style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+            {lang === 'te' ? 'చరిత్ర & విశేషాలు' : 'History & Lore'}
+          </span>
+        </button>
+      </div>
+    </div>
+  );
+
   return (
-    <main style={{ minHeight: '100vh', backgroundColor: 'var(--bg-canvas, #FAF8F5)', color: '#0F172A', paddingBottom: 'calc(36px + env(safe-area-inset-bottom, 20px))', width: '100%', maxWidth: '100vw', overflowX: 'hidden', boxSizing: 'border-box' }}>
+    <main style={{ minHeight: '100vh', backgroundColor: 'var(--bg-canvas, #FAF8F5)', color: '#0F172A', paddingBottom: 'calc(88px + env(safe-area-inset-bottom, 20px))', width: '100%', maxWidth: '100vw', overflowX: 'hidden', boxSizing: 'border-box' }}>
       <style>{`
         .place-hero-box {
           position: relative;
@@ -1376,7 +1557,7 @@ export default function PlaceDetails() {
           width: 100%;
           max-width: 640px;
           margin: 0 auto;
-          padding: 12px 12px calc(36px + env(safe-area-inset-bottom, 20px)) 12px;
+          padding: 12px 12px calc(88px + env(safe-area-inset-bottom, 20px)) 12px;
           display: flex;
           flex-direction: column;
           gap: 12px;
@@ -1386,7 +1567,27 @@ export default function PlaceDetails() {
         .place-desktop-container {
           display: none;
         }
+        .place-sticky-bottom-bar {
+          position: fixed;
+          bottom: 0;
+          left: 0;
+          right: 0;
+          z-index: 50;
+          background-color: rgba(255, 255, 255, 0.96);
+          backdrop-filter: blur(12px);
+          -webkit-backdrop-filter: blur(12px);
+          border-top: 1px solid #E2E8F0;
+          box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.08);
+          padding: 10px 16px calc(10px + env(safe-area-inset-bottom, 12px)) 16px;
+          display: flex;
+          align-items: center;
+          gap: 10px;
+          box-sizing: border-box;
+        }
         @media (min-width: 900px) {
+          .place-sticky-bottom-bar {
+            display: none !important;
+          }
           .place-hero-box {
             max-width: 1600px;
             width: calc(100% - 48px);
@@ -1677,44 +1878,194 @@ export default function PlaceDetails() {
       </div>
 
       {/* ═══════════════════════════════════════════════════
-          MOBILE FLOW (< 900px): Exact 1 -> 9 Pilgrim Order
+          MOBILE FLOW (< 900px): Clean Tabbed Pilgrim Flow
           ═══════════════════════════════════════════════════ */}
       <div className="place-mobile-container">
         {closureAlertNode}
-        {topMetricsNode}
-        {placeSignificanceNode}
-        {quickFactsNode}
-        {saarthiSuggestsNode}
-        {ctaButtonsNode}
-        {offlineMapNode}
-        {essentialFacilitiesNode}
-        {aboutTempleNode}
-        {nearbyTemplesNode}
-        {heritageAccordionsNode}
+        {tabBarNode}
+
+        {activeTab === 'guide' && (
+          <>
+            {topMetricsNode}
+            {placeSignificanceNode}
+            {quickFactsNode}
+            {essentialFacilitiesNode}
+            {saarthiSuggestsNode}
+            {nearbyTemplesNode}
+          </>
+        )}
+
+        {activeTab === 'map' && (
+          <>
+            {offlineMapNode}
+          </>
+        )}
+
+        {activeTab === 'history' && (
+          <>
+            {aboutTempleNode}
+            {heritageAccordionsNode}
+            {nearbyTemplesNode}
+          </>
+        )}
       </div>
 
       {/* ═══════════════════════════════════════════════════
           DESKTOP GRID (>= 900px): 2-Column Responsive Layout
           ═══════════════════════════════════════════════════ */}
       <div className="place-desktop-container">
-        {/* Left Column: Sacred Heritage & Visuals */}
+        {/* Left Column: Tabbed Content & Wayfinding */}
         <div className="place-desktop-main">
           {closureAlertNode}
-          {offlineMapNode}
-          {aboutTempleNode}
-          {heritageAccordionsNode}
-          {nearbyTemplesNode}
+          {tabBarNode}
+
+          {activeTab === 'guide' && (
+            <>
+              {placeSignificanceNode}
+              {quickFactsNode}
+              {saarthiSuggestsNode}
+              {offlineMapNode}
+              {nearbyTemplesNode}
+            </>
+          )}
+
+          {activeTab === 'map' && (
+            <>
+              {offlineMapNode}
+              {nearbyTemplesNode}
+            </>
+          )}
+
+          {activeTab === 'history' && (
+            <>
+              {aboutTempleNode}
+              {heritageAccordionsNode}
+              {nearbyTemplesNode}
+            </>
+          )}
         </div>
 
         {/* Right Column: Sticky Quick Action & Briefing Sidebar */}
         <div className="place-desktop-sidebar">
           {topMetricsNode}
-          {placeSignificanceNode}
-          {quickFactsNode}
-          {saarthiSuggestsNode}
           {ctaButtonsNode}
           {essentialFacilitiesNode}
         </div>
+      </div>
+
+      {/* ═══════════════════════════════════════════════════
+          MOBILE STICKY BOTTOM BAR (< 900px)
+          Always accessible: Navigate + Fuel + Save + Share
+          ═══════════════════════════════════════════════════ */}
+      <div className="place-sticky-bottom-bar">
+        {/* Navigate Primary Action */}
+        <button
+          type="button"
+          onClick={openNavigation}
+          style={{
+            flex: 1,
+            backgroundColor: '#0F5132',
+            color: '#FFFFFF',
+            border: 'none',
+            borderRadius: '14px',
+            padding: '12px 14px',
+            minHeight: '48px',
+            fontSize: '13.5px',
+            fontWeight: 800,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            gap: '8px',
+            cursor: 'pointer',
+            boxShadow: '0 4px 14px rgba(15, 81, 50, 0.3)',
+            whiteSpace: 'nowrap'
+          }}
+        >
+          <Navigation size={17} color="#FFFFFF" fill="#FFFFFF" style={{ flexShrink: 0 }} />
+          <span>{lang === 'te' ? (isTemple ? 'దర్శన మార్గం' : 'మార్గం') : 'Start Navigation'}</span>
+          {formattedDriveTime && (
+            <span style={{
+              backgroundColor: 'rgba(255, 255, 255, 0.2)',
+              padding: '2px 7px',
+              borderRadius: '8px',
+              fontSize: '11px',
+              fontWeight: 700,
+              color: '#FFFFFF'
+            }}>
+              {formattedDriveTime}
+            </span>
+          )}
+        </button>
+
+        {/* Fuel Estimator */}
+        <Link
+          href={`/trip-estimator?destId=${place.id}`}
+          style={{
+            width: '48px',
+            height: '48px',
+            minWidth: '48px',
+            minHeight: '48px',
+            backgroundColor: '#F8FAFC',
+            border: '1.5px solid #E2E8F0',
+            borderRadius: '14px',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            textDecoration: 'none',
+            color: '#059669',
+            boxSizing: 'border-box',
+            flexShrink: 0
+          }}
+          title={lang === 'te' ? 'ఇంధనం & ప్రయాణ ఖర్చు అంచనా' : 'Estimate Fuel & Trip Cost'}
+        >
+          <Fuel size={20} color="#059669" />
+        </Link>
+
+        {/* Save Toggle */}
+        <button
+          type="button"
+          onClick={() => togglePlace(place.id)}
+          style={{
+            width: '48px',
+            height: '48px',
+            minWidth: '48px',
+            minHeight: '48px',
+            backgroundColor: isSaved ? '#FFF1F2' : '#F8FAFC',
+            border: isSaved ? '1.5px solid #FECDD3' : '1.5px solid #E2E8F0',
+            borderRadius: '14px',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            cursor: 'pointer',
+            flexShrink: 0
+          }}
+          title={isSaved ? (lang === 'te' ? 'సేవ్ చేయబడింది' : 'Saved') : (lang === 'te' ? 'సేవ్ చేయండి' : 'Save Place')}
+        >
+          <Heart size={20} fill={isSaved ? '#E11D48' : 'none'} color={isSaved ? '#E11D48' : '#475569'} />
+        </button>
+
+        {/* Share Button */}
+        <button
+          type="button"
+          onClick={handleShare}
+          style={{
+            width: '48px',
+            height: '48px',
+            minWidth: '48px',
+            minHeight: '48px',
+            backgroundColor: '#F8FAFC',
+            border: '1.5px solid #E2E8F0',
+            borderRadius: '14px',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            cursor: 'pointer',
+            flexShrink: 0
+          }}
+          title={lang === 'te' ? 'షేర్ చేయండి' : 'Share Place'}
+        >
+          <Share2 size={20} color="#475569" />
+        </button>
       </div>
 
     </main>
