@@ -80,7 +80,7 @@ export const PRESET_LOCATIONS: LocationOption[] = [
   },
   {
     id: 'tirumala',
-    nameEn: 'Tirumala (Hill Top & Sanctum)',
+    nameEn: 'Tirumala (Hill Top & Temple)',
     nameTe: 'తిరుమల (కొండపై & శ్రీవారి సన్నిధి)',
     shortName: 'Tirumala',
     category: 'local-hub',

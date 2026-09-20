@@ -1186,7 +1186,7 @@ export default function OfflineTempleMap({
                 const wordsTe = cleanTe.split(' ');
                 return wordsTe.length > 2 ? wordsTe.slice(0, 2).join(' ') : cleanTe;
               }
-              if (p.category === 'sanctum') return 'Sanctum';
+              if (p.category === 'sanctum') return 'Main Shrine';
               if (p.category === 'entry') return 'Entrance';
               if (p.category === 'footwear') return 'Footwear';
               if (p.category === 'parking') return 'Parking';

@@ -134,7 +134,7 @@ export function JourneyOverviewPanel() {
             <div className={styles.statusDot} style={{ background: '#EF4444', boxShadow: '0 0 8px #EF4444' }} />
             <span className={styles.stationName}>
               <Landmark size={13} color="#FDE047" style={{ display: 'inline', verticalAlign: 'middle', marginRight: '4px' }} />
-              Tirumala Sanctum
+              Tirumala Main Temple
             </span>
           </div>
           <div className={styles.stationDetails}>

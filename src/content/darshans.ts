@@ -75,7 +75,7 @@ export const darshanRegistry: Record<string, DarshanDetail> = {
       { 
         step: 5, 
         title: "Garbhagriha Srivari Darshan", 
-        desc: "Proceed through Jaya-Vijaya Dwara into the inner sanctum for the divine darshan of Lord Sri Venkateswara.",
+        desc: "Proceed through Jaya-Vijaya Dwara into the inner temple for the divine darshan of Lord Sri Venkateswara.",
         estimatedTime: "10 - 20 Mins"
       },
       { 
@@ -123,7 +123,7 @@ export const darshanRegistry: Record<string, DarshanDetail> = {
       { title: "Fixed 1-Hr Window", subtitle: "Report within allotted time slot", icon: "clock" },
       { title: "1 Free Srivari Laddu", subtitle: "Included per ₹300 ticket voucher", icon: "gift" }
     ],
-    whyWaitTimeExplanation: "Wait time is strictly regulated by allocated 1-hour slot batches. Minor delays only occur during auspicious Kainkaryam rituals or VIP protocol clearances inside the inner sanctum.",
+    whyWaitTimeExplanation: "Wait time is strictly regulated by allocated 1-hour slot batches. Minor delays only occur during auspicious Kainkaryam rituals or VIP protocol clearances inside the main shrine.",
     
     accessibility: [
       "Bypasses 90% of outer holding warehouses, minimizing standing fatigue significantly.",
@@ -168,7 +168,7 @@ export const darshanRegistry: Record<string, DarshanDetail> = {
       },
       { 
         step: 4, 
-        title: "Sanctum Progression (Mahadwaram)", 
+        title: "Main Temple Entry (Mahadwaram)", 
         desc: "Enter the grand temple gates into the inner prakaram and proceed directly towards Garbhagriha.",
         estimatedTime: "20 - 30 Mins"
       },
@@ -191,7 +191,7 @@ export const darshanRegistry: Record<string, DarshanDetail> = {
     ],
     tips: [
       "Plan parking at ATC or near Rambagicha for quickest foot commute to the gate.",
-      "Book morning slots (8:00 AM - 10:00 AM) to experience fastest sanctum clearing."
+      "Book morning slots (8:00 AM - 10:00 AM) to experience fastest temple entry."
     ]
   },
 
@@ -379,7 +379,7 @@ export const darshanRegistry: Record<string, DarshanDetail> = {
     bestTimeToVisit: "Morning VIP slot following Suprabhata / Tomala Seva",
     entryGate: "Vaikuntam Queue Complex I (VQC-I), Tirumala",
     bookingMode: "Online via TTD Portal (SRIVANI Donation) or Official Protocol Letter",
-    description: "VIP Break Darshan provides premium, expedited access to the sanctum. It is accessible either through official government protocol recommendations or through the widely popular SRIVANI Trust donation scheme.",
+    description: "VIP Break Darshan provides premium, expedited access to the main temple. It is accessible either through official government protocol recommendations or through the widely popular SRIVANI Trust donation scheme.",
     
     accessibility: [
       "Shortest physical walking distance and direct queue access.",
@@ -403,8 +403,8 @@ export const darshanRegistry: Record<string, DarshanDetail> = {
     journeySteps: [
       { step: 1, title: "Report at VQC-I Lounge", desc: "Report at the designated Vaikuntam Queue Complex I lounge 30 minutes prior to assigned VIP slot.", estimatedTime: "15 Mins" },
       { step: 2, title: "Donation Receipt & Aadhaar Scan", desc: "Verify SRIVANI donation receipt, e-ticket barcode, and original ID.", estimatedTime: "10 Mins" },
-      { step: 3, title: "Direct Sanctum Corridor", desc: "Bypass outer holding compartments and enter the temple directly via Mahadwaram.", estimatedTime: "30 - 45 Mins" },
-      { step: 4, title: "Near-Sanctum Divya Darshan", desc: "Experience intimate, peaceful darshan from the Kulasekhara Padi / inner perimeter.", estimatedTime: "15 Mins" }
+      { step: 3, title: "Direct Main Temple Corridor", desc: "Bypass outer holding compartments and enter the temple directly via Mahadwaram.", estimatedTime: "30 - 45 Mins" },
+      { step: 4, title: "Close-up Divya Darshan", desc: "Experience intimate, peaceful darshan from the Kulasekhara Padi / inner perimeter.", estimatedTime: "15 Mins" }
     ],
     guidelines: [
       "Smartphones, smartwatches, and all electronics must be deposited in VIP lounge lockers.",

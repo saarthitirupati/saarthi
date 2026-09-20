@@ -67,7 +67,7 @@ const CHECKLIST_ITEMS: ChecklistItem[] = [
     titleTe: 'ఫోన్ & పవర్ బ్యాంక్',
     shortEn: 'Phone & Power',
     shortTe: 'ఫోన్',
-    descEn: 'Phones are permitted inside waiting compartments; deposit safely before sanctum.',
+    descEn: 'Phones are permitted inside waiting compartments; deposit safely before entering the main temple.',
     descTe: 'కంపార్ట్‌మెంట్లలో ఫోన్లు అనుమతిస్తారు. గర్భాలయ ప్రవేశానికి ముందు ఉచితంగా డిపాజిట్ చేయవచ్చు.',
     tagEn: 'Helpful',
     tagTe: 'ఉపయోగకరం'

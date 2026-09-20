@@ -60,8 +60,8 @@ export function getPlaceGuideData(place: Place) {
       visitorTips: {
         dressCode: place.visitorTips?.dressCode || place.practicalInfo?.dressCode || (isSpiritual ? "Strict traditional wear (Dhoti/Kurta for men, Saree/Chudidar for women)." : "Comfortable casual clothing suited for walking."),
         crowdNote: place.visitorTips?.crowdNote || (isSpiritual ? "Heavy crowds on weekends, festival days, and auspicious solar dates." : "Generally peaceful, moderate rush during school holidays."),
-        footwearRule: place.visitorTips?.footwearRule || (isSpiritual ? "Must be removed before entering the inner sanctum/temple premises." : "Not restricted, but comfortable walking shoes are highly recommended."),
-        photoRule: place.visitorTips?.photoRule || (isSpiritual ? "Photography is strictly prohibited inside the main sanctum." : "Permitted everywhere. Bring a good camera for scenic vistas."),
+        footwearRule: place.visitorTips?.footwearRule || (isSpiritual ? "Must be removed before entering the temple premises." : "Not restricted, but comfortable walking shoes are highly recommended."),
+        photoRule: place.visitorTips?.photoRule || (isSpiritual ? "Photography is strictly prohibited inside the main temple area." : "Permitted everywhere. Bring a good camera for scenic vistas."),
         entryRule: place.visitorTips?.entryRule || (place.entryFeeNum && place.entryFeeNum > 0 ? `Paid entry ticket (₹${place.entryFeeNum}) required. Special queues available.` : "Free public access. Maintain decorum and follow queues.")
       }
     };
@@ -95,6 +95,27 @@ export const PLACES: Place[] = [
     coordinates: { lat: 13.68323, lng: 79.34731 },
     shortIntro: "Sri Venkateswara Swamy Temple in Tirumala, Tirupati is the pre-eminent spiritual center of India, drawing millions of devotees seeking blessings from Lord Venkateswara (Balaji) in Kali Yuga.",
     whyVisit: "Known as the 'Temple of Seven Hills', it is the richest and most visited temple globally. Devotees believe Lord Venkateswara manifested here to guide humanity through the trials of Kali Yuga.",
+    significance: {
+      traditionType: 'temple',
+      whyVisitTe: 'కలియుగ ప్రత్యక్ష దైవమైన శ్రీ వేంకటేశ్వర స్వామిని దర్శించి, కోరిన కోర్కెలు తీరాలని మరియు ఆపదల నుండి రక్షణ పొందాలని కోట్లాది భక్తులు తిరుమల వస్తారు.',
+      whyVisitEn: 'Devotees journey to Tirumala to surrender before Lord Venkateswara (Balaji), the supreme savior deity of Kali Yuga, for grace, vows, and peace.',
+      actionsTe: [
+        'స్వామి పుష్కరిణిలో పవిత్ర స్నానమాచరించి వరాహస్వామిని మొదట దర్శిస్తారు',
+        'తలనీలాలు (కల్యాణకట్ట) సమర్పించి అహంకారాన్ని స్వామి పాదాల వద్ద వదులుకుంటారు',
+        'ఆనంద నిలయం బంగారు గోపురం క్రింద కొలువైన శ్రీవారి దివ్య దర్శనం చేసుకుంటారు',
+        'శ్రీవారి లడ్డూ ప్రసాదం స్వీకరించి హుండీలో కానుకలు సమర్పిస్తారు'
+      ],
+      actionsEn: [
+        'Take a holy dip in Swami Pushkarini and pay initial obeisance to Sri Bhu Varaha Swamy',
+        'Offer hair tonsure (Mokku at Kalyana Katta) as a sacred act of surrendering ego',
+        'Attain darshan of Lord Venkateswara consecrated beneath the golden Ananda Nilayam vimana',
+        'Receive the consecrated Srivari Laddu prasadam and offer secret vows in Srivari Hundi'
+      ],
+      culturalMeaningTe: 'పురాణ సంప్రదాయం ప్రకారం కలియుగంలో మానవులను కష్టాల నుండి రక్షించడానికి మహావిష్ణువు శేషాచల పర్వతంపై స్వయంభూవుగా వెలిశారు. మొదట వరాహస్వామిని దర్శించిన తర్వాతే వేంకటేశ్వరుని దర్శించుకోవాలనేది ఆచార నియమం.',
+      culturalMeaningEn: 'According to tradition, Lord Vishnu manifested as Swayambhu on the Seshachalam hills to guide mankind through Kali Yuga. Visiting Bhu Varaha Swamy before entering the main shrine is an age-old mandated ritual.',
+      saarthiTipTe: 'దర్శనానికి వెళ్లే ముందు ఎలక్ట్రానిక్స్ మరియు మొబైల్ ఫోన్లను లగేజ్ కౌంటర్ లేదా గదిలోనే ఉంచండి. సాంప్రదాయ దుస్తుల నియమావళి (ధోవతి/కుర్తా, చీర/చుడీదార్) తప్పనిసరి.',
+      saarthiTipEn: 'Mobile phones and smartwatches are strictly forbidden inside queue complexes; deposit them in room lockers. Strict traditional dress code is enforced at Vaikuntam queue gates.'
+    },
     openingTime: "Open 24 Hours",
     closingTime: "Open 24 Hours",
     duration: "3 to 6 hours",
@@ -288,9 +309,9 @@ export const PLACES: Place[] = [
     },
     spiritualInfo: {
       god: 'Lord Sri Venkateswara Swamy',
-      knownFor: 'Divine landing footprints pointing exactly towards the Ananda Nilayam main sanctum',
+      knownFor: 'Divine landing footprints pointing exactly towards the Ananda Nilayam main shrine',
       mantra: 'Om Namo Venkateshaya',
-      devoteeTips: ['Remove footwear before entering the footprint sanctum.', 'Look closely at the orientation of the cased footprints—they are aligned directly pointing towards the golden dome of the main temple.', 'Climbing the 300 steps is moderately challenging for elderly; utilize stone benches placed along the path for rest.']
+      devoteeTips: ['Remove footwear before entering the sacred footprint pavilion.', 'Look closely at the orientation of the cased footprints—they are aligned directly pointing towards the golden dome of the main temple.', 'Climbing the 300 steps is moderately challenging for elderly; utilize stone benches placed along the path for rest.']
     }
   },
   {
@@ -574,6 +595,27 @@ export const PLACES: Place[] = [
     shortIntro: 'Sri Govinda Raja Swamy Vari Temple is an iconic 12th-century Dravidian temple in central Tirupati housing a grand reclining idol of Lord Vishnu.',
     history: 'According to temple sthala puranam, Lord Govindaraja Swamy, elder brother of Lord Venkateswara, settled in Tirupati to manage and count the vast wealth loaned by Lord Kubera for Lord Srinivasa’s celestial marriage. In 1130 AD, the revered Vaishnava reformer Sri Ramanujacharya consecrated this sacred temple to enshrine the deity brought safely from Chidambaram. Devotees worship Him as the divine treasurer for wealth, prosperity, and debt clearance.',
     whyVisit: 'Magnificent reclining posture (Sayana Murti) of Lord Vishnu, historic 1130 AD Sri Ramanujacharya legacy, imposing 7-tier Raja Gopuram, daily Kalyanotsavam & Unjal Sevas, and convenient 3-minute walking distance from Tirupati Railway Station.',
+    significance: {
+      traditionType: 'temple',
+      whyVisitTe: 'శ్రీవారి అన్నగారైన గోవిందరాజ స్వామిని దర్శించుకుని, ఆర్థిక ఇబ్బందులు & రుణ విముక్తి కోసం ప్రార్థించడానికి యాత్రికులు ఇక్కడ ఆగుతారు.',
+      whyVisitEn: 'Devotees worship Lord Govindaraja Swamy, the elder brother of Lord Venkateswara, seeking relief from debts, financial stability, and prosperity.',
+      actionsTe: [
+        'అనంతశయనం (శయన ముద్ర) లో కొలువైన మహావిష్ణువును గర్భాలయంలో దర్శించుకుంటారు',
+        'శ్రీ రామానుజాచార్యుల వారు స్వయంగా ప్రతిష్ఠించిన పవిత్ర సన్నిధిని సేవించుకుంటారు',
+        'సాయంత్రం జరిగే ఊంజల్ సేవ లేదా కల్యాణోత్సవంలో పాల్గొంటారు',
+        'కుబేరుని ద్రవ్యానికి రక్షకుడైన స్వామికి ముడుపులు సమర్పించి రుణ విముక్తిని కోరుకుంటారు'
+      ],
+      actionsEn: [
+        'Witness the grand reclining posture (Sayana Murti) of Lord Vishnu resting upon Anantha Sesha',
+        'Pay homage at the shrine sanctified by Vaishnavite reformer Sri Ramanujacharya in 1130 AD',
+        'Partake in the serene evening Unjal Seva (swing ceremony) or Kalyanotsavam',
+        'Offer traditional prayers for freedom from financial liabilities and debts'
+      ],
+      culturalMeaningTe: 'స్థల పురాణం ప్రకారం శ్రీవారి కల్యాణ ఖర్చుల కోసం కుబేరుడు ఇచ్చిన రుణాన్ని లెక్కించడానికి, నిల్వ చేయడానికి గోవిందరాజ స్వామి ఇక్కడ కొలువుదీరారని సంప్రదాయ నమ్మకం. తిరుపతి రైల్వే స్టేషన్ చేరుకోగానే ముందుగా స్వామివారిని దర్శించుకోవడం పూర్వీకుల ఆచారం.',
+      culturalMeaningEn: 'Tradition reveres Lord Govindaraja as the divine custodian of Lord Venkateswara wedding treasury. Pilgrims arriving at Tirupati traditionally pay homage here before ascending the hills.',
+      saarthiTipTe: 'రైల్వే స్టేషన్ నుండి కేవలం 3 నిమిషాల నడక దూరంలో ఉంటుంది. ఉదయం 7:30 లోపు లేదా సాయంత్రం 5:30 సమయాల్లో దర్శనం ప్రశాంతంగా పూర్తవుతుంది.',
+      saarthiTipEn: 'Located just a 3-minute walk from Tirupati Railway Station. Morning hours before 7:30 AM or early evenings around 5:30 PM offer minimal wait times.'
+    },
     timings: '6:00 AM - 12:30 PM, 4:00 PM - 8:30 PM',
     entryFee: 'Free General Darshan (₹20 for Seeghra Darshan)',
     address: 'Gandhi Road, Near Tirupati Railway Station, Tirupati, Andhra Pradesh 517501',
@@ -642,6 +684,27 @@ export const PLACES: Place[] = [
     coordinates: { lat: 13.607974, lng: 79.450015 },
     shortIntro: "Dedicated to Goddess Padmavathi, the consort of Lord Venkateswara, this ancient temple in Tiruchanur is an essential pilgrimage stop, traditionally visited after seeking blessings at Tirumala.",
     whyVisit: "Goddess Padmavathi is the symbol of wealth, compassion, and prosperity. It is customary to visit this temple to complete the Tirupati pilgrimage, as it represents the union of the divine couple.",
+    significance: {
+      traditionType: 'temple',
+      whyVisitTe: 'తిరుమల శ్రీవారి యాత్ర సంపూర్ణం కావడానికి, సంపద మరియు కరుణామూర్తి అయిన పద్మావతి అమ్మవారి ఆశీస్సులు పొందడానికి భక్తులు తిరుచానూరు దర్శిస్తారు.',
+      whyVisitEn: 'Devotees visit to seek the compassionate grace and prosperity of Goddess Padmavathi, a mandatory custom to complete the sacred Tirumala pilgrimage.',
+      actionsTe: [
+        'పద్మ పుష్కరిణి (పద్మ సరోవరం) పవిత్ర జలాలను సంప్రోక్షించుకుంటారు',
+        'గర్భాలయంలో పద్మాసనంలో కొలువైన అలమేలుమంగ అమ్మవారిని దర్శించుకుంటారు',
+        'కుంకుమార్చన లేదా అమ్మవారి విశేష పూజలలో పాల్గొంటారు',
+        'కుటుంబ ఐశ్వర్యం & సౌభాగ్యం కోసం ప్రార్థిస్తారు'
+      ],
+      actionsEn: [
+        'Sprinkle holy waters of the sacred Padma Sarovaram temple tank',
+        'Receive darshan of Goddess Padmavathi in Her benevolent Padmasana posture inside the main temple',
+        'Participate in Kumkumarchana and special devotional offerings',
+        'Pray for family prosperity, well-being, and marital fulfillment'
+      ],
+      culturalMeaningTe: 'వరహా పురాణం ప్రకారం శ్రీ మహాలక్ష్మి తిరుచానూరు పద్మ పుష్కరిణిలో బంగారు పద్మంలో అలమేలుమంగగా ఆవిర్భవించింది. శ్రీవారిని దర్శించుకున్నా, అమ్మవారిని దర్శించుకుంటేనే తీర్థయాత్ర పరిపూర్ణమవుతుందనేది ప్రాచీన నియమం.',
+      culturalMeaningEn: 'According to tradition, Goddess Lakshmi manifested as Alamelu Manga upon a golden lotus in Padma Sarovaram. Pilgrimage custom dictates that the Tirumala pilgrimage is incomplete without Ammavari darshan.',
+      saarthiTipTe: 'శుక్రవారం అమ్మవారికి అత్యంత విశేషమైన దినం. రద్దీని దృష్టిలో ఉంచుకుని ఉదయం లేదా మధ్యాహ్నం వేళల్లో దర్శనం సులభంగా పూర్తి చేసుకోవచ్చు.',
+      saarthiTipEn: 'Fridays are auspicious for Ammavaru with higher footfall. Planning a morning visit ensures a serene darshan experience.'
+    },
     openingTime: "5:00 AM",
     closingTime: "9:00 PM",
     duration: "1 to 2 hours",
@@ -703,7 +766,7 @@ export const PLACES: Place[] = [
       dressCode: 'Decent traditional wear recommended.',
       crowdNote: 'Moderate on regular days. Extremely crowded during the annual Ganga Jatara in May and on Tuesdays and Fridays.',
       footwearRule: 'Footwear must be deposited at the counters outside the temple entrance.',
-      photoRule: 'Photography is restricted inside the sanctum sanctorum.',
+      photoRule: 'Photography is strictly prohibited inside the main temple area.',
       entryRule: 'Free general darshan. Special pooja and archana tickets available at the temple office.',
     },
     tags: ['Goddess', 'Grama Devatha', 'Gangamma Jatara', 'Sister of Balaji', 'Ancient', 'Heritage'],
@@ -791,6 +854,27 @@ export const PLACES: Place[] = [
     isMustVisit: true,
     description: 'Shaivite temple at the base with a stunning waterfall.',
     history: "Named after Maharishi Kapila, who did severe penance here. Lord Shiva appeared before him from the earth, and the holy spring emerged. The temple was built and patronized by the Pallava kings and later by the Vijayanagara Emperors.",
+    significance: {
+      traditionType: 'temple',
+      whyVisitTe: 'తిరుపతిలోని ఏకైక ప్రాచీన శివాలయం మరియు కొండపైనుండి జాలువారే పవిత్ర తీర్థంలో స్నానమాచరించి శివుని అనుగ్రహం పొందడానికి భక్తులు ఇక్కడికి వస్తారు.',
+      whyVisitEn: 'Devotees visit the only historic Shiva temple in Tirupati to take a holy dip in the sacred waterfall pool blessed by Sage Kapila before ascending the hills.',
+      actionsTe: [
+        'కొండల మధ్య ఉన్న కపిల పుష్కరిణి తీర్థ జలాలను పవిత్రంగా నెత్తిపై చల్లుకుంటారు/స్నానం చేస్తారు',
+        'స్వయంభూ కపిలేశ్వర లింగం మరియు కామాక్షి అమ్మవార్లను దర్శించుకుంటారు',
+        'శ్రీ వినాయకుడు మరియు నవగ్రహ మండపాలలో పూజలు నిర్వహిస్తారు',
+        'మహాశివరాత్రి & కార్తీక మాసాల్లో విశేష దీపారాధన చేస్తారు'
+      ],
+      actionsEn: [
+        'Sprinkle or bathe in the sacred mountain stream waters of Kapila Theertham pond',
+        'Seek blessings of Swayambhu Sri Kapileswara Swamy and Goddess Kamakshi in the main temple',
+        'Offer prayers at the prominent Ganesha and Navagraha shrines',
+        'Light auspicious oil lamps during Kartika Masam and Maha Shivaratri'
+      ],
+      culturalMeaningTe: 'కపిల మహర్షి తపస్సుకు మెచ్చి శివుడు ఇక్కడ ప్రత్యక్షమయ్యాడని పురాణ గాథ. తిరుమల కొండల పాదాల వద్ద కొలువైన ఈ శైవ క్షేత్రం, హరిహరుల అభేద తత్వానికి గొప్ప నిదర్శనం.',
+      culturalMeaningEn: 'Sage Kapila performed penance here, prompting Lord Shiva to emerge from the underworld. Located at the foot of the sacred hills, it embodies the spiritual harmony of Shiva and Vishnu in Tirupati tradition.',
+      saarthiTipTe: 'వర్షాకాలంలో జలపాతం ఉధృతంగా ఉంటుంది. జారే మెట్లపై జాగ్రత్తగా నడవండి. ఉదయం 6:00 నుండి 8:00 మధ్య సమయం ప్రశాంతమైన దర్శనానికి అనుకూలం.',
+      saarthiTipEn: 'The waterfall flows strongly post-monsoon. Steps can be slippery near the pond. Visiting between 6:00 AM and 8:00 AM allows peaceful darshan.'
+    },
     timings: '5:00 AM - 9:00 PM',
     entryFee: "Free entry. Special Darshan ticket available at ₹5 and Special Pooja at ₹25.",
     address: 'Alipiri Road, Tirupati',
@@ -893,6 +977,7 @@ export const PLACES: Place[] = [
   {
     id: 'srinivasa-mangapuram',
     name: 'Sri Kalyana Venkateswara Swamy Temple',
+    nameTe: 'శ్రీ కల్యాణ వేంకటేశ్వర స్వామి వారి ఆలయం',
     category: 'Core Temple',
     placeType: 'spiritual',
     location: 'Srinivasa Mangapuram',
@@ -904,8 +989,29 @@ export const PLACES: Place[] = [
     openFrom: 5,
     openTo: 20,
     isMustVisit: true,
-    description: 'Where the Lord stayed after his marriage.',
-    history: 'Considered equal to Tirumala for those who cannot climb.',
+    description: 'Where the Lord stayed after his marriage at Sage Agastya hermitage.',
+    history: 'Considered equal to Tirumala for those who cannot climb. Devotees seek marriage blessings (Kalyana Prapti).',
+    significance: {
+      traditionType: 'temple',
+      whyVisitTe: 'కల్యాణ వేంకటేశ్వర స్వామిని దర్శించుకుని, వివాహ ప్రతిబంధకాలు తొలగాలని మరియు కల్యాణ ప్రాప్తి కలగాలని ప్రార్థించడం ఇక్కడి ప్రధాన భక్తి సంప్రదాయం.',
+      whyVisitEn: 'Devotees pray to Lord Sri Kalyana Venkateswara Swamy specifically for overcoming obstacles in marriage alliances, invoking Kalyana Prapti, and attaining lifelong marital harmony.',
+      actionsTe: [
+        'గర్భాలయంలో కల్యాణ భంగిమలో కొలువైన శ్రీవారిని దర్శించుకుంటారు',
+        'గర్భాలయంలో పూజించిన పవిత్ర కల్యాణ కంకణం (రక్షా సూత్రం) స్వీకరించి కుడిచేతికి ధరిస్తారు',
+        'స్వామివారి నిత్య కల్యాణోత్సవ సేవలో పాల్గొని వేద ఆశీర్వచనం పొందుతారు',
+        'దాంపత్య సౌఖ్యం, కుటుంబ శాంతి మరియు వివాహ సాఫల్యం కోసం ప్రార్థిస్తారు'
+      ],
+      actionsEn: [
+        'Receive darshan of the Lord standing in divine post-marriage Kalyana posture in the main temple',
+        'Accept the consecrated sacred yellow thread (Kalyana Kankanam) tied to the wrist as divine protection',
+        'Participate in the daily Nitya Kalyanotsavam seva and receive Vedic blessings',
+        'Offer prayers for marital bliss, family peace, and early settlement of auspicious marriage alliances'
+      ],
+      culturalMeaningTe: 'భవిష్యోత్తర పురాణ ప్రకారం, నారాయణవనంలో పద్మావతి అమ్మవారితో కల్యాణం జరిగిన తర్వాత శ్రీనివాసుడు అగస్త్య మహర్షి కోరిక మేరకు ఇక్కడి ఆశ్రమంలో 6 నెలల పాటు బస చేశారు. వృద్ధాప్యం, అనారోగ్యం లేదా ఇతర కారణాలతో తిరుమల కొండను ఎక్కలేని భక్తులు ఇక్కడ స్వామివారిని దర్శించుకుంటే తిరుమల క్షేత్ర దర్శనంతో సమానమైన సంపూర్ణ పుణ్యఫలం లభిస్తుందని స్వామివారు స్వయంగా వరమిచ్చారు.',
+      culturalMeaningEn: 'According to the Bhavishyottara Purana, after their celestial wedding at Narayanavanam, Lord Srinivasa and Goddess Padmavathi stayed at Sage Agastya hermitage here for 6 months before climbing the Tirumala hills. The Lord blessed this Kshetram declaring that devotees unable to ascend the sacred hills, or those seeking marriage blessings, receive equivalent spiritual merit through darshan here.',
+      saarthiTipTe: 'వివాహ ప్రయత్నాలలో ఉన్నవారు లేదా వివాహానంతరం తిరుమల యాత్ర వెంటనే చేయలేని దంపతులు ఈ క్షేత్రాన్ని దర్శించడం పూర్వీకుల నుండి వస్తున్న సంప్రదాయం. ప్రతిరోజూ ఉదయం 11:00 గంటలకు కల్యాణోత్సవం జరుగుతుంది; కంకణం పొందేందుకు ఉదయం 10:00 లోపు చేరుకోవడం ఉత్తమం.',
+      saarthiTipEn: 'Visiting this shrine is traditionally observed by those seeking marriage prospects or newlyweds unable to immediately climb Tirumala. Daily Kalyanotsavam takes place at 11:00 AM; arriving before 10:00 AM is recommended to participate and receive the consecrated Kankanam.'
+    },
     timings: '5:00 AM - 8:00 PM',
     entryFee: 'Free',
     address: 'Srinivasa Mangapuram, AP',
@@ -913,7 +1019,7 @@ export const PLACES: Place[] = [
     reviewCount: 12000,
     image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRPvV6BoYYOv1D5CL8ADeBt8oC3Aqzhyyxcq9LOhkDyyA&s=10',
     coordinates: { lat: 13.6108, lng: 79.3277 },
-    tags: ['Marriage', 'Alternative'],
+    tags: ['Marriage', 'Alternative', 'Kalyana Kankanam'],
     bestTime: 'Morning',
     practicalInfo: { dressCode: 'Traditional', food: 'Limited', parking: 'Available' },
     travelEstimates: { 'tirupati': '20 mins' }
@@ -932,7 +1038,7 @@ export const PLACES: Place[] = [
     openFrom: 6,
     openTo: 20.5,
     isMustVisit: true,
-    description: 'Situated at RS Mada Street in Nehru Nagar, Tirupati, Sri Kodanda Rama Swamy Temple is a magnificent 10th-century Chola heritage temple managed by TTD. According to temple puranas, Lord Rama, Goddess Sita, and Lakshmana spent a night resting here while returning from Lanka. The sanctum features monolithic stone deities of Lord Rama holding his bow (Kodanda), flanked by Sita Devi and Lakshmana.',
+    description: 'Situated at RS Mada Street in Nehru Nagar, Tirupati, Sri Kodanda Rama Swamy Temple is a magnificent 10th-century Chola heritage temple managed by TTD. According to temple puranas, Lord Rama, Goddess Sita, and Lakshmana spent a night resting here while returning from Lanka. The main shrine features monolithic stone deities of Lord Rama holding his bow (Kodanda), flanked by Sita Devi and Lakshmana.',
     descriptionTe: 'లంకా విజయం అనంతరం శ్రీరాముడు, సీతాదేవి, లక్ష్మణ సమేతంగా అయోధ్యకు తిరిగి ప్రయాణిస్తూ ఈ పవిత్ర ప్రదేశంలో విశ్రమించారని స్థానిక పురాణాల విశ్వాసం. 10వ శతాబ్దపు చోళుల కాలంలో నిర్మించబడిన ఈ ప్రాచీన ఆలయం ద్రవిడ శైలి శిల్పకళతో, కోదండం ధరించిన రాముడి ఏకశిలా విగ్రహంతో ప్రసిద్ధి చెందింది.',
     historyTe: '10వ శతాబ్దంలో చోళ రాజులచే ఈ ఆలయం నిర్మించబడిందని, అనంతరం శ్రీకృష్ణదేవరాయల కాలంలో విజయనగర సామ్రాజ్యంలో మరింత విస్తరించబడిందని శాసనాలు తెలుపుతున్నాయి.',
     timings: '6:00 AM - 12:30 PM, 4:00 PM - 8:30 PM (Aartis: 6:30 AM, 12:00 PM, 6:30 PM; Ekantha Seva: 8:30 PM)',
@@ -944,7 +1050,7 @@ export const PLACES: Place[] = [
     coordinates: { lat: 13.635037, lng: 79.416753 },
     oneReasonToVisit: 'Sacred resting spot of Lord Rama, Sita Devi & Lakshmana on their return from Lanka',
     shortIntro: "Sri Kodandarama Swamy Temple is one of Tirupati's ancient Chola-era shrines managed by TTD. According to sacred tradition, Lord Rama, Goddess Sita, and Lakshmana halted here after returning from Lanka.",
-    history: "According to sacred tradition, Lord Rama, Sita Devi, and Lakshmana stayed at this sacred spot on their arduous return journey from Lanka to Ayodhya after conquering Ravana. Historically, the temple sanctum was consecrated in the 10th century during the Chola dynasty and expanded during the Vijayanagara empire under Sri Krishnadevaraya.",
+    history: "According to sacred tradition, Lord Rama, Sita Devi, and Lakshmana stayed at this sacred spot on their arduous return journey from Lanka to Ayodhya after conquering Ravana. Historically, the main temple was consecrated in the 10th century during the Chola dynasty and expanded during the Vijayanagara empire under Sri Krishnadevaraya.",
     whyVisit: "Revered for its classic Dravidian architectural style, 1,000-year Chola history, divine monolithic idols of Lord Rama holding his Kodanda bow, Sita Devi & Lakshmana, and grand annual Sri Rama Navami Brahmotsavams.",
     openingTime: "6:00 AM",
     closingTime: "8:30 PM",
@@ -1050,6 +1156,25 @@ export const PLACES: Place[] = [
     isMustVisit: true,
     description: 'Major 11th-century fort with Raja and Rani Mahal.',
     history: "Built by the Yadava Naidus in 1000 AD and taken over by the Vijayanagara kings. In 1585, it became their main capital after the fall of Hampi. It was here that the treaty was signed in 1639 granting land to the British East India Company to build Fort St. George, starting modern Madras (Chennai).",
+    significance: {
+      traditionType: 'heritage',
+      whyVisitTe: 'విజయనగర సామ్రాజ్యపు రాజులు ఎలా జీవించేవారు, రాతి నిర్మాణాలతో కోటను ఎలా నిర్మించారు అనేది ప్రత్యక్షంగా చూడటానికి.',
+      whyVisitEn: 'To witness firsthand how the Vijayanagara emperors lived and engineered stone fortifications without timber beams.',
+      actionsTe: [
+        'రాజా మహల్ మరియు రాణి మహల్ ప్రాంగణాలను పరిశీలిస్తారు',
+        'ఆర్కియోలాజికల్ మ్యూజియంలోని చారిత్రక శిల్పాలు మరియు నాణేలను చూస్తారు',
+        'సాయంత్రం జరిగే చారిత్రక లైట్ & సౌండ్ షోను వీక్షిస్తారు'
+      ],
+      actionsEn: [
+        'Explore the multi-storied Indo-Saracenic Raja Mahal and Rani Mahal',
+        'View preserved stone sculptures, weapons, and coins in the on-site museum',
+        'Attend the open-air evening Light & Sound heritage narration'
+      ],
+      culturalMeaningTe: 'శ్రీకృష్ణదేవరాయల కాలం నుండి విజయనగర పాలకులకు దక్షిణ రాజధానిగా నిలిచిన ఈ కోట, అప్పటి యుద్ధ వ్యూహాలు మరియు రాజభవనాల వైభవానికి ప్రత్యక్ష సాక్ష్యం.',
+      culturalMeaningEn: 'Served as the southern bastion and final capital of the Vijayanagara Empire, showcasing late medieval Deccan military architecture and royal culture.',
+      saarthiTipTe: 'సాయంత్రం వెళ్లేవారు లైట్ & సౌండ్ షో సమయం (తెలుగు/ఇంగ్లీష్ ప్రదర్శనలు) ముందుగా చెక్ చేసుకోండి. కోట ప్రాంగణంలో నడవడానికి సౌకర్యవంతమైన పాదరక్షలు ధరించండి.',
+      saarthiTipEn: 'Verify the evening Light & Sound show schedule in advance. Wear comfortable walking shoes to comfortably navigate the fort palace grounds.'
+    },
     timings: '9:00 AM - 6:00 PM',
     entryFee: "₹60 for Adults, ₹45 for Children (ASI Entry ticket). Sound and Light show costs ₹100 per adult.",
     address: 'Chandragiri, AP',
@@ -1114,7 +1239,7 @@ export const PLACES: Place[] = [
     travelEstimates: { 'tirupati': '45 mins' },
     visitorTips: {
       dressCode: 'Strict traditional wear mandatory (Dhoti/Pajamas for men, Saree/Chudidar for women). Shorts and sleeveless tops are prohibited.',
-      photoRule: 'Photography is strictly forbidden inside the inner sanctum. Permitted only in outer courtyard.',
+      photoRule: 'Photography is strictly forbidden inside the inner temple. Permitted only in outer courtyard.',
       footwearRule: 'Must be deposited at footwear stand outside.',
       crowdNote: 'Generally peaceful. Moderate crowds on Mondays and festival days.',
       entryRule: 'Free public entry for general darshan. Note: No office/helpdesk, restrooms, or eateries on site — carry drinking water.'
@@ -1138,6 +1263,25 @@ export const PLACES: Place[] = [
     isMustVisit: true,
     description: 'Highest waterfall in Andhra Pradesh (270 ft).',
     history: "The name 'Talakona' translates to 'head hill' in Telugu, signifying the starting point of the Seshachalam Hills. It was declared an eco-tourism project in the 1990s and houses an ancient temple dedicated to Lord Siddheswara Swamy.",
+    significance: {
+      traditionType: 'nature',
+      whyVisitTe: 'ప్రకృతి మధ్య ఎత్తైన జలపాతం, దట్టమైన అడవి వాతావరణం మరియు ట్రెక్కింగ్ అనుభవం కోసం ప్రజలు ఇక్కడికి వస్తారు.',
+      whyVisitEn: 'Visitors come for the breathtaking cascade, dense forest atmosphere, and scenic valley trek.',
+      actionsTe: [
+        'అడవి మార్గంలో నడిచి ప్రధాన జలపాతాన్ని వీక్షిస్తారు',
+        'సమీపంలోని ప్రాచీన శ్రీ సిద్ధేశ్వర స్వామి ఆలయాన్ని దర్శించుకుంటారు',
+        'కెనోపి రోప్ వాక్ మరియు ప్రకృతి దృశ్యాలను ఆస్వాదిస్తారు'
+      ],
+      actionsEn: [
+        'Walk the scenic forest trail to view the 270-ft natural cascade',
+        'Visit the ancient Sri Siddheswara Swamy shrine located near the falls',
+        'Experience the canopy rope walk and fresh forest surroundings'
+      ],
+      culturalMeaningTe: 'ఈ జలపాతపు నీరు శేషాచలం అడవుల్లోని అరుదైన ఔషధ మూలికల గుండా ప్రవహిస్తుందని, ఇందులో స్నానం చేయడం శరీరానికి ఉత్తేజాన్నిస్తుందని స్థానిక నమ్మకం. శివరాత్రి సమయంలో సిద్ధేశ్వర స్వామికి ప్రత్యేక పూజలు జరుగుతాయి.',
+      culturalMeaningEn: 'Local tradition associates these stream waters with medicinal herb infusions from the surrounding Seshachalam reserve. The adjacent Siddheswara Swamy shrine holds deep spiritual ties for regional pilgrims.',
+      saarthiTipTe: 'వర్షాకాలంలో నీటి ప్రవాహం ఎక్కువగా ఉండవచ్చు. జారే రాళ్ల పట్ల జాగ్రత్త వహించండి మరియు వెళ్లే ముందు ప్రస్తుత వాతావరణ పరిస్థితిని చెక్ చేయండి.',
+      saarthiTipEn: 'Water flow peaks post-monsoon. Rocks can be slippery; check local weather and trail safety before undertaking the forest walk.'
+    },
     timings: '6:00 AM - 5:00 PM',
     entryFee: "₹10 per person entry fee. Forest checkpoint charges separate vehicle fees.",
     address: 'Tirupati District',
@@ -1625,7 +1769,7 @@ export const PLACES: Place[] = [
     images: ['https://res.cloudinary.com/kniegqlj/image/upload/v1787057156/sddefault_ivnuoq.jpg'],
     coordinates: { lat: 13.6667627, lng: 79.5135769 },
     shortIntro: 'A one-of-a-kind historic shrine in Karakambadi situated in an underground passage directly beneath an active running railway track.',
-    whyVisit: 'Experience the unique spiritual atmosphere where railway trains pass directly overhead while prayers are performed in the underground sanctum. Revered as the sacred keeper of truth (sathya pramanaalu).',
+    whyVisit: 'Experience the unique spiritual atmosphere where railway trains pass directly overhead while prayers are performed in the underground shrine. Revered as the sacred keeper of truth (sathya pramanaalu).',
     openingTime: '6:00 AM',
     closingTime: '7:00 PM',
     duration: '30 to 45 mins',
@@ -1651,7 +1795,7 @@ export const PLACES: Place[] = [
     importanceLevel: 'Hidden Gem',
     visitDifficulty: 'Easy',
     visitType: 'Quick Stop',
-    oneReasonToVisit: 'Witness the miraculous underground sanctum directly beneath an active railway track where prayers resonate as trains rumble overhead.',
+    oneReasonToVisit: 'Witness the miraculous underground shrine directly beneath an active railway track where prayers resonate as trains rumble overhead.',
     verification: {
       status: 'Verified',
       verifiedBy: 'Ground Mapping & Regional Heritage Records',
@@ -1698,7 +1842,7 @@ export const PLACES: Place[] = [
       dressCode: 'Decent traditional or modest wear.',
       crowdNote: 'Peaceful on regular days. Crowded during Mondays, Pradosham, Masa Shivaratri, and Maha Shivaratri.',
       footwearRule: 'Footwear stands available at temple entrance.',
-      photoRule: 'Allowed in exterior courtyard; restricted inside inner sanctum.',
+      photoRule: 'Allowed in exterior courtyard; restricted inside the main shrine.',
       entryRule: 'Free general darshan. Special Abhishekam tickets available at temple counter.'
     },
     tags: ['Shiva', 'Jambukeswara', 'Mangalam', 'Shivalayam', 'Rudrabhishekam', 'Maha Shivaratri', 'Pradosham'],
@@ -1818,7 +1962,7 @@ export const PLACES: Place[] = [
       dressCode: 'Decent traditional or modest Indian wear.',
       crowdNote: 'Low to moderate crowd on regular days. Crowded during Saturdays and Brahmotsavams.',
       footwearRule: 'Footwear stands available at temple entrance.',
-      photoRule: 'Allowed in exterior courtyard; restricted in sanctum.',
+      photoRule: 'Allowed in exterior courtyard; restricted in main shrine.',
       entryRule: 'Free general darshan. Special Archana and Kalyanotsavam available at temple counter.'
     },
     tags: ['Pratham Tirupati', 'Venkateswara', 'Tummalagunta', 'Sage Agastya', 'Ancient Temple', 'Kalyanotsavam'],
@@ -1878,7 +2022,7 @@ export const PLACES: Place[] = [
       dressCode: 'Decent traditional or modest Indian wear.',
       crowdNote: 'High rush on Fridays, Tuesdays, Sundays, and during Sankranti and summer Jathara (May to August).',
       footwearRule: 'Footwear stands available at temple entrance.',
-      photoRule: 'Allowed in outer temple courtyard; restricted in sanctum.',
+      photoRule: 'Allowed in outer temple courtyard; restricted in main shrine.',
       entryRule: 'Free general darshan. Special Abhisheka and Ashta Lakshmi poojas available on Fridays.'
     },
     tags: ['Shakti Peeth', 'Goddess Yellamma', 'Chandragiri', 'Sage Agastya', 'Healing Temple', 'Grama Devatha', 'Neem Tree'],
@@ -1913,7 +2057,7 @@ export const PLACES: Place[] = [
     openFrom: 6,
     openTo: 20.5,
     isMustVisit: false,
-    description: 'TTD Namoona Temple is an authentic model temple constructed and maintained by Tirumala Tirupati Devasthanams (TTD) near Alipiri. Built as a sacred replica of the sanctum sanctorum of Lord Venkateswara, it offers a peaceful, unhurried darshan experience right at the foothills of Tirumala.',
+    description: 'TTD Namoona Temple is an authentic model temple constructed and maintained by Tirumala Tirupati Devasthanams (TTD) near Alipiri. Built as a sacred replica of the main shrine of Lord Venkateswara at Tirumala, it offers a peaceful, unhurried darshan experience right at the foothills of Tirumala.',
     shortIntro: 'An authentic TTD replica temple near Alipiri offering peaceful darshan of Lord Venkateswara and full Vedic sevas without hill queues.',
     history: 'Constructed by TTD as a model temple (*Namoona Alayam*), this sacred shrine showcases the exact Agamic traditions, architecture, and daily seva rituals practiced at the main Tirumala temple. It serves as an accessible devotional haven for pilgrims, elderly devotees, and visitors wishing to offer prayers before or after their journey to the Seven Hills.',
     whyVisit: 'Peaceful, unhurried darshan of Lord Venkateswara with zero queue delays. Experience authentic TTD Suprabhatam, Archana, and daily Kalyanotsavam in a tranquil setting.',
@@ -1938,20 +2082,20 @@ export const PLACES: Place[] = [
       dressCode: 'Decent traditional or modest wear.',
       crowdNote: 'Low crowd on regular days; very quick and peaceful darshan.',
       footwearRule: 'Footwear stands available at temple entrance.',
-      photoRule: 'Allowed in exterior courtyard; restricted in sanctum.',
+      photoRule: 'Allowed in exterior courtyard; restricted in main shrine.',
       entryRule: 'Free general darshan. TTD sevas and daily Kalyanotsavam available.'
     },
     tags: ['TTD', 'Namoona Temple', 'Model Temple', 'Venkateswara', 'Alipiri', 'Kalyanotsavam', 'Replica'],
     bestTime: 'Morning (6:30 AM - 10:30 AM) and evening hours.',
     practicalInfo: { dressCode: 'Traditional', food: 'Nearby restaurants on Alipiri Road', parking: 'Available on premises' },
-    spiritualInfo: { god: 'Lord Venkateswara Swamy', knownFor: 'Authentic TTD Replica Sanctum, Daily Kalyanotsavam, Peaceful Darshan', mantra: 'Om Namo Venkateshaya', devoteeTips: ['Ideal for elderly devotees who find hill walking challenging', 'Daily Kalyanotsavam performed at 10:00 AM'] },
+    spiritualInfo: { god: 'Lord Venkateswara Swamy', knownFor: 'Authentic TTD Replica Temple, Daily Kalyanotsavam, Peaceful Darshan', mantra: 'Om Namo Venkateshaya', devoteeTips: ['Ideal for elderly devotees who find hill walking challenging', 'Daily Kalyanotsavam performed at 10:00 AM'] },
     travelEstimates: { 'tirupati': '6 mins', 'alipiri-mettu': '4 mins', 'kapila-theertham': '5 mins' },
     relatedPlaces: ['alipiri-mettu', 'kapila-theertham', 'regional-science-centre'],
     status: 'Published',
     importanceLevel: 'Recommended',
     visitDifficulty: 'Easy',
     visitType: 'Quick Stop',
-    oneReasonToVisit: 'Experience an authentic, serene replica of the sacred Tirumala Venkateswara sanctum at the foothills with zero queue wait.',
+    oneReasonToVisit: 'Experience an authentic, serene replica of the sacred Tirumala Venkateswara temple at the foothills with zero queue wait.',
     verification: {
       status: 'Verified',
       verifiedBy: 'TTD Administrative & DaivaKshetra Database',
@@ -2041,6 +2185,25 @@ export const PLACES: Place[] = [
     shortIntro: 'Narayanavanam is the holy site of the divine wedding of Lord Venkateswara and Goddess Padmavati, located 36 km from Tirupati near Puttur.',
     history: 'According to Hindu Puranas, Narayanavanam was the capital of King Akasa Raju. Lord Venkateswara married Goddess Padmavati at this exact location. The temple showcases magnificent Vijayanagara architectural grandeur with interconnected shrines for Goddess Padmavati and Lord Agastheeswara.',
     whyVisit: 'The divine wedding venue of Lord Venkateswara & Goddess Padmavati; renowned for grand Vijayanagara architecture and marital blessings.',
+    significance: {
+      traditionType: 'temple',
+      whyVisitTe: 'శ్రీ వేంకటేశ్వర స్వామి మరియు పద్మావతి అమ్మవార్ల దివ్య కల్యాణం జరిగిన పవిత్ర వివాహ స్థలాన్ని దర్శించి, కల్యాణ సాఫల్యం కోసం ప్రార్థించడానికి భక్తులు ఇక్కడికి వస్తారు.',
+      whyVisitEn: 'Devotees visit to offer prayers at the historic celestial wedding venue where Lord Venkateswara married Goddess Padmavathi.',
+      actionsTe: [
+        'కల్యాణ వేదిక వద్ద కొలువైన శ్రీ కల్యాణ వేంకటేశ్వర స్వామి మరియు పద్మావతి అమ్మవార్లను దర్శించుకుంటారు',
+        'వివాహ విందు తయారీలో ఉపయోగించిన పవిత్రమైన రాతి రుబ్బురోలు (కల్లురాయి) ను దర్శిస్తారు',
+        'వివాహ యోగం & దాంపత్య సౌభాగ్యం కోసం సంకల్ప పూజలు నిర్వహిస్తారు'
+      ],
+      actionsEn: [
+        'Have darshan of Sri Kalyana Venkateswara Swamy and Goddess Padmavathi at their wedding venue in the main temple',
+        'View the historic stone grinding pestle (Kalluralu) revered from the celestial wedding feast',
+        'Offer special prayers and sankalpam for marital harmony and blessed wedding alliances'
+      ],
+      culturalMeaningTe: 'పురాణాల ప్రకారం ఆకాశరాజు తన కుమార్తె పద్మావతిని శ్రీనివాసునికి ఇచ్చి వివాహం జరిపించిన రాజధాని నారాయణవనం. ఈ వివాహ జ్ఞాపకార్థం నిర్మించిన ఈ ఆలయం వివాహ బంధాన్ని పవిత్రంగా గౌరవించే సంస్కృతికి ప్రతీక.',
+      culturalMeaningEn: 'Historical lore identifies Narayanavanam as King Akasa Raju capital where the celestial marriage took place. The temple celebrates the sacred institution of marriage and lifelong companionship.',
+      saarthiTipTe: 'పుత్తూరు సమీపంలో ఉన్న ఈ ఆలయాన్ని శ్రీనివాస మంగాపురం మరియు తిరుచానూరుతో కలిపి దర్శించుకోవడం సంపూర్ణ కల్యాణ దర్శన యాత్రగా పరిగణించబడుతుంది.',
+      saarthiTipEn: 'Traditionally visited alongside Srinivasa Mangapuram and Tiruchanur to complete the divine wedding pilgrimage circuit.'
+    },
     timings: '6:00 AM - 8:00 PM (TTD Administered)', 
     entryFee: 'Free', 
     address: 'Narayanavanam, near Puttur, AP (36 km from Tirupati)', 
@@ -2481,6 +2644,25 @@ export const PLACES: Place[] = [
     isMustVisit: false,
     description: 'Iconic spot for traditional Andhra sweets, savories, and quick snacks. Perfect for buying souvenirs.',
     history: 'A longstanding institution for authentic South Indian confections.',
+    significance: {
+      traditionType: 'food',
+      whyVisitTe: 'తిరుపతి యాత్రలో ఇంటికి తీసుకెళ్లే స్వీట్లు, ప్రసాదం తరహా ఆహార సంప్రదాయాల కోసం స్థానికులు మరియు యాత్రికులు ఇక్కడ ఆగుతారు.',
+      whyVisitEn: 'Pilgrims and locals stop here to purchase traditional sweets and savories to carry home from their Tirupati journey.',
+      actionsTe: [
+        'నెయ్యితో చేసిన ప్రసిద్ధ మైసూర్ పాక్ మరియు లడ్డూలను ఎంచుకుంటారు',
+        'సాంప్రదాయ మిక్చర్, మురుకులు వంటి కారపు పదార్థాలను రుచి చూస్తారు',
+        'సుదూర ప్రయాణాలకు అనువుగా ఉండే డ్రై బాక్స్ ప్యాకింగ్ చేయించుకుంటారు'
+      ],
+      actionsEn: [
+        'Select fresh pure-ghee Mysore Pak and traditional sweets',
+        'Sample traditional savory crisps and spiced snacks',
+        'Request travel-friendly gift packing for long journeys'
+      ],
+      culturalMeaningTe: 'తీర్థయాత్ర పూర్తయిన తర్వాత బంధుమిత్రులకు తీపి పదార్థాలను పంచిపెట్టడం మన సంస్కృతిలో ఒక శుభసూచకమైన ఆచారం.',
+      culturalMeaningEn: 'Sharing sweets with extended family and neighbors upon returning from a pilgrimage is an auspicious cultural custom.',
+      saarthiTipTe: 'ప్రయాణంలో పాడవకుండా ఉండటానికి ఫ్రెష్ డేట్ ఉన్న డబ్బాలను ఎంచుకోండి మరియు ఇంటికి తీసుకెళ్లడానికి ప్రత్యేక గిఫ్ట్ ప్యాకింగ్ అడగండి.',
+      saarthiTipEn: 'Request travel-ready sealed packaging with the latest shelf-life dates for convenient transport back home.'
+    },
     timings: '8:00 AM - 10:00 PM',
     entryFee: 'Free',
     address: 'Prakasam Road, Tirupati',
@@ -2868,8 +3050,8 @@ export const PLACES: Place[] = [
     openFrom: 6,
     openTo: 20.5,
     isMustVisit: false,
-    description: 'Shri Jagannatha Swamy Temple in Tirupati is dedicated to Lord Jagannatha (Krishna), Lord Balabhadra, and Devi Subhadra, recreating the divine sanctum of the sacred Puri Jagannath temple. Established by Vaishnava devotees to bring the spiritual bliss and Mahaprasadam tradition of Puri closer to South Indian pilgrims.',
-    shortIntro: 'Shri Jagannatha Swamy Temple in Tirupati offers a divine Puri-style Vaishnavite pilgrimage with sanctums for Lord Jagannatha, Balabhadra, and Devi Subhadra.',
+    description: 'Shri Jagannatha Swamy Temple in Tirupati is dedicated to Lord Jagannatha (Krishna), Lord Balabhadra, and Devi Subhadra, recreating the divine atmosphere of the sacred Puri Jagannath temple. Established by Vaishnava devotees to bring the spiritual bliss and Mahaprasadam tradition of Puri closer to South Indian pilgrims.',
+    shortIntro: 'Shri Jagannatha Swamy Temple in Tirupati offers a divine Puri-style Vaishnavite pilgrimage with shrines for Lord Jagannatha, Balabhadra, and Devi Subhadra.',
     history: 'According to temple sthala puranam, a devout bhakta inspired by a pilgrimage to Puri envisioned bringing Lord Jagannatha’s worship to Tirupati. Through divine guidance and devotee patronage, consecrated idols of Jagannatha, Balabhadra, and Subhadra were installed, creating a revered spiritual sanctuary in Tirupati.',
     whyVisit: 'Unique Puri Jagannatha Kshetram in Tirupati, divine darshan of Lord Jagannatha, Balabhadra & Subhadra, Sandhya Arati, Tulasi Archana, and peaceful devotee environment with on-premise parking.',
     timings: '6:00 AM - 12:30 PM, 4:00 PM - 8:30 PM (Fri-Sun until 9:00 PM)',
@@ -3010,7 +3192,7 @@ export const PLACES: Place[] = [
     isMustVisit: false,
     description: 'Sri Jeeva Lingeshwara Swamy Temple is a serene Shaivite shrine located in Mangalam village, nestled at the scenic foothills of the Tirumala ranges. Dedicated to Lord Shiva as Jeeva Lingeshwara, the living divine consciousness, the temple is famed for its peaceful meditative ambiance, powerful Rudrabhishekam rituals, and grand Maha Shivaratri celebrations.',
     shortIntro: 'Tranquil Shiva shrine in Mangalam at the foot of Tirumala hills enshrining Jeeva Lingeshwara Swamy, renowned for Rudrabhishekam and Dosha Parihara poojas.',
-    history: 'According to local temple lore, the sanctum houses a consecrated Jeeva Lingam imbued with living spiritual vibrations that brings serenity and protection to the surrounding valley of Mangalam. Devotees and local sadhus have worshipped here for generations, especially seeking astrological remedies, Dosha Nivarana, and inner peace away from urban crowds.',
+    history: 'According to local temple lore, the inner temple houses a consecrated Jeeva Lingam imbued with living spiritual vibrations that brings serenity and protection to the surrounding valley of Mangalam. Devotees and local sadhus have worshipped here for generations, especially seeking astrological remedies, Dosha Nivarana, and inner peace away from urban crowds.',
     whyVisit: 'Peaceful foothill Shiva temple in Mangalam, powerful Rudrabhishekam & Bilva Archana sevas, astrology & Dosha Parihara poojas, low crowd serenity, and scenic natural views of the Tirumala hill backdrop.',
     timings: '6:00 AM – 12:30 PM, 4:00 PM – 8:00 PM (Extended hours during Pradosham and Maha Shivaratri)',
     entryFee: 'Free entry for all devotees (Rudrabhishekam and Special Archana tickets available at the counter)',
@@ -3079,7 +3261,7 @@ export const PLACES: Place[] = [
       mantra: 'Om Saravanabhavaya Namaha | Om Subramanyaya Namaha | Om Skandaya Namaha',
       devoteeTips: [
         'Visit on Tuesdays (Mangalavaram) during morning Abhishekam (6:30 AM – 9:00 AM) for powerful Kuja Dosha remedies',
-        'Shaded steps with handrails lead from the foothills parking area to the hilltop sanctum and 54-ft statue',
+        'Shaded steps with handrails lead from the foothills parking area to the hilltop main temple and 54-ft statue',
         'Special tickets for Kalyanotsavam, Abhishekam, and Naga Dosha Nivarana can be booked directly at the temple office desk (Phone: 08572-282450)',
         'Traditional Laddoo, Vada, and Pulihora prasadam counters are available near the main complex',
         'Located just 1.5 km from Pakala Junction Railway Station with 24/7 auto-rickshaw connectivity'
@@ -3104,7 +3286,7 @@ export const PLACES: Place[] = [
     },
     rituals: {
       daily: [
-        'Suprabhatam & Sanctum Cleaning (6:00 AM)',
+        'Suprabhatam & Temple Cleaning (6:00 AM)',
         'Morning Abhishekam (Milk, Panchamrutam & Archana) (6:30 AM – 9:00 AM)',
         'Sarva Darshan (9:00 AM – 11:30 AM)',
         'Afternoon Closure / Rest (11:30 AM – 4:00 PM)',
@@ -3143,7 +3325,7 @@ export const PLACES: Place[] = [
     description: 'Sri Penusila Lakshmi Narasimha Swamy Devasthanam in Penchalakona is an ancient, self-manifested (Swayambhu) Nava Narasimha Kshetram set amidst the scenic, medicinal mountain ranges of the Eastern Ghats in SPSR Nellore District. According to Sthala Puranam, after slaying the demon Hiranyakashipu, Lord Narasimha roamed these hills in a fierce (Ugra) state until Goddess Lakshmi assumed the form of Chenchu Lakshmi and embraced Him (Penu Vesukonuta) beneath a massive rock boulder (Sila), turning Him into Shantha Narasimha. The temple complex is renowned for its therapeutic mountain waterfalls, Kanva Maharshi Tapovanam, daily Nitya Annadanam, and powerful blessings for childless couples and devotees seeking peace and protection.',
     shortIntro: 'Ancient Swayambhu Nava Narasimha Kshetram in the Eastern Ghats near Rapur featuring medicinal waterfalls, Kanva Tapovanam, and peaceful Shantha Narasimha darshan.',
     whyVisit: 'Renowned Swayambhu Nava Narasimha temple nestled amidst medicinal waterfall streams and the scenic Vedagiri forest. Pilgrims revere the holy dip in Kona waterfalls, free daily Nitya Annadanam (12:30 PM – 2:30 PM), childless couples\' blessings (Santhana Praapthi), and tranquil hilltop spirituality.',
-    history: 'According to ancient Sthala Puranam, the sacred mountain was the hermitage (Tapovanam) of Sage Kanva (Kandeya Maharshi) who performed rigorous penance along the sacred Kanva Yeru (now Kandaleru river). The deity is a self-manifested rock formation where two massive stones intertwine into a lion’s head form. Historical records note that the sanctum sanctorum dates back over 670 years, and the annual 5-day Brahmotsavam starting on Vaisakha Suddha Ekadashi attracts lakhs of pilgrims across Rayalaseema and coastal Andhra.',
+    history: 'According to ancient Sthala Puranam, the sacred mountain was the hermitage (Tapovanam) of Sage Kanva (Kandeya Maharshi) who performed rigorous penance along the sacred Kanva Yeru (now Kandaleru river). The deity is a self-manifested rock formation where two massive stones intertwine into a lion’s head form. Historical records note that the main shrine dates back over 670 years, and the annual 5-day Brahmotsavam starting on Vaisakha Suddha Ekadashi attracts lakhs of pilgrims across Rayalaseema and coastal Andhra.',
     timings: 'Morning: 6:00 AM – 12:30 PM | Evening: 3:00 PM – 8:00 PM (Nitya Abhishekam: 6:30 AM – 7:30 AM; Kalyanotsavam: 10:00 AM – 12:00 PM; Nitya Annadanam: 12:30 PM – 2:30 PM)',
     entryFee: 'Free entry for all devotees (Special Darshan, Kalyanotsavam & Sahasranamarchana tickets available at the devasthanam office)',
     address: 'Penchalakona Village, Rapur Mandal, SPSR Nellore District, Andhra Pradesh – 524414',
@@ -3175,7 +3357,7 @@ export const PLACES: Place[] = [
       parking: 'Expansive parking spaces at foothills for buses, cars, and two-wheelers'
     },
     facilities: {
-      wheelchair: 'Concrete pathways and ramp lines for elderly devotees to reach the sanctum area easily',
+      wheelchair: 'Concrete pathways and ramp lines for elderly devotees to reach the main temple area easily',
       drinkingWater: 'Purified RO drinking water taps available throughout the complex',
       toilets: 'Clean public restrooms and bathing ghats near the waterfall stream',
       parking: 'Expansive parking spaces at foothills for buses, cars, and two-wheelers',
@@ -3196,7 +3378,7 @@ export const PLACES: Place[] = [
         'Sarva Darshan (8:30 AM – 12:30 PM)',
         'Nitya Kalyanotsavam & Sahasranama Archana (10:00 AM – 12:00 PM)',
         'Free Nitya Annadanam at Satram (12:30 PM – 2:30 PM)',
-        'Sanctum Afternoon Repose / Closure (12:30 PM – 3:00 PM)',
+        'Afternoon Temple Closure (12:30 PM – 3:00 PM)',
         'Evening Darshan & Archanas (3:00 PM – 7:30 PM)',
         'Ekanta Seva & Night Closure (7:30 PM – 8:00 PM)'
       ],
@@ -3260,7 +3442,7 @@ export const PLACES: Place[] = [
         'Ushathkalam Abhishekam & Temple Opening (6:00 AM – 6:30 AM)',
         'Kalasanthi Puja & Alankaram (8:00 AM – 8:30 AM)',
         'Uchikalam Puja (12:00 PM – 12:30 PM)',
-        'Midday Sanctum Repose (1:00 PM – 4:00 PM)',
+        'Midday Temple Break (1:00 PM – 4:00 PM)',
         'Sayarakshai Evening Harathi (5:00 PM – 6:00 PM)',
         'Ardha Jamam & Night Closure (8:00 PM)'
       ],

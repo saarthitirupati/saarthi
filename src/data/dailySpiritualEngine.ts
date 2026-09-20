@@ -51,7 +51,7 @@ export const AUDIO_CATALOG: AudioTrack[] = [
   { id: 'govinda-namalu', title: 'Govinda Namalu (108 Names)', artist: 'Annamayya Choral', duration: '45 sec', category: 'Devotional Chanting' },
   { id: 'ashtakam', title: 'Venkateswara Ashtakam', artist: 'Traditional Stotram', duration: '35 sec', category: 'Praise & Chanting' },
   { id: 'annamayya', title: 'Nigama Nigamanta (Annamayya Keerthana)', artist: 'Carnatic Vocal', duration: '40 sec', category: 'Annamayya Legend' },
-  { id: 'bell-meditation', title: 'Tirumala Temple Bell Chime Meditation', artist: 'Sanctum Atmosphere', duration: '30 sec', category: 'Peaceful Meditation' },
+  { id: 'bell-meditation', title: 'Tirumala Temple Bell Chime Meditation', artist: 'Temple Atmosphere', duration: '30 sec', category: 'Peaceful Meditation' },
 ];
 
 export const DAY_OF_WEEK_THEMES: Record<number, { theme: string; deity: string; quote: string; author: string; triviaCategory: 'Temple' | 'History' | 'Architecture' | 'Festivals' | 'Rituals' | 'Prasadam' | 'Annamayya' | 'TTD'; triviaTitle: string; trivia: string }> = {
@@ -62,7 +62,7 @@ export const DAY_OF_WEEK_THEMES: Record<number, { theme: string; deity: string; 
     author: 'Sri Ramanujacharya Wisdom',
     triviaCategory: 'Architecture',
     triviaTitle: 'Ananda Nilayam Golden Vimanam',
-    trivia: 'The golden tower above the sanctum absorbs the morning sunlight, radiating divine warmth over the Seven Hills.'
+    trivia: 'The golden tower above the main shrine absorbs the morning sunlight, radiating divine warmth over the Seven Hills.'
   },
   1: { // Monday - Lord Shiva & Sri Kapileswara
     theme: 'Inner Calmness & Sacred Patience',

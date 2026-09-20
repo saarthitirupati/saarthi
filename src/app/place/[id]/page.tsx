@@ -8,10 +8,11 @@ import {
   Camera, Navigation, Sparkles, CheckCircle2, 
   ChevronDown, ChevronUp, Droplets, Utensils, Lock,
   Bus, Car, Shield, Check, Zap, BookOpen, Flame, Landmark, Fuel,
-  AlertTriangle, Info
+  AlertTriangle, Info, Compass
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { PLACES, Place, getPlaceGuideData } from '@/data/places';
+import { PlaceSignificance, TraditionType } from '@/types/place';
 import { useTrip } from '@/components/TripContext';
 import { useRealtimePlaces } from '@/lib/useRealtimePlaces';
 import { calculateDrivingDistance, isCoordinateOnTirumalaHill, isWithinTirupatiRegion, TIRUPATI_CENTER, formatTravelTime, estimateDriveDuration, formatDistance } from '@/utils/location';
@@ -31,6 +32,7 @@ export default function PlaceDetails() {
 
   // Collapsible drawers state
   const [openDrawer, setOpenDrawer] = useState<'legend' | 'festivals' | 'architecture' | 'faqs' | null>(null);
+  const [isSignificanceOpen, setIsSignificanceOpen] = useState(false);
 
   const targetId = decodeURIComponent(id || '').trim().toLowerCase();
   const allPlaces = places.length > 0 ? places : PLACES;
@@ -347,6 +349,364 @@ export default function PlaceDetails() {
     </div>
   );
 
+  // 1.5 CULTURAL SIGNIFICANCE & PRACTICAL ACTION ("Tradition -> Meaning -> Action")
+  const significanceData: PlaceSignificance = useMemo(() => {
+    if (place.significance) {
+      return place.significance;
+    }
+
+    const pType = place.placeType;
+    const pCat = (place.category || '').toLowerCase();
+    const tags = (place.tags || []).map(t => t.toLowerCase());
+
+    const isNature = pType === 'nature' || pCat.includes('nature') || pCat.includes('water') || tags.some(t => ['waterfall', 'hills', 'dam', 'forest'].includes(t));
+    const isHeritage = pType === 'historical' || pCat.includes('historical') || pCat.includes('heritage') || tags.some(t => ['fort', 'monument', 'history'].includes(t));
+    const isFood = pType === 'food' || pCat.includes('food') || tags.some(t => ['restaurant', 'sweets', 'dining', 'food'].includes(t));
+
+    if (isNature) {
+      return {
+        traditionType: 'nature',
+        whyVisitTe: place.whyVisit ? `${place.whyVisit}` : 'ప్రకృతి అందాలు, ఆహ్లాదకరమైన వాతావరణం మరియు పరిసరాలను అన్వేషించడానికి ప్రజలు ఇక్కడికి వస్తారు.',
+        whyVisitEn: place.whyVisit || 'Visitors come to experience scenic nature, fresh air, and peaceful outdoor surroundings.',
+        actionsTe: [
+          'పరిసర ప్రకృతి అందాలను మరియు వ్యూ పాయింట్లను వీక్షిస్తారు',
+          'సురక్షిత వాకింగ్ మార్గాల గుండా నడుస్తూ వాతావరణాన్ని ఆస్వాదిస్తారు',
+          'స్థానిక నిబంధనలను పాటిస్తూ ఫోటోలు తీసుకుంటారు'
+        ],
+        actionsEn: [
+          'Take in scenic panoramic views and natural landscapes',
+          'Walk designated walking trails and enjoy the fresh forest air',
+          'Observe local eco-guidelines and nature preservation'
+        ],
+        culturalMeaningTe: place.history || 'ఈ ప్రదేశానికి స్థానిక సహజ వనరులు మరియు ప్రాంతీయ జీవవైవిధ్యంతో ప్రత్యేక అనుబంధం ఉంది.',
+        culturalMeaningEn: place.history || 'This scenic spot holds deep ecological and regional connection in the Tirupati district.',
+        saarthiTipTe: 'వాతావరణ పరిస్థితిని బట్టి సందర్శించండి. ఉదయం లేదా సాయంత్రం వేళల్లో వాతావరణం ఆహ్లాదకరంగా ఉంటుంది.',
+        saarthiTipEn: 'Morning and late afternoon hours offer the most pleasant weather for outdoor exploration.'
+      };
+    }
+
+    if (isHeritage) {
+      return {
+        traditionType: 'heritage',
+        whyVisitTe: place.whyVisit ? `${place.whyVisit}` : 'ఈ చారిత్రక ప్రాముఖ్యత కలిగిన నిర్మాణ వైభవాన్ని మరియు నాటి సంస్కృతిని ప్రత్యక్షంగా వీక్షించడానికి సందర్శిస్తారు.',
+        whyVisitEn: place.whyVisit || 'Visitors come to explore the historical architecture and regional cultural heritage.',
+        actionsTe: [
+          'ప్రాచీన నిర్మాణ శైలి మరియు శిల్పకళను పరిశీలిస్తారు',
+          'చారిత్రక విశేషాలను తెలుసుకుంటూ ప్రాంగణంలో నడుస్తారు',
+          'స్థానిక సమాచార ఫలకాలను గమనిస్తూ చరిత్రను అర్థం చేసుకుంటారు'
+        ],
+        actionsEn: [
+          'Examine historical architectural styles and ancient stone craftsmanship',
+          'Walk through preserved heritage courtyards and monuments',
+          'Learn historical context and regional dynastic legacy'
+        ],
+        culturalMeaningTe: place.history || 'ఈ చారిత్రక ప్రదేశం శతాబ్దాల నాటి సాంస్కృతిక వారసత్వానికి మరియు పాలనా చరిత్రకు సాక్ష్యంగా నిలుస్తుంది.',
+        culturalMeaningEn: place.history || 'This historical landmark stands as an enduring monument to centuries of regional culture and architectural mastery.',
+        saarthiTipTe: 'చారిత్రక ప్రదేశాన్ని పూర్తిగా చూడటానికి తగినంత సమయం కేటాయించండి. సౌకర్యవంతమైన పాదరక్షలు ధరించండి.',
+        saarthiTipEn: 'Allocate adequate time to explore the heritage site comfortably. Wear walking-friendly shoes.'
+      };
+    }
+
+    if (isFood) {
+      return {
+        traditionType: 'food',
+        whyVisitTe: place.whyVisit ? `${place.whyVisit}` : 'స్థానిక సాంప్రదాయ రుచులు మరియు ప్రసిద్ధ వంటకాలను ఆస్వాదించడానికి ప్రజలు ఇక్కడికి వస్తారు.',
+        whyVisitEn: place.whyVisit || 'Visitors stop here to experience authentic local culinary traditions and specialties.',
+        actionsTe: [
+          'తాజా సాంప్రదాయ వంటకాలు మరియు ప్రత్యేక పదార్థాలను రుచి చూస్తారు',
+          'పరిశుభ్రమైన సాత్విక/స్థానిక భోజనం లేదా అల్పాహారం స్వీకరిస్తారు',
+          'ప్రయాణానికి అవసరమైన ఆహారాన్ని ప్యాక్ చేయించుకుంటారు'
+        ],
+        actionsEn: [
+          'Sample fresh traditional delicacies and signature dishes',
+          'Enjoy wholesome regional meals or refreshments',
+          'Pack travel-friendly items for the onward journey'
+        ],
+        culturalMeaningTe: place.history || 'తీర్థయాత్ర సంస్కృతిలో భాగంగా యాత్రికులు స్థానిక రుచులను ఆస్వాదించడం ఒక ఆచారం.',
+        culturalMeaningEn: place.history || 'Enjoying wholesome local food forms an integral part of the pilgrim travel experience in Tirupati.',
+        saarthiTipTe: 'రద్దీ సమయాలను నివారించడానికి భోజన వేళలకు కొద్దిగా ముందుగా లేదా తర్వాత వెళ్లడం సౌకర్యవంతం.',
+        saarthiTipEn: 'Visiting slightly before or after peak meal hours ensures faster service and seating.'
+      };
+    }
+
+    // Default: Temple / Spiritual
+    const knownFor = place.spiritualInfo?.knownFor;
+    const wishes = place.spiritualInfo?.wishes;
+    return {
+      traditionType: 'temple',
+      whyVisitTe: wishes
+        ? `${wishes} కోసం మరియు స్వామివారి దివ్య దర్శనం కోసం భక్తులు ఇక్కడికి వస్తారు.`
+        : (knownFor
+            ? `${knownFor} కోసం ప్రసిద్ధి చెందిన ఈ పవిత్ర క్షేత్రాన్ని దర్శించి పూజలు నిర్వహిస్తారు.`
+            : (place.whyVisit || 'ఈ పవిత్ర ఆలయాన్ని దర్శించి స్వామివారి దివ్యానుగ్రహం మరియు మనశ్శాంతి పొందడం ఇక్కడి భక్తి సంప్రదాయం.')),
+      whyVisitEn: knownFor
+        ? `Devotees visit to seek blessings for ${knownFor}.`
+        : (place.whyVisit || 'Pilgrims visit to offer traditional prayers, fulfill vows, and receive divine blessings.'),
+      actionsTe: place.spiritualInfo?.devoteeTips && place.spiritualInfo.devoteeTips.length > 0
+        ? place.spiritualInfo.devoteeTips
+        : [
+            'గర్భాలయంలో మూలవిరాట్టును భక్తిశ్రద్ధలతో దర్శించుకుంటారు',
+            'ఆలయ ప్రదక్షిణ చేసి తీర్థ ప్రసాదాలు స్వీకరిస్తారు',
+            'కుటుంబ క్షేమం & మనశ్శాంతి కోసం ప్రార్థిస్తారు'
+          ],
+      actionsEn: [
+        'Receive darshan of the main deity inside the temple with reverence',
+        'Perform circumambulation (pradakshina) and receive sacred teertham & prasadam',
+        'Offer silent prayers for family peace, good health, and prosperity'
+      ],
+      culturalMeaningTe: place.history || 'ఈ పవిత్ర క్షేత్రానికి ప్రాచీన సంప్రదాయాలలో విశిష్ట స్థానం ఉంది. భక్తుల మనోభీష్టాలను నెరవేర్చే పుణ్యభూమిగా పరిగణించబడుతుంది.',
+      culturalMeaningEn: place.history || 'This sacred shrine holds a revered place in regional heritage, sanctified by generations of faithful devotees.',
+      saarthiTipTe: place.practicalInfo?.dressCode
+        ? `దుస్తుల నియమావళి: ${place.practicalInfo.dressCode}. ఉదయం వేళల్లో దర్శనం ప్రశాంతంగా పూర్తవుతుంది.`
+        : 'ఉదయం వేళల్లో దర్శనం ప్రశాంతంగా మరియు తక్కువ క్యూ సమయంతో పూర్తవుతుంది.',
+      saarthiTipEn: place.practicalInfo?.dressCode
+        ? `Dress code: ${place.practicalInfo.dressCode}. Visiting during morning hours offers a smooth darshan experience.`
+        : 'Visiting during early morning hours offers the most serene darshan experience.'
+    };
+  }, [place]);
+
+  const traditionTheme = useMemo(() => {
+    switch (significanceData.traditionType) {
+      case 'nature':
+        return {
+          icon: Compass,
+          iconColor: '#0D9488',
+          borderColor: 'rgba(13, 148, 136, 0.22)',
+          bgGradient: 'linear-gradient(135deg, #FFFFFF 0%, #F0FDFA 100%)',
+          badgeBg: '#CCFBF1',
+          badgeColor: '#0F766E',
+          titleTe: 'సహజ సౌందర్యం & సందర్శన విశేషాలు',
+          titleEn: 'Natural Wonder & Highlights',
+          badgeTe: 'సహజ సౌందర్యం & అనుభవం',
+          badgeEn: 'Nature & Experience',
+          buttonClosedTe: 'సందర్శన క్రమం, అనుభవాలు & సూచనలు చూడండి',
+          buttonClosedEn: 'View Activity Steps, Experiences & Tips',
+          actionTitleTe: 'సందర్శకులు చేయవలసిన ముఖ్య కార్యకలాపాలు',
+          actionTitleEn: 'Key Activities & Experiences',
+          meaningTitleTe: 'భౌగోళిక & పర్యావరణ విశిష్టత',
+          meaningTitleEn: 'Geographical & Ecological Significance'
+        };
+      case 'heritage':
+        return {
+          icon: Landmark,
+          iconColor: '#2563EB',
+          borderColor: 'rgba(37, 99, 235, 0.22)',
+          bgGradient: 'linear-gradient(135deg, #FFFFFF 0%, #EFF6FF 100%)',
+          badgeBg: '#DBEAFE',
+          badgeColor: '#1E40AF',
+          titleTe: 'చారిత్రక వైభవం & ప్రాముఖ్యత',
+          titleEn: 'Historical Heritage & Architecture',
+          badgeTe: 'చారిత్రక వారసత్వం',
+          badgeEn: 'Historical Heritage',
+          buttonClosedTe: 'చారిత్రక విశేషాలు, నిర్మాణ శైలి & మార్గదర్శనం చూడండి',
+          buttonClosedEn: 'View Key Sights, Dynastic Lore & Guidelines',
+          actionTitleTe: 'ప్రత్యక్షంగా చూడవలసిన చారిత్రక విశేషాలు',
+          actionTitleEn: 'Key Sights & Architectural Highlights',
+          meaningTitleTe: 'చారిత్రక ప్రాశస్త్యం & రాజవంశాల నేపథ్యం',
+          meaningTitleEn: 'Historical Significance & Dynastic Legacy'
+        };
+      case 'food':
+        return {
+          icon: Utensils,
+          iconColor: '#D97706',
+          borderColor: 'rgba(217, 119, 6, 0.22)',
+          bgGradient: 'linear-gradient(135deg, #FFFFFF 0%, #FFFBEB 100%)',
+          badgeBg: '#FEF3C7',
+          badgeColor: '#92400E',
+          titleTe: 'ఆహార సంస్కృతి & ప్రత్యేకతలు',
+          titleEn: 'Culinary Tradition & Specialties',
+          badgeTe: 'ఆహార సంస్కృతి',
+          badgeEn: 'Culinary Tradition',
+          buttonClosedTe: 'ప్రసిద్ధ రుచులు, పదార్థాలు & వివరాలు చూడండి',
+          buttonClosedEn: 'View Signature Items & Specialties',
+          actionTitleTe: 'రుచి చూడవలసిన ప్రసిద్ధ సాంప్రదాయ పదార్థాలు',
+          actionTitleEn: 'Signature Specialties & Must-Try Items',
+          meaningTitleTe: 'ఆహార సంప్రదాయ నేపథ్యం',
+          meaningTitleEn: 'Culinary Heritage & Tradition'
+        };
+      case 'theertham':
+        return {
+          icon: Droplets,
+          iconColor: '#0284C7',
+          borderColor: 'rgba(2, 132, 199, 0.22)',
+          bgGradient: 'linear-gradient(135deg, #FFFFFF 0%, #F0F9FF 100%)',
+          badgeBg: '#E0F2FE',
+          badgeColor: '#0369A1',
+          titleTe: 'పుణ్య తీర్థం & పవిత్రత',
+          titleEn: 'Sacred Theertham & Holy Waters',
+          badgeTe: 'పవిత్ర తీర్థం',
+          badgeEn: 'Sacred Theertham',
+          buttonClosedTe: 'తీర్థ విధి, విశేషాలు & ప్రాశస్త్యం చూడండి',
+          buttonClosedEn: 'View Bathing Customs & Sthala Puranam',
+          actionTitleTe: 'భక్తులు ఆచరించే తీర్థస్నాన విధి & పూజలు',
+          actionTitleEn: 'Sacred Bathing Rituals & Observances',
+          meaningTitleTe: 'తీర్థ మహత్యం & పురాణ నేపథ్యం',
+          meaningTitleEn: 'Sacred Purana & Theertha Mahatyam'
+        };
+      case 'temple':
+      default:
+        return {
+          icon: Sparkles,
+          iconColor: '#0F5132',
+          borderColor: 'rgba(15, 81, 50, 0.22)',
+          bgGradient: 'linear-gradient(135deg, #FFFFFF 0%, #F8FAF7 100%)',
+          badgeBg: '#E8F5E9',
+          badgeColor: '#0F5132',
+          titleTe: 'ఆలయ ప్రాశస్త్యం & సంప్రదాయం',
+          titleEn: 'Temple Tradition & Devotional Purpose',
+          badgeTe: 'క్షేత్ర ప్రాశస్త్యం & ఆచారం',
+          badgeEn: 'Sacred Tradition & Practice',
+          buttonClosedTe: 'దర్శన క్రమం, విశిష్టత & ఆచారాలు చూడండి',
+          buttonClosedEn: 'View Darshan Steps, Traditions & Guidance',
+          actionTitleTe: 'భక్తులు ఆచరించే దర్శన క్రమం & సంప్రదాయాలు',
+          actionTitleEn: 'Traditional Darshan Sequence & Practices',
+          meaningTitleTe: 'స్థల పురాణం & సంప్రదాయ ప్రాశస్త్యం',
+          meaningTitleEn: 'Sthala Purana & Sacred Significance'
+        };
+    }
+  }, [significanceData.traditionType]);
+
+  const placeSignificanceNode = (
+    <div style={{
+      backgroundColor: '#FFFFFF',
+      background: traditionTheme.bgGradient,
+      border: `1.5px solid ${traditionTheme.borderColor}`,
+      borderRadius: '18px',
+      padding: '14px 16px',
+      boxShadow: '0 3px 12px rgba(15, 23, 42, 0.04)',
+      width: '100%',
+      boxSizing: 'border-box'
+    }}>
+      {/* Header Bar */}
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '8px', marginBottom: '8px', flexWrap: 'wrap' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', minWidth: 0 }}>
+          <div style={{
+            width: '28px',
+            height: '28px',
+            borderRadius: '8px',
+            backgroundColor: traditionTheme.badgeBg,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            flexShrink: 0
+          }}>
+            <traditionTheme.icon size={15} color={traditionTheme.iconColor} />
+          </div>
+          <h2 style={{
+            fontSize: '13.5px',
+            fontWeight: 800,
+            color: '#0F172A',
+            margin: 0,
+            letterSpacing: '-0.01em',
+            wordBreak: 'break-word'
+          }}>
+            {lang === 'te' ? traditionTheme.titleTe : traditionTheme.titleEn}
+          </h2>
+        </div>
+        <span style={{
+          fontSize: '10.5px',
+          fontWeight: 700,
+          color: traditionTheme.badgeColor,
+          backgroundColor: traditionTheme.badgeBg,
+          padding: '2.5px 8px',
+          borderRadius: '8px',
+          whiteSpace: 'nowrap'
+        }}>
+          {lang === 'te' ? traditionTheme.badgeTe : traditionTheme.badgeEn}
+        </span>
+      </div>
+
+      {/* Core Reason: Why People Visit */}
+      <p style={{
+        fontSize: '13px',
+        color: '#1E293B',
+        fontWeight: 700,
+        lineHeight: 1.5,
+        margin: '0 0 10px',
+        wordBreak: 'break-word'
+      }}>
+        {lang === 'te' ? significanceData.whyVisitTe : significanceData.whyVisitEn}
+      </p>
+
+      {/* Dropdown Toggle Button */}
+      <button
+        onClick={() => setIsSignificanceOpen(!isSignificanceOpen)}
+        style={{
+          width: '100%',
+          backgroundColor: '#FFFFFF',
+          border: '1px solid #E2E8F0',
+          borderRadius: '12px',
+          padding: '9px 12px',
+          fontSize: '12.5px',
+          fontWeight: 700,
+          color: '#0F5132',
+          cursor: 'pointer',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          transition: 'all 0.15s ease',
+          boxShadow: '0 1px 3px rgba(0,0,0,0.02)'
+        }}
+      >
+        <span style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+          <BookOpen size={14} color="#0F5132" />
+          <span>
+            {isSignificanceOpen 
+              ? (lang === 'te' ? 'వివరాలను తగ్గించండి' : 'Show Less') 
+              : (lang === 'te' ? traditionTheme.buttonClosedTe : traditionTheme.buttonClosedEn)}
+          </span>
+        </span>
+        {isSignificanceOpen ? <ChevronUp size={15} color="#0F5132" /> : <ChevronDown size={15} color="#64748B" />}
+      </button>
+
+      {/* Expandable Deep Dive Body */}
+      {isSignificanceOpen && (
+        <div style={{ marginTop: '12px', display: 'flex', flexDirection: 'column', gap: '10px', paddingTop: '10px', borderTop: '1px solid rgba(0, 0, 0, 0.06)' }}>
+          {/* Section 1: What People Traditionally Do */}
+          <div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '6px' }}>
+              <CheckCircle2 size={13} color="#0F5132" style={{ flexShrink: 0 }} />
+              <span style={{ fontSize: '11.5px', fontWeight: 800, color: '#0F5132', textTransform: 'uppercase', letterSpacing: '0.03em' }}>
+                {lang === 'te' ? traditionTheme.actionTitleTe : traditionTheme.actionTitleEn}
+              </span>
+            </div>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '5px' }}>
+              {(lang === 'te' ? significanceData.actionsTe : significanceData.actionsEn).map((action, idx) => (
+                <div key={idx} style={{ display: 'flex', alignItems: 'flex-start', gap: '7px', fontSize: '12px', color: '#334155', lineHeight: 1.45 }}>
+                  <div style={{ width: '4px', height: '4px', borderRadius: '50%', backgroundColor: '#0F5132', marginTop: '6px', flexShrink: 0 }} />
+                  <span>{action}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Section 2: Cultural Background / Sthala Purana */}
+          <div style={{ backgroundColor: 'rgba(255, 255, 255, 0.85)', padding: '10px 12px', borderRadius: '10px', border: '1px solid #E2E8F0' }}>
+            <div style={{ fontSize: '11px', fontWeight: 800, color: '#475569', marginBottom: '4px', textTransform: 'uppercase', letterSpacing: '0.03em' }}>
+              {lang === 'te' ? traditionTheme.meaningTitleTe : traditionTheme.meaningTitleEn}
+            </div>
+            <p style={{ fontSize: '12px', color: '#334155', lineHeight: 1.5, margin: 0 }}>
+              {lang === 'te' ? significanceData.culturalMeaningTe : significanceData.culturalMeaningEn}
+            </p>
+          </div>
+
+          {/* Section 3: Saarthi Practical Advisory */}
+          <div style={{ backgroundColor: '#FEF3C7', border: '1px solid #FDE68A', padding: '9px 12px', borderRadius: '10px', display: 'flex', alignItems: 'flex-start', gap: '7px' }}>
+            <Info size={14} color="#92400E" style={{ flexShrink: 0, marginTop: '2px' }} />
+            <div style={{ flex: 1, minWidth: 0 }}>
+              <span style={{ fontSize: '10.5px', fontWeight: 800, color: '#92400E', textTransform: 'uppercase', letterSpacing: '0.04em', display: 'block', marginBottom: '2px' }}>
+                {lang === 'te' ? 'సారథి ప్రాక్టికల్ సూచన' : 'Saarthi Practical Advisory'}
+              </span>
+              <p style={{ fontSize: '11.5px', color: '#78350F', fontWeight: 600, lineHeight: 1.45, margin: 0 }}>
+                {lang === 'te' ? significanceData.saarthiTipTe : significanceData.saarthiTipEn}
+              </p>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+
   // 2. QUICK FACTS ("Before you go")
   const quickFactsNode = (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
@@ -445,7 +805,7 @@ export default function PlaceDetails() {
         <div style={{ fontSize: '12px', fontWeight: 800, color: '#0F172A', lineHeight: 1.3, wordBreak: 'break-word' }}>
           {lang === 'te'
             ? (place.id === 'venkateswara' ? 'ఖచ్చితంగా నిషేధం' : 'గర్భగుడి వెలుపల అనుమతి')
-            : (place.id === 'venkateswara' ? 'Strictly Prohibited' : 'Allowed Outside Sanctum')}
+            : (place.id === 'venkateswara' ? 'Strictly Prohibited' : 'Allowed Outside Main Temple')}
         </div>
       </div>
       </div>
@@ -972,7 +1332,7 @@ export default function PlaceDetails() {
           >
             <span style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
               <Landmark size={16} color="#0F5132" />
-              <span>{lang === 'te' ? (isTemple ? 'ఆలయ శిల్పకళ & నియమావళి' : 'లేఅవుట్ & సందర్శకుల నియమావళి') : (isTemple ? 'Architecture & Sanctum Guidelines' : 'Layout, Safari & Guidelines')}</span>
+              <span>{lang === 'te' ? (isTemple ? 'ఆలయ శిల్పకళ & నియమావళి' : 'లేఅవుట్ & సందర్శకుల నియమావళి') : (isTemple ? 'Architecture & Temple Guidelines' : 'Layout, Safari & Guidelines')}</span>
             </span>
             {openDrawer === 'architecture' ? <ChevronUp size={16} color="#0F5132" /> : <ChevronDown size={16} color="#94A3B8" />}
           </button>
@@ -986,7 +1346,7 @@ export default function PlaceDetails() {
                           ? '1987లో స్థాపించబడిన ఈ జూ పార్క్ పౌరాణిక ఇతివృత్తంతో రూపొందించబడింది. జంతువులను సహజసిద్ధమైన భారీ ఆవరణలలో సంరక్షిస్తున్నారు. ప్లాస్టిక్ నిషేధం అమలులో ఉంది.'
                           : (place.practicalInfo?.dressCode ? `నియమావళి: ${place.practicalInfo.dressCode}. పరిసరాలను పరిశుభ్రంగా ఉంచండి.` : 'సందర్శకులు పరిసరాల నియమాలను పాటించాలి.')))
                   : (isTemple
-                      ? 'Built in classical South Indian Dravidian temple architecture style featuring intricately carved stone pillars, Raja Gopuram tower, and sanctum sanctorum designed according to ancient Agama Sastras.'
+                      ? 'Built in classical South Indian Dravidian temple architecture style featuring intricately carved stone pillars, Raja Gopuram tower, and main deity shrine designed according to ancient Agama Sastras.'
                       : (place.id === 'sv-zoo-park'
                           ? 'Spanning over 1,200 hectares, this zoo is designed on mythological themes with large open moated enclosures mimicking natural habitats rather than traditional cages. Plastic-free zone.'
                           : (place.practicalInfo?.dressCode ? `Guidelines: ${place.practicalInfo.dressCode}. Keep the premises clean.` : 'Visitors are requested to follow on-site park guidelines and preserve nature.')))}
@@ -1322,6 +1682,7 @@ export default function PlaceDetails() {
       <div className="place-mobile-container">
         {closureAlertNode}
         {topMetricsNode}
+        {placeSignificanceNode}
         {quickFactsNode}
         {saarthiSuggestsNode}
         {ctaButtonsNode}
@@ -1348,6 +1709,7 @@ export default function PlaceDetails() {
         {/* Right Column: Sticky Quick Action & Briefing Sidebar */}
         <div className="place-desktop-sidebar">
           {topMetricsNode}
+          {placeSignificanceNode}
           {quickFactsNode}
           {saarthiSuggestsNode}
           {ctaButtonsNode}

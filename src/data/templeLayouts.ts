@@ -85,7 +85,7 @@ export const CURATED_LAYOUTS: Record<string, Partial<TempleLayoutData>> = {
     pins: [
       {
         id: 'sanctum',
-        nameEn: 'Ananda Nilayam Sanctum',
+        nameEn: 'Ananda Nilayam Main Shrine',
         nameTe: 'ఆనంద నిలయం (గర్భాలయం)',
         category: 'sanctum',
         lat: 13.6833,
@@ -211,7 +211,7 @@ export const CURATED_LAYOUTS: Record<string, Partial<TempleLayoutData>> = {
         lng: 79.4474,
         svgX: 270,
         svgY: 195,
-        descEn: 'Sacred golden flag mast facing Mother Padmavathi sanctum.',
+        descEn: 'Sacred golden flag mast facing Mother Padmavathi main shrine.',
         descTe: 'ఆలయ అంతర ప్రాంగణంలోని పవిత్ర ధ్వజస్తంభం.'
       },
       {
@@ -228,7 +228,7 @@ export const CURATED_LAYOUTS: Record<string, Partial<TempleLayoutData>> = {
       },
       {
         id: 'sanctum',
-        nameEn: 'Sri Padmavathi Devi Garbhalayam (Sanctum)',
+        nameEn: 'Sri Padmavathi Devi Garbhalayam (Main Shrine)',
         nameTe: 'శ్రీ పద్మావతి అమ్మవారి గర్భాలయం',
         category: 'sanctum',
         lat: 13.6070,
@@ -267,7 +267,7 @@ export const CURATED_LAYOUTS: Record<string, Partial<TempleLayoutData>> = {
       { stepNumber: 1, titleEn: 'Tiruchanur Arrival & Parking', titleTe: 'తిరుచానూరు పార్కింగ్ చేరుకోవడం', distance: '0.0 km', timeMins: 0, descEn: 'Park vehicle at the TTD parking bay.', descTe: 'వాహనాన్ని పార్క్ చేయండి.' },
       { stepNumber: 2, titleEn: 'Raja Gopuram Entrance & Footwear', titleTe: 'రాజగోపురం & పాదరక్షల కేంద్రం', distance: '50m', timeMins: 2, descEn: 'Deposit shoes and enter through the 7-tier Raja Gopuram.', descTe: 'చెప్పులు విడిచి రాజగోపురం ద్వారా ప్రవేశించండి.' },
       { stepNumber: 3, titleEn: 'Dhwajasthambham & Sundararaja Shrine', titleTe: 'ధ్వజస్తంభం & సుందరరాజ స్వామి సన్నిధి', distance: '80m', timeMins: 5, descEn: 'Offer prayers at the flag mast and visit Sri Sundararaja Swamy & Krishna shrines.', descTe: 'ధ్వజస్తంభ నమస్కారం మరియు ఉపాలయాల దర్శనం.' },
-      { stepNumber: 4, titleEn: 'Sri Padmavathi Devi Moolavirat Darshan', titleTe: 'శ్రీ పద్మావతి అమ్మవారి మూలవిరాట్టు దర్శనం', distance: '100m', timeMins: 20, descEn: 'Receive the divine compassion and prosperity blessings of Mother Padmavathi in the sanctum.', descTe: 'అమ్మవారి దివ్య గర్భాలయ దర్శనం మరియు ఆశీస్సులు.' },
+      { stepNumber: 4, titleEn: 'Sri Padmavathi Devi Moolavirat Darshan', titleTe: 'శ్రీ పద్మావతి అమ్మవారి మూలవిరాట్టు దర్శనం', distance: '100m', timeMins: 20, descEn: 'Receive the divine compassion and prosperity blessings of Mother Padmavathi in the main shrine.', descTe: 'అమ్మవారి దివ్య గర్భాలయ దర్శనం మరియు ఆశీస్సులు.' },
       { stepNumber: 5, titleEn: 'Padma Sarovaram & Prasadam', titleTe: 'పద్మ సరోవరం & ప్రసాదం కౌంటర్', distance: '120m', timeMins: 10, descEn: 'Sprinkle holy theertham from Padma Sarovaram and collect blessed Kumkum & Tiruchanur Laddu.', descTe: 'పద్మ సరోవర తీర్థం మరియు లడ్డూ ప్రసాదం పొందండి.' }
     ],
     emergencyContacts: [
@@ -515,7 +515,7 @@ export const CURATED_LAYOUTS: Record<string, Partial<TempleLayoutData>> = {
         lng: 79.4291,
         svgX: 270,
         svgY: 195,
-        descEn: 'Sacred flag mast and stone Nandi bull seated facing the Shiva sanctum.',
+        descEn: 'Sacred flag mast and stone Nandi bull seated facing the Shiva main shrine.',
         descTe: 'పవిత్ర ధ్వజస్తంభం మరియు నందీశ్వరుని దర్శనం.'
       },
       {
@@ -559,7 +559,7 @@ export const CURATED_LAYOUTS: Record<string, Partial<TempleLayoutData>> = {
       { stepNumber: 1, titleEn: 'Mangalam Arrival & Parking', titleTe: 'మంగళం చేరుకోవడం', distance: '0.0 km', timeMins: 0, descEn: 'Park vehicle along the foothill approach plaza.', descTe: 'వాహనాన్ని పార్క్ చేయండి.' },
       { stepNumber: 2, titleEn: 'Temple Entrance & Footwear', titleTe: 'ప్రవేశం & పాదరక్షల కేంద్రం', distance: '20m', timeMins: 2, descEn: 'Deposit shoes and enter through the stone archway.', descTe: 'చెప్పులు విడిచి గోపురం ద్వారా ప్రవేశించండి.' },
       { stepNumber: 3, titleEn: 'Dhwajasthambham & Nandi Mandapam', titleTe: 'ధ్వజస్తంభం & నంది నమస్కారం', distance: '30m', timeMins: 5, descEn: 'Bow before the flag mast and take blessings of Nandi.', descTe: 'ధ్వజస్తంభం వద్ద ప్రార్థించండి.' },
-      { stepNumber: 4, titleEn: 'Sri Jeeva Lingeshwara Darshan', titleTe: 'శ్రీ జీవ లింగేశ్వర స్వామి దర్శనం', distance: '50m', timeMins: 10, descEn: 'Seek blessings of Lord Shiva in the sanctum.', descTe: 'స్వామివారి దివ్య దర్శనం మరియు ఆశీస్సులు.' },
+      { stepNumber: 4, titleEn: 'Sri Jeeva Lingeshwara Darshan', titleTe: 'శ్రీ జీవ లింగేశ్వర స్వామి దర్శనం', distance: '50m', timeMins: 10, descEn: 'Seek blessings of Lord Shiva in the main temple.', descTe: 'స్వామివారి దివ్య దర్శనం మరియు ఆశీస్సులు.' },
       { stepNumber: 5, titleEn: 'Navagraha & Vibhuti Prasadam', titleTe: 'నవగ్రహ దర్శనం & విభూతి ప్రసాదం', distance: '30m', timeMins: 5, descEn: 'Perform Navagraha pradakshina and receive holy Vibhuti.', descTe: 'నవగ్రహ పూజ చేసి విభూతి పొందండి.' }
     ],
     emergencyContacts: [
@@ -633,7 +633,7 @@ export const CURATED_LAYOUTS: Record<string, Partial<TempleLayoutData>> = {
         lng: 79.4147,
         svgX: 160,
         svgY: 120,
-        descEn: 'Revered sanctum of Lord Sri Rama, Sita Devi, and Lakshmana Swamy worshipped with devotion.',
+        descEn: 'Revered shrine of Lord Sri Rama, Sita Devi, and Lakshmana Swamy worshipped with devotion.',
         descTe: 'శ్రీ సీతారామ లక్ష్మణుల పవిత్ర సన్నిధి.'
       },
       {
@@ -665,7 +665,7 @@ export const CURATED_LAYOUTS: Record<string, Partial<TempleLayoutData>> = {
       { stepNumber: 1, titleEn: 'Balaji Nagar Arrival & Parking', titleTe: 'బాలాజీ నగర్ చేరుకోవడం', distance: '0.0 km', timeMins: 0, descEn: 'Park vehicle along the street parking bay.', descTe: 'వాహనాన్ని పార్క్ చేయండి.' },
       { stepNumber: 2, titleEn: 'Temple Entrance & Footwear', titleTe: 'ప్రవేశం & పాదరక్షల కేంద్రం', distance: '20m', timeMins: 2, descEn: 'Deposit shoes and enter through the temple archway.', descTe: 'చెప్పులు విడిచి ఆలయంలోకి ప్రవేశించండి.' },
       { stepNumber: 3, titleEn: 'Dhwajasthambham & Sri Rama Shrine', titleTe: 'ధ్వజస్తంభం & సీతారాముల సన్నిధి', distance: '40m', timeMins: 5, descEn: 'Bow before the flag mast and seek blessings at Sri Rama shrine.', descTe: 'ధ్వజస్తంభ నమస్కారం మరియు శ్రీరాముని దర్శనం.' },
-      { stepNumber: 4, titleEn: 'Pancha Mukha Anjaneya Darshan', titleTe: 'పంచముఖ ఆంజనేయ స్వామి దర్శనం', distance: '50m', timeMins: 10, descEn: 'Witness the mighty 5-faced Hanuman in the inner sanctum.', descTe: 'స్వామివారి దివ్య దర్శనం మరియు ఆశీస్సులు.' },
+      { stepNumber: 4, titleEn: 'Pancha Mukha Anjaneya Darshan', titleTe: 'పంచముఖ ఆంజనేయ స్వామి దర్శనం', distance: '50m', timeMins: 10, descEn: 'Witness the mighty 5-faced Hanuman in the inner temple.', descTe: 'స్వామివారి దివ్య దర్శనం మరియు ఆశీస్సులు.' },
       { stepNumber: 5, titleEn: 'Sindhooram & Blessed Prasadam', titleTe: 'సింధూరం & ప్రసాదం స్వీకరణ', distance: '30m', timeMins: 5, descEn: 'Receive blessed Sindhooram and sacred Vada / Laddu prasadam.', descTe: 'సింధూర ప్రసాదం పొందండి.' }
     ],
     emergencyContacts: [
@@ -751,7 +751,7 @@ export const CURATED_LAYOUTS: Record<string, Partial<TempleLayoutData>> = {
         lng: 79.4404,
         svgX: 270,
         svgY: 85,
-        descEn: 'Consecrated sanctum of protective Mother Goddess Bonthalamma adorned with kumkum, turmeric, and silver kavacham.',
+        descEn: 'Consecrated shrine of protective Mother Goddess Bonthalamma adorned with kumkum, turmeric, and silver kavacham.',
         descTe: 'పసుపు, కుంకుమలతో దివ్యంగా అలంకరించబడిన బొంతలమ్మ తల్లి గర్భగుడి.'
       },
       {
@@ -771,7 +771,7 @@ export const CURATED_LAYOUTS: Record<string, Partial<TempleLayoutData>> = {
       { stepNumber: 1, titleEn: 'Akkarampalle Arrival & Parking', titleTe: 'అక్కరంపల్లె చేరుకోవడం', distance: '0.0 km', timeMins: 0, descEn: 'Park vehicle along the approach lane.', descTe: 'వాహనాన్ని పార్క్ చేయండి.' },
       { stepNumber: 2, titleEn: 'Temple Entrance & Footwear', titleTe: 'ప్రవేశం & పాదరక్షల కేంద్రం', distance: '20m', timeMins: 2, descEn: 'Deposit shoes and enter through the temple archway.', descTe: 'చెప్పులు విడిచి ఆలయంలోకి ప్రవేశించండి.' },
       { stepNumber: 3, titleEn: 'Dhwajasthambham & Sacred Neem Tree', titleTe: 'ధ్వజస్తంభం & వేప వృక్ష ప్రదక్షిణ', distance: '40m', timeMins: 5, descEn: 'Bow before the flag mast and perform pradakshina around the holy neem tree.', descTe: 'ధ్వజస్తంభ నమస్కారం మరియు వృక్ష ప్రదక్షిణ.' },
-      { stepNumber: 4, titleEn: 'Sri Bonthalamma Talli Darshan', titleTe: 'శ్రీ బొంతలమ్మ తల్లి దివ్య దర్శనం', distance: '60m', timeMins: 10, descEn: 'Seek blessings of the protective Gramadevata in the sanctum.', descTe: 'అమ్మవారి ఆశీస్సులు పొందండి.' },
+      { stepNumber: 4, titleEn: 'Sri Bonthalamma Talli Darshan', titleTe: 'శ్రీ బొంతలమ్మ తల్లి దివ్య దర్శనం', distance: '60m', timeMins: 10, descEn: 'Seek blessings of the protective Gramadevata in the main shrine.', descTe: 'అమ్మవారి ఆశీస్సులు పొందండి.' },
       { stepNumber: 5, titleEn: 'Kumkumarchana & Blessed Prasadam', titleTe: 'కుంకుమార్చన & ప్రసాదం', distance: '40m', timeMins: 5, descEn: 'Receive blessed vermillion (Kumkum) and sacred theertham.', descTe: 'రక్షా కుంకుమ మరియు తీర్థం స్వీకరించండి.' }
     ],
     emergencyContacts: [
@@ -877,7 +877,7 @@ export const CURATED_LAYOUTS: Record<string, Partial<TempleLayoutData>> = {
       { stepNumber: 1, titleEn: 'Mogili Arrival & Parking', titleTe: 'మొగిలి పార్కింగ్ చేరుకోవడం', distance: '0.0 km', timeMins: 0, descEn: 'Park vehicle along the highway approach bay.', descTe: 'వాహనాన్ని పార్క్ చేయండి.' },
       { stepNumber: 2, titleEn: 'Raja Gopuram Entrance & Footwear', titleTe: 'రాజగోపురం & పాదరక్షల కేంద్రం', distance: '30m', timeMins: 2, descEn: 'Deposit shoes and enter through the stone gopuram.', descTe: 'చెప్పులు విడిచి గోపురం ద్వారా ప్రవేశించండి.' },
       { stepNumber: 3, titleEn: 'Gomukha Nandi Perennial Spring', titleTe: 'గోముఖ నంది పవిత్ర జలధార', distance: '50m', timeMins: 5, descEn: 'Witness the mysterious perennial stream trickling from Nandi\'s feet.', descTe: 'నంది పాదాల నుండి వచ్చే పవిత్ర జలాన్ని దర్శించండి.' },
-      { stepNumber: 4, titleEn: 'Sri Mogileeswara Lingam Darshan', titleTe: 'శ్రీ మొగిలీశ్వర స్వామి దర్శనం', distance: '70m', timeMins: 15, descEn: 'Seek blessings of the Swayambhu Shiva Lingam in the sanctum.', descTe: 'స్వామివారి దివ్య దర్శనం మరియు ఆశీస్సులు.' },
+      { stepNumber: 4, titleEn: 'Sri Mogileeswara Lingam Darshan', titleTe: 'శ్రీ మొగిలీశ్వర స్వామి దర్శనం', distance: '70m', timeMins: 15, descEn: 'Seek blessings of the Swayambhu Shiva Lingam in the main shrine.', descTe: 'స్వామివారి దివ్య దర్శనం మరియు ఆశీస్సులు.' },
       { stepNumber: 5, titleEn: 'Kamakshi Shrine & Vibhuti Prasadam', titleTe: 'అమ్మవారి దర్శనం & ప్రసాదం', distance: '50m', timeMins: 5, descEn: 'Visit Sri Kamakshi Ammavaru and receive holy vibhuti theertham.', descTe: 'కామాక్షి అమ్మవారి దర్శనం మరియు విభూతి ప్రసాదం పొందండి.' }
     ],
     emergencyContacts: [
@@ -987,7 +987,7 @@ export const CURATED_LAYOUTS: Record<string, Partial<TempleLayoutData>> = {
         lng: 79.0350,
         svgX: 370,
         svgY: 190,
-        descEn: 'Famous Kanipakam delicious laddus, unbroken coconut offering return, and sanctum theertham bottles.',
+        descEn: 'Famous Kanipakam delicious laddus, unbroken coconut offering return, and sacred theertham bottles.',
         descTe: 'ప్రసిద్ధ కాణిపాకం లడ్డూ ప్రసాదం మరియు పవిత్ర బావి తీర్థం.'
       }
     ],
@@ -1245,7 +1245,7 @@ export const CURATED_LAYOUTS: Record<string, Partial<TempleLayoutData>> = {
         lng: 79.3276,
         svgX: 270,
         svgY: 195,
-        descEn: 'Golden flag mast offering sashtanga namaskaram before sanctum darshan.',
+        descEn: 'Golden flag mast offering sashtanga namaskaram before main temple darshan.',
         descTe: 'ధ్వజస్తంభానికి సాష్టాంగ నమస్కారం ఆచరించే స్థలం.'
       },
       {
@@ -1257,7 +1257,7 @@ export const CURATED_LAYOUTS: Record<string, Partial<TempleLayoutData>> = {
         lng: 79.3274,
         svgX: 150,
         svgY: 130,
-        descEn: 'Sanctum of Divine Mother Padmavathi in the inner parikrama corridor.',
+        descEn: 'Shrine of Divine Mother Padmavathi in the inner parikrama corridor.',
         descTe: 'ప్రాకార మండపంలో ఉన్న శ్రీ పద్మావతి దేవి సన్నిధి.'
       },
       {
@@ -1301,7 +1301,7 @@ export const CURATED_LAYOUTS: Record<string, Partial<TempleLayoutData>> = {
       { stepNumber: 1, titleEn: 'Arrival & Temple Parking', titleTe: 'పార్కింగ్ చేరుకోవడం', distance: '0.0 km', timeMins: 0, descEn: 'Park vehicle in front of the Raja Gopuram.', descTe: 'రాజగోపురం ఎదురుగా వాహనాన్ని పార్క్ చేయండి.' },
       { stepNumber: 2, titleEn: 'Raja Gopuram Entrance & Footwear', titleTe: 'రాజగోపురం & పాదరక్షల కేంద్రం', distance: '50m', timeMins: 2, descEn: 'Deposit shoes and enter through the 5-tier Gopuram.', descTe: 'చెప్పులు విడిచి రాజగోపురం గుండా ప్రవేశించండి.' },
       { stepNumber: 3, titleEn: 'Dhwajasthambham & Padmavathi Shrine', titleTe: 'ధ్వజస్తంభం & పద్మావతి అమ్మవారి సన్నిధి', distance: '80m', timeMins: 5, descEn: 'Offer prayers at the flag mast and visit Mother Padmavathi shrine.', descTe: 'ధ్వజస్తంభ నమస్కారం మరియు అమ్మవారి దర్శనం.' },
-      { stepNumber: 4, titleEn: 'Sri Kalyana Venkateswara Swamy Darshan', titleTe: 'శ్రీ కల్యాణ వేంకటేశ్వర స్వామి దర్శనం', distance: '100m', timeMins: 15, descEn: 'Receive sanctum darshan of the Lord in divine wedding form and blessed Kalyana Kankanam.', descTe: 'స్వామివారి కల్యాణ వైభవ దర్శనం మరియు కల్యాణ కంకణాలు.' },
+      { stepNumber: 4, titleEn: 'Sri Kalyana Venkateswara Swamy Darshan', titleTe: 'శ్రీ కల్యాణ వేంకటేశ్వర స్వామి దర్శనం', distance: '100m', timeMins: 15, descEn: 'Receive darshan of the Lord in divine wedding form and blessed Kalyana Kankanam in the main temple.', descTe: 'స్వామివారి కల్యాణ వైభవ దర్శనం మరియు కల్యాణ కంకణాలు.' },
       { stepNumber: 5, titleEn: 'Ranganatha Shrine & Laddu Prasadam Counter', titleTe: 'రంగనాథ సన్నిధి & లడ్డూ ప్రసాదం', distance: '120m', timeMins: 5, descEn: 'Visit Sri Ranganatha Swamy and collect fresh TTD laddu prasadam.', descTe: 'శ్రీ రంగనాథ స్వామి దర్శనం మరియు లడ్డూ ప్రసాదం పొందండి.' }
     ],
     emergencyContacts: [
@@ -1419,7 +1419,7 @@ export const CURATED_LAYOUTS: Record<string, Partial<TempleLayoutData>> = {
       { stepNumber: 1, titleEn: 'Arrival & Temple Parking', titleTe: 'పార్కింగ్ చేరుకోవడం', distance: '0.0 km', timeMins: 0, descEn: 'Park vehicle in front of the temple complex.', descTe: 'ఆలయం ఎదురుగా వాహనాన్ని పార్క్ చేయండి.' },
       { stepNumber: 2, titleEn: 'Raja Gopuram & Footwear', titleTe: 'రాజగోపురం & పాదరక్షల కేంద్రం', distance: '50m', timeMins: 2, descEn: 'Deposit shoes and enter through the ancient Gopuram.', descTe: 'చెప్పులు విడిచి రాజగోపురం గుండా ప్రవేశించండి.' },
       { stepNumber: 3, titleEn: 'Dhwajasthambham & Anjaneya Shrine', titleTe: 'ధ్వజస్తంభం & ఆంజనేయ స్వామి సన్నిధి', distance: '80m', timeMins: 5, descEn: 'Offer prayers at the flag mast and visit the miraculous Anjaneya Swamy.', descTe: 'ధ్వజస్తంభ నమస్కారం మరియు హనుమాన్ దర్శనం.' },
-      { stepNumber: 4, titleEn: 'Sri Prasanna Venkateswara Swamy Darshan', titleTe: 'శ్రీ ప్రసన్న వేంకటేశ్వర స్వామి దర్శనం', distance: '100m', timeMins: 15, descEn: 'Receive sanctum darshan of the Lord in Abhaya Hasta posture.', descTe: 'స్వామివారి దివ్య దర్శనం.' },
+      { stepNumber: 4, titleEn: 'Sri Prasanna Venkateswara Swamy Darshan', titleTe: 'శ్రీ ప్రసన్న వేంకటేశ్వర స్వామి దర్శనం', distance: '100m', timeMins: 15, descEn: 'Receive darshan of the Lord in Abhaya Hasta posture inside the main temple.', descTe: 'స్వామివారి దివ్య దర్శనం.' },
       { stepNumber: 5, titleEn: 'Padmavathi Shrine & Prasadam Counter', titleTe: 'పద్మావతి సన్నిధి & ప్రసాదం', distance: '120m', timeMins: 5, descEn: 'Visit Mother Padmavathi and collect TTD prasadam.', descTe: 'అమ్మవారి దర్శనం మరియు ప్రసాదం పొందండి.' }
     ],
     emergencyContacts: [
@@ -1523,9 +1523,9 @@ export const CURATED_LAYOUTS: Record<string, Partial<TempleLayoutData>> = {
     ],
     routeSteps: [
       { stepNumber: 1, titleEn: 'Padmagiri Hill Arrival & Parking', titleTe: 'పద్మగిరి కొండ చేరుకోవడం', distance: '0.0 km', timeMins: 0, descEn: 'Park vehicle at the base of the Thanapalli hill.', descTe: 'వాహనాన్ని పార్క్ చేయండి.' },
-      { stepNumber: 2, titleEn: 'Hill Steps & Raja Gopuram Entrance', titleTe: 'మెట్లు & రాజగోపురం ప్రవేశం', distance: '40m', timeMins: 3, descEn: 'Ascend the steps, deposit footwear, and enter the sanctum courtyard.', descTe: 'మెట్లు ఎక్కి చెప్పులు విడిచి గోపురం గుండా ప్రవేశించండి.' },
+      { stepNumber: 2, titleEn: 'Hill Steps & Raja Gopuram Entrance', titleTe: 'మెట్లు & రాజగోపురం ప్రవేశం', distance: '40m', timeMins: 3, descEn: 'Ascend the steps, deposit footwear, and enter the temple courtyard.', descTe: 'మెట్లు ఎక్కి చెప్పులు విడిచి గోపురం గుండా ప్రవేశించండి.' },
       { stepNumber: 3, titleEn: 'Dhwajasthambham & Shatkona Yantra Peetham', titleTe: 'ధ్వజస్తంభం & షట్కోణ యంత్రం', distance: '60m', timeMins: 5, descEn: 'Offer prayers at the Peacock vehicle and meditate at the mystical Shatkona Yantra.', descTe: 'మయూర వాహనం మరియు షట్కోణ యంత్రాన్ని దర్శించండి.' },
-      { stepNumber: 4, titleEn: 'Sri Balagnana Dandayudhapani Sanctum Darshan', titleTe: 'శ్రీ దండాయుధపాణి స్వామి దర్శనం', distance: '80m', timeMins: 15, descEn: 'Receive the powerful blessings of Lord Subramanya Swamy holding the divine Vel.', descTe: 'స్వామివారి దివ్య దర్శనం మరియు ఆశీస్సులు.' },
+      { stepNumber: 4, titleEn: 'Sri Balagnana Dandayudhapani Main Temple Darshan', titleTe: 'శ్రీ దండాయుధపాణి స్వామి దర్శనం', distance: '80m', timeMins: 15, descEn: 'Receive the powerful blessings of Lord Subramanya Swamy holding the divine Vel.', descTe: 'స్వామివారి దివ్య దర్శనం మరియు ఆశీస్సులు.' },
       { stepNumber: 5, titleEn: 'Vibhuti & Panchamrutham Prasadam', titleTe: 'విభూతి & పంచామృతం', distance: '60m', timeMins: 5, descEn: 'Collect blessed Vibhuti and holy Panchamrutham.', descTe: 'పవిత్ర విభూతి ప్రసాదం పొందండి.' }
     ],
     emergencyContacts: [
@@ -1631,7 +1631,7 @@ export const CURATED_LAYOUTS: Record<string, Partial<TempleLayoutData>> = {
       { stepNumber: 1, titleEn: 'Perur Hill Arrival & Parking', titleTe: 'పేరూరు కొండ చేరుకోవడం', distance: '0.0 km', timeMins: 0, descEn: 'Park vehicle at the Perur Banda hill parking lot.', descTe: 'వాహనాన్ని పార్క్ చేయండి.' },
       { stepNumber: 2, titleEn: 'Raja Gopuram Entrance & Footwear', titleTe: 'రాజగోపురం & పాదరక్షల స్టాండ్', distance: '40m', timeMins: 2, descEn: 'Deposit shoes and enter the scenic hilltop courtyard.', descTe: 'చెప్పులు విడిచి రాజగోపురం ద్వారా ప్రవేశించండి.' },
       { stepNumber: 3, titleEn: 'Dhwajasthambham & Seven Hills View Balcony', titleTe: 'ధ్వజస్తంభం & ఏడుకొండల వీక్షణ', distance: '60m', timeMins: 5, descEn: 'Offer prayers at the flag mast and gaze towards Tirumala Seven Hills.', descTe: 'ధ్వజస్తంభ దర్శనం మరియు ఏడుకొండలను తిలకించండి.' },
-      { stepNumber: 4, titleEn: 'Sri Vakula Matha Sanctum Darshan', titleTe: 'శ్రీ వకుళమాత దివ్య దర్శనం', distance: '80m', timeMins: 15, descEn: 'Seek the unconditional maternal blessings of Sri Vakula Devi.', descTe: 'శ్రీవారి మాతృమూర్తి ఆశీస్సులు పొందండి.' },
+      { stepNumber: 4, titleEn: 'Sri Vakula Matha Main Shrine Darshan', titleTe: 'శ్రీ వకుళమాత దివ్య దర్శనం', distance: '80m', timeMins: 15, descEn: 'Seek the unconditional maternal blessings of Sri Vakula Devi.', descTe: 'శ్రీవారి మాతృమూర్తి ఆశీస్సులు పొందండి.' },
       { stepNumber: 5, titleEn: 'Kumkum Archana & Prasadam', titleTe: 'కుంకుమార్చన & ప్రసాదం', distance: '60m', timeMins: 5, descEn: 'Collect blessed kumkum and sweet prasadam.', descTe: 'పవిత్ర కుంకుమ మరియు ప్రసాదం స్వీకరించండి.' }
     ],
     emergencyContacts: [
@@ -1693,7 +1693,7 @@ export const CURATED_LAYOUTS: Record<string, Partial<TempleLayoutData>> = {
         lng: 79.3410,
         svgX: 270,
         svgY: 195,
-        descEn: 'Sacred stone Nandi facing the Shiva sanctum and golden flag mast.',
+        descEn: 'Sacred stone Nandi facing the Shiva shrine and golden flag mast.',
         descTe: 'శివుని అభిముఖంగా ఉన్న పవిత్ర నందీశ్వరుడు మరియు ధ్వజస్తంభం.'
       },
       {
@@ -1749,7 +1749,7 @@ export const CURATED_LAYOUTS: Record<string, Partial<TempleLayoutData>> = {
       { stepNumber: 1, titleEn: 'Arrival & Riverside Parking', titleTe: 'పార్కింగ్ చేరుకోవడం', distance: '0.0 km', timeMins: 0, descEn: 'Park vehicle along the peaceful Swarnamukhi river road.', descTe: 'నదీతీరంలో వాహనాన్ని పార్క్ చేయండి.' },
       { stepNumber: 2, titleEn: 'Raja Gopuram Entrance & Footwear', titleTe: 'రాజగోపురం & పాదరక్షల కేంద్రం', distance: '50m', timeMins: 2, descEn: 'Leave footwear and enter through the stone gateway.', descTe: 'చెప్పులు విడిచి రాజగోపురం ద్వారా ప్రవేశించండి.' },
       { stepNumber: 3, titleEn: 'Dhwajasthambham & Nandi Namaskaram', titleTe: 'ధ్వజస్తంభం & నందీశ్వర దర్శనం', distance: '80m', timeMins: 5, descEn: 'Seek blessings from Lord Nandi and flag mast.', descTe: 'నందీశ్వరుడిని, ధ్వజస్తంభాన్ని దర్శించండి.' },
-      { stepNumber: 4, titleEn: 'Sri Agastheeswara Swamy & Anandavalli Darshan', titleTe: 'అగస్త్యేశ్వర & ఆనందవల్లి దర్శనం', distance: '100m', timeMins: 15, descEn: 'Receive sanctum darshan of Sage Agastya\'s Shiva Lingam and Mother Anandavalli.', descTe: 'పవిత్ర శివలింగం మరియు అమ్మవారి దివ్య దర్శనం.' },
+      { stepNumber: 4, titleEn: 'Sri Agastheeswara Swamy & Anandavalli Darshan', titleTe: 'అగస్త్యేశ్వర & ఆనందవల్లి దర్శనం', distance: '100m', timeMins: 15, descEn: 'Receive darshan of Sage Agastya\'s Shiva Lingam and Mother Anandavalli in the main temple.', descTe: 'పవిత్ర శివలింగం మరియు అమ్మవారి దివ్య దర్శనం.' },
       { stepNumber: 5, titleEn: 'Triveni Sangamam View & Vibhuti Prasadam', titleTe: 'త్రివేణి సంగమం & ప్రసాదం', distance: '120m', timeMins: 10, descEn: 'Visit the 3-river confluence point and collect blessed Vibhuti.', descTe: 'త్రివేణి సంగమ ఘాట్ వీక్షించి విభూతి ప్రసాదం పొందండి.' }
     ],
     emergencyContacts: [
@@ -1923,7 +1923,7 @@ export const CURATED_LAYOUTS: Record<string, Partial<TempleLayoutData>> = {
       },
       {
         id: 'sanctum',
-        nameEn: 'Sri Moolasthana Yellamma Devi Sanctum',
+        nameEn: 'Sri Moolasthana Yellamma Devi Main Shrine',
         nameTe: 'శ్రీ మూలస్థాన ఎల్లమ్మ దేవి మూలవిరాట్',
         category: 'sanctum',
         lat: 13.5844,
@@ -1962,7 +1962,7 @@ export const CURATED_LAYOUTS: Record<string, Partial<TempleLayoutData>> = {
       { stepNumber: 1, titleEn: 'Arrival & Parking', titleTe: 'పార్కింగ్ చేరుకోవడం', distance: '0.0 km', timeMins: 0, descEn: 'Park vehicle near Chandragiri bus stand.', descTe: 'వాహనాన్ని పార్క్ చేయండి.' },
       { stepNumber: 2, titleEn: 'Entrance & Footwear', titleTe: 'ప్రవేశం & పాదరక్షలు', distance: '30m', timeMins: 2, descEn: 'Leave footwear and enter main gate.', descTe: 'చెప్పులు విడిచి ప్రవేశించండి.' },
       { stepNumber: 3, titleEn: 'Sacred Neem Tree Pradakshina', titleTe: 'వేపచెట్టు ప్రదక్షిణ', distance: '50m', timeMins: 5, descEn: 'Perform pradakshina around the holy neem tree.', descTe: 'పవిత్ర వేపచెట్టుకు ప్రదక్షిణ చేయండి.' },
-      { stepNumber: 4, titleEn: 'Moolasthana Yellamma Devi Darshan', titleTe: 'శ్రీ ఎల్లమ్మ దర్శనం', distance: '80m', timeMins: 15, descEn: 'Seek blessings of Mother Yellamma in the sanctum.', descTe: 'అమ్మవారి మూలవిరాట్ దర్శనం చేసుకోండి.' },
+      { stepNumber: 4, titleEn: 'Moolasthana Yellamma Devi Darshan', titleTe: 'శ్రీ ఎల్లమ్మ దర్శనం', distance: '80m', timeMins: 15, descEn: 'Seek blessings of Mother Yellamma in the main shrine.', descTe: 'అమ్మవారి మూలవిరాట్ దర్శనం చేసుకోండి.' },
       { stepNumber: 5, titleEn: 'Kumkum & Prasadam Collection', titleTe: 'కుంకుమ ప్రసాదం', distance: '60m', timeMins: 5, descEn: 'Receive blessed kumkuma prasadam.', descTe: 'కుంకుమ ప్రసాదం స్వీకరించండి.' }
     ],
     emergencyContacts: [
@@ -2376,7 +2376,7 @@ export const CURATED_LAYOUTS: Record<string, Partial<TempleLayoutData>> = {
       },
       {
         id: 'sanctum',
-        nameEn: 'Sri Adi Bhu Varaha Swamy Sanctum',
+        nameEn: 'Sri Adi Bhu Varaha Swamy Main Shrine',
         nameTe: 'శ్రీ భూ వరాహ స్వామి గర్భాలయం',
         category: 'sanctum',
         lat: 13.6841,
@@ -2777,14 +2777,14 @@ export const CURATED_LAYOUTS: Record<string, Partial<TempleLayoutData>> = {
       },
       {
         id: 'sanctum',
-        nameEn: 'Lord Kapileswara Shiva Sanctum',
+        nameEn: 'Lord Kapileswara Shiva Main Shrine',
         nameTe: 'శ్రీ కపిలేశ్వర స్వామి గర్భాలయం',
         category: 'sanctum',
         lat: 13.6548,
         lng: 79.4215,
         svgX: 270,
         svgY: 150,
-        descEn: 'Primary sacred sanctum and viewing area.',
+        descEn: 'Primary sacred main shrine and viewing area.',
         descTe: 'ప్రధాన దర్శన ప్రదేశం.'
       },
       {
@@ -2860,7 +2860,7 @@ export const CURATED_LAYOUTS: Record<string, Partial<TempleLayoutData>> = {
       },
       {
         id: 'sanctum',
-        nameEn: 'Trimurti Parasurameswara Sanctum',
+        nameEn: 'Trimurti Parasurameswara Main Shrine',
         nameTe: 'త్రిమూర్తి పరశురామేశ్వర గర్భాలయం',
         category: 'sanctum',
         lat: 13.6037445,
@@ -3069,7 +3069,7 @@ export const CURATED_LAYOUTS: Record<string, Partial<TempleLayoutData>> = {
       { stepNumber: 1, titleEn: 'Anandagiri Hill Base Arrival & Parking', titleTe: 'ఆనందగిరి కొండ దిగువకు చేరుకోవడం', distance: '0.0 km', timeMins: 0, descEn: 'Park vehicle at the base of Anandagiri hillock in Utlavaripalli.', descTe: 'వాహనాన్ని పార్క్ చేయండి.' },
       { stepNumber: 2, titleEn: 'Footwear Deposit & Shaded Steps Ascent', titleTe: 'చెప్పులు విడిచి మెట్లు ఎక్కడం', distance: '50m', timeMins: 4, descEn: 'Deposit footwear at the free counter and climb the shaded steps with handrails.', descTe: 'చెప్పులు విడిచి నీడ ఉన్న మెట్ల గుండా కొండపైకి చేరుకోండి.' },
       { stepNumber: 3, titleEn: 'Monumental 54-Ft Lord Murugan Statue Darshan', titleTe: '54 అడుగుల మురుగన్ విగ్రహ దర్శనం', distance: '60m', timeMins: 10, descEn: 'Marvel at the grand 54-foot statue of Lord Subramanya holding his sacred Vel.', descTe: 'మహిమాన్విత 54 అడుగుల మురుగన్ విగ్రహాన్ని దర్శించి ప్రార్థించండి.' },
-      { stepNumber: 4, titleEn: 'Sri Kalyana Subramanya Swamy Sanctum Darshan', titleTe: 'శ్రీ కళ్యాణ సుబ్రమణ్య స్వామి గర్భాలయ దర్శనం', distance: '40m', timeMins: 15, descEn: 'Offer prayers at the sanctum sanctorum for Kuja Dosha Nivarana and marriage blessings.', descTe: 'కుజ దోష నివారణ మరియు కళ్యాణ యోగం కోసం స్వామివారిని దర్శించుకోండి.' },
+      { stepNumber: 4, titleEn: 'Sri Kalyana Subramanya Swamy Main Temple Darshan', titleTe: 'శ్రీ కళ్యాణ సుబ్రమణ్య స్వామి గర్భాలయ దర్శనం', distance: '40m', timeMins: 15, descEn: 'Offer prayers at the main shrine for Kuja Dosha Nivarana and marriage blessings.', descTe: 'కుజ దోష నివారణ మరియు కళ్యాణ యోగం కోసం స్వామివారిని దర్శించుకోండి.' },
       { stepNumber: 5, titleEn: 'Prasadam Collection & TTD PAC Complex', titleTe: 'ప్రసాదం & టీటీడీ పీఏసీ సౌకర్యాలు', distance: '50m', timeMins: 5, descEn: 'Collect delicious temple Laddoo/Vada prasadam and use the TTD amenities hall.', descTe: 'లడ్డూ, వడ ప్రసాదాలు స్వీకరించి విశ్రాంతి తీసుకోండి.' }
     ],
     emergencyContacts: [
@@ -3147,7 +3147,7 @@ export const CURATED_LAYOUTS: Record<string, Partial<TempleLayoutData>> = {
         lng: 79.4104,
         svgX: 270,
         svgY: 195,
-        descEn: 'Sacred brass-clad flag mast and Lord Garuda\'s shrine facing the sanctum.',
+        descEn: 'Sacred brass-clad flag mast and Lord Garuda\'s shrine facing the main temple.',
         descTe: 'పవిత్ర ధ్వజస్తంభం మరియు గరుత్మంతుని సన్నిధి.'
       },
       {
@@ -3191,7 +3191,7 @@ export const CURATED_LAYOUTS: Record<string, Partial<TempleLayoutData>> = {
       { stepNumber: 1, titleEn: 'Penchalakona Foothills Arrival & Parking', titleTe: 'పెంచలకోన చేరుకోవడం & పార్కింగ్', distance: '0.0 km', timeMins: 0, descEn: 'Park vehicle at the base near the bus bay.', descTe: 'వాహనాన్ని పార్క్ చేయండి.' },
       { stepNumber: 2, titleEn: 'Holy Cleansing Dip in Kona Waterfalls', titleTe: 'పవిత్ర కోన జలపాతంలో స్నానం', distance: '80m', timeMins: 15, descEn: 'Take a refreshing holy dip in the therapeutic mountain stream waters.', descTe: 'ఔషధ గుణాలు గల పవిత్ర జలపాతంలో స్నానం చేయండి.' },
       { stepNumber: 3, titleEn: 'Footwear Custody & Mukha Mandapam Entry', titleTe: 'చెప్పులు విడిచి మండపం ప్రవేశం', distance: '60m', timeMins: 3, descEn: 'Deposit footwear at the counter and proceed through the gateway.', descTe: 'పాదరక్షలు విడిచి ఆలయ ముఖమండపంలోకి ప్రవేశించండి.' },
-      { stepNumber: 4, titleEn: 'Swayambhu Sri Lakshmi Narasimha Darshan', titleTe: 'స్వయంభూ శ్రీ లక్ష్మీ నరసింహ స్వామి దర్శనం', distance: '40m', timeMins: 20, descEn: 'Offer prayers at the self-manifested rock sanctum for peace, protection, and family prosperity.', descTe: 'శాంత నరసింహ స్వామిని దర్శించి ప్రత్యేక పూజలు చేయండి.' },
+      { stepNumber: 4, titleEn: 'Swayambhu Sri Lakshmi Narasimha Darshan', titleTe: 'స్వయంభూ శ్రీ లక్ష్మీ నరసింహ స్వామి దర్శనం', distance: '40m', timeMins: 20, descEn: 'Offer prayers at the self-manifested rock shrine for peace, protection, and family prosperity.', descTe: 'శాంత నరసింహ స్వామిని దర్శించి ప్రత్యేక పూజలు చేయండి.' },
       { stepNumber: 5, titleEn: 'Free Nitya Annadanam & Prasadam Counter', titleTe: 'నిత్య అన్నదానం & ప్రసాద స్వీకరణ', distance: '60m', timeMins: 15, descEn: 'Receive sanctified Laddoo prasadam and partake in the free Nitya Annadanam meal.', descTe: 'లడ్డూ ప్రసాదం స్వీకరించి నిత్య అన్నదాన ప్రసాదాన్ని ఆరగించండి.' }
     ],
     emergencyContacts: [
@@ -3893,14 +3893,14 @@ export function getTempleLayout(placeInput: string | PlaceInputContext, fallback
       },
       { 
         id: 'sanctum', 
-        nameEn: `${name} Garbhalayam (Sanctum)`, 
+        nameEn: `${name} Garbhalayam (Main Shrine)`, 
         nameTe: `${name} ప్రధాన గర్భాలయం`, 
         category: 'sanctum', 
         lat: baseLat, 
         lng: baseLng, 
         svgX: 270, 
         svgY: 85, 
-        descEn: 'Sacred inner sanctum sanctorum and consecrated presiding deity idol.', 
+        descEn: 'Sacred inner shrine and consecrated presiding deity idol.', 
         descTe: 'మూలవిరాట్టు దర్శనం మరియు పవిత్ర గర్భగుడి.' 
       },
       { 
@@ -3924,7 +3924,7 @@ export function getTempleLayout(placeInput: string | PlaceInputContext, fallback
       { id: 'entry', nameEn: 'Mukha Mandapam / Gateway', nameTe: 'ముఖ మండపం ద్వారం', category: 'entry', lat: baseLat - 0.0004, lng: baseLng, svgX: 270, svgY: 238, descEn: 'Historical stone entrance gateway under ASI protection.', descTe: 'ఆలయ ప్రవేశ ద్వారం.' },
       { id: 'footwear', nameEn: 'Courtyard Footwear Stand', nameTe: 'పాదరక్షల స్టాండ్', category: 'footwear', lat: baseLat - 0.0006, lng: baseLng - 0.0004, svgX: 135, svgY: 215, descEn: 'Shoe custody counter outside courtyard.', descTe: 'చెప్పులు విడిచే ప్రదేశం.' },
       { id: 'info', nameEn: 'Historical Heritage Inscriptions', nameTe: 'పురావస్తు శాసనాలు', category: 'info', lat: baseLat, lng: baseLng - 0.0006, svgX: 140, svgY: 140, descEn: 'Ancient stone inscriptions and carvings detailing heritage.', descTe: 'రాతి శాసనాలు మరియు చారిత్రక వివరాలు.' },
-      { id: 'sanctum', nameEn: `${name} Sanctum`, nameTe: `${name} గర్భాలయం`, category: 'sanctum', lat: baseLat, lng: baseLng, svgX: 270, svgY: 85, descEn: 'Sacred inner sanctum sanctorum and deity idol.', descTe: 'ప్రధాన గర్భాలయం మరియు మూలవిరాట్టు.' }
+      { id: 'sanctum', nameEn: `${name} Main Shrine`, nameTe: `${name} గర్భాలయం`, category: 'sanctum', lat: baseLat, lng: baseLng, svgX: 270, svgY: 85, descEn: 'Sacred inner shrine and deity idol.', descTe: 'ప్రధాన గర్భాలయం మరియు మూలవిరాట్టు.' }
     ];
   } else if (layoutType === 'trek-trail') {
     generatedRoute = [[412, 255], [270, 238], [135, 215], [270, 145], [270, 65]];
@@ -3988,7 +3988,7 @@ export function getTempleLayout(placeInput: string | PlaceInputContext, fallback
       { id: 'parking', nameEn: `${name} Parking Bay`, nameTe: 'పార్కింగ్ ప్రదేశం', category: 'parking', lat: baseLat - 0.0012, lng: baseLng + 0.0008, svgX: 412, svgY: 265, descEn: 'Dedicated vehicle parking and taxi drop zone.', descTe: 'వాహనాల పార్కింగ్ స్థలం.' },
       { id: 'entry', nameEn: 'Raja Gopuram Entrance', nameTe: 'రాజగోపురం ముఖద్వారం', category: 'entry', lat: baseLat - 0.0007, lng: baseLng, svgX: 270, svgY: 245, descEn: 'Main gateway tower facing east.', descTe: 'ఆలయ ప్రధాన ప్రవేశ గోపురం.' },
       { id: 'footwear', nameEn: 'Free Footwear Counter', nameTe: 'ఉచిత పాదరక్షల కౌంటర్', category: 'footwear', lat: baseLat - 0.0006, lng: baseLng - 0.0005, svgX: 138, svgY: 222, descEn: 'Free shoe keeping counter with token safety.', descTe: 'ఉచిత చెప్పుల కౌంటర్.' },
-      { id: 'sanctum', nameEn: `${name} Sanctum`, nameTe: `${name} గర్భగుడి`, category: 'sanctum', lat: baseLat, lng: baseLng, svgX: 270, svgY: 85, descEn: 'Sacred inner sanctum sanctorum and presiding deity.', descTe: 'ప్రధాన గర్భాలయం మరియు స్వామి/అమ్మవారి దర్శనం.' },
+      { id: 'sanctum', nameEn: `${name} Main Shrine`, nameTe: `${name} గర్భగుడి`, category: 'sanctum', lat: baseLat, lng: baseLng, svgX: 270, svgY: 85, descEn: 'Sacred inner shrine and presiding deity.', descTe: 'ప్రధాన గర్భాలయం మరియు స్వామి/అమ్మవారి దర్శనం.' },
       { id: 'pushkarini', nameEn: 'Sacred Pushkarini Tank', nameTe: 'పుష్కరిణి తీర్థం', category: 'info', lat: baseLat, lng: baseLng + 0.0008, svgX: 400, svgY: 105, descEn: 'Holy temple water tank for holy water sprinkling.', descTe: 'పవిత్ర ఆలయ పుష్కరిణి.' },
       { id: 'laddu', nameEn: 'Prasadam & Laddu Counter', nameTe: 'ప్రసాదం కౌంటర్', category: 'laddu', lat: baseLat - 0.0004, lng: baseLng + 0.0005, svgX: 370, svgY: 185, descEn: 'Sacred laddu, pulihora, and blessed prasadam counter.', descTe: 'స్వామివారి ప్రసాదం కౌంటర్.' }
     ];

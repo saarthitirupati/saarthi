@@ -307,7 +307,7 @@ export const FESTIVALS_2026: Festival[] = [
     recommendedTime: '4:00 AM - 9:00 PM',
     dressCode: 'Traditional',
     parking: 'Tirumala Parking',
-    specialTips: 'Magha Sukla Ekadashi. Mass chanting of Sri Vishnu Sahasranama Stotram in all Vaishnavite sanctums.',
+    specialTips: 'Magha Sukla Ekadashi. Mass chanting of Sri Vishnu Sahasranama Stotram in all Vaishnavite temples.',
     coverImage: '/assets/temples/venkateswara.png'
   },
   {
@@ -611,7 +611,7 @@ export const FESTIVALS_2026: Festival[] = [
     recommendedTime: '6:00 AM - 12:00 PM',
     dressCode: 'Traditional',
     parking: 'Nagalapuram Parking',
-    specialTips: 'Annual Surya Pooja miracle at Nagalapuram where sun rays directly touch Lord Matsya sanctum.',
+    specialTips: 'Annual Surya Pooja miracle at Nagalapuram where sun rays directly touch Lord Matsya idol inside the main shrine.',
     coverImage: '/assets/temples/venkateswara.png'
   },
   {
@@ -1651,7 +1651,7 @@ export const FESTIVALS_2026: Festival[] = [
     recommendedTime: '6:00 AM - 8:00 PM',
     dressCode: 'Traditional',
     parking: 'Tirumala Parking',
-    specialTips: 'Grand Poornahuti of Pavitrotsavam at Tirumala sanctum, with festive Onam floral decorations across town.',
+    specialTips: 'Grand Poornahuti of Pavitrotsavam at Tirumala main temple, with festive Onam floral decorations across town.',
     coverImage: '/assets/temples/venkateswara.png'
   },
   {
@@ -2004,7 +2004,7 @@ export const FESTIVALS_2026: Festival[] = [
     recommendedTime: '6:00 AM - 8:30 PM',
     dressCode: 'Traditional Silk Saree',
     parking: 'Tiruchanur Parking',
-    specialTips: 'Special Lalitha Sahasranama Kumkumarchana at the sanctum sanctorum.',
+    specialTips: 'Special Lalitha Sahasranama Kumkumarchana at the main temple shrine.',
     coverImage: '/assets/temples/padmavathi.png'
   },
   {

@@ -109,8 +109,23 @@ export interface PlaceEmergencyInfo {
   lostFound?: string;
 }
 
+export type TraditionType = 'temple' | 'nature' | 'heritage' | 'food' | 'theertham';
+
+export interface PlaceSignificance {
+  traditionType: TraditionType;
+  whyVisitTe: string;
+  whyVisitEn: string;
+  actionsTe: string[];
+  actionsEn: string[];
+  culturalMeaningTe: string;
+  culturalMeaningEn: string;
+  saarthiTipTe: string;
+  saarthiTipEn: string;
+}
+
 export interface Place {
   id: string;
+  significance?: PlaceSignificance;
   name: string;
   nameTe?: string;
   teluguName?: string;

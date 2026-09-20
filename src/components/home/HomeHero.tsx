@@ -478,7 +478,7 @@ export function HomeHero({ userName, locationName, weatherTemp, liveStatus, acti
         : 'Sunday Flow · Regular Queue Movement';
     }
     if (day === 5) { // Friday
-      return 'Friday Abhishekam · High Sanctum Rush';
+      return 'Friday Abhishekam · High Temple Rush';
     }
     if (isSsdIssuing) {
       return 'Free SSD Tokens Active · Slotted Inflow';

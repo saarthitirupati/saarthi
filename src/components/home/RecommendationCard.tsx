@@ -96,7 +96,7 @@ export function RecommendationCard({
       link: '/place/venkateswara',
       image: '/assets/temples/venkateswara.png',
       priorityTag: lang === 'te' ? 'ప్రాధాన్యత 2: ముఖ్యమైన ఆలయ దినం' : 'Priority 2: Important Temple Day',
-      reason: lang === 'te' ? 'పవిత్ర శనివారం · ప్రధాన తిరుమల ఏడు కొండల ఆలయం' : 'Holy Saturday · Primary Tirumala Seven Hills sanctum'
+      reason: lang === 'te' ? 'పవిత్ర శనివారం · ప్రధాన తిరుమల ఏడు కొండల ఆలయం' : 'Holy Saturday · Primary Tirumala Seven Hills temple'
     };
   } else if (dayOfWeek === 5) { // Friday — Padmavathi (Tiruchanoor, 5 km)
     rec = {
@@ -171,7 +171,7 @@ export function RecommendationCard({
       link: '/place/iskcon-tirupati',
       image: 'https://res.cloudinary.com/kniegqlj/image/upload/v1786967622/iskcon-temple-tirupati_wl7dd2.jpg',
       priorityTag: lang === 'te' ? 'వాతావరణం: వర్షం అనుకూలం' : 'Weather Context: Rain Friendly',
-      reason: lang === 'te' ? 'వర్షపు వాతావరణం · కవర్డ్ ఇండోర్ ఆలయం మరియు సౌకర్యవంతమైన సీటింగ్' : 'Rainy Weather · Covered indoor sanctum and comfortable seating'
+      reason: lang === 'te' ? 'వర్షపు వాతావరణం · కవర్డ్ ఇండోర్ ఆలయం మరియు సౌకర్యవంతమైన సీటింగ్' : 'Rainy Weather · Covered indoor temple and comfortable seating'
     };
   } else if (crowd === 'high' || crowd === 'very-high') {
     rec = {

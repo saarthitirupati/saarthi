@@ -93,7 +93,7 @@ export const GITA_SHLOKAS: GitaShloka[] = [
     transliteration: 'sarva-dharmān parityajya mām ekaṁ śaraṇaṁ vraja |\nahaṁ tvāṁ sarva-pāpebhyo mokṣayiṣyāmi mā śucaḥ ||',
     meaningEn: 'Abandon all varieties of dharma and take refuge in Me alone. I shall free you from all sins. Do not grieve.',
     meaningTe: 'సర్వ ధర్మములను సమర్పించి, నన్ను ఒక్కడినే శరణు వేడుము. నేను నిన్ను సమస్త పాపముల నుండి విముక్తుడిని చేస్తాను. శోకింపకుము.',
-    pilgrimReflectionEn: 'As you stand before Lord Venkateswara\'s sanctum, offer your burdens, doubts, and ego at His lotus feet. In complete surrender, the heart finds lasting peace.',
+    pilgrimReflectionEn: 'As you stand before Lord Venkateswara in the main temple, offer your burdens, doubts, and ego at His lotus feet. In complete surrender, the heart finds lasting peace.',
     pilgrimReflectionTe: 'శ్రీ వేంకటేశ్వర స్వామివారి సన్నిధిలో మీ భారాలు, సందేహాలు, అహంకారాన్ని స్వామి పాదపద్మాలకు సమర్పించండి; సంపూర్ణ శరణాగతిలో హృదయానికి శాశ్వత శాంతి లభిస్తుంది.'
   },
   {

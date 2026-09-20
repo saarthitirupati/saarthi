@@ -25,7 +25,7 @@ export default function LiveRoutePage() {
     if (navigator.share) {
       navigator.share({
         title: 'Saarthi Tirupati Live Pilgrimage Route',
-        text: `Live Tirumala Darshan Route: Alipiri (${tollStatus}) → SSD Counters (${ssdWait} wait) → Tirumala Sanctum (${sarvaWait} wait).`,
+        text: `Live Tirumala Darshan Route: Alipiri (${tollStatus}) → SSD Counters (${ssdWait} wait) → Tirumala Temple (${sarvaWait} wait).`,
         url: window.location.href,
       }).catch(() => {});
     } else {
@@ -112,14 +112,14 @@ export default function LiveRoutePage() {
       icon: Key,
       desc: lang === 'te'
         ? 'ఆలయంలోకి మొబైల్స్ మరియు ఎలక్ట్రానిక్స్ నిషేధం. PAC 1/4 వద్ద ఉచిత లాకర్లలో భద్రపరచుకోండి.'
-        : 'Cell phones, cameras & electronics are prohibited inside the sanctum. Store safely in free PAC lockers.',
+        : 'Cell phones, cameras & electronics are prohibited inside the main temple. Store safely in free PAC lockers.',
       actionText: lang === 'te' ? 'PAC-1 కి దారి' : 'Navigate to PAC-1',
       mapsUrl: 'https://www.google.com/maps/dir/?api=1&destination=13.6820,79.3490',
       reason: lang === 'te' ? 'ఆలయ ప్రవేశానికి ముందు లగేజీ భద్రత' : 'Mandatory free electronic deposit before queue complex entry',
     },
     {
-      id: 'sanctum',
-      title: lang === 'te' ? 'శ్రీవారి వైకుంఠం క్యూ కాంప్లెక్స్ & దర్శనం' : 'Sri Venkateswara Sanctum & Vaikuntam Queue',
+      id: 'main-temple',
+      title: lang === 'te' ? 'శ్రీవారి వైకుంఠం క్యూ కాంప్లెక్స్ & దర్శనం' : 'Sri Venkateswara Main Temple & Vaikuntam Queue',
       location: 'Vaikuntam Queue Complex-2, Tirumala',
       status: `${sarvaWait}+ hrs wait · Heavy Rush`,
       statusColor: '#EF4444',
@@ -131,7 +131,7 @@ export default function LiveRoutePage() {
         : 'Continuous free hot milk, drinking water, and Annaprasadam meals served inside all holding compartments.',
       actionText: lang === 'te' ? 'వైకుంఠం క్యూ-2 కి దారి' : 'Navigate to Vaikuntam Queue-2',
       mapsUrl: 'https://www.google.com/maps/dir/?api=1&destination=13.6833,79.3475',
-      reason: lang === 'te' ? 'శ్రీవారి మూలవిరాట్ దర్శనం' : 'Sacred core sanctum of Lord Venkateswara Swamy',
+      reason: lang === 'te' ? 'శ్రీవారి మూలవిరాట్ దర్శనం' : 'Sacred main temple of Lord Venkateswara Swamy',
     },
     {
       id: 'prasadam',
@@ -192,7 +192,7 @@ export default function LiveRoutePage() {
               <strong className={styles.statValue}>~5h 30m</strong>
             </div>
             <div className={styles.statBox}>
-              <span className={styles.statLabel}>{lang === 'te' ? 'సర్వదర్శనం సమయం' : 'Sanctum Darshan Wait'}</span>
+              <span className={styles.statLabel}>{lang === 'te' ? 'సర్వదర్శనం సమయం' : 'Main Temple Darshan Wait'}</span>
               <strong className={styles.statValue} style={{ color: '#DC2626' }}>{sarvaWait}</strong>
             </div>
           </div>
