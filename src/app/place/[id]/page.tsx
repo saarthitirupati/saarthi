@@ -33,7 +33,6 @@ export default function PlaceDetails() {
   // Collapsible drawers state
   const [openDrawer, setOpenDrawer] = useState<'legend' | 'festivals' | 'architecture' | 'faqs' | null>(null);
   const [isSignificanceOpen, setIsSignificanceOpen] = useState(false);
-  const [activeTab, setActiveTab] = useState<'guide' | 'map' | 'history'>('guide');
 
   const targetId = decodeURIComponent(id || '').trim().toLowerCase();
   const allPlaces = places.length > 0 ? places : PLACES;
@@ -309,41 +308,213 @@ export default function PlaceDetails() {
     </div>
   ) : null;
 
-  // 0. TOP 4 PRIMARY METRIC PILLS
+  // 0. TOP 4 PRIMARY METRIC CARDS (Visual & Fully Responsive)
   const topMetricsNode = (
-    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, minmax(0, 1fr))', gap: '8px' }}>
-      <div suppressHydrationWarning style={{ backgroundColor: '#FFFFFF', border: '1.5px solid rgba(15, 81, 50, 0.15)', borderRadius: '14px', padding: '10px 4px', textAlign: 'center', boxShadow: '0 2px 8px rgba(0,0,0,0.02)' }}>
-        <div suppressHydrationWarning style={{ fontSize: '13px', fontWeight: 900, color: '#0F5132', lineHeight: 1.1 }}>
+    <div style={{
+      display: 'grid',
+      gridTemplateColumns: 'repeat(4, minmax(0, 1fr))',
+      gap: 'clamp(6px, 1.8vw, 10px)'
+    }}>
+      {/* 1. Distance */}
+      <div suppressHydrationWarning style={{
+        backgroundColor: '#FFFFFF',
+        border: '1.5px solid rgba(15, 81, 50, 0.2)',
+        borderRadius: '15px',
+        padding: '9px 4px 8px',
+        textAlign: 'center',
+        boxShadow: '0 2px 8px rgba(0,0,0,0.02)',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        minWidth: 0
+      }}>
+        <div style={{
+          width: '22px',
+          height: '22px',
+          borderRadius: '50%',
+          backgroundColor: '#DCFCE7',
+          border: '1px solid #86EFAC',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          marginBottom: '3px',
+          flexShrink: 0
+        }}>
+          <MapPin size={12} color="#0F5132" />
+        </div>
+        <div suppressHydrationWarning style={{
+          fontSize: 'clamp(11.5px, 3.2vw, 13px)',
+          fontWeight: 900,
+          color: '#0F5132',
+          lineHeight: 1.15,
+          whiteSpace: 'nowrap',
+          overflow: 'hidden',
+          textOverflow: 'ellipsis',
+          maxWidth: '100%'
+        }}>
           {formatDistance(drivingDistance, lang)}
         </div>
-        <div suppressHydrationWarning style={{ fontSize: '9.5px', fontWeight: 700, color: '#64748B', marginTop: '3px' }}>
+        <div suppressHydrationWarning style={{
+          fontSize: '9.5px',
+          fontWeight: 700,
+          color: '#64748B',
+          marginTop: '2px',
+          whiteSpace: 'nowrap'
+        }}>
           {lang === 'te' ? 'దూరం' : 'Distance'}
         </div>
       </div>
 
-      <div suppressHydrationWarning style={{ backgroundColor: '#FFFFFF', border: '1.5px solid rgba(217, 119, 6, 0.2)', borderRadius: '14px', padding: '10px 4px', textAlign: 'center', boxShadow: '0 2px 8px rgba(0,0,0,0.02)' }}>
-        <div suppressHydrationWarning style={{ fontSize: '13px', fontWeight: 900, color: '#D97706', lineHeight: 1.1 }}>
+      {/* 2. Travel Time */}
+      <div suppressHydrationWarning style={{
+        backgroundColor: '#FFFFFF',
+        border: '1.5px solid rgba(217, 119, 6, 0.22)',
+        borderRadius: '15px',
+        padding: '9px 4px 8px',
+        textAlign: 'center',
+        boxShadow: '0 2px 8px rgba(0,0,0,0.02)',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        minWidth: 0
+      }}>
+        <div style={{
+          width: '22px',
+          height: '22px',
+          borderRadius: '50%',
+          backgroundColor: '#FEF3C7',
+          border: '1px solid #FDE68A',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          marginBottom: '3px',
+          flexShrink: 0
+        }}>
+          <Clock size={12} color="#D97706" />
+        </div>
+        <div suppressHydrationWarning style={{
+          fontSize: 'clamp(11.5px, 3.2vw, 13px)',
+          fontWeight: 900,
+          color: '#D97706',
+          lineHeight: 1.15,
+          whiteSpace: 'nowrap',
+          overflow: 'hidden',
+          textOverflow: 'ellipsis',
+          maxWidth: '100%'
+        }}>
           {formattedDriveTime ? formattedDriveTime.replace(/\bm\b/, 'min') : `${driveTimeMins} min`}
         </div>
-        <div suppressHydrationWarning style={{ fontSize: '9.5px', fontWeight: 700, color: '#64748B', marginTop: '3px' }}>
+        <div suppressHydrationWarning style={{
+          fontSize: '9.5px',
+          fontWeight: 700,
+          color: '#64748B',
+          marginTop: '2px',
+          whiteSpace: 'nowrap'
+        }}>
           {lang === 'te' ? 'ప్రయాణ సమయం' : 'Travel Time'}
         </div>
       </div>
 
-      <div suppressHydrationWarning style={{ backgroundColor: '#FFFFFF', border: `1.5px solid ${isOpenNow ? 'rgba(34, 197, 94, 0.3)' : 'rgba(239, 68, 68, 0.3)'}`, borderRadius: '14px', padding: '10px 4px', textAlign: 'center', boxShadow: '0 2px 8px rgba(0,0,0,0.02)' }}>
-        <div suppressHydrationWarning style={{ fontSize: '13px', fontWeight: 900, color: isOpenNow ? '#16A34A' : '#DC2626', lineHeight: 1.1 }}>
+      {/* 3. Status */}
+      <div suppressHydrationWarning style={{
+        backgroundColor: '#FFFFFF',
+        border: `1.5px solid ${isOpenNow ? 'rgba(34, 197, 94, 0.3)' : 'rgba(239, 68, 68, 0.3)'}`,
+        borderRadius: '15px',
+        padding: '9px 4px 8px',
+        textAlign: 'center',
+        boxShadow: '0 2px 8px rgba(0,0,0,0.02)',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        minWidth: 0
+      }}>
+        <div style={{
+          width: '22px',
+          height: '22px',
+          borderRadius: '50%',
+          backgroundColor: isOpenNow ? '#DCFCE7' : '#FEE2E2',
+          border: `1px solid ${isOpenNow ? '#86EFAC' : '#FCA5A5'}`,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          marginBottom: '3px',
+          flexShrink: 0
+        }}>
+          {isOpenNow ? <CheckCircle2 size={12} color="#16A34A" /> : <Clock size={12} color="#DC2626" />}
+        </div>
+        <div suppressHydrationWarning style={{
+          fontSize: 'clamp(11.5px, 3.2vw, 13px)',
+          fontWeight: 900,
+          color: isOpenNow ? '#16A34A' : '#DC2626',
+          lineHeight: 1.15,
+          whiteSpace: 'nowrap',
+          overflow: 'hidden',
+          textOverflow: 'ellipsis',
+          maxWidth: '100%'
+        }}>
           {isOpenNow ? (lang === 'te' ? 'తెరిచి ఉంది' : 'Open') : (lang === 'te' ? 'మూసివేత' : 'Closed')}
         </div>
-        <div suppressHydrationWarning style={{ fontSize: '9.5px', fontWeight: 700, color: '#64748B', marginTop: '3px' }}>
+        <div suppressHydrationWarning style={{
+          fontSize: '9.5px',
+          fontWeight: 700,
+          color: '#64748B',
+          marginTop: '2px',
+          whiteSpace: 'nowrap'
+        }}>
           {lang === 'te' ? 'స్థితి' : 'Status'}
         </div>
       </div>
 
-      <div suppressHydrationWarning style={{ backgroundColor: '#FFFFFF', border: '1.5px solid rgba(37, 99, 235, 0.2)', borderRadius: '14px', padding: '10px 4px', textAlign: 'center', boxShadow: '0 2px 8px rgba(0,0,0,0.02)' }}>
-        <div suppressHydrationWarning style={{ fontSize: '13px', fontWeight: 900, color: '#2563EB', lineHeight: 1.1 }}>
+      {/* 4. Entry Fee */}
+      <div suppressHydrationWarning style={{
+        backgroundColor: '#FFFFFF',
+        border: '1.5px solid rgba(37, 99, 235, 0.22)',
+        borderRadius: '15px',
+        padding: '9px 4px 8px',
+        textAlign: 'center',
+        boxShadow: '0 2px 8px rgba(0,0,0,0.02)',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        minWidth: 0
+      }}>
+        <div style={{
+          width: '22px',
+          height: '22px',
+          borderRadius: '50%',
+          backgroundColor: '#DBEAFE',
+          border: '1px solid #93C5FD',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          marginBottom: '3px',
+          flexShrink: 0
+        }}>
+          <Sparkles size={12} color="#2563EB" />
+        </div>
+        <div suppressHydrationWarning style={{
+          fontSize: 'clamp(11.5px, 3.2vw, 13px)',
+          fontWeight: 900,
+          color: '#2563EB',
+          lineHeight: 1.15,
+          whiteSpace: 'nowrap',
+          overflow: 'hidden',
+          textOverflow: 'ellipsis',
+          maxWidth: '100%'
+        }}>
           {place.entryFeeNum === 0 || !place.entryFeeNum ? (lang === 'te' ? 'ఉచితం' : 'Free') : `₹${place.entryFeeNum}`}
         </div>
-        <div suppressHydrationWarning style={{ fontSize: '9.5px', fontWeight: 700, color: '#64748B', marginTop: '3px' }}>
+        <div suppressHydrationWarning style={{
+          fontSize: '9.5px',
+          fontWeight: 700,
+          color: '#64748B',
+          marginTop: '2px',
+          whiteSpace: 'nowrap'
+        }}>
           {lang === 'te' ? 'ప్రవేశ రుసుము' : 'Entry Fee'}
         </div>
       </div>
@@ -478,8 +649,8 @@ export default function PlaceDetails() {
           badgeColor: '#0F766E',
           titleTe: 'సహజ సౌందర్యం & సందర్శన విశేషాలు',
           titleEn: 'Natural Wonder & Highlights',
-          badgeTe: 'సహజ సౌందర్యం & అనుభవం',
-          badgeEn: 'Nature & Experience',
+          badgeTe: 'ప్రకృతి అందాలు',
+          badgeEn: 'Scenic Landscape',
           buttonClosedTe: 'సందర్శన క్రమం, అనుభవాలు & సూచనలు చూడండి',
           buttonClosedEn: 'View Activity Steps, Experiences & Tips',
           actionTitleTe: 'సందర్శకులు చేయవలసిన ముఖ్య కార్యకలాపాలు',
@@ -497,8 +668,8 @@ export default function PlaceDetails() {
           badgeColor: '#1E40AF',
           titleTe: 'చారిత్రక వైభవం & ప్రాముఖ్యత',
           titleEn: 'Historical Heritage & Architecture',
-          badgeTe: 'చారిత్రక వారసత్వం',
-          badgeEn: 'Historical Heritage',
+          badgeTe: 'వారసత్వ సంపద',
+          badgeEn: 'Heritage Landmark',
           buttonClosedTe: 'చారిత్రక విశేషాలు, నిర్మాణ శైలి & మార్గదర్శనం చూడండి',
           buttonClosedEn: 'View Key Sights, Dynastic Lore & Guidelines',
           actionTitleTe: 'ప్రత్యక్షంగా చూడవలసిన చారిత్రక విశేషాలు',
@@ -516,8 +687,8 @@ export default function PlaceDetails() {
           badgeColor: '#92400E',
           titleTe: 'ఆహార సంస్కృతి & ప్రత్యేకతలు',
           titleEn: 'Culinary Tradition & Specialties',
-          badgeTe: 'ఆహార సంస్కృతి',
-          badgeEn: 'Culinary Tradition',
+          badgeTe: 'స్థానిక రుచులు',
+          badgeEn: 'Local Flavors',
           buttonClosedTe: 'ప్రసిద్ధ రుచులు, పదార్థాలు & వివరాలు చూడండి',
           buttonClosedEn: 'View Signature Items & Specialties',
           actionTitleTe: 'రుచి చూడవలసిన ప్రసిద్ధ సాంప్రదాయ పదార్థాలు',
@@ -535,8 +706,8 @@ export default function PlaceDetails() {
           badgeColor: '#0369A1',
           titleTe: 'పుణ్య తీర్థం & పవిత్రత',
           titleEn: 'Sacred Theertham & Holy Waters',
-          badgeTe: 'పవిత్ర తీర్థం',
-          badgeEn: 'Sacred Theertham',
+          badgeTe: 'పుణ్య జలాలు',
+          badgeEn: 'Holy Waters',
           buttonClosedTe: 'తీర్థ విధి, విశేషాలు & ప్రాశస్త్యం చూడండి',
           buttonClosedEn: 'View Bathing Customs & Sthala Puranam',
           actionTitleTe: 'భక్తులు ఆచరించే తీర్థస్నాన విధి & పూజలు',
@@ -555,8 +726,8 @@ export default function PlaceDetails() {
           badgeColor: '#0F5132',
           titleTe: 'ఆలయ ప్రాశస్త్యం & సంప్రదాయం',
           titleEn: 'Temple Tradition & Devotional Purpose',
-          badgeTe: 'క్షేత్ర ప్రాశస్త్యం & ఆచారం',
-          badgeEn: 'Sacred Tradition & Practice',
+          badgeTe: 'పుణ్యక్షేత్రం',
+          badgeEn: 'Sacred Sanctum',
           buttonClosedTe: 'దర్శన క్రమం, విశిష్టత & ఆచారాలు చూడండి',
           buttonClosedEn: 'View Darshan Steps, Traditions & Guidance',
           actionTitleTe: 'భక్తులు ఆచరించే దర్శన క్రమం & సంప్రదాయాలు',
@@ -628,7 +799,7 @@ export default function PlaceDetails() {
         alignItems: 'flex-start',
         gap: '8px'
       }}>
-        <CheckCircle2 size={15} color="#0F5132" style={{ flexShrink: 0, marginTop: '2px' }} />
+        <CheckCircle2 size={15} color={traditionTheme.iconColor} style={{ flexShrink: 0, marginTop: '2px' }} />
         <p style={{
           fontSize: '12.5px',
           color: '#1E293B',
@@ -641,10 +812,10 @@ export default function PlaceDetails() {
         </p>
       </div>
 
-      {/* Visual Quick Practice Chips */}
+      {/* Visual Highlights & Key Actions (Clean, legible, zero ellipsis truncation) */}
       <div style={{
-        display: 'grid',
-        gridTemplateColumns: 'repeat(auto-fit, minmax(130px, 1fr))',
+        display: 'flex',
+        flexDirection: 'column',
         gap: '6px',
         marginBottom: '10px'
       }}>
@@ -654,19 +825,34 @@ export default function PlaceDetails() {
             style={{
               backgroundColor: '#FFFFFF',
               border: '1px solid rgba(15, 23, 42, 0.07)',
-              borderRadius: '10px',
-              padding: '6px 9px',
+              borderRadius: '11px',
+              padding: '8px 11px',
               display: 'flex',
-              alignItems: 'center',
-              gap: '6px',
-              fontSize: '11px',
-              fontWeight: 600,
-              color: '#334155',
-              lineHeight: 1.3
+              alignItems: 'flex-start',
+              gap: '8px',
+              boxShadow: '0 1px 3px rgba(0,0,0,0.02)'
             }}
           >
-            <div style={{ width: '5px', height: '5px', borderRadius: '50%', backgroundColor: traditionTheme.iconColor, flexShrink: 0 }} />
-            <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical' }}>
+            <div style={{
+              width: '18px',
+              height: '18px',
+              borderRadius: '50%',
+              backgroundColor: traditionTheme.badgeBg,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              flexShrink: 0,
+              marginTop: '1px'
+            }}>
+              <CheckCircle2 size={12} color={traditionTheme.iconColor} />
+            </div>
+            <span style={{
+              fontSize: '12px',
+              fontWeight: 600,
+              color: '#334155',
+              lineHeight: 1.4,
+              wordBreak: 'break-word'
+            }}>
               {action}
             </span>
           </div>
@@ -752,9 +938,11 @@ export default function PlaceDetails() {
           <button
             type="button"
             onClick={() => {
-              setActiveTab('history');
               setOpenDrawer('legend');
-              window.scrollTo({ top: 320, behavior: 'smooth' });
+              const el = document.getElementById('temple-heritage-section');
+              if (el) {
+                el.scrollIntoView({ behavior: 'smooth' });
+              }
             }}
             style={{
               width: '100%',
@@ -1440,109 +1628,7 @@ export default function PlaceDetails() {
     <OfflineTempleMap placeId={place.id} place={place} lang={lang} isTemple={isTemple} coordinates={place.coordinates} />
   );
 
-  // 12. TABBED NAVIGATION BAR (Guide • Precinct Map • History & Lore)
-  const tabBarNode = (
-    <div style={{
-      position: 'sticky',
-      top: 0,
-      zIndex: 35,
-      backgroundColor: 'rgba(250, 248, 245, 0.96)',
-      backdropFilter: 'blur(12px)',
-      WebkitBackdropFilter: 'blur(12px)',
-      padding: '8px 0',
-      marginBottom: '6px'
-    }}>
-      <div style={{
-        display: 'grid',
-        gridTemplateColumns: 'repeat(3, minmax(0, 1fr))',
-        backgroundColor: '#E2E8F0',
-        padding: '3.5px',
-        borderRadius: '14px',
-        gap: '4px'
-      }}>
-        <button
-          type="button"
-          onClick={() => setActiveTab('guide')}
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            gap: '6px',
-            padding: '10px 4px',
-            borderRadius: '11px',
-            border: 'none',
-            cursor: 'pointer',
-            backgroundColor: activeTab === 'guide' ? '#FFFFFF' : 'transparent',
-            color: activeTab === 'guide' ? '#0F5132' : '#475569',
-            fontWeight: activeTab === 'guide' ? 800 : 700,
-            fontSize: '12px',
-            boxShadow: activeTab === 'guide' ? '0 2px 8px rgba(0, 0, 0, 0.08)' : 'none',
-            transition: 'all 0.15s ease',
-            minHeight: '44px'
-          }}
-        >
-          <Compass size={15} color={activeTab === 'guide' ? '#0F5132' : '#475569'} style={{ flexShrink: 0 }} />
-          <span style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-            {lang === 'te' ? 'మార్గదర్శి' : 'Guide'}
-          </span>
-        </button>
 
-        <button
-          type="button"
-          onClick={() => setActiveTab('map')}
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            gap: '6px',
-            padding: '10px 4px',
-            borderRadius: '11px',
-            border: 'none',
-            cursor: 'pointer',
-            backgroundColor: activeTab === 'map' ? '#FFFFFF' : 'transparent',
-            color: activeTab === 'map' ? '#0F5132' : '#475569',
-            fontWeight: activeTab === 'map' ? 800 : 700,
-            fontSize: '12px',
-            boxShadow: activeTab === 'map' ? '0 2px 8px rgba(0, 0, 0, 0.08)' : 'none',
-            transition: 'all 0.15s ease',
-            minHeight: '44px'
-          }}
-        >
-          <MapPin size={15} color={activeTab === 'map' ? '#0F5132' : '#475569'} style={{ flexShrink: 0 }} />
-          <span style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-            {lang === 'te' ? 'ప్రాంగణ మ్యాప్' : 'Precinct Map'}
-          </span>
-        </button>
-
-        <button
-          type="button"
-          onClick={() => setActiveTab('history')}
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            gap: '6px',
-            padding: '10px 4px',
-            borderRadius: '11px',
-            border: 'none',
-            cursor: 'pointer',
-            backgroundColor: activeTab === 'history' ? '#FFFFFF' : 'transparent',
-            color: activeTab === 'history' ? '#0F5132' : '#475569',
-            fontWeight: activeTab === 'history' ? 800 : 700,
-            fontSize: '12px',
-            boxShadow: activeTab === 'history' ? '0 2px 8px rgba(0, 0, 0, 0.08)' : 'none',
-            transition: 'all 0.15s ease',
-            minHeight: '44px'
-          }}
-        >
-          <BookOpen size={15} color={activeTab === 'history' ? '#0F5132' : '#475569'} style={{ flexShrink: 0 }} />
-          <span style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-            {lang === 'te' ? 'చరిత్ర & విశేషాలు' : 'History & Lore'}
-          </span>
-        </button>
-      </div>
-    </div>
-  );
 
   return (
     <main style={{ minHeight: '100vh', backgroundColor: 'var(--bg-canvas, #FAF8F5)', color: '#0F172A', paddingBottom: 'calc(88px + env(safe-area-inset-bottom, 20px))', width: '100%', maxWidth: '100vw', overflowX: 'hidden', boxSizing: 'border-box' }}>
@@ -1878,78 +1964,46 @@ export default function PlaceDetails() {
       </div>
 
       {/* ═══════════════════════════════════════════════════
-          MOBILE FLOW (< 900px): Clean Tabbed Pilgrim Flow
+          MOBILE FLOW (< 900px): Clean Sequential Pilgrim Flow
           ═══════════════════════════════════════════════════ */}
       <div className="place-mobile-container">
         {closureAlertNode}
-        {tabBarNode}
-
-        {activeTab === 'guide' && (
-          <>
-            {topMetricsNode}
-            {placeSignificanceNode}
-            {quickFactsNode}
-            {essentialFacilitiesNode}
-            {saarthiSuggestsNode}
-            {nearbyTemplesNode}
-          </>
-        )}
-
-        {activeTab === 'map' && (
-          <>
-            {offlineMapNode}
-          </>
-        )}
-
-        {activeTab === 'history' && (
-          <>
-            {aboutTempleNode}
-            {heritageAccordionsNode}
-            {nearbyTemplesNode}
-          </>
-        )}
+        {topMetricsNode}
+        {placeSignificanceNode}
+        {quickFactsNode}
+        {essentialFacilitiesNode}
+        {offlineMapNode}
+        {saarthiSuggestsNode}
+        {aboutTempleNode}
+        <div id="temple-heritage-section">
+          {heritageAccordionsNode}
+        </div>
+        {nearbyTemplesNode}
       </div>
 
       {/* ═══════════════════════════════════════════════════
           DESKTOP GRID (>= 900px): 2-Column Responsive Layout
           ═══════════════════════════════════════════════════ */}
       <div className="place-desktop-container">
-        {/* Left Column: Tabbed Content & Wayfinding */}
+        {/* Left Column: Precinct Map, About, Heritage & Nearby */}
         <div className="place-desktop-main">
           {closureAlertNode}
-          {tabBarNode}
-
-          {activeTab === 'guide' && (
-            <>
-              {placeSignificanceNode}
-              {quickFactsNode}
-              {saarthiSuggestsNode}
-              {offlineMapNode}
-              {nearbyTemplesNode}
-            </>
-          )}
-
-          {activeTab === 'map' && (
-            <>
-              {offlineMapNode}
-              {nearbyTemplesNode}
-            </>
-          )}
-
-          {activeTab === 'history' && (
-            <>
-              {aboutTempleNode}
-              {heritageAccordionsNode}
-              {nearbyTemplesNode}
-            </>
-          )}
+          {offlineMapNode}
+          {aboutTempleNode}
+          <div id="temple-heritage-section">
+            {heritageAccordionsNode}
+          </div>
+          {nearbyTemplesNode}
         </div>
 
         {/* Right Column: Sticky Quick Action & Briefing Sidebar */}
         <div className="place-desktop-sidebar">
           {topMetricsNode}
-          {ctaButtonsNode}
+          {placeSignificanceNode}
+          {quickFactsNode}
           {essentialFacilitiesNode}
+          {saarthiSuggestsNode}
+          {ctaButtonsNode}
         </div>
       </div>
 
