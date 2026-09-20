@@ -1,177 +1,410 @@
 .dashboard {
-  max-width: 1200px;
+  max-width: 1280px;
   margin: 0 auto;
+  box-sizing: border-box;
+  width: 100%;
 }
 
 .header {
-  margin-bottom: 32px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 24px;
 }
 
 .title {
-  font-size: 24px;
-  font-weight: 700;
-  color: #1a1b1c;
+  font-size: clamp(22px, 4vw, 28px);
+  font-weight: 800;
+  color: #0F172A;
   margin: 0 0 4px 0;
+  letter-spacing: -0.02em;
 }
 
 .subtitle {
-  font-size: 14px;
-  color: #888d92;
+  font-size: 13.5px;
+  color: #64748B;
   margin: 0;
+  line-height: 1.4;
 }
 
-.healthBanner {
-  background-color: #f0fdf4;
-  border: 1px solid #bbf7d0;
-  border-radius: 12px;
-  padding: 24px;
-  display: flex;
-  flex-direction: column;
+.refreshBtn {
+  background-color: #FFFFFF;
+  color: #334155;
+  border: 1px solid #CBD5E1;
+  border-radius: 10px;
+  padding: 8px 16px;
+  font-weight: 700;
+  font-size: 13px;
+  cursor: pointer;
+  display: inline-flex;
   align-items: center;
-  justify-content: center;
-  margin-bottom: 32px;
-  gap: 8px;
+  gap: 7px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  transition: all 0.2s ease;
+}
+
+.refreshBtn:hover {
+  background-color: #F8FAFC;
+  border-color: #94A3B8;
+}
+
+/* ── Live Ground Snapshot Banner ── */
+.liveSnapshotBanner {
+  background: linear-gradient(135deg, #0F172A 0%, #1E293B 100%);
+  border-radius: 18px;
+  padding: clamp(16px, 3vw, 22px);
+  color: #FFFFFF;
+  margin-bottom: 24px;
+  box-shadow: 0 8px 24px -4px rgba(15, 23, 42, 0.18);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.liveSnapshotHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 14px;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.livePulseBadge {
+  background-color: #059669;
+  color: #FFFFFF;
+  font-size: 11px;
+  font-weight: 800;
+  padding: 4px 10px;
+  border-radius: 20px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  letter-spacing: 0.5px;
+}
+
+.liveSnapshotGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+}
+
+@media (min-width: 768px) {
+  .liveSnapshotGrid {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+  }
+}
+
+.liveSnapshotItem {
+  background-color: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  padding: 12px 14px;
+  box-sizing: border-box;
+}
+
+.liveItemLabel {
+  font-size: 11px;
+  font-weight: 700;
+  color: #94A3B8;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  margin-bottom: 4px;
+}
+
+.liveItemValue {
+  font-size: clamp(15px, 3vw, 18px);
+  font-weight: 800;
+  color: #FFFFFF;
+  line-height: 1.2;
+}
+
+/* ── Health & Action Banner ── */
+.healthBanner {
+  background-color: #F0FDF4;
+  border: 1.5px solid #BBF7D0;
+  border-radius: 16px;
+  padding: 16px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.healthLeft {
+  display: flex;
+  align-items: center;
+  gap: 14px;
 }
 
 .healthScore {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 10px;
 }
 
 .scoreText {
-  font-size: 48px;
-  font-weight: 800;
+  font-size: clamp(28px, 5vw, 36px);
+  font-weight: 900;
   color: #166534;
-  letter-spacing: -1px;
+  letter-spacing: -0.5px;
+  line-height: 1;
 }
 
 .healthLabel {
-  font-size: 14px;
-  font-weight: 600;
-  color: #15803d;
+  font-size: 13px;
+  font-weight: 700;
+  color: #15803D;
   text-transform: uppercase;
   letter-spacing: 0.5px;
 }
 
+.healthSubtext {
+  font-size: 12px;
+  color: #166534;
+  margin-top: 2px;
+}
+
+/* ── Quick Action Controls: 2x2 on Mobile Samsung, 4x1 on Desktop ── */
+.sectionHeading {
+  font-size: 12.5px;
+  font-weight: 800;
+  color: #64748B;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin: 0 0 12px 0;
+}
+
+.actionsGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  margin-bottom: 28px;
+}
+
+@media (min-width: 768px) {
+  .actionsGrid {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin-bottom: 32px;
+  }
+}
+
+.actionCard {
+  background-color: #FFFFFF;
+  border: 1.5px solid #E2E8F0;
+  border-radius: 14px;
+  padding: 14px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  box-sizing: border-box;
+  text-decoration: none;
+  min-height: 68px;
+}
+
+.actionCard:hover {
+  border-color: #0F5132;
+  box-shadow: 0 8px 18px -3px rgba(15, 81, 50, 0.12);
+  transform: translateY(-2px);
+}
+
+.actionLeft {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+}
+
+.actionTitle {
+  font-size: 13.5px;
+  font-weight: 800;
+  color: #0F172A;
+  display: block;
+  line-height: 1.25;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.actionDesc {
+  font-size: 11px;
+  color: #64748B;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-top: 2px;
+}
+
+/* ── Dynamic Stats Grid: 2x2 on Mobile Samsung, 4x1 on Desktop ── */
 .statsGrid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  gap: 24px;
-  margin-bottom: 48px;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  margin-bottom: 32px;
+}
+
+@media (min-width: 768px) {
+  .statsGrid {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin-bottom: 36px;
+  }
 }
 
 .statCard {
-  background: white;
-  border: 1px solid #eef0f2;
-  border-radius: 12px;
-  padding: 24px;
+  background: #FFFFFF;
+  border: 1.5px solid #E2E8F0;
+  border-radius: 16px;
+  padding: clamp(14px, 3vw, 20px);
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  justify-content: space-between;
+  gap: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+  box-sizing: border-box;
+  position: relative;
+  overflow: hidden;
+}
+
+.statTopRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .statIcon {
-  width: 40px;
-  height: 40px;
-  border-radius: 8px;
-  background-color: #f5f6f8;
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  background-color: #F8FAFC;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-.statContent {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-
 .statValue {
-  font-size: 28px;
-  font-weight: 700;
-  color: #1a1b1c;
+  font-size: clamp(24px, 4.5vw, 32px);
+  font-weight: 900;
+  color: #0F172A;
+  line-height: 1.1;
+  letter-spacing: -0.5px;
+  margin: 6px 0 2px 0;
 }
 
 .statLabel {
-  font-size: 13px;
-  color: #888d92;
-  font-weight: 500;
+  font-size: 12px;
+  color: #64748B;
+  font-weight: 700;
 }
 
 .subStats {
   display: flex;
-  gap: 8px;
-  font-size: 12px;
-  font-weight: 600;
+  align-items: center;
+  gap: 6px;
+  font-size: 11.5px;
+  font-weight: 700;
+  flex-wrap: wrap;
 }
 
-.subStatSuccess {
-  color: #16a34a;
-}
+.subStatSuccess { color: #16A34A; }
+.subStatWarning { color: #EA580C; }
+.subStatNeutral { color: #64748B; }
 
-.subStatWarning {
-  color: #ea580c;
-}
-
-.subStatNeutral {
-  color: #64748b;
-}
-
+/* ── Live Data Quality Section ── */
 .dataQualitySection {
-  background: white;
-  border: 1px solid #eef0f2;
-  border-radius: 12px;
-  padding: 24px;
+  background: #FFFFFF;
+  border: 1.5px solid #E2E8F0;
+  border-radius: 16px;
+  padding: clamp(16px, 3vw, 24px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+  box-sizing: border-box;
 }
 
 .sectionTitle {
-  font-size: 16px;
-  font-weight: 600;
-  color: #1a1b1c;
+  font-size: 15px;
+  font-weight: 800;
+  color: #0F172A;
   margin: 0 0 16px 0;
-  padding-bottom: 16px;
-  border-bottom: 1px solid #eef0f2;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #F1F5F9;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .warningList {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 12px;
 }
 
 .warningItem {
   display: flex;
   align-items: flex-start;
-  flex-direction: column;
+  justify-content: space-between;
+  flex-wrap: wrap;
   gap: 8px;
-  padding-bottom: 16px;
-  border-bottom: 1px solid #f5f6f8;
-}
-
-.warningItem:last-child {
-  border-bottom: none;
-  padding-bottom: 0;
+  padding: 12px 14px;
+  background-color: #F8FAFC;
+  border-radius: 10px;
+  border: 1px solid #E2E8F0;
 }
 
 .warningPlace {
-  font-size: 14px;
-  font-weight: 600;
-  color: #1a1b1c;
+  font-size: 13.5px;
+  font-weight: 700;
+  color: #0F172A;
 }
 
 .warningTags {
   display: flex;
-  gap: 8px;
+  gap: 6px;
   flex-wrap: wrap;
 }
 
 .warningTag {
-  background-color: #fff7ed;
-  color: #c2410c;
-  font-size: 12px;
-  font-weight: 500;
-  padding: 4px 8px;
-  border-radius: 4px;
-  border: 1px solid #ffedd5;
+  background-color: #FFF7ED;
+  color: #C2410C;
+  font-size: 11.5px;
+  font-weight: 600;
+  padding: 3px 8px;
+  border-radius: 6px;
+  border: 1px solid #FFEDD5;
+}
+
+.editPlaceBtn {
+  font-size: 11.5px;
+  font-weight: 700;
+  color: #059669;
+  background-color: #F0FDF4;
+  border: 1px solid #BBF7D0;
+  border-radius: 6px;
+  padding: 4px 9px;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  transition: all 0.15s ease;
+}
+
+.editPlaceBtn:hover {
+  background-color: #DCFCE7;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.spin {
+  animation: spin 1s linear infinite;
 }
