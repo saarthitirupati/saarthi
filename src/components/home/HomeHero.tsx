@@ -1643,7 +1643,8 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
               {
                 id: 'sarva',
                 href: '/darshan/sarva-darshan',
-                icon: <Building2 size={24} color={sarvaTheme.iconColor} />,
+                icon: <Building2 size={16} color={sarvaTheme.iconColor} />,
+                sublabel: lang === 'te' ? 'ఉచిత ప్రవేశం' : 'FREE ENTRY',
                 title: lang === 'te' ? 'సర్వదర్శనం' : 'Sarva Darshan',
                 wait: sarvaWait,
                 bg: sarvaTheme.bg,
@@ -1654,8 +1655,9 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
               {
                 id: 'special',
                 href: '/darshan/special-entry',
-                icon: <Ticket size={24} color={specialTheme.iconColor} />,
-                title: lang === 'te' ? '₹300 ప్రవేశం' : '₹300 Entry',
+                icon: <Ticket size={16} color={specialTheme.iconColor} />,
+                sublabel: lang === 'te' ? 'ఆన్‌లైన్ టికెట్' : 'SPECIAL ENTRY',
+                title: lang === 'te' ? '₹300 దర్శనం' : '₹300 Darshan',
                 wait: specialWait,
                 bg: specialTheme.bg,
                 border: specialTheme.border,
@@ -1665,7 +1667,8 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
               {
                 id: 'ssd',
                 href: '/darshan/ssd-token',
-                icon: ssdTheme.iconComp,
+                icon: React.cloneElement(ssdTheme.iconComp, { size: 16 }),
+                sublabel: lang === 'te' ? 'టైమ్డ్ స్లాట్' : 'TIMED SLOT',
                 title: lang === 'te' ? 'SSD టోకెన్లు' : 'SSD Tokens',
                 wait: ssdTheme.waitText,
                 bg: ssdTheme.bg,
@@ -1684,22 +1687,27 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
                   backgroundColor: card.bg,
                   border: `1.5px solid ${card.border}`,
                   borderRadius: '16px',
-                  padding: '12px 6px 10px',
+                  padding: '10px 6px 9px',
                   display: 'flex',
                   flexDirection: 'column',
                   alignItems: 'center',
                   textAlign: 'center',
                   justifyContent: 'space-between',
-                  minHeight: '118px',
+                  minHeight: '122px',
                   boxSizing: 'border-box',
-                  transition: 'transform 0.15s ease',
-                  cursor: 'pointer'
+                  transition: 'transform 0.15s ease, box-shadow 0.15s ease',
+                  cursor: 'pointer',
+                  boxShadow: '0 2px 8px rgba(15, 23, 42, 0.02)'
                 }}
                 className="darshan-home-card"
               >
-                {/* Top Vector Icon */}
+                {/* Top Vector Icon inside Dedicated Container */}
                 <div style={{
-                  height: '32px',
+                  width: '28px',
+                  height: '28px',
+                  borderRadius: '8px',
+                  backgroundColor: card.badgeBg,
+                  border: `1px solid ${card.border}`,
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
@@ -1708,13 +1716,27 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
                   {card.icon}
                 </div>
 
+                {/* Micro-label */}
+                <span style={{
+                  fontSize: '9px',
+                  fontWeight: 800,
+                  letterSpacing: '0.04em',
+                  textTransform: 'uppercase',
+                  color: '#64748B',
+                  lineHeight: 1.1,
+                  marginBottom: '2px'
+                }}>
+                  {card.sublabel}
+                </span>
+
                 {/* Title */}
                 <div style={{
                   fontSize: lang === 'te' ? '12px' : '11.5px',
                   fontWeight: 800,
                   color: '#0F172A',
-                  marginBottom: '6px',
-                  lineHeight: 1.2
+                  marginBottom: '5px',
+                  lineHeight: 1.2,
+                  fontFamily: lang === 'te' ? 'var(--font-telugu)' : 'inherit'
                 }}>
                   {card.title}
                 </div>
@@ -1725,20 +1747,21 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
                   color: card.badgeText,
                   fontSize: '10.5px',
                   fontWeight: 800,
-                  padding: '3px 8px',
-                  borderRadius: '12px',
-                  marginBottom: '6px',
+                  padding: '3px 7px',
+                  borderRadius: '10px',
+                  marginBottom: '4px',
                   width: '100%',
-                  maxWidth: '92%',
+                  maxWidth: '94%',
                   whiteSpace: 'nowrap',
                   overflow: 'hidden',
-                  textOverflow: 'ellipsis'
+                  textOverflow: 'ellipsis',
+                  border: `1px solid ${card.border}`
                 }}>
                   {card.wait}
                 </div>
 
                 {/* Bottom Chevron Arrow */}
-                <ChevronRight size={13} color="#64748B" />
+                <ChevronRight size={12} color="#64748B" />
               </Link>
             ));
           })()}

@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 import { useTrip } from '@/components/TripContext';
-import { calculateDrivingDistance, TIRUPATI_CENTER, isWithinTirupatiRegion, formatTravelTime, estimateDriveDuration } from '@/utils/location';
+import { calculateDrivingDistance, TIRUPATI_CENTER, isWithinTirupatiRegion, formatTravelTime, estimateDriveDuration, isPlaceOnTirumala, isCoordinateOnTirumalaHill } from '@/utils/location';
 
 export function useFeaturedPlaces(places: any[], liveStatus: any, weatherTemp: string) {
   const { userLocation } = useTrip();
@@ -32,7 +32,7 @@ export function useFeaturedPlaces(places: any[], liveStatus: any, weatherTemp: s
       }
 
       if (p.coordinates) {
-        const isTirumalaSpot = p.id === 'srivari-temple' || p.location?.toLowerCase().includes('tirumala');
+        const isTirumalaSpot = isPlaceOnTirumala(p);
         const distKm = calculateDrivingDistance(
           effectiveOrigin.lat,
           effectiveOrigin.lng,
@@ -91,7 +91,8 @@ export function useFeaturedPlaces(places: any[], liveStatus: any, weatherTemp: s
   const featuredPlaceDistance = useMemo(() => {
     if (!featuredPlace?.coordinates) return '10 mins away';
 
-    const isTirumalaSpot = featuredPlace.id === 'srivari-temple' || featuredPlace.location?.toLowerCase().includes('tirumala');
+    const isTirumalaSpot = isPlaceOnTirumala(featuredPlace);
+    const isGhatTrip = isTirumalaSpot !== isCoordinateOnTirumalaHill(effectiveOrigin.lat, effectiveOrigin.lng);
     const distKm = calculateDrivingDistance(
       effectiveOrigin.lat,
       effectiveOrigin.lng,
@@ -104,7 +105,7 @@ export function useFeaturedPlaces(places: any[], liveStatus: any, weatherTemp: s
       const walkMins = Math.max(1, Math.round(distKm * 12));
       return `${walkMins} min walk (${distKm} km)`;
     } else {
-      const driveMins = estimateDriveDuration(distKm, isTirumalaSpot);
+      const driveMins = estimateDriveDuration(distKm, isGhatTrip);
       const formattedTime = formatTravelTime(driveMins);
       return `${formattedTime} ${isLocalUser ? 'from you' : 'from Tirupati'} (${distKm} km)`;
     }

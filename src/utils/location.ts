@@ -261,6 +261,32 @@ export function isCoordinateOnTirumalaHill(lat: number, lng: number): boolean {
 }
 
 /**
+ * Checks if a place is genuinely located on Tirumala Hill (Seshachalam plateau).
+ * Uses GPS boundary check, category, and safe location string parsing to prevent
+ * false positives for foothill/bypass roads in Tirupati town (e.g. Tirumala Bypass Road).
+ */
+export function isPlaceOnTirumala(place: {
+  coordinates?: { lat?: number; lng?: number } | null;
+  category?: string;
+  location?: string;
+}): boolean {
+  if (place.coordinates?.lat && place.coordinates?.lng && isCoordinateOnTirumalaHill(place.coordinates.lat, place.coordinates.lng)) {
+    return true;
+  }
+  if (place.category === 'Tirumala Spot') {
+    return true;
+  }
+  const loc = (place.location || '').trim().toLowerCase();
+  if (loc === 'tirumala' || loc.includes('narayanagiri')) {
+    return true;
+  }
+  if (loc.includes('tirumala') && !loc.includes('bypass') && !loc.includes('foothill') && !loc.includes('alipiri')) {
+    return true;
+  }
+  return false;
+}
+
+/**
  * Checks if a location is within the Greater Tirupati Pilgrimage Circuit (<= 120 km)
  * or matches any explicitly supported preset hub.
  *
@@ -361,7 +387,7 @@ export function calculateDrivingDistance(
 
   // Determine if origin & destination are on Tirumala hill
   const isOriginOnHill = isCoordinateOnTirumalaHill(lat1, lon1);
-  const isDestOnHill = isTirumalaSpot || isCoordinateOnTirumalaHill(lat2, lon2);
+  const isDestOnHill = isCoordinateOnTirumalaHill(lat2, lon2) || (isTirumalaSpot && (lat2 >= 13.655 && lon2 <= 79.385));
 
   // ── CASE 1: Both Origin & Destination are on Tirumala Hill ──
   if (isOriginOnHill && isDestOnHill) {
@@ -484,7 +510,12 @@ export function estimateDriveDuration(distanceKm: number, isTirumalaRoute: boole
   if (!distanceKm || isNaN(distanceKm) || distanceKm <= 0) return 0;
 
   if (isTirumalaRoute) {
-    return Math.max(5, Math.round(distanceKm * 2.1));
+    if (distanceKm <= 22) {
+      return Math.max(5, Math.round(distanceKm * 2.1));
+    }
+    const plainsDist = distanceKm - 19.5;
+    const plainsDuration = plainsDist <= 15 ? plainsDist * 1.5 : (15 * 1.5 + (plainsDist - 15) * 1.15);
+    return Math.max(45, Math.round(41 + plainsDuration));
   }
   if (distanceKm <= 5) {
     return Math.max(2, Math.round(distanceKm * 2.0)); // City streets

@@ -7,7 +7,16 @@ import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { useSearchParams } from 'next/navigation';
 import styles from './Explore.module.css';
-import { calculateDrivingDistance, TIRUPATI_CENTER, isWithinTirupatiRegion, formatTravelTime, formatDistance, estimateDriveDuration } from '@/utils/location';
+import { 
+  calculateDrivingDistance, 
+  TIRUPATI_CENTER, 
+  isWithinTirupatiRegion, 
+  formatTravelTime, 
+  formatDistance, 
+  estimateDriveDuration,
+  isPlaceOnTirumala,
+  isCoordinateOnTirumalaHill
+} from '@/utils/location';
 import { useTrip } from '@/components/TripContext';
 import { useRealtimePlaces } from '@/lib/useRealtimePlaces';
 import { useLanguage } from '@/lib/useLanguage';
@@ -134,6 +143,8 @@ function ExploreContent() {
 
   const isAlternativeQuery = searchQuery.toLowerCase().includes('alternative');
   const isTirupatiQuery = searchQuery.toLowerCase() === 'tirupati' || searchQuery.toLowerCase() === 'nearby';
+  const effectiveLocation = userLocation || TIRUPATI_CENTER;
+  const isOriginOnHill = isCoordinateOnTirumalaHill(effectiveLocation.lat, effectiveLocation.lng);
 
   const filteredPlaces = useMemo(() => {
     const rawSource = places.length > 0 ? places : PLACES;
@@ -264,25 +275,26 @@ function ExploreContent() {
       return matchesSearch && matchesFilter;
     });
 
-    const effectiveLocation = userLocation || TIRUPATI_CENTER;
     result = result.map(p => {
-      const toStr = (v: any) => typeof v === 'string' ? v : (v?.name || v?.slug || String(v || ''));
       const lat = p.coordinates?.lat || TIRUPATI_CENTER.lat;
       const lng = p.coordinates?.lng || TIRUPATI_CENTER.lng;
-      const locStr = toStr(p.location).toLowerCase();
-      const catStr = toStr(p.category).toLowerCase();
-      const isTirumala = locStr.includes('tirumala') || 
-                         locStr.includes('narayanagiri') || 
-                         catStr.includes('tirumala');
+      const isTirumala = isPlaceOnTirumala(p);
       const dist = calculateDrivingDistance(effectiveLocation.lat, effectiveLocation.lng, lat, lng, isTirumala);
-      return { ...p, computedDistance: dist } as any;
+      const isGhatRoute = isTirumala !== isOriginOnHill;
+      const driveMins = estimateDriveDuration(dist, isGhatRoute);
+      return { 
+        ...p, 
+        computedDistance: dist,
+        computedDriveMins: driveMins,
+        isTirumalaOnHill: isTirumala
+      } as any;
     });
 
     // Always sort by proximity (nearest to farthest)
     result.sort((a: any, b: any) => (a.computedDistance ?? 999) - (b.computedDistance ?? 999));
 
     return result;
-  }, [searchQuery, activeFilter, places, userLocation, isAlternativeQuery, isTirupatiQuery, savedPlaceIds]);
+  }, [searchQuery, activeFilter, places, userLocation, isAlternativeQuery, isTirupatiQuery, savedPlaceIds, isOriginOnHill, effectiveLocation]);
 
   const nearbyPlaces = useMemo(() => {
     return [...filteredPlaces]
@@ -337,7 +349,8 @@ function ExploreContent() {
       // Nearby: places within 15 km
       const lat = place.coordinates?.lat || TIRUPATI_CENTER.lat;
       const lng = place.coordinates?.lng || TIRUPATI_CENTER.lng;
-      const dist = calculateDrivingDistance(effectiveLocation.lat, effectiveLocation.lng, lat, lng, false);
+      const isTirumala = isPlaceOnTirumala(place);
+      const dist = calculateDrivingDistance(effectiveLocation.lat, effectiveLocation.lng, lat, lng, isTirumala);
       if (dist <= 15) counts.Nearby++;
 
       // Primary placeType-based counting (tight, accurate)
@@ -494,68 +507,257 @@ function ExploreContent() {
             <div className={styles.horizontalScroll}>
               {nearbyPlaces.map((place) => {
                 const dist = Number((place as any).computedDistance || 0);
-                const locStr = String(place.location || '').toLowerCase();
-                const isTirumala = locStr.includes('tirumala') || locStr.includes('narayanagiri') || String(place.category || '').toLowerCase().includes('tirumala');
-                const driveMins = estimateDriveDuration(dist, isTirumala);
+                const driveMins = Number((place as any).computedDriveMins) || estimateDriveDuration(dist, isPlaceOnTirumala(place) !== isOriginOnHill);
                 const timeFormatted = formatTravelTime(driveMins, lang);
+                const placeName = (lang === 'te' && (place.nameTe || place.teluguName)) ? (place.nameTe || place.teluguName) : place.name;
+                const reason = lang === 'te'
+                  ? (place.significance?.whyVisitTe || place.whyVisit || place.shortIntro || place.oneReasonToVisit || '')
+                  : (place.whyVisit || place.shortIntro || place.oneReasonToVisit || '');
 
                 let travelStr = '';
                 if (dist <= 1.5) {
-                  travelStr = lang === 'te' ? `${Math.max(1, Math.round(dist * 12))} నిమిషాలు • నడకదారి` : `${Math.max(1, Math.round(dist * 12))} mins • Walk`;
+                  travelStr = lang === 'te' ? `${Math.max(1, Math.round(dist * 12))} ని. నడక` : `${Math.max(1, Math.round(dist * 12))}m walk`;
                 } else if (dist <= 8.0) {
-                  travelStr = lang === 'te' ? `${timeFormatted} • బైక్/ఆటో` : `${timeFormatted} • Bike`;
+                  travelStr = lang === 'te' ? `${timeFormatted} బైక్` : `${timeFormatted} bike`;
                 } else {
-                  travelStr = lang === 'te' ? `${timeFormatted} • బస్సు/కారు` : `${timeFormatted} • Bus/Car`;
+                  travelStr = lang === 'te' ? `${timeFormatted} కారు` : `${timeFormatted} drive`;
                 }
 
                 return (
-                  <Link href={`/place/${place.id}`} key={place.id} className={styles.curatedCard}>
-                    <div className={styles.curatedImage} style={{ backgroundImage: `url(${place.image || 'https://images.unsplash.com/photo-1514222134-b57cbf8ce673?auto=format&fit=crop&q=80&w=800'})` }} />
-                    <div className={styles.curatedInfo}>
-                      <h4>{place.name}</h4>
-                      <div style={{ display: 'flex', flexDirection: 'column', gap: '2px', marginTop: '2px' }}>
-                        <span style={{ color: '#2F6144', fontWeight: 800, fontSize: '11px' }}>
-                          {formatDistance(dist, lang)} {lang === 'te' ? 'దూరం' : 'away'} • {travelStr}
-                        </span>
+                  <motion.div
+                    key={place.id}
+                    whileHover={{ y: -3 }}
+                    whileTap={{ scale: 0.98 }}
+                    style={{ flexShrink: 0 }}
+                  >
+                    <Link
+                      href={`/place/${place.id}`}
+                      style={{
+                        textDecoration: 'none',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        width: 'clamp(152px, 44vw, 175px)',
+                        height: '100%',
+                        backgroundColor: '#FFFFFF',
+                        borderRadius: '16px',
+                        overflow: 'hidden',
+                        border: '1px solid rgba(15, 23, 42, 0.08)',
+                        boxShadow: '0 4px 14px rgba(15, 23, 42, 0.03)'
+                      }}
+                    >
+                      <div
+                        style={{
+                          height: '90px',
+                          width: '100%',
+                          backgroundImage: `url(${place.image || 'https://images.unsplash.com/photo-1514222134-b57cbf8ce673?auto=format&fit=crop&q=80&w=800'})`,
+                          backgroundSize: 'cover',
+                          backgroundPosition: 'center',
+                          position: 'relative'
+                        }}
+                      >
+                        <div style={{
+                          position: 'absolute',
+                          top: '6px',
+                          left: '6px',
+                          backgroundColor: 'rgba(15, 23, 42, 0.72)',
+                          backdropFilter: 'blur(4px)',
+                          padding: '2px 6px',
+                          borderRadius: '5px',
+                          color: '#FFFFFF',
+                          fontSize: '8.5px',
+                          fontWeight: 800,
+                          letterSpacing: '0.04em',
+                          textTransform: 'uppercase'
+                        }}>
+                          {place.category || place.placeType || 'Spot'}
+                        </div>
+                        <div style={{
+                          position: 'absolute',
+                          bottom: '6px',
+                          left: '6px',
+                          backgroundColor: 'rgba(255, 255, 255, 0.94)',
+                          backdropFilter: 'blur(4px)',
+                          padding: '2px 6px',
+                          borderRadius: '5px',
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: '3px',
+                          color: '#0F5132',
+                          fontSize: '9.5px',
+                          fontWeight: 800
+                        }}>
+                          <MapPin size={9} color="#0F5132" />
+                          <span>{formatDistance(dist, lang)} • {travelStr}</span>
+                        </div>
                       </div>
-                    </div>
-                  </Link>
+                      <div style={{ padding: '8px 10px 10px', display: 'flex', flexDirection: 'column', flex: 1 }}>
+                        <h4 style={{
+                          fontSize: '12.5px',
+                          fontWeight: 800,
+                          color: '#0F172A',
+                          margin: '0 0 3px 0',
+                          lineHeight: 1.25,
+                          fontFamily: lang === 'te' ? 'var(--font-telugu)' : 'inherit',
+                          overflow: 'hidden',
+                          display: '-webkit-box',
+                          WebkitLineClamp: 1,
+                          WebkitBoxOrient: 'vertical'
+                        }}>
+                          {placeName}
+                        </h4>
+                        {reason ? (
+                          <p style={{
+                            fontSize: '10.5px',
+                            color: '#64748B',
+                            margin: '0 0 6px',
+                            lineHeight: 1.3,
+                            overflow: 'hidden',
+                            display: '-webkit-box',
+                            WebkitLineClamp: 2,
+                            WebkitBoxOrient: 'vertical',
+                            flex: 1
+                          }}>
+                            {reason}
+                          </p>
+                        ) : (
+                          <div style={{ flex: 1 }} />
+                        )}
+                        <div style={{ fontSize: '10.5px', fontWeight: 800, color: '#0F5132', display: 'flex', alignItems: 'center', gap: '2px', marginTop: 'auto' }}>
+                          <span>{lang === 'te' ? 'వివరాలు →' : 'Explore →'}</span>
+                        </div>
+                      </div>
+                    </Link>
+                  </motion.div>
                 );
               })}
             </div>
           </div>
         )}
 
+        {/* Hidden Gems Section */}
+        {hiddenGems.length > 0 && (
+          <div className={styles.curatedSection}>
+            <h2 className={styles.curatedTitle} style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+              {lang === 'te' ? 'దాగి ఉన్న పవిత్ర క్షేత్రాలు' : 'Hidden Gems'} <Sparkles size={18} style={{ color: '#6C63FF' }} />
+            </h2>
+            <div className={styles.horizontalScroll}>
+              {hiddenGems.map((place) => {
+                const dist = Number((place as any).computedDistance || 0);
+                const placeName = (lang === 'te' && (place.nameTe || place.teluguName)) ? (place.nameTe || place.teluguName) : place.name;
+                const reason = lang === 'te'
+                  ? (place.significance?.whyVisitTe || place.whyVisit || place.shortIntro || place.oneReasonToVisit || '')
+                  : (place.whyVisit || place.shortIntro || place.oneReasonToVisit || '');
 
-              {/* Hidden Gems Section */}
-              {hiddenGems.length > 0 && (
-                <div className={styles.curatedSection}>
-                  <h2 className={styles.curatedTitle} style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                    {lang === 'te' ? 'దాగి ఉన్న పవిత్ర క్షేత్రాలు' : 'Hidden Gems'} <Sparkles size={18} style={{ color: '#6C63FF' }} />
-                  </h2>
-                  <div className={styles.horizontalScroll}>
-                    {hiddenGems.map((place) => (
-                      <Link href={`/place/${place.id}`} key={place.id} className={styles.curatedCard}>
-                        <div
-                          className={styles.curatedImage}
-                          style={{ backgroundImage: `url(${place.image || 'https://images.unsplash.com/photo-1514222134-b57cbf8ce673?auto=format&fit=crop&q=80&w=800'})` }}
-                        >
-                          {place.placeType && (
-                            <span className={styles.curatedImageBadge}>{place.placeType}</span>
-                          )}
+                return (
+                  <motion.div
+                    key={place.id}
+                    whileHover={{ y: -3 }}
+                    whileTap={{ scale: 0.98 }}
+                    style={{ flexShrink: 0 }}
+                  >
+                    <Link
+                      href={`/place/${place.id}`}
+                      style={{
+                        textDecoration: 'none',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        width: 'clamp(152px, 44vw, 175px)',
+                        height: '100%',
+                        backgroundColor: '#FFFFFF',
+                        borderRadius: '16px',
+                        overflow: 'hidden',
+                        border: '1px solid rgba(15, 23, 42, 0.08)',
+                        boxShadow: '0 4px 14px rgba(15, 23, 42, 0.03)'
+                      }}
+                    >
+                      <div
+                        style={{
+                          height: '90px',
+                          width: '100%',
+                          backgroundImage: `url(${place.image || 'https://images.unsplash.com/photo-1514222134-b57cbf8ce673?auto=format&fit=crop&q=80&w=800'})`,
+                          backgroundSize: 'cover',
+                          backgroundPosition: 'center',
+                          position: 'relative'
+                        }}
+                      >
+                        <div style={{
+                          position: 'absolute',
+                          top: '6px',
+                          left: '6px',
+                          backgroundColor: 'rgba(79, 70, 229, 0.85)',
+                          backdropFilter: 'blur(4px)',
+                          padding: '2px 6px',
+                          borderRadius: '5px',
+                          color: '#FFFFFF',
+                          fontSize: '8.5px',
+                          fontWeight: 800,
+                          letterSpacing: '0.04em',
+                          textTransform: 'uppercase'
+                        }}>
+                          {lang === 'te' ? 'ప్రత్యేకం' : 'HIDDEN GEM'}
                         </div>
-                        <div className={styles.curatedInfo}>
-                          <h4 title={place.name}>{place.name}</h4>
-                          <div className={styles.curatedDistance}>
-                            <MapPin size={10} strokeWidth={2.5} />
-                            {formatDistance(Number((place as any).computedDistance || 0), lang)}
-                          </div>
+                        <div style={{
+                          position: 'absolute',
+                          bottom: '6px',
+                          left: '6px',
+                          backgroundColor: 'rgba(255, 255, 255, 0.94)',
+                          backdropFilter: 'blur(4px)',
+                          padding: '2px 6px',
+                          borderRadius: '5px',
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: '3px',
+                          color: '#0F5132',
+                          fontSize: '9.5px',
+                          fontWeight: 800
+                        }}>
+                          <MapPin size={9} color="#0F5132" />
+                          <span>{formatDistance(dist, lang)}</span>
                         </div>
-                      </Link>
-                    ))}
-                  </div>
-                </div>
-              )}
+                      </div>
+                      <div style={{ padding: '8px 10px 10px', display: 'flex', flexDirection: 'column', flex: 1 }}>
+                        <h4 style={{
+                          fontSize: '12.5px',
+                          fontWeight: 800,
+                          color: '#0F172A',
+                          margin: '0 0 3px 0',
+                          lineHeight: 1.25,
+                          fontFamily: lang === 'te' ? 'var(--font-telugu)' : 'inherit',
+                          overflow: 'hidden',
+                          display: '-webkit-box',
+                          WebkitLineClamp: 1,
+                          WebkitBoxOrient: 'vertical'
+                        }}>
+                          {placeName}
+                        </h4>
+                        {reason ? (
+                          <p style={{
+                            fontSize: '10.5px',
+                            color: '#64748B',
+                            margin: '0 0 6px',
+                            lineHeight: 1.3,
+                            overflow: 'hidden',
+                            display: '-webkit-box',
+                            WebkitLineClamp: 2,
+                            WebkitBoxOrient: 'vertical',
+                            flex: 1
+                          }}>
+                            {reason}
+                          </p>
+                        ) : (
+                          <div style={{ flex: 1 }} />
+                        )}
+                        <div style={{ fontSize: '10.5px', fontWeight: 800, color: '#4F46E5', display: 'flex', alignItems: 'center', gap: '2px', marginTop: 'auto' }}>
+                          <span>{lang === 'te' ? 'వివరాలు →' : 'Explore →'}</span>
+                        </div>
+                      </div>
+                    </Link>
+                  </motion.div>
+                );
+              })}
+            </div>
+          </div>
+        )}
 
         {isAlternativeQuery && (
           <div style={{
@@ -649,6 +851,7 @@ function ExploreContent() {
         <div className={styles.templeList}>
           {filteredPlaces.length > 0 ? (
             filteredPlaces.map((place: Place, index: number) => {
+              const placeName = (lang === 'te' && (place.nameTe || place.teluguName)) ? (place.nameTe || place.teluguName) : place.name;
               const festCrowd = getFestivalCrowdIntelligence(place.id);
               const explainableReason = festCrowd.hasImpact && festCrowd.isFestivalActive
                 ? (lang === 'te' ? festCrowd.alertTitleTe : festCrowd.alertTitleEn)
@@ -659,19 +862,45 @@ function ExploreContent() {
                 <motion.div
                   key={place.id}
                   className={styles.templeItem}
-                  initial={{ opacity: 0, x: -20 }}
+                  initial={{ opacity: 0, x: -16 }}
                   animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: index * 0.05 }}
+                  transition={{ delay: Math.min(index * 0.03, 0.3) }}
                 >
                   <Link href={`/place/${place.id}`} className={styles.templeLink}>
                     <div 
                       className={styles.itemImage}
-                      style={{ backgroundImage: `url(${place.image || 'https://images.unsplash.com/photo-1514222134-b57cbf8ce673?auto=format&fit=crop&q=80&w=800'})` }}
-                    />
+                      style={{
+                        backgroundImage: `url(${place.image || 'https://images.unsplash.com/photo-1514222134-b57cbf8ce673?auto=format&fit=crop&q=80&w=800'})`,
+                        position: 'relative'
+                      }}
+                    >
+                      <div style={{
+                        position: 'absolute',
+                        top: '6px',
+                        left: '6px',
+                        backgroundColor: 'rgba(15, 23, 42, 0.72)',
+                        backdropFilter: 'blur(4px)',
+                        padding: '2px 5px',
+                        borderRadius: '4px',
+                        color: '#FFFFFF',
+                        fontSize: '8px',
+                        fontWeight: 800,
+                        letterSpacing: '0.04em',
+                        textTransform: 'uppercase'
+                      }}>
+                        {place.category || place.placeType || 'Spot'}
+                      </div>
+                    </div>
                     <div className={styles.itemInfo}>
                       <div className={styles.itemHeader}>
-                        <h3 style={{ fontSize: '15px', fontWeight: 800, color: '#0F172A', margin: 0 }}>
-                          {place.name}
+                        <h3 style={{
+                          fontSize: '15px',
+                          fontWeight: 800,
+                          color: '#0F172A',
+                          margin: 0,
+                          fontFamily: lang === 'te' ? 'var(--font-telugu)' : 'inherit'
+                        }}>
+                          {placeName}
                         </h3>
                         <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                           <button
@@ -707,18 +936,18 @@ function ExploreContent() {
                           display: 'inline-flex',
                           alignItems: 'center',
                           gap: '5px',
-                          backgroundColor: festCrowd.hasImpact && festCrowd.isFestivalActive ? '#FEF2F2' : '#FEF9C3',
+                          backgroundColor: festCrowd.hasImpact && festCrowd.isFestivalActive ? '#FEF2F2' : '#FFFDF0',
                           color: festCrowd.hasImpact && festCrowd.isFestivalActive ? '#991B1B' : '#854D0E',
                           fontSize: '11px',
                           fontWeight: 700,
                           borderRadius: '6px',
-                          padding: '2.5px 7px',
+                          padding: '3px 8px',
                           margin: '4px 0 6px 0',
-                          border: `1px solid ${festCrowd.hasImpact && festCrowd.isFestivalActive ? 'rgba(239, 68, 68, 0.35)' : 'rgba(234, 179, 8, 0.25)'}`,
+                          border: `1px solid ${festCrowd.hasImpact && festCrowd.isFestivalActive ? 'rgba(239, 68, 68, 0.35)' : 'rgba(217, 119, 6, 0.25)'}`,
                           lineHeight: 1.3
                         }}>
-                          <Sparkles size={11} color={festCrowd.hasImpact && festCrowd.isFestivalActive ? '#DC2626' : '#CA8A04'} style={{ flexShrink: 0 }} />
-                          <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', maxWidth: '300px' }}>
+                          <Sparkles size={12} color={festCrowd.hasImpact && festCrowd.isFestivalActive ? '#DC2626' : '#D97706'} style={{ flexShrink: 0 }} />
+                          <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', maxWidth: '320px' }}>
                             {explainableReason}
                           </span>
                         </div>
@@ -734,7 +963,7 @@ function ExploreContent() {
                             <MapPin size={12} style={{ flexShrink: 0 }} />
                             {Number((place as any).computedDistance) < 1.0
                               ? `${formatDistance(Number((place as any).computedDistance), lang)} ${lang === 'te' ? 'దూరం' : 'away'}`
-                              : `${Math.max(4, Math.round(Number((place as any).computedDistance) * 3))} min away (${formatDistance(Number((place as any).computedDistance), lang)})`}
+                              : `${formatTravelTime((place as any).computedDriveMins || estimateDriveDuration(Number((place as any).computedDistance), isPlaceOnTirumala(place) !== isOriginOnHill), lang)} ${lang === 'te' ? 'ప్రయాణం' : 'away'} (${formatDistance(Number((place as any).computedDistance), lang)})`}
                           </span>
                         ) : (
                           <span className={styles.tag}>{formatDistance(place.distanceKms || 5, lang)}</span>

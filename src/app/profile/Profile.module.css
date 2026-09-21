@@ -2,7 +2,9 @@
   min-height: 100vh;
   background: #FCF8F2;
   color: #1A1A1A;
-  padding: 80px 24px 100px;
+  padding: 40px 24px 100px;
+  max-width: 720px;
+  margin: 0 auto;
 }
 
 .header {

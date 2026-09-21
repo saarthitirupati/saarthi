@@ -116,6 +116,20 @@
   padding: var(--space-4) var(--space-4) var(--space-8);
 }
 
+@media (min-width: 768px) {
+  .header {
+    max-width: 860px;
+  }
+  .content {
+    max-width: 860px;
+  }
+  .listGrid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+  }
+}
+
 .loading {
   text-align: center;
   padding: var(--space-12) 0;

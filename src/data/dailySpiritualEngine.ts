@@ -65,10 +65,10 @@ export const DAY_OF_WEEK_THEMES: Record<number, { theme: string; deity: string; 
     trivia: 'The golden tower above the main shrine absorbs the morning sunlight, radiating divine warmth over the Seven Hills.'
   },
   1: { // Monday - Lord Shiva & Sri Kapileswara
-    theme: 'Inner Calmness & Sacred Patience',
+    theme: 'Patience & Inner Peace',
     deity: 'Lord Shiva',
-    quote: 'Silence in queue is not empty waiting; it is the deepest prayer of a tranquil mind.',
-    author: 'Kapila Maharshi Teaching',
+    quote: 'Waiting in the queue is not wasted time — it is your quiet prayer to the Lord.',
+    author: "Sage Kapila's Teaching",
     triviaCategory: 'Temple',
     triviaTitle: 'Kapila Theertham Cave Temple',
     trivia: 'Located at the foot of Tirumala, Kapila Theertham is the only Lord Shiva temple in the entire Tirupati region.'

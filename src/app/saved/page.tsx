@@ -9,7 +9,7 @@ import Link from 'next/link';
 import { motion } from 'framer-motion';
 import styles from './Saved.module.css';
 
-import { calculateDistance, calculateDrivingDistance, TIRUPATI_CENTER, isWithinTirupatiRegion, formatDistance } from '@/utils/location';
+import { calculateDistance, calculateDrivingDistance, TIRUPATI_CENTER, isWithinTirupatiRegion, formatDistance, isPlaceOnTirumala } from '@/utils/location';
 
 export default function SavedPage() {
   const { places, loading } = useRealtimePlaces();
@@ -77,10 +77,10 @@ export default function SavedPage() {
                           <span>
                             {place.location} • {place.coordinates
                               ? (() => {
-                                  const orig = userLocation || TIRUPATI_CENTER;
-                                  const isTirumala = place.location.toLowerCase().includes('tirumala') || place.location.toLowerCase().includes('narayanagiri') || !!(place.category && place.category.toLowerCase().includes('tirumala'));
-                                  const d = calculateDrivingDistance(orig.lat, orig.lng, place.coordinates.lat, place.coordinates.lng, isTirumala);
-                                  return `${formatDistance(d)} ${userLocation ? 'away' : 'from Tirupati'}`;
+                                   const orig = userLocation || TIRUPATI_CENTER;
+                                   const isTirumala = isPlaceOnTirumala(place);
+                                   const d = calculateDrivingDistance(orig.lat, orig.lng, place.coordinates.lat, place.coordinates.lng, isTirumala);
+                                   return `${formatDistance(d)} ${userLocation ? 'away' : 'from Tirupati'}`;
                                 })()
                               : `${place.distanceKms} km`}
                           </span>

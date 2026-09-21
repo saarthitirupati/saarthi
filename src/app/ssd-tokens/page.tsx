@@ -122,22 +122,26 @@ export default function SsdTokensStandalonePage() {
       fontFamily: 'var(--font-sans, system-ui, -apple-system, sans-serif)'
     }}>
       {/* ── 1. STICKY TOP APP BAR ── */}
-      <header style={{
+      <div style={{
         position: 'sticky',
         top: 0,
         backgroundColor: 'rgba(255, 255, 255, 0.94)',
         backdropFilter: 'blur(16px)',
         WebkitBackdropFilter: 'blur(16px)',
         borderBottom: '1px solid rgba(15, 23, 42, 0.08)',
-        padding: '12px 16px',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        gap: '10px',
         zIndex: 100
       }}>
-        <button 
-          onClick={() => router.back()} 
+        <header style={{
+          padding: '12px 16px',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          gap: '10px',
+          maxWidth: '860px',
+          margin: '0 auto'
+        }}>
+          <button 
+            onClick={() => router.back()} 
           style={{
             background: '#F1F5F9', border: '1px solid #E2E8F0', color: '#334155',
             width: '36px', height: '36px', borderRadius: '10px', display: 'flex',
@@ -186,6 +190,7 @@ export default function SsdTokensStandalonePage() {
           </button>
         </div>
       </header>
+      </div>
 
       {/* Copy Toast */}
       {copied && (
@@ -200,7 +205,7 @@ export default function SsdTokensStandalonePage() {
       )}
 
       {/* ── MAIN CONTENT GRID ── */}
-      <main style={{ padding: '14px', display: 'flex', flexDirection: 'column', gap: '16px' }}>
+      <main style={{ padding: '14px', display: 'flex', flexDirection: 'column', gap: '16px', maxWidth: '860px', margin: '0 auto', width: '100%', boxSizing: 'border-box' }}>
 
         {/* ── 1. HERO LIVE STATUS CARD ── */}
         <section style={{

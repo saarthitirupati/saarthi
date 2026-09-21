@@ -6,8 +6,17 @@ import { useState, useMemo } from 'react';
 import { useHomeData } from '@/hooks/useHomeData';
 import { useTrip } from '@/components/TripContext';
 import { LoadingState } from '@/components/common/LoadingState';
-import { calculateDrivingDistance, TIRUPATI_CENTER, isWithinTirupatiRegion, formatDistance } from '@/lib/location';
+import { 
+  calculateDrivingDistance, 
+  TIRUPATI_CENTER, 
+  isWithinTirupatiRegion, 
+  formatDistance, 
+  estimateDriveDuration, 
+  isPlaceOnTirumala, 
+  isCoordinateOnTirumalaHill 
+} from '@/lib/location';
 import { useLanguage } from '@/lib/useLanguage';
+import { motion } from 'framer-motion';
 import {
   HomeHero,
   RecommendationCard,
@@ -74,22 +83,31 @@ export default function HomePage() {
   const [showLoreDrawer, setShowLoreDrawer] = useState(false);
 
   const origin = userLocation || TIRUPATI_CENTER;
+  const isOriginOnHill = isCoordinateOnTirumalaHill(origin.lat, origin.lng);
 
   const nearbyPlaces = useMemo(() => {
     if (!home.places?.allPlaces?.length) return [];
     return [...home.places.allPlaces]
       .filter(p => p.coordinates && p.placeType !== 'food')
-      .map(p => ({
-        ...p,
-        _dist: calculateDrivingDistance(
+      .map(p => {
+        const isTirumala = isPlaceOnTirumala(p);
+        const dist = calculateDrivingDistance(
           origin.lat, origin.lng,
           p.coordinates.lat, p.coordinates.lng,
-          p.category === 'Tirumala Spot'
-        )
-      }))
+          isTirumala
+        );
+        const isGhatRoute = isTirumala !== isOriginOnHill;
+        const driveMins = estimateDriveDuration(dist, isGhatRoute);
+        return {
+          ...p,
+          _dist: dist,
+          _driveMins: driveMins,
+          _isTirumala: isTirumala
+        };
+      })
       .sort((a, b) => a._dist - b._dist)
       .slice(0, 6);
-  }, [home.places?.allPlaces, origin.lat, origin.lng]);
+  }, [home.places?.allPlaces, origin.lat, origin.lng, isOriginOnHill]);
 
   if (home.loading) {
     return <HomeSkeleton />;
@@ -146,21 +164,50 @@ export default function HomePage() {
         <div className={styles.mobileStack}>
           
           {/* LAYER 1: HERO DECISION ENGINE & GUIDANCE */}
-          <HomeHero {...home.hero} liveStatus={home.status.liveStatus} activeAlertsCount={home.alerts.activeAlertsCount} hideHeader={false} />
+          <motion.div
+            initial={{ opacity: 0, y: 6 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.2 }}
+          >
+            <HomeHero {...home.hero} liveStatus={home.status.liveStatus} activeAlertsCount={home.alerts.activeAlertsCount} hideHeader={false} />
+          </motion.div>
 
           {/* LAYER 2: SSD TOKEN STATUS & COLLECTION CENTRES (IMMEDIATELY AFTER CROWD DETAILS) */}
-          <div style={{ marginTop: '4px', marginBottom: '8px' }}>
+          <motion.div
+            initial={{ opacity: 0, y: 6 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.22, delay: 0.04 }}
+            style={{ marginTop: '4px', marginBottom: '8px' }}
+          >
             <QuickChecklist {...home.checklist} liveStatus={home.status.liveStatus} />
-          </div>
+          </motion.div>
 
           {/* LAYER 2.5: YATRA ESSENTIALS COMPLIANCE CHECKLIST */}
-          <YatraChecklist />
+          <motion.div
+            initial={{ opacity: 0, y: 6 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.24, delay: 0.08 }}
+          >
+            <YatraChecklist />
+          </motion.div>
 
           {/* LAYER 3: PRIMARY PILGRIM SERVICES (ACT) */}
-          <div style={{ padding: '0 14px', marginTop: '2px', marginBottom: '16px' }}>
+          <motion.div
+            initial={{ opacity: 0, y: 6 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.26, delay: 0.12 }}
+            style={{ padding: '0 14px', marginTop: '2px', marginBottom: '16px' }}
+          >
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '10px' }}>
               <div>
-                <h2 style={{ fontSize: '15px', fontWeight: 800, color: '#0F172A', margin: 0, letterSpacing: '-0.01em' }}>
+                <h2 style={{
+                  fontSize: '15px',
+                  fontWeight: 800,
+                  color: '#0F172A',
+                  margin: 0,
+                  letterSpacing: '-0.01em',
+                  fontFamily: lang === 'te' ? 'var(--font-telugu)' : 'var(--font-heading)'
+                }}>
                   {t.primaryServices}
                 </h2>
                 <p style={{ fontSize: '11px', color: '#64748B', margin: '1px 0 0 0', fontWeight: 500 }}>
@@ -177,87 +224,116 @@ export default function HomePage() {
               {PRIMARY_SERVICES.map(srv => {
                 const IconComp = srv.icon;
                 return (
-                  <Link
+                  <motion.div
                     key={srv.id}
-                    href={srv.link}
-                    style={{
-                      textDecoration: 'none',
-                      backgroundColor: '#FFFFFF',
-                      borderRadius: '16px',
-                      overflow: 'hidden',
-                      border: '1px solid rgba(15, 23, 42, 0.06)',
-                      boxShadow: '0 6px 20px -4px rgba(15, 23, 42, 0.04), 0 2px 6px rgba(15, 23, 42, 0.02)',
-                      display: 'flex',
-                      flexDirection: 'column',
-                      minWidth: 0,
-                      transition: 'transform 0.15s ease'
-                    }}
+                    whileHover={{ y: -2 }}
+                    whileTap={{ scale: 0.98 }}
+                    transition={{ duration: 0.15 }}
                   >
-                    <div style={{
-                      height: '74px',
-                      width: '100%',
-                      backgroundImage: `url(${srv.image})`,
-                      backgroundSize: 'cover',
-                      backgroundPosition: 'center',
-                      backgroundColor: '#F1F5F9',
-                      position: 'relative'
-                    }}>
-                      <div style={{
-                        position: 'absolute',
-                        inset: 0,
-                        background: 'linear-gradient(180deg, rgba(0,0,0,0.15) 0%, rgba(0,0,0,0.45) 100%)'
-                      }} />
-                      <div style={{
-                        position: 'absolute',
-                        top: '6px',
-                        left: '6px',
-                        width: '24px',
-                        height: '24px',
-                        borderRadius: '7px',
-                        backgroundColor: 'rgba(15, 81, 50, 0.88)',
-                        boxShadow: '0 2px 6px rgba(0, 0, 0, 0.15)',
+                    <Link
+                      href={srv.link}
+                      style={{
+                        textDecoration: 'none',
+                        backgroundColor: '#FFFFFF',
+                        borderRadius: '16px',
+                        overflow: 'hidden',
+                        border: '1px solid rgba(15, 23, 42, 0.06)',
+                        boxShadow: '0 6px 20px -4px rgba(15, 23, 42, 0.04), 0 2px 6px rgba(15, 23, 42, 0.02)',
                         display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center'
+                        flexDirection: 'column',
+                        minWidth: 0,
+                        height: '100%'
+                      }}
+                    >
+                      <div style={{
+                        height: '74px',
+                        width: '100%',
+                        backgroundImage: `url(${srv.image})`,
+                        backgroundSize: 'cover',
+                        backgroundPosition: 'center',
+                        backgroundColor: '#F1F5F9',
+                        position: 'relative'
                       }}>
-                        <IconComp size={13} color="#FFFFFF" />
+                        <div style={{
+                          position: 'absolute',
+                          inset: 0,
+                          background: 'linear-gradient(180deg, rgba(0,0,0,0.12) 0%, rgba(0,0,0,0.5) 100%)'
+                        }} />
+                        {/* Dedicated Soft-Tinted Icon Container */}
+                        <div style={{
+                          position: 'absolute',
+                          top: '6px',
+                          left: '6px',
+                          width: '26px',
+                          height: '26px',
+                          borderRadius: '8px',
+                          backgroundColor: 'rgba(255, 255, 255, 0.92)',
+                          backdropFilter: 'blur(4px)',
+                          boxShadow: '0 2px 6px rgba(0, 0, 0, 0.12)',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center'
+                        }}>
+                          <IconComp size={14} color="#0F5132" />
+                        </div>
                       </div>
-                    </div>
 
-                    <div style={{ padding: '8px 10px 10px' }}>
-                      <span style={{
-                        display: 'inline-flex',
-                        alignItems: 'center',
-                        gap: '4px',
-                        fontSize: '9.5px',
-                        fontWeight: 700,
-                        color: srv.statusColor,
-                        marginBottom: '2px'
-                      }}>
-                        <span style={{ width: '4px', height: '4px', borderRadius: '50%', backgroundColor: 'currentColor' }} />
-                        <span>{srv.status}</span>
-                      </span>
-                      <h3 style={{ fontSize: '12.5px', fontWeight: 800, color: '#0F172A', margin: '0 0 2px', lineHeight: 1.25 }}>
-                        {srv.title}
-                      </h3>
-                      <p style={{ fontSize: '10.5px', color: '#64748B', margin: '0 0 6px', lineHeight: 1.25, fontWeight: 500 }}>
-                        {srv.subtitle}
-                      </p>
-                      <div style={{ fontSize: '10.5px', fontWeight: 800, color: '#0F5132', display: 'flex', alignItems: 'center', gap: '2px' }}>
-                        <span>{t.navigate}</span>
+                      <div style={{ padding: '8px 10px 10px', display: 'flex', flexDirection: 'column', flex: 1 }}>
+                        <span style={{
+                          display: 'inline-flex',
+                          alignItems: 'center',
+                          gap: '4px',
+                          fontSize: '9.5px',
+                          fontWeight: 800,
+                          letterSpacing: '0.04em',
+                          textTransform: 'uppercase',
+                          color: srv.statusColor,
+                          marginBottom: '2px'
+                        }}>
+                          <span style={{ width: '4px', height: '4px', borderRadius: '50%', backgroundColor: 'currentColor' }} />
+                          <span>{srv.status}</span>
+                        </span>
+                        <h3 style={{
+                          fontSize: '12.5px',
+                          fontWeight: 800,
+                          color: '#0F172A',
+                          margin: '0 0 2px',
+                          lineHeight: 1.25,
+                          fontFamily: lang === 'te' ? 'var(--font-telugu)' : 'var(--font-heading)'
+                        }}>
+                          {srv.title}
+                        </h3>
+                        <p style={{ fontSize: '10.5px', color: '#64748B', margin: '0 0 6px', lineHeight: 1.25, fontWeight: 500, flex: 1 }}>
+                          {srv.subtitle}
+                        </p>
+                        <div style={{ fontSize: '10.5px', fontWeight: 800, color: '#0F5132', display: 'flex', alignItems: 'center', gap: '2px', marginTop: 'auto' }}>
+                          <span>{t.navigate}</span>
+                        </div>
                       </div>
-                    </div>
-                  </Link>
+                    </Link>
+                  </motion.div>
                 );
               })}
             </div>
-          </div>
+          </motion.div>
 
-          {/* LAYER 4: EXPLORE AROUND YOU (PHOTO-FIRST CARDS) */}
+          {/* LAYER 4: EXPLORE AROUND YOU (PHOTO-FIRST EXPLAINABLE CARDS) */}
           {nearbyPlaces.length > 0 && (
-            <div style={{ padding: '0 0 16px' }}>
+            <motion.div
+              initial={{ opacity: 0, y: 6 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.26, delay: 0.16 }}
+              style={{ padding: '0 0 16px' }}
+            >
               <div style={{ padding: '0 14px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '8px' }}>
-                <p style={{ fontSize: '13px', fontWeight: 800, color: '#0F172A', letterSpacing: '0.2px', margin: 0 }}>
+                <p style={{
+                  fontSize: '13px',
+                  fontWeight: 800,
+                  color: '#0F172A',
+                  letterSpacing: '0.2px',
+                  margin: 0,
+                  fontFamily: lang === 'te' ? 'var(--font-telugu)' : 'inherit'
+                }}>
                   {t.nearbyPlaces}
                 </p>
                 <Link href="/explore" style={{ fontSize: '11px', fontWeight: 800, color: '#0F5132', textDecoration: 'none' }}>
@@ -265,74 +341,140 @@ export default function HomePage() {
                 </Link>
               </div>
               <div className="noScrollbar" style={{ display: 'flex', gap: '10px', overflowX: 'auto', padding: '0 14px 4px', scrollbarWidth: 'none', msOverflowStyle: 'none' as any, WebkitOverflowScrolling: 'touch' }}>
-                {nearbyPlaces.map(p => (
-                  <Link 
-                    key={p.id} 
-                    href={`/place/${p.id}`} 
-                    style={{ 
-                      textDecoration: 'none', 
-                      flexShrink: 0, 
-                      width: 'clamp(138px, 40vw, 150px)',
-                      backgroundColor: '#FFFFFF',
-                      borderRadius: '16px',
-                      overflow: 'hidden',
-                      border: '1px solid rgba(15, 23, 42, 0.06)',
-                      boxShadow: '0 6px 20px -4px rgba(15, 23, 42, 0.04), 0 2px 6px rgba(15, 23, 42, 0.02)'
-                    }}
-                  >
-                    {/* PHOTO BANNER */}
-                    <div style={{
-                      width: '100%', 
-                      height: '84px', 
-                      backgroundImage: `url(${p.image})`, 
-                      backgroundSize: 'cover', 
-                      backgroundPosition: 'center',
-                      backgroundColor: '#E2E8F0',
-                      position: 'relative'
-                    }}>
-                      <div style={{
-                        position: 'absolute',
-                        bottom: '5px',
-                        left: '5px',
-                        backgroundColor: 'rgba(15, 23, 42, 0.75)',
-                        backdropFilter: 'blur(4px)',
-                        padding: '2px 6px',
-                        borderRadius: '5px',
-                        display: 'flex',
-                        alignItems: 'center',
-                        gap: '3px',
-                        color: '#FFFFFF',
-                        fontSize: '9.5px',
-                        fontWeight: 700
-                      }}>
-                        <MapPin size={9} />
-                        <span>{p._dist} km</span>
-                      </div>
-                    </div>
+                {nearbyPlaces.map(p => {
+                  const placeName = (lang === 'te' && (p.nameTelugu || p.teluguName)) ? (p.nameTelugu || p.teluguName) : p.name;
+                  const reason = lang === 'te'
+                    ? (p.teluguWhyVisit || p.shortIntroTelugu || p.whyVisit || p.shortIntro || '')
+                    : (p.whyVisit || p.shortIntro || '');
+                  const distLabel = typeof p._dist === 'number' ? formatDistance(p._dist, lang) : null;
+                  const driveLabel = p._driveMins ? (lang === 'te' ? `${p._driveMins} ని.` : `${p._driveMins}m`) : null;
 
-                    <div style={{ padding: '7px 8px 9px' }}>
-                      <p style={{
-                        fontSize: '12px', 
-                        fontWeight: 800, 
-                        color: '#0F172A', 
-                        margin: '0 0 2px', 
-                        lineHeight: 1.25,
-                        height: '2.5em',
-                        overflow: 'hidden', 
-                        display: '-webkit-box', 
-                        WebkitLineClamp: 2, 
-                        WebkitBoxOrient: 'vertical' as const
-                      }}>
-                        {p.name}
-                      </p>
-                      <span style={{ fontSize: '10px', color: '#64748B', fontWeight: 600 }}>
-                        {p._dist ? `${Math.max(4, Math.round(Number(p._dist) * 3))} min away` : 'Nearby'}
-                      </span>
-                    </div>
-                  </Link>
-                ))}
+                  return (
+                    <motion.div
+                      key={p.id}
+                      whileHover={{ y: -3 }}
+                      whileTap={{ scale: 0.98 }}
+                      style={{ flexShrink: 0 }}
+                    >
+                      <Link 
+                        href={`/place/${p.id}`} 
+                        style={{ 
+                          textDecoration: 'none', 
+                          display: 'flex',
+                          flexDirection: 'column',
+                          width: 'clamp(152px, 44vw, 172px)',
+                          height: '100%',
+                          backgroundColor: '#FFFFFF',
+                          borderRadius: '16px',
+                          overflow: 'hidden',
+                          border: '1px solid rgba(15, 23, 42, 0.06)',
+                          boxShadow: '0 6px 20px -4px rgba(15, 23, 42, 0.04), 0 2px 6px rgba(15, 23, 42, 0.02)'
+                        }}
+                      >
+                        {/* PHOTO BANNER */}
+                        <div style={{
+                          width: '100%', 
+                          height: '86px', 
+                          backgroundImage: `url(${p.image})`, 
+                          backgroundSize: 'cover', 
+                          backgroundPosition: 'center',
+                          backgroundColor: '#E2E8F0',
+                          position: 'relative'
+                        }}>
+                          {/* Category Floating Pill */}
+                          <div style={{
+                            position: 'absolute',
+                            top: '5px',
+                            left: '5px',
+                            backgroundColor: 'rgba(15, 23, 42, 0.72)',
+                            backdropFilter: 'blur(4px)',
+                            padding: '2px 6px',
+                            borderRadius: '5px',
+                            color: '#FFFFFF',
+                            fontSize: '8.5px',
+                            fontWeight: 800,
+                            letterSpacing: '0.04em',
+                            textTransform: 'uppercase'
+                          }}>
+                            {p.category || 'Spot'}
+                          </div>
+
+                          {/* Distance & Drive Time Pill */}
+                          <div style={{
+                            position: 'absolute',
+                            bottom: '5px',
+                            left: '5px',
+                            backgroundColor: 'rgba(255, 255, 255, 0.94)',
+                            backdropFilter: 'blur(4px)',
+                            padding: '2px 6px',
+                            borderRadius: '5px',
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: '3px',
+                            color: '#0F5132',
+                            fontSize: '9px',
+                            fontWeight: 800,
+                            boxShadow: '0 1px 4px rgba(0,0,0,0.1)'
+                          }}>
+                            <MapPin size={9} color="#0F5132" />
+                            <span>{distLabel ? `${distLabel}${driveLabel ? ` • ${driveLabel}` : ''}` : (lang === 'te' ? 'సమీపంలో' : 'Nearby')}</span>
+                          </div>
+                        </div>
+
+                        {/* CARD BODY WITH EXPLAINABLE REASON */}
+                        <div style={{ padding: '8px 9px 10px', display: 'flex', flexDirection: 'column', flex: 1 }}>
+                          <p style={{
+                            fontSize: '12px', 
+                            fontWeight: 800, 
+                            color: '#0F172A', 
+                            margin: '0 0 3px', 
+                            lineHeight: 1.25,
+                            fontFamily: lang === 'te' ? 'var(--font-telugu)' : 'inherit',
+                            overflow: 'hidden', 
+                            display: '-webkit-box', 
+                            WebkitLineClamp: 1, 
+                            WebkitBoxOrient: 'vertical' as const
+                          }}>
+                            {placeName}
+                          </p>
+                          
+                          {/* 1-Line Authentic Reason (Explainability Principle) */}
+                          {reason ? (
+                            <p style={{
+                              fontSize: '10px',
+                              color: '#64748B',
+                              margin: '0 0 6px',
+                              lineHeight: 1.3,
+                              overflow: 'hidden',
+                              display: '-webkit-box',
+                              WebkitLineClamp: 2,
+                              WebkitBoxOrient: 'vertical' as const,
+                              flex: 1
+                            }}>
+                              {reason}
+                            </p>
+                          ) : (
+                            <div style={{ flex: 1 }} />
+                          )}
+
+                          <div style={{
+                            fontSize: '10px',
+                            fontWeight: 800,
+                            color: '#0F5132',
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: '2px',
+                            marginTop: 'auto'
+                          }}>
+                            <span>{lang === 'te' ? 'వివరాలు →' : 'Explore →'}</span>
+                          </div>
+                        </div>
+                      </Link>
+                    </motion.div>
+                  );
+                })}
               </div>
-            </div>
+            </motion.div>
           )}
 
           {/* LAYER 5: DEVOTIONAL TRADITIONS & SACRED LORE (Single Consolidated Drawer) */}
@@ -410,76 +552,133 @@ export default function HomePage() {
             {/* Explore Around You (Desktop Balanced Grid) */}
             {nearbyPlaces.length > 0 && (
               <div style={{ backgroundColor: '#FFFFFF', borderRadius: '24px', padding: '20px', border: '1px solid #E2E8F0', boxShadow: '0 4px 16px rgba(15, 23, 42, 0.03)' }}>
-                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '12px' }}>
-                  <h2 style={{ fontSize: '17px', fontWeight: 800, color: '#0F172A', margin: 0 }}>
-                    {t.nearbyPlaces}
-                  </h2>
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '14px' }}>
+                  <div>
+                    <h2 style={{
+                      fontSize: '17px',
+                      fontWeight: 800,
+                      color: '#0F172A',
+                      margin: 0,
+                      fontFamily: lang === 'te' ? 'var(--font-telugu)' : 'var(--font-heading)'
+                    }}>
+                      {t.nearbyPlaces}
+                    </h2>
+                    <p style={{ fontSize: '11.5px', color: '#64748B', margin: '2px 0 0', fontWeight: 500 }}>
+                      {lang === 'te' ? 'మీ పరిసరాలలో దర్శించదగిన క్షేత్రాలు' : 'Curated heritage & sacred destinations near you'}
+                    </p>
+                  </div>
                   <Link href="/explore" style={{ fontSize: '12.5px', fontWeight: 800, color: '#0F5132', textDecoration: 'none' }}>
                     {t.seeAll}
                   </Link>
                 </div>
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(150px, 1fr))', gap: '10px' }}>
-                  {nearbyPlaces.slice(0, 6).map(p => (
-                    <Link
-                      key={p.id}
-                      href={`/place/${p.id}`}
-                      style={{
-                        textDecoration: 'none',
-                        backgroundColor: '#F8FAFC',
-                        borderRadius: '14px',
-                        overflow: 'hidden',
-                        border: '1px solid #E2E8F0',
-                        display: 'flex',
-                        flexDirection: 'column',
-                        minWidth: 0
-                      }}
-                    >
-                      <div style={{
-                        height: '70px',
-                        width: '100%',
-                        backgroundImage: `url(${p.image})`,
-                        backgroundSize: 'cover',
-                        backgroundPosition: 'center',
-                        position: 'relative'
-                      }}>
-                        <div style={{
-                          position: 'absolute',
-                          bottom: '4px',
-                          left: '4px',
-                          backgroundColor: 'rgba(15, 23, 42, 0.75)',
-                          padding: '2px 6px',
-                          borderRadius: '4px',
-                          display: 'flex',
-                          alignItems: 'center',
-                          gap: '2px',
-                          color: '#FFFFFF',
-                          fontSize: '9.5px',
-                          fontWeight: 700
-                        }}>
-                          <MapPin size={8} />
-                          <span>{formatDistance(p._dist, lang)}</span>
-                        </div>
-                      </div>
-                      <div style={{ padding: '6px 8px' }}>
-                        <p style={{
-                          fontSize: '12px',
-                          fontWeight: 800,
-                          color: '#0F172A',
-                          margin: 0,
-                          lineHeight: 1.2,
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(180px, 1fr))', gap: '12px' }}>
+                  {nearbyPlaces.slice(0, 6).map(p => {
+                    const placeName = (lang === 'te' && (p.nameTe || p.teluguName)) ? (p.nameTe || p.teluguName) : p.name;
+                    const reason = lang === 'te'
+                      ? (p.significance?.whyVisitTe || p.shortIntroTe || p.whyVisit || p.shortIntro || '')
+                      : (p.whyVisit || p.shortIntro || '');
+                    const distLabel = typeof p._dist === 'number' ? formatDistance(p._dist, lang) : null;
+                    const driveLabel = p._driveMins ? (lang === 'te' ? `${p._driveMins} ని.` : `${p._driveMins}m`) : null;
+
+                    return (
+                      <Link
+                        key={p.id}
+                        href={`/place/${p.id}`}
+                        style={{
+                          textDecoration: 'none',
+                          backgroundColor: '#FFFFFF',
+                          borderRadius: '16px',
                           overflow: 'hidden',
-                          display: '-webkit-box',
-                          WebkitLineClamp: 1,
-                          WebkitBoxOrient: 'vertical'
+                          border: '1px solid rgba(15, 23, 42, 0.08)',
+                          boxShadow: '0 2px 8px rgba(15, 23, 42, 0.02)',
+                          display: 'flex',
+                          flexDirection: 'column',
+                          minWidth: 0,
+                          transition: 'transform 0.15s ease, box-shadow 0.15s ease'
+                        }}
+                      >
+                        <div style={{
+                          height: '84px',
+                          width: '100%',
+                          backgroundImage: `url(${p.image})`,
+                          backgroundSize: 'cover',
+                          backgroundPosition: 'center',
+                          position: 'relative'
                         }}>
-                          {p.name}
-                        </p>
-                        <span style={{ fontSize: '10px', color: '#64748B', fontWeight: 600 }}>
-                          {p._dist ? `${Math.max(4, Math.round(Number(p._dist) * 3))} min away` : 'Nearby'}
-                        </span>
-                      </div>
-                    </Link>
-                  ))}
+                          <div style={{
+                            position: 'absolute',
+                            top: '6px',
+                            left: '6px',
+                            backgroundColor: 'rgba(15, 23, 42, 0.72)',
+                            backdropFilter: 'blur(4px)',
+                            padding: '2px 6px',
+                            borderRadius: '5px',
+                            color: '#FFFFFF',
+                            fontSize: '8.5px',
+                            fontWeight: 800,
+                            letterSpacing: '0.04em',
+                            textTransform: 'uppercase'
+                          }}>
+                            {p.category || 'Spot'}
+                          </div>
+                          <div style={{
+                            position: 'absolute',
+                            bottom: '6px',
+                            left: '6px',
+                            backgroundColor: 'rgba(255, 255, 255, 0.94)',
+                            backdropFilter: 'blur(4px)',
+                            padding: '2px 6px',
+                            borderRadius: '5px',
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: '3px',
+                            color: '#0F5132',
+                            fontSize: '9.5px',
+                            fontWeight: 800
+                          }}>
+                            <MapPin size={9} color="#0F5132" />
+                            <span>{distLabel ? `${distLabel}${driveLabel ? ` • ${driveLabel}` : ''}` : (lang === 'te' ? 'సమీపంలో' : 'Nearby')}</span>
+                          </div>
+                        </div>
+                        <div style={{ padding: '8px 10px 10px', display: 'flex', flexDirection: 'column', flex: 1 }}>
+                          <p style={{
+                            fontSize: '12.5px',
+                            fontWeight: 800,
+                            color: '#0F172A',
+                            margin: '0 0 3px',
+                            lineHeight: 1.25,
+                            fontFamily: lang === 'te' ? 'var(--font-telugu)' : 'inherit',
+                            overflow: 'hidden',
+                            display: '-webkit-box',
+                            WebkitLineClamp: 1,
+                            WebkitBoxOrient: 'vertical'
+                          }}>
+                            {placeName}
+                          </p>
+                          {reason ? (
+                            <p style={{
+                              fontSize: '10.5px',
+                              color: '#64748B',
+                              margin: '0 0 6px',
+                              lineHeight: 1.3,
+                              overflow: 'hidden',
+                              display: '-webkit-box',
+                              WebkitLineClamp: 2,
+                              WebkitBoxOrient: 'vertical',
+                              flex: 1
+                            }}>
+                              {reason}
+                            </p>
+                          ) : (
+                            <div style={{ flex: 1 }} />
+                          )}
+                          <div style={{ fontSize: '10.5px', fontWeight: 800, color: '#0F5132', display: 'flex', alignItems: 'center', gap: '2px', marginTop: 'auto' }}>
+                            <span>{lang === 'te' ? 'వివరాలు →' : 'Explore →'}</span>
+                          </div>
+                        </div>
+                      </Link>
+                    );
+                  })}
                 </div>
               </div>
             )}
@@ -491,7 +690,13 @@ export default function HomePage() {
             <div style={{ backgroundColor: '#FFFFFF', borderRadius: '24px', padding: '20px', border: '1px solid #E2E8F0', boxShadow: '0 4px 16px rgba(15, 23, 42, 0.03)' }}>
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '14px' }}>
                 <div>
-                  <h2 style={{ fontSize: '17px', fontWeight: 800, color: '#0F172A', margin: 0 }}>
+                  <h2 style={{
+                    fontSize: '17px',
+                    fontWeight: 800,
+                    color: '#0F172A',
+                    margin: 0,
+                    fontFamily: lang === 'te' ? 'var(--font-telugu)' : 'var(--font-heading)'
+                  }}>
                     {t.primaryServices}
                   </h2>
                   <p style={{ fontSize: '12px', color: '#64748B', margin: '2px 0 0', fontWeight: 500 }}>
@@ -541,26 +746,45 @@ export default function HomePage() {
                           left: '6px',
                           width: '26px',
                           height: '26px',
-                          borderRadius: '7px',
-                          backgroundColor: 'rgba(15, 23, 42, 0.8)',
+                          borderRadius: '8px',
+                          backgroundColor: 'rgba(255, 255, 255, 0.92)',
+                          backdropFilter: 'blur(4px)',
+                          boxShadow: '0 2px 6px rgba(0, 0, 0, 0.12)',
                           display: 'flex',
                           alignItems: 'center',
                           justifyContent: 'center'
                         }}>
-                          <IconComp size={14} color="#FFFFFF" />
+                          <IconComp size={14} color="#0F5132" />
                         </div>
                       </div>
-                      <div style={{ padding: '10px 12px' }}>
-                        <span style={{ fontSize: '10.5px', fontWeight: 800, color: srv.statusColor, display: 'block', marginBottom: '2px' }}>
-                          ● {srv.status}
+                      <div style={{ padding: '10px 12px', display: 'flex', flexDirection: 'column', flex: 1 }}>
+                        <span style={{
+                          display: 'inline-flex',
+                          alignItems: 'center',
+                          gap: '4px',
+                          fontSize: '9.5px',
+                          fontWeight: 800,
+                          letterSpacing: '0.04em',
+                          textTransform: 'uppercase',
+                          color: srv.statusColor,
+                          marginBottom: '3px'
+                        }}>
+                          <span style={{ width: '4px', height: '4px', borderRadius: '50%', backgroundColor: 'currentColor' }} />
+                          <span>{srv.status}</span>
                         </span>
-                        <h3 style={{ fontSize: '13.5px', fontWeight: 800, color: '#0F172A', margin: '0 0 2px' }}>
+                        <h3 style={{
+                          fontSize: '13.5px',
+                          fontWeight: 800,
+                          color: '#0F172A',
+                          margin: '0 0 2px',
+                          fontFamily: lang === 'te' ? 'var(--font-telugu)' : 'var(--font-heading)'
+                        }}>
                           {srv.title}
                         </h3>
-                        <p style={{ fontSize: '11px', color: '#64748B', margin: '0 0 6px', lineHeight: 1.3 }}>
+                        <p style={{ fontSize: '11px', color: '#64748B', margin: '0 0 6px', lineHeight: 1.3, flex: 1 }}>
                           {srv.subtitle}
                         </p>
-                        <div style={{ fontSize: '11px', fontWeight: 800, color: '#0F5132', display: 'flex', alignItems: 'center', gap: '2px' }}>
+                        <div style={{ fontSize: '11px', fontWeight: 800, color: '#0F5132', display: 'flex', alignItems: 'center', gap: '2px', marginTop: 'auto' }}>
                           <span>{t.navigate}</span>
                         </div>
                       </div>
