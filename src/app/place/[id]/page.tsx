@@ -371,11 +371,11 @@ export default function PlaceDetails() {
       gap: 'clamp(5px, 1.6vw, 10px)'
     }}>
       {/* 1. Distance */}
-      <div suppressHydrationWarning style={{
+      <div suppressHydrationWarning title={lang === 'te' ? 'దూరం' : 'Distance'} style={{
         backgroundColor: '#FFFFFF',
         border: '1.5px solid rgba(15, 81, 50, 0.2)',
         borderRadius: '15px',
-        padding: 'clamp(7px, 2vw, 9px) clamp(2px, 1.2vw, 6px)',
+        padding: 'clamp(8px, 2.2vw, 11px) clamp(2px, 1.2vw, 6px)',
         textAlign: 'center',
         boxShadow: '0 2px 8px rgba(0,0,0,0.02)',
         display: 'flex',
@@ -385,18 +385,18 @@ export default function PlaceDetails() {
         minWidth: 0
       }}>
         <div style={{
-          width: '22px',
-          height: '22px',
+          width: '26px',
+          height: '26px',
           borderRadius: '50%',
           backgroundColor: '#DCFCE7',
           border: '1px solid #86EFAC',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          marginBottom: '3px',
+          marginBottom: '4px',
           flexShrink: 0
         }}>
-          <MapPin size={12} color="#0F5132" />
+          <MapPin size={13} color="#0F5132" />
         </div>
         <div suppressHydrationWarning style={{
           fontSize: 'clamp(11.5px, 3.2vw, 13px)',
@@ -411,24 +411,14 @@ export default function PlaceDetails() {
         }}>
           {formatDistance(drivingDistance, lang)}
         </div>
-        <div suppressHydrationWarning style={{
-          fontSize: '9.5px',
-          fontWeight: 700,
-          fontFamily: lang === 'te' ? 'var(--font-telugu), var(--font-body)' : 'var(--font-body)',
-          color: '#64748B',
-          marginTop: '2px',
-          whiteSpace: 'nowrap'
-        }}>
-          {lang === 'te' ? 'దూరం' : 'Distance'}
-        </div>
       </div>
 
       {/* 2. Travel Time */}
-      <div suppressHydrationWarning style={{
+      <div suppressHydrationWarning title={lang === 'te' ? 'ప్రయాణ సమయం' : 'Travel Time'} style={{
         backgroundColor: '#FFFFFF',
         border: '1.5px solid rgba(217, 119, 6, 0.22)',
         borderRadius: '15px',
-        padding: 'clamp(7px, 2vw, 9px) clamp(2px, 1.2vw, 6px)',
+        padding: 'clamp(8px, 2.2vw, 11px) clamp(2px, 1.2vw, 6px)',
         textAlign: 'center',
         boxShadow: '0 2px 8px rgba(0,0,0,0.02)',
         display: 'flex',
@@ -438,18 +428,18 @@ export default function PlaceDetails() {
         minWidth: 0
       }}>
         <div style={{
-          width: '22px',
-          height: '22px',
+          width: '26px',
+          height: '26px',
           borderRadius: '50%',
           backgroundColor: '#FEF3C7',
           border: '1px solid #FDE68A',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          marginBottom: '3px',
+          marginBottom: '4px',
           flexShrink: 0
         }}>
-          <Clock size={12} color="#D97706" />
+          <Clock size={13} color="#D97706" />
         </div>
         <div suppressHydrationWarning style={{
           fontSize: 'clamp(11.5px, 3.2vw, 13px)',
@@ -464,24 +454,14 @@ export default function PlaceDetails() {
         }}>
           {formattedDriveTime ? formattedDriveTime.replace(/\bm\b/, 'min') : `${driveTimeMins} min`}
         </div>
-        <div suppressHydrationWarning style={{
-          fontSize: '9.5px',
-          fontWeight: 700,
-          fontFamily: lang === 'te' ? 'var(--font-telugu), var(--font-body)' : 'var(--font-body)',
-          color: '#64748B',
-          marginTop: '2px',
-          whiteSpace: 'nowrap'
-        }}>
-          {lang === 'te' ? 'ప్రయాణ సమయం' : 'Travel Time'}
-        </div>
       </div>
 
       {/* 3. Status */}
-      <div suppressHydrationWarning style={{
+      <div suppressHydrationWarning title={lang === 'te' ? 'దర్శన స్థితి' : 'Status'} style={{
         backgroundColor: '#FFFFFF',
         border: `1.5px solid ${isOpenNow ? 'rgba(34, 197, 94, 0.3)' : 'rgba(239, 68, 68, 0.3)'}`,
         borderRadius: '15px',
-        padding: 'clamp(7px, 2vw, 9px) clamp(2px, 1.2vw, 6px)',
+        padding: 'clamp(8px, 2.2vw, 11px) clamp(2px, 1.2vw, 6px)',
         textAlign: 'center',
         boxShadow: '0 2px 8px rgba(0,0,0,0.02)',
         display: 'flex',
@@ -491,18 +471,18 @@ export default function PlaceDetails() {
         minWidth: 0
       }}>
         <div style={{
-          width: '22px',
-          height: '22px',
+          width: '26px',
+          height: '26px',
           borderRadius: '50%',
           backgroundColor: isOpenNow ? '#DCFCE7' : '#FEE2E2',
           border: `1px solid ${isOpenNow ? '#86EFAC' : '#FCA5A5'}`,
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          marginBottom: '3px',
+          marginBottom: '4px',
           flexShrink: 0
         }}>
-          {isOpenNow ? <CheckCircle2 size={12} color="#16A34A" /> : <Clock size={12} color="#DC2626" />}
+          {isOpenNow ? <CheckCircle2 size={13} color="#16A34A" /> : <Clock size={13} color="#DC2626" />}
         </div>
         <div suppressHydrationWarning style={{
           fontSize: 'clamp(11.5px, 3.2vw, 13px)',
@@ -517,24 +497,14 @@ export default function PlaceDetails() {
         }}>
           {isOpenNow ? (lang === 'te' ? 'తెరిచి ఉంది' : 'Open') : (lang === 'te' ? 'మూసివేత' : 'Closed')}
         </div>
-        <div suppressHydrationWarning style={{
-          fontSize: '9.5px',
-          fontWeight: 700,
-          fontFamily: lang === 'te' ? 'var(--font-telugu), var(--font-body)' : 'var(--font-body)',
-          color: '#64748B',
-          marginTop: '2px',
-          whiteSpace: 'nowrap'
-        }}>
-          {lang === 'te' ? 'స్థితి' : 'Status'}
-        </div>
       </div>
 
       {/* 4. Entry Fee */}
-      <div suppressHydrationWarning style={{
+      <div suppressHydrationWarning title={lang === 'te' ? 'ప్రవేశ రుసుము' : 'Entry Fee'} style={{
         backgroundColor: '#FFFFFF',
         border: '1.5px solid rgba(37, 99, 235, 0.22)',
         borderRadius: '15px',
-        padding: 'clamp(7px, 2vw, 9px) clamp(2px, 1.2vw, 6px)',
+        padding: 'clamp(8px, 2.2vw, 11px) clamp(2px, 1.2vw, 6px)',
         textAlign: 'center',
         boxShadow: '0 2px 8px rgba(0,0,0,0.02)',
         display: 'flex',
@@ -544,18 +514,18 @@ export default function PlaceDetails() {
         minWidth: 0
       }}>
         <div style={{
-          width: '22px',
-          height: '22px',
+          width: '26px',
+          height: '26px',
           borderRadius: '50%',
           backgroundColor: '#DBEAFE',
           border: '1px solid #93C5FD',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          marginBottom: '3px',
+          marginBottom: '4px',
           flexShrink: 0
         }}>
-          <Sparkles size={12} color="#2563EB" />
+          <Sparkles size={13} color="#2563EB" />
         </div>
         <div suppressHydrationWarning style={{
           fontSize: 'clamp(11.5px, 3.2vw, 13px)',
@@ -569,16 +539,6 @@ export default function PlaceDetails() {
           maxWidth: '100%'
         }}>
           {place.entryFeeNum === 0 || !place.entryFeeNum ? (lang === 'te' ? 'ఉచితం' : 'Free') : `₹${place.entryFeeNum}`}
-        </div>
-        <div suppressHydrationWarning style={{
-          fontSize: '9.5px',
-          fontWeight: 700,
-          fontFamily: lang === 'te' ? 'var(--font-telugu), var(--font-body)' : 'var(--font-body)',
-          color: '#64748B',
-          marginTop: '2px',
-          whiteSpace: 'nowrap'
-        }}>
-          {lang === 'te' ? 'ప్రవేశ రుసుము' : 'Entry Fee'}
         </div>
       </div>
     </div>

@@ -9,6 +9,7 @@ import { TripProvider, useTrip } from '@/components/TripContext';
 import LocationPrompt from '@/components/LocationPrompt/LocationPrompt';
 import { usePageAnalytics } from '@/hooks/usePageAnalytics';
 import GoogleTranslate from '@/components/GoogleTranslate';
+import { motion } from 'framer-motion';
 import { DesktopHeader } from '@/components/DesktopHeader';
 import { ActiveAlerts } from '@/components/home/ActiveAlerts';
 import { useAlerts } from '@/hooks/useAlerts';
@@ -103,7 +104,22 @@ function LayoutContent({
           boxSizing: 'border-box',
           paddingBottom: showBottomNav ? 'var(--layout-padding-bottom)' : (pathname === '/onboarding' ? '0px' : '24px')
         }}>
-          {children}
+          {isAdmin || isStudio || pathname === '/onboarding' ? (
+            children
+          ) : (
+            <motion.div
+              key={pathname}
+              initial={{ opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{
+                duration: 0.22,
+                ease: [0.22, 1, 0.36, 1]
+              }}
+              style={{ width: '100%', minHeight: 'inherit' }}
+            >
+              {children}
+            </motion.div>
+          )}
         </div>
       </div>
     </>

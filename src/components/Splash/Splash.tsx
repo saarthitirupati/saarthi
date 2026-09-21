@@ -114,29 +114,6 @@ export default function SplashScreen({ onFinish }: { onFinish: () => void }) {
               transition: 'opacity 0.35s ease-in-out'
             }}
           />
-
-          <button
-            type="button"
-            onClick={handleFinish}
-            style={{
-              position: 'absolute',
-              top: 'max(20px, env(safe-area-inset-top))',
-              right: '20px',
-              zIndex: 9999999,
-              background: 'rgba(0, 0, 0, 0.4)',
-              border: '1px solid rgba(255, 255, 255, 0.25)',
-              color: '#FFFFFF',
-              borderRadius: '9999px',
-              padding: '6px 14px',
-              fontSize: '13px',
-              fontWeight: 500,
-              backdropFilter: 'blur(8px)',
-              WebkitBackdropFilter: 'blur(8px)',
-              cursor: 'pointer'
-            }}
-          >
-            Skip
-          </button>
         </motion.div>
       )}
     </AnimatePresence>
