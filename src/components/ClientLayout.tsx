@@ -12,6 +12,7 @@ import GoogleTranslate from '@/components/GoogleTranslate';
 import { DesktopHeader } from '@/components/DesktopHeader';
 import { ActiveAlerts } from '@/components/home/ActiveAlerts';
 import { useAlerts } from '@/hooks/useAlerts';
+import { LocationBanner } from '@/components/common/LocationBanner';
 
 import { syncExistingPushSubscription } from '@/lib/pushClient';
 
@@ -76,6 +77,7 @@ function LayoutContent({
           dismissAlert={alertsHook.dismissAlert} 
         />
       )}
+      {!isAdmin && !showSplash && !isExcluded && <LocationBanner />}
       <div 
         className="appContainer"
         style={{ 

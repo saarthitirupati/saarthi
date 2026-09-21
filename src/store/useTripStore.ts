@@ -65,69 +65,90 @@ export function useTripStore() {
     if (typeof window !== 'undefined') {
       const isManual = loadedState.locationSource === 'manual';
       let activeWatchId: number | null = null;
+      let permStatus: PermissionStatus | null = null;
+
+      const triggerLocationDetection = async () => {
+        const { detectCoordinates, watchCoordinates, getIPLocation, TIRUPATI_CENTER, resolveLocationName, syncLocationToServiceWorker } = await import('@/lib/location');
+
+        detectCoordinates(
+          (coords, source, isApproximate, accuracyMeters) => {
+            const region = resolveLocationName(coords.lat, coords.lng);
+            syncLocationToServiceWorker(coords, region);
+            setState(prev => ({
+              ...prev,
+              userLocation: coords,
+              locationPermission: source === 'gps' ? 'granted' : (prev.locationPermission === 'denied' ? 'denied' : 'default'),
+              locationSource: source,
+              locationAccuracyMeters: accuracyMeters,
+              locationName: region
+            }));
+
+            if (source === 'ip') {
+              getIPLocation().then(({ city }) => {
+                if (city) {
+                  const refined = resolveLocationName(coords.lat, coords.lng, city);
+                  setState(prev => ({ ...prev, locationName: refined }));
+                  syncLocationToServiceWorker(coords, refined);
+                }
+              }).catch(() => {});
+            }
+          },
+          (err) => {
+            const isExplicitDenial = err && err.code === 1;
+            setState(prev => ({
+              ...prev,
+              userLocation: prev.userLocation || TIRUPATI_CENTER,
+              locationPermission: isExplicitDenial ? 'denied' : prev.locationPermission
+            }));
+          }
+        );
+
+        // Real-time GPS tracking as the pilgrim moves
+        if (activeWatchId !== null && navigator.geolocation) {
+          navigator.geolocation.clearWatch(activeWatchId);
+        }
+        activeWatchId = watchCoordinates((coords, accuracyMeters) => {
+          const region = resolveLocationName(coords.lat, coords.lng);
+          syncLocationToServiceWorker(coords, region);
+          setState(prev => ({
+            ...prev,
+            userLocation: coords,
+            locationPermission: 'granted',
+            locationSource: 'gps',
+            locationAccuracyMeters: accuracyMeters,
+            locationName: region
+          }));
+        });
+      };
 
       // Check real browser permission status if supported
       const checkPermissionAndDetect = async () => {
         let isBrowserDenied = false;
         try {
           if (navigator.permissions && navigator.permissions.query) {
-            const status = await navigator.permissions.query({ name: 'geolocation' });
-            if (status.state === 'denied') isBrowserDenied = true;
+            permStatus = await navigator.permissions.query({ name: 'geolocation' });
+            if (permStatus.state === 'denied') isBrowserDenied = true;
+
+            // Auto-dynamically react when user toggles location in browser/device settings
+            const handlePermChange = () => {
+              if (!permStatus) return;
+              if (permStatus.state === 'granted') {
+                triggerLocationDetection();
+              } else if (permStatus.state === 'denied') {
+                setState(prev => ({ ...prev, locationPermission: 'denied', locationSource: 'fallback' }));
+              } else {
+                setState(prev => ({ ...prev, locationPermission: 'default' }));
+              }
+            };
+            permStatus.addEventListener('change', handlePermChange);
           }
         } catch {}
 
         if (!isManual && !isBrowserDenied) {
-          const { detectCoordinates, watchCoordinates, getIPLocation, TIRUPATI_CENTER, resolveLocationName, syncLocationToServiceWorker } = await import('@/lib/location');
-
-          detectCoordinates(
-            (coords, source, isApproximate, accuracyMeters) => {
-              const region = resolveLocationName(coords.lat, coords.lng);
-              syncLocationToServiceWorker(coords, region);
-              setState(prev => ({
-                ...prev,
-                userLocation: coords,
-                locationPermission: 'granted',
-                locationSource: source,
-                locationAccuracyMeters: accuracyMeters,
-                locationName: region
-              }));
-
-              if (source === 'ip') {
-                getIPLocation().then(({ city }) => {
-                  if (city) {
-                    const refined = resolveLocationName(coords.lat, coords.lng, city);
-                    setState(prev => ({ ...prev, locationName: refined }));
-                    syncLocationToServiceWorker(coords, refined);
-                  }
-                }).catch(() => {});
-              }
-            },
-            (err) => {
-              const isExplicitDenial = err && err.code === 1;
-              setState(prev => ({
-                ...prev,
-                userLocation: prev.userLocation || TIRUPATI_CENTER,
-                locationPermission: isExplicitDenial ? 'denied' : prev.locationPermission
-              }));
-            }
-          );
-
-          // Real-time GPS tracking as the pilgrim moves
-          activeWatchId = watchCoordinates((coords, accuracyMeters) => {
-            const region = resolveLocationName(coords.lat, coords.lng);
-            syncLocationToServiceWorker(coords, region);
-            setState(prev => ({
-              ...prev,
-              userLocation: coords,
-              locationPermission: 'granted',
-              locationSource: 'gps',
-              locationAccuracyMeters: accuracyMeters,
-              locationName: region
-            }));
-          });
+          await triggerLocationDetection();
         } else if (!loadedState.userLocation) {
           const { TIRUPATI_CENTER } = await import('@/lib/location');
-          setState(prev => ({ ...prev, userLocation: TIRUPATI_CENTER }));
+          setState(prev => ({ ...prev, userLocation: TIRUPATI_CENTER, locationPermission: isBrowserDenied ? 'denied' : prev.locationPermission }));
         }
       };
 
@@ -310,6 +331,56 @@ export function useTripStore() {
     setState(prev => (prev.locationName === locationName ? prev : { ...prev, locationName }));
   }, []);
 
+  const requestLocationPermission = useCallback(async (): Promise<boolean> => {
+    if (typeof window === 'undefined') return false;
+    try {
+      const { detectCoordinates, resolveLocationName, syncLocationToServiceWorker, watchCoordinates } = await import('@/lib/location');
+      return new Promise<boolean>((resolve) => {
+        detectCoordinates(
+          (coords, source, isApproximate, accuracyMeters) => {
+            const region = resolveLocationName(coords.lat, coords.lng);
+            syncLocationToServiceWorker(coords, region);
+            const isGps = source === 'gps';
+            setState(prev => ({
+              ...prev,
+              userLocation: coords,
+              locationPermission: isGps ? 'granted' : 'denied',
+              locationSource: source,
+              locationAccuracyMeters: accuracyMeters,
+              locationName: region
+            }));
+            if (isGps && navigator.geolocation) {
+              watchCoordinates((c, acc) => {
+                const reg = resolveLocationName(c.lat, c.lng);
+                syncLocationToServiceWorker(c, reg);
+                setState(prev => ({
+                  ...prev,
+                  userLocation: c,
+                  locationPermission: 'granted',
+                  locationSource: 'gps',
+                  locationAccuracyMeters: acc,
+                  locationName: reg
+                }));
+              });
+              resolve(true);
+            } else {
+              resolve(false);
+            }
+          },
+          () => {
+            setState(prev => ({
+              ...prev,
+              locationPermission: 'denied'
+            }));
+            resolve(false);
+          }
+        );
+      });
+    } catch {
+      return false;
+    }
+  }, []);
+
   return {
     ...state,
     setDays,
@@ -325,6 +396,7 @@ export function useTripStore() {
     resetTrip,
     setUserLocation,
     setLocationPermission,
-    setLocationName
+    setLocationName,
+    requestLocationPermission
   };
 }
