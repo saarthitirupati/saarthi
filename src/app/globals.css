@@ -9,6 +9,7 @@
   --font-telugu: 'Noto Sans Telugu', 'Tiro Telugu', 'Gautami', 'Vani', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
   --font-telugu-serif: 'Noto Serif Telugu', 'Tiro Telugu', 'Gautami', Georgia, serif;
   --font-sacred-serif: 'Cinzel', 'Playfair Display', Georgia, serif;
+  --font-hero: 'Cinzel', 'Playfair Display', Georgia, serif;
   --font-heading: 'Plus Jakarta Sans', var(--font-telugu), system-ui, -apple-system, sans-serif;
   --font-body: 'Inter', var(--font-telugu), system-ui, -apple-system, sans-serif;
   --font-sans: var(--font-body);
