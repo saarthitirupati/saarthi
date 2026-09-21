@@ -15,6 +15,8 @@ const initialPlannerInput: PlannerInput = {
   travelMode: 'car'
 };
 
+let globalActiveWatchId: number | null = null;
+
 export function useTripStore() {
   const [state, setState] = useState<TripState>({
     days: 0,
@@ -64,33 +66,53 @@ export function useTripStore() {
     // Refresh coordinates dynamically on mount (non-blocking deferral after initial UI render)
     if (typeof window !== 'undefined') {
       const isManual = loadedState.locationSource === 'manual';
-      let activeWatchId: number | null = null;
       let permStatus: PermissionStatus | null = null;
 
+      const startActiveWatcher = (
+        watchCoordinatesFn: typeof import('@/lib/location').watchCoordinates,
+        resolveLocationNameFn: typeof import('@/lib/location').resolveLocationName,
+        syncLocationFn: typeof import('@/lib/location').syncLocationToServiceWorker
+      ) => {
+        if (typeof window === 'undefined' || !navigator.geolocation) return;
+        if (globalActiveWatchId !== null) {
+          navigator.geolocation.clearWatch(globalActiveWatchId);
+          globalActiveWatchId = null;
+        }
+        globalActiveWatchId = watchCoordinatesFn((coords, accuracyMeters) => {
+          const region = resolveLocationNameFn(coords.lat, coords.lng);
+          syncLocationFn(coords, region);
+          setState(prev => ({
+            ...prev,
+            userLocation: coords,
+            locationPermission: 'granted',
+            locationSource: 'gps',
+            locationAccuracyMeters: accuracyMeters,
+            locationName: region
+          }));
+        });
+      };
+
       const triggerLocationDetection = async () => {
-        const { detectCoordinates, watchCoordinates, getIPLocation, TIRUPATI_CENTER, resolveLocationName, syncLocationToServiceWorker } = await import('@/lib/location');
+        const { detectCoordinates, watchCoordinates, TIRUPATI_CENTER, resolveLocationName, syncLocationToServiceWorker } = await import('@/lib/location');
 
         detectCoordinates(
           (coords, source, isApproximate, accuracyMeters) => {
             const region = resolveLocationName(coords.lat, coords.lng);
             syncLocationToServiceWorker(coords, region);
+            const isGps = source === 'gps';
+
             setState(prev => ({
               ...prev,
               userLocation: coords,
-              locationPermission: source === 'gps' ? 'granted' : (prev.locationPermission === 'denied' ? 'denied' : 'default'),
+              locationPermission: isGps ? 'granted' : (prev.locationPermission === 'denied' ? 'denied' : 'default'),
               locationSource: source,
               locationAccuracyMeters: accuracyMeters,
               locationName: region
             }));
 
-            if (source === 'ip') {
-              getIPLocation().then(({ city }) => {
-                if (city) {
-                  const refined = resolveLocationName(coords.lat, coords.lng, city);
-                  setState(prev => ({ ...prev, locationName: refined }));
-                  syncLocationToServiceWorker(coords, refined);
-                }
-              }).catch(() => {});
+            // Start continuous high-accuracy watcher whenever GPS is available
+            if (isGps && navigator.geolocation) {
+              startActiveWatcher(watchCoordinates, resolveLocationName, syncLocationToServiceWorker);
             }
           },
           (err) => {
@@ -102,23 +124,6 @@ export function useTripStore() {
             }));
           }
         );
-
-        // Real-time GPS tracking as the pilgrim moves
-        if (activeWatchId !== null && navigator.geolocation) {
-          navigator.geolocation.clearWatch(activeWatchId);
-        }
-        activeWatchId = watchCoordinates((coords, accuracyMeters) => {
-          const region = resolveLocationName(coords.lat, coords.lng);
-          syncLocationToServiceWorker(coords, region);
-          setState(prev => ({
-            ...prev,
-            userLocation: coords,
-            locationPermission: 'granted',
-            locationSource: 'gps',
-            locationAccuracyMeters: accuracyMeters,
-            locationName: region
-          }));
-        });
       };
 
       // Check real browser permission status if supported
@@ -135,6 +140,10 @@ export function useTripStore() {
               if (permStatus.state === 'granted') {
                 triggerLocationDetection();
               } else if (permStatus.state === 'denied') {
+                if (globalActiveWatchId !== null && navigator.geolocation) {
+                  navigator.geolocation.clearWatch(globalActiveWatchId);
+                  globalActiveWatchId = null;
+                }
                 setState(prev => ({ ...prev, locationPermission: 'denied', locationSource: 'fallback' }));
               } else {
                 setState(prev => ({ ...prev, locationPermission: 'default' }));
@@ -152,12 +161,13 @@ export function useTripStore() {
         }
       };
 
-      const timer = setTimeout(checkPermissionAndDetect, 250);
+      const timer = setTimeout(checkPermissionAndDetect, 200);
 
       return () => {
         clearTimeout(timer);
-        if (activeWatchId !== null && navigator.geolocation) {
-          navigator.geolocation.clearWatch(activeWatchId);
+        if (globalActiveWatchId !== null && navigator.geolocation) {
+          navigator.geolocation.clearWatch(globalActiveWatchId);
+          globalActiveWatchId = null;
         }
       };
     }
@@ -332,48 +342,58 @@ export function useTripStore() {
   }, []);
 
   const requestLocationPermission = useCallback(async (): Promise<boolean> => {
-    if (typeof window === 'undefined') return false;
+    if (typeof window === 'undefined' || !navigator.geolocation) return false;
     try {
-      const { detectCoordinates, resolveLocationName, syncLocationToServiceWorker, watchCoordinates } = await import('@/lib/location');
+      const { resolveLocationName, syncLocationToServiceWorker, watchCoordinates } = await import('@/lib/location');
       return new Promise<boolean>((resolve) => {
-        detectCoordinates(
-          (coords, source, isApproximate, accuracyMeters) => {
-            const region = resolveLocationName(coords.lat, coords.lng);
+        navigator.geolocation.getCurrentPosition(
+          (position) => {
+            const lat = Number(position.coords.latitude.toFixed(6));
+            const lng = Number(position.coords.longitude.toFixed(6));
+            const accuracy = Math.round(position.coords.accuracy || 0);
+            const coords = { lat, lng };
+            const region = resolveLocationName(lat, lng);
             syncLocationToServiceWorker(coords, region);
-            const isGps = source === 'gps';
+
             setState(prev => ({
               ...prev,
               userLocation: coords,
-              locationPermission: isGps ? 'granted' : 'denied',
-              locationSource: source,
-              locationAccuracyMeters: accuracyMeters,
+              locationPermission: 'granted',
+              locationSource: 'gps',
+              locationAccuracyMeters: accuracy,
               locationName: region
             }));
-            if (isGps && navigator.geolocation) {
-              watchCoordinates((c, acc) => {
-                const reg = resolveLocationName(c.lat, c.lng);
-                syncLocationToServiceWorker(c, reg);
-                setState(prev => ({
-                  ...prev,
-                  userLocation: c,
-                  locationPermission: 'granted',
-                  locationSource: 'gps',
-                  locationAccuracyMeters: acc,
-                  locationName: reg
-                }));
-              });
-              resolve(true);
-            } else {
-              resolve(false);
+
+            // Start continuous high-accuracy watcher
+            if (globalActiveWatchId !== null) {
+              navigator.geolocation.clearWatch(globalActiveWatchId);
+              globalActiveWatchId = null;
             }
+            globalActiveWatchId = watchCoordinates((c, acc) => {
+              const reg = resolveLocationName(c.lat, c.lng);
+              syncLocationToServiceWorker(c, reg);
+              setState(prev => ({
+                ...prev,
+                userLocation: c,
+                locationPermission: 'granted',
+                locationSource: 'gps',
+                locationAccuracyMeters: acc,
+                locationName: reg
+              }));
+            });
+
+            resolve(true);
           },
-          () => {
+          (err) => {
+            const isExplicitDenial = err && err.code === 1;
+            console.warn("[requestLocationPermission] Acquisition notice:", err);
             setState(prev => ({
               ...prev,
-              locationPermission: 'denied'
+              locationPermission: isExplicitDenial ? 'denied' : prev.locationPermission
             }));
             resolve(false);
-          }
+          },
+          { enableHighAccuracy: true, timeout: 12000, maximumAge: 30000 }
         );
       });
     } catch {
