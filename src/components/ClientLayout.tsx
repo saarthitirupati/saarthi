@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
+import SplashScreen from '@/components/Splash/Splash';
 import SideMenu from '@/components/SideMenu/SideMenu';
 import BottomNav from '@/components/BottomNav/BottomNav';
 import { TripProvider, useTrip } from '@/components/TripContext';
@@ -18,10 +19,14 @@ import { syncExistingPushSubscription } from '@/lib/pushClient';
 
 function LayoutContent({
   children,
+  showSplash,
+  handleSplashFinish,
   isMenuOpen,
   setIsMenuOpen,
 }: {
   children: React.ReactNode;
+  showSplash: boolean;
+  handleSplashFinish: () => void;
   isMenuOpen: boolean;
   setIsMenuOpen: (val: boolean) => void;
 }) {
@@ -45,10 +50,10 @@ function LayoutContent({
 
   useEffect(() => {
     const isExcluded = pathname === '/onboarding' || pathname === '/splash' || isAdmin || isStudio;
-    if (isInitialized && !isExcluded && needsOnboarding === true) {
+    if (isInitialized && !showSplash && !isExcluded && needsOnboarding === true) {
       router.push('/onboarding');
     }
-  }, [isInitialized, pathname, router, needsOnboarding]);
+  }, [isInitialized, showSplash, pathname, router, needsOnboarding]);
 
   useEffect(() => {
     const handleToggle = () => setIsMenuOpen(!isMenuOpen);
@@ -58,21 +63,22 @@ function LayoutContent({
 
   const isExcluded = pathname === '/onboarding' || pathname === '/splash' || isAdmin || isStudio;
   const isCheckingOrNeedsOnboarding = !isExcluded && (needsOnboarding === true);
-  const showLocationPrompt = isInitialized && !isAdmin && pathname === '/' && locationPermission === 'default';
-  const showBottomNav = !showLocationPrompt && !isAdmin && (['/', '/explore', '/saved', '/profile', '/essentials'].includes(pathname) || pathname?.startsWith('/essentials/'));
-  const hideContent = !isAdmin && isCheckingOrNeedsOnboarding;
+  const showLocationPrompt = isInitialized && !showSplash && !isAdmin && pathname === '/' && locationPermission === 'default';
+  const showBottomNav = !showSplash && !showLocationPrompt && !isAdmin && (['/', '/explore', '/saved', '/profile', '/essentials'].includes(pathname) || pathname?.startsWith('/essentials/'));
+  const hideContent = !isAdmin && (showSplash || isCheckingOrNeedsOnboarding);
 
   return (
     <>
+      {showSplash && !isAdmin && <SplashScreen onFinish={handleSplashFinish} />}
       {showLocationPrompt && <LocationPrompt />}
-      {!isAdmin && !isExcluded && <DesktopHeader />}
-      {!isAdmin && !isExcluded && (
+      {!isAdmin && !showSplash && !isExcluded && <DesktopHeader />}
+      {!isAdmin && !showSplash && !isExcluded && (
         <ActiveAlerts 
           activePopupAlert={alertsHook.activePopupAlert} 
           dismissAlert={alertsHook.dismissAlert} 
         />
       )}
-      {!isAdmin && !isExcluded && <LocationBanner />}
+      {!isAdmin && !showSplash && !isExcluded && <LocationBanner />}
       <div 
         className="appContainer"
         style={{ 
@@ -128,9 +134,30 @@ export default function ClientLayout({
   const pathname = usePathname();
   const router = useRouter();
 
+  const isHome = pathname === '/' || pathname === '';
+  const [showSplash, setShowSplash] = useState<boolean>(isHome);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const isAdmin = pathname?.startsWith('/saarthiadmin');
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const isE2E = window.location.search.includes('e2e=1') || navigator.userAgent.includes('Playwright');
+    if (isE2E) {
+      setShowSplash(false);
+      return;
+    }
+    const splashShown = sessionStorage.getItem('splashShown');
+    const isHomePage = pathname === '/' || pathname === '';
+    if (splashShown && isHomePage) {
+      setShowSplash(false);
+    }
+  }, [pathname]);
+
+  const handleSplashFinish = () => {
+    setShowSplash(false);
+    sessionStorage.setItem('splashShown', 'true');
+  };
 
   // Register service worker + sync push subscription if permission was already granted
   useEffect(() => {
@@ -180,6 +207,8 @@ export default function ClientLayout({
     <TripProvider>
       <GoogleTranslate />
       <LayoutContent
+        showSplash={showSplash}
+        handleSplashFinish={handleSplashFinish}
         isMenuOpen={isMenuOpen}
         setIsMenuOpen={setIsMenuOpen}
       >
