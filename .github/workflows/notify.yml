@@ -25,14 +25,14 @@ jobs:
     steps:
       - name: Send Daily Spot of the Day
         run: |
-          curl -s -f -L -X POST https://www.saarthiguide.in/api/push/send \
+          curl -4 --retry 3 --retry-all-errors --retry-delay 2 --connect-timeout 10 --max-time 45 -s -f -L -X POST https://www.saarthiguide.in/api/push/send \
             -H "Content-Type: application/json" \
             -H "x-cron-secret: ${{ secrets.CRON_SECRET }}" \
             -d '{"type":"daily_spot"}'
 
       - name: Send Festival Reminder (if any in 7/3/1/0 days)
         run: |
-          curl -s -L -X POST https://www.saarthiguide.in/api/push/send \
+          curl -4 --retry 3 --retry-all-errors --retry-delay 2 --connect-timeout 10 --max-time 45 -s -L -X POST https://www.saarthiguide.in/api/push/send \
             -H "Content-Type: application/json" \
             -H "x-cron-secret: ${{ secrets.CRON_SECRET }}" \
             -d '{"type":"festival"}'
@@ -44,7 +44,7 @@ jobs:
     steps:
       - name: Send Weekend Yatra Suggestion
         run: |
-          curl -s -f -L -X POST https://www.saarthiguide.in/api/push/send \
+          curl -4 --retry 3 --retry-all-errors --retry-delay 2 --connect-timeout 10 --max-time 45 -s -f -L -X POST https://www.saarthiguide.in/api/push/send \
             -H "Content-Type: application/json" \
             -H "x-cron-secret: ${{ secrets.CRON_SECRET }}" \
             -d '{"type":"weekend"}'
@@ -56,28 +56,28 @@ jobs:
     steps:
       - name: 3-day inactive users
         run: |
-          curl -s -L -X POST https://www.saarthiguide.in/api/push/send \
+          curl -4 --retry 3 --retry-all-errors --retry-delay 2 --connect-timeout 10 --max-time 45 -s -L -X POST https://www.saarthiguide.in/api/push/send \
             -H "Content-Type: application/json" \
             -H "x-cron-secret: ${{ secrets.CRON_SECRET }}" \
             -d '{"type":"reengagement","daysSince":3}'
 
       - name: 7-day inactive users
         run: |
-          curl -s -L -X POST https://www.saarthiguide.in/api/push/send \
+          curl -4 --retry 3 --retry-all-errors --retry-delay 2 --connect-timeout 10 --max-time 45 -s -L -X POST https://www.saarthiguide.in/api/push/send \
             -H "Content-Type: application/json" \
             -H "x-cron-secret: ${{ secrets.CRON_SECRET }}" \
             -d '{"type":"reengagement","daysSince":7}'
 
       - name: 15-day inactive users
         run: |
-          curl -s -L -X POST https://www.saarthiguide.in/api/push/send \
+          curl -4 --retry 3 --retry-all-errors --retry-delay 2 --connect-timeout 10 --max-time 45 -s -L -X POST https://www.saarthiguide.in/api/push/send \
             -H "Content-Type: application/json" \
             -H "x-cron-secret: ${{ secrets.CRON_SECRET }}" \
             -d '{"type":"reengagement","daysSince":15}'
 
       - name: 30-day inactive users
         run: |
-          curl -s -L -X POST https://www.saarthiguide.in/api/push/send \
+          curl -4 --retry 3 --retry-all-errors --retry-delay 2 --connect-timeout 10 --max-time 45 -s -L -X POST https://www.saarthiguide.in/api/push/send \
             -H "Content-Type: application/json" \
             -H "x-cron-secret: ${{ secrets.CRON_SECRET }}" \
             -d '{"type":"reengagement","daysSince":30}'

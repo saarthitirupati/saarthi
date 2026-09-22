@@ -9,6 +9,8 @@
     "start": "next start",
     "lint": "eslint . --max-warnings=0",
     "type-check": "tsc --noEmit",
+    "verify-mobile": "tsx scripts/verify_flutter_app.ts",
+    "test:e2e": "playwright test tests/smoke.spec.ts --project=\"Desktop Chrome\"",
     "test": "npm run audit-places && echo \"Smoke tests pass\" && exit 0",
     "verify": "npm run audit-places && npm run type-check && npm run test",
     "clean": "rm -rf .next node_modules package-lock.json && npm install",

@@ -153,11 +153,19 @@ export function useTripStore() {
           }
         } catch {}
 
-        if (!isManual && !isBrowserDenied) {
+        if (permStatus?.state === 'granted') {
+          // If browser already granted permission, ALWAYS detect live coordinates dynamically
+          await triggerLocationDetection();
+        } else if (!isManual && !isBrowserDenied) {
           await triggerLocationDetection();
         } else if (!loadedState.userLocation) {
-          const { TIRUPATI_CENTER } = await import('@/lib/location');
-          setState(prev => ({ ...prev, userLocation: TIRUPATI_CENTER, locationPermission: isBrowserDenied ? 'denied' : prev.locationPermission }));
+          const { TIRUPATI_CENTER, resolveLocationName } = await import('@/lib/location');
+          setState(prev => ({ 
+            ...prev, 
+            userLocation: TIRUPATI_CENTER, 
+            locationName: prev.locationName || resolveLocationName(TIRUPATI_CENTER.lat, TIRUPATI_CENTER.lng),
+            locationPermission: isBrowserDenied ? 'denied' : prev.locationPermission 
+          }));
         }
       };
 
@@ -325,8 +333,13 @@ export function useTripStore() {
         return prev;
       }
       if (userLocation) {
-        import('@/lib/location').then(({ syncLocationToServiceWorker }) => {
-          syncLocationToServiceWorker(userLocation);
+        import('@/lib/location').then(({ resolveLocationName, syncLocationToServiceWorker }) => {
+          const region = resolveLocationName(userLocation.lat, userLocation.lng);
+          syncLocationToServiceWorker(userLocation, region);
+          setState(current => ({
+            ...current,
+            locationName: region
+          }));
         }).catch(() => {});
       }
       return { ...prev, userLocation, locationSource: source };

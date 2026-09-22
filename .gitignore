@@ -63,3 +63,8 @@ android-app/app/saarthi-release.keystore
 
 # local cloned agent skills
 .agents/google-skills/
+
+# separate mobile codebase
+saarthi_mobile/
+scripts/verify_flutter_app.ts
+scripts/export_to_flutter.ts

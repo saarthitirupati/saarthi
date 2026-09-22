@@ -209,9 +209,10 @@ self.addEventListener('push', (event) => {
           const matches = 
             target.includes('all') ||
             (target.includes('tirumala') && userRegion.includes('tirumala')) ||
-            (target.includes('tirupati') && userRegion.includes('tirupati')) ||
+            (target.includes('tirupati') && (userRegion.includes('tirupati') || userRegion.includes('alipiri') || userRegion.includes('renigunta') || userRegion.includes('chandragiri'))) ||
             (target.includes('alipiri') && (userRegion.includes('alipiri') || userRegion.includes('tirupati'))) ||
-            (target.includes('nearby') && (userRegion.includes('tirumala') || userRegion.includes('tirupati') || userRegion.includes('alipiri')));
+            (target.includes('nearby') && (userRegion.includes('tirumala') || userRegion.includes('tirupati') || userRegion.includes('alipiri'))) ||
+            (userRegion.length > 2 && (target.includes(userRegion) || userRegion.includes(target)));
 
           if (!matches) {
             // Pilgrim is not in target location; skip displaying notification

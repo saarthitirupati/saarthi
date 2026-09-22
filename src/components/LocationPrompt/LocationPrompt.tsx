@@ -8,28 +8,24 @@ import { useState } from 'react';
 import { LocationPickerModal } from '@/components/common/LocationPickerModal';
 
 export default function LocationPrompt() {
-  const { setUserLocation, setLocationPermission } = useTrip();
+  const { requestLocationPermission, setUserLocation, setLocationPermission } = useTrip();
   const [isRequesting, setIsRequesting] = useState(false);
   const [isPickerOpen, setIsPickerOpen] = useState(false);
 
-  const handleAllowLocation = () => {
+  const handleAllowLocation = async () => {
     setIsRequesting(true);
-    import('@/lib/location').then(({ detectCoordinates, TIRUPATI_CENTER }) => {
-      detectCoordinates(
-        (coords) => {
-          setUserLocation(coords);
-          setLocationPermission('granted');
-          setIsRequesting(false);
-        },
-        () => {
-          setUserLocation(TIRUPATI_CENTER);
-          setLocationPermission('granted');
-          setIsRequesting(false);
-        }
-      );
-    }).catch(() => {
+    try {
+      const granted = await requestLocationPermission();
+      if (!granted) {
+        const { TIRUPATI_CENTER } = await import('@/lib/location');
+        setUserLocation(TIRUPATI_CENTER, 'fallback');
+      }
+    } catch {
+      const { TIRUPATI_CENTER } = await import('@/lib/location');
+      setUserLocation(TIRUPATI_CENTER, 'fallback');
+    } finally {
       setIsRequesting(false);
-    });
+    }
   };
 
   const handleNotNow = () => {

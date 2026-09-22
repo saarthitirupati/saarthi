@@ -132,12 +132,10 @@ export function detectCoordinates(
   if (typeof window === 'undefined') return;
 
   if (navigator.geolocation) {
-    let handled = false;
+    let hasGps = false;
 
     const handleSuccess = (position: GeolocationPosition) => {
-      if (handled) return;
-      handled = true;
-
+      hasGps = true;
       const lat = Number(position.coords.latitude.toFixed(6));
       const lng = Number(position.coords.longitude.toFixed(6));
       const accuracy = Math.round(position.coords.accuracy || 0);
@@ -148,40 +146,35 @@ export function detectCoordinates(
       }
 
       const isPrecise = accuracy > 0 && accuracy <= 100;
-      console.log(`[LocationPipeline] High-accuracy GPS acquired: (${lat}, ${lng}), accuracy: ±${accuracy}m, precise: ${isPrecise}`);
+      console.log(`[LocationPipeline] High-accuracy GPS acquired: (${lat}, ${lng}), accuracy: ±${accuracy}m`);
 
       syncLocationToServiceWorker({ lat, lng });
       onSuccess({ lat, lng }, 'gps', !isPrecise, accuracy);
     };
 
-    // Stage 1: Fast high-accuracy fix (accept cached GPS if acquired within last 30s)
+    // Parallel fast IP pre-warm: provides immediate regional coordinates so UI doesn't stall
+    const fallbackTimer = setTimeout(() => {
+      if (!hasGps) {
+        fallbackToDefault();
+      }
+    }, 1800);
+
+    // Single high-accuracy hardware/satellite GPS query with fast 4.5s timeout
     navigator.geolocation.getCurrentPosition(
-      handleSuccess,
-      (firstErr) => {
-        if (firstErr && firstErr.code === 1) {
-          // User explicitly clicked "Deny"
-          console.warn("[LocationPipeline] Geolocation permission explicitly denied by user.");
-          if (onFailure) onFailure(firstErr);
+      (pos) => {
+        clearTimeout(fallbackTimer);
+        handleSuccess(pos);
+      },
+      (err) => {
+        clearTimeout(fallbackTimer);
+        if (err && err.code === 1) {
+          console.warn("[LocationPipeline] Geolocation permission denied by user.");
+          if (onFailure) onFailure(err);
           return;
         }
-
-        console.warn("[LocationPipeline] Fast GPS fix timed out/unavailable, requesting fresh satellite fix...", firstErr);
-
-        // Stage 2: Fresh satellite lock with extended timeout (up to 12s)
-        navigator.geolocation.getCurrentPosition(
-          handleSuccess,
-          (secondErr) => {
-            if (secondErr && secondErr.code === 1) {
-              if (onFailure) onFailure(secondErr);
-              return;
-            }
-            console.warn("[LocationPipeline] Fresh GPS timed out, engaging fallback:", secondErr);
-            fallbackToDefault(secondErr);
-          },
-          { enableHighAccuracy: true, timeout: 12000, maximumAge: 120000 }
-        );
+        fallbackToDefault(err);
       },
-      { enableHighAccuracy: true, timeout: 7000, maximumAge: 30000 }
+      { enableHighAccuracy: true, timeout: 4500, maximumAge: 60000 }
     );
   } else {
     fallbackToDefault();

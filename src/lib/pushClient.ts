@@ -381,9 +381,27 @@ async function showLocalNotification(
     vibrate: [200, 100, 200],
   };
 
-  if (reg && 'showNotification' in reg) {
-    await reg.showNotification(title, options);
-  } else if (typeof Notification !== 'undefined') {
-    new Notification(title, options);
+  let activeReg = reg;
+  if (!activeReg && typeof navigator !== 'undefined' && 'serviceWorker' in navigator) {
+    try {
+      activeReg = await navigator.serviceWorker.ready;
+    } catch {}
+  }
+
+  if (activeReg && typeof activeReg.showNotification === 'function') {
+    try {
+      await activeReg.showNotification(title, options);
+      return;
+    } catch (err) {
+      console.warn('activeReg.showNotification error:', err);
+    }
+  }
+
+  if (typeof Notification !== 'undefined' && Notification.permission === 'granted') {
+    try {
+      new Notification(title, options);
+    } catch {
+      // Mobile Chrome intentionally throws TypeError on window.Notification
+    }
   }
 }

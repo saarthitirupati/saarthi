@@ -253,13 +253,20 @@ const METRIC_ICON: Record<string, React.ReactNode> = {
 export function HomeHero({ userName, locationName, weatherTemp, liveStatus, activeAlertsCount, hideHeader = false }: any) {
   const lang = useLanguage();
   const t = TEXTS[lang];
-  const { setUserLocation, locationPermission } = useTrip();
+  const { setUserLocation, locationPermission, locationName: storeLocationName } = useTrip();
   const [overrideScenario, setOverrideScenario] = useState<string>('auto');
-  const [selectedLocation, setSelectedLocation] = useState<string>(locationName || 'Tirupati');
+  const [selectedLocation, setSelectedLocation] = useState<string>(locationName || storeLocationName || 'Tirupati');
   const [isLocating, setIsLocating] = useState<boolean>(false);
   const [isLocationModalOpen, setIsLocationModalOpen] = useState<boolean>(false);
   const [isVideoPlaying, setIsVideoPlaying] = useState<boolean>(false);
   const bannerVideoRef = React.useRef<HTMLVideoElement>(null);
+
+  React.useEffect(() => {
+    const activeName = locationName || storeLocationName;
+    if (activeName) {
+      setSelectedLocation(activeName);
+    }
+  }, [locationName, storeLocationName]);
 
   React.useEffect(() => {
     const playVideo = () => {
@@ -1423,7 +1430,7 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
           controls={false}
           controlsList="nodownload nofallback noremoteplayback noplaybackrate"
           poster="/banner/banner_poster.webp"
-          preload="auto"
+          preload="metadata"
           aria-hidden="true"
           tabIndex={-1}
           onCanPlay={(e) => {
