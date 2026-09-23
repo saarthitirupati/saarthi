@@ -125,15 +125,17 @@ export default function SplashScreen({ onFinish }: { onFinish: () => void }) {
             }}
           />
 
-          <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 0.9, y: 0 }}
-            transition={{ delay: 0.8, duration: 0.5 }}
-            className={styles.touchHint}
-          >
-            <span className={styles.touchHintDot} />
-            <span>Touch anywhere to enter</span>
-          </motion.div>
+          <div className={styles.touchHintWrapper}>
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 0.9, y: 0 }}
+              transition={{ delay: 0.8, duration: 0.5 }}
+              className={styles.touchHint}
+            >
+              <span className={styles.touchHintDot} />
+              <span>Touch anywhere to enter</span>
+            </motion.div>
+          </div>
         </motion.div>
       )}
     </AnimatePresence>
