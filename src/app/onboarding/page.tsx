@@ -132,6 +132,11 @@ export default function OnboardingPage() {
 
   const nextStep = () => {
     if (step === 3 && !name.trim()) return;
+    if (step === 3 && typeof window !== 'undefined') {
+      import('@/lib/pushClient').then(({ subscribeToPushNotifications }) => {
+        subscribeToPushNotifications().catch(() => {});
+      }).catch(() => {});
+    }
     setStep(s => Math.min(s + 1, 4));
   };
 
