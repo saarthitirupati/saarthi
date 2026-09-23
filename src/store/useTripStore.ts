@@ -16,6 +16,21 @@ const initialPlannerInput: PlannerInput = {
 };
 
 let globalActiveWatchId: number | null = null;
+let lastEvaluatedLocationCoords: { lat: number; lng: number } | null = null;
+
+function triggerLocationNotificationEvaluation(coords: { lat: number; lng: number }) {
+  if (typeof window === 'undefined') return;
+  if (lastEvaluatedLocationCoords) {
+    const dLat = Math.abs(coords.lat - lastEvaluatedLocationCoords.lat) * 111000;
+    const dLng = Math.abs(coords.lng - lastEvaluatedLocationCoords.lng) * 111000 * Math.cos((coords.lat * Math.PI) / 180);
+    const distMeters = Math.sqrt(dLat * dLat + dLng * dLng);
+    if (distMeters < 100) return;
+  }
+  lastEvaluatedLocationCoords = coords;
+  import('@/lib/locationNotifications').then(({ checkAndDispatchLocationNotification }) => {
+    checkAndDispatchLocationNotification(coords).catch(() => {});
+  }).catch(() => {});
+}
 
 export function useTripStore() {
   const [state, setState] = useState<TripState>({
@@ -81,6 +96,7 @@ export function useTripStore() {
         globalActiveWatchId = watchCoordinatesFn((coords, accuracyMeters) => {
           const region = resolveLocationNameFn(coords.lat, coords.lng);
           syncLocationFn(coords, region);
+          triggerLocationNotificationEvaluation(coords);
           setState(prev => ({
             ...prev,
             userLocation: coords,
@@ -99,6 +115,7 @@ export function useTripStore() {
           (coords, source, isApproximate, accuracyMeters) => {
             const region = resolveLocationName(coords.lat, coords.lng);
             syncLocationToServiceWorker(coords, region);
+            triggerLocationNotificationEvaluation(coords);
             const isGps = source === 'gps';
 
             setState(prev => ({
@@ -367,6 +384,7 @@ export function useTripStore() {
             const coords = { lat, lng };
             const region = resolveLocationName(lat, lng);
             syncLocationToServiceWorker(coords, region);
+            triggerLocationNotificationEvaluation(coords);
 
             setState(prev => ({
               ...prev,
@@ -385,6 +403,7 @@ export function useTripStore() {
             globalActiveWatchId = watchCoordinates((c, acc) => {
               const reg = resolveLocationName(c.lat, c.lng);
               syncLocationToServiceWorker(c, reg);
+              triggerLocationNotificationEvaluation(c);
               setState(prev => ({
                 ...prev,
                 userLocation: c,

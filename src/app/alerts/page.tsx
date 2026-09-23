@@ -28,11 +28,13 @@ import {
   isNativeAndroidApp,
   PushPermissionState
 } from '@/lib/pushClient';
+import { useTripStore } from '@/store/useTripStore';
 
 export default function AlertsPage() {
   const router = useRouter();
   const { status, loading: statusLoading } = useRealtimeStatus();
   const { alerts, loading: alertsLoading } = useRealtimeAlerts();
+  const { locationName } = useTripStore();
 
   const [permission, setPermission] = useState<PushPermissionState>('default');
   const [isNative, setIsNative] = useState(false);
@@ -40,6 +42,31 @@ export default function AlertsPage() {
   const [testStatus, setTestStatus] = useState<'idle' | 'sending' | 'sent' | 'failed'>('idle');
   const [bgTestStatus, setBgTestStatus] = useState<'idle' | 'scheduled' | 'sent' | 'failed'>('idle');
   const [countdown, setCountdown] = useState(5);
+  const [locTestStatus, setLocTestStatus] = useState<string | null>(null);
+
+  const handleLocationSimulation = async (zone: 'tirumala' | 'alipiri') => {
+    const coords = zone === 'tirumala'
+      ? { lat: 13.68323, lng: 79.34731 }
+      : { lat: 13.647051, lng: 79.405856 };
+
+    setLocTestStatus(`Simulating ${zone === 'tirumala' ? 'Tirumala Hill' : 'Alipiri Gate'} arrival...`);
+    const { checkAndDispatchLocationNotification } = await import('@/lib/locationNotifications');
+
+    // Temporarily clear cooldown for the simulated test
+    const cooldownKey = 'saarthi_location_notif_cooldowns';
+    const raw = localStorage.getItem(cooldownKey);
+    const cooldowns = raw ? JSON.parse(raw) : {};
+    delete cooldowns[zone === 'tirumala' ? 'zone_tirumala_hill' : 'zone_alipiri_gate'];
+    localStorage.setItem(cooldownKey, JSON.stringify(cooldowns));
+
+    const dispatched = await checkAndDispatchLocationNotification(coords);
+    if (dispatched) {
+      setLocTestStatus(`Arrival notification triggered! Check your device top bar.`);
+    } else {
+      setLocTestStatus(`Could not trigger notification. Ensure notifications are allowed.`);
+    }
+    setTimeout(() => setLocTestStatus(null), 5000);
+  };
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -290,6 +317,71 @@ export default function AlertsPage() {
                 {bgTestStatus === 'failed' && (
                   <span style={{ fontSize: '11.5px', color: '#DC2626', fontWeight: 600 }}>
                     Could not dispatch background push. Ensure notification permission is granted.
+                  </span>
+                )}
+              </div>
+
+              {/* Location-Aware Region Indicator & Proactive Arrival Simulator */}
+              <div style={{
+                marginTop: 14,
+                paddingTop: 12,
+                borderTop: '1px solid rgba(21, 128, 61, 0.2)',
+                display: 'flex',
+                flexDirection: 'column',
+                gap: 8
+              }}>
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 6 }}>
+                  <span style={{ fontSize: '12px', fontWeight: 700, color: '#166534', display: 'flex', alignItems: 'center', gap: 5 }}>
+                    <MapPin size={14} color="#15803D" /> Active Zone: <strong>{locationName || 'Tirupati Region'}</strong>
+                  </span>
+                  <span style={{ fontSize: '11px', color: '#15803D', background: '#DCFCE7', padding: '2px 7px', borderRadius: 4, fontWeight: 700 }}>
+                    Location-Aware
+                  </span>
+                </div>
+                <p style={{ fontSize: '12px', color: '#166534', margin: 0, lineHeight: 1.4 }}>
+                  Saarthi monitors your route and notifies you upon arrival at Tirumala Hilltop, Alipiri Gate, Srivari Mettu, or nearby sacred shrines.
+                </p>
+                <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', marginTop: 4 }}>
+                  <button
+                    onClick={() => handleLocationSimulation('tirumala')}
+                    style={{
+                      background: '#FFFFFF',
+                      border: '1px solid #86EFAC',
+                      color: '#15803D',
+                      borderRadius: 8,
+                      padding: '6px 10px',
+                      fontSize: '11.5px',
+                      fontWeight: 700,
+                      cursor: 'pointer',
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      gap: 4
+                    }}
+                  >
+                    <span>📍 Simulate Tirumala Arrival</span>
+                  </button>
+                  <button
+                    onClick={() => handleLocationSimulation('alipiri')}
+                    style={{
+                      background: '#FFFFFF',
+                      border: '1px solid #86EFAC',
+                      color: '#15803D',
+                      borderRadius: 8,
+                      padding: '6px 10px',
+                      fontSize: '11.5px',
+                      fontWeight: 700,
+                      cursor: 'pointer',
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      gap: 4
+                    }}
+                  >
+                    <span>⛩️ Simulate Alipiri Arrival</span>
+                  </button>
+                </div>
+                {locTestStatus && (
+                  <span style={{ fontSize: '11.5px', color: '#15803D', fontWeight: 700, marginTop: 2 }}>
+                    {locTestStatus}
                   </span>
                 )}
               </div>

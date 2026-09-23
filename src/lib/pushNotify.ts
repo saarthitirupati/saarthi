@@ -30,6 +30,9 @@ interface PushPayload {
   target_location?: string;
   category?: string;
   image?: string;
+  target_coords?: { lat: number; lng: number };
+  radius_km?: number;
+  reason?: string;
 }
 
 async function runInBatches<T>(items: T[], batchSize: number, worker: (item: T) => Promise<any>): Promise<void> {
@@ -123,17 +126,25 @@ export async function pushNotifyAll(payload: PushPayload) {
 
   // 2. Native Android FCM Push Dispatch
   try {
-    const { data: devices, error: devErr } = await supabase
+    let devQuery = supabase
       .from('user_devices')
-      .select('device_id, fcm_token')
+      .select('device_id, fcm_token, is_in_tirupati')
       .eq('is_active', true)
       .not('fcm_token', 'is', null);
+
+    // If alert is targeted specifically at Tirumala, Tirupati, or Alipiri, filter to devices in Tirupati region
+    const targetLoc = (payload.target_location || '').toLowerCase();
+    if (targetLoc && targetLoc !== 'all users' && targetLoc !== 'all' && (targetLoc.includes('tirumala') || targetLoc.includes('tirupati') || targetLoc.includes('alipiri'))) {
+      devQuery = devQuery.eq('is_in_tirupati', true);
+    }
+
+    const { data: devices, error: devErr } = await devQuery;
 
     const validDevices = (devices || [])
       .filter(d => d.fcm_token && d.fcm_token.trim().length > 20 && !sentFcmTokens.has(d.fcm_token.trim()));
 
     if (!devErr && validDevices.length) {
-      console.log(`[PushNotifyAll] Dispatching FCM push to ${validDevices.length} active Android devices for "${payload.title}"`);
+      console.log(`[PushNotifyAll] Dispatching FCM push to ${validDevices.length} active Android devices for "${payload.title}" (target: ${payload.target_location || 'All'})`);
       const deadDevices: string[] = [];
       const deepLink = payload.url
         ? (payload.url.startsWith('http') ? payload.url : `https://www.saarthiguide.in${payload.url}`)
@@ -149,6 +160,8 @@ export async function pushNotifyAll(payload: PushPayload) {
           data: {
             tag: payload.tag || 'saarthi-alert',
             url: deepLink,
+            target_location: payload.target_location || 'All Users',
+            reason: payload.reason || ''
           },
         });
 

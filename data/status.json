@@ -1,10 +1,10 @@
 {
-  "waitTime": "6 Hours ",
+  "waitTime": "2-3 Hours ",
   "bestTime": "",
   "crowdLevel": "high",
   "sevaStatus": "All sevas open",
   "notice": "HIGH CROWD WARNING: Ghat road traffic slow. Exercise caution.",
-  "lastUpdated": "2026-09-21T04:46:16.721+00:00",
+  "lastUpdated": "2026-09-22T11:48:02.261+00:00",
   "darshanSpeed": "normal",
   "accommodationStatus": "available",
   "ladduAvailability": "available",
@@ -12,7 +12,7 @@
   "darshans": [
     {
       "name": "Sarva Darshan (Free)",
-      "waitTime": "6 Hours ",
+      "waitTime": "2-3 Hours ",
       "peakHours": "Daily 10 AM - 6 PM"
     },
     {
@@ -32,7 +32,7 @@
     }
   ],
   "ssdTokenStatus": "closed-for-day",
-  "ssdNextTokenTime": "SSD & DD Tokens cancelled",
+  "ssdNextTokenTime": "SSD & DD Tokens ",
   "ssdTokenSlots": [
     {
       "slotTime": "5:00 AM - 7:00 AM",
@@ -65,7 +65,7 @@
       "tokensLeft": "Full"
     }
   ],
-  "ssdNotice": "SSD & DD Tokens are Cancelled from 14th Sep to 23rd Sep due to Bhramostshavam  ",
+  "ssdNotice": "SSD & DD Tokens are Issueing on Queue line ",
   "ssdTimingsGuide": "",
   "ssdCounters": [
     {
