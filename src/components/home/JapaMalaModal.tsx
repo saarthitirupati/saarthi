@@ -267,7 +267,7 @@ export function JapaMalaModal({ isOpen, onClose, lang }: JapaMalaModalProps) {
       const currentNama = activeNama;
       const isMilestone = activeBead === 27 || activeBead === 54 || activeBead === 81;
       const cardType = isMilestone ? 'milestone' : 'bead';
-      const siteUrl = 'https://saarthiguide.in';
+      const siteUrl = 'https://www.saarthiguide.in';
 
       const text = lang === 'te'
         ? `✨ 📿 *శ్రీ వేంకటేశ్వర 108 దివ్య నామ జప మాల* 📿 ✨\n\n🌸 *నామం #${activeBead}/108:*\n*${currentNama.namaTe}*\n_(${currentNama.namaEn})_\n\n🌿 *దివ్య ఆశీర్వచనం:*\n"${currentNama.blessingTe}"\n\n🪔 *మాల ప్రగతి:* ${activeBead}/108 నామ జపం పూర్తయింది\n👉 ${siteUrl}`

@@ -1026,7 +1026,7 @@ export function HomeHero({ userName, locationName, weatherTemp, liveStatus, acti
       const currentNama = getGovindaNamaForBead(activeBead);
       const isMilestone = activeBead === 27 || activeBead === 54 || activeBead === 81;
       const cardType: 'bead' | 'milestone' = isMilestone ? 'milestone' : 'bead';
-      const siteUrl = 'https://saarthiguide.in';
+      const siteUrl = 'https://www.saarthiguide.in';
 
       const text = lang === 'te'
         ? `✨ 📿 *శ్రీ వేంకటేశ్వర 108 దివ్య నామ జప మాల* 📿 ✨
@@ -1088,7 +1088,7 @@ _Om Namo Venkatesaya • Peace & Auspicious Blessings to All_`;
       }
     } catch (err: any) {
       if (err?.name !== 'AbortError') {
-        window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(shareMessage || 'https://saarthiguide.in')}`, '_blank');
+        window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(shareMessage || 'https://www.saarthiguide.in')}`, '_blank');
       }
     } finally {
       setIsSharingJapa(false);
@@ -1102,7 +1102,7 @@ _Om Namo Venkatesaya • Peace & Auspicious Blessings to All_`;
 
     let shareMessage = '';
     try {
-      const siteUrl = 'https://saarthiguide.in';
+      const siteUrl = 'https://www.saarthiguide.in';
       const text = lang === 'te'
         ? `🎉 📿 *శ్రీ వేంకటేశ్వర 108 జప మాల సంపూర్ణం!* 📿 🎉
 ━━━━━━━━━━━━━━━━━━━━━━━━
@@ -1163,7 +1163,7 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
       }
     } catch (err: any) {
       if (err?.name !== 'AbortError') {
-        window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(shareMessage || 'https://saarthiguide.in')}`, '_blank');
+        window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(shareMessage || 'https://www.saarthiguide.in')}`, '_blank');
       }
     } finally {
       setIsSharingJapa(false);
