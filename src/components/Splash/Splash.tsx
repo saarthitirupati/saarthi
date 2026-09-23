@@ -14,6 +14,11 @@ export default function SplashScreen({ onFinish }: { onFinish: () => void }) {
   const handleFinish = useCallback(() => {
     if (isFinishedRef.current) return;
     isFinishedRef.current = true;
+    if (videoRef.current) {
+      try {
+        videoRef.current.pause();
+      } catch {}
+    }
     setIsVisible(false);
     setTimeout(onFinish, 350); // 350ms smooth exit cross-fade
   }, [onFinish]);
@@ -44,6 +49,11 @@ export default function SplashScreen({ onFinish }: { onFinish: () => void }) {
       v.play().then(() => setIsVideoReady(true)).catch(() => {});
     }
 
+    const handleKeyDown = () => {
+      handleFinish();
+    };
+    window.addEventListener('keydown', handleKeyDown);
+
     // Safety fallback timer (12s) - allows full 9.4s video to finish naturally via onEnded
     const safetyTimer = setTimeout(() => {
       handleFinish();
@@ -52,12 +62,9 @@ export default function SplashScreen({ onFinish }: { onFinish: () => void }) {
     return () => {
       clearTimeout(soundTimer);
       clearTimeout(safetyTimer);
+      window.removeEventListener('keydown', handleKeyDown);
     };
   }, [handleFinish]);
-
-  const tryPlay = useCallback(() => {
-    videoRef.current?.play().then(() => setIsVideoReady(true)).catch(() => {});
-  }, []);
 
   return (
     <AnimatePresence mode="wait">
@@ -67,8 +74,11 @@ export default function SplashScreen({ onFinish }: { onFinish: () => void }) {
           initial={{ opacity: 1 }}
           exit={{ opacity: 0, scale: 1.02 }}
           transition={{ duration: 0.35, ease: [0.4, 0, 0.2, 1] }}
-          onTouchStart={tryPlay}
-          onClick={tryPlay}
+          onClick={handleFinish}
+          onTouchEnd={handleFinish}
+          role="button"
+          tabIndex={0}
+          aria-label="Touch anywhere to enter Saarthi"
         >
           <video
             ref={attachVideo}
@@ -114,6 +124,16 @@ export default function SplashScreen({ onFinish }: { onFinish: () => void }) {
               transition: 'opacity 0.35s ease-in-out'
             }}
           />
+
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 0.9, y: 0 }}
+            transition={{ delay: 0.8, duration: 0.5 }}
+            className={styles.touchHint}
+          >
+            <span className={styles.touchHintDot} />
+            <span>Touch anywhere to enter</span>
+          </motion.div>
         </motion.div>
       )}
     </AnimatePresence>

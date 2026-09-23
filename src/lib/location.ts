@@ -152,12 +152,12 @@ export function detectCoordinates(
       onSuccess({ lat, lng }, 'gps', !isPrecise, accuracy);
     };
 
-    // Parallel fast IP pre-warm: provides immediate regional coordinates so UI doesn't stall
+    // Parallel fallback timer: waits for hardware GPS fix before falling back
     const fallbackTimer = setTimeout(() => {
       if (!hasGps) {
         fallbackToDefault();
       }
-    }, 1800);
+    }, 4500);
 
     // Single high-accuracy hardware/satellite GPS query with fast 4.5s timeout
     navigator.geolocation.getCurrentPosition(

@@ -121,7 +121,7 @@ export function useTripStore() {
             setState(prev => ({
               ...prev,
               userLocation: coords,
-              locationPermission: isGps ? 'granted' : (prev.locationPermission === 'denied' ? 'denied' : 'default'),
+              locationPermission: (isGps || prev.locationPermission === 'granted') ? 'granted' : (prev.locationPermission === 'denied' ? 'denied' : 'default'),
               locationSource: source,
               locationAccuracyMeters: accuracyMeters,
               locationName: region
@@ -171,7 +171,7 @@ export function useTripStore() {
         } catch {}
 
         if (permStatus?.state === 'granted') {
-          // If browser already granted permission, ALWAYS detect live coordinates dynamically
+          setState(prev => ({ ...prev, locationPermission: 'granted' }));
           await triggerLocationDetection();
         } else if (!isManual && !isBrowserDenied) {
           await triggerLocationDetection();

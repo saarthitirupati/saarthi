@@ -14,6 +14,9 @@ export default function LocationPrompt() {
 
   const handleAllowLocation = async () => {
     setIsRequesting(true);
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('saarthi_location_prompt_seen', 'true');
+    }
     try {
       const granted = await requestLocationPermission();
       if (!granted) {
@@ -29,6 +32,9 @@ export default function LocationPrompt() {
   };
 
   const handleNotNow = () => {
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('saarthi_location_prompt_seen', 'true');
+    }
     setLocationPermission('denied');
   };
 

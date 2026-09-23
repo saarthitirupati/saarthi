@@ -14,6 +14,7 @@ import { DesktopHeader } from '@/components/DesktopHeader';
 import { ActiveAlerts } from '@/components/home/ActiveAlerts';
 import { useAlerts } from '@/hooks/useAlerts';
 import { LocationBanner } from '@/components/common/LocationBanner';
+import { AppInstallBanner, isInsideApp } from '@/components/common/AppInstallBanner';
 
 import { syncExistingPushSubscription } from '@/lib/pushClient';
 
@@ -63,13 +64,26 @@ function LayoutContent({
 
   const isExcluded = pathname === '/onboarding' || pathname === '/splash' || isAdmin || isStudio;
   const isCheckingOrNeedsOnboarding = !isExcluded && (needsOnboarding === true);
-  const showLocationPrompt = isInitialized && !showSplash && !isAdmin && pathname === '/' && locationPermission === 'default';
+
+  // In the installed app, or if already seen/resolved, NEVER prompt location
+  const isApp = typeof window !== 'undefined' && isInsideApp();
+  const hasSeenLocationPrompt = typeof window !== 'undefined' && Boolean(localStorage.getItem('saarthi_location_prompt_seen'));
+  const showLocationPrompt =
+    !isApp &&
+    !hasSeenLocationPrompt &&
+    isInitialized &&
+    !showSplash &&
+    !isAdmin &&
+    pathname === '/' &&
+    locationPermission === 'default';
+
   const showBottomNav = !showSplash && !showLocationPrompt && !isAdmin && (['/', '/explore', '/saved', '/profile', '/essentials'].includes(pathname) || pathname?.startsWith('/essentials/'));
   const hideContent = !isAdmin && (showSplash || isCheckingOrNeedsOnboarding);
 
   return (
     <>
       {showSplash && !isAdmin && <SplashScreen onFinish={handleSplashFinish} />}
+      {!isAdmin && !showSplash && !isExcluded && <AppInstallBanner />}
       {showLocationPrompt && <LocationPrompt />}
       {!isAdmin && !showSplash && !isExcluded && <DesktopHeader />}
       {!isAdmin && !showSplash && !isExcluded && (

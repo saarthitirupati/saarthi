@@ -258,7 +258,6 @@ export function HomeHero({ userName, locationName, weatherTemp, liveStatus, acti
   const [selectedLocation, setSelectedLocation] = useState<string>(locationName || storeLocationName || 'Tirupati');
   const [isLocating, setIsLocating] = useState<boolean>(false);
   const [isLocationModalOpen, setIsLocationModalOpen] = useState<boolean>(false);
-  const [isVideoPlaying, setIsVideoPlaying] = useState<boolean>(false);
   const bannerVideoRef = React.useRef<HTMLVideoElement>(null);
 
   React.useEffect(() => {
@@ -278,10 +277,8 @@ export function HomeHero({ userName, locationName, weatherTemp, liveStatus, acti
         v.setAttribute('x5-playsinline', 'true');
         v.defaultMuted = true;
         v.muted = true;
-        if (!v.paused && v.currentTime > 0) {
-          setIsVideoPlaying(true);
-        } else {
-          v.play().then(() => setIsVideoPlaying(true)).catch(() => {});
+        if (v.paused) {
+          v.play().catch(() => {});
         }
       }
     };
@@ -1413,7 +1410,14 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
         aspectRatio: '16 / 9'
       }}>
         <video
-          ref={bannerVideoRef}
+          ref={(el) => {
+            bannerVideoRef.current = el;
+            if (el) {
+              el.muted = true;
+              el.defaultMuted = true;
+              el.playsInline = true;
+            }
+          }}
           src="/banner/homescreen-banner.mp4"
           autoPlay
           loop
@@ -1430,44 +1434,26 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
           controls={false}
           controlsList="nodownload nofallback noremoteplayback noplaybackrate"
           poster="/banner/banner_poster.webp"
-          preload="metadata"
+          preload="auto"
           aria-hidden="true"
           tabIndex={-1}
+          onLoadedMetadata={(e) => {
+            const v = e.currentTarget;
+            v.muted = true;
+            v.defaultMuted = true;
+            v.play().catch(() => {});
+          }}
           onCanPlay={(e) => {
-            e.currentTarget.defaultMuted = true;
-            e.currentTarget.muted = true;
-            if (e.currentTarget.textTracks) {
-              for (let i = 0; i < e.currentTarget.textTracks.length; i++) {
-                e.currentTarget.textTracks[i].mode = 'disabled';
-              }
-            }
-            e.currentTarget.play().then(() => setIsVideoPlaying(true)).catch(() => {});
+            const v = e.currentTarget;
+            v.muted = true;
+            v.defaultMuted = true;
+            v.play().catch(() => {});
           }}
           onLoadedData={(e) => {
-            e.currentTarget.defaultMuted = true;
-            e.currentTarget.muted = true;
-            if (e.currentTarget.textTracks) {
-              for (let i = 0; i < e.currentTarget.textTracks.length; i++) {
-                e.currentTarget.textTracks[i].mode = 'disabled';
-              }
-            }
-            e.currentTarget.play().then(() => setIsVideoPlaying(true)).catch(() => {});
-          }}
-          onPlaying={() => setIsVideoPlaying(true)}
-          onTimeUpdate={(e) => {
-            if (e.currentTarget.currentTime > 0 && !isVideoPlaying) {
-              setIsVideoPlaying(true);
-            }
-          }}
-          onError={() => setIsVideoPlaying(false)}
-          onPause={(e) => {
-            e.currentTarget.defaultMuted = true;
-            e.currentTarget.muted = true;
-            e.currentTarget.play().then(() => setIsVideoPlaying(true)).catch(() => {});
-          }}
-          onEnded={(e) => {
-            e.currentTarget.currentTime = 0;
-            e.currentTarget.play().then(() => setIsVideoPlaying(true)).catch(() => {});
+            const v = e.currentTarget;
+            v.muted = true;
+            v.defaultMuted = true;
+            v.play().catch(() => {});
           }}
           style={{
             width: '100%',
@@ -1479,10 +1465,11 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
             userSelect: 'none',
             WebkitUserSelect: 'none',
             WebkitTouchCallout: 'none',
-            opacity: isVideoPlaying ? 1 : 0,
-            transition: 'opacity 0.5s ease-in-out'
+            opacity: 1
           }}
-        />
+        >
+          <source src="/banner/homescreen-banner.mp4" type="video/mp4" />
+        </video>
 
 
         {/* Right Side Transparent Touch Hotspots (Matching Video's Built-in Buttons) */}
