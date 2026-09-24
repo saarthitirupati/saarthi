@@ -327,6 +327,15 @@ export function HomeHero({ userName, locationName, weatherTemp, liveStatus, acti
     );
   };
 
+  React.useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const isManual = localStorage.getItem('saarthi_location_manual') === 'true';
+      if (!isManual && (!locationName || locationName === 'Tirupati')) {
+        handleAutoDetectLocation();
+      }
+    }
+  }, [locationName]);
+
   // Real wait time from admin — fallback to crowd-level estimates
   const liveWaitTime: string = (() => {
     if (liveStatus?.waitTime) return liveStatus.waitTime;

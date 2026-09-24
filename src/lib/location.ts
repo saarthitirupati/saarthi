@@ -190,10 +190,8 @@ export function detectCoordinates(
       (firstErr) => {
         if (resolved) return;
         if (firstErr && firstErr.code === 1) {
-          // User explicitly clicked "Deny"
-          resolved = true;
-          console.warn("[LocationPipeline] Geolocation permission denied by user.");
-          if (onFailure) onFailure(firstErr);
+          console.warn("[LocationPipeline] Geolocation permission denied by user, falling back to IP estimation.");
+          fallbackToIP();
           return;
         }
 
@@ -203,12 +201,7 @@ export function detectCoordinates(
           (stdPos) => handleSuccess(stdPos, 'gps'),
           (stdErr) => {
             if (resolved) return;
-            if (stdErr && stdErr.code === 1) {
-              resolved = true;
-              if (onFailure) onFailure(stdErr);
-              return;
-            }
-            console.warn("[LocationPipeline] Standard geolocation failed, falling back to IP estimation:", stdErr);
+            console.warn("[LocationPipeline] Geolocation fallback triggered:", stdErr);
             fallbackToIP();
           },
           { enableHighAccuracy: false, timeout: 5000, maximumAge: 300000 }

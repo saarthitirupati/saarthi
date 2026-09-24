@@ -6,7 +6,6 @@ import SplashScreen from '@/components/Splash/Splash';
 import SideMenu from '@/components/SideMenu/SideMenu';
 import BottomNav from '@/components/BottomNav/BottomNav';
 import { TripProvider, useTrip } from '@/components/TripContext';
-import LocationPrompt from '@/components/LocationPrompt/LocationPrompt';
 import { usePageAnalytics } from '@/hooks/usePageAnalytics';
 import GoogleTranslate from '@/components/GoogleTranslate';
 import { DesktopHeader } from '@/components/DesktopHeader';
@@ -61,14 +60,12 @@ function LayoutContent({
 
   const isExcluded = pathname === '/onboarding' || pathname === '/splash' || isAdmin || isStudio;
   const isCheckingOrNeedsOnboarding = !isExcluded && (needsOnboarding === true);
-  const showLocationPrompt = isInitialized && !showSplash && !isAdmin && pathname === '/' && locationPermission === 'default';
-  const showBottomNav = !showSplash && !showLocationPrompt && !isAdmin && (['/', '/explore', '/saved', '/profile', '/essentials'].includes(pathname) || pathname?.startsWith('/essentials/'));
-  const hideContent = !isAdmin && (showSplash || showLocationPrompt || isCheckingOrNeedsOnboarding);
+  const showBottomNav = !showSplash && !isAdmin && (['/', '/explore', '/saved', '/profile', '/essentials'].includes(pathname) || pathname?.startsWith('/essentials/'));
+  const hideContent = !isAdmin && (showSplash || isCheckingOrNeedsOnboarding);
 
   return (
     <>
       {showSplash && !isAdmin && <SplashScreen onFinish={handleSplashFinish} />}
-      {showLocationPrompt && <LocationPrompt />}
       {!isAdmin && !showSplash && !isExcluded && <DesktopHeader />}
       {!isAdmin && !showSplash && !isExcluded && (
         <ActiveAlerts 

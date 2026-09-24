@@ -79,7 +79,7 @@ export function useTripStore() {
           }
         } catch {}
 
-        const shouldDetect = !isManual && !isBrowserDenied && (loadedState.locationPermission === 'granted' || isBrowserGranted);
+        const shouldDetect = !isManual;
 
         if (shouldDetect) {
           const { detectCoordinates, watchCoordinates, getIPLocation, TIRUPATI_CENTER, resolveLocationName, syncLocationToServiceWorker } = await import('@/lib/location');
