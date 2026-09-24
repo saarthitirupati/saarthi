@@ -2,6 +2,7 @@ import React from 'react';
 import Link from 'next/link';
 import { Sparkles, Navigation, Users, Info } from 'lucide-react';
 import { useLanguage } from '@/lib/useLanguage';
+import { getISTDate } from '@/utils/location';
 
 const TEXTS = {
   en: {
@@ -44,7 +45,7 @@ export function RecommendationCard({
 
   const status = liveStatus || {};
 
-  const date = new Date();
+  const date = getISTDate();
   const dayOfWeek = date.getDay();
   const hr = date.getHours();
   const isNight = hr >= 21 || hr < 5;

@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 import { useTrip } from '@/components/TripContext';
-import { calculateDrivingDistance, TIRUPATI_CENTER, isWithinTirupatiRegion, formatTravelTime, estimateDriveDuration } from '@/utils/location';
+import { calculateDrivingDistance, TIRUPATI_CENTER, isWithinTirupatiRegion, formatTravelTime, estimateDriveDuration, getISTDate } from '@/utils/location';
 
 export function useFeaturedPlaces(places: any[], liveStatus: any, weatherTemp: string) {
   const { userLocation } = useTrip();
@@ -11,7 +11,7 @@ export function useFeaturedPlaces(places: any[], liveStatus: any, weatherTemp: s
   const featuredPlace = useMemo(() => {
     if (!places || places.length === 0) return null;
 
-    const currentHour = new Date().getHours();
+    const currentHour = getISTDate().getHours();
     const tempNum = parseInt(weatherTemp, 10) || 27;
     const isRainy = liveStatus?.weather?.toLowerCase().includes('rain') || liveStatus?.weather?.toLowerCase().includes('shower');
     const isHeavyCrowd = liveStatus?.crowdLevel === 'high' || liveStatus?.crowdLevel === 'very-high';

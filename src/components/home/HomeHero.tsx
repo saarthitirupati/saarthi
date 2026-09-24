@@ -28,6 +28,7 @@ import {
   shareOrDownloadCard 
 } from '@/lib/shareCardGenerator';
 import { JapaMalaModal } from './JapaMalaModal';
+import { getISTDate } from '@/utils/location';
 
 const TEXTS: Record<string, any> = {
   en: {
@@ -358,7 +359,7 @@ export function HomeHero({ userName, locationName, weatherTemp, liveStatus, acti
   })();
 
   const getGreetingPrefix = () => {
-    const hr = new Date().getHours();
+    const hr = getISTDate().getHours();
     if (hr >= 5 && hr < 12) return t.greetings.morning;
     if (hr >= 12 && hr < 17) return t.greetings.afternoon;
     if (hr >= 17 && hr < 21) return t.greetings.evening;
@@ -369,7 +370,8 @@ export function HomeHero({ userName, locationName, weatherTemp, liveStatus, acti
   const weatherStr = (liveStatus?.weather || '').toLowerCase();
   const isRainy = weatherStr.includes('rain') || weatherStr.includes('shower') || weatherStr.includes('storm') || weatherStr.includes('thunder');
   const ssdTokenStatus = (liveStatus?.ssdTokenStatus || '').toLowerCase(); // fixed: was reading wrong field
-  const isNight = new Date().getHours() >= 21 || new Date().getHours() < 5;
+  const istHr = getISTDate().getHours();
+  const isNight = istHr >= 21 || istHr < 5;
 
   // ── Live metric values from admin ──────────────────────────────────
   const liveSSD: string = (() => {
@@ -1765,7 +1767,7 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '8px' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
             {isNight && (
-              <span style={{
+              <span suppressHydrationWarning style={{
                 display: 'inline-flex',
                 alignItems: 'center',
                 gap: '6px',

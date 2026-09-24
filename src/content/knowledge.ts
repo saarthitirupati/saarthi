@@ -9,6 +9,8 @@ export interface ItemCategorySpec {
   desc: string;
   tag: string;
   iconName: string;
+  whyNeeded?: string;
+  whereToDeposit?: string;
 }
 
 export interface SubLocation {
@@ -17,12 +19,15 @@ export interface SubLocation {
   distance: string;
   status: 'Open Now' | 'Serving' | 'Crowded' | 'Closing Soon' | 'Closed';
   mapsUrl?: string;
+  whyRecommended?: string;
+  bestFor?: string;
 }
 
 export interface ProcedureStep {
   stepNumber: number;
   title: string;
   description?: string;
+  whyThisStep?: string;
 }
 
 export interface RequirementsSpec {
@@ -76,192 +81,629 @@ export const KNOWLEDGE_ITEMS: KnowledgeItem[] = [
   {
     id: 'secure-belongings',
     intentId: 'secure-belongings',
-    name: 'Secure My Belongings',
+    name: 'Secure Belongings & Free Lockers',
     category: 'Free Facilities',
     importance: 'must-know',
-    tag: 'FREE',
-    status: 'Open Now',
-    shortDescription: 'Free luggage lockers, mobile phone deposit, and electronics storage.',
-    description: 'Store your heavy bags, mobile phones, cameras, and leather items safely before entering the Vaikuntam Queue Complex. Free TTD counters are available at 6 major transit points.',
-    whyItMatters: 'Mobiles, smartwatches, cameras, and heavy bags are strictly prohibited inside the main temple. Depositing them at authorized TTD counters before queue entry avoids being turned back by security checkpoints at VQC-II gates.',
+    tag: '100% FREE TTD',
+    status: 'Open 24/7',
+    shortDescription: 'Free luggage lockers, mobile phone deposit, and footwear stands.',
+    description: 'Deposit heavy backpacks, phones, smartwatches, cameras, and footwear safely before entering the Vaikuntam Queue Complex. TTD provides 100% free, 24/7 guarded locker complexes and instant barcode phone sealing with exit-gate pickup.',
+    whyItMatters: 'Temple security strictly bans phones, electronics, bags, and footwear from the sanctum sanctorum. Arriving at the inner queue with these items results in immediate rejection by CISF/TTD security, forcing you to exit and restart your wait from scratch.',
     distance: '120 m',
-    walkingTime: '4 min walk',
+    walkingTime: '3 min walk',
     image: '/assets/nature/udyanavanam.png',
-    location: '6 Nearby Counters (Madhava Nilayam, PAC-1 to PAC-5, VQC Entrance)',
+    location: 'Tirumala Hill: VQC-I/II Gates, PAC-1 to PAC-5 & Padmanabha Nilayam',
     coordinates: { lat: 13.6823, lng: 79.3514 },
     iconName: 'lock',
     searchAliases: [
       'phone', 'mobile', 'cellphone', 'deposit', 'gadget', 'electronic', 'watch',
       'locker', 'lockers', 'luggage', 'bags', 'baggage', 'store', 'secure', 'belongings',
-      'aadhaar', 'camera', 'laptop', 'belt', 'footwear', 'shoes'
+      'aadhaar', 'camera', 'laptop', 'belt', 'footwear', 'shoes', 'chappals'
     ],
     highlights: [
-      { title: '100% Free TTD', subtitle: 'Zero fee for lockers & pouches', iconName: 'lock' },
-      { title: 'Aadhaar Required', subtitle: 'Mandatory original ID for receipt', iconName: 'file-text' },
-      { title: 'Sealed Phone Pouch', subtitle: 'Tamper-evident barcode protection', iconName: 'smartphone' },
-      { title: '24/7 PAC Hubs', subtitle: 'Round-the-clock storage & collection', iconName: 'clock' }
+      { title: '100% Free TTD Service', subtitle: 'Zero fee for lockers, bags & phone pouches', iconName: 'lock' },
+      { title: 'Aadhaar Required', subtitle: 'Biometric/Barcode verification prevents theft', iconName: 'file-text' },
+      { title: 'Exit Gate Pickup', subtitle: 'Collect phone right outside Silver Door exit', iconName: 'smartphone' },
+      { title: '24/7 Armed Security', subtitle: 'Round-the-clock guarded PAC storage hubs', iconName: 'clock' }
     ],
     itemCategories: [
-      { title: 'Mobile Phones & Smartwatches', desc: 'Sealed in tamper-evident barcode pouches at VQC Entrance deposit counters.', tag: 'Instant Sealing', iconName: 'smartphone' },
-      { title: 'Heavy Luggage & Laptops', desc: 'Stored in free TTD lockers at PAC-1, PAC-2 (Madhava Nilayam), PAC-3, PAC-5, & Padmanabha Nilayam.', tag: 'Physical Token', iconName: 'briefcase' },
-      { title: 'Footwear & Shoes', desc: 'Free footwear stands near Alipiri Mettu, Srivari Mettu & Tirumala Main Temple entrance.', tag: 'Free Stand', iconName: 'footprints' },
-      { title: 'Cameras & Electronic Gadgets', desc: 'Cataloged and scanned at PAC luggage halls prior to entering security queue.', tag: 'Barcode Scanned', iconName: 'camera' }
+      { 
+        title: 'Mobile Phones & Smartwatches', 
+        desc: 'Sealed in numbered, tamper-evident barcode security pouches at VQC Entrance booths.', 
+        tag: 'Instant Sealing', 
+        iconName: 'smartphone',
+        whereToDeposit: 'VQC-I & VQC-II Entrance Counters (3 min walk)',
+        whyNeeded: 'Sanctum metal detectors flag all electronics. Depositing here lets you retrieve your phone right outside the temple exit (near Laddu counters) without walking back to your locker.'
+      },
+      { 
+        title: 'Heavy Luggage, Backpacks & Laptops', 
+        desc: 'Stored in free steel lockers at PAC-1 to PAC-5 and Padmanabha Nilayam.', 
+        tag: 'Steel Locker & Key', 
+        iconName: 'briefcase',
+        whereToDeposit: 'PAC-2 Madhava Nilayam or your Pilgrim Hall',
+        whyNeeded: 'Queue compartments are packed and narrow; bulky luggage is barred from entering temple corridors and will not fit through inner security turnstiles.'
+      },
+      { 
+        title: 'Footwear & Chappals', 
+        desc: 'Free footwear counters with token tags located near temple approach paths.', 
+        tag: 'Free Token Stand', 
+        iconName: 'footprints',
+        whereToDeposit: 'Dedicated stands opposite VQC Entrance',
+        whyNeeded: 'Leather and shoes are strictly forbidden inside the sacred complex. Depositing at the designated stand ensures your shoes are waiting at the exact exit gate where you emerge.'
+      },
+      { 
+        title: 'Cameras, Power Banks & Electronic Gadgets', 
+        desc: 'Cataloged, X-rayed, and deposited in electronic safety bays at PAC locker halls.', 
+        tag: 'Barcode Scanned', 
+        iconName: 'camera',
+        whereToDeposit: 'PAC Luggage Counters prior to queue entry',
+        whyNeeded: 'Lithium battery devices and photography gear are prohibited under strict shrine security laws to preserve temple sanctum sanctity.'
+      }
     ],
     subLocations: [
-      { name: 'Madhava Nilayam (PAC-2 Locker Hub)', walkTime: '4 mins', distance: '120 m', status: 'Open Now' },
-      { name: 'Padmanabha Nilayam Deposit Counter', walkTime: '6 mins', distance: '220 m', status: 'Open Now' },
-      { name: 'Yatri Sadan (PAC-1 Free Counter)', walkTime: '7 mins', distance: '300 m', status: 'Open Now' },
-      { name: 'Yatri Sadan 3 (PAC-3 Lockers)', walkTime: '8 mins', distance: '350 m', status: 'Open Now' },
-      { name: 'Venkatadri Nilayam (PAC-5 Counter)', walkTime: '9 mins', distance: '400 m', status: 'Open Now' },
-      { name: 'VQC-I & VQC-II Mobile Deposit', walkTime: '3 mins', distance: '90 m', status: 'Open Now' }
+      { 
+        name: 'VQC-I & VQC-II Mobile Deposit', 
+        walkTime: '3 mins', 
+        distance: '90 m', 
+        status: 'Open Now',
+        bestFor: 'Mobile Phones & Smartwatches Only',
+        whyRecommended: 'Right at queue gate entrance. Phone is tagged to your photo/receipt and transferred to the temple exit counter for immediate post-darshan collection.'
+      },
+      { 
+        name: 'Madhava Nilayam (PAC-2 Locker Mega-Hub)', 
+        walkTime: '4 mins', 
+        distance: '120 m', 
+        status: 'Open Now',
+        bestFor: 'Heavy Luggage, Backpacks & Family Bags',
+        whyRecommended: 'Tirumala’s largest locker facility with 4,000+ free steel lockers, 24/7 CCTV surveillance, and changing/shower rooms nearby.'
+      },
+      { 
+        name: 'Padmanabha Nilayam Deposit Counter', 
+        walkTime: '6 mins', 
+        distance: '220 m', 
+        status: 'Open Now',
+        bestFor: 'Pilgrims arriving via Taxi or CRO Office',
+        whyRecommended: 'Closest counter to the Central Reception Office (CRO) and cottage allotment counters.'
+      },
+      { 
+        name: 'Yatri Sadan (PAC-1 Free Counter)', 
+        walkTime: '7 mins', 
+        distance: '300 m', 
+        status: 'Open Now',
+        bestFor: 'Dormitory Guests & Walking Pilgrims',
+        whyRecommended: 'Directly attached to the free pilgrim rest halls and near the Tirupati downhill bus stand.'
+      },
+      { 
+        name: 'Venkatadri Nilayam (PAC-5 Counter)', 
+        walkTime: '9 mins', 
+        distance: '400 m', 
+        status: 'Open Now',
+        bestFor: 'Pilgrims visiting Free Annaprasadam',
+        whyRecommended: 'Convenient deposit hub if you plan to partake in free meals at Tarigonda Vengamamba before your darshan.'
+      }
     ],
     procedureTimeline: [
-      { stepNumber: 1, title: 'Carry Aadhaar & Original Photo ID', description: 'Mandatory for receipt issuance and bag scanning.' },
-      { stepNumber: 2, title: 'Visit Nearest PAC Counter', description: 'Follow green signs to the locker or mobile deposit hall.' },
-      { stepNumber: 3, title: 'Submit Luggage / Mobile', description: 'Electronics are sealed in barcode pouches. Bags pass X-ray.' },
-      { stepNumber: 4, title: 'Receive Locker Token / Receipt', description: 'Keep barcode token safe in your wallet or pocket.' },
-      { stepNumber: 5, title: 'Collect Within 24 Hours', description: 'Present barcode token at retrieval counter post-Darshan.' }
+      { 
+        stepNumber: 1, 
+        title: 'Carry Physical Aadhaar / Original Photo ID', 
+        description: 'Have your physical government ID card ready in your hand.',
+        whyThisStep: 'TTD scans the barcode on your physical Aadhaar to generate your deposit token. If your phone is your only ID, you cannot use it once it is deposited!'
+      },
+      { 
+        stepNumber: 2, 
+        title: 'Separate Cash & Ticket from Bags', 
+        description: 'Keep your darshan ticket, cash, and ID securely in your pockets.',
+        whyThisStep: 'Once your bag or locker is locked, you cannot open it until after darshan. You need cash for laddus, holy water bottles, and prasadams inside.'
+      },
+      { 
+        stepNumber: 3, 
+        title: 'Deposit Luggage at PAC, Leave Shoes at Stand', 
+        description: 'Store heavy bags in free steel lockers; drop shoes at the numbered footwear counter.',
+        whyThisStep: 'Entering the queue area with only your clothes, cash, and ID allows you to walk through metal detectors in seconds without friction.'
+      },
+      { 
+        stepNumber: 4, 
+        title: 'Seal Phone at VQC Gate & Collect Barcode Token', 
+        description: 'Hand over mobile at the VQC entrance counter; staff seal it in a tamper-proof barcode pouch.',
+        whyThisStep: 'Your phone is digitally registered and transported to the exit gate kiosk, ensuring zero theft risk and quick collection.'
+      },
+      { 
+        stepNumber: 5, 
+        title: 'Collect Within 24 Hours at Exit / Locker Hall', 
+        description: 'Show your token at the exit counter for your phone, and at PAC for your luggage.',
+        whyThisStep: 'Counters operate 24 hours non-stop. Tokens are verified with your biometric/Aadhaar so nobody else can claim your belongings.'
+      }
     ],
     requirements: {
-      carry: ['Aadhaar Card', 'Luggage Bags', 'Mobile Phones'],
-      prohibited: ['Cash & Gold in Lockers', 'Inflammable items'],
-      mandatoryDoc: 'Aadhaar Card Required'
+      carry: [
+        'Original Physical Aadhaar Card or Passport (Mandatory for locker token)',
+        'Darshan Ticket Printout (Physical copy recommended)',
+        'Cash / Small Currency Notes (for Laddu Prasadam counters)',
+        'Cloth pouch or waist bag for cash & ID (leather prohibited)',
+        'Infant milk bottle / doctor-prescribed medications (allowed in queue)'
+      ],
+      prohibited: [
+        'Mobile phones & smartwatches (must be sealed at VQC gate)',
+        'Cameras, video equipment, selfie sticks & drones',
+        'Laptops, tablets, bluetooth earbuds & power banks',
+        'Leather belts, leather wallets, leather pouches & shoe bags',
+        'Cigarettes, tobacco, lighters, matchboxes & gutkha',
+        'Knives, scissors, blades, or inflammable sprays'
+      ],
+      mandatoryDoc: 'Physical Aadhaar / Govt Photo ID Required'
     },
     tips: [
-      'Take a photo of your locker token or receipt on your companion’s phone as backup.',
-      'Mobile deposit counters near VQC-I provide instant barcode pouch sealing.',
-      'Lockers are 100% free of charge under TTD management.'
+      'Tie the locker key band securely around your wrist or sacred thread immediately upon receiving it.',
+      'Take a quick photo of the locker token with your companion’s phone before sealing, or memorize the 4-digit locker number.',
+      'Never pay anyone for lockers or pouches: TTD provides 100% of these services completely free of cost.',
+      'Keep your phone separate from your main luggage bag so you can collect it at the temple exit right after darshan.'
     ]
   },
   {
     id: 'free-meals',
     intentId: 'free-meals',
-    name: 'Eat Free (Annaprasadam)',
+    name: 'Free Annaprasadam (Sacred Meals)',
     category: 'Free Facilities',
     importance: 'must-know',
-    tag: 'FREE',
-    status: 'Open (11 AM Onwards)',
-    shortDescription: 'Free, hygienic, hot sanctified vegetarian meals for all pilgrims.',
-    description: 'The Matrusri Tarigonda Vengamamba Annaprasadam complex serves continuous, hot, sanctified vegetarian meals (rice, dal, sambar, chutney, buttermilk, roti) to tens of thousands of devotees daily.',
-    whyItMatters: 'Finding pure, sanitary food is effortless and free. No ticket or registration is required — walk in anytime.',
-    distance: '350 m',
-    walkingTime: '5 min walk',
+    tag: '100% FREE TTD',
+    status: 'Serving (8:30 AM – 11:00 PM)',
+    shortDescription: 'Hygienic, unlimited, traditional vegetarian meals served free to all pilgrims.',
+    description: 'Matrusri Tarigonda Vengamamba Annaprasadam Complex and VQC queue halls serve hot, pure satvik vegetarian meals (steamed rice, sambar, rasam, vegetable curry, chutney, buttermilk) to tens of thousands of pilgrims daily. 100% free of charge with zero tickets or tokens required.',
+    whyItMatters: 'Lord Venkateswara temple provides unlimited sacred meals as divine prasad. No pilgrim in Tirumala should remain hungry. No token, Aadhaar, or ticket is needed — walk in directly at meal timings, or receive hot food packets delivered directly to your queue seat inside VQC compartments.',
+    distance: '280 m',
+    walkingTime: '4 min walk',
     image: '/assets/temples/bhu_varaha_front.png',
-    location: 'Vengamamba Complex & Venkatadri Nilayam Halls',
+    location: 'Matrusri Tarigonda Vengamamba Complex (Near Temple) & VQC Compartments',
     coordinates: { lat: 13.6841, lng: 79.3498 },
     iconName: 'utensils',
     searchAliases: [
       'food', 'meals', 'lunch', 'dinner', 'eating', 'veg', 'annaprasadam', 'rice',
-      'eat', 'hungry', 'breakfast', 'canteen', 'milk', 'free meals'
+      'eat', 'hungry', 'breakfast', 'canteen', 'milk', 'free meals', 'vengamamba', 'tiffin'
+    ],
+    highlights: [
+      {
+        title: '100% Free TTD Service',
+        subtitle: 'Zero tokens, zero fees, open to all devotees without discrimination',
+        iconName: 'shield-check'
+      },
+      {
+        title: 'Unlimited Satvik Meals',
+        subtitle: 'Steamed rice, sambar, rasam, vegetable curry, chutney & buttermilk',
+        iconName: 'utensils'
+      },
+      {
+        title: 'Plantain Leaf Tradition',
+        subtitle: 'Traditional, hygienic, eco-friendly seating on clean marble dining tables',
+        iconName: 'sparkles'
+      },
+      {
+        title: 'Continuous In-Queue Supply',
+        subtitle: 'Food packets, buttermilk & infant milk delivered directly in VQC waiting halls',
+        iconName: 'clock'
+      }
+    ],
+    itemCategories: [
+      {
+        title: 'Breakfast (Tiffin)',
+        tag: '8:30 AM – 10:30 AM',
+        desc: 'Hot rava upma, ven pongal, fresh coconut chutney and sambar served fresh in morning dining sessions.',
+        iconName: 'utensils',
+        whereToDeposit: 'Matrusri Tarigonda Vengamamba Complex (Ground Floor Dining Halls)',
+        whyNeeded: 'Gives pilgrims completing early morning head tonsure or walking the footpath an instant, wholesome breakfast before darshan.'
+      },
+      {
+        title: 'Traditional Lunch Feast',
+        tag: '10:30 AM – 4:00 PM',
+        desc: 'Full traditional meal served on fresh banana leaf: unlimited steamed rice, flavourful sambar, rasam, freshly cooked vegetable curry, spicy chutney, and digestive buttermilk.',
+        iconName: 'utensils',
+        whereToDeposit: 'Matrusri Tarigonda Vengamamba Mega Complex (All 4 Multi-floor Dining Halls)',
+        whyNeeded: 'Serves up to 4,000 devotees simultaneously every 30 minutes with hygienic hot food cooked in giant automated steam boilers.'
+      },
+      {
+        title: 'Evening & Night Dinner',
+        tag: '5:00 PM – 11:00 PM',
+        desc: 'Freshly prepared hot dinner with steamed rice, aromatic sambar, rasam, vegetable curry, and cooling curd/buttermilk served until 11:00 PM.',
+        iconName: 'clock',
+        whereToDeposit: 'Matrusri Tarigonda Vengamamba Mega Complex (Central Dining Halls)',
+        whyNeeded: 'Ensures devotees exiting the temple after evening and night darshan have access to hot, hygienic food without searching for hotels.'
+      },
+      {
+        title: 'In-Queue Compartment Food',
+        tag: 'Continuous 24/7',
+        desc: 'Hot pulihora (tamarind rice), curd rice, sambar bath packets, buttermilk, and warm milk for babies distributed directly inside waiting halls.',
+        iconName: 'droplets',
+        whereToDeposit: 'Vaikuntam Queue Complexes (VQC-I & VQC-II) All Compartments',
+        whyNeeded: 'Devotees waiting 4 to 12 hours inside locked compartments cannot step out, so Srivari Seva volunteers bring food right to their seats.'
+      }
     ],
     subLocations: [
-      { name: 'Matrusri Tarigonda Vengamamba Complex', walkTime: '5 mins', distance: '350 m', status: 'Open Now' },
-      { name: 'Venkatadri Nilayam Dining Hall', walkTime: '8 mins', distance: '500 m', status: 'Open Now' },
-      { name: 'Panchajanyam Milk Distribution Post', walkTime: '3 mins', distance: '150 m', status: 'Open Now' }
+      { 
+        name: 'Matrusri Tarigonda Vengamamba Complex (Central Facility)', 
+        walkTime: '4 mins', 
+        distance: '280 m', 
+        status: 'Serving',
+        bestFor: 'Full sit-down lunch & dinner meals on banana leaf',
+        whyRecommended: 'The central mega complex near main temple & Parakamani with 4 giant air-cooled halls seating 4,000+ devotees per batch.'
+      },
+      { 
+        name: 'Vaikuntam Queue Complexes (VQC-I & II)', 
+        walkTime: 'Inside Queue', 
+        distance: '0 m', 
+        status: 'Serving',
+        bestFor: 'Devotees waiting inside darshan compartments',
+        whyRecommended: 'Continuous free distribution of hot food packets, cold buttermilk, and drinking water directly inside your compartment seat.'
+      },
+      { 
+        name: 'Pilgrim Amenities Complex (PAC-II & PAC-IV)', 
+        walkTime: '5 mins', 
+        distance: '350 m', 
+        status: 'Open Now',
+        bestFor: 'Transit pilgrims & dormitory hall residents',
+        whyRecommended: 'Dedicated counters providing hot food packets, baby milk, and pure drinking water without needing to walk to the main temple.'
+      },
+      { 
+        name: 'Rambagicha Bus Stand Distribution Counter', 
+        walkTime: '3 mins', 
+        distance: '200 m', 
+        status: 'Open Now',
+        bestFor: 'Arriving and departing bus passengers',
+        whyRecommended: 'Convenient food distribution stall near Balaji Nagar bus terminus providing hot food packets before or after your journey.'
+      }
     ],
     procedureTimeline: [
-      { stepNumber: 1, title: 'Walk Into Dining Hall', description: 'No registration, token, or ticket required.' },
-      { stepNumber: 2, title: 'Join Queue Line', description: 'Orderly seating compartments with clean banana leaf / steel thali.' },
-      { stepNumber: 3, title: 'Receive Hot Meal', description: 'Unlimited hot rice, sambar, rasam, curries & buttermilk served.' },
-      { stepNumber: 4, title: 'Milk / Tea Distribution', description: 'Free hot milk available for kids and elderly near queue halls.' }
+      { 
+        stepNumber: 1, 
+        title: 'Walk Directly Into Complex', 
+        description: 'No tickets, tokens, biometric scans, or reservations required — open unconditionally to all pilgrims.',
+        whyThisStep: 'TTD Annadanam is considered the ultimate sacred duty (Annadanam Param Danam) and is completely unrestricted to all devotees.'
+      },
+      { 
+        stepNumber: 2, 
+        title: 'Wash Hands & Leave Footwear Outside', 
+        description: 'Convenient water wash-bays and dedicated shoe stands are available at the entrance.',
+        whyThisStep: 'Maintains strict hygiene for traditional hand-eating and preserves the sanctified purity of the dining halls.'
+      },
+      { 
+        stepNumber: 3, 
+        title: 'Take Seat at Marble Dining Table', 
+        description: 'Batches of devotees are guided systematically into spacious dining halls with fresh eco-friendly banana leaves laid out.',
+        whyThisStep: 'Systematic batch seating allows the cleaning crew to sanitize the entire hall between batches within minutes.'
+      },
+      { 
+        stepNumber: 4, 
+        title: 'Enjoy Unlimited Hot Satvik Meal', 
+        description: 'Srivari Seva volunteers serve unlimited steaming rice, traditional sambar, rasam, vegetable curry, chutney, and refreshing buttermilk.',
+        whyThisStep: 'Traditional plantain leaf eating enhances natural digestion and aroma while being 100% biodegradable.'
+      },
+      { 
+        stepNumber: 5, 
+        title: 'Clean Exit & Leaf Disposal', 
+        description: 'Fold your leaf, dispose it in the designated bins, and wash hands at exit bays.',
+        whyThisStep: 'Ensures the mega facility remains spotless for the thousands of devotees entering right after you.'
+      }
     ],
     requirements: {
-      carry: ['Pure Intent', 'Clean hands'],
-      prohibited: ['Wastage of food', 'Footwear inside dining halls'],
+      carry: ['Devotional respect & healthy appetite', 'Clean hands'],
+      prohibited: ['Wasting food (Take only what you can finish)', 'Footwear inside dining halls', 'Paying any tips or money (100% free)'],
       mandatoryDoc: 'No ID or Ticket Needed'
     },
     tips: [
-      'Continuous service from 11:00 AM to 11:00 PM daily.',
-      'Special milk distribution points operate inside queue halls for infants.',
-      'Maintain quiet decorum in dining halls out of respect for sacred food.'
+      'Operating Timings: Breakfast 8:30–10:30 AM | Lunch 10:30 AM–4:00 PM | Dinner 5:00–11:00 PM.',
+      'Hygiene Pause: Service pauses between 4:00 PM and 5:00 PM daily for deep cleaning and kitchen preparations.',
+      'Inside VQC Queue: You do NOT need to leave the compartment. Srivari Seva volunteers bring food packets and buttermilk to you.',
+      'Infant Care: Free warm milk for babies is readily available upon request inside VQC compartments and PAC centers.',
+      'Festival Days: Sacred sweet pongal or payasam is served along with meals on auspicious festivals and Brahmotsavams.'
     ]
   },
   {
     id: 'hair-offering',
     intentId: 'hair-offering',
-    name: 'Hair Offering (Tonsure)',
+    name: 'Sacred Hair Offering (Kalyanakatta & Mundan)',
     category: 'Hair Offering',
     importance: 'highly-recommended',
-    tag: 'FREE',
-    status: 'Open 24/7',
-    shortDescription: 'Sacred hair tonsure facility (Kalyana Katta).',
-    description: 'Offering hair is a sacred tradition in Tirumala representing surrender of ego. TTD runs the massive 4-story Kalyana Katta complex with 500+ trained barbers working around the clock under hygienic conditions.',
-    whyItMatters: 'Tonsure is performed prior to Darshan. Free sanitized blades and warm water baths are provided.',
+    tag: '100% FREE TTD',
+    status: 'Open 24/7 (All Day & Night)',
+    shortDescription: 'Official 24/7 TTD tonsure centers with free sterilized blades, dedicated halls, and hot bath facilities.',
+    description: 'Offering hair (tonsuring / mundan) in Tirumala represents the complete surrender of ego to Lord Venkateswara. TTD operates the central multi-story Main Kalyanakatta opposite the Annadanam Complex 24 hours a day, alongside 9 satellite mini-centers located near major guest houses (Nandakam, SVRH, Rambagicha, and PACs). All hair offering services, sterilized blades, and adjoining hot water baths are 100% free with a strict ban on tipping barbers.',
+    whyItMatters: 'Devotees traditionally tonsure their heads prior to entering the Darshan queue. TTD ensures highest hygiene standards with new sealed surgical blades opened in front of you, dedicated separate halls for men and women, and immediate access to free hot-water showers so you can change into clean traditional clothes.',
     distance: '250 m',
     walkingTime: '3 min walk',
     image: '/assets/temples/pushkarini_ghats.png',
-    location: 'Main Kalyana Katta Complex & PAC Mini Counters',
+    location: 'Opposite Annadhanam Complex (Main 24/7 Facility) & 9 Rest House Satellite Centers',
     coordinates: { lat: 13.6825, lng: 79.3501 },
     iconName: 'scissors',
     searchAliases: [
-      'hair', 'tonsure', 'shaving', 'kalyana katta', 'barber', 'head shave', 'head', 'blade', 'bath'
+      'hair', 'tonsure', 'shaving', 'kalyana katta', 'kalyanakatta', 'barber', 'head shave', 'head', 'blade', 'bath', 'mundan', 'mottai'
+    ],
+    highlights: [
+      {
+        title: '100% Free Service & Blades',
+        subtitle: 'Sterilized surgical blades and expert barbers provided at zero cost with zero tipping',
+        iconName: 'shield-check'
+      },
+      {
+        title: 'Open 24 Hours Non-Stop',
+        subtitle: 'Round-the-clock service at Main Kalyanakatta with dedicated men & women halls',
+        iconName: 'clock'
+      },
+      {
+        title: '9 Satellite Mini Centers',
+        subtitle: 'Convenient satellite centers near Nandakam, SVRH, Rambagicha & PACs to skip crowd',
+        iconName: 'map-pin'
+      },
+      {
+        title: 'Free Adjoining Hot Baths',
+        subtitle: 'Clean shower complexes with geysers for immediate cleansing before queue entry',
+        iconName: 'droplets'
+      }
+    ],
+    itemCategories: [
+      {
+        title: 'Main 24/7 Kalyanakatta Complex',
+        tag: 'Open 24 Hours',
+        desc: 'Massive 4-story facility located directly opposite the Annadhanam Complex with hundreds of barbers and separate floors for men, women, and children.',
+        iconName: 'scissors',
+        whereToDeposit: 'Opposite Matrusri Tarigonda Vengamamba Annadhanam Complex',
+        whyNeeded: 'Highest capacity center with continuous movement and dedicated staff, open all night for early morning pilgrims.'
+      },
+      {
+        title: '9 Satellite Mini Kalyanakattas',
+        tag: 'Rest House Hubs',
+        desc: 'Satellite centers situated near major rest houses including Nandakam Rest House, Sri Venkateswara Rest House (SVRH), Rambagicha, and PAC dormitories.',
+        iconName: 'map-pin',
+        whereToDeposit: 'Nandakam Rest House, SVRH, Rambagicha Guest House & PAC-1/PAC-2',
+        whyNeeded: 'Convenient for families, senior citizens, and cottage guests — avoids long walks across hilltop and has shorter queues in early morning hours.'
+      },
+      {
+        title: 'Free Hot Water Shower Complexes',
+        tag: 'Adjoining Halls',
+        desc: 'Spacious public bathing halls with hot water geysers and private changing cubicles located immediately inside/adjacent to each tonsure center.',
+        iconName: 'droplets',
+        whereToDeposit: 'Within Main Kalyanakatta Complex & Adjacent to all Mini Centers',
+        whyNeeded: 'Allows devotees to thoroughly rinse off loose hair clippings and change into fresh traditional attire before proceeding to Darshan.'
+      },
+      {
+        title: 'Baby Mundan & Ceremonial Hair Lock',
+        tag: 'Custom Tradition',
+        desc: 'Specialized gentle tonsuring for infants and children; barbers assist with collecting the ceremonial first lock of hair into a cloth pouch.',
+        iconName: 'sparkles',
+        whereToDeposit: 'Dedicated Family / Infant Counters at Main Complex & Satellite Hubs',
+        whyNeeded: 'Preserves auspicious family traditions where the initial lock of hair is offered separately as per vows.'
+      }
     ],
     subLocations: [
-      { name: 'Main Kalyana Katta Complex (4 Floors)', walkTime: '3 mins', distance: '250 m', status: 'Open Now' },
-      { name: 'PAC-1 Mini Kalyana Katta', walkTime: '6 mins', distance: '380 m', status: 'Open Now' },
-      { name: 'PAC-2 Mini Kalyana Katta', walkTime: '4 mins', distance: '200 m', status: 'Open Now' }
+      { 
+        name: 'Main Kalyanakatta Complex (Central 4-Story Facility)', 
+        walkTime: '3 mins', 
+        distance: '250 m', 
+        status: 'Open Now',
+        bestFor: '24/7 tonsure with dedicated multi-floor halls for men, women & infants',
+        whyRecommended: 'Located opposite Annadhanam complex; largest mega center with hundreds of barbers working round the clock to ensure fast turnaround.'
+      },
+      { 
+        name: 'Nandakam & SVRH Mini Kalyanakatta', 
+        walkTime: '4 mins', 
+        distance: '300 m', 
+        status: 'Open Now',
+        bestFor: 'Pilgrims staying in Nandakam, Panchajanyam, or SVRH rest houses',
+        whyRecommended: 'Saves 30+ minutes of walking; ideal for morning tonsure without the large crowd of the central facility.'
+      },
+      { 
+        name: 'Rambagicha & PAC Satellite Centers (PAC-I & II)', 
+        walkTime: '3 mins', 
+        distance: '200 m', 
+        status: 'Open Now',
+        bestFor: 'Devotees arriving at Balaji Nagar bus stand or resting in PAC halls',
+        whyRecommended: 'Instant tonsure access right after getting off the bus or before checking into dormitory halls.'
+      },
+      { 
+        name: 'Cottage Clusters Mini Kalyanakattas (SNC & ATC Hubs)', 
+        walkTime: '6 mins', 
+        distance: '450 m', 
+        status: 'Open Now',
+        bestFor: 'Families & elderly devotees residing in hill cottage zones',
+        whyRecommended: 'Quiet, localized centers designed to serve residential cottage sectors with zero commute hassle.'
+      }
     ],
     procedureTimeline: [
-      { stepNumber: 1, title: 'Visit Counter', description: 'Collect your free token and single-use antiseptic blade.' },
-      { stepNumber: 2, title: 'Receive Blade', description: 'Each barber opens a new sealed blade in front of you.' },
-      { stepNumber: 3, title: 'Hair Offering (Tonsure)', description: 'Quick, painless shaving by experienced TTD barbers.' },
-      { stepNumber: 4, title: 'Shower & Bathroom', description: 'Proceed to hot water bathrooms in the same building.' },
-      { stepNumber: 5, title: 'Wear Fresh Traditional Clothes', description: 'Change into clean dhoti/saree before Darshan.' }
+      { 
+        stepNumber: 1, 
+        title: 'Collect Free Entry Token & Blade', 
+        description: 'Approach the entrance token counter to receive your free entry pass and a new, sealed single-use surgical blade.',
+        whyThisStep: 'TTD enforces sealed single-use blades to guarantee 100% surgical hygiene and eliminate cross-contamination.'
+      },
+      { 
+        stepNumber: 2, 
+        title: 'Proceed to Designated Hall Floor', 
+        description: 'Staff guides pilgrims to separate floors: dedicated sections for men, women, and infants.',
+        whyThisStep: 'Ensures absolute privacy, dignity, and comfortable seating arrangements for women and young children.'
+      },
+      { 
+        stepNumber: 3, 
+        title: 'Ceremonial First Lock (Optional)', 
+        description: 'If performing a child’s first mundan, inform the barber to hand you the ceremonial first lock of hair to collect in your cloth pouch.',
+        whyThisStep: 'Honors family customs and sacred vows before the full tonsure is carried out.'
+      },
+      { 
+        stepNumber: 4, 
+        title: 'Sacred Hair Tonsure (Strictly No Tips)', 
+        description: 'Skilled barbers open the sealed blade in front of you and perform quick, painless tonsure. Tipping is strictly prohibited.',
+        whyThisStep: 'Barbers receive official TTD salaries; never offer money or tips to maintain the sanctity of selfless service.'
+      },
+      { 
+        stepNumber: 5, 
+        title: 'Hot Water Bath & Traditional Clothes', 
+        description: 'Walk directly to the adjoining bath complex, take a hot shower to wash off hair fragments, and change into clean traditional dress.',
+        whyThisStep: 'Cleanses the body for divine purity and prepares you comfortably for the Vaikuntam Queue entry.'
+      }
     ],
     requirements: {
-      carry: ['Towel', 'Fresh Traditional Clothes', 'Soap'],
-      prohibited: ['Tipping barbers (Strictly prohibited by TTD)'],
-      mandatoryDoc: 'Free Entry (Token at Counter)'
+      carry: ['Spare set of traditional clothes (Dhoti/Saree/Kurta)', 'Bath towel & soap', 'Small cloth pouch (if collecting ceremonial hair lock)'],
+      prohibited: ['Tipping barbers (Strictly prohibited by TTD — report any demand)', 'Footwear inside tonsuring halls', 'Soap inside shaving bays (Allowed in shower bathrooms only)'],
+      mandatoryDoc: 'Free Entry Token (Issued on arrival at counter)'
     },
     tips: [
-      'No fees or tips should be paid to barbers. It is completely free.',
-      'Sealed single-use blades are mandatory for hygiene.',
-      'Mini Kalyana Katta counters at PAC-1 & PAC-2 have shorter wait times during peak morning hours.'
+      'Cost & Tipping: The tonsure service and sterilized blades are completely free of charge. Never pay tips to barbers.',
+      'Facilities: Free hot water and common bathrooms are available nearby for bathing immediately after tonsure.',
+      'Clothing: Carry a spare set of traditional clothes to change into after your bath, along with a small pouch to collect your hair if you wish to keep a small lock as per custom.',
+      'Timing Strategy: Main Kalyanakatta opposite Annadhanam is open 24 hours. The quietest hours are late night (10 PM - 3 AM) and early afternoon (1 PM - 3 PM).',
+      'Satellite Centers: If staying in cottages or rest houses (Nandakam, SVRH, Rambagicha), use the 9 mini satellite centers to skip the main queue.'
     ]
   },
   {
     id: 'accommodation',
     intentId: 'accommodation',
-    name: 'Accommodation',
+    name: 'Tirumala Accommodation & Cottage Booking',
     category: 'Accommodation',
     importance: 'must-know',
-    tag: 'CRO HUB',
-    status: 'Check Availability',
-    shortDescription: 'Spot allotment offices, dormitories, and PAC free halls.',
-    description: 'TTD provides rooms, cottages, shared dormitories, and free hall accommodation across Tirumala hilltop town. Central Reception Office (CRO) handles all spot allotments.',
-    whyItMatters: 'Whether you booked online or need a room on arrival, knowing where to report saves hours of wandering with family.',
+    tag: 'ONLINE & CRO SPOT',
+    status: 'Open Daily (Online & CRO)',
+    shortDescription: 'Official online portal & CRO spot allotment for budget cottages (₹100/₹500), guest houses, and free PAC halls.',
+    description: 'TTD provides rooms, cottages, shared dormitories, and free hall accommodation across the Tirumala hilltop town. Rooms can be booked online through the official TTD booking portal up to 3 months in advance (linked to a confirmed darshan/seva ticket for at least 2 pilgrims, with a 30-day quota limit), or offline via walk-in spot allotment at the Central Reception Office (CRO) near the bus stand with original Aadhaar cards and facial biometric verification. Alternatively, downhill TTD complexes (Srinivasam, Vishnu Nivasam, Madhavam) in Tirupati town and free carpeted PAC halls on the hill provide reliable lodging when hilltop rooms are booked out.',
+    whyItMatters: 'Hilltop room demand is immense. Low-cost ₹100 and ₹500 rooms exhaust rapidly. Knowing the online darshan-link rules, the 3:00 AM – 4:00 AM CRO walk-in strategy, and having backup downhill TTD options in Tirupati town prevents families from falling into unauthorized broker traps or being stranded without shelter.',
     distance: '300 m',
     walkingTime: '4 min walk',
     image: '/assets/nature/udyanavanam.png',
-    location: 'CRO Office (opposite Bus Stand) & PAC Halls',
+    location: 'CRO Office (opposite Bus Stand) & Downhill Tirupati Complexes',
     coordinates: { lat: 13.6819, lng: 79.3512 },
     iconName: 'bed',
     searchAliases: [
       'room', 'rooms', 'sleep', 'stay', 'cro', 'hotel', 'dormitory', 'pac', 'hall',
-      'cottage', 'booking', 'accommodation', 'bed', 'rest', 'aadhaar'
+      'cottage', 'booking', 'accommodation', 'bed', 'rest', 'aadhaar', 'srinivasam', 'vishnu nivasam'
+    ],
+    highlights: [
+      {
+        title: 'Online Portal Booking',
+        subtitle: 'Up to 3 months advance; requires confirmed Darshan ticket (min 2 pilgrims)',
+        iconName: 'shield-check'
+      },
+      {
+        title: 'Budget & Premium Cottages',
+        subtitle: 'Official TTD pricing from ₹100 & ₹500 rest houses to ₹1,000–₹3,000+ guest suites',
+        iconName: 'bed'
+      },
+      {
+        title: 'Offline CRO Spot Allotment',
+        subtitle: 'Walk-in counter near bus stand; queuing by 3–4 AM yields best chance for ₹100 rooms',
+        iconName: 'clock'
+      },
+      {
+        title: 'Free PAC Halls & Downhill Hubs',
+        subtitle: '24/7 free halls on hill (PAC 1–4) & massive Tirupati hubs (Srinivasam, Vishnu Nivasam)',
+        iconName: 'map-pin'
+      }
+    ],
+    itemCategories: [
+      {
+        title: 'Online Advance Booking (TTD Portal)',
+        tag: '3 Months Advance',
+        desc: 'Book rooms online via the official TTD website. Requires a valid darshan or seva ticket linked to your mobile for at least 2 pilgrims. Limited to 1 room per Aadhaar profile every 30 days.',
+        iconName: 'bed',
+        whereToDeposit: 'Official TTD Booking Website / Mobile App (Redeem at ARP Hub)',
+        whyNeeded: 'Prevents mass broker hoarding by verifying confirmed darshan pilgrims before reserving rooms on the sacred hill.'
+      },
+      {
+        title: 'Offline CRO Spot Allotment (₹100 & ₹500)',
+        tag: '3:00 AM – 4:00 AM Walk-In',
+        desc: 'Walk-in room allotment counter located at Central Reception Office (CRO) near Tirumala bus stand. ₹100 budget rooms run out quickly, so arriving early gives you the best chance.',
+        iconName: 'clock',
+        whereToDeposit: 'Central Reception Office (CRO) Opposite RTC Bus Stand',
+        whyNeeded: 'Primary walk-in lifeline for spontaneous pilgrims. Facial recognition and Aadhaar ensure fair spot allotment.'
+      },
+      {
+        title: 'Free Carpeted Dormitories (PAC 1 to 4)',
+        tag: '100% Free • 24/7',
+        desc: 'Massive, clean carpeted halls at PAC-1, PAC-2, PAC-3, and PAC-4 with free luggage lockers, hot water bathrooms, and 24/7 security on a first-come, first-served basis.',
+        iconName: 'sparkles',
+        whereToDeposit: 'Pilgrim Amenities Complexes (PAC-1 to PAC-4)',
+        whyNeeded: 'Provides safe, cost-free shelter right on the hilltop if all paid rooms and cottages are completely full.'
+      },
+      {
+        title: 'Tirupati Downhill Hubs (Srinivasam & Vishnu Nivasam)',
+        tag: 'Downhill Transit Hubs',
+        desc: 'Massive TTD accommodation complexes located in Tirupati town right opposite the railway station (Vishnu Nivasam) and central bus stand (Srinivasam & Madhavam).',
+        iconName: 'map-pin',
+        whereToDeposit: 'Opposite Tirupati Railway Station & Central RTC Bus Stand',
+        whyNeeded: 'Thousands of rooms available downhill; direct electric buses connect from the doorstep uphill to Tirumala in 45 minutes.'
+      }
     ],
     subLocations: [
-      { name: 'Central Reception Office (CRO) - Spot Allotment', walkTime: '4 mins', distance: '300 m', status: 'Open Now' },
-      { name: 'Already Booked Counters (ARP Hub)', walkTime: '5 mins', distance: '350 m', status: 'Open Now' },
-      { name: 'PAC-1 Free Dormitory Hall', walkTime: '6 mins', distance: '400 m', status: 'Open Now' },
-      { name: 'PAC-3 & PAC-4 Free Pilgrim Halls', walkTime: '7 mins', distance: '450 m', status: 'Open Now' }
+      { 
+        name: 'Central Reception Office (CRO) - Spot Allotment', 
+        walkTime: '4 mins', 
+        distance: '300 m', 
+        status: 'Open Now',
+        bestFor: 'In-person walk-in room allotments on hilltop arrival',
+        whyRecommended: 'Official hilltop offline counter; open early morning. Carry original Aadhaar cards for facial biometric scan.'
+      },
+      { 
+        name: 'Already Booked Counters (ARP Hub)', 
+        walkTime: '5 mins', 
+        distance: '350 m', 
+        status: 'Open Now',
+        bestFor: 'Devotees with advance online booking confirmation vouchers',
+        whyRecommended: 'Fast-track counter to scan online booking QR voucher, deposit caution money, and collect sub-office cottage keys.'
+      },
+      { 
+        name: 'PAC-1, PAC-3 & PAC-4 Free Pilgrim Halls', 
+        walkTime: '6 mins', 
+        distance: '400 m', 
+        status: 'Open Now',
+        bestFor: 'Cost-free dormitory stay when paid cottages are sold out',
+        whyRecommended: '100% free carpeted halls with 24/7 security, steel luggage lockers, and running hot water bathrooms.'
+      },
+      { 
+        name: 'Tirupati Downhill Complexes (Srinivasam & Vishnu Nivasam)', 
+        walkTime: 'Downhill transit', 
+        distance: '22 km', 
+        status: 'Open Now',
+        bestFor: 'Comfortable stay in Tirupati town before heading uphill',
+        whyRecommended: 'Srinivasam (opp. RTC Bus Stand), Vishnu Nivasam (opp. Railway Station), and Madhavam Rest House offer spot booking and direct hill buses.'
+      }
     ],
     procedureTimeline: [
-      { stepNumber: 1, title: 'Carry Aadhaar Card of All Pilgrims', description: 'Original Aadhaar verification is compulsory.' },
-      { stepNumber: 2, title: 'Visit CRO Office / Online Counter', description: 'Join spot counter queue or scan online QR voucher.' },
-      { stepNumber: 3, title: 'Check Availability & Pay Caution Deposit', description: 'Cautious refund processed upon room checkout.' },
-      { stepNumber: 4, title: 'Receive Sub-office Allotment Slip', description: 'Proceed directly to designated cottage cluster.' },
-      { stepNumber: 5, title: 'No Rooms Available? Head to PAC Halls', description: 'Free carpeted PAC halls with lockers and hot baths available 24/7.' }
+      { 
+        stepNumber: 1, 
+        title: 'Check Online Quota or Reach CRO Early', 
+        description: 'Book online up to 3 months in advance with your darshan ticket, or arrive at CRO by 3:00 AM – 4:00 AM for offline ₹100/₹500 spot cottages.',
+        whyThisStep: 'Budget rooms sell out quickly; planning early ensures your family gets comfortable lodging without stress.'
+      },
+      { 
+        stepNumber: 2, 
+        title: 'Carry Original Physical Aadhaar Cards', 
+        description: 'Original Aadhaar cards of all staying pilgrims are compulsory. Staff conducts live facial biometric verification.',
+        whyThisStep: 'Prevents touts and unauthorized middlemen from hoarding rooms under fake or duplicate identities.'
+      },
+      { 
+        stepNumber: 3, 
+        title: 'Pay Room Rent & Refundable Caution Deposit', 
+        description: 'Pay the official room tariff plus a standard caution deposit (e.g. ₹500 or ₹1,000) via UPI, card, or cash.',
+        whyThisStep: 'Caution deposit protects TTD assets and is promptly refunded to your bank account/card upon checkout.'
+      },
+      { 
+        stepNumber: 4, 
+        title: 'Collect Sub-Office Allotment Slip & Keys', 
+        description: 'CRO issues an allotment slip directing you to a sub-office (e.g., ATC, SNC, TB, or Rambagicha) where the keys are handed over.',
+        whyThisStep: 'Decentralized sub-offices handle cottage inspections and maintenance locally across the hill.'
+      },
+      { 
+        stepNumber: 5, 
+        title: 'Rooms Full? Head to Free PAC Halls or Tirupati', 
+        description: 'If all paid rooms are exhausted, proceed directly to PAC-1 to PAC-4 free halls on the hill or take a bus to Srinivasam in Tirupati.',
+        whyThisStep: 'Guarantees clean, safe, and secure shelter with bathrooms and lockers without paying private hotel surge prices.'
+      }
     ],
     requirements: {
-      carry: ['Original Aadhaar Cards', 'Online Booking Slip (if booked)'],
-      prohibited: ['Unregistered third-party brokers'],
-      mandatoryDoc: 'Aadhaar Card Mandatory'
+      carry: ['Original Physical Aadhaar Cards of all pilgrims', 'Valid Darshan Ticket Printout (for online quota)', 'Refundable Caution Deposit (UPI / Card / Cash)'],
+      prohibited: ['Unauthorized brokers / touts (Strictly illegal; book only at official CRO)', 'Holding multiple rooms on single Aadhaar (Max 1 room per 30 days)', 'Cooking inside cottage rooms (Banned for fire safety)'],
+      mandatoryDoc: 'Original Aadhaar Card Compulsory (Biometric Facial Scan)'
     },
     tips: [
-      'Spot allotment opens daily at CRO. Arrive early morning for best availability.',
-      'If rooms are full, PAC-1, PAC-3, and PAC-4 offer free, secure hall stay with clean restrooms.',
-      'Do not pay money to private agents. All official TTD allotments are handled at CRO.'
+      'Online Booking Rule: You must have a confirmed Tirumala darshan or seva ticket (for at least 2 pilgrims) linked to your mobile login to book hilltop accommodation.',
+      '30-Day Quota Limit: A pilgrim can book only one TTD room every 30 days across all mobile logins and Aadhaar profiles.',
+      'CRO Walk-in Strategy: Offline counters open early morning, but ₹100 budget rooms run out rapidly. Queuing by 3:00 AM to 4:00 AM yields the highest chance of securing a budget cottage.',
+      'Facial Recognition: All adult pilgrims checking into the room must be present physically at the CRO or sub-office counter for biometric facial verification.',
+      'Downhill Fallback: If hilltop cottages are fully occupied, take a Dharma Ratham or APSRTC bus to Tirupati town and stay at Srinivasam, Vishnu Nivasam, or Madhavam rest houses.'
     ]
   },
   {
@@ -602,24 +1044,24 @@ export const FAQ_ITEMS: FAQItem[] = [
   },
   {
     id: 'faq-food',
-    question: 'Where can I get free meals in Tirumala?',
-    answer: 'Free, unlimited vegetarian meals are served throughout the day at the Matrusri Tarigonda Vengamamba Annaprasadam complex located near the temple. No entry ticket or registration is required.',
+    question: 'Where can I get free meals in Tirumala and what are the exact timings?',
+    answer: 'Free, unlimited satvik vegetarian meals are served at the Matrusri Tarigonda Vengamamba Annaprasadam Complex near the temple (Breakfast: 8:30–10:30 AM, Lunch: 10:30 AM–4:00 PM, Dinner: 5:00–11:00 PM; cleaning pause 4:00–5:00 PM). In addition, free food packets, buttermilk, and warm milk are continuously distributed inside Vaikuntam Queue Complexes (VQC I & II), PAC-II, PAC-IV, and Rambagicha Bus Stand. Zero tokens or tickets needed.',
     category: 'Facilities',
-    searchAliases: ['food', 'meals', 'lunch', 'dinner', 'free', 'annaprasadam', 'eat']
+    searchAliases: ['food', 'meals', 'lunch', 'dinner', 'free', 'annaprasadam', 'eat', 'timings', 'vengamamba']
   },
   {
     id: 'faq-hair',
-    question: 'Where is hair offering (Kalyana Katta) done and is it free?',
-    answer: 'Hair offering is done at the main 4-story Kalyana Katta complex and mini PAC counters. It is 100% free; TTD provides free single-use blades and barbers. No tips should be paid.',
+    question: 'Where is hair offering (Kalyanakatta / Mundan) done and is it free?',
+    answer: 'Hair offering is done at the Main Kalyanakatta (located opposite the Annadhanam Complex, open 24 hours with dedicated floors for men and women) and at 9 satellite mini-centers near major rest houses (such as Nandakam, SVRH, Rambagicha, and PACs). It is 100% free of charge; TTD provides new sealed surgical blades and trained barbers at zero cost. Tipping is strictly prohibited. Free hot water shower complexes are available immediately adjacent for bathing after tonsure.',
     category: 'Facilities',
-    searchAliases: ['hair', 'tonsure', 'kalyana katta', 'barber', 'shaving', 'blade']
+    searchAliases: ['hair', 'tonsure', 'kalyana katta', 'kalyanakatta', 'barber', 'shaving', 'blade', 'mundan', 'hot bath']
   },
   {
     id: 'faq-room',
-    question: 'How do I get a room or dormitory on arrival in Tirumala?',
-    answer: 'Visit the Central Reception Office (CRO) near the bus stand for spot room allotments with original Aadhaar cards. If rooms are sold out, free carpeted dormitories and halls with hot baths are available at PAC-1, PAC-3, and PAC-4.',
+    question: 'How do I book accommodation in Tirumala and what if cottages are sold out?',
+    answer: 'You can book rooms online up to 3 months in advance via the official TTD portal (requires a valid darshan ticket for at least 2 pilgrims, max 1 room per Aadhaar every 30 days). Offline walk-in spot allotments are issued daily at the Central Reception Office (CRO) near the bus stand with original Aadhaar cards and facial biometric scans (queuing by 3:00–4:00 AM is recommended for ₹100 budget rooms). If hilltop rooms are full, stay at TTD downhill complexes in Tirupati (Srinivasam, Vishnu Nivasam, Madhavam) or utilize free carpeted PAC dormitories (PAC-1 to PAC-4) on the hill.',
     category: 'Facilities',
-    searchAliases: ['room', 'rooms', 'cro', 'accommodation', 'dormitory', 'sleep', 'stay', 'aadhaar']
+    searchAliases: ['room', 'rooms', 'cro', 'accommodation', 'dormitory', 'sleep', 'stay', 'aadhaar', 'booking', 'cottage', 'tirupati']
   },
   {
     id: 'faq-wheelchair',

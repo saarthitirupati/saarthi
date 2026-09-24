@@ -1,11 +1,12 @@
 import React from 'react';
 import Link from 'next/link';
 import { Footprints, Sun, Sunset, Moon } from 'lucide-react';
+import { getISTDate } from '@/utils/location';
 
 export function ContextualActionCard({ liveStatus }: { liveStatus: any }) {
   if (!liveStatus) return null;
 
-  const hr = new Date().getHours();
+  const hr = getISTDate().getHours();
   const isMorning = hr >= 5 && hr < 12;
   const isAfternoon = hr >= 12 && hr < 17;
   const isEvening = hr >= 17 && hr < 21;

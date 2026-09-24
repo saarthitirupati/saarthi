@@ -525,4 +525,13 @@ export function formatTravelTime(minutes: number, lang: string = 'en'): string {
   return `${hours} hr${hours > 1 ? 's' : ''} ${remainingMins} mins`;
 }
 
+/**
+ * Returns current Date object normalized to Indian Standard Time (IST / UTC+5:30)
+ * Prevents hydration mismatches between UTC servers and IST clients.
+ */
+export function getISTDate(date: Date = new Date()): Date {
+  const utc = date.getTime() + date.getTimezoneOffset() * 60000;
+  return new Date(utc + 3600000 * 5.5);
+}
+
 

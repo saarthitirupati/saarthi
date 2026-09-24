@@ -15,7 +15,7 @@ import { PLACES, Place, getPlaceGuideData } from '@/data/places';
 import { PlaceSignificance, TraditionType } from '@/types/place';
 import { useTrip } from '@/components/TripContext';
 import { useRealtimePlaces } from '@/lib/useRealtimePlaces';
-import { calculateDrivingDistance, isCoordinateOnTirumalaHill, isWithinTirupatiRegion, TIRUPATI_CENTER, formatTravelTime, estimateDriveDuration, formatDistance } from '@/utils/location';
+import { calculateDrivingDistance, isCoordinateOnTirumalaHill, isWithinTirupatiRegion, TIRUPATI_CENTER, formatTravelTime, estimateDriveDuration, formatDistance, getISTDate } from '@/utils/location';
 import { findNearestPlaceCandidates } from '@/lib/location';
 import { useLanguage } from '@/lib/useLanguage';
 import { getFestivalCrowdIntelligence } from '@/utils/festivalCrowd';
@@ -236,8 +236,9 @@ export default function PlaceDetails() {
     return fallback;
   };
 
-  // Determine current open status
-  const currentHour = new Date().getHours() + new Date().getMinutes() / 60;
+  // Determine current open status based on Tirupati local time (IST, UTC+5:30)
+  const istDate = getISTDate();
+  const currentHour = istDate.getHours() + istDate.getMinutes() / 60;
   const isOpenNow = (place.openFrom !== undefined && place.openTo !== undefined)
     ? currentHour >= place.openFrom && currentHour < place.openTo
     : true;
@@ -783,21 +784,8 @@ export default function PlaceDetails() {
         </div>
       </div>
 
-      {/* Accessibility */}
-      <div style={{ backgroundColor: '#FFFFFF', border: '1px solid rgba(15, 23, 42, 0.06)', borderRadius: '14px', padding: '11px 12px', boxShadow: '0 3px 10px rgba(15,23,42,0.03)', minWidth: 0, overflow: 'hidden' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '4px' }}>
-          <CheckCircle2 size={14} color="#0F5132" style={{ flexShrink: 0 }} />
-          <span style={{ fontSize: '10.5px', fontWeight: 700, color: '#64748B', whiteSpace: 'nowrap' }}>{lang === 'te' ? 'దివ్యాంగుల సౌలభ్యం' : 'Accessibility'}</span>
-        </div>
-        <div style={{ fontSize: '12px', fontWeight: 800, color: '#0F172A', lineHeight: 1.3, wordBreak: 'break-word' }}>
-          {lang === 'te'
-            ? (place.recommendationContext?.wheelchairAccessible ? 'వీల్ చైర్ సౌకర్యం' : 'ర్యాంప్ / సులభ ప్రవేశం')
-            : (place.recommendationContext?.wheelchairAccessible ? 'Wheelchair Friendly' : 'Ramp / Ground Access')}
-        </div>
-      </div>
-
       {/* Photography / Mobile */}
-      <div style={{ backgroundColor: '#FFFFFF', border: '1px solid rgba(15, 23, 42, 0.06)', borderRadius: '16px', padding: '11px 12px', boxShadow: '0 3px 10px rgba(15,23,42,0.03)', minWidth: 0, overflow: 'hidden' }}>
+      <div style={{ backgroundColor: '#FFFFFF', border: '1px solid rgba(15, 23, 42, 0.06)', borderRadius: '14px', padding: '11px 12px', boxShadow: '0 3px 10px rgba(15,23,42,0.03)', minWidth: 0, overflow: 'hidden' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '4px' }}>
           <Camera size={14} color="#0F5132" style={{ flexShrink: 0 }} />
           <span style={{ fontSize: '10.5px', fontWeight: 700, color: '#64748B', whiteSpace: 'nowrap' }}>{lang === 'te' ? 'ఫోన్లు & కెమెరా' : 'Phones & Camera'}</span>
@@ -993,7 +981,7 @@ export default function PlaceDetails() {
           }}
         >
           <Heart size={16} fill={isSaved ? '#E11D48' : 'none'} style={{ flexShrink: 0 }} />
-          <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{isSaved ? (lang === 'te' ? 'సేవ్ చేయబడింది' : 'Saved') : (lang === 'te' ? (isTemple ? 'ఆలయాన్ని సేవ్ చేయండి' : 'ప్రదేశాన్ని సేవ్ చేయండి') : (isTemple ? 'Save Temple' : 'Save Place'))}</span>
+          <span suppressHydrationWarning style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{isSaved ? (lang === 'te' ? 'సేవ్ చేయబడింది' : 'Saved') : (lang === 'te' ? (isTemple ? 'ఆలయాన్ని సేవ్ చేయండి' : 'ప్రదేశాన్ని సేవ్ చేయండి') : (isTemple ? 'Save Temple' : 'Save Place'))}</span>
         </button>
 
         <button
@@ -1623,10 +1611,10 @@ export default function PlaceDetails() {
                 gap: '4px'
               }}>
                 <AlertTriangle size={12} color="#FDE047" />
-                <span>{lang === 'te' ? 'పునర్నిర్మాణంలో ఉంది (మూసివేయబడింది)' : 'Under Reconstruction (Closed)'}</span>
+                <span suppressHydrationWarning>{lang === 'te' ? 'పునర్నిర్మాణంలో ఉంది (మూసివేయబడింది)' : 'Under Reconstruction (Closed)'}</span>
               </span>
             ) : (
-              <span style={{
+              <span suppressHydrationWarning style={{
                 fontSize: '11px',
                 fontWeight: 800,
                 backgroundColor: isOpenNow ? 'rgba(34, 197, 94, 0.25)' : 'rgba(239, 68, 68, 0.25)',
@@ -1671,7 +1659,7 @@ export default function PlaceDetails() {
             boxSizing: 'border-box'
           }}>
             <MapPin size={14} color="#CBD5E1" style={{ flexShrink: 0 }} />
-            <span style={{ minWidth: 0, wordBreak: 'break-word' }}>{place.location} • ~{formattedDriveTime} {userLocation ? (lang === 'te' ? 'మీ నుండి' : 'from you') : (lang === 'te' ? 'తిరుపతి నుండి' : 'from Tirupati')} ({formatDistance(drivingDistance, lang)})</span>
+            <span suppressHydrationWarning style={{ minWidth: 0, wordBreak: 'break-word' }}>{place.location} • ~{formattedDriveTime} {userLocation ? (lang === 'te' ? 'మీ నుండి' : 'from you') : (lang === 'te' ? 'తిరుపతి నుండి' : 'from Tirupati')} ({formatDistance(drivingDistance, lang)})</span>
           </div>
         </div>
       </div>

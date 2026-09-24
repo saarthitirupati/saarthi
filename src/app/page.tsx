@@ -7,6 +7,7 @@ import { useHomeData } from '@/hooks/useHomeData';
 import { useTrip } from '@/components/TripContext';
 import { LoadingState } from '@/components/common/LoadingState';
 import { calculateDrivingDistance, TIRUPATI_CENTER, isWithinTirupatiRegion, formatDistance } from '@/lib/location';
+import { getISTDate } from '@/utils/location';
 import { useLanguage } from '@/lib/useLanguage';
 import {
   HomeHero,
@@ -385,9 +386,9 @@ export default function HomePage() {
       {/* 💻 DESKTOP & TABLET VIEW (>=768px): Multi-Column Command Center */}
       <div className={styles.desktopOnly}>
         <div style={{ marginBottom: '20px', padding: '8px 0' }}>
-          <h1 style={{ fontSize: '28px', fontWeight: 900, color: '#0F172A', margin: '0 0 6px 0', letterSpacing: '-0.02em' }}>
+          <h1 suppressHydrationWarning style={{ fontSize: '28px', fontWeight: 900, color: '#0F172A', margin: '0 0 6px 0', letterSpacing: '-0.02em' }}>
             {(() => {
-              const hr = new Date().getHours();
+              const hr = getISTDate().getHours();
               if (hr >= 5 && hr < 12) return lang === 'te' ? 'శుభోదయం' : 'Good Morning';
               if (hr >= 12 && hr < 17) return lang === 'te' ? 'శుభ మధ్యాహ్నం' : 'Good Afternoon';
               if (hr >= 17 && hr < 21) return lang === 'te' ? 'శుభ సాయంత్రం' : 'Good Evening';
