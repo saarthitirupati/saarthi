@@ -101,6 +101,25 @@ export async function getIPLocation(): Promise<{ coords: LatLng; city?: string }
   return { coords: TIRUPATI_CENTER };
 }
 
+export async function reverseGeocodeCity(lat: number, lng: number): Promise<string | null> {
+  if (!isValidCoordinates(lat, lng)) return null;
+  if (isCoordinateOnTirumalaHill(lat, lng)) return 'Tirumala';
+  try {
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), 2000);
+    const res = await fetch(
+      `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${lat}&longitude=${lng}&localityLanguage=en`,
+      { signal: controller.signal }
+    );
+    clearTimeout(timer);
+    if (res.ok) {
+      const data = await res.json();
+      return data.city || data.locality || data.principalSubdivision || null;
+    }
+  } catch {}
+  return null;
+}
+
 /**
  * Syncs the current user location to the browser's Cache API ('saarthi-user-context').
  * This allows the Service Worker (sw.js) to deliver location-accurate notifications

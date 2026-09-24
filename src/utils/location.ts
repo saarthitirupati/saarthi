@@ -315,24 +315,24 @@ export function resolveLocationName(lat: number, lng: number, fallbackCity?: str
     }
   }
 
-  // If within 25 km of a specific known hub (e.g. Srikalahasti, Kanipakam, Renigunta, Chandragiri)
-  if (closestPreset && minDistance <= 25) {
-    return closestPreset.shortName;
-  }
-
-  // If within 120 km of Tirupati Center, label as Tirupati region
-  if (calculateDistance(lat, lng, TIRUPATI_CENTER.lat, TIRUPATI_CENTER.lng) <= 120) {
-    return 'Tirupati';
-  }
-
-  // If near a planning city (within 50 km)
-  if (closestPreset && minDistance <= 50 && closestPreset.category === 'planning-city') {
+  // If within 35 km of a specific known hub or city (Tirupati, Renigunta, Chandragiri, Chennai, Bengaluru, Hyderabad, etc.)
+  if (closestPreset && minDistance <= 35) {
     return closestPreset.shortName;
   }
 
   // Use reverse-geocoded or IP city name if provided
   if (fallbackCity && fallbackCity.trim().length > 0) {
     return fallbackCity.trim();
+  }
+
+  // If near a regional preset (within 60 km)
+  if (closestPreset && minDistance <= 60) {
+    return closestPreset.shortName;
+  }
+
+  // Default to Tirupati if within local 45 km radius
+  if (calculateDistance(lat, lng, TIRUPATI_CENTER.lat, TIRUPATI_CENTER.lng) <= 45) {
+    return 'Tirupati';
   }
 
   return closestPreset ? closestPreset.shortName : 'Tirupati';

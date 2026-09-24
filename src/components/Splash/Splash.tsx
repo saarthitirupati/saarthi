@@ -2,7 +2,6 @@
 
 import React, { useEffect, useState, useCallback, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { playTempleBellChime } from '@/lib/audioBell';
 import styles from './Splash.module.css';
 
 export default function SplashScreen({ onFinish }: { onFinish: () => void }) {
@@ -32,11 +31,6 @@ export default function SplashScreen({ onFinish }: { onFinish: () => void }) {
   }, []);
 
   useEffect(() => {
-    // 🔔 Sacred bronze temple chime (0.2s)
-    const soundTimer = setTimeout(() => {
-      playTempleBellChime();
-    }, 200);
-
     const v = videoRef.current;
     if (v) {
       v.defaultMuted = true;
@@ -50,14 +44,9 @@ export default function SplashScreen({ onFinish }: { onFinish: () => void }) {
     }, 12000);
 
     return () => {
-      clearTimeout(soundTimer);
       clearTimeout(safetyTimer);
     };
   }, [handleFinish]);
-
-  const tryPlay = useCallback(() => {
-    videoRef.current?.play().then(() => setIsVideoReady(true)).catch(() => {});
-  }, []);
 
   return (
     <AnimatePresence mode="wait">
@@ -67,8 +56,9 @@ export default function SplashScreen({ onFinish }: { onFinish: () => void }) {
           initial={{ opacity: 1 }}
           exit={{ opacity: 0, scale: 1.02 }}
           transition={{ duration: 0.35, ease: [0.4, 0, 0.2, 1] }}
-          onTouchStart={tryPlay}
-          onClick={tryPlay}
+          onTouchStart={handleFinish}
+          onClick={handleFinish}
+          style={{ cursor: 'pointer' }}
         >
           <video
             ref={attachVideo}
@@ -115,28 +105,24 @@ export default function SplashScreen({ onFinish }: { onFinish: () => void }) {
             }}
           />
 
-          <button
-            type="button"
-            onClick={handleFinish}
+          <div
             style={{
               position: 'absolute',
-              top: 'max(20px, env(safe-area-inset-top))',
-              right: '20px',
+              bottom: 'max(28px, env(safe-area-inset-bottom))',
+              left: 0,
+              right: 0,
+              textAlign: 'center',
               zIndex: 9999999,
-              background: 'rgba(0, 0, 0, 0.4)',
-              border: '1px solid rgba(255, 255, 255, 0.25)',
-              color: '#FFFFFF',
-              borderRadius: '9999px',
-              padding: '6px 14px',
+              color: 'rgba(255, 255, 255, 0.75)',
               fontSize: '13px',
               fontWeight: 500,
-              backdropFilter: 'blur(8px)',
-              WebkitBackdropFilter: 'blur(8px)',
-              cursor: 'pointer'
+              letterSpacing: '0.03em',
+              pointerEvents: 'none',
+              textShadow: '0 1px 4px rgba(0, 0, 0, 0.8)'
             }}
           >
-            Skip
-          </button>
+            Touch anywhere to enter
+          </div>
         </motion.div>
       )}
     </AnimatePresence>

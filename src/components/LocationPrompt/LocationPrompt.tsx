@@ -16,13 +16,13 @@ export default function LocationPrompt() {
     setIsRequesting(true);
     import('@/lib/location').then(({ detectCoordinates, TIRUPATI_CENTER }) => {
       detectCoordinates(
-        (coords) => {
-          setUserLocation(coords);
+        (coords, source) => {
+          setUserLocation(coords, source || 'gps');
           setLocationPermission('granted');
           setIsRequesting(false);
         },
         () => {
-          setUserLocation(TIRUPATI_CENTER);
+          setUserLocation(TIRUPATI_CENTER, 'fallback');
           setLocationPermission('granted');
           setIsRequesting(false);
         }

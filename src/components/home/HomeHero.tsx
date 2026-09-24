@@ -6,7 +6,7 @@ import Link from 'next/link';
 import Logo from '@/components/Logo/Logo';
 import { useLanguage, setAppLanguage } from '@/lib/useLanguage';
 import { useTrip } from '@/components/TripContext';
-import { detectCoordinates, isCoordinateOnTirumalaHill } from '@/lib/location';
+import { detectCoordinates, isCoordinateOnTirumalaHill, resolveLocationName } from '@/lib/location';
 import { 
   playBeadComplete, 
   playReflectionEnd, 
@@ -262,6 +262,12 @@ export function HomeHero({ userName, locationName, weatherTemp, liveStatus, acti
   const bannerVideoRef = React.useRef<HTMLVideoElement>(null);
 
   React.useEffect(() => {
+    if (locationName) {
+      setSelectedLocation(locationName);
+    }
+  }, [locationName]);
+
+  React.useEffect(() => {
     const playVideo = () => {
       const v = bannerVideoRef.current;
       if (v) {
@@ -307,11 +313,10 @@ export function HomeHero({ userName, locationName, weatherTemp, liveStatus, acti
   const handleAutoDetectLocation = () => {
     setIsLocating(true);
     detectCoordinates(
-      (coords) => {
+      (coords, source) => {
         setIsLocating(false);
-        setUserLocation(coords);
-        const isTirumala = isCoordinateOnTirumalaHill(coords.lat, coords.lng);
-        const region = isTirumala ? 'Tirumala' : 'Tirupati';
+        setUserLocation(coords, source || 'gps');
+        const region = resolveLocationName(coords.lat, coords.lng);
         setSelectedLocation(region);
         if (typeof window !== 'undefined') localStorage.setItem('saarthi_user_region', region);
         setIsLocationModalOpen(false);

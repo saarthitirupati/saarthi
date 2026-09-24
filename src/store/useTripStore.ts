@@ -3,6 +3,7 @@
 import { useState, useEffect, useCallback } from 'react';
 
 import { PlanStop, Plan, PlannerInput, TripState } from '@/types/journey';
+import { resolveLocationName } from '@/utils/location';
 
 export type { PlanStop, Plan, PlannerInput, TripState };
 
@@ -96,15 +97,25 @@ export function useTripStore() {
                 locationName: region
               }));
 
-              if (source === 'ip') {
-                getIPLocation().then(({ city }) => {
-                  if (city) {
-                    const refined = resolveLocationName(coords.lat, coords.lng, city);
-                    setState(prev => ({ ...prev, locationName: refined }));
-                    syncLocationToServiceWorker(coords, refined);
-                  }
-                }).catch(() => {});
-              }
+              import('@/lib/location').then(({ reverseGeocodeCity, getIPLocation }) => {
+                if (source === 'ip') {
+                  getIPLocation().then(({ city }) => {
+                    if (city) {
+                      const refined = resolveLocationName(coords.lat, coords.lng, city);
+                      setState(prev => ({ ...prev, locationName: refined }));
+                      syncLocationToServiceWorker(coords, refined);
+                    }
+                  }).catch(() => {});
+                } else {
+                  reverseGeocodeCity(coords.lat, coords.lng).then(city => {
+                    if (city) {
+                      const refined = resolveLocationName(coords.lat, coords.lng, city);
+                      setState(prev => ({ ...prev, locationName: refined }));
+                      syncLocationToServiceWorker(coords, refined);
+                    }
+                  }).catch(() => {});
+                }
+              }).catch(() => {});
             },
             (err) => {
               const isExplicitDenial = err && err.code === 1;
@@ -297,12 +308,33 @@ export function useTripStore() {
       ) {
         return prev;
       }
+      const initialResolvedName = userLocation
+        ? resolveLocationName(userLocation.lat, userLocation.lng)
+        : prev.locationName;
+
       if (userLocation) {
-        import('@/lib/location').then(({ syncLocationToServiceWorker }) => {
-          syncLocationToServiceWorker(userLocation);
+        import('@/lib/location').then(({ syncLocationToServiceWorker, reverseGeocodeCity }) => {
+          syncLocationToServiceWorker(userLocation, initialResolvedName);
+          reverseGeocodeCity(userLocation.lat, userLocation.lng).then(city => {
+            if (city) {
+              const refinedName = resolveLocationName(userLocation.lat, userLocation.lng, city);
+              setState(p => {
+                if (p.locationName !== refinedName) {
+                  syncLocationToServiceWorker(userLocation, refinedName);
+                  return { ...p, locationName: refinedName };
+                }
+                return p;
+              });
+            }
+          }).catch(() => {});
         }).catch(() => {});
       }
-      return { ...prev, userLocation, locationSource: source };
+      return { 
+        ...prev, 
+        userLocation, 
+        locationSource: source,
+        locationName: initialResolvedName || prev.locationName
+      };
     });
   }, []);
 
