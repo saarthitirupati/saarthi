@@ -2,12 +2,10 @@
   min-height: 100vh;
   padding-bottom: 120px;
   background-color: var(--background);
-  max-width: 960px;
-  margin: 0 auto;
 }
 
 .header {
-  height: 68px;
+  height: 80px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -15,21 +13,9 @@
   background: white;
   border-bottom: 1px solid var(--border);
   position: sticky;
-  top: 0;
+  top: 64px;
   width: 100%;
   z-index: 40;
-}
-
-@media (min-width: 768px) {
-  .header {
-    position: static;
-    border-bottom: none;
-    background: transparent;
-    padding: 16px 20px 0;
-  }
-  .backButton {
-    display: none;
-  }
 }
 
 .header h1 {

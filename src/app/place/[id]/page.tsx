@@ -12,45 +12,27 @@ import {
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { PLACES, Place, getPlaceGuideData } from '@/data/places';
+import { PlaceSignificance, TraditionType } from '@/types/place';
 import { useTrip } from '@/components/TripContext';
 import { useRealtimePlaces } from '@/lib/useRealtimePlaces';
-import { calculateDrivingDistance, isCoordinateOnTirumalaHill, isPlaceOnTirumala, isWithinTirupatiRegion, TIRUPATI_CENTER, formatTravelTime, estimateDriveDuration, formatDistance } from '@/utils/location';
+import { calculateDrivingDistance, isCoordinateOnTirumalaHill, isWithinTirupatiRegion, TIRUPATI_CENTER, formatTravelTime, estimateDriveDuration, formatDistance } from '@/utils/location';
 import { findNearestPlaceCandidates } from '@/lib/location';
 import { useLanguage } from '@/lib/useLanguage';
 import { getFestivalCrowdIntelligence } from '@/utils/festivalCrowd';
-import dynamic from 'next/dynamic';
-
-const OfflineTempleMap = dynamic(() => import('@/components/place/OfflineTempleMap'), {
-  ssr: false,
-  loading: () => (
-    <div style={{
-      minHeight: '220px',
-      backgroundColor: '#FFFFFF',
-      borderRadius: '20px',
-      border: '1px solid rgba(15, 23, 42, 0.06)',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      color: '#64748B',
-      fontSize: '12.5px',
-      fontWeight: 600
-    }}>
-      Loading Offline Map...
-    </div>
-  )
-});
+import OfflineTempleMap from '@/components/place/OfflineTempleMap';
 
 export default function PlaceDetails() {
   const routeParams = useParams();
   const id = typeof routeParams?.id === 'string' ? routeParams.id : (Array.isArray(routeParams?.id) ? routeParams.id[0] : '');
   const lang = useLanguage();
-  const { togglePlace, savedPlaces, addViewedPlace, userLocation, locationPermission, locationSource, requestLocationPermission } = useTrip();
+  const { togglePlace, savedPlaces, addViewedPlace, userLocation } = useTrip();
 
   const { places, loading } = useRealtimePlaces(PLACES);
   const [copied, setCopied] = useState(false);
 
   // Collapsible drawers state
   const [openDrawer, setOpenDrawer] = useState<'legend' | 'festivals' | 'architecture' | 'faqs' | null>(null);
+  const [isSignificanceOpen, setIsSignificanceOpen] = useState(false);
 
   const targetId = decodeURIComponent(id || '').trim().toLowerCase();
   const allPlaces = places.length > 0 ? places : PLACES;
@@ -99,17 +81,16 @@ export default function PlaceDetails() {
       35000
     ).slice(0, 4);
 
-    const isSelfTirumala = isPlaceOnTirumala(place);
+    const isSelfTirumala = place.category === 'Tirumala Spot' || (place.coordinates ? isCoordinateOnTirumalaHill(place.coordinates.lat, place.coordinates.lng) : false);
     return candidates.map(({ place: p }) => {
       if (!p.coordinates) return { place: p, dist: 5, timeMins: 15 };
-      const isTargetTirumala = isPlaceOnTirumala(p);
+      const isTargetTirumala = p.category === 'Tirumala Spot' || isCoordinateOnTirumalaHill(p.coordinates.lat, p.coordinates.lng);
       const dist = calculateDrivingDistance(
         place.coordinates!.lat, place.coordinates!.lng,
         p.coordinates.lat, p.coordinates.lng,
-        isTargetTirumala
+        isSelfTirumala !== isTargetTirumala
       );
-      const isGhatTrip = isSelfTirumala !== isTargetTirumala;
-      const timeMins = estimateDriveDuration(dist, isGhatTrip);
+      const timeMins = Math.max(4, Math.round(dist * 2.5));
       return { place: p, dist, timeMins };
     });
   }, [place, allPlaces]);
@@ -117,7 +98,7 @@ export default function PlaceDetails() {
   // Distance from user or fallback to Tirupati Center
   const effectiveLocation = userLocation || TIRUPATI_CENTER;
 
-  const isDestOnHill = isPlaceOnTirumala(place);
+  const isDestOnHill = place.category === 'Tirumala Spot' || (place.coordinates ? isCoordinateOnTirumalaHill(place.coordinates.lat, place.coordinates.lng) : false);
   const isOriginOnHill = isCoordinateOnTirumalaHill(effectiveLocation.lat, effectiveLocation.lng);
   const isGhatTrip = isDestOnHill !== isOriginOnHill;
 
@@ -327,293 +308,421 @@ export default function PlaceDetails() {
     </div>
   ) : null;
 
-  // Live GPS Prompt Chip when location is turned off or not precise GPS
-  const locationOffPromptNode = (locationPermission === 'denied' || locationSource !== 'gps') ? (
-    <button
-      type="button"
-      onClick={async () => {
-        await requestLocationPermission();
-      }}
-      style={{
-        width: '100%',
-        backgroundColor: '#FFFBEB',
-        border: '1px solid #FDE68A',
-        borderRadius: '14px',
-        padding: '8px 12px',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        gap: '8px',
-        cursor: 'pointer',
-        boxSizing: 'border-box',
-        boxShadow: '0 1px 3px rgba(180, 83, 9, 0.05)',
-        fontFamily: 'var(--font-heading)'
-      }}
-    >
-      <span style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '11.5px', fontWeight: 700, color: '#92400E', minWidth: 0, textAlign: 'left' }}>
-        <Navigation size={13} color="#B45309" fill="#B45309" style={{ flexShrink: 0 }} />
-        <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', fontFamily: lang === 'te' ? 'var(--font-telugu), var(--font-body)' : 'var(--font-body)' }}>
-          {lang === 'te' ? 'లొకేషన్ ఆఫ్ అయింది • మీ ప్రదేశం నుండి ప్రత్యక్ష దూరం కోసం ఆన్ చేయండి' : 'Location is off • Tap to enable live distance from your spot'}
-        </span>
-      </span>
-      <span style={{ fontSize: '11px', fontWeight: 800, color: '#B45309', flexShrink: 0, textDecoration: 'underline' }}>
-        {lang === 'te' ? 'ఆన్ చేయండి →' : 'Turn On →'}
-      </span>
-    </button>
-  ) : null;
-
-  // 0. TOP 4 PRIMARY METRIC CARDS (Visual & Fully Responsive)
+  // 0. TOP 4 PRIMARY METRIC PILLS
   const topMetricsNode = (
-    <div style={{
-      display: 'grid',
-      gridTemplateColumns: 'repeat(4, minmax(0, 1fr))',
-      gap: 'clamp(5px, 1.6vw, 10px)'
-    }}>
-      {/* 1. Distance */}
-      <div suppressHydrationWarning title={lang === 'te' ? 'దూరం' : 'Distance'} style={{
-        backgroundColor: '#FFFFFF',
-        border: '1px solid rgba(15, 81, 50, 0.16)',
-        borderRadius: '16px',
-        padding: '10px 4px 9px',
-        textAlign: 'center',
-        boxShadow: '0 2px 8px rgba(15, 23, 42, 0.03)',
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-        minWidth: 0
-      }}>
-        <div style={{
-          width: '26px',
-          height: '26px',
-          borderRadius: '8px',
-          backgroundColor: '#DCFCE7',
-          border: '1px solid #BBF7D0',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          marginBottom: '4px',
-          flexShrink: 0
-        }}>
-          <MapPin size={13} color="#0F5132" />
-        </div>
-        <div style={{
-          fontSize: '9.5px',
-          fontWeight: 700,
-          fontFamily: lang === 'te' ? 'var(--font-telugu), var(--font-heading)' : 'var(--font-heading)',
-          color: '#64748B',
-          letterSpacing: lang === 'te' ? '0' : '0.04em',
-          textTransform: 'uppercase',
-          marginBottom: '2px',
-          lineHeight: 1
-        }}>
-          {lang === 'te' ? 'దూరం' : 'Distance'}
-        </div>
-        <div suppressHydrationWarning style={{
-          fontSize: 'clamp(11.5px, 3.2vw, 13px)',
-          fontWeight: 900,
-          fontFamily: 'var(--font-heading)',
-          color: '#0F5132',
-          lineHeight: 1.15,
-          whiteSpace: 'nowrap',
-          overflow: 'hidden',
-          textOverflow: 'ellipsis',
-          maxWidth: '100%'
-        }}>
+    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, minmax(0, 1fr))', gap: '8px' }}>
+      <div suppressHydrationWarning style={{ backgroundColor: '#FFFFFF', border: '1.5px solid rgba(15, 81, 50, 0.15)', borderRadius: '14px', padding: '10px 4px', textAlign: 'center', boxShadow: '0 2px 8px rgba(0,0,0,0.02)' }}>
+        <div suppressHydrationWarning style={{ fontSize: '13px', fontWeight: 900, color: '#0F5132', lineHeight: 1.1 }}>
           {formatDistance(drivingDistance, lang)}
         </div>
+        <div suppressHydrationWarning style={{ fontSize: '9.5px', fontWeight: 700, color: '#64748B', marginTop: '3px' }}>
+          {lang === 'te' ? 'దూరం' : 'Distance'}
+        </div>
       </div>
 
-      {/* 2. Travel Time */}
-      <div suppressHydrationWarning title={lang === 'te' ? 'ప్రయాణ సమయం' : 'Travel Time'} style={{
-        backgroundColor: '#FFFFFF',
-        border: '1px solid rgba(217, 119, 6, 0.2)',
-        borderRadius: '16px',
-        padding: '10px 4px 9px',
-        textAlign: 'center',
-        boxShadow: '0 2px 8px rgba(15, 23, 42, 0.03)',
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-        minWidth: 0
-      }}>
-        <div style={{
-          width: '26px',
-          height: '26px',
-          borderRadius: '8px',
-          backgroundColor: '#FEF3C7',
-          border: '1px solid #FDE68A',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          marginBottom: '4px',
-          flexShrink: 0
-        }}>
-          <Clock size={13} color="#D97706" />
-        </div>
-        <div style={{
-          fontSize: '9.5px',
-          fontWeight: 700,
-          fontFamily: lang === 'te' ? 'var(--font-telugu), var(--font-heading)' : 'var(--font-heading)',
-          color: '#64748B',
-          letterSpacing: lang === 'te' ? '0' : '0.04em',
-          textTransform: 'uppercase',
-          marginBottom: '2px',
-          lineHeight: 1
-        }}>
-          {lang === 'te' ? 'ప్రయాణం' : 'Drive'}
-        </div>
-        <div suppressHydrationWarning style={{
-          fontSize: 'clamp(11.5px, 3.2vw, 13px)',
-          fontWeight: 900,
-          fontFamily: 'var(--font-heading)',
-          color: '#D97706',
-          lineHeight: 1.15,
-          whiteSpace: 'nowrap',
-          overflow: 'hidden',
-          textOverflow: 'ellipsis',
-          maxWidth: '100%'
-        }}>
+      <div suppressHydrationWarning style={{ backgroundColor: '#FFFFFF', border: '1.5px solid rgba(217, 119, 6, 0.2)', borderRadius: '14px', padding: '10px 4px', textAlign: 'center', boxShadow: '0 2px 8px rgba(0,0,0,0.02)' }}>
+        <div suppressHydrationWarning style={{ fontSize: '13px', fontWeight: 900, color: '#D97706', lineHeight: 1.1 }}>
           {formattedDriveTime ? formattedDriveTime.replace(/\bm\b/, 'min') : `${driveTimeMins} min`}
         </div>
+        <div suppressHydrationWarning style={{ fontSize: '9.5px', fontWeight: 700, color: '#64748B', marginTop: '3px' }}>
+          {lang === 'te' ? 'ప్రయాణ సమయం' : 'Travel Time'}
+        </div>
       </div>
 
-      {/* 3. Status */}
-      <div suppressHydrationWarning title={lang === 'te' ? 'దర్శన స్థితి' : 'Status'} style={{
-        backgroundColor: '#FFFFFF',
-        border: `1px solid ${isOpenNow ? 'rgba(34, 197, 94, 0.25)' : 'rgba(239, 68, 68, 0.25)'}`,
-        borderRadius: '16px',
-        padding: '10px 4px 9px',
-        textAlign: 'center',
-        boxShadow: '0 2px 8px rgba(15, 23, 42, 0.03)',
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-        minWidth: 0
-      }}>
-        <div style={{
-          width: '26px',
-          height: '26px',
-          borderRadius: '8px',
-          backgroundColor: isOpenNow ? '#DCFCE7' : '#FEE2E2',
-          border: `1px solid ${isOpenNow ? '#BBF7D0' : '#FECDD3'}`,
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          marginBottom: '4px',
-          flexShrink: 0
-        }}>
-          {isOpenNow ? <CheckCircle2 size={13} color="#16A34A" /> : <Clock size={13} color="#DC2626" />}
-        </div>
-        <div style={{
-          fontSize: '9.5px',
-          fontWeight: 700,
-          fontFamily: lang === 'te' ? 'var(--font-telugu), var(--font-heading)' : 'var(--font-heading)',
-          color: '#64748B',
-          letterSpacing: lang === 'te' ? '0' : '0.04em',
-          textTransform: 'uppercase',
-          marginBottom: '2px',
-          lineHeight: 1
-        }}>
-          {lang === 'te' ? 'దర్శనం' : 'Status'}
-        </div>
-        <div suppressHydrationWarning style={{
-          fontSize: 'clamp(11.5px, 3.2vw, 13px)',
-          fontWeight: 900,
-          fontFamily: 'var(--font-heading)',
-          color: isOpenNow ? '#16A34A' : '#DC2626',
-          lineHeight: 1.15,
-          whiteSpace: 'nowrap',
-          overflow: 'hidden',
-          textOverflow: 'ellipsis',
-          maxWidth: '100%'
-        }}>
+      <div suppressHydrationWarning style={{ backgroundColor: '#FFFFFF', border: `1.5px solid ${isOpenNow ? 'rgba(34, 197, 94, 0.3)' : 'rgba(239, 68, 68, 0.3)'}`, borderRadius: '14px', padding: '10px 4px', textAlign: 'center', boxShadow: '0 2px 8px rgba(0,0,0,0.02)' }}>
+        <div suppressHydrationWarning style={{ fontSize: '13px', fontWeight: 900, color: isOpenNow ? '#16A34A' : '#DC2626', lineHeight: 1.1 }}>
           {isOpenNow ? (lang === 'te' ? 'తెరిచి ఉంది' : 'Open') : (lang === 'te' ? 'మూసివేత' : 'Closed')}
         </div>
+        <div suppressHydrationWarning style={{ fontSize: '9.5px', fontWeight: 700, color: '#64748B', marginTop: '3px' }}>
+          {lang === 'te' ? 'స్థితి' : 'Status'}
+        </div>
       </div>
 
-      {/* 4. Entry Fee */}
-      <div suppressHydrationWarning title={lang === 'te' ? 'ప్రవేశ రుసుము' : 'Entry Fee'} style={{
-        backgroundColor: '#FFFFFF',
-        border: '1px solid rgba(37, 99, 235, 0.2)',
-        borderRadius: '16px',
-        padding: '10px 4px 9px',
-        textAlign: 'center',
-        boxShadow: '0 2px 8px rgba(15, 23, 42, 0.03)',
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-        minWidth: 0
-      }}>
-        <div style={{
-          width: '26px',
-          height: '26px',
-          borderRadius: '8px',
-          backgroundColor: '#DBEAFE',
-          border: '1px solid #BFDBFE',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          marginBottom: '4px',
-          flexShrink: 0
-        }}>
-          <Sparkles size={13} color="#2563EB" />
-        </div>
-        <div style={{
-          fontSize: '9.5px',
-          fontWeight: 700,
-          fontFamily: lang === 'te' ? 'var(--font-telugu), var(--font-heading)' : 'var(--font-heading)',
-          color: '#64748B',
-          letterSpacing: lang === 'te' ? '0' : '0.04em',
-          textTransform: 'uppercase',
-          marginBottom: '2px',
-          lineHeight: 1
-        }}>
-          {lang === 'te' ? 'రుసుము' : 'Entry'}
-        </div>
-        <div suppressHydrationWarning style={{
-          fontSize: 'clamp(11.5px, 3.2vw, 13px)',
-          fontWeight: 900,
-          fontFamily: 'var(--font-heading)',
-          color: '#2563EB',
-          lineHeight: 1.15,
-          whiteSpace: 'nowrap',
-          overflow: 'hidden',
-          textOverflow: 'ellipsis',
-          maxWidth: '100%'
-        }}>
+      <div suppressHydrationWarning style={{ backgroundColor: '#FFFFFF', border: '1.5px solid rgba(37, 99, 235, 0.2)', borderRadius: '14px', padding: '10px 4px', textAlign: 'center', boxShadow: '0 2px 8px rgba(0,0,0,0.02)' }}>
+        <div suppressHydrationWarning style={{ fontSize: '13px', fontWeight: 900, color: '#2563EB', lineHeight: 1.1 }}>
           {place.entryFeeNum === 0 || !place.entryFeeNum ? (lang === 'te' ? 'ఉచితం' : 'Free') : `₹${place.entryFeeNum}`}
         </div>
+        <div suppressHydrationWarning style={{ fontSize: '9.5px', fontWeight: 700, color: '#64748B', marginTop: '3px' }}>
+          {lang === 'te' ? 'ప్రవేశ రుసుము' : 'Entry Fee'}
+        </div>
       </div>
+    </div>
+  );
+
+  // 1.5 CULTURAL SIGNIFICANCE & PRACTICAL ACTION ("Tradition -> Meaning -> Action")
+  const significanceData: PlaceSignificance = useMemo(() => {
+    if (place.significance) {
+      return place.significance;
+    }
+
+    const pType = place.placeType;
+    const pCat = (place.category || '').toLowerCase();
+    const tags = (place.tags || []).map(t => t.toLowerCase());
+
+    const isNature = pType === 'nature' || pCat.includes('nature') || pCat.includes('water') || tags.some(t => ['waterfall', 'hills', 'dam', 'forest'].includes(t));
+    const isHeritage = pType === 'historical' || pCat.includes('historical') || pCat.includes('heritage') || tags.some(t => ['fort', 'monument', 'history'].includes(t));
+    const isFood = pType === 'food' || pCat.includes('food') || tags.some(t => ['restaurant', 'sweets', 'dining', 'food'].includes(t));
+
+    if (isNature) {
+      return {
+        traditionType: 'nature',
+        whyVisitTe: place.whyVisit ? `${place.whyVisit}` : 'ప్రకృతి అందాలు, ఆహ్లాదకరమైన వాతావరణం మరియు పరిసరాలను అన్వేషించడానికి ప్రజలు ఇక్కడికి వస్తారు.',
+        whyVisitEn: place.whyVisit || 'Visitors come to experience scenic nature, fresh air, and peaceful outdoor surroundings.',
+        actionsTe: [
+          'పరిసర ప్రకృతి అందాలను మరియు వ్యూ పాయింట్లను వీక్షిస్తారు',
+          'సురక్షిత వాకింగ్ మార్గాల గుండా నడుస్తూ వాతావరణాన్ని ఆస్వాదిస్తారు',
+          'స్థానిక నిబంధనలను పాటిస్తూ ఫోటోలు తీసుకుంటారు'
+        ],
+        actionsEn: [
+          'Take in scenic panoramic views and natural landscapes',
+          'Walk designated walking trails and enjoy the fresh forest air',
+          'Observe local eco-guidelines and nature preservation'
+        ],
+        culturalMeaningTe: place.history || 'ఈ ప్రదేశానికి స్థానిక సహజ వనరులు మరియు ప్రాంతీయ జీవవైవిధ్యంతో ప్రత్యేక అనుబంధం ఉంది.',
+        culturalMeaningEn: place.history || 'This scenic spot holds deep ecological and regional connection in the Tirupati district.',
+        saarthiTipTe: 'వాతావరణ పరిస్థితిని బట్టి సందర్శించండి. ఉదయం లేదా సాయంత్రం వేళల్లో వాతావరణం ఆహ్లాదకరంగా ఉంటుంది.',
+        saarthiTipEn: 'Morning and late afternoon hours offer the most pleasant weather for outdoor exploration.'
+      };
+    }
+
+    if (isHeritage) {
+      return {
+        traditionType: 'heritage',
+        whyVisitTe: place.whyVisit ? `${place.whyVisit}` : 'ఈ చారిత్రక ప్రాముఖ్యత కలిగిన నిర్మాణ వైభవాన్ని మరియు నాటి సంస్కృతిని ప్రత్యక్షంగా వీక్షించడానికి సందర్శిస్తారు.',
+        whyVisitEn: place.whyVisit || 'Visitors come to explore the historical architecture and regional cultural heritage.',
+        actionsTe: [
+          'ప్రాచీన నిర్మాణ శైలి మరియు శిల్పకళను పరిశీలిస్తారు',
+          'చారిత్రక విశేషాలను తెలుసుకుంటూ ప్రాంగణంలో నడుస్తారు',
+          'స్థానిక సమాచార ఫలకాలను గమనిస్తూ చరిత్రను అర్థం చేసుకుంటారు'
+        ],
+        actionsEn: [
+          'Examine historical architectural styles and ancient stone craftsmanship',
+          'Walk through preserved heritage courtyards and monuments',
+          'Learn historical context and regional dynastic legacy'
+        ],
+        culturalMeaningTe: place.history || 'ఈ చారిత్రక ప్రదేశం శతాబ్దాల నాటి సాంస్కృతిక వారసత్వానికి మరియు పాలనా చరిత్రకు సాక్ష్యంగా నిలుస్తుంది.',
+        culturalMeaningEn: place.history || 'This historical landmark stands as an enduring monument to centuries of regional culture and architectural mastery.',
+        saarthiTipTe: 'చారిత్రక ప్రదేశాన్ని పూర్తిగా చూడటానికి తగినంత సమయం కేటాయించండి. సౌకర్యవంతమైన పాదరక్షలు ధరించండి.',
+        saarthiTipEn: 'Allocate adequate time to explore the heritage site comfortably. Wear walking-friendly shoes.'
+      };
+    }
+
+    if (isFood) {
+      return {
+        traditionType: 'food',
+        whyVisitTe: place.whyVisit ? `${place.whyVisit}` : 'స్థానిక సాంప్రదాయ రుచులు మరియు ప్రసిద్ధ వంటకాలను ఆస్వాదించడానికి ప్రజలు ఇక్కడికి వస్తారు.',
+        whyVisitEn: place.whyVisit || 'Visitors stop here to experience authentic local culinary traditions and specialties.',
+        actionsTe: [
+          'తాజా సాంప్రదాయ వంటకాలు మరియు ప్రత్యేక పదార్థాలను రుచి చూస్తారు',
+          'పరిశుభ్రమైన సాత్విక/స్థానిక భోజనం లేదా అల్పాహారం స్వీకరిస్తారు',
+          'ప్రయాణానికి అవసరమైన ఆహారాన్ని ప్యాక్ చేయించుకుంటారు'
+        ],
+        actionsEn: [
+          'Sample fresh traditional delicacies and signature dishes',
+          'Enjoy wholesome regional meals or refreshments',
+          'Pack travel-friendly items for the onward journey'
+        ],
+        culturalMeaningTe: place.history || 'తీర్థయాత్ర సంస్కృతిలో భాగంగా యాత్రికులు స్థానిక రుచులను ఆస్వాదించడం ఒక ఆచారం.',
+        culturalMeaningEn: place.history || 'Enjoying wholesome local food forms an integral part of the pilgrim travel experience in Tirupati.',
+        saarthiTipTe: 'రద్దీ సమయాలను నివారించడానికి భోజన వేళలకు కొద్దిగా ముందుగా లేదా తర్వాత వెళ్లడం సౌకర్యవంతం.',
+        saarthiTipEn: 'Visiting slightly before or after peak meal hours ensures faster service and seating.'
+      };
+    }
+
+    // Default: Temple / Spiritual
+    const knownFor = place.spiritualInfo?.knownFor;
+    const wishes = place.spiritualInfo?.wishes;
+    return {
+      traditionType: 'temple',
+      whyVisitTe: wishes
+        ? `${wishes} కోసం మరియు స్వామివారి దివ్య దర్శనం కోసం భక్తులు ఇక్కడికి వస్తారు.`
+        : (knownFor
+            ? `${knownFor} కోసం ప్రసిద్ధి చెందిన ఈ పవిత్ర క్షేత్రాన్ని దర్శించి పూజలు నిర్వహిస్తారు.`
+            : (place.whyVisit || 'ఈ పవిత్ర ఆలయాన్ని దర్శించి స్వామివారి దివ్యానుగ్రహం మరియు మనశ్శాంతి పొందడం ఇక్కడి భక్తి సంప్రదాయం.')),
+      whyVisitEn: knownFor
+        ? `Devotees visit to seek blessings for ${knownFor}.`
+        : (place.whyVisit || 'Pilgrims visit to offer traditional prayers, fulfill vows, and receive divine blessings.'),
+      actionsTe: place.spiritualInfo?.devoteeTips && place.spiritualInfo.devoteeTips.length > 0
+        ? place.spiritualInfo.devoteeTips
+        : [
+            'గర్భాలయంలో మూలవిరాట్టును భక్తిశ్రద్ధలతో దర్శించుకుంటారు',
+            'ఆలయ ప్రదక్షిణ చేసి తీర్థ ప్రసాదాలు స్వీకరిస్తారు',
+            'కుటుంబ క్షేమం & మనశ్శాంతి కోసం ప్రార్థిస్తారు'
+          ],
+      actionsEn: [
+        'Receive darshan of the main deity inside the temple with reverence',
+        'Perform circumambulation (pradakshina) and receive sacred teertham & prasadam',
+        'Offer silent prayers for family peace, good health, and prosperity'
+      ],
+      culturalMeaningTe: place.history || 'ఈ పవిత్ర క్షేత్రానికి ప్రాచీన సంప్రదాయాలలో విశిష్ట స్థానం ఉంది. భక్తుల మనోభీష్టాలను నెరవేర్చే పుణ్యభూమిగా పరిగణించబడుతుంది.',
+      culturalMeaningEn: place.history || 'This sacred shrine holds a revered place in regional heritage, sanctified by generations of faithful devotees.',
+      saarthiTipTe: place.practicalInfo?.dressCode
+        ? `దుస్తుల నియమావళి: ${place.practicalInfo.dressCode}. ఉదయం వేళల్లో దర్శనం ప్రశాంతంగా పూర్తవుతుంది.`
+        : 'ఉదయం వేళల్లో దర్శనం ప్రశాంతంగా మరియు తక్కువ క్యూ సమయంతో పూర్తవుతుంది.',
+      saarthiTipEn: place.practicalInfo?.dressCode
+        ? `Dress code: ${place.practicalInfo.dressCode}. Visiting during morning hours offers a smooth darshan experience.`
+        : 'Visiting during early morning hours offers the most serene darshan experience.'
+    };
+  }, [place]);
+
+  const traditionTheme = useMemo(() => {
+    switch (significanceData.traditionType) {
+      case 'nature':
+        return {
+          icon: Compass,
+          iconColor: '#0D9488',
+          borderColor: 'rgba(13, 148, 136, 0.22)',
+          bgGradient: 'linear-gradient(135deg, #FFFFFF 0%, #F0FDFA 100%)',
+          badgeBg: '#CCFBF1',
+          badgeColor: '#0F766E',
+          titleTe: 'సహజ సౌందర్యం & సందర్శన విశేషాలు',
+          titleEn: 'Natural Wonder & Highlights',
+          badgeTe: 'సహజ సౌందర్యం & అనుభవం',
+          badgeEn: 'Nature & Experience',
+          buttonClosedTe: 'సందర్శన క్రమం, అనుభవాలు & సూచనలు చూడండి',
+          buttonClosedEn: 'View Activity Steps, Experiences & Tips',
+          actionTitleTe: 'సందర్శకులు చేయవలసిన ముఖ్య కార్యకలాపాలు',
+          actionTitleEn: 'Key Activities & Experiences',
+          meaningTitleTe: 'భౌగోళిక & పర్యావరణ విశిష్టత',
+          meaningTitleEn: 'Geographical & Ecological Significance'
+        };
+      case 'heritage':
+        return {
+          icon: Landmark,
+          iconColor: '#2563EB',
+          borderColor: 'rgba(37, 99, 235, 0.22)',
+          bgGradient: 'linear-gradient(135deg, #FFFFFF 0%, #EFF6FF 100%)',
+          badgeBg: '#DBEAFE',
+          badgeColor: '#1E40AF',
+          titleTe: 'చారిత్రక వైభవం & ప్రాముఖ్యత',
+          titleEn: 'Historical Heritage & Architecture',
+          badgeTe: 'చారిత్రక వారసత్వం',
+          badgeEn: 'Historical Heritage',
+          buttonClosedTe: 'చారిత్రక విశేషాలు, నిర్మాణ శైలి & మార్గదర్శనం చూడండి',
+          buttonClosedEn: 'View Key Sights, Dynastic Lore & Guidelines',
+          actionTitleTe: 'ప్రత్యక్షంగా చూడవలసిన చారిత్రక విశేషాలు',
+          actionTitleEn: 'Key Sights & Architectural Highlights',
+          meaningTitleTe: 'చారిత్రక ప్రాశస్త్యం & రాజవంశాల నేపథ్యం',
+          meaningTitleEn: 'Historical Significance & Dynastic Legacy'
+        };
+      case 'food':
+        return {
+          icon: Utensils,
+          iconColor: '#D97706',
+          borderColor: 'rgba(217, 119, 6, 0.22)',
+          bgGradient: 'linear-gradient(135deg, #FFFFFF 0%, #FFFBEB 100%)',
+          badgeBg: '#FEF3C7',
+          badgeColor: '#92400E',
+          titleTe: 'ఆహార సంస్కృతి & ప్రత్యేకతలు',
+          titleEn: 'Culinary Tradition & Specialties',
+          badgeTe: 'ఆహార సంస్కృతి',
+          badgeEn: 'Culinary Tradition',
+          buttonClosedTe: 'ప్రసిద్ధ రుచులు, పదార్థాలు & వివరాలు చూడండి',
+          buttonClosedEn: 'View Signature Items & Specialties',
+          actionTitleTe: 'రుచి చూడవలసిన ప్రసిద్ధ సాంప్రదాయ పదార్థాలు',
+          actionTitleEn: 'Signature Specialties & Must-Try Items',
+          meaningTitleTe: 'ఆహార సంప్రదాయ నేపథ్యం',
+          meaningTitleEn: 'Culinary Heritage & Tradition'
+        };
+      case 'theertham':
+        return {
+          icon: Droplets,
+          iconColor: '#0284C7',
+          borderColor: 'rgba(2, 132, 199, 0.22)',
+          bgGradient: 'linear-gradient(135deg, #FFFFFF 0%, #F0F9FF 100%)',
+          badgeBg: '#E0F2FE',
+          badgeColor: '#0369A1',
+          titleTe: 'పుణ్య తీర్థం & పవిత్రత',
+          titleEn: 'Sacred Theertham & Holy Waters',
+          badgeTe: 'పవిత్ర తీర్థం',
+          badgeEn: 'Sacred Theertham',
+          buttonClosedTe: 'తీర్థ విధి, విశేషాలు & ప్రాశస్త్యం చూడండి',
+          buttonClosedEn: 'View Bathing Customs & Sthala Puranam',
+          actionTitleTe: 'భక్తులు ఆచరించే తీర్థస్నాన విధి & పూజలు',
+          actionTitleEn: 'Sacred Bathing Rituals & Observances',
+          meaningTitleTe: 'తీర్థ మహత్యం & పురాణ నేపథ్యం',
+          meaningTitleEn: 'Sacred Purana & Theertha Mahatyam'
+        };
+      case 'temple':
+      default:
+        return {
+          icon: Sparkles,
+          iconColor: '#0F5132',
+          borderColor: 'rgba(15, 81, 50, 0.22)',
+          bgGradient: 'linear-gradient(135deg, #FFFFFF 0%, #F8FAF7 100%)',
+          badgeBg: '#E8F5E9',
+          badgeColor: '#0F5132',
+          titleTe: 'ఆలయ ప్రాశస్త్యం & సంప్రదాయం',
+          titleEn: 'Temple Tradition & Devotional Purpose',
+          badgeTe: 'క్షేత్ర ప్రాశస్త్యం & ఆచారం',
+          badgeEn: 'Sacred Tradition & Practice',
+          buttonClosedTe: 'దర్శన క్రమం, విశిష్టత & ఆచారాలు చూడండి',
+          buttonClosedEn: 'View Darshan Steps, Traditions & Guidance',
+          actionTitleTe: 'భక్తులు ఆచరించే దర్శన క్రమం & సంప్రదాయాలు',
+          actionTitleEn: 'Traditional Darshan Sequence & Practices',
+          meaningTitleTe: 'స్థల పురాణం & సంప్రదాయ ప్రాశస్త్యం',
+          meaningTitleEn: 'Sthala Purana & Sacred Significance'
+        };
+    }
+  }, [significanceData.traditionType]);
+
+  const placeSignificanceNode = (
+    <div style={{
+      backgroundColor: '#FFFFFF',
+      background: traditionTheme.bgGradient,
+      border: `1.5px solid ${traditionTheme.borderColor}`,
+      borderRadius: '18px',
+      padding: '14px 16px',
+      boxShadow: '0 3px 12px rgba(15, 23, 42, 0.04)',
+      width: '100%',
+      boxSizing: 'border-box'
+    }}>
+      {/* Header Bar */}
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '8px', marginBottom: '8px', flexWrap: 'wrap' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', minWidth: 0 }}>
+          <div style={{
+            width: '28px',
+            height: '28px',
+            borderRadius: '8px',
+            backgroundColor: traditionTheme.badgeBg,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            flexShrink: 0
+          }}>
+            <traditionTheme.icon size={15} color={traditionTheme.iconColor} />
+          </div>
+          <h2 style={{
+            fontSize: '13.5px',
+            fontWeight: 800,
+            color: '#0F172A',
+            margin: 0,
+            letterSpacing: '-0.01em',
+            wordBreak: 'break-word'
+          }}>
+            {lang === 'te' ? traditionTheme.titleTe : traditionTheme.titleEn}
+          </h2>
+        </div>
+        <span style={{
+          fontSize: '10.5px',
+          fontWeight: 700,
+          color: traditionTheme.badgeColor,
+          backgroundColor: traditionTheme.badgeBg,
+          padding: '2.5px 8px',
+          borderRadius: '8px',
+          whiteSpace: 'nowrap'
+        }}>
+          {lang === 'te' ? traditionTheme.badgeTe : traditionTheme.badgeEn}
+        </span>
+      </div>
+
+      {/* Core Reason: Why People Visit */}
+      <p style={{
+        fontSize: '13px',
+        color: '#1E293B',
+        fontWeight: 700,
+        lineHeight: 1.5,
+        margin: '0 0 10px',
+        wordBreak: 'break-word'
+      }}>
+        {lang === 'te' ? significanceData.whyVisitTe : significanceData.whyVisitEn}
+      </p>
+
+      {/* Dropdown Toggle Button */}
+      <button
+        onClick={() => setIsSignificanceOpen(!isSignificanceOpen)}
+        style={{
+          width: '100%',
+          backgroundColor: '#FFFFFF',
+          border: '1px solid #E2E8F0',
+          borderRadius: '12px',
+          padding: '9px 12px',
+          fontSize: '12.5px',
+          fontWeight: 700,
+          color: '#0F5132',
+          cursor: 'pointer',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          transition: 'all 0.15s ease',
+          boxShadow: '0 1px 3px rgba(0,0,0,0.02)'
+        }}
+      >
+        <span style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+          <BookOpen size={14} color="#0F5132" />
+          <span>
+            {isSignificanceOpen 
+              ? (lang === 'te' ? 'వివరాలను తగ్గించండి' : 'Show Less') 
+              : (lang === 'te' ? traditionTheme.buttonClosedTe : traditionTheme.buttonClosedEn)}
+          </span>
+        </span>
+        {isSignificanceOpen ? <ChevronUp size={15} color="#0F5132" /> : <ChevronDown size={15} color="#64748B" />}
+      </button>
+
+      {/* Expandable Deep Dive Body */}
+      {isSignificanceOpen && (
+        <div style={{ marginTop: '12px', display: 'flex', flexDirection: 'column', gap: '10px', paddingTop: '10px', borderTop: '1px solid rgba(0, 0, 0, 0.06)' }}>
+          {/* Section 1: What People Traditionally Do */}
+          <div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '6px' }}>
+              <CheckCircle2 size={13} color="#0F5132" style={{ flexShrink: 0 }} />
+              <span style={{ fontSize: '11.5px', fontWeight: 800, color: '#0F5132', textTransform: 'uppercase', letterSpacing: '0.03em' }}>
+                {lang === 'te' ? traditionTheme.actionTitleTe : traditionTheme.actionTitleEn}
+              </span>
+            </div>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '5px' }}>
+              {(lang === 'te' ? significanceData.actionsTe : significanceData.actionsEn).map((action, idx) => (
+                <div key={idx} style={{ display: 'flex', alignItems: 'flex-start', gap: '7px', fontSize: '12px', color: '#334155', lineHeight: 1.45 }}>
+                  <div style={{ width: '4px', height: '4px', borderRadius: '50%', backgroundColor: '#0F5132', marginTop: '6px', flexShrink: 0 }} />
+                  <span>{action}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Section 2: Cultural Background / Sthala Purana */}
+          <div style={{ backgroundColor: 'rgba(255, 255, 255, 0.85)', padding: '10px 12px', borderRadius: '10px', border: '1px solid #E2E8F0' }}>
+            <div style={{ fontSize: '11px', fontWeight: 800, color: '#475569', marginBottom: '4px', textTransform: 'uppercase', letterSpacing: '0.03em' }}>
+              {lang === 'te' ? traditionTheme.meaningTitleTe : traditionTheme.meaningTitleEn}
+            </div>
+            <p style={{ fontSize: '12px', color: '#334155', lineHeight: 1.5, margin: 0 }}>
+              {lang === 'te' ? significanceData.culturalMeaningTe : significanceData.culturalMeaningEn}
+            </p>
+          </div>
+
+          {/* Section 3: Saarthi Practical Advisory */}
+          <div style={{ backgroundColor: '#FEF3C7', border: '1px solid #FDE68A', padding: '9px 12px', borderRadius: '10px', display: 'flex', alignItems: 'flex-start', gap: '7px' }}>
+            <Info size={14} color="#92400E" style={{ flexShrink: 0, marginTop: '2px' }} />
+            <div style={{ flex: 1, minWidth: 0 }}>
+              <span style={{ fontSize: '10.5px', fontWeight: 800, color: '#92400E', textTransform: 'uppercase', letterSpacing: '0.04em', display: 'block', marginBottom: '2px' }}>
+                {lang === 'te' ? 'సారథి ప్రాక్టికల్ సూచన' : 'Saarthi Practical Advisory'}
+              </span>
+              <p style={{ fontSize: '11.5px', color: '#78350F', fontWeight: 600, lineHeight: 1.45, margin: 0 }}>
+                {lang === 'te' ? significanceData.saarthiTipTe : significanceData.saarthiTipEn}
+              </p>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 
   // 2. QUICK FACTS ("Before you go")
   const quickFactsNode = (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-      <h2 style={{
-        fontSize: '14.5px',
-        fontWeight: 800,
-        fontFamily: lang === 'te' ? 'var(--font-telugu), var(--font-heading)' : 'var(--font-heading)',
-        color: '#0F172A',
-        margin: '2px 0 2px 0',
-        letterSpacing: '-0.01em'
-      }}>
+      <h2 style={{ fontSize: '14px', fontWeight: 900, color: '#0F172A', margin: '2px 0 2px 0' }}>
         {lang === 'te' ? 'సందర్శించే ముందు (ముఖ్య వివరాలు)' : 'Before you go'}
       </h2>
 
       {/* Full-Width Timings Banner Card */}
-      <div style={{ backgroundColor: '#FFFFFF', border: '1px solid rgba(15, 23, 42, 0.08)', borderRadius: '16px', padding: '12px 14px', boxShadow: '0 2px 8px rgba(15,23,42,0.03)', minWidth: 0 }}>
+      <div style={{ backgroundColor: '#FFFFFF', border: '1px solid rgba(15, 23, 42, 0.08)', borderRadius: '16px', padding: '12px 14px', boxShadow: '0 3px 10px rgba(15,23,42,0.03)', minWidth: 0 }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '6px' }}>
-          <Clock size={15} color="#0F5132" style={{ flexShrink: 0 }} />
-          <span style={{ fontSize: '11px', fontWeight: 800, fontFamily: 'var(--font-heading)', color: '#0F5132', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
+          <Clock size={16} color="#0F5132" style={{ flexShrink: 0 }} />
+          <span style={{ fontSize: '11px', fontWeight: 800, color: '#0F5132', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
             {lang === 'te' ? 'దర్శన సమయాలు & పూజ నిర్వహణ' : 'Timings & Schedule'}
           </span>
         </div>
-        <div style={{ fontSize: '13px', fontWeight: 800, fontFamily: lang === 'te' ? 'var(--font-telugu), var(--font-heading)' : 'var(--font-heading)', color: '#0F172A', lineHeight: 1.5, wordBreak: 'break-word' }}>
+        <div style={{ fontSize: '13px', fontWeight: 800, color: '#0F172A', lineHeight: 1.5, wordBreak: 'break-word' }}>
           {timingsStr.includes('(') ? (
             <div>
               <div style={{ color: '#0F172A', fontWeight: 800 }}>{timingsStr.split('(')[0].trim()}</div>
@@ -627,112 +736,45 @@ export default function PlaceDetails() {
         </div>
       </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, minmax(0, 1fr))', gap: '8px' }}>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, minmax(0, 1fr))', gap: '8px' }}>
       {/* Dress Code */}
-      <div style={{
-        backgroundColor: '#FFFFFF',
-        border: '1px solid rgba(15, 23, 42, 0.08)',
-        borderRadius: '16px',
-        padding: '11px 9px',
-        boxShadow: '0 2px 8px rgba(15,23,42,0.03)',
-        minWidth: 0,
-        overflow: 'hidden',
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'space-between'
-      }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '5px', marginBottom: '6px' }}>
-          <div style={{
-            width: '24px',
-            height: '24px',
-            borderRadius: '6px',
-            backgroundColor: '#F0FDF4',
-            border: '1px solid #DCFCE7',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            flexShrink: 0
-          }}>
-            <Shirt size={13} color="#0F5132" />
-          </div>
-          <span style={{
-            fontSize: '10px',
-            fontWeight: 700,
-            fontFamily: lang === 'te' ? 'var(--font-telugu), var(--font-heading)' : 'var(--font-heading)',
-            color: '#64748B',
-            whiteSpace: 'nowrap',
-            overflow: 'hidden',
-            textOverflow: 'ellipsis'
-          }}>
-            {lang === 'te' ? 'దుస్తులు' : 'Dress Code'}
-          </span>
+      <div style={{ backgroundColor: '#FFFFFF', border: '1px solid rgba(15, 23, 42, 0.06)', borderRadius: '14px', padding: '11px 12px', boxShadow: '0 3px 10px rgba(15,23,42,0.03)', minWidth: 0, overflow: 'hidden' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '4px' }}>
+          <Shirt size={14} color="#0F5132" style={{ flexShrink: 0 }} />
+          <span style={{ fontSize: '10.5px', fontWeight: 700, color: '#64748B', whiteSpace: 'nowrap' }}>{lang === 'te' ? 'దుస్తుల నియమావళి' : 'Dress Code'}</span>
         </div>
-        <div style={{
-          fontSize: '12px',
-          fontWeight: 800,
-          fontFamily: lang === 'te' ? 'var(--font-telugu), var(--font-heading)' : 'var(--font-heading)',
-          color: '#0F172A',
-          lineHeight: 1.3,
-          wordBreak: 'break-word'
-        }}>
+        <div style={{ fontSize: '12px', fontWeight: 800, color: '#0F172A', lineHeight: 1.3, wordBreak: 'break-word' }}>
           {lang === 'te' 
-            ? 'సాంప్రదాయం' 
+            ? 'సాంప్రదాయ దుస్తులు' 
             : (place.practicalInfo?.dressCode?.includes('Strict') ? 'Traditional Mandatory' : 'Traditional / Modest')}
         </div>
       </div>
 
-      {/* Parking */}
-      <div style={{
-        backgroundColor: '#FFFFFF',
-        border: '1px solid rgba(15, 23, 42, 0.08)',
-        borderRadius: '16px',
-        padding: '11px 9px',
-        boxShadow: '0 2px 8px rgba(15,23,42,0.03)',
-        minWidth: 0,
-        overflow: 'hidden',
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'space-between'
-      }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '5px', marginBottom: '6px' }}>
-          <div style={{
-            width: '24px',
-            height: '24px',
-            borderRadius: '6px',
-            backgroundColor: '#F0FDF4',
-            border: '1px solid #DCFCE7',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            flexShrink: 0
-          }}>
-            <Car size={13} color="#0F5132" />
-          </div>
-          <span style={{
-            fontSize: '10px',
-            fontWeight: 700,
-            fontFamily: lang === 'te' ? 'var(--font-telugu), var(--font-heading)' : 'var(--font-heading)',
-            color: '#64748B',
-            whiteSpace: 'nowrap',
-            overflow: 'hidden',
-            textOverflow: 'ellipsis'
-          }}>
-            {lang === 'te' ? 'పార్కింగ్' : 'Parking'}
-          </span>
+      {/* Entry Fee */}
+      <div style={{ backgroundColor: '#FFFFFF', border: '1px solid rgba(15, 23, 42, 0.06)', borderRadius: '14px', padding: '11px 12px', boxShadow: '0 3px 10px rgba(15,23,42,0.03)', minWidth: 0, overflow: 'hidden' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '4px' }}>
+          <Sparkles size={14} color="#0F5132" style={{ flexShrink: 0 }} />
+          <span style={{ fontSize: '10.5px', fontWeight: 700, color: '#64748B', whiteSpace: 'nowrap' }}>{lang === 'te' ? 'ప్రవేశ రుసుము' : 'Entry Fee'}</span>
         </div>
-        <div style={{
-          fontSize: '12px',
-          fontWeight: 800,
-          fontFamily: lang === 'te' ? 'var(--font-telugu), var(--font-heading)' : 'var(--font-heading)',
-          color: '#0F172A',
-          lineHeight: 1.3,
-          wordBreak: 'break-word'
-        }}>
+        <div style={{ fontSize: '12px', fontWeight: 800, color: '#0F172A', lineHeight: 1.3, wordBreak: 'break-word' }}>
+          {place.entryFeeNum === 0 || !place.entryFeeNum 
+            ? (lang === 'te' ? 'ఉచిత దర్శనం' : 'Free Darshan') 
+            : (lang === 'te' ? `₹${place.entryFeeNum} ఒక్కొక్కరికి` : `₹${place.entryFeeNum} per person`)}
+        </div>
+      </div>
+
+      {/* Parking */}
+      <div style={{ backgroundColor: '#FFFFFF', border: '1px solid rgba(15, 23, 42, 0.06)', borderRadius: '14px', padding: '11px 12px', boxShadow: '0 3px 10px rgba(15,23,42,0.03)', minWidth: 0, overflow: 'hidden' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '4px' }}>
+          <Car size={14} color="#0F5132" style={{ flexShrink: 0 }} />
+          <span style={{ fontSize: '10.5px', fontWeight: 700, color: '#64748B', whiteSpace: 'nowrap' }}>{lang === 'te' ? 'పార్కింగ్' : 'Parking'}</span>
+        </div>
+        <div style={{ fontSize: '12px', fontWeight: 800, color: '#0F172A', lineHeight: 1.3, wordBreak: 'break-word' }}>
           {lang === 'te' 
-            ? 'పార్కింగ్ ఉంది' 
+            ? 'పార్కింగ్ అందుబాటులో ఉంది' 
             : (() => {
                 const rawParking = toSafeText(place.facilities?.parking, toSafeText(place.practicalInfo?.parking, 'Available Nearby'));
-                if (rawParking.toLowerCase().includes('dedicated')) return 'Dedicated Free';
+                if (rawParking.toLowerCase().includes('dedicated')) return 'Dedicated Free Parking';
                 if (rawParking.toLowerCase().includes('spacious') || rawParking.toLowerCase().includes('ample') || rawParking.toLowerCase().includes('large')) return 'Ample Parking';
                 if (rawParking.toLowerCase().includes('street')) return 'Street Parking';
                 if (rawParking.toLowerCase().includes('limited')) return 'Limited Parking';
@@ -741,56 +783,29 @@ export default function PlaceDetails() {
         </div>
       </div>
 
-      {/* Photography / Mobile */}
-      <div style={{
-        backgroundColor: '#FFFFFF',
-        border: '1px solid rgba(15, 23, 42, 0.08)',
-        borderRadius: '16px',
-        padding: '11px 9px',
-        boxShadow: '0 2px 8px rgba(15,23,42,0.03)',
-        minWidth: 0,
-        overflow: 'hidden',
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'space-between'
-      }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '5px', marginBottom: '6px' }}>
-          <div style={{
-            width: '24px',
-            height: '24px',
-            borderRadius: '6px',
-            backgroundColor: '#F0FDF4',
-            border: '1px solid #DCFCE7',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            flexShrink: 0
-          }}>
-            <Camera size={13} color="#0F5132" />
-          </div>
-          <span style={{
-            fontSize: '10px',
-            fontWeight: 700,
-            fontFamily: lang === 'te' ? 'var(--font-telugu), var(--font-heading)' : 'var(--font-heading)',
-            color: '#64748B',
-            whiteSpace: 'nowrap',
-            overflow: 'hidden',
-            textOverflow: 'ellipsis'
-          }}>
-            {lang === 'te' ? 'ఫోన్లు/కెమెరా' : 'Phones/Camera'}
-          </span>
+      {/* Accessibility */}
+      <div style={{ backgroundColor: '#FFFFFF', border: '1px solid rgba(15, 23, 42, 0.06)', borderRadius: '14px', padding: '11px 12px', boxShadow: '0 3px 10px rgba(15,23,42,0.03)', minWidth: 0, overflow: 'hidden' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '4px' }}>
+          <CheckCircle2 size={14} color="#0F5132" style={{ flexShrink: 0 }} />
+          <span style={{ fontSize: '10.5px', fontWeight: 700, color: '#64748B', whiteSpace: 'nowrap' }}>{lang === 'te' ? 'దివ్యాంగుల సౌలభ్యం' : 'Accessibility'}</span>
         </div>
-        <div style={{
-          fontSize: '12px',
-          fontWeight: 800,
-          fontFamily: lang === 'te' ? 'var(--font-telugu), var(--font-heading)' : 'var(--font-heading)',
-          color: '#0F172A',
-          lineHeight: 1.3,
-          wordBreak: 'break-word'
-        }}>
+        <div style={{ fontSize: '12px', fontWeight: 800, color: '#0F172A', lineHeight: 1.3, wordBreak: 'break-word' }}>
           {lang === 'te'
-            ? (place.id === 'venkateswara' ? 'ఖచ్చితంగా నిషేధం' : 'వెలుపల అనుమతి')
-            : (place.id === 'venkateswara' ? 'Strictly Prohibited' : 'Allowed Outside')}
+            ? (place.recommendationContext?.wheelchairAccessible ? 'వీల్ చైర్ సౌకర్యం' : 'ర్యాంప్ / సులభ ప్రవేశం')
+            : (place.recommendationContext?.wheelchairAccessible ? 'Wheelchair Friendly' : 'Ramp / Ground Access')}
+        </div>
+      </div>
+
+      {/* Photography / Mobile */}
+      <div style={{ backgroundColor: '#FFFFFF', border: '1px solid rgba(15, 23, 42, 0.06)', borderRadius: '16px', padding: '11px 12px', boxShadow: '0 3px 10px rgba(15,23,42,0.03)', minWidth: 0, overflow: 'hidden' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '4px' }}>
+          <Camera size={14} color="#0F5132" style={{ flexShrink: 0 }} />
+          <span style={{ fontSize: '10.5px', fontWeight: 700, color: '#64748B', whiteSpace: 'nowrap' }}>{lang === 'te' ? 'ఫోన్లు & కెమెరా' : 'Phones & Camera'}</span>
+        </div>
+        <div style={{ fontSize: '12px', fontWeight: 800, color: '#0F172A', lineHeight: 1.3, wordBreak: 'break-word' }}>
+          {lang === 'te'
+            ? (place.id === 'venkateswara' ? 'ఖచ్చితంగా నిషేధం' : 'గర్భగుడి వెలుపల అనుమతి')
+            : (place.id === 'venkateswara' ? 'Strictly Prohibited' : 'Allowed Outside Main Temple')}
         </div>
       </div>
       </div>
@@ -832,7 +847,7 @@ export default function PlaceDetails() {
           }}>
             {festivalCrowd.isFestivalActive ? <Flame size={13} color="#B45309" /> : <Sparkles size={13} color="#CA8A04" />}
           </div>
-          <span style={{ fontSize: '13px', fontWeight: 800, fontFamily: 'var(--font-heading)', color: festivalCrowd.isFestivalActive ? '#92400E' : '#854D0E', letterSpacing: '0.1px', lineHeight: 1.3 }}>
+          <span style={{ fontSize: '13px', fontWeight: 800, color: festivalCrowd.isFestivalActive ? '#92400E' : '#854D0E', letterSpacing: '0.1px', lineHeight: 1.3 }}>
             {festivalCrowd.hasImpact 
               ? (lang === 'te' ? festivalCrowd.alertTitleTe : festivalCrowd.alertTitleEn)
               : (lang === 'te' ? 'సారథి సూచన' : 'Saarthi Suggests')}
@@ -843,7 +858,6 @@ export default function PlaceDetails() {
           <span style={{
             fontSize: '10.5px',
             fontWeight: 800,
-            fontFamily: 'var(--font-heading)',
             color: festivalCrowd.isFestivalActive ? '#92400E' : '#1D4ED8',
             backgroundColor: festivalCrowd.isFestivalActive ? '#FEF3C7' : '#DBEAFE',
             padding: '2.5px 8px',
@@ -857,14 +871,7 @@ export default function PlaceDetails() {
         )}
       </div>
 
-      <p style={{
-        fontSize: '12.5px',
-        color: '#1E293B',
-        fontWeight: 700,
-        fontFamily: lang === 'te' ? 'var(--font-telugu), var(--font-body)' : 'var(--font-body)',
-        lineHeight: 1.5,
-        margin: '0 0 10px'
-      }}>
+      <p style={{ fontSize: '12.5px', color: '#1E293B', fontWeight: 700, lineHeight: 1.45, margin: '0 0 10px' }}>
         {festivalCrowd.hasImpact
           ? (lang === 'te' ? festivalCrowd.alertMessageTe : festivalCrowd.alertMessageEn)
           : (lang === 'te' 
@@ -1092,16 +1099,10 @@ export default function PlaceDetails() {
       padding: '18px 20px',
       boxShadow: '0 4px 14px rgba(15,23,42,0.03)'
     }}>
-      <h2 style={{ fontSize: '16px', fontWeight: 800, fontFamily: 'var(--font-heading)', color: '#0F172A', margin: '0 0 8px' }}>
+      <h2 style={{ fontSize: '16px', fontWeight: 800, color: '#0F172A', margin: '0 0 8px' }}>
         {lang === 'te' ? (isTemple ? 'ఆలయ విశేషాలు' : 'ప్రదేశ విశేషాలు') : (isTemple ? 'About This Temple' : (isZooOrWildlife ? 'About This Zoological Park' : 'About This Place'))}
       </h2>
-      <p style={{
-        fontSize: '13.5px',
-        color: '#475569',
-        fontFamily: lang === 'te' ? 'var(--font-telugu), var(--font-body)' : 'var(--font-body)',
-        lineHeight: 1.65,
-        margin: '0 0 12px'
-      }}>
+      <p style={{ fontSize: '13.5px', color: '#475569', lineHeight: 1.6, margin: '0 0 12px' }}>
         {lang === 'te' 
           ? (place.id === 'govindaraja'
               ? 'శ్రీ గోవిందరాజ స్వామి వారి ఆలయం తిరుపతి నడిబొడ్డున ఉన్న 12వ శతాబ్దపు ప్రసిద్ధ ద్రవిడ ఆలయం. ఇక్కడ శయన ముద్రలో ఉన్న మహావిష్ణువు కొలువై ఉన్నారు.'
@@ -1118,7 +1119,6 @@ export default function PlaceDetails() {
           padding: 0,
           fontSize: '12.5px',
           fontWeight: 800,
-          fontFamily: 'var(--font-heading)',
           color: '#0F5132',
           cursor: 'pointer',
           display: 'flex',
@@ -1145,10 +1145,10 @@ export default function PlaceDetails() {
       boxShadow: '0 4px 14px rgba(15,23,42,0.03)'
     }}>
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '14px' }}>
-        <h2 style={{ fontSize: '16px', fontWeight: 800, fontFamily: 'var(--font-heading)', color: '#0F172A', margin: 0 }}>
+        <h2 style={{ fontSize: '16px', fontWeight: 800, color: '#0F172A', margin: 0 }}>
           {lang === 'te' ? (isTemple ? 'సమీప పవిత్ర ఆలయాలు' : 'సమీప సందర్శనీయ ప్రదేశాలు') : (isTemple ? 'Nearby Sacred Temples' : 'Nearby Places to Visit')}
         </h2>
-        <Link href="/explore" style={{ fontSize: '12px', fontWeight: 800, fontFamily: 'var(--font-heading)', color: '#0F5132', textDecoration: 'none' }}>
+        <Link href="/explore" style={{ fontSize: '12px', fontWeight: 800, color: '#0F5132', textDecoration: 'none' }}>
           {lang === 'te' ? 'అన్నీ చూడండి →' : 'View All →'}
         </Link>
       </div>
@@ -1194,7 +1194,6 @@ export default function PlaceDetails() {
                 color: '#FFFFFF',
                 fontSize: '10px',
                 fontWeight: 700,
-                fontFamily: 'var(--font-heading)',
                 display: 'flex',
                 alignItems: 'center',
                 gap: '3px'
@@ -1207,7 +1206,6 @@ export default function PlaceDetails() {
               <p style={{
                 fontSize: '12.5px',
                 fontWeight: 800,
-                fontFamily: 'var(--font-heading)',
                 color: '#0F172A',
                 margin: '0 0 4px',
                 lineHeight: 1.3,
@@ -1219,7 +1217,7 @@ export default function PlaceDetails() {
               }}>
                 {p.name}
               </p>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '4px', fontSize: '11px', fontFamily: 'var(--font-body)', color: '#64748B', fontWeight: 600 }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '4px', fontSize: '11px', color: '#64748B', fontWeight: 600 }}>
                 <MapPin size={11} color="#94A3B8" />
                 <span>{dist.toFixed(1)} km away</span>
               </div>
@@ -1233,7 +1231,7 @@ export default function PlaceDetails() {
   // 10. HERITAGE / VISITOR ACCORDIONS
   const heritageAccordionsNode = (
     <div>
-      <h2 style={{ fontSize: '16px', fontWeight: 800, fontFamily: 'var(--font-heading)', color: '#0F172A', margin: '0 0 12px' }}>
+      <h2 style={{ fontSize: '16px', fontWeight: 800, color: '#0F172A', margin: '0 0 12px' }}>
         {lang === 'te' ? (isTemple ? 'ఆలయ చరిత్ర & సంప్రదాయాలు' : 'చరిత్ర & సందర్శకుల సమాచారం') : (isTemple ? 'More Details & Heritage' : 'History & Visitor Highlights')}
       </h2>
 
@@ -1253,7 +1251,6 @@ export default function PlaceDetails() {
               cursor: 'pointer',
               fontSize: '13.5px',
               fontWeight: 800,
-              fontFamily: 'var(--font-heading)',
               color: '#0F172A'
             }}
           >
@@ -1264,7 +1261,7 @@ export default function PlaceDetails() {
             {openDrawer === 'legend' ? <ChevronUp size={16} color="#0F5132" /> : <ChevronDown size={16} color="#94A3B8" />}
           </button>
           {openDrawer === 'legend' && (
-            <div style={{ padding: '0 18px 18px', fontSize: '13px', fontFamily: lang === 'te' ? 'var(--font-telugu), var(--font-body)' : 'var(--font-body)', color: '#475569', lineHeight: 1.65, borderTop: '1px solid #F1F5F9' }}>
+            <div style={{ padding: '0 18px 18px', fontSize: '13px', color: '#475569', lineHeight: 1.6, borderTop: '1px solid #F1F5F9' }}>
               <p style={{ marginTop: '12px' }}>
                 {lang === 'te' 
                   ? (place.id === 'govindaraja'
@@ -1291,7 +1288,6 @@ export default function PlaceDetails() {
               cursor: 'pointer',
               fontSize: '13.5px',
               fontWeight: 800,
-              fontFamily: 'var(--font-heading)',
               color: '#0F172A'
             }}
           >
@@ -1302,7 +1298,7 @@ export default function PlaceDetails() {
             {openDrawer === 'festivals' ? <ChevronUp size={16} color="#0F5132" /> : <ChevronDown size={16} color="#94A3B8" />}
           </button>
           {openDrawer === 'festivals' && (
-            <div style={{ padding: '0 18px 18px', fontSize: '13px', fontFamily: lang === 'te' ? 'var(--font-telugu), var(--font-body)' : 'var(--font-body)', color: '#475569', lineHeight: 1.65, borderTop: '1px solid #F1F5F9' }}>
+            <div style={{ padding: '0 18px 18px', fontSize: '13px', color: '#475569', lineHeight: 1.6, borderTop: '1px solid #F1F5F9' }}>
               <p style={{ marginTop: '12px' }}>
                 {lang === 'te' 
                   ? (isTemple
@@ -1331,7 +1327,6 @@ export default function PlaceDetails() {
               cursor: 'pointer',
               fontSize: '13.5px',
               fontWeight: 800,
-              fontFamily: 'var(--font-heading)',
               color: '#0F172A'
             }}
           >
@@ -1342,7 +1337,7 @@ export default function PlaceDetails() {
             {openDrawer === 'architecture' ? <ChevronUp size={16} color="#0F5132" /> : <ChevronDown size={16} color="#94A3B8" />}
           </button>
           {openDrawer === 'architecture' && (
-            <div style={{ padding: '0 18px 18px', fontSize: '13px', fontFamily: lang === 'te' ? 'var(--font-telugu), var(--font-body)' : 'var(--font-body)', color: '#475569', lineHeight: 1.65, borderTop: '1px solid #F1F5F9' }}>
+            <div style={{ padding: '0 18px 18px', fontSize: '13px', color: '#475569', lineHeight: 1.6, borderTop: '1px solid #F1F5F9' }}>
               <p style={{ marginTop: '12px' }}>
                 {lang === 'te' 
                   ? (isTemple
@@ -1368,22 +1363,20 @@ export default function PlaceDetails() {
     <OfflineTempleMap placeId={place.id} place={place} lang={lang} isTemple={isTemple} coordinates={place.coordinates} />
   );
 
-
-
   return (
-    <main style={{ minHeight: '100vh', backgroundColor: 'var(--bg-canvas, #FAF8F5)', color: '#0F172A', paddingBottom: 'calc(88px + env(safe-area-inset-bottom, 20px))', width: '100%', maxWidth: '100vw', overflowX: 'hidden', boxSizing: 'border-box' }}>
+    <main style={{ minHeight: '100vh', backgroundColor: 'var(--bg-canvas, #FAF8F5)', color: '#0F172A', paddingBottom: 'calc(36px + env(safe-area-inset-bottom, 20px))', width: '100%', maxWidth: '100vw', overflowX: 'hidden', boxSizing: 'border-box' }}>
       <style>{`
         .place-hero-box {
           position: relative;
           width: 100%;
           overflow: hidden;
-          height: clamp(280px, 40vh, 360px);
+          height: clamp(280px, 38vh, 340px);
         }
         .place-mobile-container {
           width: 100%;
-          max-width: 720px;
+          max-width: 640px;
           margin: 0 auto;
-          padding: 12px clamp(10px, 3vw, 16px) calc(88px + env(safe-area-inset-bottom, 20px)) clamp(10px, 3vw, 16px);
+          padding: 12px 12px calc(36px + env(safe-area-inset-bottom, 20px)) 12px;
           display: flex;
           flex-direction: column;
           gap: 12px;
@@ -1393,33 +1386,13 @@ export default function PlaceDetails() {
         .place-desktop-container {
           display: none;
         }
-        .place-sticky-bottom-bar {
-          position: fixed;
-          bottom: 0;
-          left: 0;
-          right: 0;
-          z-index: 50;
-          background-color: rgba(255, 255, 255, 0.96);
-          backdrop-filter: blur(12px);
-          -webkit-backdrop-filter: blur(12px);
-          border-top: 1px solid #E2E8F0;
-          box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.08);
-          padding: 10px clamp(10px, 3vw, 16px) calc(10px + env(safe-area-inset-bottom, 12px)) clamp(10px, 3vw, 16px);
-          display: flex;
-          align-items: center;
-          gap: clamp(6px, 2vw, 10px);
-          box-sizing: border-box;
-        }
         @media (min-width: 900px) {
-          .place-sticky-bottom-bar {
-            display: none !important;
-          }
           .place-hero-box {
             max-width: 1600px;
             width: calc(100% - 48px);
             margin: 20px auto 28px auto;
             border-radius: 28px;
-            height: clamp(300px, 38vh, 440px);
+            height: 440px;
             box-shadow: 0 20px 48px -10px rgba(15, 23, 42, 0.18);
           }
           .place-mobile-container {
@@ -1431,8 +1404,8 @@ export default function PlaceDetails() {
             margin: 0 auto;
             padding: 0;
             display: grid !important;
-            grid-template-columns: minmax(0, 1.3fr) minmax(320px, 1fr);
-            gap: 24px;
+            grid-template-columns: minmax(0, 1.45fr) minmax(420px, 1fr);
+            gap: 32px;
             align-items: start;
           }
           .place-desktop-main {
@@ -1442,16 +1415,10 @@ export default function PlaceDetails() {
           }
           .place-desktop-sidebar {
             position: sticky;
-            top: 76px;
+            top: 24px;
             display: flex;
             flex-direction: column;
             gap: 20px;
-          }
-        }
-        @media (min-width: 1200px) {
-          .place-desktop-container {
-            grid-template-columns: minmax(0, 1.45fr) minmax(380px, 1fr);
-            gap: 32px;
           }
         }
       `}</style>
@@ -1474,7 +1441,6 @@ export default function PlaceDetails() {
               borderRadius: '20px',
               fontSize: '13px',
               fontWeight: 700,
-              fontFamily: 'var(--font-heading)',
               zIndex: 9999,
               boxShadow: '0 8px 24px rgba(0,0,0,0.2)',
               display: 'flex',
@@ -1609,7 +1575,6 @@ export default function PlaceDetails() {
               borderRadius: '6px',
               fontSize: '11px',
               fontWeight: 800,
-              fontFamily: 'var(--font-heading)',
               color: '#0F172A',
               boxShadow: '0 2px 8px rgba(0, 0, 0, 0.15)',
               flexShrink: 0
@@ -1622,7 +1587,6 @@ export default function PlaceDetails() {
               <span style={{
                 fontSize: '11px',
                 fontWeight: 800,
-                fontFamily: 'var(--font-heading)',
                 backgroundColor: festivalCrowd.isFestivalActive 
                   ? (festivalCrowd.isDirectCenter ? 'rgba(220, 38, 38, 0.75)' : 'rgba(217, 119, 6, 0.75)')
                   : 'rgba(37, 99, 235, 0.75)',
@@ -1645,7 +1609,6 @@ export default function PlaceDetails() {
               <span style={{
                 fontSize: '11px',
                 fontWeight: 800,
-                fontFamily: 'var(--font-heading)',
                 backgroundColor: 'rgba(217, 119, 6, 0.35)',
                 color: '#FDE047',
                 padding: '3px 9px',
@@ -1666,7 +1629,6 @@ export default function PlaceDetails() {
               <span style={{
                 fontSize: '11px',
                 fontWeight: 800,
-                fontFamily: 'var(--font-heading)',
                 backgroundColor: isOpenNow ? 'rgba(34, 197, 94, 0.25)' : 'rgba(239, 68, 68, 0.25)',
                 color: isOpenNow ? '#86EFAC' : '#FCA5A5',
                 padding: '3px 9px',
@@ -1685,10 +1647,9 @@ export default function PlaceDetails() {
           <h1 style={{
             fontSize: 'clamp(20px, 5.2vw, 28px)',
             fontWeight: 900,
-            fontFamily: lang === 'te' ? 'var(--font-telugu), var(--font-heading)' : 'var(--font-heading)',
             color: '#FFFFFF',
             margin: '0 0 4px',
-            lineHeight: 1.25,
+            lineHeight: 1.2,
             letterSpacing: '-0.02em',
             textShadow: '0 2px 10px rgba(0, 0, 0, 0.9), 0 1px 3px rgba(0, 0, 0, 0.8)',
             wordBreak: 'break-word',
@@ -1701,7 +1662,6 @@ export default function PlaceDetails() {
             alignItems: 'center',
             gap: '5px',
             fontSize: '12.5px',
-            fontFamily: 'var(--font-body)',
             color: '#F1F5F9',
             fontWeight: 600,
             textShadow: '0 1px 4px rgba(0, 0, 0, 0.8)',
@@ -1711,175 +1671,50 @@ export default function PlaceDetails() {
             boxSizing: 'border-box'
           }}>
             <MapPin size={14} color="#CBD5E1" style={{ flexShrink: 0 }} />
-            <span style={{ minWidth: 0, wordBreak: 'break-word' }}>
-              {place.location} • ~{formattedDriveTime} {userLocation && locationSource === 'gps' ? (lang === 'te' ? 'మీ నుండి' : 'from you') : (lang === 'te' ? 'తిరుపతి నుండి' : 'from Tirupati')} ({formatDistance(drivingDistance, lang)})
-            </span>
+            <span style={{ minWidth: 0, wordBreak: 'break-word' }}>{place.location} • ~{formattedDriveTime} {userLocation ? (lang === 'te' ? 'మీ నుండి' : 'from you') : (lang === 'te' ? 'తిరుపతి నుండి' : 'from Tirupati')} ({formatDistance(drivingDistance, lang)})</span>
           </div>
         </div>
       </div>
 
       {/* ═══════════════════════════════════════════════════
-          MOBILE FLOW (< 900px): Clean Sequential Pilgrim Flow
+          MOBILE FLOW (< 900px): Exact 1 -> 9 Pilgrim Order
           ═══════════════════════════════════════════════════ */}
       <div className="place-mobile-container">
         {closureAlertNode}
-        {locationOffPromptNode}
         {topMetricsNode}
+        {placeSignificanceNode}
         {quickFactsNode}
-        {essentialFacilitiesNode}
-        {offlineMapNode}
         {saarthiSuggestsNode}
+        {ctaButtonsNode}
+        {offlineMapNode}
+        {essentialFacilitiesNode}
         {aboutTempleNode}
         {nearbyTemplesNode}
-        <div id="temple-heritage-section">
-          {heritageAccordionsNode}
-        </div>
+        {heritageAccordionsNode}
       </div>
 
       {/* ═══════════════════════════════════════════════════
           DESKTOP GRID (>= 900px): 2-Column Responsive Layout
           ═══════════════════════════════════════════════════ */}
       <div className="place-desktop-container">
-        {/* Left Column: Precinct Map, About, Heritage & Nearby */}
+        {/* Left Column: Sacred Heritage & Visuals */}
         <div className="place-desktop-main">
           {closureAlertNode}
           {offlineMapNode}
           {aboutTempleNode}
+          {heritageAccordionsNode}
           {nearbyTemplesNode}
-          <div id="temple-heritage-section">
-            {heritageAccordionsNode}
-          </div>
         </div>
 
         {/* Right Column: Sticky Quick Action & Briefing Sidebar */}
         <div className="place-desktop-sidebar">
-          {locationOffPromptNode}
           {topMetricsNode}
+          {placeSignificanceNode}
           {quickFactsNode}
-          {essentialFacilitiesNode}
           {saarthiSuggestsNode}
           {ctaButtonsNode}
+          {essentialFacilitiesNode}
         </div>
-      </div>
-
-      {/* ═══════════════════════════════════════════════════
-          MOBILE STICKY BOTTOM BAR (< 900px)
-          Always accessible: Navigate + Fuel + Save + Share
-          ═══════════════════════════════════════════════════ */}
-      <div className="place-sticky-bottom-bar">
-        {/* Navigate Primary Action */}
-        <button
-          type="button"
-          onClick={openNavigation}
-          style={{
-            flex: 1,
-            minWidth: 0,
-            backgroundColor: '#0F5132',
-            color: '#FFFFFF',
-            border: 'none',
-            borderRadius: '14px',
-            padding: '11px clamp(8px, 2.5vw, 14px)',
-            minHeight: '48px',
-            fontSize: 'clamp(12px, 3.2vw, 13.5px)',
-            fontWeight: 800,
-            fontFamily: 'var(--font-heading)',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            gap: '6px',
-            cursor: 'pointer',
-            boxShadow: '0 4px 14px rgba(15, 81, 50, 0.3)',
-            whiteSpace: 'nowrap'
-          }}
-        >
-          <Navigation size={17} color="#FFFFFF" fill="#FFFFFF" style={{ flexShrink: 0 }} />
-          <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', minWidth: 0 }}>
-            {lang === 'te' ? (isTemple ? 'దర్శన మార్గం' : 'మార్గం') : 'Start Navigation'}
-          </span>
-          {formattedDriveTime && (
-            <span style={{
-              backgroundColor: 'rgba(255, 255, 255, 0.2)',
-              padding: '2px 7px',
-              borderRadius: '8px',
-              fontSize: '11px',
-              fontWeight: 700,
-              color: '#FFFFFF',
-              flexShrink: 0
-            }}>
-              {formattedDriveTime}
-            </span>
-          )}
-        </button>
-
-        {/* Fuel Estimator */}
-        <Link
-          href={`/trip-estimator?destId=${place.id}`}
-          style={{
-            width: 'clamp(42px, 11vw, 48px)',
-            height: 'clamp(42px, 11vw, 48px)',
-            minWidth: 'clamp(42px, 11vw, 48px)',
-            minHeight: 'clamp(42px, 11vw, 48px)',
-            backgroundColor: '#F8FAFC',
-            border: '1.5px solid #E2E8F0',
-            borderRadius: '14px',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            textDecoration: 'none',
-            color: '#059669',
-            boxSizing: 'border-box',
-            flexShrink: 0
-          }}
-          title={lang === 'te' ? 'ఇంధనం & ప్రయాణ ఖర్చు అంచనా' : 'Estimate Fuel & Trip Cost'}
-        >
-          <Fuel size={19} color="#059669" />
-        </Link>
-
-        {/* Save Toggle */}
-        <button
-          type="button"
-          onClick={() => togglePlace(place.id)}
-          style={{
-            width: 'clamp(42px, 11vw, 48px)',
-            height: 'clamp(42px, 11vw, 48px)',
-            minWidth: 'clamp(42px, 11vw, 48px)',
-            minHeight: 'clamp(42px, 11vw, 48px)',
-            backgroundColor: isSaved ? '#FFF1F2' : '#F8FAFC',
-            border: isSaved ? '1.5px solid #FECDD3' : '1.5px solid #E2E8F0',
-            borderRadius: '14px',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            cursor: 'pointer',
-            flexShrink: 0
-          }}
-          title={isSaved ? (lang === 'te' ? 'సేవ్ చేయబడింది' : 'Saved') : (lang === 'te' ? 'సేవ్ చేయండి' : 'Save Place')}
-        >
-          <Heart size={19} fill={isSaved ? '#E11D48' : 'none'} color={isSaved ? '#E11D48' : '#475569'} />
-        </button>
-
-        {/* Share Button */}
-        <button
-          type="button"
-          onClick={handleShare}
-          style={{
-            width: 'clamp(42px, 11vw, 48px)',
-            height: 'clamp(42px, 11vw, 48px)',
-            minWidth: 'clamp(42px, 11vw, 48px)',
-            minHeight: 'clamp(42px, 11vw, 48px)',
-            backgroundColor: '#F8FAFC',
-            border: '1.5px solid #E2E8F0',
-            borderRadius: '14px',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            cursor: 'pointer',
-            flexShrink: 0
-          }}
-          title={lang === 'te' ? 'షేర్ చేయండి' : 'Share Place'}
-        >
-          <Share2 size={19} color="#475569" />
-        </button>
       </div>
 
     </main>

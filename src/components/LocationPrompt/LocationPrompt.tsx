@@ -8,33 +8,31 @@ import { useState } from 'react';
 import { LocationPickerModal } from '@/components/common/LocationPickerModal';
 
 export default function LocationPrompt() {
-  const { requestLocationPermission, setUserLocation, setLocationPermission } = useTrip();
+  const { setUserLocation, setLocationPermission } = useTrip();
   const [isRequesting, setIsRequesting] = useState(false);
   const [isPickerOpen, setIsPickerOpen] = useState(false);
 
-  const handleAllowLocation = async () => {
+  const handleAllowLocation = () => {
     setIsRequesting(true);
-    if (typeof window !== 'undefined') {
-      localStorage.setItem('saarthi_location_prompt_seen', 'true');
-    }
-    try {
-      const granted = await requestLocationPermission();
-      if (!granted) {
-        const { TIRUPATI_CENTER } = await import('@/lib/location');
-        setUserLocation(TIRUPATI_CENTER, 'fallback');
-      }
-    } catch {
-      const { TIRUPATI_CENTER } = await import('@/lib/location');
-      setUserLocation(TIRUPATI_CENTER, 'fallback');
-    } finally {
+    import('@/lib/location').then(({ detectCoordinates, TIRUPATI_CENTER }) => {
+      detectCoordinates(
+        (coords) => {
+          setUserLocation(coords);
+          setLocationPermission('granted');
+          setIsRequesting(false);
+        },
+        () => {
+          setUserLocation(TIRUPATI_CENTER);
+          setLocationPermission('granted');
+          setIsRequesting(false);
+        }
+      );
+    }).catch(() => {
       setIsRequesting(false);
-    }
+    });
   };
 
   const handleNotNow = () => {
-    if (typeof window !== 'undefined') {
-      localStorage.setItem('saarthi_location_prompt_seen', 'true');
-    }
     setLocationPermission('denied');
   };
 

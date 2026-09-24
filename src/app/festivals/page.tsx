@@ -94,22 +94,9 @@ export default function FestivalsPage() {
   };
 
   return (
-    <div style={{ minHeight: '100vh', backgroundColor: '#FDF8F5', paddingBottom: 60, fontFamily: 'var(--font-sans)', width: '100%' }}>
-      <style>{`
-        @media (min-width: 768px) {
-          .festivals-header {
-            position: static !important;
-            border-bottom: none !important;
-            background: transparent !important;
-            padding: 20px 20px 0 !important;
-          }
-          .festivals-back-btn {
-            display: none !important;
-          }
-        }
-      `}</style>
+    <div style={{ minHeight: '100vh', backgroundColor: '#FDF8F5', paddingBottom: 60, fontFamily: 'var(--font-sans)' }}>
       {/* Top Header */}
-      <div className="festivals-header" style={{
+      <div style={{
         padding: '16px 20px',
         background: '#FFFFFF',
         borderBottom: '1px solid #F1F5F9',
@@ -118,10 +105,8 @@ export default function FestivalsPage() {
         zIndex: 50,
         boxShadow: '0 1px 3px rgba(0,0,0,0.03)'
       }}>
-        <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
           <button 
-            className="festivals-back-btn"
             onClick={() => router.back()} 
             style={{ 
               border: '1px solid var(--md-sys-color-outline-variant, #E2E8F0)', 
@@ -211,11 +196,10 @@ export default function FestivalsPage() {
             );
           })}
         </div>
-        </div>
       </div>
 
       {/* Main Body Container */}
-      <div style={{ padding: '16px 20px', maxWidth: '1200px', margin: '0 auto' }}>
+      <div style={{ padding: '16px 20px' }}>
         {/* Info Banner */}
         <div style={{ 
           background: 'linear-gradient(135deg, #FFFBEB 0%, #FEF3C7 100%)', 
@@ -247,7 +231,7 @@ export default function FestivalsPage() {
             <p style={{ margin: 0, fontSize: 13, color: '#64748B' }}>Try clearing your search query or selecting a different month filter.</p>
           </div>
         ) : (
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: 16 }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
             <AnimatePresence>
               {filteredFestivals.map((fest, index) => {
                 const color = COLORS[index % COLORS.length];

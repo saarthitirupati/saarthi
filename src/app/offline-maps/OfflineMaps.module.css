@@ -33,12 +33,6 @@
   transition: all 0.15s;
 }
 
-@media (min-width: 768px) {
-  .backBtn {
-    display: none;
-  }
-}
-
 .backBtn:hover {
   background: #E7E5E4;
 }

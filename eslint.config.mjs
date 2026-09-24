@@ -16,9 +16,7 @@ const eslintConfig = defineConfig([
     "*.js",
     "*.mjs",
     "twa-output/**",
-    "scratch/**",
-    "saarthi_mobile/**",
-    "android-app/**"
+    "scratch/**"
   ]),
   {
     linterOptions: {

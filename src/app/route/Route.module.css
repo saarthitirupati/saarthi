@@ -15,15 +15,6 @@
   padding: 14px 20px;
 }
 
-@media (min-width: 768px) {
-  .topHeader {
-    position: static;
-    background: transparent;
-    border-bottom: none;
-    padding: 20px 20px 0;
-  }
-}
-
 .headerInner {
   max-width: 1200px;
   margin: 0 auto;
@@ -45,12 +36,6 @@
   text-decoration: none;
   transition: all 0.2s ease;
   flex-shrink: 0;
-}
-
-@media (min-width: 768px) {
-  .backBtn {
-    display: none;
-  }
 }
 
 .backBtn:hover {

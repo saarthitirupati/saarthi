@@ -22,15 +22,15 @@ export const GITA_SHLOKAS: GitaShloka[] = [
     verse: 47,
     referenceEn: 'Bhagavad Gita • Chapter 2, Verse 47',
     referenceTe: 'శ్రీమద్భగవద్గీత • సాంఖ్య యోగం (2.47)',
-    themeEn: 'Selfless Action & Peace',
-    themeTe: 'నిష్కామ కర్మ & మనశ్శాంతి',
+    themeEn: 'Selfless Duty & Peace',
+    themeTe: 'నిష్కామ కర్మ & కర్తవ్య నిర్వహణ',
     shlokaSanskrit: 'कर्मण्येवाधिकारस्ते मा फलेषु कदाचन।\nमा कर्मफलहेतुर्भूर्मा ते सङ्गोऽस्त्वकर्मणि॥',
     shlokaTelugu: 'కర్మణ్యేవాధికారస్తే మా ఫలేషు కదాచన ।\nమా కర్మఫలహేతుర్భూర్మా తే సఙ్గోఽస్త్వకర్మణి ॥',
     transliteration: 'karmaṇy-evādhikāras te mā phaleṣu kadācana |\nmā karma-phala-hetur bhūr mā te saṅgo \'stv akarmaṇi ||',
-    meaningEn: 'Focus on doing your duty with a pure heart, without worrying about the results. Never take pride as the sole cause of success, and never give up on your duties.',
-    meaningTe: 'ఫలితం గురించి చింతించకుండా మీ పనిని చిత్తశుద్ధితో చేయండి. ఫలితానికి మీరే కర్తననే అహంకారం వద్దు, అలాగని బాధ్యతలను ఎన్నడూ వదలకండి.',
-    pilgrimReflectionEn: 'While traveling or waiting in line, do your part with patience and leave the timing peacefully to Lord Srinivasa.',
-    pilgrimReflectionTe: 'దర్శనం క్యూలలో లేదా ప్రయాణంలో ఉన్నప్పుడు ఫలితం గురించి ఆందోళన చెందక, మనసును భగవంతునిపై ఉంచి ప్రశాంతంగా వేచి ఉండండి.'
+    meaningEn: 'You have a right to perform your prescribed duty, but never to the fruits of action. Never consider yourself the cause of results, nor be attached to inaction.',
+    meaningTe: 'కర్మలను ఆచరించుట యందే నీకు అధికారము కలదు, ఫలితములపై ఎన్నడూ లేదు. కర్మఫలమునకు నీవు కారణము కాకుము, అలాగని కర్మలు చేయకుండుట యందునూ ఆసక్తి చూపకుము.',
+    pilgrimReflectionEn: 'When waiting in queue lines or planning your journey, do your best with sincere devotion and leave the timing and outcome peacefully to Lord Srinivasa.',
+    pilgrimReflectionTe: 'దర్శనం క్యూలలో లేదా యాత్రలో ఉన్నప్పుడు సమయం మరియు ఫలితం గురించి ఆందోళన చెందక, మనసును భగవంతునిపై ఉంచి ప్రశాంతంగా వేచి ఉండండి.'
   },
   {
     id: 'gita-6-5',

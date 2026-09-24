@@ -14,7 +14,7 @@ import SaarthiGuidanceCard from '@/components/SaarthiGuidanceCard';
 
 import { KNOWLEDGE_ITEMS, FAQ_ITEMS, SubLocation } from '@/content/knowledge';
 import { useTrip } from '@/components/TripContext';
-import { calculateDrivingDistance, TIRUPATI_CENTER, isCoordinateOnTirumalaHill, isWithinTirupatiRegion, formatDistance, isPlaceOnTirumala } from '@/utils/location';
+import { calculateDrivingDistance, TIRUPATI_CENTER, isCoordinateOnTirumalaHill, isWithinTirupatiRegion } from '@/utils/location';
 import { SrivariNamamVector, LotusMandalaVector, TempleArchVector } from '@/components/common/DevotionalSvgIcons';
 
 // Map iconName strings to Lucide React components
@@ -60,7 +60,7 @@ export default function EssentialDetailPage({ params }: { params: Promise<{ id: 
 
   const isLocalUser = userLocation && isWithinTirupatiRegion(userLocation.lat, userLocation.lng);
   const effectiveLocation = isLocalUser ? userLocation! : TIRUPATI_CENTER;
-  const isTirumalaSpot = isPlaceOnTirumala(item || {}) || 
+  const isTirumalaSpot = item?.location?.toLowerCase().includes('tirumala') || 
                          item?.location?.toLowerCase().includes('vqc') || 
                          (item?.coordinates ? isCoordinateOnTirumalaHill(item.coordinates.lat, item.coordinates.lng) : false);
 
@@ -74,8 +74,9 @@ export default function EssentialDetailPage({ params }: { params: Promise<{ id: 
       item.coordinates.lng,
       Boolean(isTirumalaSpot)
     );
+    const distM = Math.round(distKm * 1000);
     return {
-      label: formatDistance(distKm),
+      label: distKm < 1 ? `${distM} m` : `${distKm.toFixed(1)} km`,
       walkMins: Math.max(1, Math.round(distKm * 12)),
     };
   }, [effectiveLocation, item, isTirumalaSpot]);
@@ -334,7 +335,7 @@ export default function EssentialDetailPage({ params }: { params: Promise<{ id: 
                       <h4 className={styles.subLocationName}>{loc.name}</h4>
                       <div className={styles.subLocationMeta}>
                         {isCloseBy && <span className={styles.subLocationWalk}>Walk • {loc.walkTime}</span>}
-                        <span>{distVal !== null ? formatDistance(distVal) : loc.distance}</span>
+                        <span>{distVal !== null ? `${distVal} km` : loc.distance}</span>
                         <span style={{ color: '#16A34A', fontWeight: 700 }}>• {loc.status}</span>
                       </div>
                     </div>

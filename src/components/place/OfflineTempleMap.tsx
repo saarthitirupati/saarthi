@@ -8,11 +8,7 @@ import {
   PhoneCall, 
   Sparkles, 
   Shield, 
-  Compass,
-  Maximize2,
-  Minimize2,
-  ChevronDown,
-  ChevronUp
+  Compass
 } from 'lucide-react';
 import styles from './OfflineTempleMap.module.css';
 import { getTempleLayout, hasCuratedTempleLayout, MapPin } from '@/data/templeLayouts';
@@ -25,19 +21,18 @@ interface OfflineTempleMapProps {
   coordinates?: { lat: number; lng: number };
 }
 
-const CATEGORY_STYLES: Record<string, { bg: string; border: string; text: string; fill: string }> = {
-  sanctum: { bg: '#FEF3C7', border: '#D97706', text: '#92400E', fill: '#F59E0B' },
-  queue: { bg: '#DBEAFE', border: '#2563EB', text: '#1E40AF', fill: '#3B82F6' },
-  laddu: { bg: '#FEF9C3', border: '#CA8A04', text: '#854D0E', fill: '#EAB308' },
-  footwear: { bg: '#F1F5F9', border: '#64748B', text: '#334155', fill: '#64748B' },
-  food: { bg: '#DCFCE7', border: '#16A34A', text: '#166534', fill: '#22C55E' },
-  medical: { bg: '#FEE2E2', border: '#DC2626', text: '#991B1B', fill: '#EF4444' },
-  safari: { bg: '#FFEDD5', border: '#EA580C', text: '#9A3412', fill: '#F97316' },
-  entry: { bg: '#E0E7FF', border: '#4F46E5', text: '#3730A3', fill: '#6366F1' },
-  parking: { bg: '#F3E8FF', border: '#9333EA', text: '#6B21A8', fill: '#A855F7' },
-  info: { bg: '#ECFDF5', border: '#0F5132', text: '#0F5132', fill: '#10B981' }
+const CATEGORY_STYLES: Record<string, { bg: string; border: string; text: string; fill: string; icon: string }> = {
+  sanctum: { bg: '#FEF3C7', border: '#D97706', text: '#92400E', fill: '#F59E0B', icon: '🛕' },
+  queue: { bg: '#DBEAFE', border: '#2563EB', text: '#1E40AF', fill: '#3B82F6', icon: '🚶' },
+  laddu: { bg: '#FEF9C3', border: '#CA8A04', text: '#854D0E', fill: '#EAB308', icon: '🟡' },
+  footwear: { bg: '#F1F5F9', border: '#64748B', text: '#334155', fill: '#64748B', icon: '👟' },
+  food: { bg: '#DCFCE7', border: '#16A34A', text: '#166534', fill: '#22C55E', icon: '🍲' },
+  medical: { bg: '#FEE2E2', border: '#DC2626', text: '#991B1B', fill: '#EF4444', icon: '🏥' },
+  safari: { bg: '#FFEDD5', border: '#EA580C', text: '#9A3412', fill: '#F97316', icon: '🦁' },
+  entry: { bg: '#E0E7FF', border: '#4F46E5', text: '#3730A3', fill: '#6366F1', icon: '🚪' },
+  parking: { bg: '#F3E8FF', border: '#9333EA', text: '#6B21A8', fill: '#A855F7', icon: '🅿️' },
+  info: { bg: '#ECFDF5', border: '#0F5132', text: '#0F5132', fill: '#10B981', icon: 'ℹ️' }
 };
-
 
 function renderMapSvgIcon(category: string, pinId: string = '', color: string = '#D97706') {
   if (pinId.includes('dhwaja') || pinId.includes('flag')) {
@@ -126,8 +121,6 @@ export default function OfflineTempleMap({
   const [isCached, setIsCached] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
   const [mounted, setMounted] = useState(false);
-  const [isFullscreen, setIsFullscreen] = useState(false);
-  const [isTimelineExpanded, setIsTimelineExpanded] = useState(false);
 
   // Update active pin when layout changes
   useEffect(() => {
@@ -192,19 +185,7 @@ export default function OfflineTempleMap({
   const coordString = `${displayLat.toFixed(4)}° N, ${displayLng.toFixed(4)}° E`;
 
   return (
-    <div 
-      className={styles.container}
-      style={isFullscreen ? {
-        position: 'fixed',
-        inset: 0,
-        zIndex: 9999,
-        backgroundColor: '#FFFFFF',
-        borderRadius: 0,
-        padding: '16px',
-        overflowY: 'auto',
-        boxShadow: 'none'
-      } : undefined}
-    >
+    <div className={styles.container}>
       {/* Header */}
       <div className={styles.header}>
         <div className={styles.headerTop}>
@@ -215,36 +196,23 @@ export default function OfflineTempleMap({
               : (lang === 'te' ? 'ఆఫ్‌లైన్ మ్యాప్' : 'Offline Precinct Map')}
           </span>
 
-          <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-            <button
-              type="button"
-              onClick={() => setIsFullscreen(prev => !prev)}
-              className={styles.saveBtn}
-              style={{ backgroundColor: '#F8FAFC', border: '1px solid #CBD5E1', color: '#334155' }}
-              title={isFullscreen ? 'Exit Full Screen' : 'Full Screen Map'}
-            >
-              {isFullscreen ? <Minimize2 size={13} /> : <Maximize2 size={13} />}
-              <span>{isFullscreen ? (lang === 'te' ? 'మూసివేయి' : 'Exit') : (lang === 'te' ? 'పూర్తి స్క్రీన్' : 'Full Screen')}</span>
-            </button>
-
-            <button 
-              onClick={handleSaveOffline}
-              className={`${styles.saveBtn} ${isCached ? styles.saveBtnSaved : styles.saveBtnUnsaved}`}
-              title="Save vector layout for offline use"
-            >
-              {isCached ? (
-                <>
-                  <Check size={13} />
-                  <span>{lang === 'te' ? 'సేవ్ చేయబడింది' : 'Saved Offline'}</span>
-                </>
-              ) : (
-                <>
-                  <Download size={13} />
-                  <span>{isSaving ? (lang === 'te' ? 'సేవ్...' : 'Saving...') : (lang === 'te' ? 'ఆఫ్‌లైన్ సేవ్' : 'Save Offline')}</span>
-                </>
-              )}
-            </button>
-          </div>
+          <button 
+            onClick={handleSaveOffline}
+            className={`${styles.saveBtn} ${isCached ? styles.saveBtnSaved : styles.saveBtnUnsaved}`}
+            title="Save vector layout for offline use"
+          >
+            {isCached ? (
+              <>
+                <Check size={13} />
+                <span>{lang === 'te' ? 'సేవ్ చేయబడింది' : 'Saved Offline'}</span>
+              </>
+            ) : (
+              <>
+                <Download size={13} />
+                <span>{isSaving ? (lang === 'te' ? 'సేవ్...' : 'Saving...') : (lang === 'te' ? 'ఆఫ్‌లైన్ సేవ్' : 'Save Offline')}</span>
+              </>
+            )}
+          </button>
         </div>
 
         <h2 className={styles.title}>
@@ -1469,46 +1437,14 @@ export default function OfflineTempleMap({
         </div>
       )}
 
-      {/* Step-by-Step Wayfinding Timeline (Combined Expandable Accordion) */}
+      {/* Step-by-Step Wayfinding Timeline */}
       <div className={styles.timelineSection}>
-        <button
-          type="button"
-          onClick={() => setIsTimelineExpanded(prev => !prev)}
-          style={{
-            width: '100%',
-            background: 'none',
-            border: 'none',
-            padding: 0,
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            cursor: 'pointer',
-            minHeight: '44px'
-          }}
-        >
-          <div className={styles.sectionHeading} style={{ margin: 0 }}>
-            <Footprints size={16} color="#0F5132" />
-            <span>{lang === 'te' ? 'ఆఫ్‌లైన్ నడక మార్గం (స్టెప్-బై-స్టెప్)' : 'Step-by-Step Wayfinding Route'}</span>
-          </div>
-          <span style={{
-            fontSize: '11.5px',
-            fontWeight: 800,
-            color: '#0F5132',
-            backgroundColor: '#DCFCE7',
-            border: '1px solid #86EFAC',
-            padding: '3px 9px',
-            borderRadius: '12px',
-            display: 'flex',
-            alignItems: 'center',
-            gap: '4px'
-          }}>
-            <span>{layout.routeSteps.length} {lang === 'te' ? 'దశలు' : 'steps'}</span>
-            {isTimelineExpanded ? <ChevronUp size={14} /> : <ChevronDown size={14} />}
-          </span>
-        </button>
+        <div className={styles.sectionHeading}>
+          <Footprints size={16} color="#0F5132" />
+          <span>{lang === 'te' ? 'ఆఫ్‌లైన్ నడక మార్గం (స్టెప్-బై-స్టెప్)' : 'Step-by-Step Wayfinding Route'}</span>
+        </div>
 
-        {isTimelineExpanded && (
-          <div className={styles.timelineList} style={{ marginTop: '12px' }}>
+        <div className={styles.timelineList}>
           {layout.routeSteps.map((step) => (
             <div key={step.stepNumber} className={styles.timelineItem}>
               <div className={styles.stepNumber}>{step.stepNumber}</div>
@@ -1527,8 +1463,7 @@ export default function OfflineTempleMap({
               </div>
             </div>
           ))}
-          </div>
-        )}
+        </div>
       </div>
 
       {/* Emergency Offline Contacts */}

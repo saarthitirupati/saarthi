@@ -160,9 +160,6 @@ self.addEventListener('push', (event) => {
   let badge = '/icon-96.png';
   let tag = 'saarthi-alert-' + Date.now();
   let targetLocation = 'All Users';
-  let targetCoords = null;
-  let radiusKm = 0;
-  let reason = '';
 
   if (event.data) {
     try {
@@ -174,9 +171,6 @@ self.addEventListener('push', (event) => {
       if (payload.badge) badge = payload.badge;
       if (payload.tag) tag = payload.tag;
       if (payload.target_location) targetLocation = payload.target_location;
-      if (payload.target_coords) targetCoords = payload.target_coords;
-      if (payload.radius_km) radiusKm = Number(payload.radius_km);
-      if (payload.reason) reason = payload.reason;
     } catch (_err) {
       const text = event.data.text();
       if (text) body = text;
@@ -193,56 +187,35 @@ self.addEventListener('push', (event) => {
     badge: badgeUrl,
     tag: tag,
     renotify: true,
-    data: { url: url, reason: reason },
+    data: { url: url },
     vibrate: [200, 100, 200],
     requireInteraction: false,
     silent: false,
   };
 
   event.waitUntil((async () => {
+    // Location-targeted notification check against cached pilgrim location
     const isTestAlert = tag.includes('test') || title.toLowerCase().includes('test');
-    
-    // Check location targeting if specified
-    if (!isTestAlert && (targetLocation !== 'All Users' || targetCoords)) {
+    if (targetLocation && targetLocation !== 'All Users' && !isTestAlert) {
       try {
         const cache = await caches.open('saarthi-user-context');
         const match = await cache.match('/user-location');
         if (match) {
           const loc = await match.json();
           const userRegion = (loc.locationName || '').toLowerCase();
-          const target = (targetLocation || '').toLowerCase();
+          const target = targetLocation.toLowerCase();
 
-          // 1. Precise Coordinate & Radius Filter (if payload provides coordinates)
-          if (targetCoords && targetCoords.lat && targetCoords.lng && radiusKm > 0 && loc.lat && loc.lng) {
-            const R = 6371;
-            const dLat = ((loc.lat - targetCoords.lat) * Math.PI) / 180;
-            const dLon = ((loc.lng - targetCoords.lng) * Math.PI) / 180;
-            const a =
-              Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-              Math.cos((targetCoords.lat * Math.PI) / 180) *
-                Math.cos((loc.lat * Math.PI) / 180) *
-                Math.sin(dLon / 2) *
-                Math.sin(dLon / 2);
-            const dist = R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-            if (dist > radiusKm) {
-              // User is outside coordinate radius; skip notification
-              return;
-            }
-          }
+          // Targeted delivery matching
+          const matches = 
+            target.includes('all') ||
+            (target.includes('tirumala') && userRegion.includes('tirumala')) ||
+            (target.includes('tirupati') && userRegion.includes('tirupati')) ||
+            (target.includes('alipiri') && (userRegion.includes('alipiri') || userRegion.includes('tirupati'))) ||
+            (target.includes('nearby') && (userRegion.includes('tirumala') || userRegion.includes('tirupati') || userRegion.includes('alipiri')));
 
-          // 2. Named Region Filter
-          if (target && target !== 'all users' && target !== 'all') {
-            const matches =
-              (target === 'tirumala' && userRegion.includes('tirumala')) ||
-              (target === 'tirupati' && (userRegion.includes('tirupati') || userRegion.includes('alipiri') || userRegion.includes('renigunta') || userRegion.includes('chandragiri'))) ||
-              (target === 'alipiri' && (userRegion.includes('alipiri') || userRegion.includes('tirupati'))) ||
-              (target === 'nearby' && (userRegion.includes('tirumala') || userRegion.includes('tirupati') || userRegion.includes('alipiri') || userRegion.includes('renigunta') || userRegion.includes('chandragiri'))) ||
-              (userRegion.length > 2 && (target.includes(userRegion) || userRegion.includes(target)));
-
-            if (!matches) {
-              // Pilgrim is not in target location; skip displaying notification
-              return;
-            }
+          if (!matches) {
+            // Pilgrim is not in target location; skip displaying notification
+            return;
           }
         }
       } catch (_e) {}

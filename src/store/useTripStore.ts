@@ -15,23 +15,6 @@ const initialPlannerInput: PlannerInput = {
   travelMode: 'car'
 };
 
-let globalActiveWatchId: number | null = null;
-let lastEvaluatedLocationCoords: { lat: number; lng: number } | null = null;
-
-function triggerLocationNotificationEvaluation(coords: { lat: number; lng: number }) {
-  if (typeof window === 'undefined') return;
-  if (lastEvaluatedLocationCoords) {
-    const dLat = Math.abs(coords.lat - lastEvaluatedLocationCoords.lat) * 111000;
-    const dLng = Math.abs(coords.lng - lastEvaluatedLocationCoords.lng) * 111000 * Math.cos((coords.lat * Math.PI) / 180);
-    const distMeters = Math.sqrt(dLat * dLat + dLng * dLng);
-    if (distMeters < 100) return;
-  }
-  lastEvaluatedLocationCoords = coords;
-  import('@/lib/locationNotifications').then(({ checkAndDispatchLocationNotification }) => {
-    checkAndDispatchLocationNotification(coords).catch(() => {});
-  }).catch(() => {});
-}
-
 export function useTripStore() {
   const [state, setState] = useState<TripState>({
     days: 0,
@@ -81,118 +64,79 @@ export function useTripStore() {
     // Refresh coordinates dynamically on mount (non-blocking deferral after initial UI render)
     if (typeof window !== 'undefined') {
       const isManual = loadedState.locationSource === 'manual';
-      let permStatus: PermissionStatus | null = null;
-
-      const startActiveWatcher = (
-        watchCoordinatesFn: typeof import('@/lib/location').watchCoordinates,
-        resolveLocationNameFn: typeof import('@/lib/location').resolveLocationName,
-        syncLocationFn: typeof import('@/lib/location').syncLocationToServiceWorker
-      ) => {
-        if (typeof window === 'undefined' || !navigator.geolocation) return;
-        if (globalActiveWatchId !== null) {
-          navigator.geolocation.clearWatch(globalActiveWatchId);
-          globalActiveWatchId = null;
-        }
-        globalActiveWatchId = watchCoordinatesFn((coords, accuracyMeters) => {
-          const region = resolveLocationNameFn(coords.lat, coords.lng);
-          syncLocationFn(coords, region);
-          triggerLocationNotificationEvaluation(coords);
-          setState(prev => ({
-            ...prev,
-            userLocation: coords,
-            locationPermission: 'granted',
-            locationSource: 'gps',
-            locationAccuracyMeters: accuracyMeters,
-            locationName: region
-          }));
-        });
-      };
-
-      const triggerLocationDetection = async () => {
-        const { detectCoordinates, watchCoordinates, TIRUPATI_CENTER, resolveLocationName, syncLocationToServiceWorker } = await import('@/lib/location');
-
-        detectCoordinates(
-          (coords, source, isApproximate, accuracyMeters) => {
-            const region = resolveLocationName(coords.lat, coords.lng);
-            syncLocationToServiceWorker(coords, region);
-            triggerLocationNotificationEvaluation(coords);
-            const isGps = source === 'gps';
-
-            setState(prev => ({
-              ...prev,
-              userLocation: coords,
-              locationPermission: (isGps || prev.locationPermission === 'granted') ? 'granted' : (prev.locationPermission === 'denied' ? 'denied' : 'default'),
-              locationSource: source,
-              locationAccuracyMeters: accuracyMeters,
-              locationName: region
-            }));
-
-            // Start continuous high-accuracy watcher whenever GPS is available
-            if (isGps && navigator.geolocation) {
-              startActiveWatcher(watchCoordinates, resolveLocationName, syncLocationToServiceWorker);
-            }
-          },
-          (err) => {
-            const isExplicitDenial = err && err.code === 1;
-            setState(prev => ({
-              ...prev,
-              userLocation: prev.userLocation || TIRUPATI_CENTER,
-              locationPermission: isExplicitDenial ? 'denied' : prev.locationPermission
-            }));
-          }
-        );
-      };
+      let activeWatchId: number | null = null;
 
       // Check real browser permission status if supported
       const checkPermissionAndDetect = async () => {
         let isBrowserDenied = false;
         try {
           if (navigator.permissions && navigator.permissions.query) {
-            permStatus = await navigator.permissions.query({ name: 'geolocation' });
-            if (permStatus.state === 'denied') isBrowserDenied = true;
-
-            // Auto-dynamically react when user toggles location in browser/device settings
-            const handlePermChange = () => {
-              if (!permStatus) return;
-              if (permStatus.state === 'granted') {
-                triggerLocationDetection();
-              } else if (permStatus.state === 'denied') {
-                if (globalActiveWatchId !== null && navigator.geolocation) {
-                  navigator.geolocation.clearWatch(globalActiveWatchId);
-                  globalActiveWatchId = null;
-                }
-                setState(prev => ({ ...prev, locationPermission: 'denied', locationSource: 'fallback' }));
-              } else {
-                setState(prev => ({ ...prev, locationPermission: 'default' }));
-              }
-            };
-            permStatus.addEventListener('change', handlePermChange);
+            const status = await navigator.permissions.query({ name: 'geolocation' });
+            if (status.state === 'denied') isBrowserDenied = true;
           }
         } catch {}
 
-        if (permStatus?.state === 'granted') {
-          setState(prev => ({ ...prev, locationPermission: 'granted' }));
-          await triggerLocationDetection();
-        } else if (!isManual && !isBrowserDenied) {
-          await triggerLocationDetection();
+        if (!isManual && !isBrowserDenied) {
+          const { detectCoordinates, watchCoordinates, getIPLocation, TIRUPATI_CENTER, resolveLocationName, syncLocationToServiceWorker } = await import('@/lib/location');
+
+          detectCoordinates(
+            (coords, source, isApproximate, accuracyMeters) => {
+              const region = resolveLocationName(coords.lat, coords.lng);
+              syncLocationToServiceWorker(coords, region);
+              setState(prev => ({
+                ...prev,
+                userLocation: coords,
+                locationPermission: 'granted',
+                locationSource: source,
+                locationAccuracyMeters: accuracyMeters,
+                locationName: region
+              }));
+
+              if (source === 'ip') {
+                getIPLocation().then(({ city }) => {
+                  if (city) {
+                    const refined = resolveLocationName(coords.lat, coords.lng, city);
+                    setState(prev => ({ ...prev, locationName: refined }));
+                    syncLocationToServiceWorker(coords, refined);
+                  }
+                }).catch(() => {});
+              }
+            },
+            (err) => {
+              const isExplicitDenial = err && err.code === 1;
+              setState(prev => ({
+                ...prev,
+                userLocation: prev.userLocation || TIRUPATI_CENTER,
+                locationPermission: isExplicitDenial ? 'denied' : prev.locationPermission
+              }));
+            }
+          );
+
+          // Real-time GPS tracking as the pilgrim moves
+          activeWatchId = watchCoordinates((coords, accuracyMeters) => {
+            const region = resolveLocationName(coords.lat, coords.lng);
+            syncLocationToServiceWorker(coords, region);
+            setState(prev => ({
+              ...prev,
+              userLocation: coords,
+              locationPermission: 'granted',
+              locationSource: 'gps',
+              locationAccuracyMeters: accuracyMeters,
+              locationName: region
+            }));
+          });
         } else if (!loadedState.userLocation) {
-          const { TIRUPATI_CENTER, resolveLocationName } = await import('@/lib/location');
-          setState(prev => ({ 
-            ...prev, 
-            userLocation: TIRUPATI_CENTER, 
-            locationName: prev.locationName || resolveLocationName(TIRUPATI_CENTER.lat, TIRUPATI_CENTER.lng),
-            locationPermission: isBrowserDenied ? 'denied' : prev.locationPermission 
-          }));
+          const { TIRUPATI_CENTER } = await import('@/lib/location');
+          setState(prev => ({ ...prev, userLocation: TIRUPATI_CENTER }));
         }
       };
 
-      const timer = setTimeout(checkPermissionAndDetect, 200);
+      const timer = setTimeout(checkPermissionAndDetect, 250);
 
       return () => {
         clearTimeout(timer);
-        if (globalActiveWatchId !== null && navigator.geolocation) {
-          navigator.geolocation.clearWatch(globalActiveWatchId);
-          globalActiveWatchId = null;
+        if (activeWatchId !== null && navigator.geolocation) {
+          navigator.geolocation.clearWatch(activeWatchId);
         }
       };
     }
@@ -350,13 +294,8 @@ export function useTripStore() {
         return prev;
       }
       if (userLocation) {
-        import('@/lib/location').then(({ resolveLocationName, syncLocationToServiceWorker }) => {
-          const region = resolveLocationName(userLocation.lat, userLocation.lng);
-          syncLocationToServiceWorker(userLocation, region);
-          setState(current => ({
-            ...current,
-            locationName: region
-          }));
+        import('@/lib/location').then(({ syncLocationToServiceWorker }) => {
+          syncLocationToServiceWorker(userLocation);
         }).catch(() => {});
       }
       return { ...prev, userLocation, locationSource: source };
@@ -369,68 +308,6 @@ export function useTripStore() {
 
   const setLocationName = useCallback((locationName: string) => {
     setState(prev => (prev.locationName === locationName ? prev : { ...prev, locationName }));
-  }, []);
-
-  const requestLocationPermission = useCallback(async (): Promise<boolean> => {
-    if (typeof window === 'undefined' || !navigator.geolocation) return false;
-    try {
-      const { resolveLocationName, syncLocationToServiceWorker, watchCoordinates } = await import('@/lib/location');
-      return new Promise<boolean>((resolve) => {
-        navigator.geolocation.getCurrentPosition(
-          (position) => {
-            const lat = Number(position.coords.latitude.toFixed(6));
-            const lng = Number(position.coords.longitude.toFixed(6));
-            const accuracy = Math.round(position.coords.accuracy || 0);
-            const coords = { lat, lng };
-            const region = resolveLocationName(lat, lng);
-            syncLocationToServiceWorker(coords, region);
-            triggerLocationNotificationEvaluation(coords);
-
-            setState(prev => ({
-              ...prev,
-              userLocation: coords,
-              locationPermission: 'granted',
-              locationSource: 'gps',
-              locationAccuracyMeters: accuracy,
-              locationName: region
-            }));
-
-            // Start continuous high-accuracy watcher
-            if (globalActiveWatchId !== null) {
-              navigator.geolocation.clearWatch(globalActiveWatchId);
-              globalActiveWatchId = null;
-            }
-            globalActiveWatchId = watchCoordinates((c, acc) => {
-              const reg = resolveLocationName(c.lat, c.lng);
-              syncLocationToServiceWorker(c, reg);
-              triggerLocationNotificationEvaluation(c);
-              setState(prev => ({
-                ...prev,
-                userLocation: c,
-                locationPermission: 'granted',
-                locationSource: 'gps',
-                locationAccuracyMeters: acc,
-                locationName: reg
-              }));
-            });
-
-            resolve(true);
-          },
-          (err) => {
-            const isExplicitDenial = err && err.code === 1;
-            console.warn("[requestLocationPermission] Acquisition notice:", err);
-            setState(prev => ({
-              ...prev,
-              locationPermission: isExplicitDenial ? 'denied' : prev.locationPermission
-            }));
-            resolve(false);
-          },
-          { enableHighAccuracy: true, timeout: 12000, maximumAge: 30000 }
-        );
-      });
-    } catch {
-      return false;
-    }
   }, []);
 
   return {
@@ -448,7 +325,6 @@ export function useTripStore() {
     resetTrip,
     setUserLocation,
     setLocationPermission,
-    setLocationName,
-    requestLocationPermission
+    setLocationName
   };
 }

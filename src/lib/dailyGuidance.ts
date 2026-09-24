@@ -23,14 +23,14 @@ export const DAY_TEMPLE_GUIDES: Record<number, DayTempleInfo> = {
     placeId: 'papavinasam-theertham',
     placeName: 'Papavinasam & Akasa Ganga Theertham',
     placeNameTe: 'పాపవినాశనం & ఆకాశగంగ తీర్థం',
-    headlineEn: 'Sunday: Visit Papavinasam & Akasa Ganga first — Darshan rush drops after 2:30 PM.',
-    headlineTe: 'ఆదివారం: ముందుగా పాపవినాశనం & ఆకాశగంగ దర్శించండి — మధ్యాహ్నం తర్వాత రద్దీ తగ్గుతుంది.',
+    headlineEn: 'Sunday: Visit Papavinasam & Akasa Ganga while queue eases.',
+    headlineTe: 'ఆదివారం: పాపవినాశనం & ఆకాశగంగ దర్శించండి.',
     benefitEn: '⚡ SAVE 2-3 HOURS WAITING',
-    benefitTe: '⚡ 2-3 గంటల సమయం ఆదా',
+    benefitTe: '⚡ 2-3 గంటల నిరీక్షణ ఆదా',
     reasonsEn: [
-      'Holy water bath before entering Srivari Darshan',
-      'Darshan wait time drops after 2:30 PM',
-      'Peaceful mountain waterfalls away from temple rush'
+      'Holy water cleansing before Srivari Darshan',
+      'Queue congestion eases after 2:30 PM slot',
+      'Peaceful mountain waterfalls away from main rush'
     ],
     reasonsTe: [
       'దర్శనానికి ముందు పవిత్ర తీర్థ స్నానం శుభప్రదం',
@@ -46,14 +46,14 @@ export const DAY_TEMPLE_GUIDES: Record<number, DayTempleInfo> = {
     placeId: 'kapila-theertham',
     placeName: 'Sri Kapileswara Swamy Temple (Kapila Theertham)',
     placeNameTe: 'శ్రీ కపిలేశ్వరస్వామి ఆలయం (కపిలతీర్థం)',
-    headlineEn: 'Monday: Visit Kapila Theertham now — darshan rush clears after 2 PM.',
-    headlineTe: 'సోమవారం: ఇప్పుడే కపిలతీర్థం దర్శించండి — మధ్యాహ్నం 2 తర్వాత రద్దీ తగ్గుతుంది.',
+    headlineEn: 'Monday: Visit Kapila Theertham now; queue eases after 2 PM.',
+    headlineTe: 'సోమవారం: కపిలతీర్థం దర్శించండి; మధ్యాహ్నం 2 తర్వాత క్యూకి వెళ్లండి.',
     benefitEn: '⚡ SAVE 2 HOURS WAITING',
-    benefitTe: '⚡ 2 గంటల సమయం ఆదా',
+    benefitTe: '⚡ 2 గంటల నిరీక్షణ ఆదా',
     reasonsEn: [
-      'Auspicious Monday worship at Lord Shiva temple',
-      'Darshan wait time drops after 2:00 PM',
-      'Located right near the Alipiri entrance'
+      'Sacred for Lord Shiva at Kapila Theertham shrine',
+      'Queue wait clears significantly after 2:00 PM',
+      'Located conveniently near Alipiri entrance'
     ],
     reasonsTe: [
       'శివారాధనకు అత్యంత విశిష్టమైన రోజు',
@@ -69,13 +69,13 @@ export const DAY_TEMPLE_GUIDES: Record<number, DayTempleInfo> = {
     placeId: 'japali-hanuman',
     placeName: 'Japali Hanuman Theertham',
     placeNameTe: 'జాపాలి హనుమాన్ తీర్థం',
-    headlineEn: 'Tuesday: Visit Japali Hanuman Theertham first — darshan rush drops in the afternoon.',
-    headlineTe: 'మంగళవారం: ముందుగా జాపాలి హనుమాన్ తీర్థం దర్శించండి.',
+    headlineEn: 'Tuesday: Visit Japali Hanuman Theertham while queue eases.',
+    headlineTe: 'మంగళవారం: జాపాలి హనుమాన్ తీర్థం దర్శించండి.',
     benefitEn: '⚡ SAVE 2.5 HOURS WAITING',
-    benefitTe: '⚡ 2.5 గంటల సమయం ఆదా',
+    benefitTe: '⚡ 2.5 గంటల నిరీక్షణ ఆదా',
     reasonsEn: [
-      'Auspicious Tuesday prayer at Japali Hanuman shrine',
-      'Afternoon queues move faster as morning crowd clears',
+      'Sacred for Sri Hanuman at Japali shrine',
+      'Afternoon queues move faster as morning rush clears',
       'Shaded forest walk with fresh mountain air'
     ],
     reasonsTe: [
@@ -92,8 +92,8 @@ export const DAY_TEMPLE_GUIDES: Record<number, DayTempleInfo> = {
     placeId: 'iskcon-tirupati',
     placeName: 'ISKCON Lotus Temple',
     placeNameTe: 'ఇస్కాన్ లోటస్ టెంపుల్',
-    headlineEn: 'Wednesday: Visit ISKCON Lotus Temple first — morning rush clears after 1 PM.',
-    headlineTe: 'బుధవారం: ముందుగా ఇస్కాన్ లోటస్ టెంపుల్ దర్శించండి — మధ్యాహ్నం తర్వాత రద్దీ తగ్గుతుంది.',
+    headlineEn: 'Wednesday: Visit ISKCON Lotus Temple now; enter queue later.',
+    headlineTe: 'బుధవారం: ఇస్కాన్ లోటస్ టెంపుల్ దర్శించండి.',
     benefitEn: '⚡ SAVE 2 HOURS WAITING',
     benefitTe: '⚡ 2 గంటల సమయం ఆదా',
     reasonsEn: [

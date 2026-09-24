@@ -395,10 +395,6 @@
 
 /* 📱 Tablet (768px – 1023px) */
 @media (min-width: 768px) {
-  .header {
-    display: none;
-  }
-
   .searchBar {
     max-width: 600px;
   }

@@ -9,12 +9,9 @@ import { TripProvider, useTrip } from '@/components/TripContext';
 import LocationPrompt from '@/components/LocationPrompt/LocationPrompt';
 import { usePageAnalytics } from '@/hooks/usePageAnalytics';
 import GoogleTranslate from '@/components/GoogleTranslate';
-import { motion } from 'framer-motion';
 import { DesktopHeader } from '@/components/DesktopHeader';
 import { ActiveAlerts } from '@/components/home/ActiveAlerts';
 import { useAlerts } from '@/hooks/useAlerts';
-import { LocationBanner } from '@/components/common/LocationBanner';
-import { AppInstallBanner, isInsideApp } from '@/components/common/AppInstallBanner';
 
 import { syncExistingPushSubscription } from '@/lib/pushClient';
 
@@ -64,26 +61,13 @@ function LayoutContent({
 
   const isExcluded = pathname === '/onboarding' || pathname === '/splash' || isAdmin || isStudio;
   const isCheckingOrNeedsOnboarding = !isExcluded && (needsOnboarding === true);
-
-  // In the installed app, or if already seen/resolved, NEVER prompt location
-  const isApp = typeof window !== 'undefined' && isInsideApp();
-  const hasSeenLocationPrompt = typeof window !== 'undefined' && Boolean(localStorage.getItem('saarthi_location_prompt_seen'));
-  const showLocationPrompt =
-    !isApp &&
-    !hasSeenLocationPrompt &&
-    isInitialized &&
-    !showSplash &&
-    !isAdmin &&
-    pathname === '/' &&
-    locationPermission === 'default';
-
+  const showLocationPrompt = isInitialized && !showSplash && !isAdmin && pathname === '/' && locationPermission === 'default';
   const showBottomNav = !showSplash && !showLocationPrompt && !isAdmin && (['/', '/explore', '/saved', '/profile', '/essentials'].includes(pathname) || pathname?.startsWith('/essentials/'));
-  const hideContent = !isAdmin && (showSplash || isCheckingOrNeedsOnboarding);
+  const hideContent = !isAdmin && (showSplash || showLocationPrompt || isCheckingOrNeedsOnboarding);
 
   return (
     <>
       {showSplash && !isAdmin && <SplashScreen onFinish={handleSplashFinish} />}
-      {!isAdmin && !showSplash && !isExcluded && <AppInstallBanner />}
       {showLocationPrompt && <LocationPrompt />}
       {!isAdmin && !showSplash && !isExcluded && <DesktopHeader />}
       {!isAdmin && !showSplash && !isExcluded && (
@@ -92,7 +76,6 @@ function LayoutContent({
           dismissAlert={alertsHook.dismissAlert} 
         />
       )}
-      {!isAdmin && !showSplash && !isExcluded && <LocationBanner />}
       <div 
         className="appContainer"
         style={{ 
@@ -118,22 +101,7 @@ function LayoutContent({
           boxSizing: 'border-box',
           paddingBottom: showBottomNav ? 'var(--layout-padding-bottom)' : (pathname === '/onboarding' ? '0px' : '24px')
         }}>
-          {isAdmin || isStudio || pathname === '/onboarding' ? (
-            children
-          ) : (
-            <motion.div
-              key={pathname}
-              initial={{ opacity: 0, y: 8 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{
-                duration: 0.22,
-                ease: [0.22, 1, 0.36, 1]
-              }}
-              style={{ width: '100%', minHeight: 'inherit' }}
-            >
-              {children}
-            </motion.div>
-          )}
+          {children}
         </div>
       </div>
     </>
@@ -168,11 +136,6 @@ export default function ClientLayout({
     }
   }, [pathname]);
 
-  const handleSplashFinish = () => {
-    setShowSplash(false);
-    sessionStorage.setItem('splashShown', 'true');
-  };
-
   // Register service worker + sync push subscription if permission was already granted
   useEffect(() => {
     if (typeof window === 'undefined' || !('serviceWorker' in navigator)) return;
@@ -205,6 +168,13 @@ export default function ClientLayout({
     window.addEventListener('error', handleChunkError);
     return () => window.removeEventListener('error', handleChunkError);
   }, []);
+
+
+
+  const handleSplashFinish = () => {
+    setShowSplash(false);
+    sessionStorage.setItem('splashShown', 'true');
+  };
 
   // Track page views (skip admin routes)
   useEffect(() => {

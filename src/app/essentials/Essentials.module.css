@@ -25,18 +25,6 @@
   padding: 16px 20px;
 }
 
-@media (min-width: 768px) {
-  .header {
-    position: static;
-    border-bottom: none;
-    background: transparent;
-    padding: 20px 20px 0;
-  }
-  .backButton {
-    display: none;
-  }
-}
-
 .backButton {
   background: var(--md-sys-color-surface-container-low, #F8F8F8);
   border: 1px solid var(--md-sys-color-outline-variant, #E5E5E5);

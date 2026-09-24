@@ -253,19 +253,13 @@ const METRIC_ICON: Record<string, React.ReactNode> = {
 export function HomeHero({ userName, locationName, weatherTemp, liveStatus, activeAlertsCount, hideHeader = false }: any) {
   const lang = useLanguage();
   const t = TEXTS[lang];
-  const { setUserLocation, locationPermission, locationName: storeLocationName } = useTrip();
+  const { setUserLocation, locationPermission } = useTrip();
   const [overrideScenario, setOverrideScenario] = useState<string>('auto');
-  const [selectedLocation, setSelectedLocation] = useState<string>(locationName || storeLocationName || 'Tirupati');
+  const [selectedLocation, setSelectedLocation] = useState<string>(locationName || 'Tirupati');
   const [isLocating, setIsLocating] = useState<boolean>(false);
   const [isLocationModalOpen, setIsLocationModalOpen] = useState<boolean>(false);
+  const [isVideoPlaying, setIsVideoPlaying] = useState<boolean>(false);
   const bannerVideoRef = React.useRef<HTMLVideoElement>(null);
-
-  React.useEffect(() => {
-    const activeName = locationName || storeLocationName;
-    if (activeName) {
-      setSelectedLocation(activeName);
-    }
-  }, [locationName, storeLocationName]);
 
   React.useEffect(() => {
     const playVideo = () => {
@@ -277,8 +271,10 @@ export function HomeHero({ userName, locationName, weatherTemp, liveStatus, acti
         v.setAttribute('x5-playsinline', 'true');
         v.defaultMuted = true;
         v.muted = true;
-        if (v.paused) {
-          v.play().catch(() => {});
+        if (!v.paused && v.currentTime > 0) {
+          setIsVideoPlaying(true);
+        } else {
+          v.play().then(() => setIsVideoPlaying(true)).catch(() => {});
         }
       }
     };
@@ -1026,7 +1022,7 @@ export function HomeHero({ userName, locationName, weatherTemp, liveStatus, acti
       const currentNama = getGovindaNamaForBead(activeBead);
       const isMilestone = activeBead === 27 || activeBead === 54 || activeBead === 81;
       const cardType: 'bead' | 'milestone' = isMilestone ? 'milestone' : 'bead';
-      const siteUrl = 'https://www.saarthiguide.in';
+      const siteUrl = 'https://saarthiguide.in';
 
       const text = lang === 'te'
         ? `✨ 📿 *శ్రీ వేంకటేశ్వర 108 దివ్య నామ జప మాల* 📿 ✨
@@ -1088,7 +1084,7 @@ _Om Namo Venkatesaya • Peace & Auspicious Blessings to All_`;
       }
     } catch (err: any) {
       if (err?.name !== 'AbortError') {
-        window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(shareMessage || 'https://www.saarthiguide.in')}`, '_blank');
+        window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(shareMessage || 'https://saarthiguide.in')}`, '_blank');
       }
     } finally {
       setIsSharingJapa(false);
@@ -1102,7 +1098,7 @@ _Om Namo Venkatesaya • Peace & Auspicious Blessings to All_`;
 
     let shareMessage = '';
     try {
-      const siteUrl = 'https://www.saarthiguide.in';
+      const siteUrl = 'https://saarthiguide.in';
       const text = lang === 'te'
         ? `🎉 📿 *శ్రీ వేంకటేశ్వర 108 జప మాల సంపూర్ణం!* 📿 🎉
 ━━━━━━━━━━━━━━━━━━━━━━━━
@@ -1163,7 +1159,7 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
       }
     } catch (err: any) {
       if (err?.name !== 'AbortError') {
-        window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(shareMessage || 'https://www.saarthiguide.in')}`, '_blank');
+        window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(shareMessage || 'https://saarthiguide.in')}`, '_blank');
       }
     } finally {
       setIsSharingJapa(false);
@@ -1410,14 +1406,7 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
         aspectRatio: '16 / 9'
       }}>
         <video
-          ref={(el) => {
-            bannerVideoRef.current = el;
-            if (el) {
-              el.muted = true;
-              el.defaultMuted = true;
-              el.playsInline = true;
-            }
-          }}
+          ref={bannerVideoRef}
           src="/banner/homescreen-banner.mp4"
           autoPlay
           loop
@@ -1437,23 +1426,41 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
           preload="auto"
           aria-hidden="true"
           tabIndex={-1}
-          onLoadedMetadata={(e) => {
-            const v = e.currentTarget;
-            v.muted = true;
-            v.defaultMuted = true;
-            v.play().catch(() => {});
-          }}
           onCanPlay={(e) => {
-            const v = e.currentTarget;
-            v.muted = true;
-            v.defaultMuted = true;
-            v.play().catch(() => {});
+            e.currentTarget.defaultMuted = true;
+            e.currentTarget.muted = true;
+            if (e.currentTarget.textTracks) {
+              for (let i = 0; i < e.currentTarget.textTracks.length; i++) {
+                e.currentTarget.textTracks[i].mode = 'disabled';
+              }
+            }
+            e.currentTarget.play().then(() => setIsVideoPlaying(true)).catch(() => {});
           }}
           onLoadedData={(e) => {
-            const v = e.currentTarget;
-            v.muted = true;
-            v.defaultMuted = true;
-            v.play().catch(() => {});
+            e.currentTarget.defaultMuted = true;
+            e.currentTarget.muted = true;
+            if (e.currentTarget.textTracks) {
+              for (let i = 0; i < e.currentTarget.textTracks.length; i++) {
+                e.currentTarget.textTracks[i].mode = 'disabled';
+              }
+            }
+            e.currentTarget.play().then(() => setIsVideoPlaying(true)).catch(() => {});
+          }}
+          onPlaying={() => setIsVideoPlaying(true)}
+          onTimeUpdate={(e) => {
+            if (e.currentTarget.currentTime > 0 && !isVideoPlaying) {
+              setIsVideoPlaying(true);
+            }
+          }}
+          onError={() => setIsVideoPlaying(false)}
+          onPause={(e) => {
+            e.currentTarget.defaultMuted = true;
+            e.currentTarget.muted = true;
+            e.currentTarget.play().then(() => setIsVideoPlaying(true)).catch(() => {});
+          }}
+          onEnded={(e) => {
+            e.currentTarget.currentTime = 0;
+            e.currentTarget.play().then(() => setIsVideoPlaying(true)).catch(() => {});
           }}
           style={{
             width: '100%',
@@ -1465,11 +1472,10 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
             userSelect: 'none',
             WebkitUserSelect: 'none',
             WebkitTouchCallout: 'none',
-            opacity: 1
+            opacity: isVideoPlaying ? 1 : 0,
+            transition: 'opacity 0.5s ease-in-out'
           }}
-        >
-          <source src="/banner/homescreen-banner.mp4" type="video/mp4" />
-        </video>
+        />
 
 
         {/* Right Side Transparent Touch Hotspots (Matching Video's Built-in Buttons) */}
@@ -1637,8 +1643,7 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
               {
                 id: 'sarva',
                 href: '/darshan/sarva-darshan',
-                icon: <Building2 size={16} color={sarvaTheme.iconColor} />,
-                sublabel: lang === 'te' ? 'ఉచిత ప్రవేశం' : 'FREE ENTRY',
+                icon: <Building2 size={24} color={sarvaTheme.iconColor} />,
                 title: lang === 'te' ? 'సర్వదర్శనం' : 'Sarva Darshan',
                 wait: sarvaWait,
                 bg: sarvaTheme.bg,
@@ -1649,9 +1654,8 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
               {
                 id: 'special',
                 href: '/darshan/special-entry',
-                icon: <Ticket size={16} color={specialTheme.iconColor} />,
-                sublabel: lang === 'te' ? 'ఆన్‌లైన్ టికెట్' : 'SPECIAL ENTRY',
-                title: lang === 'te' ? '₹300 దర్శనం' : '₹300 Darshan',
+                icon: <Ticket size={24} color={specialTheme.iconColor} />,
+                title: lang === 'te' ? '₹300 ప్రవేశం' : '₹300 Entry',
                 wait: specialWait,
                 bg: specialTheme.bg,
                 border: specialTheme.border,
@@ -1661,8 +1665,7 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
               {
                 id: 'ssd',
                 href: '/darshan/ssd-token',
-                icon: React.cloneElement(ssdTheme.iconComp, { size: 16 }),
-                sublabel: lang === 'te' ? 'టైమ్డ్ స్లాట్' : 'TIMED SLOT',
+                icon: ssdTheme.iconComp,
                 title: lang === 'te' ? 'SSD టోకెన్లు' : 'SSD Tokens',
                 wait: ssdTheme.waitText,
                 bg: ssdTheme.bg,
@@ -1681,27 +1684,22 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
                   backgroundColor: card.bg,
                   border: `1.5px solid ${card.border}`,
                   borderRadius: '16px',
-                  padding: '10px 6px 9px',
+                  padding: '12px 6px 10px',
                   display: 'flex',
                   flexDirection: 'column',
                   alignItems: 'center',
                   textAlign: 'center',
                   justifyContent: 'space-between',
-                  minHeight: '122px',
+                  minHeight: '118px',
                   boxSizing: 'border-box',
-                  transition: 'transform 0.15s ease, box-shadow 0.15s ease',
-                  cursor: 'pointer',
-                  boxShadow: '0 2px 8px rgba(15, 23, 42, 0.02)'
+                  transition: 'transform 0.15s ease',
+                  cursor: 'pointer'
                 }}
                 className="darshan-home-card"
               >
-                {/* Top Vector Icon inside Dedicated Container */}
+                {/* Top Vector Icon */}
                 <div style={{
-                  width: '28px',
-                  height: '28px',
-                  borderRadius: '8px',
-                  backgroundColor: card.badgeBg,
-                  border: `1px solid ${card.border}`,
+                  height: '32px',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
@@ -1710,27 +1708,13 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
                   {card.icon}
                 </div>
 
-                {/* Micro-label */}
-                <span style={{
-                  fontSize: '9px',
-                  fontWeight: 800,
-                  letterSpacing: '0.04em',
-                  textTransform: 'uppercase',
-                  color: '#64748B',
-                  lineHeight: 1.1,
-                  marginBottom: '2px'
-                }}>
-                  {card.sublabel}
-                </span>
-
                 {/* Title */}
                 <div style={{
                   fontSize: lang === 'te' ? '12px' : '11.5px',
                   fontWeight: 800,
                   color: '#0F172A',
-                  marginBottom: '5px',
-                  lineHeight: 1.2,
-                  fontFamily: lang === 'te' ? 'var(--font-telugu)' : 'inherit'
+                  marginBottom: '6px',
+                  lineHeight: 1.2
                 }}>
                   {card.title}
                 </div>
@@ -1741,21 +1725,20 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
                   color: card.badgeText,
                   fontSize: '10.5px',
                   fontWeight: 800,
-                  padding: '3px 7px',
-                  borderRadius: '10px',
-                  marginBottom: '4px',
+                  padding: '3px 8px',
+                  borderRadius: '12px',
+                  marginBottom: '6px',
                   width: '100%',
-                  maxWidth: '94%',
+                  maxWidth: '92%',
                   whiteSpace: 'nowrap',
                   overflow: 'hidden',
-                  textOverflow: 'ellipsis',
-                  border: `1px solid ${card.border}`
+                  textOverflow: 'ellipsis'
                 }}>
                   {card.wait}
                 </div>
 
                 {/* Bottom Chevron Arrow */}
-                <ChevronRight size={12} color="#64748B" />
+                <ChevronRight size={13} color="#64748B" />
               </Link>
             ));
           })()}

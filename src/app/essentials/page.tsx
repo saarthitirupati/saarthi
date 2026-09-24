@@ -38,73 +38,9 @@ const ICON_MAP: Record<string, React.ComponentType<any>> = {
 };
 
 import { SrivariNamamVector } from '@/components/common/DevotionalSvgIcons';
-import { useLanguage } from '@/lib/useLanguage';
-
-const ESSENTIALS_TEXTS = {
-  en: {
-    headerTitle: 'Pilgrim Essentials',
-    headerSubtitle: 'Everything you need before your visit',
-    searchPlaceholder: 'Search lockers, food, rooms, tonsure...',
-    todayNotice: "Today's Notice",
-    generalNotice: 'Notice',
-    readiness: 'Pre-Darshan Readiness',
-    whatYouNeed: 'What You Need Right Now',
-    whatYouNeedSub: 'Essential facilities before your darshan',
-    supportEmergency: 'Support & Emergency Services',
-    officialShopping: 'Official Shopping',
-    shoppingSub: 'TTD Books & Laddus',
-    emergencyHelp: 'Emergency Help',
-    emergencySub: 'Police & Medical 24/7',
-    faqs: 'Frequently Asked Questions',
-    navigate: 'Navigate →',
-    lockersTitle: 'Free Lockers & Mobile Deposit',
-    lockersSub: 'Secure phones, smart watches & luggage before entering VQC queue',
-    lockersStatus: '6 Locations Open',
-    mealsTitle: 'Free Annaprasadam Meals',
-    mealsSub: 'Continuous hot, sacred vegetarian meals at Tarigonda Vengamamba Complex',
-    mealsStatus: 'Serving Continuously',
-    tonsureTitle: 'Kalyana Katta (Hair Offering)',
-    tonsureSub: 'Sacred head tonsure counters with token-free sanitized service',
-    tonsureStatus: 'Open 24/7',
-    stayTitle: 'Accommodation & PAC Rest Halls',
-    staySub: 'Free pilgrim rest halls & TTD CRO room reservation counters',
-    stayStatus: 'Halls Available'
-  },
-  te: {
-    headerTitle: 'యాత్రా సదుపాయాలు',
-    headerSubtitle: 'దర్శనానికి ముందు మీకు అవసరమైన ముఖ్య సదుపాయాలు',
-    searchPlaceholder: 'లాకర్లు, అన్నప్రసాదం, వసతి, తలనీలాలు...',
-    todayNotice: 'నేటి సమాచారం',
-    generalNotice: 'ముఖ్య సమాచారం',
-    readiness: 'దర్శనానికి ముందస్తు సిద్ధత',
-    whatYouNeed: 'మీకు ఇప్పుడు అవసరమైనవి',
-    whatYouNeedSub: 'దర్శనానికి వెళ్లేముందు ముఖ్యమైన సదుపాయాలు',
-    supportEmergency: 'సహాయం & అత్యవసర సేవలు',
-    officialShopping: 'అధికారిక విక్రయ కేంద్రాలు',
-    shoppingSub: 'టీటీడీ పుస్తకాలు & ప్రసాదాలు',
-    emergencyHelp: 'అత్యవసర సహాయం',
-    emergencySub: 'పోలీస్ & వైద్య సేవలు 24/7',
-    faqs: 'తరచుగా అడిగే ప్రశ్నలు',
-    navigate: 'మార్గం →',
-    lockersTitle: 'ఉచిత లాకర్లు & మొబైల్ డిపాజిట్',
-    lockersSub: 'క్యూ లైన్ లోకి వెళ్లేముందు ఫోన్లు, లగేజీ సురక్షితంగా డిపాజిట్ చేయండి',
-    lockersStatus: '6 కేంద్రాలు ఓపెన్',
-    mealsTitle: 'ఉచిత అన్నప్రసాదం',
-    mealsSub: 'తరిగొండ వెంగమాంబ అన్నప్రసాద భవనంలో నిరంతర ఉచిత భోజనం',
-    mealsStatus: 'అందుబాటులో ఉంది',
-    tonsureTitle: 'కళ్యాణకట్ట (తలనీలాలు)',
-    tonsureSub: 'శుభ్రమైన ఉచిత తలనీలాల సమర్పణ కౌంటర్లు',
-    tonsureStatus: '24/7 అందుబాటులో ఉంది',
-    stayTitle: 'వసతి & PAC విశ్రాంతి హాళ్ళు',
-    staySub: 'ఉచిత విశ్రాంతి భవనాలు & టీటీడీ సీఆర్వో గదుల కేంద్రాలు',
-    stayStatus: 'హాళ్ళు అందుబాటులో ఉన్నాయి'
-  }
-};
 
 export default function PilgrimEssentialsPage() {
   const router = useRouter();
-  const lang = useLanguage();
-  const t = ESSENTIALS_TEXTS[lang];
   const { status } = useRealtimeStatus();
   const [searchQuery, setSearchQuery] = useState('');
   const [showChecklist, setShowChecklist] = useState(false);
@@ -274,12 +210,8 @@ export default function PilgrimEssentialsPage() {
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
           <SrivariNamamVector size={28} />
           <div>
-            <h1 className={styles.headerTitle} style={{ fontFamily: lang === 'te' ? 'var(--font-telugu)' : 'inherit' }}>
-              {t.headerTitle}
-            </h1>
-            <p className={styles.headerSubtitle} style={{ fontFamily: lang === 'te' ? 'var(--font-telugu)' : 'inherit' }}>
-              {t.headerSubtitle}
-            </p>
+            <h1 className={styles.headerTitle}>Pilgrim Essentials</h1>
+            <p className={styles.headerSubtitle}>Everything you need before your visit</p>
           </div>
         </div>
         <div className={styles.headerActions}>
@@ -306,7 +238,7 @@ export default function PilgrimEssentialsPage() {
             <input 
               type="text"
               className={styles.searchInput}
-              placeholder={t.searchPlaceholder}
+              placeholder="Search lockers, food, rooms, tonsure..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
             />
@@ -331,7 +263,7 @@ export default function PilgrimEssentialsPage() {
             <div style={{ flex: 1 }}>
               <div className={styles.noticeHeader}>
                 <AlertTriangle size={14} color="#D97706" />
-                <span>{noticeIsStale ? t.generalNotice : t.todayNotice}</span>
+                <span>{noticeIsStale ? 'Notice' : "Today's Notice"}</span>
               </div>
               <p className={styles.noticeContent}>
                 {noticeText}
@@ -357,9 +289,9 @@ export default function PilgrimEssentialsPage() {
               exit={{ opacity: 0, height: 0 }}
             >
               <div className={styles.checklistHeader}>
-                <h3 className={styles.checklistTitle} style={{ fontFamily: lang === 'te' ? 'var(--font-telugu)' : 'inherit' }}>
+                <h3 className={styles.checklistTitle}>
                   <ClipboardCheck size={18} color="#D97706" />
-                  {t.readiness}
+                  Pre-Darshan Readiness
                 </h3>
                 <span className={styles.checklistProgress}>{checklistStats.checked} / {checklistStats.total} ({checklistStats.pct}%)</span>
               </div>
@@ -441,80 +373,76 @@ export default function PilgrimEssentialsPage() {
           <section className={styles.primaryGridSection}>
             <div className={styles.sectionHeaderRow}>
               <div>
-                <h2 className={styles.sectionTitle} style={{ fontFamily: lang === 'te' ? 'var(--font-telugu)' : 'var(--font-heading)' }}>
-                  {t.whatYouNeed}
-                </h2>
+                <h2 className={styles.sectionTitle}>What You Need Right Now</h2>
                 <p style={{ fontSize: '12px', color: '#64748B', margin: '2px 0 0 0', fontWeight: 600 }}>
-                  {t.whatYouNeedSub}
+                  Essential facilities before your darshan
                 </p>
               </div>
             </div>
 
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '16px', marginTop: '12px' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '16px', marginTop: '12px' }}>
               {[
                 {
                   id: 'secure-belongings',
-                  title: t.lockersTitle,
-                  subtitle: t.lockersSub,
-                  status: t.lockersStatus,
+                  title: 'Free Lockers & Mobile Deposit',
+                  subtitle: 'Secure phones, smart watches & luggage before entering VQC queue',
+                  status: '6 Locations Open',
                   statusColor: '#16A34A',
                   icon: Lock,
                   image: 'https://res.cloudinary.com/kniegqlj/image/upload/v1786968161/IMG_6992_cq6gls.jpg',
-                  cta: t.navigate
+                  cta: 'Navigate →'
                 },
                 {
                   id: 'free-meals',
-                  title: t.mealsTitle,
-                  subtitle: t.mealsSub,
-                  status: t.mealsStatus,
+                  title: 'Free Annaprasadam Meals',
+                  subtitle: 'Continuous hot, sacred vegetarian meals at Tarigonda Vengamamba Complex',
+                  status: 'Serving Now',
                   statusColor: '#16A34A',
                   icon: Utensils,
                   image: 'https://res.cloudinary.com/kniegqlj/image/upload/v1786968272/Annaprasadam-4-copy_lyo86v.jpg',
-                  cta: t.navigate
+                  cta: 'Navigate →'
                 },
                 {
                   id: 'hair-offering',
-                  title: t.tonsureTitle,
-                  subtitle: t.tonsureSub,
-                  status: t.tonsureStatus,
+                  title: 'Kalyana Katta (Hair Offering)',
+                  subtitle: 'Sacred head tonsure counters with token-free sanitized service',
+                  status: 'Open 24/7',
                   statusColor: '#16A34A',
                   icon: Scissors,
                   image: 'https://res.cloudinary.com/kniegqlj/image/upload/v1786968353/painted-sign-board-of-kalyanakatta-balaji-temple-tirupati-andhra-pradesh-F5M0J1_p7hkr5.jpg',
-                  cta: t.navigate
+                  cta: 'Navigate →'
                 },
                 {
                   id: 'accommodation',
-                  title: t.stayTitle,
-                  subtitle: t.staySub,
-                  status: t.stayStatus,
+                  title: 'Accommodation & PAC Rest Halls',
+                  subtitle: 'Free pilgrim rest halls & TTD CRO room reservation counters',
+                  status: 'Halls Available',
                   statusColor: '#D97706',
                   icon: Bed,
                   image: 'https://res.cloudinary.com/kniegqlj/image/upload/v1786968555/maxresdefault_fwmwke.jpg',
-                  cta: t.navigate
+                  cta: 'Navigate →'
                 }
               ].map((service) => {
                 const IconComp = service.icon;
                 return (
-                  <motion.div 
+                  <div 
                     key={service.id}
-                    whileHover={{ y: -3 }}
-                    whileTap={{ scale: 0.98 }}
-                    transition={{ duration: 0.15 }}
                     onClick={() => handleCardClick(service.id)}
                     style={{
                       backgroundColor: '#FFFFFF',
                       borderRadius: '24px',
                       overflow: 'hidden',
-                      border: '1px solid rgba(15, 23, 42, 0.08)',
+                      border: '1px solid #E2E8F0',
                       boxShadow: '0 6px 20px rgba(0, 0, 0, 0.04)',
                       cursor: 'pointer',
                       display: 'flex',
-                      flexDirection: 'column'
+                      flexDirection: 'column',
+                      transition: 'transform 0.15s ease'
                     }}
                   >
                     {/* PHOTO BANNER */}
                     <div style={{
-                      height: '136px',
+                      height: '130px',
                       width: '100%',
                       backgroundImage: `url(${service.image})`,
                       backgroundSize: 'cover',
@@ -523,43 +451,18 @@ export default function PilgrimEssentialsPage() {
                     }}>
                       <div style={{
                         position: 'absolute',
-                        inset: 0,
-                        background: 'linear-gradient(180deg, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.45) 100%)'
-                      }} />
-                      {/* Dedicated Soft-Tinted Icon Container */}
-                      <div style={{
-                        position: 'absolute',
                         top: '12px',
                         left: '12px',
-                        width: '32px',
-                        height: '32px',
-                        borderRadius: '10px',
-                        backgroundColor: 'rgba(255, 255, 255, 0.94)',
-                        backdropFilter: 'blur(6px)',
-                        boxShadow: '0 2px 8px rgba(0,0,0,0.15)',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center'
-                      }}>
-                        <IconComp size={18} color="#0F5132" />
-                      </div>
-
-                      {/* Status Micro-Label Pill */}
-                      <div style={{
-                        position: 'absolute',
-                        top: '12px',
-                        right: '12px',
                         display: 'inline-flex',
                         alignItems: 'center',
                         gap: '6px',
                         backgroundColor: 'rgba(15, 23, 42, 0.85)',
                         backdropFilter: 'blur(6px)',
-                        padding: '5px 12px',
+                        padding: '6px 12px',
                         borderRadius: '20px',
                         color: '#FFFFFF',
                         fontSize: '11px',
-                        fontWeight: 800,
-                        letterSpacing: '0.02em'
+                        fontWeight: 800
                       }}>
                         <span style={{ width: 6, height: 6, borderRadius: '50%', backgroundColor: service.statusColor, flexShrink: 0 }} />
                         <span>{service.status}</span>
@@ -567,18 +470,11 @@ export default function PilgrimEssentialsPage() {
                     </div>
 
                     {/* CONTENT & 1 CTA */}
-                    <div style={{ padding: '16px 18px 18px', display: 'flex', flexDirection: 'column', flex: 1 }}>
-                      <h3 style={{
-                        fontSize: '17px',
-                        fontWeight: 900,
-                        color: '#0F172A',
-                        margin: '0 0 4px',
-                        letterSpacing: '-0.01em',
-                        fontFamily: lang === 'te' ? 'var(--font-telugu)' : 'var(--font-heading)'
-                      }}>
+                    <div style={{ padding: '16px 18px 18px' }}>
+                      <h3 style={{ fontSize: '17px', fontWeight: 900, color: '#0F172A', margin: '0 0 4px', letterSpacing: '-0.01em' }}>
                         {service.title}
                       </h3>
-                      <p style={{ fontSize: '13px', color: '#64748B', margin: '0 0 14px', lineHeight: 1.4, fontWeight: 500, flex: 1 }}>
+                      <p style={{ fontSize: '13px', color: '#64748B', margin: '0 0 14px', lineHeight: '1.4', fontWeight: 500 }}>
                         {service.subtitle}
                       </p>
                       
@@ -597,76 +493,42 @@ export default function PilgrimEssentialsPage() {
                           alignItems: 'center',
                           justifyContent: 'center',
                           gap: '6px',
-                          boxShadow: '0 4px 12px rgba(15, 81, 50, 0.18)',
-                          marginTop: 'auto'
+                          boxShadow: '0 4px 12px rgba(15, 81, 50, 0.18)'
                         }}
                       >
                         <span>{service.cta}</span>
                       </button>
                     </div>
-                  </motion.div>
+                  </div>
                 );
               })}
             </div>
 
             {/* SECONDARY SERVICES SECTION */}
             <div style={{ marginTop: '28px', borderTop: '1px solid #E2E8F0', paddingTop: '20px' }}>
-              <h3 style={{
-                fontSize: '15px',
-                fontWeight: 800,
-                color: '#0F172A',
-                margin: '0 0 12px',
-                fontFamily: lang === 'te' ? 'var(--font-telugu)' : 'var(--font-heading)'
-              }}>
-                {t.supportEmergency}
+              <h3 style={{ fontSize: '15px', fontWeight: 800, color: '#0F172A', margin: '0 0 12px' }}>
+                Support & Emergency Services
               </h3>
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
-                <motion.div
-                  whileHover={{ y: -2 }}
-                  whileTap={{ scale: 0.98 }}
+                <div
                   onClick={() => handleCardClick('shopping')}
                   style={{
-                    backgroundColor: '#FFFFFF',
+                    backgroundColor: '#F8FAFC',
                     border: '1px solid #E2E8F0',
                     borderRadius: '16px',
                     padding: '14px',
                     cursor: 'pointer',
                     display: 'flex',
                     flexDirection: 'column',
-                    gap: '4px',
-                    boxShadow: '0 2px 8px rgba(15, 23, 42, 0.03)'
+                    gap: '4px'
                   }}
                 >
-                  <div style={{
-                    width: '32px',
-                    height: '32px',
-                    borderRadius: '8px',
-                    backgroundColor: '#F0FDF4',
-                    border: '1px solid #BBF7D0',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    marginBottom: '2px'
-                  }}>
-                    <ShoppingBag size={18} color="#166534" />
-                  </div>
-                  <span style={{ fontSize: '9px', fontWeight: 800, color: '#166534', letterSpacing: '0.04em', textTransform: 'uppercase' }}>
-                    {lang === 'te' ? 'టీటీడీ' : 'OFFICIAL TTD'}
-                  </span>
-                  <span style={{
-                    fontSize: '13.5px',
-                    fontWeight: 800,
-                    color: '#0F172A',
-                    fontFamily: lang === 'te' ? 'var(--font-telugu)' : 'inherit'
-                  }}>
-                    {t.officialShopping}
-                  </span>
-                  <span style={{ fontSize: '11px', color: '#64748B' }}>{t.shoppingSub}</span>
-                </motion.div>
+                  <ShoppingBag size={20} color="#0F5132" />
+                  <span style={{ fontSize: '13.5px', fontWeight: 800, color: '#0F172A', marginTop: '4px' }}>Official Shopping</span>
+                  <span style={{ fontSize: '11px', color: '#64748B' }}>TTD Books & Laddus</span>
+                </div>
 
-                <motion.div
-                  whileHover={{ y: -2 }}
-                  whileTap={{ scale: 0.98 }}
+                <div
                   onClick={() => handleCardClick('emergency')}
                   style={{
                     backgroundColor: '#FEF2F2',
@@ -676,36 +538,13 @@ export default function PilgrimEssentialsPage() {
                     cursor: 'pointer',
                     display: 'flex',
                     flexDirection: 'column',
-                    gap: '4px',
-                    boxShadow: '0 2px 8px rgba(220, 38, 38, 0.04)'
+                    gap: '4px'
                   }}
                 >
-                  <div style={{
-                    width: '32px',
-                    height: '32px',
-                    borderRadius: '8px',
-                    backgroundColor: '#FEE2E2',
-                    border: '1px solid #FECDD3',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    marginBottom: '2px'
-                  }}>
-                    <ShieldAlert size={18} color="#DC2626" />
-                  </div>
-                  <span style={{ fontSize: '9px', fontWeight: 800, color: '#991B1B', letterSpacing: '0.04em', textTransform: 'uppercase' }}>
-                    {lang === 'te' ? '24/7 అత్యవసరం' : 'EMERGENCY 24/7'}
-                  </span>
-                  <span style={{
-                    fontSize: '13.5px',
-                    fontWeight: 800,
-                    color: '#991B1B',
-                    fontFamily: lang === 'te' ? 'var(--font-telugu)' : 'inherit'
-                  }}>
-                    {t.emergencyHelp}
-                  </span>
-                  <span style={{ fontSize: '11px', color: '#B91C1C' }}>{t.emergencySub}</span>
-                </motion.div>
+                  <ShieldAlert size={20} color="#DC2626" />
+                  <span style={{ fontSize: '13.5px', fontWeight: 800, color: '#991B1B', marginTop: '4px' }}>Emergency Help</span>
+                  <span style={{ fontSize: '11px', color: '#B91C1C' }}>Police & Medical 24/7</span>
+                </div>
               </div>
             </div>
           </section>
@@ -713,11 +552,9 @@ export default function PilgrimEssentialsPage() {
 
         {/* FAQs SECTION */}
         <section className={styles.faqSection}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '16px' }}>
+          <div className={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '16px' } as any}>
             <HelpCircle size={18} color="#D97706" />
-            <h2 className={styles.sectionTitle} style={{ fontFamily: lang === 'te' ? 'var(--font-telugu)' : 'var(--font-heading)' }}>
-              {t.faqs}
-            </h2>
+            <h2 className={styles.sectionTitle}>Frequently Asked Questions</h2>
           </div>
           
           <div className={styles.faqList}>

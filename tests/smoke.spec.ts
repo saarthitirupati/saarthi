@@ -94,7 +94,6 @@ test.describe('Saarthi Smoke Baseline Tests', () => {
   });
 
   test('08: Core pilgrim journey: Splash -> Onboarding -> Home -> Darshan -> Explore -> Place -> Directions', async ({ page }) => {
-    test.setTimeout(120000);
     // 1. Splash / Onboarding
     await page.goto('/onboarding', { waitUntil: 'domcontentloaded' });
 
@@ -124,18 +123,17 @@ test.describe('Saarthi Smoke Baseline Tests', () => {
     await expect(essentialsLink).toBeAttached({ timeout: 8000 });
 
     // 6. Explore: Navigate to Explore
-    await page.goto('/explore', { waitUntil: 'domcontentloaded' });
+    await page.goto('/explore');
     await page.waitForLoadState('domcontentloaded');
 
     // 7. Select Place: Find first place card link
     const placeLink = page.locator('a[href^="/place/"]').first();
-    await expect(placeLink).toBeVisible({ timeout: 10000 });
-    const href = await placeLink.getAttribute('href');
-    expect(href).toBeTruthy();
+    await expect(placeLink).toBeVisible({ timeout: 6000 });
+    await placeLink.click({ force: true });
 
-    // 8. Place Details: Navigate to details page and verify Directions CTA
-    await page.goto(href!, { waitUntil: 'domcontentloaded' });
+    // 8. Place Details: Wait for details page and verify Directions CTA
+    await page.waitForURL((url) => url.pathname.startsWith('/place/'), { timeout: 10000 });
     const directionsBtn = page.getByRole('button', { name: /Start Navigation|దర్శన మార్గం|మార్గం/i }).first();
-    await expect(directionsBtn).toBeVisible({ timeout: 20000 });
+    await expect(directionsBtn).toBeVisible({ timeout: 10000 });
   });
 });

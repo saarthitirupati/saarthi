@@ -22,10 +22,6 @@ const nextConfig: NextConfig = {
       './scripts/**',
     ],
   },
-  compress: true,
-  experimental: {
-    optimizePackageImports: ['lucide-react', 'framer-motion'],
-  },
   async headers() {
     return [
       {
@@ -39,18 +35,6 @@ const nextConfig: NextConfig = {
           { key: 'Permissions-Policy', value: 'camera=(), microphone=(), geolocation=(self)' },
           { key: 'Strict-Transport-Security', value: 'max-age=31536000; includeSubDomains; preload' }
         ],
-      },
-      {
-        source: '/api/v1/places',
-        headers: [
-          { key: 'Cache-Control', value: 'public, s-maxage=180, stale-while-revalidate=600' }
-        ]
-      },
-      {
-        source: '/api/v1/weather',
-        headers: [
-          { key: 'Cache-Control', value: 'public, s-maxage=600, stale-while-revalidate=1200' }
-        ]
       },
       {
         source: '/saarthiadmin/:path*',
