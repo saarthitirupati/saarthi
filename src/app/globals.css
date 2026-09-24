@@ -548,3 +548,43 @@ video::-webkit-media-text-track-region {
   opacity: 0 !important;
   visibility: hidden !important;
 }
+
+/* ==============================================================
+   DEVOTIONAL SKELETON SHIMMER WAVE ANIMATION
+   High-performance sweeping gradient across all page skeletons
+   ============================================================== */
+@keyframes shimmerWave {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.shimmer-wave {
+  background: linear-gradient(
+    90deg,
+    #ECEEF2 0%,
+    #F8F9FA 25%,
+    #E2E8F0 50%,
+    #F8F9FA 75%,
+    #ECEEF2 100%
+  ) !important;
+  background-size: 200% 100% !important;
+  animation: shimmerWave 1.6s ease-in-out infinite !important;
+}
+
+.shimmer-dark-wave {
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.04) 0%,
+    rgba(255, 255, 255, 0.12) 25%,
+    rgba(255, 255, 255, 0.04) 50%,
+    rgba(255, 255, 255, 0.12) 75%,
+    rgba(255, 255, 255, 0.04) 100%
+  ) !important;
+  background-size: 200% 100% !important;
+  animation: shimmerWave 1.6s ease-in-out infinite !important;
+}
+

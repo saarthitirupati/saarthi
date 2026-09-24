@@ -39,7 +39,17 @@ export default function SavedPage() {
 
       <section className={styles.content}>
         {loading ? (
-          <div className={styles.loading}>Scanning saves...</div>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', padding: '12px 0' }}>
+            {Array.from({ length: 3 }).map((_, idx) => (
+              <div key={idx} style={{ backgroundColor: '#FFFFFF', borderRadius: '18px', border: '1px solid #ECE9E3', padding: '14px', display: 'flex', gap: '14px', alignItems: 'center' }}>
+                <div className="shimmer-wave" style={{ width: '70px', height: '70px', borderRadius: '14px', flexShrink: 0 }}></div>
+                <div style={{ flex: 1 }}>
+                  <div className="shimmer-wave" style={{ width: '70%', height: '16px', borderRadius: '6px', marginBottom: '8px' }}></div>
+                  <div className="shimmer-wave" style={{ width: '45%', height: '12px', borderRadius: '4px' }}></div>
+                </div>
+              </div>
+            ))}
+          </div>
         ) : (
           <div className={styles.sectionsContainer}>
             {/* ─── SAVED PLACES SECTION ─── */}

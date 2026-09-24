@@ -14,6 +14,7 @@ import { useLanguage } from '@/lib/useLanguage';
 import { LocationPickerModal, LocationPill } from '@/components/common/LocationPickerModal';
 import { getFestivalCrowdIntelligence } from '@/utils/festivalCrowd';
 import { SrivariNamamVector } from '@/components/common/DevotionalSvgIcons';
+import { PageSkeleton } from '@/components/common/PageSkeleton';
 
 const FILTERS_DATA = [
   { key: 'All', labelEn: 'All', labelTe: 'అన్నీ' },
@@ -889,7 +890,7 @@ function ExploreContent() {
 
 export default function Explore() {
   return (
-    <Suspense fallback={<div style={{ padding: '20px', textAlign: 'center' }}>Loading...</div>}>
+    <Suspense fallback={<PageSkeleton type="grid" cardCount={6} />}>
       <ExploreContent />
     </Suspense>
   );

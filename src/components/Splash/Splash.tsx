@@ -105,24 +105,46 @@ export default function SplashScreen({ onFinish }: { onFinish: () => void }) {
             }}
           />
 
-          <div
+          <motion.div
+            initial={{ opacity: 0, y: 8 }}
+            animate={{ opacity: [0.7, 1, 0.7], y: 0 }}
+            transition={{
+              opacity: { repeat: Infinity, duration: 2.4, ease: 'easeInOut' },
+              y: { duration: 0.6, ease: 'easeOut' }
+            }}
             style={{
               position: 'absolute',
-              bottom: 'max(28px, env(safe-area-inset-bottom))',
+              bottom: 'max(36px, calc(env(safe-area-inset-bottom) + 18px))',
               left: 0,
               right: 0,
-              textAlign: 'center',
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
               zIndex: 9999999,
-              color: 'rgba(255, 255, 255, 0.75)',
-              fontSize: '13px',
-              fontWeight: 500,
-              letterSpacing: '0.03em',
-              pointerEvents: 'none',
-              textShadow: '0 1px 4px rgba(0, 0, 0, 0.8)'
+              pointerEvents: 'none'
             }}
           >
-            Touch anywhere to enter
-          </div>
+            <span
+              style={{
+                fontFamily: "var(--font-heading, 'Plus Jakarta Sans', -apple-system, sans-serif)",
+                fontSize: '12px',
+                fontWeight: 600,
+                letterSpacing: '0.08em',
+                textTransform: 'uppercase',
+                color: '#FFFFFF',
+                backgroundColor: 'rgba(15, 23, 42, 0.55)',
+                backdropFilter: 'blur(16px)',
+                WebkitBackdropFilter: 'blur(16px)',
+                border: '1px solid rgba(255, 255, 255, 0.22)',
+                borderRadius: '9999px',
+                padding: '8px 22px',
+                boxShadow: '0 4px 20px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.15)',
+                textShadow: '0 1px 2px rgba(0, 0, 0, 0.6)'
+              }}
+            >
+              Touch anywhere to enter
+            </span>
+          </motion.div>
         </motion.div>
       )}
     </AnimatePresence>
