@@ -69,14 +69,18 @@ export function useTripStore() {
       // Check real browser permission status if supported
       const checkPermissionAndDetect = async () => {
         let isBrowserDenied = false;
+        let isBrowserGranted = false;
         try {
           if (navigator.permissions && navigator.permissions.query) {
             const status = await navigator.permissions.query({ name: 'geolocation' });
             if (status.state === 'denied') isBrowserDenied = true;
+            if (status.state === 'granted') isBrowserGranted = true;
           }
         } catch {}
 
-        if (!isManual && !isBrowserDenied) {
+        const shouldDetect = !isManual && !isBrowserDenied && (loadedState.locationPermission === 'granted' || isBrowserGranted);
+
+        if (shouldDetect) {
           const { detectCoordinates, watchCoordinates, getIPLocation, TIRUPATI_CENTER, resolveLocationName, syncLocationToServiceWorker } = await import('@/lib/location');
 
           detectCoordinates(

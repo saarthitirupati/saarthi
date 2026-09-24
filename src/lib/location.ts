@@ -50,9 +50,22 @@ export interface LocationResult {
 
 
 export async function getIPLocation(): Promise<{ coords: LatLng; city?: string }> {
+  const fetchWithTimeout = async (url: string, timeoutMs: number = 2500) => {
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), timeoutMs);
+    try {
+      const res = await fetch(url, { signal: controller.signal });
+      clearTimeout(timer);
+      return res;
+    } catch (e) {
+      clearTimeout(timer);
+      throw e;
+    }
+  };
+
   // Try ipapi.co first
   try {
-    const res = await fetch('https://ipapi.co/json/');
+    const res = await fetchWithTimeout('https://ipapi.co/json/', 2500);
     if (res.ok) {
       const data = await res.json();
       if (data && isValidCoordinates(data.latitude, data.longitude)) {
@@ -68,7 +81,7 @@ export async function getIPLocation(): Promise<{ coords: LatLng; city?: string }
 
   // Try ipinfo.io as secondary fallback
   try {
-    const res = await fetch('https://ipinfo.io/json');
+    const res = await fetchWithTimeout('https://ipinfo.io/json', 2500);
     if (res.ok) {
       const data = await res.json();
       if (data && data.loc) {
@@ -130,59 +143,59 @@ export function detectCoordinates(
   if (typeof window === 'undefined') return;
 
   if (navigator.geolocation) {
-    console.log("[LocationPipeline] Requesting fresh hardware GPS (high-accuracy, 15s timeout, 0ms cache)...");
+    let resolved = false;
 
-    // 1. High Accuracy Hardware GPS (maximumAge: 0 ensures fresh hardware fix, 15s timeout)
+    const handleSuccess = (position: GeolocationPosition, source: LocationSource = 'gps') => {
+      if (resolved) return;
+      resolved = true;
+
+      const lat = Number(position.coords.latitude.toFixed(6));
+      const lng = Number(position.coords.longitude.toFixed(6));
+      const accuracy = Math.round(position.coords.accuracy || 0);
+
+      if (!isValidCoordinates(lat, lng)) {
+        fallbackToIP();
+        return;
+      }
+
+      const isPrecise = accuracy > 0 && accuracy <= 150;
+      console.log(`[LocationPipeline] GPS acquired: (${lat}, ${lng}), accuracy: ±${accuracy}m`);
+
+      syncLocationToServiceWorker({ lat, lng });
+      onSuccess({ lat, lng }, source, !isPrecise, accuracy);
+    };
+
+    // Stage 1: Fast high-accuracy fix (accepts recent cache up to 60s, 6s timeout)
     navigator.geolocation.getCurrentPosition(
-      (position) => {
-        const lat = Number(position.coords.latitude.toFixed(6));
-        const lng = Number(position.coords.longitude.toFixed(6));
-        const accuracy = Math.round(position.coords.accuracy || 0);
-
-        if (!isValidCoordinates(lat, lng)) {
-          console.warn("[LocationPipeline] GPS returned invalid coordinates:", lat, lng);
-          fallbackToIP();
-          return;
-        }
-
-        const isPrecise = accuracy > 0 && accuracy <= 150;
-        console.log(`[LocationPipeline] Fresh hardware GPS acquired: (${lat}, ${lng}), accuracy: ±${accuracy}m, precise: ${isPrecise}`);
-
-        syncLocationToServiceWorker({ lat, lng });
-        onSuccess({ lat, lng }, 'gps', !isPrecise, accuracy);
-      },
-      (highAccErr) => {
-        // If user explicitly clicked "Deny" in browser dialog (code 1 PERMISSION_DENIED), respect decision
-        if (highAccErr && highAccErr.code === 1) {
+      (pos) => handleSuccess(pos, 'gps'),
+      (firstErr) => {
+        if (resolved) return;
+        if (firstErr && firstErr.code === 1) {
+          // User explicitly clicked "Deny"
+          resolved = true;
           console.warn("[LocationPipeline] Geolocation permission denied by user.");
-          if (onFailure) onFailure(highAccErr);
+          if (onFailure) onFailure(firstErr);
           return;
         }
 
-        console.warn("[LocationPipeline] High accuracy GPS failed/timed out, attempting standard accuracy fallback:", highAccErr);
-        // 2. Standard accuracy fallback (cached max 10s, 8s timeout)
+        console.warn("[LocationPipeline] High accuracy GPS failed/timed out, attempting standard accuracy fallback:", firstErr);
+        // Stage 2: Standard network accuracy fallback (cached up to 5 min, 5s timeout, works indoors)
         navigator.geolocation.getCurrentPosition(
-          (stdPosition) => {
-            const lat = Number(stdPosition.coords.latitude.toFixed(6));
-            const lng = Number(stdPosition.coords.longitude.toFixed(6));
-            const accuracy = Math.round(stdPosition.coords.accuracy || 0);
-
-            if (isValidCoordinates(lat, lng)) {
-              console.log(`[LocationPipeline] Standard network GPS acquired: (${lat}, ${lng}), accuracy: ±${accuracy}m`);
-              syncLocationToServiceWorker({ lat, lng });
-              onSuccess({ lat, lng }, 'gps', accuracy > 100, accuracy);
-            } else {
-              fallbackToIP();
-            }
-          },
+          (stdPos) => handleSuccess(stdPos, 'gps'),
           (stdErr) => {
+            if (resolved) return;
+            if (stdErr && stdErr.code === 1) {
+              resolved = true;
+              if (onFailure) onFailure(stdErr);
+              return;
+            }
             console.warn("[LocationPipeline] Standard geolocation failed, falling back to IP estimation:", stdErr);
             fallbackToIP();
           },
-          { enableHighAccuracy: false, timeout: 8000, maximumAge: 10000 }
+          { enableHighAccuracy: false, timeout: 5000, maximumAge: 300000 }
         );
       },
-      { enableHighAccuracy: true, timeout: 15000, maximumAge: 0 }
+      { enableHighAccuracy: true, timeout: 6000, maximumAge: 60000 }
     );
   } else {
     fallbackToIP();
@@ -253,7 +266,7 @@ export function watchCoordinates(
       }
     },
     (err) => console.warn("[LocationPipeline] GPS watch position error:", err),
-    { enableHighAccuracy: true, timeout: 20000, maximumAge: 0 }
+    { enableHighAccuracy: true, timeout: 20000, maximumAge: 2000 }
   );
 }
 
