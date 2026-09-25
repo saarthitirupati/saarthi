@@ -1,10 +1,10 @@
 {
-  "waitTime": "24 Hours ",
+  "waitTime": "8-12 Hours ",
   "bestTime": "",
   "crowdLevel": "high",
   "sevaStatus": "All sevas open",
-  "notice": "",
-  "lastUpdated": "2026-09-18T12:45:36.887+00:00",
+  "notice": "HIGH CROWD WARNING: Ghat road traffic slow. Exercise caution.",
+  "lastUpdated": "2026-09-25T04:20:59.568+00:00",
   "darshanSpeed": "normal",
   "accommodationStatus": "available",
   "ladduAvailability": "available",
@@ -12,7 +12,7 @@
   "darshans": [
     {
       "name": "Sarva Darshan (Free)",
-      "waitTime": "24 Hours ",
+      "waitTime": "8-12 Hours ",
       "peakHours": "Daily 10 AM - 6 PM"
     },
     {
@@ -22,7 +22,7 @@
     },
     {
       "name": "Divya Darshan (Footpath)",
-      "waitTime": "cancelled",
+      "waitTime": "4-7 Hours",
       "peakHours": "Daily 8 AM - 4 PM"
     },
     {
@@ -32,7 +32,7 @@
     }
   ],
   "ssdTokenStatus": "closed-for-day",
-  "ssdNextTokenTime": "SSD & DD Tokens cancelled",
+  "ssdNextTokenTime": "SSD & DD Tokens Issue started from 7:30 pm",
   "ssdTokenSlots": [
     {
       "slotTime": "5:00 AM - 7:00 AM",
@@ -65,8 +65,8 @@
       "tokensLeft": "Full"
     }
   ],
-  "ssdNotice": "SSD & DD Tokens are Cancelled from 14th Sep due to Bhramostshavam  ",
-  "ssdTimingsGuide": "",
+  "ssdNotice": "",
+  "ssdTimingsGuide": "SSD Tokens – Current Status*\n\n  ✅ • Available Tokens: completed",
   "ssdCounters": [
     {
       "name": "Vishnu Nivasam Counter",

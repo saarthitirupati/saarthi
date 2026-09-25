@@ -348,3 +348,23 @@
   background: var(--color-teal-600);
   transform: translateY(-1px);
 }
+
+/* Responsive Desktop Enhancements */
+@media (min-width: 768px) {
+  .header {
+    max-width: 1080px;
+    top: 61px;
+  }
+
+  .content {
+    max-width: 1080px;
+    padding: var(--space-6) var(--space-6) var(--space-12);
+  }
+
+  .listGrid,
+  .historyList {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 20px;
+  }
+}

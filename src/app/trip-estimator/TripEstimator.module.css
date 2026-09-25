@@ -1,6 +1,6 @@
 .container {
   min-height: 100vh;
-  background-color: #FAF8F5;
+  background-color: #F8F7F3;
   color: #1E1B18;
   font-family: var(--font-body), system-ui, -apple-system, sans-serif;
   padding-bottom: 60px;
@@ -13,39 +13,40 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 16px 20px;
-  background: rgba(250, 248, 245, 0.92);
+  padding: 12px 16px;
+  gap: 8px;
+  background: rgba(248, 247, 243, 0.95);
   backdrop-filter: blur(12px);
   border-bottom: 1px solid rgba(231, 227, 221, 0.8);
 }
 
 .backBtn {
-  display: inline-flex;
+  display: flex;
   align-items: center;
-  gap: 8px;
-  background: var(--md-sys-color-surface-container-low, #F8FAFC);
+  justify-content: center;
+  background: var(--md-sys-color-surface-container-low, #F8F8F8);
   border: 1px solid var(--md-sys-color-outline-variant, #E2E8F0);
   color: #1E1B18;
-  font-size: 14px;
-  font-weight: 600;
   cursor: pointer;
-  min-height: 48px;
-  padding: 0 16px;
+  width: 40px;
+  height: 40px;
+  min-width: 40px;
+  min-height: 40px;
+  padding: 0;
   border-radius: var(--md-sys-shape-corner-full, 9999px);
+  text-decoration: none;
   transition: background-color 0.2s, transform 0.15s;
 }
 
 .backBtn:active {
   background-color: var(--md-sys-color-surface-container-high, #E2E8F0);
-  transform: scale(0.97);
+  transform: scale(0.96);
 }
 
-.title {
-  font-size: 18px;
-  font-weight: 800;
-  color: #1E1B18;
-  margin: 0;
-  font-family: var(--font-hero), Georgia, serif;
+.headerTitleContainer {
+  flex: 1;
+  text-align: center;
+  min-width: 0;
 }
 
 .content {
@@ -60,7 +61,7 @@
   padding: 20px;
   border: 1px solid var(--md-sys-color-outline-variant, #E7E3DD);
   box-shadow: var(--md-sys-elevation-level1, 0 4px 14px rgba(0,0,0,0.03));
-  margin-bottom: 20px;
+  margin-bottom: 16px;
 }
 
 .routeSelector {
@@ -102,58 +103,49 @@
   background: #FFFFFF;
 }
 
-.modeGrid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
-  gap: 8px;
-  margin-top: 14px;
-}
-
-.modeCard {
-  padding: 12px 8px;
-  border-radius: 14px;
-  border: 1.5px solid #E2E8F0;
-  background: #FFFFFF;
+/* Mode filter tabs */
+.modeTabsContainer {
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 6px;
-  cursor: pointer;
-  transition: all 0.2s ease;
+  gap: 8px;
+  overflow-x: auto;
+  padding-bottom: 4px;
+  margin-bottom: 12px;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
 }
 
-.modeCardActive {
-  border-color: #E9801D;
-  background: #FFF7ED;
-  box-shadow: 0 4px 12px rgba(233, 128, 29, 0.15);
+.modeTabsContainer::-webkit-scrollbar {
+  display: none;
 }
 
+/* Transport cards */
 .estimateCard {
   background: #FFFFFF;
-  border-radius: 20px;
-  border: 1px solid #E7E3DD;
-  padding: 20px;
-  margin-bottom: 16px;
-  box-shadow: 0 4px 14px rgba(0,0,0,0.02);
+  border-radius: 16px;
+  border: 1px solid #E2E8F0;
+  padding: 16px 18px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.02);
 }
 
 .estimateHeader {
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  margin-bottom: 14px;
+  align-items: flex-start;
+  gap: 12px;
 }
 
 .tagBadge {
-  font-size: 11px;
+  font-size: 10.5px;
   font-weight: 800;
-  padding: 4px 10px;
-  border-radius: 20px;
+  padding: 3px 8px;
+  border-radius: 6px;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
 }
 
 .tagBest {
-  background: #DCFCE7;
-  color: #15803D;
+  background: rgba(15, 81, 50, 0.1);
+  color: #0F5132;
 }
 
 .tagWarning {
@@ -170,25 +162,27 @@
   font-size: 24px;
   font-weight: 800;
   color: #0F172A;
+  line-height: 1;
 }
 
 .reasonList {
   list-style: none;
   padding: 0;
-  margin: 12px 0 0 0;
+  margin: 8px 0 0 0;
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 4px;
 }
 
 .reasonItem {
-  font-size: 12.5px;
+  font-size: 12px;
   color: #475569;
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
 }
 
+/* Trip config toggles */
 .toggleGroup {
   display: flex;
   background: #F1F5F9;
@@ -256,6 +250,88 @@
   white-space: nowrap;
 }
 
+/* Accordion toggle */
+.accordionToggle {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 18px;
+  background: #FFFFFF;
+  border: 1px solid #E2E8F0;
+  border-radius: 14px;
+  font-size: 14px;
+  font-weight: 700;
+  color: #0F172A;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.accordionToggle:hover {
+  background: #F8FAFC;
+}
+
+.accordionContent {
+  background: #F8FAFC;
+  border: 1px solid #E2E8F0;
+  border-radius: 14px;
+  padding: 14px 16px;
+  margin-top: 8px;
+}
+
+/* Per-card navigate button */
+.navigateBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  border-radius: 10px;
+  background: rgba(15, 81, 50, 0.08);
+  color: #0F5132;
+  font-size: 12.5px;
+  font-weight: 700;
+  text-decoration: none;
+  border: 1px solid rgba(15, 81, 50, 0.15);
+  transition: background 0.15s;
+  cursor: pointer;
+}
+
+.navigateBtn:hover {
+  background: rgba(15, 81, 50, 0.14);
+}
+
+/* Cost breakdown collapsible */
+.breakdownToggle {
+  background: none;
+  border: none;
+  font-size: 12px;
+  font-weight: 700;
+  color: #64748B;
+  cursor: pointer;
+  padding: 4px 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  transition: color 0.15s;
+}
+
+.breakdownToggle:hover {
+  color: #0F172A;
+}
+
+.breakdownContent {
+  margin-top: 8px;
+  padding: 10px 12px;
+  background: rgba(15, 23, 42, 0.03);
+  border-radius: 10px;
+  display: flex;
+  gap: 14px;
+  font-size: 12px;
+  color: #475569;
+  flex-wrap: wrap;
+}
+
+/* Mileage settings inside accordion */
 .settingsSection {
   background: #F8FAFC;
   border: 1px solid #E2E8F0;
@@ -282,7 +358,33 @@
 
 .sliderInput {
   width: 100%;
-  accent-color: #E9801D;
+  accent-color: #0F5132;
   cursor: pointer;
 }
 
+/* Unused legacy classes kept for compatibility */
+.modeGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+  gap: 8px;
+  margin-top: 14px;
+}
+
+.modeCard {
+  padding: 12px 8px;
+  border-radius: 14px;
+  border: 1.5px solid #E2E8F0;
+  background: #FFFFFF;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.modeCardActive {
+  border-color: #0F5132;
+  background: #F0FDF4;
+  box-shadow: 0 4px 12px rgba(15, 81, 50, 0.15);
+}

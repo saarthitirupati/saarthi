@@ -3459,6 +3459,132 @@ export const PLACES: Place[] = [
       ]
     },
     relatedPlaces: ['srikalahasti', 'srinivasa-mangapuram', 'kanipakam', 'kailasa-kona']
+  },
+
+  // --- XIV. DIVYARAMAM PARK (Nagaravanam) ---
+  {
+    id: 'divyaramam-park',
+    name: 'Divyaramam Park (Nagaravanam)',
+    nameTe: 'దివ్యారామం పార్కు',
+    category: 'Nature',
+    placeType: 'nature',
+    location: 'Alipiri Foothills, Tirupati',
+    distanceKms: 3.5,
+    durationMins: 90,
+    budgetLevel: 'budget',
+    entryFeeNum: 20,
+    interests: ['nature', 'fitness', 'families', 'birdwatching'],
+    openFrom: 6,
+    openTo: 18,
+    isMustVisit: false,
+    description: 'A scenic urban forest and nature park at the foothills of Tirumala, featuring 2.5 km walking tracks, native trees, children\'s play areas, open-air gym equipment, and the seasonal Malwadigundam waterfall.',
+    descriptionTe: 'తిరుమల కొండల అడుగు భాగంలో ఉన్న ఈ అందమైన ప్రకృతి ఉద్యానవనంలో 2.5 కిమీ నడక ట్రాక్‌లు, దేశీయ వృక్షాలు, పిల్లల ఆటస్థలం, బహిరంగ వ్యాయామ పరికరాలు మరియు రుతుపవన కాలంలో ప్రవహించే మాల్వాడిగుండం జలపాతం ఉన్నాయి.',
+    history: 'Developed by the Forest Department of Tirupati on a previously unused area at the foothills, transforming it into a green urban sanctuary for residents and pilgrims seeking respite from the city.',
+    historyTe: 'తిరుపతి అటవీ శాఖ అభివృద్ధి చేసిన ఈ ఉద్యానవనం, కొండల అడుగు భాగంలో ఖాళీగా ఉన్న ప్రదేశాన్ని నగర ప్రకృతి విహారధామంగా మార్చింది.',
+    significance: {
+      traditionType: 'nature',
+      whyVisitTe: 'తిరుమల కొండల నేపథ్యంలో ప్రశాంతమైన పచ్చదనం, పక్షుల గమనం, మరియు ఆరోగ్యకరమైన నడక మార్గాల కోసం కుటుంబాలు మరియు ప్రకృతి ప్రేమికులు ఇక్కడికి వస్తారు.',
+      whyVisitEn: 'Families and nature lovers visit for tranquil greenery against the Tirumala Hills backdrop, birdwatching opportunities, and well-maintained walking tracks ideal for morning exercise.',
+      actionsTe: [
+        '2.5 కిమీ నడక/జాగింగ్ ట్రాక్‌లో ఉదయ వ్యాయామం చేయండి',
+        'వేప, మర్రి, రావి, వెదురు వంటి దేశీయ వృక్షాల మధ్య పక్షులను గమనించండి',
+        'వర్షాకాలంలో మాల్వాడిగుండం జలపాతాన్ని సందర్శించండి',
+        'పిల్లల ఆటస్థలం మరియు ఆరుబయట వ్యాయామశాలను ఉపయోగించండి'
+      ],
+      actionsEn: [
+        'Walk or jog the 2.5 km nature trail for morning exercise',
+        'Spot local birds, butterflies, and squirrels among neem, banyan, peepal, and bamboo groves',
+        'Visit Malwadigundam waterfall during monsoon season (July–November)',
+        'Use the children\'s play area and open-air public gym equipment'
+      ],
+      culturalMeaningTe: 'తిరుమల కొండల పాదాల వద్ద అటవీ శాఖ సృష్టించిన ఈ పచ్చని విహారధామం, నగరవాసులకు ప్రకృతితో అనుబంధం కలిగించే ప్రశాంత తావు.',
+      culturalMeaningEn: 'An urban forest sanctuary created by the Forest Department at the sacred foothills, offering a green retreat where visitors reconnect with nature before or after their Tirumala pilgrimage.',
+      saarthiTipTe: 'ఉదయం 6:00–8:00 మధ్య నడకకు అనువైన చల్లని వాతావరణం ఉంటుంది. వర్షాకాలంలో మాల్వాడిగుండం జలపాతం చూడదగ్గది. సౌకర్యవంతమైన నడక పాదరక్షలు ధరించండి.',
+      saarthiTipEn: 'Best visited between 6:00–8:00 AM when the weather is cool and birds are most active. The Malwadigundam waterfall is spectacular during monsoon (Aug–Nov). Wear comfortable walking shoes.'
+    },
+    timings: '6:00 AM - 6:00 PM',
+    entryFee: '₹20 per adult',
+    address: 'Alipiri-Kapila Theertham Road, Srinivasanagar / NGO Colony, Tirupati, Andhra Pradesh 517507',
+    rating: 4.3,
+    reviewCount: 2400,
+    image: 'https://res.cloudinary.com/kniegqlj/image/upload/v1790324405/eyJidWNrZXQiOiJ1dGEtaW1hZ2VzIiwia2V5IjoicGxhY2VfaW1nL2Y3ZTM5YjgyODQ5NTQ1ZDBiNzBiNGJlNjM4ZDBmOTYxIiwiZWRpdHMiOnsicmVzaXplIjp7IndpZHRoIjo2NDAsImhlaWdodCI6NjQwLCJmaXQiOiJpbnNpZGUifSwicm90YXRlIjpudWxsLCJ0b0Zvcm1hdCI6ICJ3ZWJwIn19_tc5rnx.webp',
+    coordinates: { lat: 13.6515, lng: 79.4120 },
+    shortIntro: 'A peaceful urban forest park at the foothills of Tirumala with walking trails, native trees, children\'s play areas, and the seasonal Malwadigundam waterfall.',
+    whyVisit: 'Ideal morning walk destination near Alipiri with 2.5 km forest trails, birdwatching, and stunning views of the Tirumala Hills. The Malwadigundam waterfall flows during monsoon season.',
+    openingTime: '6:00 AM',
+    closingTime: '6:00 PM',
+    duration: '1 to 2 hours',
+    travelByRTC: 'Take city bus or auto from Tirupati Central Bus Station towards Alipiri. Get off at NGO Colony / Divyaramam Park stop.',
+    travelByCar: 'Drive 3.5 km from Tirupati center via Alipiri-Kapila Theertham Road. Parking available at the entrance.',
+    travelByBike: 'A 10-minute ride from Tirupati Railway Station towards Alipiri. Two-wheeler parking available.',
+    approxRTCFare: '₹10 per person city bus / ₹50 shared auto',
+    approxCarCost: '₹40 fuel or ₹100 auto ride',
+    approxBikeCost: '₹20 petrol',
+    images: ['https://res.cloudinary.com/kniegqlj/image/upload/v1790324405/eyJidWNrZXQiOiJ1dGEtaW1hZ2VzIiwia2V5IjoicGxhY2VfaW1nL2Y3ZTM5YjgyODQ5NTQ1ZDBiNzBiNGJlNjM4ZDBmOTYxIiwiZWRpdHMiOnsicmVzaXplIjp7IndpZHRoIjo2NDAsImhlaWdodCI6NjQwLCJmaXQiOiJpbnNpZGUifSwicm90YXRlIjpudWxsLCJ0b0Zvcm1hdCI6ICJ3ZWJwIn19_tc5rnx.webp'],
+    tags: ['Nature Park', 'Walking Trail', 'Birdwatching', 'Waterfall', 'Family', 'Fitness'],
+    bestTime: 'Early morning (6:00–8:00 AM). Waterfall best during monsoon (Aug–Nov).',
+    idealFor: ['Families', 'Kids', 'Senior Citizens', 'Solo Travelers', 'Photographers'],
+    status: 'Published',
+    importanceLevel: 'Optional',
+    visitDifficulty: 'Easy',
+    visitType: 'Quick Stop',
+    oneReasonToVisit: 'Peaceful forest walk with hill views and seasonal waterfall — perfect morning outing near Alipiri.',
+    verification: {
+      status: 'Verified',
+      tier: 'Silver',
+      source: 'Ground Visit',
+      confidenceScore: 0.85,
+      lastUpdated: '2025-09-25'
+    },
+    recommendationContext: {
+      bestTimeOfDay: ['Morning'],
+      idealSeason: ['Monsoon', 'Winter', 'All Seasons'],
+      typicalCrowd: 'Low',
+      indoorOutdoor: 'Outdoor',
+      familyFriendly: true,
+      seniorFriendly: true,
+      wheelchairAccessible: true,
+      kidsFriendly: true,
+      photographyFriendly: true,
+      recommendationReasons: [
+        'Peaceful forest walk at the foothills of Tirumala with 2.5 km shaded trails',
+        'Seasonal Malwadigundam waterfall is spectacular during monsoon',
+        'Free gym equipment, children\'s play area, and boating at Nagaravanam',
+        'Only ₹20 entry — excellent value for families and fitness enthusiasts'
+      ]
+    },
+    searchIntelligence: {
+      aliases: ['Divyaramam', 'Nagaravanam', 'Divya Ramam Park', 'NGO Colony Park'],
+      tags: ['nature park', 'walking trail', 'jogging', 'birdwatching', 'waterfall', 'kids park', 'morning walk'],
+      intentQueries: ['morning walk place near tirupati', 'nature park tirupati', 'divyaramam park timings', 'nagaravanam tirupati', 'parks near alipiri'],
+      misspellings: ['divyaramam', 'divya ramam', 'nagaravanm', 'divyaram park']
+    },
+    relationships: {
+      nearby: ['kapila-theertham'],
+      recommendedTogether: ['kapila-theertham'],
+      sameCategory: ['tada-falls']
+    },
+    practicalInfo: {
+      dressCode: 'Casual / Comfortable walking attire',
+      food: 'Small food court inside park',
+      parking: 'Available at entrance (₹10–30)'
+    },
+    visitorTips: {
+      dressCode: 'Comfortable walking clothes and shoes recommended. Carry water.',
+      crowdNote: 'Quiet on weekday mornings. Moderate crowds on weekends.',
+      photoRule: 'Photography permitted throughout the park.',
+      entryRule: 'Entry ₹20 per adult. No online booking required.'
+    },
+    facilities: {
+      parking: 'Available at main entrance (₹10–30)',
+      toilets: 'Available inside the park',
+      drinkingWater: 'Water points available',
+      food: 'Small canteen / food court inside',
+      wheelchair: 'Wheelchair-accessible entrance and main paths'
+    },
+    travelEstimates: { 'kapila-theertham': '5 mins drive' },
+    mapUrl: 'https://www.google.com/maps/place/Divyaramam+Park/data=!4m2!3m1!1s0x0:0x1d23250441cc3fd2',
+    relatedPlaces: ['kapila-theertham', 'tada-falls']
   }
 ];
 

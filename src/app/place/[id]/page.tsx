@@ -247,10 +247,10 @@ export default function PlaceDetails() {
   const defaultTimingsFallback = `${place.openFrom || 6}:00 AM – ${place.openTo ? (place.openTo > 12 ? `${place.openTo - 12}:00 PM` : `${place.openTo}:00 AM`) : '9:00 PM'}`;
   const timingsStr = toSafeText(place.timings, defaultTimingsFallback);
 
-  // Smart Saarthi Tip
-  const saarthiTip = place.saarthiIntelligence?.crowdLevel === 'High'
-    ? 'Visit early before 7:30 AM or post 7:00 PM. High devotee rush during afternoon hours.'
-    : 'Comfortable visiting hours. Mornings are serene with minimal queue times (15–25 mins).';
+  // Smart Saarthi Tip — always use per-place data (every recommendation must be explainable)
+  const saarthiTip = lang === 'te'
+    ? (place.significance?.saarthiTipTe || '')
+    : (place.significance?.saarthiTipEn || '');
 
   // ═══════════════════════════════════════════════════
   // MODULAR SUB-BLOCKS (Rendered once, shared cleanly)
@@ -862,15 +862,7 @@ export default function PlaceDetails() {
       <p style={{ fontSize: '12.5px', color: '#1E293B', fontWeight: 700, lineHeight: 1.45, margin: '0 0 10px' }}>
         {festivalCrowd.hasImpact
           ? (lang === 'te' ? festivalCrowd.alertMessageTe : festivalCrowd.alertMessageEn)
-          : (lang === 'te' 
-              ? (place.id === 'govindaraja'
-                  ? 'ఉదయం 7:30 లోపు లేదా సాయంత్రం 5:30 (ఊంజల్ సేవ / కల్యాణోత్సవం) వేళల్లో దర్శనం అత్యంత శ్రేయస్కరం. తక్కువ నిరీక్షణ సమయం (15–25 నిమిషాలు).'
-                  : (place.id === 'sv-zoo-park'
-                      ? 'ఉదయం 9:00 - 11:30 మధ్య జంతువులు చురుగ్గా ఉంటాయి. సఫారీ రైడ్ కోసం ముందుగా టికెట్లు తీసుకోండి.'
-                      : (isTemple ? 'ఉదయం వేళల్లో దర్శనం ప్రశాంతంగా ఉంటుంది. తక్కువ క్యూ సమయం (15–25 నిమిషాలు).' : 'ఉదయం లేదా సాయంత్రం వేళల్లో సందర్శించడం ఆహ్లాదకరంగా ఉంటుంది.')))
-              : (place.id === 'sv-zoo-park'
-                  ? 'Visit between 9:00 AM - 11:30 AM when animals are most active in open enclosures. Battery vehicles and safari available.'
-                  : saarthiTip))}
+          : saarthiTip}
       </p>
 
       <div style={{ display: 'flex', alignItems: 'center', gap: '12px', fontSize: '11px', color: '#64748B', borderTop: '1px solid rgba(0,0,0,0.06)', paddingTop: '8px', flexWrap: 'wrap' }}>

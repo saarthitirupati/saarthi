@@ -2,7 +2,15 @@
   min-height: 100vh;
   background: #FCF8F2;
   color: #1A1A1A;
-  padding: 80px 24px 100px;
+  padding: 24px 16px 100px;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+@media (min-width: 768px) {
+  .container {
+    padding: 36px 24px 100px;
+  }
 }
 
 .header {
@@ -138,6 +146,18 @@
   color: #ef4444;
 }
 
+@media (max-width: 480px) {
+  .planCard {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 14px;
+  }
+  .planActions {
+    width: 100%;
+    justify-content: flex-end;
+  }
+}
+
 .emptyState {
   text-align: center;
   padding: 60px 20px;
@@ -152,12 +172,8 @@
 }
 
 .backBtn {
-  position: fixed;
-  top: 24px;
-  left: 24px;
-  z-index: 100;
-  width: 44px;
-  height: 44px;
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
   background: white;
   box-shadow: 0 2px 10px rgba(0,0,0,0.08);
