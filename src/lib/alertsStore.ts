@@ -127,7 +127,7 @@ export async function saveLiveAlert(alertData: Partial<LiveAlert>): Promise<Live
     status: alertData.status || 'Published',
     target_location: alertData.target_location || 'All Users',
     start_time: alertData.start_time || existingAlert?.start_time || now,
-    expiry_time: alertData.expiry_time || existingAlert?.expiry_time || new Date(Date.now() + 2 * 60 * 60 * 1000).toISOString(),
+    expiry_time: alertData.expiry_time || existingAlert?.expiry_time || new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString(),
     created_at: alertData.created_at || existingAlert?.created_at || now,
     updated_at: now
   };
@@ -138,17 +138,17 @@ export async function saveLiveAlert(alertData: Partial<LiveAlert>): Promise<Live
   // Add to in-memory list
   IN_MEMORY_ALERTS = [newAlert, ...IN_MEMORY_ALERTS.filter((a) => a.id !== id)];
 
-  // 1. Try Supabase live_updates update
+  // 1. Try Supabase live_updates upsert
   try {
     const existing = await fetchLiveAlerts(true);
     const updatedList = [newAlert, ...existing.filter((a) => a.id !== id)];
     await supabase
       .from('live_updates')
-      .update({
+      .upsert({
+        module: 'live_alerts',
         value: JSON.stringify(updatedList),
         updated_at: now
-      })
-      .eq('module', 'live_alerts');
+      }, { onConflict: 'module' });
   } catch (e) {
     console.warn('Supabase live_updates save warning:', e);
   }
@@ -169,17 +169,17 @@ export async function deleteLiveAlert(id: string): Promise<boolean> {
   DELETED_ALERT_IDS.add(id);
   IN_MEMORY_ALERTS = IN_MEMORY_ALERTS.filter((a) => a.id !== id);
 
-  // 1. Try Supabase live_updates delete/update
+  // 1. Try Supabase live_updates delete/upsert
   try {
     const existing = await fetchLiveAlerts(true);
     const updatedList = existing.filter((a) => a.id !== id);
     await supabase
       .from('live_updates')
-      .update({
+      .upsert({
+        module: 'live_alerts',
         value: JSON.stringify(updatedList),
         updated_at: new Date().toISOString()
-      })
-      .eq('module', 'live_alerts');
+      }, { onConflict: 'module' });
   } catch (e) {
     console.warn('Supabase live_updates delete warning:', e);
   }

@@ -11,6 +11,7 @@
     "type-check": "tsc --noEmit",
     "test": "npm run audit-places && echo \"Smoke tests pass\" && exit 0",
     "verify": "npm run audit-places && npm run type-check && npm run test",
+    "setup:ai": "node scripts/setup-ai-agent.mjs",
     "clean": "rm -rf .next node_modules package-lock.json && npm install",
     "analyze": "ANALYZE=true next build"
   },

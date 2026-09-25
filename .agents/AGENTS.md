@@ -27,3 +27,8 @@ Rules:
 # Every recommendation must be explainable
 
 If the engine recommends a place, the API must always provide the reasons. If you cannot explain *why* a place is recommended, the recommendation should not be shown. This reduces user anxiety through clear, understandable guidance.
+
+# Notification System Guard
+
+Any future changes, refactors, or modifications to the notification system (Web Push, FCM, live alerts, in-app notification badges, notification banners, push client, or service worker) REQUIRE EXPLICIT PERMISSION from the user before implementation. Do not modify notification logic, subscription schemas, dispatch payloads, or push delivery pathways without first asking the user and receiving their direct consent.
+

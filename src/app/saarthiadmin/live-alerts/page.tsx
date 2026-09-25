@@ -129,7 +129,7 @@ export default function AdminAlertsPage() {
   const [popupType, setPopupType] = useState<'Banner' | 'Popup' | 'Fullscreen'>('Banner');
   const [cta, setCta] = useState<'Open Queue' | 'Open Essentials' | 'Open Maps' | 'Open Parking' | 'None'>('None');
   const [targetLocation, setTargetLocation] = useState<'All Users' | 'Tirumala' | 'Tirupati' | 'Alipiri' | 'Nearby'>('All Users');
-  const [expiryHours, setExpiryHours] = useState<number>(2); // Default 2 hours
+  const [expiryHours, setExpiryHours] = useState<number>(24); // Default 24 hours (1 day)
   const [sendPushNotification, setSendPushNotification] = useState<boolean>(true);
 
   const getAdminHeaders = () => {
@@ -225,7 +225,7 @@ export default function AdminAlertsPage() {
     setPopupType('Banner');
     setCta('None');
     setTargetLocation('All Users');
-    setExpiryHours(2);
+    setExpiryHours(24);
     setEditingAlertId(null);
     setShowCreateForm(false);
   };
@@ -246,7 +246,7 @@ export default function AdminAlertsPage() {
       const remainingHours = Math.max(0.5, Math.round((remainingMs / (1000 * 60 * 60)) * 2) / 2);
       setExpiryHours(remainingHours);
     } else {
-      setExpiryHours(2);
+      setExpiryHours(24);
     }
 
     setShowCreateForm(true);
@@ -625,7 +625,9 @@ export default function AdminAlertsPage() {
                       { hours: 1, label: '1 Hour' },
                       { hours: 2, label: '2 Hours' },
                       { hours: 8, label: '8 Hours' },
-                      { hours: 24, label: 'Today' }
+                      { hours: 24, label: '24 Hours' },
+                      { hours: 48, label: '2 Days' },
+                      { hours: 168, label: '7 Days' }
                     ].map((exp) => (
                       <div 
                         key={exp.hours} 
