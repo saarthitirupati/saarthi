@@ -440,14 +440,16 @@ function ExploreContent() {
                     >
                       <span>{lang === 'te' ? filter.labelTe : filter.labelEn}</span>
                       {count !== undefined && count > 0 && (
-                        <span style={{
-                          fontSize: '11px',
-                          fontWeight: 800,
-                          color: isActive ? '#047857' : '#64748B',
-                          background: isActive ? '#D1FAE5' : '#F1F5F9',
-                          padding: '1.5px 7px',
-                          borderRadius: '8px'
-                        }}>
+                        <span 
+                          suppressHydrationWarning
+                          style={{
+                            fontSize: '11px',
+                            fontWeight: 800,
+                            color: isActive ? '#047857' : '#64748B',
+                            background: isActive ? '#D1FAE5' : '#F1F5F9',
+                            padding: '1.5px 7px',
+                            borderRadius: '8px'
+                          }}>
                           {count}
                         </span>
                       )}
@@ -642,7 +644,7 @@ function ExploreContent() {
               ? (lang === 'te' ? 'అన్ని దర్శనీయ స్థలాలు' : 'All Experiences') 
               : (lang === 'te' ? `${FILTERS_DATA.find(f => f.key === activeFilter)?.labelTe || activeFilter} ప్రదేశాలు` : `${activeFilter} Places`)}
           </h2>
-          <span className={styles.count}>
+          <span className={styles.count} suppressHydrationWarning>
             {filteredPlaces.length} {filteredPlaces.length === 1 ? (lang === 'te' ? 'ప్రదేశం' : 'result') : (lang === 'te' ? 'ప్రదేశాలు' : 'results')}
           </span>
         </div>

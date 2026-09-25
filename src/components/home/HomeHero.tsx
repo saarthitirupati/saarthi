@@ -251,6 +251,36 @@ const METRIC_ICON: Record<string, React.ReactNode> = {
   Crowd:    <Users size={11} opacity={0.85} />,
 };
 
+// ── Deterministic static raindrops for live temple card (Zero re-render lag) ──
+const RAIN_DROPS = [
+  { left: 3,  width: 1.5, height: 18, duration: 0.75, delay: 0.1 },
+  { left: 8,  width: 1.2, height: 14, duration: 0.85, delay: 0.4 },
+  { left: 14, width: 1.5, height: 22, duration: 0.70, delay: 0.2 },
+  { left: 19, width: 1.0, height: 16, duration: 0.90, delay: 0.6 },
+  { left: 25, width: 1.5, height: 20, duration: 0.72, delay: 0.05 },
+  { left: 31, width: 1.2, height: 15, duration: 0.82, delay: 0.35 },
+  { left: 37, width: 1.5, height: 24, duration: 0.68, delay: 0.15 },
+  { left: 43, width: 1.0, height: 17, duration: 0.88, delay: 0.5 },
+  { left: 49, width: 1.5, height: 21, duration: 0.74, delay: 0.25 },
+  { left: 55, width: 1.2, height: 16, duration: 0.80, delay: 0.45 },
+  { left: 61, width: 1.5, height: 23, duration: 0.69, delay: 0.1 },
+  { left: 67, width: 1.0, height: 15, duration: 0.92, delay: 0.55 },
+  { left: 73, width: 1.5, height: 19, duration: 0.76, delay: 0.3 },
+  { left: 79, width: 1.2, height: 22, duration: 0.71, delay: 0.18 },
+  { left: 85, width: 1.5, height: 17, duration: 0.84, delay: 0.42 },
+  { left: 91, width: 1.0, height: 20, duration: 0.78, delay: 0.08 },
+  { left: 96, width: 1.4, height: 16, duration: 0.86, delay: 0.38 },
+];
+
+const RAIN_SPLASHES = [
+  { left: 6,  bottom: 8,  duration: 0.75, delay: 0.2 },
+  { left: 22, bottom: 6,  duration: 0.80, delay: 0.4 },
+  { left: 39, bottom: 10, duration: 0.70, delay: 0.15 },
+  { left: 58, bottom: 7,  duration: 0.85, delay: 0.5 },
+  { left: 75, bottom: 9,  duration: 0.72, delay: 0.3 },
+  { left: 92, bottom: 6,  duration: 0.78, delay: 0.1 },
+];
+
 export function HomeHero({ userName, locationName, weatherTemp, liveStatus, activeAlertsCount, hideHeader = false }: any) {
   const lang = useLanguage();
   const t = TEXTS[lang];
@@ -260,7 +290,21 @@ export function HomeHero({ userName, locationName, weatherTemp, liveStatus, acti
   const [isLocating, setIsLocating] = useState<boolean>(false);
   const [isLocationModalOpen, setIsLocationModalOpen] = useState<boolean>(false);
   const [isVideoPlaying, setIsVideoPlaying] = useState<boolean>(false);
+  const [apiWeatherCode, setApiWeatherCode] = useState<number | null>(null);
+  const [testRainMode, setTestRainMode] = useState<boolean | null>(null);
   const bannerVideoRef = React.useRef<HTMLVideoElement>(null);
+
+  React.useEffect(() => {
+    // Check real-time weather API for Tirumala rain status
+    fetch('/api/v1/weather')
+      .then(res => res.json())
+      .then(data => {
+        if (data?.current?.weather_code !== undefined) {
+          setApiWeatherCode(data.current.weather_code);
+        }
+      })
+      .catch(() => {});
+  }, []);
 
   React.useEffect(() => {
     if (locationName) {
@@ -368,7 +412,14 @@ export function HomeHero({ userName, locationName, weatherTemp, liveStatus, acti
 
   const crowdLevel = (liveStatus?.crowdLevel || 'high').toLowerCase();
   const weatherStr = (liveStatus?.weather || '').toLowerCase();
-  const isRainy = weatherStr.includes('rain') || weatherStr.includes('shower') || weatherStr.includes('storm') || weatherStr.includes('thunder');
+  // WMO weather codes for rain: 51-67 (drizzle/rain), 80-82 (showers), 95-99 (thunderstorm)
+  const isApiRain = apiWeatherCode !== null && (
+    (apiWeatherCode >= 51 && apiWeatherCode <= 67) ||
+    (apiWeatherCode >= 80 && apiWeatherCode <= 82) ||
+    (apiWeatherCode >= 95 && apiWeatherCode <= 99)
+  );
+  const detectedRain = isApiRain || weatherStr.includes('rain') || weatherStr.includes('shower') || weatherStr.includes('storm') || weatherStr.includes('thunder') || weatherStr.includes('drizzle');
+  const isRainy = testRainMode !== null ? testRainMode : detectedRain;
   const ssdTokenStatus = (liveStatus?.ssdTokenStatus || '').toLowerCase(); // fixed: was reading wrong field
   const istHr = getISTDate().getHours();
   const isNight = istHr >= 21 || istHr < 5;
@@ -1219,10 +1270,10 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
           }}>
 
             {/* Left — Official Saarthi Brand Lockup */}
-            <Link href="/" style={{ display: 'flex', alignItems: 'center', gap: '6px', textDecoration: 'none', flexShrink: 0 }}>
-              <Logo size={30} />
+            <Link href="/" style={{ display: 'flex', alignItems: 'center', gap: '5px', textDecoration: 'none', flexShrink: 0 }}>
+              <Logo size={28} />
               <span className="notranslate" style={{
-                fontSize: 'clamp(18px, 4.6vw, 21px)',
+                fontSize: 'clamp(17px, 4.2vw, 20px)',
                 fontWeight: 900,
                 color: '#0F5132',
                 letterSpacing: '-0.02em',
@@ -1235,12 +1286,17 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
             </Link>
 
             {/* Right — Location Badge, Language Toggle & Notification Bell */}
-            <div style={{ display: 'flex', alignItems: 'center', gap: '5px', minWidth: 0, flexShrink: 1 }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '4px', minWidth: 0, flexShrink: 1, justifyContent: 'flex-end' }}>
               <LocationPill 
                 locationName={selectedLocation} 
                 isGpsActive={locationPermission === 'granted'}
                 onClick={() => setIsLocationModalOpen(true)} 
-                style={{ padding: '5px 8px', fontSize: '11.5px', gap: '3px', maxWidth: 'clamp(80px, 23vw, 130px)' }}
+                style={{ 
+                  padding: '4px 8px', 
+                  fontSize: '11px', 
+                  gap: '3px', 
+                  maxWidth: 'clamp(94px, 30vw, 140px)' 
+                }}
               />
 
               {/* Language Switcher */}
@@ -1253,7 +1309,7 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
                   display: 'inline-flex',
                   alignItems: 'center',
                   gap: '3px',
-                  padding: '5px 8px',
+                  padding: '4px 7px',
                   borderRadius: '9999px',
                   border: '1px solid #E2E8F0',
                   background: '#F8FAFC',
@@ -1269,21 +1325,21 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
                   flexShrink: 0,
                 }}
               >
-                <Languages size={14} color="#0F5132" strokeWidth={2.2} />
+                <Languages size={13} color="#0F5132" strokeWidth={2.2} />
                 <span>{lang === 'en' ? 'తెలుగు' : 'EN'}</span>
               </button>
 
               <Link href="/alerts" aria-label="Notifications" style={{
-                width: '36px', height: '36px', flexShrink: 0,
+                width: '32px', height: '32px', flexShrink: 0,
                 display: 'flex', alignItems: 'center', justifyContent: 'center',
                 textDecoration: 'none', position: 'relative'
               }}>
-                <Bell size={20} color="#0F5132" strokeWidth={1.9} />
+                <Bell size={18} color="#0F5132" strokeWidth={1.9} />
                 {(activeAlertsCount ?? 0) > 0 && (
                   <span style={{
                     position: 'absolute',
-                    top: '2px', right: '2px',
-                    minWidth: '16px', height: '16px',
+                    top: '1px', right: '1px',
+                    minWidth: '15px', height: '15px',
                     borderRadius: '8px',
                     background: '#DC2626',
                     border: '1.5px solid #FFFFFF',
@@ -1322,31 +1378,42 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
         {!hideHeader && (
           <>
             {/* ══════════ DEVOTIONAL INVOCATION & 108 JAPA MALA BAR ══════════ */}
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '6px', marginBottom: '10px', position: 'relative', width: '100%', maxWidth: '100%', boxSizing: 'border-box' }}>
+            <div style={{ 
+              display: 'flex', 
+              alignItems: 'center', 
+              justifyContent: 'space-between', 
+              flexWrap: 'nowrap', 
+              gap: 'clamp(4px, 1.5vw, 8px)', 
+              marginBottom: '10px', 
+              position: 'relative', 
+              width: '100%', 
+              maxWidth: '100%', 
+              boxSizing: 'border-box' 
+            }}>
               {/* Left: Today's Day, Date & Live Weather */}
               <div style={{ 
                 display: 'inline-flex', 
                 alignItems: 'center', 
-                gap: '4px', 
-                fontSize: 'clamp(10px, 2.7vw, 11.5px)', 
+                gap: 'clamp(2.5px, 0.8vw, 4px)', 
+                fontSize: 'clamp(9.5px, 2.5vw, 11px)', 
                 fontWeight: 600, 
                 color: '#475569', 
                 whiteSpace: 'nowrap', 
                 flexShrink: 1,
                 minWidth: 0,
-                padding: '5px 10px',
+                padding: '4px clamp(6px, 1.8vw, 10px)',
                 borderRadius: '20px',
                 background: 'rgba(255, 255, 255, 0.95)',
                 border: '1.5px solid #E2E8F0',
                 boxShadow: '0 1px 3px rgba(0,0,0,0.04)',
                 boxSizing: 'border-box'
               }}>
-                <span style={{ fontWeight: 800, color: '#B45309' }}>
+                <span style={{ fontWeight: 800, color: '#B45309', overflow: 'hidden', textOverflow: 'ellipsis' }}>
                   {dayShort}, {todayDateStr}
                 </span>
                 <span style={{ opacity: 0.35 }}>•</span>
-                <Sun size={13} color="#D97706" style={{ flexShrink: 0 }} />
-                <span style={{ fontWeight: 700, color: '#334155' }}>{weatherTemp || '26°C'}</span>
+                <Sun size={12} color="#D97706" style={{ flexShrink: 0 }} />
+                <span style={{ fontWeight: 700, color: '#334155', flexShrink: 0 }}>{weatherTemp || '26°C'}</span>
               </div>
 
               {/* Right: Dedicated Srivari 108 Japa Mala Button (Gestalt Focal Point & Affordance) */}
@@ -1357,13 +1424,13 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
                 style={{
                   display: 'inline-flex',
                   alignItems: 'center',
-                  gap: '6px',
-                  padding: '4px 10px',
+                  gap: 'clamp(3px, 1vw, 5px)',
+                  padding: '3.5px clamp(6px, 1.8vw, 9px)',
                   borderRadius: '20px',
                   background: 'linear-gradient(135deg, #FFFDF7 0%, #FEF3C7 55%, #FDE68A 100%)',
                   border: '1.5px solid #D97706',
                   boxShadow: '0 2px 6px rgba(217, 119, 6, 0.16)',
-                  fontSize: 'clamp(10px, 2.7vw, 11.5px)',
+                  fontSize: 'clamp(9.5px, 2.6vw, 11.5px)',
                   fontWeight: 800,
                   color: '#78350F',
                   cursor: 'pointer',
@@ -1375,25 +1442,26 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
                   boxSizing: 'border-box'
                 }}
               >
-                <Sparkles size={12} color="#D97706" style={{ animation: isChanting ? 'spin 0.4s ease' : 'none', flexShrink: 0 }} />
+                <Sparkles size={11} color="#D97706" style={{ animation: isChanting ? 'spin 0.4s ease' : 'none', flexShrink: 0 }} />
                 <span style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: '0px', flexShrink: 0 }}>
                   <span style={{ whiteSpace: 'nowrap', lineHeight: 1.2 }}>
                     {lang === 'te' ? 'ఓం నమో వేంకటేశాయ' : 'Om Namo Venkatesaya'}
                   </span>
-                  <span style={{ fontSize: '7.5px', fontWeight: 600, color: '#92400E', opacity: 0.75, lineHeight: 1, letterSpacing: '0.03em' }}>
-                    {lang === 'te' ? 'జప మాల - నొక్కండి' : 'Japa Mala - Tap to Chant'}
+                  <span style={{ fontSize: 'clamp(7px, 1.8vw, 7.5px)', fontWeight: 600, color: '#92400E', opacity: 0.75, lineHeight: 1, letterSpacing: '0.02em' }}>
+                    {lang === 'te' ? 'జప మాల • నొక్కండి' : 'Japa Mala • Tap to Chant'}
                   </span>
                 </span>
                 <span style={{
-                  fontSize: '9.5px',
+                  fontSize: 'clamp(8.5px, 2.2vw, 9.5px)',
                   fontWeight: 900,
                   color: '#FEF3C7',
                   background: '#78350F',
-                  padding: '2px 6.5px',
+                  padding: '1.5px clamp(4px, 1.2vw, 6px)',
                   borderRadius: '10px',
                   border: '1px solid rgba(253, 224, 71, 0.4)',
                   lineHeight: 1.2,
-                  letterSpacing: '0.02em'
+                  letterSpacing: '0.02em',
+                  flexShrink: 0
                 }}>
                   {chantCount}/108
                 </span>
@@ -1555,36 +1623,126 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
 
       {/* 🛕 SIGNATURE LIVE TEMPLE PULSE (BLACK OUTLINE INSIDE WHITE GLASS) */}
       <div style={{
-        background: 'linear-gradient(165deg, rgba(255, 255, 255, 0.95) 0%, rgba(248, 250, 252, 0.88) 100%)',
+        background: isRainy
+          ? 'linear-gradient(165deg, rgba(240, 249, 255, 0.96) 0%, rgba(224, 242, 254, 0.90) 50%, rgba(241, 245, 249, 0.93) 100%)'
+          : 'linear-gradient(165deg, rgba(255, 255, 255, 0.95) 0%, rgba(248, 250, 252, 0.88) 100%)',
         borderRadius: '20px',
         padding: '14px 12px',
         color: '#0F172A',
-        boxShadow: '0 16px 40px rgba(15, 23, 42, 0.08), 0 1px 3px rgba(0, 0, 0, 0.05)',
-        border: '1.5px solid #0F172A',
+        boxShadow: isRainy
+          ? '0 16px 40px rgba(14, 116, 144, 0.12), 0 1px 3px rgba(0, 0, 0, 0.05)'
+          : '0 16px 40px rgba(15, 23, 42, 0.08), 0 1px 3px rgba(0, 0, 0, 0.05)',
+        border: isRainy ? '1.5px solid #38BDF8' : '1.5px solid #0F172A',
         backdropFilter: 'blur(20px)',
         position: 'relative',
         overflow: 'hidden'
       }}>
-        {/* Subtle Top Gold Beam Accent */}
+        {/* Subtle Top Accent Beam */}
         <div style={{
           position: 'absolute',
           top: 0,
           left: '15%',
           right: '15%',
           height: '2px',
-          background: 'linear-gradient(90deg, transparent 0%, #D97706 30%, #F59E0B 50%, #D97706 70%, transparent 100%)',
+          background: isRainy
+            ? 'linear-gradient(90deg, transparent 0%, #0284C7 30%, #38BDF8 50%, #0284C7 70%, transparent 100%)'
+            : 'linear-gradient(90deg, transparent 0%, #D97706 30%, #F59E0B 50%, #D97706 70%, transparent 100%)',
           opacity: 0.85
         }} />
 
+        {/* 🌧️ REAL-TIME TIRUMALA RAIN EFFECT (ONLY ACTIVE WHEN RAINING IN TIRUMALA VIA WEATHER API) */}
+        {isRainy && (
+          <div
+            aria-hidden="true"
+            style={{
+              position: 'absolute',
+              inset: 0,
+              pointerEvents: 'none',
+              zIndex: 1,
+              overflow: 'hidden',
+              borderRadius: '20px',
+            }}
+          >
+            <style>{`
+              @keyframes raindrop-fall {
+                0% {
+                  transform: translateY(-24px) translateX(0);
+                  opacity: 0;
+                }
+                20% {
+                  opacity: 0.7;
+                }
+                80% {
+                  opacity: 0.7;
+                }
+                100% {
+                  transform: translateY(220px) translateX(-20px);
+                  opacity: 0;
+                }
+              }
+              @keyframes raindrop-splash {
+                0% {
+                  transform: scale(0.2);
+                  opacity: 0.8;
+                }
+                80% {
+                  opacity: 0.3;
+                }
+                100% {
+                  transform: scale(1.6);
+                  opacity: 0;
+                }
+              }
+            `}</style>
+            {/* Falling Rain Streaks */}
+            {RAIN_DROPS.map((drop, i) => (
+              <div
+                key={i}
+                style={{
+                  position: 'absolute',
+                  top: 0,
+                  left: `${drop.left}%`,
+                  width: `${drop.width}px`,
+                  height: `${drop.height}px`,
+                  background: 'linear-gradient(180deg, rgba(56, 189, 248, 0) 0%, rgba(56, 189, 248, 0.55) 60%, rgba(14, 165, 233, 0.9) 100%)',
+                  borderRadius: '2px',
+                  transform: 'rotate(12deg)',
+                  animation: `raindrop-fall ${drop.duration}s linear infinite`,
+                  animationDelay: `${drop.delay}s`,
+                  willChange: 'transform',
+                }}
+              />
+            ))}
+            {/* Splash ripples at bottom */}
+            {RAIN_SPLASHES.map((splash, i) => (
+              <div
+                key={`splash-${i}`}
+                style={{
+                  position: 'absolute',
+                  bottom: `${splash.bottom}px`,
+                  left: `${splash.left}%`,
+                  width: '10px',
+                  height: '3.5px',
+                  borderRadius: '50%',
+                  border: '1px solid rgba(56, 189, 248, 0.65)',
+                  animation: `raindrop-splash ${splash.duration}s ease-out infinite`,
+                  animationDelay: `${splash.delay}s`,
+                  willChange: 'transform',
+                }}
+              />
+            ))}
+          </div>
+        )}
+
         {/* 🌟 HEADER: LIVE STATUS BEACON & TITLE */}
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '10px', marginBottom: '12px', position: 'relative', zIndex: 2 }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '8px', marginBottom: '12px', position: 'relative', zIndex: 2 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '7px', flexWrap: 'wrap' }}>
             <span style={{
               width: '8px',
               height: '8px',
               borderRadius: '50%',
-              backgroundColor: '#EF4444',
-              boxShadow: '0 0 8px rgba(239, 68, 68, 0.8)',
+              backgroundColor: isRainy ? '#0284C7' : '#EF4444',
+              boxShadow: isRainy ? '0 0 8px rgba(2, 132, 199, 0.8)' : '0 0 8px rgba(239, 68, 68, 0.8)',
               display: 'inline-block'
             }} />
             <h2 style={{
@@ -1597,6 +1755,30 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
             }}>
               {lang === 'te' ? 'తిరుమల లైవ్ స్టేటస్' : 'Tirumala Live Status'}
             </h2>
+            {isRainy && (
+              <span 
+                onClick={() => setTestRainMode(prev => prev === false ? true : (prev === true ? null : false))}
+                title="Live Weather API: Rain in Tirumala (Click to test toggle)"
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '3.5px',
+                  fontSize: '10px',
+                  fontWeight: 700,
+                  color: '#0369A1',
+                  background: 'rgba(224, 242, 254, 0.9)',
+                  border: '1px solid rgba(186, 230, 253, 0.95)',
+                  padding: '2px 7px',
+                  borderRadius: '12px',
+                  lineHeight: 1.2,
+                  cursor: 'pointer',
+                  userSelect: 'none'
+                }}
+              >
+                <CloudRain size={11} color="#0284C7" />
+                <span>{lang === 'te' ? 'వర్షం' : 'Rain in Tirumala'}</span>
+              </span>
+            )}
           </div>
 
           <div style={{

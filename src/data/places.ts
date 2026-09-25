@@ -3585,6 +3585,497 @@ export const PLACES: Place[] = [
     travelEstimates: { 'kapila-theertham': '5 mins drive' },
     mapUrl: 'https://www.google.com/maps/place/Divyaramam+Park/data=!4m2!3m1!1s0x0:0x1d23250441cc3fd2',
     relatedPlaces: ['kapila-theertham', 'tada-falls']
+  },
+
+  // --- XV. MUNICIPAL PARK TIRUPATI (MCT) ---
+  {
+    id: 'municipal-park-tirupati',
+    name: 'Municipal Park (MCT)',
+    nameTe: 'మున్సిపల్ పార్కు',
+    category: 'Leisure',
+    placeType: 'leisure',
+    location: 'Bhavani Nagar / Korlagunta, Tirupati',
+    distanceKms: 2.5,
+    durationMins: 60,
+    budgetLevel: 'budget',
+    entryFeeNum: 20,
+    interests: ['nature', 'families', 'kids', 'photography', 'leisure'],
+    openFrom: 9,
+    openTo: 20,
+    isMustVisit: false,
+    description: 'A vibrant urban recreation park managed by the Tirupati Municipal Corporation (MCT), featuring landscaped lawns, walking paths, children\'s playground, and an evening musical fountain show with synchronized lights and music.',
+    descriptionTe: 'తిరుపతి నగర పాలక సంస్థ (MCT) నిర్వహించే ఈ ప్రసిద్ధ పార్కులో పచ్చని లాన్లు, నడక దారులు, పిల్లల ఆటస్థలం మరియు సాయంత్రం వేళల్లో రంగురంగుల లైట్లు, సంగీతంతో కూడిన మ్యూజికల్ ఫౌంటెన్ షో ప్రత్యేక ఆకర్షణగా ఉంటాయి.',
+    history: 'Developed and maintained by the Tirupati Municipal Corporation (MCT) to provide an accessible urban green lung and evening family recreation center for residents and pilgrims visiting the temple city.',
+    historyTe: 'తిరుపతి నగర పాలక సంస్థ (MCT) స్థానిక నివాసితులు మరియు భక్తుల కోసం నగర నడిబొడ్డున పచ్చదనం, ఆహ్లాదం మరియు సాయంత్ర వినోదం అందించే లక్ష్యంతో ఈ పార్కును అభివృద్ధి చేసి నిర్వహిస్తోంది.',
+    significance: {
+      traditionType: 'nature',
+      whyVisitTe: 'సాయంత్రం వేళల్లో రంగురంగుల సంగీత ఫౌంటెన్ (మ్యూజికల్ ఫౌంటెన్ షో), పిల్లల ఆట స్థలం మరియు ప్రశాంతమైన తోటల కోసం కుటుంబ సమేతంగా సందర్శించడానికి అనువైన ప్రదేశం.',
+      whyVisitEn: 'Families and visitors gather in the evening for the synchronized musical fountain show with vibrant lighting, green garden lawns, and an engaging children\'s play area in central Tirupati.',
+      actionsTe: [
+        'సాయంత్రం 7:00 నుండి 8:00 వరకు జరిగే మ్యూజికల్ ఫౌంటెన్ షోను తిలకించండి',
+        'పచ్చని తోటల్లో మరియు నడక మార్గాల్లో ప్రశాంతంగా గడపండి',
+        'పిల్లలను ప్రత్యేక ఆటల ప్రాంతంలో ఆడుకోనివ్వండి',
+        'పార్కు ప్రవేశద్వారం వద్ద లభించే స్థానిక స్నాక్స్ ఆస్వాదించండి'
+      ],
+      actionsEn: [
+        'Watch the synchronized musical fountain show between 7:00 PM – 8:00 PM',
+        'Stroll along the paved walking pathways and relax on garden lawns',
+        'Let children enjoy the playground equipment and open play zones',
+        'Enjoy evening snacks and fresh refreshments available outside the park entrance'
+      ],
+      culturalMeaningTe: 'ఆలయ దర్శనాల అలసట తర్వాత నగర నడిబొడ్డున కుటుంబంతో కలిసి ఆహ్లాదకరమైన సమయాన్ని గడపడానికి మున్సిపల్ పార్కు ఒక చక్కని విశ్రాంతి కేంద్రం.',
+      culturalMeaningEn: 'A welcoming civic green space where visiting pilgrims and locals unwind after temple visits, offering wholesome evening relaxation and joy for children.',
+      saarthiTipTe: 'మ్యూజికల్ ఫౌంటెన్ షో 7:00 PMకి ప్రారంభమవుతుంది; మంచి సీట్లు పొందడానికి 6:30 PM లోపు చేరుకోండి. సాయంత్రం వేళల్లో పిల్లలతో సందర్శించడానికి ఉత్తమ సమయం.',
+      saarthiTipEn: 'The musical fountain starts at 7:00 PM; arrive by 6:30 PM to secure the best viewing seats. Ideal for a relaxing family evening after daytime temple darshans.'
+    },
+    timings: '9:00 AM - 8:00 PM (Musical Fountain: 7:00 PM - 8:00 PM)',
+    entryFee: '₹20 per adult, ₹10 per child (Fountain show: ₹10–15)',
+    address: 'Municipal Park, Near Bhavani Nagar / Korlagunta, Tirupati, Andhra Pradesh 517501',
+    rating: 4.2,
+    reviewCount: 3100,
+    image: 'https://res.cloudinary.com/kniegqlj/image/upload/v1790326139/ATplDJZAqtZHnn4OpdSR46Xm95H2uP7qDzOwyRAtXPaihxdsm2togtsTUtIPrH9zeX8U7lFg5xPFDsJ7gLyl_wIzzAUttXXCEneUeQNE1pNURYBgMHtsAQDHsDerkPUvEzCKBnRbdNr30QWWWSWD-bLCsbLGSwybhgZnG0YH7v4BCfsrurE_ivukt2.jpg',
+    coordinates: { lat: 13.6473327, lng: 79.4263512 },
+    shortIntro: 'A centrally located city park with manicured lawns, children\'s playground, and an evening musical fountain show.',
+    whyVisit: 'Popular family leisure spot in Tirupati featuring a colorful musical fountain show every evening (7–8 PM), landscaped gardens, and kids\' play zone.',
+    openingTime: '9:00 AM',
+    closingTime: '8:00 PM',
+    duration: '1 to 1.5 hours',
+    travelByRTC: 'Easily reachable by city buses or shared autos from Tirupati Railway Station or Central Bus Stand (under 10 mins).',
+    travelByCar: 'Located 2.5 km from central Tirupati. Two-wheeler and car parking available near entrance.',
+    travelByBike: 'A quick 5 to 7-minute ride from Tirupati Railway Station.',
+    approxRTCFare: '₹10 city bus / ₹30–40 auto',
+    approxCarCost: '₹30 fuel or ₹80 auto/cab',
+    approxBikeCost: '₹15 petrol',
+    images: ['https://res.cloudinary.com/kniegqlj/image/upload/v1790326139/ATplDJZAqtZHnn4OpdSR46Xm95H2uP7qDzOwyRAtXPaihxdsm2togtsTUtIPrH9zeX8U7lFg5xPFDsJ7gLyl_wIzzAUttXXCEneUeQNE1pNURYBgMHtsAQDHsDerkPUvEzCKBnRbdNr30QWWWSWD-bLCsbLGSwybhgZnG0YH7v4BCfsrurE_ivukt2.jpg'],
+    tags: ['City Park', 'Musical Fountain', 'Kids Play Area', 'Evening Spot', 'Family Leisure'],
+    bestTime: 'Evening (6:00 PM - 8:00 PM) for the musical fountain show and cooler weather.',
+    idealFor: ['Families', 'Kids', 'Couples', 'Senior Citizens'],
+    status: 'Published',
+    importanceLevel: 'Optional',
+    visitDifficulty: 'Easy',
+    visitType: 'Quick Stop',
+    oneReasonToVisit: 'Vibrant evening musical fountain show and green garden play area right in the heart of Tirupati.',
+    verification: {
+      status: 'Verified',
+      tier: 'Silver',
+      source: 'Ground Visit',
+      confidenceScore: 0.85,
+      lastUpdated: '2026-09-25'
+    },
+    recommendationContext: {
+      bestTimeOfDay: ['Evening'],
+      idealSeason: ['Winter', 'Monsoon', 'All Seasons'],
+      typicalCrowd: 'Medium',
+      indoorOutdoor: 'Outdoor',
+      familyFriendly: true,
+      seniorFriendly: true,
+      wheelchairAccessible: true,
+      kidsFriendly: true,
+      photographyFriendly: true,
+      recommendationReasons: [
+        'Synchronized musical fountain with colorful water jets and lighting at 7:00 PM',
+        'Affordable entry (₹20) with spacious play area for young kids',
+        'Centrally located just 2.5 km from Tirupati Railway Station',
+        'Great place to relax in the evening after day darshans'
+      ]
+    },
+    searchIntelligence: {
+      aliases: ['Municipal Park', 'MCT Park', 'Tirupati Municipal Park', 'Korlagunta Park', 'Bhavani Nagar Park'],
+      tags: ['musical fountain', 'kids park', 'city garden', 'evening leisure', 'family park'],
+      intentQueries: ['municipal park tirupati timings', 'musical fountain tirupati', 'kids park in tirupati', 'places to visit in tirupati in evening', 'bhavani nagar park'],
+      misspellings: ['municiple park', 'municipal park', 'munisipal park']
+    },
+    relationships: {
+      nearby: ['govindaraja', 'kapila-theertham'],
+      recommendedTogether: ['govindaraja', 'kapila-theertham'],
+      sameCategory: ['divyaramam-park']
+    },
+    practicalInfo: {
+      dressCode: 'Casual / Comfortable attire',
+      food: 'Food stalls and snack vendors outside the entrance',
+      parking: 'Two-wheeler and four-wheeler parking near entrance (₹10–20)'
+    },
+    visitorTips: {
+      dressCode: 'Casual and comfortable. Walking shoes or sandals.',
+      crowdNote: 'Busiest on weekend evenings around 6:30–8:00 PM for the fountain show.',
+      photoRule: 'Photography allowed. Fountain show is very photogenic.',
+      entryRule: 'Counter tickets only at entrance. Carry exact cash or UPI.'
+    },
+    facilities: {
+      parking: 'Parking available outside park gate',
+      toilets: 'Restrooms available inside park',
+      drinkingWater: 'Drinking water points available',
+      food: 'Snack counters near entrance',
+      wheelchair: 'Paved walking paths accessible for strollers and wheelchairs'
+    },
+    travelEstimates: { 'govindaraja': '8 mins drive', 'kapila-theertham': '10 mins drive' },
+    mapUrl: 'https://www.google.com/maps/place/Municipal+Park/@13.6473327,79.4263512,17z',
+    relatedPlaces: ['divyaramam-park', 'kapila-theertham', 'govindaraja']
+  },
+
+  // --- XVI. VINAYAKA SAGAR (LAKE & WATERFRONT) ---
+  {
+    id: 'vinayaka-sagar',
+    name: 'Vinayaka Sagar (Lake & Waterfront)',
+    nameTe: 'వినాయక సాగర్ (వాటర్‌ఫ్రంట్)',
+    category: 'Water & Nature',
+    placeType: 'water',
+    location: 'Karakambadi Road, Tirupati',
+    distanceKms: 4.2,
+    durationMins: 60,
+    budgetLevel: 'budget',
+    entryFeeNum: 0,
+    interests: ['nature', 'fitness', 'families', 'lake', 'leisure'],
+    openFrom: 5,
+    openTo: 21,
+    isMustVisit: false,
+    description: 'A scenic urban lake and waterfront promenade on Karakambadi Road, revitalized by the Municipal Corporation of Tirupati (MCT) with walking and jogging tracks, landscaped greenery, public swimming pool, and RO drinking water facilities.',
+    descriptionTe: 'కరకంబాడి రోడ్డులోని ఈ అందమైన చెరువును తిరుపతి నగర పాలక సంస్థ (MCT) ఆధునీకరించి జాగింగ్ ట్రాక్‌లు, పచ్చదనం, ప్రజా స్విమ్మింగ్ పూల్ మరియు తాగునీటి సదుపాయాలతో ఆకర్షణీయమైన వాటర్‌ఫ్రంట్ కేంద్రంగా తీర్చిదిద్దింది.',
+    history: 'Historically renowned as the primary designated site for Lord Ganesh idol immersion (Nimajjanam) during Ganesh Chaturthi. The Tirupati Municipal Corporation (MCT) transformed this neglected water body into a scenic recreational waterfront and fitness facility for the city.',
+    historyTe: 'వినాయక చవితి పర్వదినాల్లో గణేష్ నిమజ్జనానికి ప్రసిద్ధి చెందిన ఈ చెరువును తిరుపతి నగర పాలక సంస్థ (MCT) అద్భుతమైన వాటర్‌ఫ్రంట్‌గా మార్చి, నగరవాసుల ఆరోగ్యం మరియు ఆహ్లాదం కోసం తీర్చిదిద్దింది.',
+    significance: {
+      traditionType: 'nature',
+      whyVisitTe: 'చెరువు ఒడ్డున చల్లని గాలి, సరస్సు చుట్టూ జాగింగ్/వాకింగ్ ట్రాక్‌లు మరియు కొత్తగా ప్రారంభించిన స్విమ్మింగ్ పూల్ సౌకర్యాల కోసం ఉదయం లేదా సాయంత్రం వేళల్లో సందర్శించడానికి అనుకూలం.',
+      whyVisitEn: 'A revitalized lakefront destination on Karakambadi Road offering cool breezes, a scenic perimeter walking/jogging track, and modern community amenities including a public swimming pool.',
+      actionsTe: [
+        'సరస్సు చుట్టూ ఏర్పాటు చేసిన ట్రాక్‌పై ఉదయపు లేదా సాయంత్రపు వాకింగ్/జాగింగ్ చేయండి',
+        'చెరువు ఒడ్డున చల్లని ఆహ్లాదకరమైన వాతావరణంలో విశ్రాంతి తీసుకోండి',
+        'మున్సిపల్ కార్పొరేషన్ ఆధ్వర్యంలోని స్విమ్మింగ్ పూల్ సదుపాయాన్ని ఉపయోగించండి',
+        'వినాయక చవితి సమయాల్లో జరిగే భారీ గణేష్ నిమజ్జన ఉత్సవాలను తిలకించండి'
+      ],
+      actionsEn: [
+        'Walk or jog along the waterfront track overlooking the lake',
+        'Enjoy the refreshing breeze and scenic open skies at sunset',
+        'Access the newly inaugurated public swimming pool and fitness amenities',
+        'Witness the vibrant Ganesh Nimajjanam festivities during Bhadrapada season'
+      ],
+      culturalMeaningTe: 'తిరుపతిలో సంప్రదాయ వినాయక నిమజ్జన స్థలంగా ఆధ్యాత్మిక అనుబంధం కలిగిన వినాయక సాగర్, నేడు ఆధునిక జీవనశైలికి అనుగుణంగా పర్యావరణహిత పర్యాటక కేంద్రంగా నిలుస్తోంది.',
+      culturalMeaningEn: 'Traditionally sacred to the city as the destination for annual Vinayaka Nimajjanam ceremonies, Vinayaka Sagar now blends cultural celebration with civic fitness and ecological renewal.',
+      saarthiTipTe: 'ఉదయం 5:30–8:00 లేదా సాయంత్రం 5:30–7:30 సమయాల్లో చల్లని గాలులతో సరస్సు తీరం అత్యంత ఆహ్లాదకరంగా ఉంటుంది. రన్నింగ్ లేదా ఈత కోసం అనువైన స్పాట్.',
+      saarthiTipEn: 'Early mornings (5:30–8:00 AM) or sunset hours (5:30–7:30 PM) offer the coolest breeze across the lake. Great for a peaceful stroll away from temple crowds.'
+    },
+    timings: '5:00 AM - 9:00 PM (Swimming pool: 6:00 AM - 8:00 PM)',
+    entryFee: 'Free (Swimming pool has nominal MCT entry fee)',
+    address: 'Vinayaka Sagar, Karakambadi Road, Near Mangalam, Tirupati, Andhra Pradesh 517507',
+    rating: 4.3,
+    reviewCount: 1950,
+    image: 'https://res.cloudinary.com/kniegqlj/image/upload/v1790327880/images_zeu2bq.jpg',
+    coordinates: { lat: 13.6459298, lng: 79.4410675 },
+    shortIntro: 'A scenic waterfront lake on Karakambadi Road featuring jogging tracks, landscaped greens, and a public swimming pool.',
+    whyVisit: 'Revamped lakefront with cool waterside walking paths, swimming pool, and peaceful sunset views on Karakambadi Road.',
+    openingTime: '5:00 AM',
+    closingTime: '9:00 PM',
+    duration: '45 mins to 1.5 hours',
+    travelByRTC: 'Buses towards Karakambadi / Renigunta ply frequently along Karakambadi Road. Stop at Vinayaka Sagar.',
+    travelByCar: '4.2 km from Tirupati city center via Karakambadi Road. Parking available alongside the lakefront.',
+    travelByBike: '10-minute ride from Tirupati Railway Station or Central Bus Stand.',
+    approxRTCFare: '₹15 per person by bus / ₹60 auto',
+    approxCarCost: '₹50 fuel or ₹120 auto/cab',
+    approxBikeCost: '₹25 petrol',
+    images: ['https://res.cloudinary.com/kniegqlj/image/upload/v1790327880/images_zeu2bq.jpg'],
+    tags: ['Lake', 'Waterfront', 'Jogging Track', 'Swimming Pool', 'Sunset Point', 'Ganesh Immersion'],
+    bestTime: 'Early morning (5:30–8:00 AM) or sunset (5:30–7:30 PM)',
+    idealFor: ['Solo Travelers', 'Couples', 'Families', 'Photographers'],
+    status: 'Published',
+    importanceLevel: 'Optional',
+    visitDifficulty: 'Easy',
+    visitType: 'Quick Stop',
+    oneReasonToVisit: 'Scenic lakefront with breezy jogging tracks, sunset views, and swimming pool on Karakambadi Road.',
+    verification: {
+      status: 'Verified',
+      tier: 'Silver',
+      source: 'Ground Visit',
+      confidenceScore: 0.85,
+      lastUpdated: '2026-09-25'
+    },
+    recommendationContext: {
+      bestTimeOfDay: ['Morning', 'Evening'],
+      idealSeason: ['Monsoon', 'Winter', 'All Seasons'],
+      typicalCrowd: 'Low',
+      indoorOutdoor: 'Outdoor',
+      familyFriendly: true,
+      seniorFriendly: true,
+      kidsFriendly: true,
+      recommendationReasons: [
+        'Peaceful waterside walkway with refreshing lake breezes',
+        'Municipal swimming pool and fitness amenities on site',
+        'Less crowded green space ideal for quiet morning workouts',
+        'Historic cultural venue for Tirupati Ganesh Nimajjanam'
+      ]
+    },
+    searchIntelligence: {
+      aliases: ['Vinayaka Sagar', 'Vinayaka Sagar Lake', 'Karakambadi Lake', 'Vinayaka Nimajjanam Cheruvu'],
+      tags: ['lake', 'waterfront', 'swimming pool', 'jogging', 'sunset point', 'karakambadi road'],
+      intentQueries: ['vinayaka sagar tirupati', 'swimming pool in tirupati', 'places to jog in tirupati', 'vinayaka sagar timings', 'lakes in tirupati'],
+      misspellings: ['vinayak sagar', 'vinayakasagar', 'vinayaka cheruvu']
+    },
+    relationships: {
+      nearby: ['municipal-park-tirupati'],
+      recommendedTogether: ['municipal-park-tirupati'],
+      sameCategory: ['divyaramam-park']
+    },
+    practicalInfo: {
+      dressCode: 'Casual / Sports attire for jogging or swimming',
+      food: 'Tea stalls and light refreshments nearby along Karakambadi Road',
+      parking: 'Roadside and lakefront designated parking available'
+    },
+    facilities: {
+      parking: 'Lakefront parking available',
+      toilets: 'Restrooms available near swimming pool complex',
+      drinkingWater: 'RO purified drinking water facility on site',
+      wheelchair: 'Paved promenade along main lakefront'
+    },
+    travelEstimates: { 'municipal-park-tirupati': '6 mins drive', 'kapila-theertham': '12 mins drive' },
+    mapUrl: 'https://www.google.com/maps/place/Vinayaka+Sagar/@13.6459298,79.4410675,17z',
+    relatedPlaces: ['municipal-park-tirupati', 'divyaramam-park']
+  },
+
+  // --- XVII. NGO COLONY PARK (APHB) ---
+  {
+    id: 'ngo-colony-park',
+    name: 'NGO Colony Park (APHB)',
+    nameTe: 'ఎన్జీఓ కాలనీ పార్కు',
+    category: 'Nature & Leisure',
+    placeType: 'nature',
+    location: 'KT Road, Srinivasa Nagar / APHB Colony, Tirupati',
+    distanceKms: 2.8,
+    durationMins: 45,
+    budgetLevel: 'budget',
+    entryFeeNum: 0,
+    interests: ['nature', 'fitness', 'families', 'kids', 'leisure'],
+    openFrom: 5,
+    openTo: 20,
+    isMustVisit: false,
+    description: 'A neighborhood green park on KT Road in Srinivasa Nagar / APHB Colony, offering peaceful walking paths, lush shaded benches, open gym equipment, and a children\'s play area near the foothills of Tirumala.',
+    descriptionTe: 'తిరుమల కొండల సామీప్యంలో కెటి రోడ్డు, శ్రీనివాస నగర్ (ఎన్జీఓ కాలనీ / APHB కాలనీ) వద్ద ఉన్న ఈ ఉద్యానవనంలో ఉదయపు నడక దారులు, పచ్చని చెట్లు, పిల్లల ఆటస్థలం మరియు వ్యాయామ పరికరాలు ఉన్నాయి.',
+    history: 'Established as a residential community park for the Andhra Pradesh Housing Board (APHB) Colony and NGO Colony, maintained by the municipal corporation as a green sanctuary for local residents and morning fitness enthusiasts.',
+    historyTe: 'ఎన్జీఓ కాలనీ మరియు ఏపీ హౌసింగ్ బోర్డు కాలనీ పరిసర ప్రాంత నివాసితుల కోసం అభివృద్ధి చేసిన ఈ కమ్యూనిటీ పార్కు, స్థానికులకు ప్రశాంత ఉదయపు నడక మరియు వ్యాయామ వేదికగా సేవలందిస్తోంది.',
+    significance: {
+      traditionType: 'nature',
+      whyVisitTe: 'అలిపిరి సమీపంలో ప్రశాంతమైన వాతావరణంలో ఉదయపు నడక, తాజా గాలి మరియు పిల్లల ఆటలకు అనుకూలమైన చక్కని రెసిడెన్షియల్ పార్కు.',
+      whyVisitEn: 'A peaceful neighborhood park near Alipiri foothills favored by morning walkers and families for its quiet paved trails, open gym, and clean garden setting.',
+      actionsTe: [
+        'ఉదయం 5:00 గంటల నుండి చల్లని వాతావరణంలో వాకింగ్ మరియు వ్యాయామం చేయండి',
+        'చెట్ల నీడలోని బెంచీలపై కూర్చుని ప్రశాంతంగా సమయం గడపండి',
+        'పిల్లల ఆట పరికరాలు మరియు ఓపెన్ జిమ్ సౌకర్యాలను ఉపయోగించండి'
+      ],
+      actionsEn: [
+        'Take peaceful morning walks along the perimeter walking paths starting from 5:00 AM',
+        'Relax under shaded green canopies on garden benches',
+        'Utilize open-air public fitness equipment and let children enjoy the playground'
+      ],
+      culturalMeaningTe: 'తిరుపతి పట్టణ జీవనంలో పచ్చదనాన్ని కాపాడుతూ, స్థానికులకు నిత్య శారీరక దృఢత్వం మరియు మానసిక ప్రశాంతతను అందించే పవిత్ర పాదాల చెంత ఉన్న హరిత కేంద్రం.',
+      culturalMeaningEn: 'A community green space that reflects everyday Tirupati life, providing a calm neighborhood environment for health, quiet reflection, and community bonding near the sacred foothills.',
+      saarthiTipTe: 'ఉదయం 5:30–8:00 మధ్య నడకకు అత్యంత ఆహ్లాదకరమైన సమయం. అలిపిరి మరియు కపిలతీర్థం మార్గంలో ఉన్నందున దర్శనానికి ముందు తేలికపాటి వాకింగ్‌కు అనుకూలం.',
+      saarthiTipEn: 'Best visited between 5:30–8:00 AM for fresh morning air. Conveniently located on KT Road near Alipiri, making it ideal for a quick walk or relaxation before embarking on your temple plans.'
+    },
+    timings: '5:00 AM - 11:00 AM, 4:00 PM - 8:30 PM',
+    entryFee: 'Free',
+    address: '6-8-905, KT Road, Srinivasa Nagar, A P Housing Board Colony, Tirupati, Andhra Pradesh 517507',
+    rating: 4.1,
+    reviewCount: 1150,
+    image: 'https://res.cloudinary.com/kniegqlj/image/upload/v1790327167/ngo-colony-park-srinivasanagar-tirupati-parks-pBVqs1ZMew-250_klsx2e.jpg',
+    coordinates: { lat: 13.6519631, lng: 79.4190593 },
+    shortIntro: 'A peaceful community park on KT Road with walking tracks, open gym, and children\'s play area near Alipiri.',
+    whyVisit: 'Calm neighborhood green park with shaded walking tracks, children\'s playground, and open fitness equipment in Srinivasa Nagar.',
+    openingTime: '5:00 AM',
+    closingTime: '8:30 PM',
+    duration: '30 to 45 mins',
+    travelByRTC: 'Take city buses or auto along KT Road towards Alipiri. Stop at Srinivasa Nagar / NGO Colony Park.',
+    travelByCar: '2.8 km from Tirupati Railway Station via KT Road. Street parking available.',
+    travelByBike: '5 to 7-minute ride from Tirupati center towards Alipiri.',
+    approxRTCFare: '₹10 by bus / ₹30 shared auto',
+    approxCarCost: '₹25 fuel or ₹60 auto',
+    approxBikeCost: '₹15 petrol',
+    images: ['https://res.cloudinary.com/kniegqlj/image/upload/v1790327167/ngo-colony-park-srinivasanagar-tirupati-parks-pBVqs1ZMew-250_klsx2e.jpg'],
+    tags: ['Community Park', 'Walking Track', 'Open Gym', 'Kids Play Area', 'Morning Walk', 'KT Road'],
+    bestTime: 'Morning (5:30 AM - 8:00 AM) or evening (5:00 PM - 7:30 PM)',
+    idealFor: ['Senior Citizens', 'Families', 'Kids', 'Solo Travelers'],
+    status: 'Published',
+    importanceLevel: 'Optional',
+    visitDifficulty: 'Easy',
+    visitType: 'Quick Stop',
+    oneReasonToVisit: 'Quiet neighborhood morning walk spot with shaded benches and children\'s playground near Alipiri.',
+    verification: {
+      status: 'Verified',
+      tier: 'Silver',
+      source: 'Ground Visit',
+      confidenceScore: 0.85,
+      lastUpdated: '2026-09-25'
+    },
+    recommendationContext: {
+      bestTimeOfDay: ['Morning', 'Evening'],
+      idealSeason: ['All Seasons'],
+      typicalCrowd: 'Low',
+      indoorOutdoor: 'Outdoor',
+      familyFriendly: true,
+      seniorFriendly: true,
+      kidsFriendly: true,
+      wheelchairAccessible: true,
+      recommendationReasons: [
+        'Opens at 5:00 AM — perfect for early morning fitness and quiet strolls',
+        'Free community entry with dedicated children play equipment',
+        'Conveniently placed along KT Road close to Alipiri foothills',
+        'Shaded green retreat away from busy commercial corridors'
+      ]
+    },
+    searchIntelligence: {
+      aliases: ['NGO Colony Park', 'APHB Colony Park', 'Srinivasa Nagar Park', 'KT Road Park'],
+      tags: ['morning walk', 'open gym', 'kids playground', 'kt road', 'alipiri parks'],
+      intentQueries: ['ngo colony park tirupati', 'parks on kt road tirupati', 'morning walk park near alipiri', 'srinivasa nagar park tirupati'],
+      misspellings: ['ngo park', 'ngos park', 'aphb park']
+    },
+    relationships: {
+      nearby: ['kapila-theertham', 'divyaramam-park'],
+      recommendedTogether: ['kapila-theertham', 'divyaramam-park'],
+      sameCategory: ['municipal-park-tirupati']
+    },
+    practicalInfo: {
+      dressCode: 'Casual / Comfortable walking attire',
+      food: 'Tea shops and bakeries available outside on KT Road',
+      parking: 'Roadside parking available'
+    },
+    facilities: {
+      parking: 'Street/roadside parking available',
+      toilets: 'Basic sanitation facility inside',
+      drinkingWater: 'Water points nearby',
+      wheelchair: 'Paved walking path suitable for wheelchairs'
+    },
+    travelEstimates: { 'kapila-theertham': '4 mins drive', 'alipiri-checkpoint': '5 mins drive' },
+    mapUrl: 'https://www.google.com/maps/place/N.G.O+Colony+Park/@13.6519631,79.4190593,17z',
+    relatedPlaces: ['kapila-theertham', 'divyaramam-park']
+  },
+
+  // --- XVIII. SRI PARASARESWARA SWAMY TEMPLE (YOGIMALLAVARAM) ---
+  {
+    id: 'parasareswara-swamy-temple',
+    name: 'Sri Parasareswara Swamy Temple (Yogimallavaram)',
+    nameTe: 'శ్రీ పరాశరేశ్వర స్వామి దేవాలయం (యోగిమల్లవరం)',
+    category: 'Temples',
+    placeType: 'spiritual',
+    location: 'Yogimallavaram, Near Tiruchanoor',
+    distanceKms: 5.2,
+    durationMins: 60,
+    budgetLevel: 'budget',
+    entryFeeNum: 0,
+    interests: ['spiritual', 'history', 'heritage', 'architecture'],
+    openFrom: 6,
+    openTo: 20,
+    isMustVisit: true,
+    description: 'A 1,000-year-old ancient Chola Shiva temple situated on the northern bank of the sacred Swarnamukhi River in Yogimallavaram near Tiruchanoor. Built by Chola Emperor Rajaraja Chola I in 1008 CE, the temple commemorates both Arjuna\'s penance for the Pasupatastra and Sage Parasara\'s installation of Lord Shiva.',
+    descriptionTe: 'తిరుచానూరు సమీపంలో స్వర్ణముఖి నదీ తీరాన యోగిమల్లవరంలో వెలసిన 1,000 ఏళ్ల పురాతన చోళుల శైవ క్షేత్రం. క్రీ.శ. 1008లో మొదటి రాజరాజ చోళునిచే నిర్మితమైన ఈ ఆలయంలో అర్జునుడు పాశుపతాస్త్రం కోసం తపస్సు చేసిన గాథ, పరాశర మహర్షి ప్రతిష్ఠించిన శివలింగం విశేష ప్రాధాన్యత కలిగి ఉన్నాయి.',
+    history: 'Built by Rajaraja Chola I in 1008 CE and celebrated across 11 ancient stone inscriptions dating from the 11th to 13th centuries. According to Sthala Purana, Arjuna meditated here as a Yogi to acquire the Pasupatastra, and Lord Shiva tested his valor in the guise of a hunter (Mallu), giving the site its name Yogimallavaram. Sage Parasara (father of Veda Vyasa) later performed penance here to behold his deceased father Sakthi in heaven and consecrated the presiding Shiva Lingam.',
+    historyTe: 'క్రీ.శ. 1008లో మొదటి రాజరాజ చోళుని కాలంలో నిర్మించబడిన ఈ ఆలయంలో 11 చారిత్రక శాసనాలు లభించాయి. పాశుపతాస్త్ర సాధన కోసం అర్జునుడు (యోగి) తపస్సు చేయగా, పరమశివుడు వేటగాడి (మల్లు) రూపంలో పరీక్షించి వరం ప్రసాదించిన పవిత్ర స్థలం "యోగిమల్లవరం". వేదవ్యాసుని తండ్రి పరాశర మహర్షి ఇక్కడ శివారాధన చేసి తన తండ్రి దర్శనం పొందడం వలన ఈ స్వామికి "పరాశరేశ్వరుడు" అనే పేరు వచ్చింది.',
+    significance: {
+      traditionType: 'temple',
+      whyVisitTe: 'తిరుచానూరు పద్మావతి అమ్మవారి దర్శనంతో పాటు దర్శించవలసిన అరుదైన 1,000 సంవత్సరాల పురాతన చోళుల శైవ క్షేత్రం. అర్జునునికి శివుడు పాశుపతాస్త్రం అనుగ్రహించిన పవిత్ర పుణ్యభూమి.',
+      whyVisitEn: 'A must-visit 1,000-year-old Chola architectural jewel near Tiruchanoor where Arjuna received the divine Pasupatastra and Sage Parasara attained his father\'s heavenly vision.',
+      actionsTe: [
+        'తూర్పు ముఖంగా ప్రతిష్ఠించబడిన శ్రీ పరాశరేశ్వర లింగానికి మరియు శ్రీ కామాక్ష్యాంబ అమ్మవారికి పూజలు చేయండి',
+        'చోళుల కాలం నాటి 11 చారిత్రక శాసనాలను, గర్భాలయ రాతి శిల్ప కళను వీక్షించండి',
+        'ప్రదోషం మరియు సోమవారాల్లో నిర్వహించే రుద్రాభిషేకంలో పాల్గొనండి',
+        'స్వర్ణముఖి నది పరివాహక ప్రాంతంలోని ప్రశాంత ఆధ్యాత్మికతను అనుభవించండి'
+      ],
+      actionsEn: [
+        'Seek blessings of East-facing Sri Parasareswara Swamy and Sri Kamakshyamba Devi',
+        'Admire 11th-century Chola granite architecture and authentic historical stone inscriptions (sasanams)',
+        'Participate in traditional Rudra Abhishekam on Somavaram and Pradosham days',
+        'Experience the calm Vedic heritage on the northern banks of the holy Swarnamukhi River'
+      ],
+      culturalMeaningTe: 'తిరుపతి-తిరుచానూరు ప్రాంతంలో వైష్ణవ సాంప్రదాయంతో పాటు సమానంగా పరిఢవిల్లిన ప్రాచీన చోళుల శైవ వైభవానికి, అర్జునుని వీరత్వానికి మరియు పరాశరుని పితృభక్తికి ఈ ఆలయం ప్రతీక.',
+      culturalMeaningEn: 'Standing on the Swarnamukhi riverbank, this temple bridges Mahabharata epic history with Chola imperial devotion, showcasing how Shaivism and Vaishnavism harmoniously flourished side-by-side near Tiruchanoor.',
+      saarthiTipTe: 'తిరుచానూరు పద్మావతి అమ్మవారి ఆలయానికి కేవలం 3 కిమీ దూరంలో ఉంది. ఉదయం 7:00–10:00 లేదా సాయంత్రం 5:00–7:00 సమయం దర్శనానికి అత్యంత ప్రశాంతమైనది. ప్రదోష పూజలు విశేష ఫలితాన్నిస్తాయి.',
+      saarthiTipEn: 'Located just 3 km from Tiruchanoor Padmavathi Temple — easily clubbed together in one trip. Early mornings (7:00–10:00 AM) or evenings during Pradosham offer an intensely serene, unhurried darshan experience.'
+    },
+    timings: '6:00 AM - 12:00 PM, 4:30 PM - 8:00 PM',
+    entryFee: 'Free (Special Abhishekam tickets available at counter)',
+    address: 'Sri Parasareswara Swamy Temple, Yogimallavaram, Near Tiruchanoor Bypass, Tirupati District, Andhra Pradesh 517503',
+    rating: 4.7,
+    reviewCount: 2800,
+    image: 'https://res.cloudinary.com/kniegqlj/image/upload/v1790327596/sri-kamakshyamba-sametha-sri-parashareshwaraswami-temple-tirupati-ho-tirupati-temples-R2nuogw9vB-250_fk1qmc.jpg',
+    coordinates: { lat: 13.6074496, lng: 79.4444212 },
+    shortIntro: 'A 1,000-year-old Chola architectural temple in Yogimallavaram dedicated to Lord Shiva, consecrated by Sage Parasara and sanctified by Arjuna\'s penance.',
+    whyVisit: 'Historic 11th-century Chola Shiva temple where Arjuna was granted the Pasupatastra and Sage Parasara installed the sacred Shiva Lingam.',
+    openingTime: '6:00 AM',
+    closingTime: '8:00 PM',
+    duration: '45 mins to 1 hour',
+    travelByRTC: 'Buses from Tirupati to Tiruchanoor are available every 5-10 mins. Alight at Yogimallavaram arch on Tiruchanoor Highway and walk 10 mins or take auto.',
+    travelByCar: '5.2 km from Tirupati Bus Stand via Padmavathi Puram and Tiruchanoor Bypass. Direct road access with parking near temple.',
+    travelByBike: '12-minute scenic ride from central Tirupati towards Tiruchanoor.',
+    approxRTCFare: '₹15 RTC bus / ₹30 auto',
+    approxCarCost: '₹40 fuel or ₹120 auto/cab',
+    approxBikeCost: '₹20 petrol',
+    images: ['https://res.cloudinary.com/kniegqlj/image/upload/v1790327596/sri-kamakshyamba-sametha-sri-parashareshwaraswami-temple-tirupati-ho-tirupati-temples-R2nuogw9vB-250_fk1qmc.jpg'],
+    tags: ['Chola Temple', 'Shiva Temple', 'Arjuna Pasupatastra', 'Yogimallavaram', 'Must Visit', 'Heritage 1008 CE'],
+    bestTime: 'Morning (7:00 AM - 10:00 AM) or evening (5:00 PM - 7:30 PM), especially Mondays and Pradosham',
+    idealFor: ['Pilgrims', 'Families', 'Senior Citizens', 'Photographers'],
+    status: 'Published',
+    importanceLevel: 'Iconic',
+    visitDifficulty: 'Easy',
+    visitType: 'Must Visit',
+    oneReasonToVisit: 'Over 1,000 years of unbroken Chola history, Arjuna\'s Pasupatastra sacred legend, and profound Shaivite tranquility right next to Tiruchanoor.',
+    verification: {
+      status: 'Verified',
+      tier: 'Gold',
+      source: 'Temple Officials',
+      confidenceScore: 0.95,
+      lastUpdated: '2026-09-25'
+    },
+    recommendationContext: {
+      bestTimeOfDay: ['Morning', 'Evening'],
+      idealSeason: ['Winter', 'Festival Season', 'All Seasons'],
+      typicalCrowd: 'Low',
+      indoorOutdoor: 'Both',
+      familyFriendly: true,
+      seniorFriendly: true,
+      wheelchairAccessible: true,
+      recommendationReasons: [
+        'Authentic 1,000-year-old stone temple built by Rajaraja Chola I in 1008 CE',
+        'Direct epic connection to Arjuna receiving the Pasupatastra weapon from Shiva',
+        'Consecrated by Sage Parasara, father of Veda Vyasa',
+        'Located only 3 km from Tiruchanoor Padmavathi Ammavari Temple — ideal combination visit'
+      ]
+    },
+    searchIntelligence: {
+      aliases: ['Parasareswara Swamy Temple', 'Yogimallavaram Temple', 'Thiru Parasareswaram', 'Parashareshwara Temple', 'Kamakshyamba Temple Yogimallavaram'],
+      tags: ['parasareswara', 'yogimallavaram', 'chola temple', 'shiva temple tiruchanoor', 'arjuna pasupatastra'],
+      intentQueries: ['parasareswara swamy temple timings', 'yogimallavaram shiva temple', 'ancient temples near tiruchanoor', 'chola temples in tirupati'],
+      misspellings: ['parashareswara', 'yogimallavarm', 'parashareswaraswami', 'parasareswar']
+    },
+    relationships: {
+      nearby: ['tiruchanur'],
+      recommendedTogether: ['tiruchanur'],
+      sameCategory: ['kapila-theertham']
+    },
+    spiritualInfo: {
+      god: 'Lord Sri Parasareswara Swamy (Lord Shiva) & Sri Kamakshyamba Devi',
+      knownFor: 'Arjuna Pasupatastra boon site, Parasara Maharishi penance, and 11th-century Chola granite architecture',
+      mantra: 'Om Namah Shivaya | Om Parasareswaraya Namah',
+      devoteeTips: [
+        'Offer Bilva leaves and milk abhishekam on Mondays or Pradosha days.',
+        'Take a few minutes to read the ancient stone inscriptions carved around the sanctum walls.'
+      ]
+    },
+    practicalInfo: {
+      dressCode: 'Traditional Hindu temple attire (Dhoti/Kurta or formal pants for men; Saree/Churidar for women)',
+      food: 'Annadanam and prasadam stalls available in nearby Tiruchanoor town',
+      parking: 'Spacious temple premises parking available'
+    },
+    visitorTips: {
+      dressCode: 'Modest and traditional clothing recommended for entering sanctum.',
+      crowdNote: 'Peaceful on regular days; moderate footfall on Maha Shivaratri, Karthika Masam, and Pradosham.',
+      photoRule: 'Photography allowed in outer mandapam and temple corridors; prohibited inside the sanctum sanctorum.',
+      entryRule: 'Free entry. Open to all devotees.'
+    },
+    facilities: {
+      parking: 'Dedicated parking space available in front of temple',
+      toilets: 'Restroom facilities available near temple office',
+      drinkingWater: 'Clean drinking water available',
+      wheelchair: 'Ground floor sanctum with flat stone courtyard'
+    },
+    travelEstimates: { 'tiruchanur': '6 mins drive', 'renigunta-junction': '15 mins drive' },
+    mapUrl: 'https://www.google.com/maps/place/Sri+Kamakshyamba+Sametha+Sri+Parashareshwaraswami+Temple/@13.6074496,79.4444212,17z',
+    relatedPlaces: ['tiruchanur', 'kapila-theertham', 'srikalahasti']
   }
 ];
 

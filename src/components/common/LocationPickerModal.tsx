@@ -437,7 +437,9 @@ export function LocationPill({
         letterSpacing: '-0.01em', 
         overflow: 'hidden', 
         textOverflow: 'ellipsis',
-        maxWidth: '110px'
+        whiteSpace: 'nowrap',
+        display: 'inline-block',
+        maxWidth: '125px'
       }}>
         {displayName}
       </span>

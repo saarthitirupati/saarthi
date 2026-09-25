@@ -43,6 +43,70 @@ function renderMapSvgIcon(category: string, pinId: string = '', color: string = 
       </g>
     );
   }
+  if (pinId.includes('gym') || pinId.includes('fitness')) {
+    return (
+      <g fill={color} stroke={color} strokeWidth="0.8">
+        <circle cx="2.5" cy="6" r="2" fill={color} />
+        <circle cx="9.5" cy="6" r="2" fill={color} />
+        <line x1="2.5" y1="6" x2="9.5" y2="6" strokeWidth="1.8" />
+      </g>
+    );
+  }
+  if (pinId.includes('play') || pinId.includes('kids') || pinId.includes('children')) {
+    return (
+      <g stroke={color} strokeWidth="1.2" fill="none">
+        <line x1="2" y1="11" x2="5" y2="1" />
+        <line x1="10" y1="11" x2="7" y2="1" />
+        <line x1="3.5" y1="4" x2="8.5" y2="4" />
+        <line x1="6" y1="4" x2="6" y2="9" strokeWidth="1" strokeDasharray="1.5 1" />
+        <rect x="4.5" y="9" width="3" height="1.5" rx="0.5" fill={color} />
+      </g>
+    );
+  }
+  if (pinId.includes('gazebo') || pinId.includes('pergola') || pinId.includes('lawn')) {
+    return (
+      <g stroke={color} strokeWidth="1.1" fill="none">
+        <polygon points="6,1 1,5 11,5" fill={color} />
+        <line x1="2.5" y1="5" x2="2.5" y2="11" />
+        <line x1="9.5" y1="5" x2="9.5" y2="11" />
+        <line x1="6" y1="5" x2="6" y2="11" />
+      </g>
+    );
+  }
+  if (pinId.includes('fountain')) {
+    return (
+      <g stroke={color} strokeWidth="1.1" fill="none">
+        <ellipse cx="6" cy="9.5" rx="5" ry="2" fill={color} />
+        <line x1="6" y1="9.5" x2="6" y2="3" strokeWidth="1.3" />
+        <path d="M 6 3 Q 3 1 2 4" />
+        <path d="M 6 3 Q 9 1 10 4" />
+      </g>
+    );
+  }
+  if (pinId.includes('track') || pinId.includes('jogging') || pinId.includes('walk')) {
+    return (
+      <g stroke={color} strokeWidth="1.2" fill="none">
+        <ellipse cx="6" cy="6" rx="5" ry="3.5" strokeDasharray="3 2" />
+        <circle cx="6" cy="6" r="1.5" fill={color} />
+      </g>
+    );
+  }
+  if (pinId.includes('pool') || pinId.includes('swimming')) {
+    return (
+      <g stroke={color} strokeWidth="1.1" fill="none">
+        <circle cx="4" cy="4" r="1.5" fill={color} />
+        <path d="M 1 9 Q 3.5 7 6 9 Q 8.5 11 11 9" strokeWidth="1.3" />
+      </g>
+    );
+  }
+  if (pinId.includes('lake') || pinId.includes('water') || pinId.includes('expanse')) {
+    return (
+      <g stroke={color} strokeWidth="1.2" fill="none">
+        <path d="M 1 5 Q 3.5 3 6 5 Q 8.5 7 11 5" />
+        <path d="M 1 9 Q 3.5 7 6 9 Q 8.5 11 11 9" />
+      </g>
+    );
+  }
   if (pinId.includes('shrine') || pinId.includes('shiva') || pinId.includes('parvathi') || category === 'sanctum') {
     return (
       <g fill={color} stroke={color} strokeWidth="0.5">
@@ -500,6 +564,97 @@ export default function OfflineTempleMap({
 
               {/* Approach Road & Parking Area (South) */}
               <rect x="290" y="265" width="100" height="26" rx="6" fill="#0284C7" stroke="#0369A1" strokeWidth="1.5" />
+            </g>
+          ) : layout.layoutType === 'urban-park' ? (
+            /* 2B. URBAN COMMUNITY & MUNICIPAL PARKS (NGO Colony Park, Municipal Park, Divyaramam) */
+            <g>
+              {/* Manicured Park Base Ground */}
+              <rect x="35" y="25" width="470" height="285" rx="16" fill="#F0FDF4" stroke="#86EFAC" strokeWidth="2" />
+              
+              {/* Outer Perimeter Terracotta Running & Walking Track */}
+              <rect x="65" y="48" width="410" height="214" rx="42" fill="none" stroke="#FED7AA" strokeWidth="22" strokeLinecap="round" strokeLinejoin="round" />
+              <rect x="65" y="48" width="410" height="214" rx="42" fill="none" stroke="#FDBA74" strokeWidth="1.5" strokeDasharray="6 6" />
+
+              {/* Shaded Tree Groves & Flower Shrubs in Corners */}
+              <circle cx="85" cy="72" r="16" fill="#DCFCE7" stroke="#22C55E" strokeWidth="1.2" />
+              <circle cx="102" cy="85" r="12" fill="#BBF7D0" stroke="#16A34A" strokeWidth="1" />
+              <circle cx="455" cy="72" r="16" fill="#DCFCE7" stroke="#22C55E" strokeWidth="1.2" />
+              <circle cx="438" cy="85" r="12" fill="#BBF7D0" stroke="#16A34A" strokeWidth="1" />
+              <circle cx="85" cy="235" r="16" fill="#DCFCE7" stroke="#22C55E" strokeWidth="1.2" />
+              <circle cx="455" cy="235" r="16" fill="#DCFCE7" stroke="#22C55E" strokeWidth="1.2" />
+
+              {/* Open-Air Fitness Gym (West) */}
+              <g transform="translate(108, 92)">
+                <rect x="0" y="0" width="84" height="56" rx="8" fill="#EFF6FF" stroke="#3B82F6" strokeWidth="1.5" />
+                {/* Pull-up Bar Frame */}
+                <line x1="16" y1="14" x2="16" y2="42" stroke="#1D4ED8" strokeWidth="2" />
+                <line x1="36" y1="14" x2="36" y2="42" stroke="#1D4ED8" strokeWidth="2" />
+                <line x1="12" y1="18" x2="40" y2="18" stroke="#1D4ED8" strokeWidth="2" />
+                {/* Cross trainer / Elliptical flywheel */}
+                <circle cx="60" cy="28" r="10" fill="#DBEAFE" stroke="#2563EB" strokeWidth="1.5" />
+                <line x1="60" y1="18" x2="60" y2="38" stroke="#2563EB" strokeWidth="1.2" />
+                <line x1="50" y1="28" x2="70" y2="28" stroke="#2563EB" strokeWidth="1.2" />
+              </g>
+
+              {/* Children Playground (East) */}
+              <g transform="translate(348, 92)">
+                <rect x="0" y="0" width="84" height="56" rx="8" fill="#FEF9C3" stroke="#EAB308" strokeWidth="1.5" />
+                {/* Swings frame */}
+                <line x1="16" y1="14" x2="16" y2="42" stroke="#CA8A04" strokeWidth="2" />
+                <line x1="38" y1="14" x2="38" y2="42" stroke="#CA8A04" strokeWidth="2" />
+                <line x1="12" y1="16" x2="42" y2="16" stroke="#CA8A04" strokeWidth="2" />
+                <line x1="23" y1="16" x2="23" y2="34" stroke="#92400E" strokeWidth="1.2" strokeDasharray="3 2" />
+                <rect x="19" y="34" width="8" height="3" rx="1" fill="#92400E" />
+                <line x1="31" y1="16" x2="31" y2="34" stroke="#92400E" strokeWidth="1.2" strokeDasharray="3 2" />
+                <rect x="27" y="34" width="8" height="3" rx="1" fill="#92400E" />
+                {/* Slide */}
+                <path d="M 52 42 L 64 16 L 70 42" stroke="#EF4444" strokeWidth="1.8" fill="none" />
+                <path d="M 64 16 Q 72 28 78 42" stroke="#F59E0B" strokeWidth="2.5" fill="none" />
+              </g>
+
+              {/* Centerpiece: Gazebo Pavilion OR Musical Fountain */}
+              {layout.placeId.includes('municipal') ? (
+                /* Musical Dancing Fountain for Municipal Park */
+                <g transform="translate(270, 135)">
+                  <ellipse cx="0" cy="0" rx="46" ry="36" fill="#E0F2FE" stroke="#0284C7" strokeWidth="2" />
+                  <ellipse cx="0" cy="0" rx="36" ry="28" fill="#BAE6FD" stroke="#0284C7" strokeWidth="1.2" strokeDasharray="4 3" />
+                  <circle cx="0" cy="0" r="16" fill="#38BDF8" stroke="#0369A1" strokeWidth="1.5" />
+                  {/* Fountain spray arcs */}
+                  <path d="M 0 0 Q -15 -25 -26 -12" stroke="#0284C7" strokeWidth="1.5" fill="none" />
+                  <path d="M 0 0 Q 15 -25 26 -12" stroke="#0284C7" strokeWidth="1.5" fill="none" />
+                  <path d="M 0 0 Q -22 0 -24 16" stroke="#0284C7" strokeWidth="1.5" fill="none" />
+                  <path d="M 0 0 Q 22 0 24 16" stroke="#0284C7" strokeWidth="1.5" fill="none" />
+                  <circle cx="0" cy="0" r="4" fill="#FFFFFF" />
+                </g>
+              ) : (
+                /* Shaded Garden Lawn & Gazebo for NGO Colony Park / Community Parks */
+                <g transform="translate(270, 135)">
+                  {/* Landscaped circular lawn ring */}
+                  <circle cx="0" cy="0" r="46" fill="#DCFCE7" stroke="#16A34A" strokeWidth="1.5" strokeDasharray="4 3" />
+                  <circle cx="0" cy="0" r="34" fill="#FEF3C7" stroke="#D97706" strokeWidth="1.5" />
+                  {/* Octagonal Gazebo Canopy */}
+                  <polygon points="0,-24 22,-12 22,12 0,24 -22,12 -22,-12" fill="#FDE68A" stroke="#B45309" strokeWidth="1.8" />
+                  <line x1="0" y1="-24" x2="0" y2="24" stroke="#B45309" strokeWidth="1" />
+                  <line x1="-22" y1="-12" x2="22" y2="12" stroke="#B45309" strokeWidth="1" />
+                  <line x1="-22" y1="12" x2="22" y2="-12" stroke="#B45309" strokeWidth="1" />
+                  <circle cx="0" cy="0" r="4.5" fill="#78350F" />
+                  {/* Perimeter garden benches */}
+                  <rect x="-38" y="-5" width="4" height="10" rx="1" fill="#78350F" />
+                  <rect x="34" y="-5" width="4" height="10" rx="1" fill="#78350F" />
+                  <rect x="-5" y="-38" width="10" height="4" rx="1" fill="#78350F" />
+                  <rect x="-5" y="34" width="10" height="4" rx="1" fill="#78350F" />
+                </g>
+              )}
+
+              {/* Park Entrance Gateway Arch (South) */}
+              <g transform="translate(250, 258)">
+                <rect x="0" y="0" width="120" height="26" rx="6" fill="#15803D" stroke="#14532D" strokeWidth="1.5" />
+                <rect x="15" y="4" width="90" height="18" rx="3" fill="#166534" />
+                <line x1="60" y1="4" x2="60" y2="22" stroke="#86EFAC" strokeWidth="1" />
+              </g>
+
+              {/* Visitor Parking Bay (South-East) */}
+              <rect x="390" y="265" width="80" height="26" rx="6" fill="#F1F5F9" stroke="#64748B" strokeWidth="1.5" />
             </g>
           ) : layout.layoutType === 'geo-nature-park' ? (
             /* 3. GEOLOGICAL & BOTANICAL PARK (Silathoranam Natural Rock Arch & Park) */
@@ -1161,63 +1316,91 @@ export default function OfflineTempleMap({
             const py = Math.max(35, Math.min(300, rawPy));
 
             const getBadgeLabel = (p: MapPin): string => {
+              const pId = (p.id || '').toLowerCase();
+              const pNameEn = (p.nameEn || '').toLowerCase();
+
               if (lang === 'te') {
-                if (p.category === 'sanctum') return 'గర్భాలయం';
+                if (pId.includes('gym') || pNameEn.includes('gym') || pNameEn.includes('fitness')) return 'ఓపెన్ జిమ్';
+                if (pId.includes('play') || pNameEn.includes('play') || pNameEn.includes('kids') || pNameEn.includes('children')) return 'పిల్లల ఆటస్థలం';
+                if (pId.includes('gazebo') || pId.includes('lawn') || pNameEn.includes('gazebo') || pNameEn.includes('lawn')) return 'గార్డెన్ & గెజిబో';
+                if (pId.includes('fountain') || pNameEn.includes('fountain')) return 'మ్యూజికల్ ఫౌంటెన్';
+                if (pId.includes('amphitheater') || pNameEn.includes('amphitheater')) return 'యాంఫీథియేటర్';
+                if (pId.includes('lake') || pId.includes('water') || pNameEn.includes('water') || pNameEn.includes('lake')) return 'జలాశయం';
+                if (pId.includes('pool') || pNameEn.includes('pool') || pNameEn.includes('swimming')) return 'స్విమ్మింగ్ పూల్';
+                if (pId.includes('track') || pId.includes('jogging') || pNameEn.includes('jogging') || pNameEn.includes('track') || pId.includes('walking')) return 'జాగింగ్ ట్రాక్';
+                if (p.category === 'sanctum') {
+                  if (layout.layoutType === 'urban-park') return 'గార్డెన్ & గెజిబో';
+                  if (layout.layoutType === 'dam-reservoir') return 'జలాశయం';
+                  if (layout.layoutType === 'geo-nature-park' || layout.layoutType === 'cultural-park' || layout.layoutType === 'botanical-garden') return 'ప్రధాన ఆకర్షణ';
+                  return 'గర్భాలయం';
+                }
                 if (p.category === 'entry') return 'ప్రవేశం';
                 if (p.category === 'footwear') return 'పాదరక్షలు';
                 if (p.category === 'parking') return 'పార్కింగ్';
                 if (p.category === 'laddu') return 'ప్రసాదం';
                 if (p.category === 'queue') return 'క్యూ లైన్';
-                if (p.id.includes('cottage') || p.id.includes('resthouse') || (p.nameEn || '').toLowerCase().includes('cottage') || (p.nameEn || '').toLowerCase().includes('rest house')) return 'రెస్ట్ హౌస్';
-                if (p.id.includes('trail') || p.id.includes('trek') || (p.nameEn || '').toLowerCase().includes('trek') || (p.nameEn || '').toLowerCase().includes('trail')) return 'ట్రెక్కింగ్ మార్గం';
-                if (p.id.includes('watchtower') || p.id.includes('canopy') || (p.nameEn || '').toLowerCase().includes('canopy') || (p.nameEn || '').toLowerCase().includes('watch tower')) return 'వాచ్ టవర్';
-                if (p.id.includes('dhwaja')) return 'ధ్వజస్తంభం';
-                if (p.id.includes('pushkarini') || p.id.includes('tank')) return 'పుష్కరిణి';
-                if (p.id.includes('theertham') || p.id.includes('kund')) return 'తీర్థం';
-                if (p.id.includes('anjaneya') || p.id.includes('hanuman')) return 'ఆంజనేయ సన్నిధి';
-                if (p.id.includes('padmavathi') || p.id.includes('ammavaru')) return 'అమ్మవారి సన్నిధి';
-                if (p.id.includes('ranganatha')) return 'రంగనాథ సన్నిధి';
-                if (p.id.includes('sundararaja')) return 'సుందరరాజ సన్నిధి';
-                if (p.id.includes('andal') || p.id.includes('godadevi')) return 'ఆండాళ్ సన్నిధి';
-                if (p.id.includes('shiva') || p.id.includes('linga')) return 'శివ సన్నిధి';
-                if (p.id.includes('vinayaka') || p.id.includes('ganesha')) return 'వినాయక సన్నిధి';
+                if (pId.includes('cottage') || pId.includes('resthouse') || pNameEn.includes('cottage') || pNameEn.includes('rest house')) return 'రెస్ట్ హౌస్';
+                if (pId.includes('trail') || pId.includes('trek') || pNameEn.includes('trek') || pNameEn.includes('trail')) return 'ట్రెక్కింగ్ మార్గం';
+                if (pId.includes('watchtower') || pId.includes('canopy') || pNameEn.includes('canopy') || pNameEn.includes('watch tower')) return 'వాచ్ టవర్';
+                if (pId.includes('dhwaja')) return 'ధ్వజస్తంభం';
+                if (pId.includes('pushkarini') || pId.includes('tank')) return 'పుష్కరిణి';
+                if (pId.includes('theertham') || pId.includes('kund')) return 'తీర్థం';
+                if (pId.includes('anjaneya') || pId.includes('hanuman')) return 'ఆంజనేయ సన్నిధి';
+                if (pId.includes('padmavathi') || pId.includes('ammavaru')) return 'అమ్మవారి సన్నిధి';
+                if (pId.includes('ranganatha')) return 'రంగనాథ సన్నిధి';
+                if (pId.includes('sundararaja')) return 'సుందరరాజ సన్నిధి';
+                if (pId.includes('andal') || pId.includes('godadevi')) return 'ఆండాళ్ సన్నిధి';
+                if (pId.includes('shiva') || pId.includes('linga')) return 'శివ సన్నిధి';
+                if (pId.includes('vinayaka') || pId.includes('ganesha')) return 'వినాయక సన్నిధి';
                 if (!p.nameTe) return 'విభాగం';
                 const cleanTe = p.nameTe.split('(')[0].split(' - ')[0].trim();
                 const wordsTe = cleanTe.split(' ');
                 return wordsTe.length > 2 ? wordsTe.slice(0, 2).join(' ') : cleanTe;
               }
-              if (p.category === 'sanctum') return 'Main Shrine';
+              if (pId.includes('gym') || pNameEn.includes('gym') || pNameEn.includes('fitness')) return 'Open Gym';
+              if (pId.includes('play') || pNameEn.includes('play') || pNameEn.includes('kids') || pNameEn.includes('children')) return 'Play Area';
+              if (pId.includes('gazebo') || pId.includes('lawn') || pNameEn.includes('gazebo') || pNameEn.includes('lawn')) return 'Garden Lawn';
+              if (pId.includes('fountain') || pNameEn.includes('fountain')) return 'Fountain Plaza';
+              if (pId.includes('amphitheater') || pNameEn.includes('amphitheater')) return 'Amphitheater';
+              if (pId.includes('lake') || pId.includes('water') || pNameEn.includes('water') || pNameEn.includes('lake')) return 'Lakefront';
+              if (pId.includes('pool') || pNameEn.includes('pool') || pNameEn.includes('swimming')) return 'Swimming Pool';
+              if (pId.includes('track') || pId.includes('jogging') || pNameEn.includes('jogging') || pNameEn.includes('track') || pId.includes('walking')) return 'Jogging Track';
+              if (p.category === 'sanctum') {
+                if (layout.layoutType === 'urban-park') return 'Garden Lawn';
+                if (layout.layoutType === 'dam-reservoir') return 'Lakefront';
+                if (layout.layoutType === 'geo-nature-park' || layout.layoutType === 'cultural-park' || layout.layoutType === 'botanical-garden') return 'Attraction';
+                return 'Main Shrine';
+              }
               if (p.category === 'entry') return 'Entrance';
               if (p.category === 'footwear') return 'Footwear';
               if (p.category === 'parking') return 'Parking';
               if (p.category === 'laddu') return 'Prasadam';
               if (p.category === 'queue') return 'Queue Line';
               if (p.category === 'medical') return 'Medical / Clinic';
-              if (p.id.includes('cottage') || p.id.includes('resthouse') || (p.nameEn || '').toLowerCase().includes('cottage') || (p.nameEn || '').toLowerCase().includes('rest house')) return 'British Cottages';
-              if (p.id.includes('trail') || p.id.includes('trek') || (p.nameEn || '').toLowerCase().includes('trek') || (p.nameEn || '').toLowerCase().includes('trail')) return 'Jungle Trek';
-              if (p.id.includes('watchtower') || p.id.includes('canopy') || (p.nameEn || '').toLowerCase().includes('canopy') || (p.nameEn || '').toLowerCase().includes('watch tower')) return 'Canopy Walk';
+              if (pId.includes('cottage') || pId.includes('resthouse') || pNameEn.includes('cottage') || pNameEn.includes('rest house')) return 'British Cottages';
+              if (pId.includes('trail') || pId.includes('trek') || pNameEn.includes('trek') || pNameEn.includes('trail')) return 'Jungle Trek';
+              if (pId.includes('watchtower') || pId.includes('canopy') || pNameEn.includes('canopy') || pNameEn.includes('watch tower')) return 'Canopy Walk';
               if (p.category === 'safari') return 'Safari Station';
-              if (p.id.includes('neem') || p.id.includes('tree') || p.id.includes('vriksha')) return 'Sacred Tree';
-              if (p.id.includes('dhwaja')) return 'Dhwajasthambham';
-              if (p.id.includes('pushkarini') || p.id.includes('tank')) return 'Pushkarini';
-              if (p.id.includes('falls') || p.id.includes('waterfall')) return 'Waterfalls';
-              if (p.id.includes('pool') || p.id.includes('kund') || p.id.includes('theertham')) return 'Theertham';
-              if (p.id.includes('view') || p.id.includes('deck') || p.id.includes('panoramic')) return 'Viewpoint';
-              if (p.id.includes('anjaneya') || p.id.includes('hanuman')) return 'Anjaneya Shrine';
-              if (p.id.includes('padmavathi') || p.id.includes('thayar') || p.id.includes('ammavaru')) return 'Padmavathi Shrine';
-              if (p.id.includes('ranganatha')) return 'Ranganatha Shrine';
-              if (p.id.includes('sundararaja')) return 'Sundararaja Shrine';
-              if (p.id.includes('andal') || p.id.includes('godadevi')) return 'Andal Shrine';
-              if (p.id.includes('garuda')) return 'Garuda Shrine';
-              if (p.id.includes('narasimha')) return 'Narasimha Shrine';
-              if (p.id.includes('subramanya') || p.id.includes('murugan')) return 'Subramanya Shrine';
-              if (p.id.includes('shiva') || p.id.includes('linga')) return 'Shiva Sannidhi';
-              if (p.id.includes('vinayaka') || p.id.includes('ganesha')) return 'Vinayaka Shrine';
-              if (p.id.includes('hall') || p.id.includes('mandapam')) return 'Mandapam';
+              if (pId.includes('neem') || pId.includes('tree') || pId.includes('vriksha')) return 'Sacred Tree';
+              if (pId.includes('dhwaja')) return 'Dhwajasthambham';
+              if (pId.includes('pushkarini') || pId.includes('tank')) return 'Pushkarini';
+              if (pId.includes('falls') || pId.includes('waterfall')) return 'Waterfalls';
+              if (pId.includes('theertham') || pId.includes('kund')) return 'Theertham';
+              if (pId.includes('view') || pId.includes('deck') || pId.includes('panoramic')) return 'Viewpoint';
+              if (pId.includes('anjaneya') || pId.includes('hanuman')) return 'Anjaneya Shrine';
+              if (pId.includes('padmavathi') || pId.includes('thayar') || pId.includes('ammavaru')) return 'Padmavathi Shrine';
+              if (pId.includes('ranganatha')) return 'Ranganatha Shrine';
+              if (pId.includes('sundararaja')) return 'Sundararaja Shrine';
+              if (pId.includes('andal') || pId.includes('godadevi')) return 'Andal Shrine';
+              if (pId.includes('garuda')) return 'Garuda Shrine';
+              if (pId.includes('narasimha')) return 'Narasimha Shrine';
+              if (pId.includes('subramanya') || pId.includes('murugan')) return 'Subramanya Shrine';
+              if (pId.includes('shiva') || pId.includes('linga')) return 'Shiva Sannidhi';
+              if (pId.includes('vinayaka') || pId.includes('ganesha')) return 'Vinayaka Shrine';
+              if (pId.includes('hall') || pId.includes('mandapam')) return 'Mandapam';
               if (p.category === 'food') {
-                const nameLower = (p.nameEn || '').toLowerCase();
-                if (nameLower.includes('anna') || nameLower.includes('meal') || nameLower.includes('dining')) return 'Annaprasadam';
-                if (nameLower.includes('prasadam') || nameLower.includes('theertham')) return 'Prasadam';
+                if (pNameEn.includes('anna') || pNameEn.includes('meal') || pNameEn.includes('dining')) return 'Annaprasadam';
+                if (pNameEn.includes('prasadam') || pNameEn.includes('theertham')) return 'Prasadam';
                 return 'Refreshments';
               }
               if (!p.nameEn) return 'Point';

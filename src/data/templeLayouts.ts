@@ -47,6 +47,7 @@ export interface TempleLayoutData {
     | 'dining-restaurant'
     | 'museum-gallery'
     | 'cultural-park'
+    | 'urban-park'
     | 'general';
   centerCoordinates: { lat: number; lng: number };
   defaultZoom: number;
@@ -3454,7 +3455,213 @@ export function getTempleLayout(placeInput: string | PlaceInputContext, fallback
     };
   }
 
-  // 0.3 Papavinasam & Akasa Ganga Theerthams (Holy Waterfalls / Pushkarini)
+  // 0.3 Vinayaka Sagar Lake & Waterfront Promenade
+  if (placeId === 'vinayaka-sagar' || placeId.includes('vinayaka-sagar') || nameLower.includes('vinayaka sagar')) {
+    const baseLat = fallbackCoords?.lat || 13.6459;
+    const baseLng = fallbackCoords?.lng || 79.4411;
+    return {
+      placeId,
+      titleEn: `${name} Waterfront & Lake Map`,
+      titleTe: `${name} వాటర్‌ఫ్రంట్ & సరస్సు మ్యాప్`,
+      layoutType: 'dam-reservoir',
+      centerCoordinates: { lat: baseLat, lng: baseLng },
+      defaultZoom: 17,
+      compassBearingDeg: 0,
+      sanctumNameEn: 'Vinayaka Sagar Lake & Promenade',
+      sanctumNameTe: 'వినాయక సాగర్ జలాశయం & వాటర్‌ఫ్రంట్',
+      routePath: [[430, 275], [330, 260], [170, 230], [270, 140], [390, 100]],
+      pins: [
+        { id: 'parking', nameEn: 'Lakefront Visitor Parking', nameTe: 'వాహనాల పార్కింగ్', category: 'parking', lat: baseLat - 0.0008, lng: baseLng + 0.0006, svgX: 430, svgY: 275, descEn: 'Designated parking for cars and two-wheelers along Karakambadi Road.', descTe: 'వాహనాల పార్కింగ్ ప్రదేశం.' },
+        { id: 'entry', nameEn: 'Main Promenade Entrance & Arch', nameTe: 'ప్రధాన ప్రవేశ ద్వారం', category: 'entry', lat: baseLat - 0.0004, lng: baseLng, svgX: 330, svgY: 260, descEn: 'Main entrance arch leading into the waterfront walking track.', descTe: 'వాటర్‌ఫ్రంట్ నడక మార్గం ప్రవేశం.' },
+        { id: 'track', nameEn: 'Lake Perimeter Jogging Track', nameTe: 'జాగింగ్ & వాకింగ్ ట్రాక్', category: 'info', lat: baseLat - 0.0002, lng: baseLng - 0.0006, svgX: 170, svgY: 230, descEn: 'Paved illuminated running & jogging path circling the lake.', descTe: 'చెరువు చుట్టూ ఉన్న వాకింగ్/జాగింగ్ ట్రాక్.' },
+        { id: 'lake', nameEn: 'Vinayaka Sagar Water Expanse', nameTe: 'వినాయక సాగర్ జలాశయం', category: 'sanctum', lat: baseLat, lng: baseLng, svgX: 270, svgY: 140, descEn: 'Rejuvenated open water body with cool evening breezes and sunset view.', descTe: 'అందమైన చెరువు మరియు చల్లని సాయంత్రపు గాలులు.' },
+        { id: 'swimming-pool', nameEn: 'MCT Swimming Pool Complex', nameTe: 'నగర పాలక స్విమ్మింగ్ పూల్', category: 'info', lat: baseLat + 0.0003, lng: baseLng + 0.0005, svgX: 380, svgY: 160, descEn: 'Public swimming pool facility and RO purified drinking water point.', descTe: 'స్విమ్మింగ్ పూల్ మరియు తాగునీటి సదుపాయం.' },
+        { id: 'immersion-deck', nameEn: 'Ganesh Nimajjanam Deck & Sunset Point', nameTe: 'నిమజ్జన వేదిక & సూర్యాస్తమయ పాయింట్', category: 'info', lat: baseLat + 0.0004, lng: baseLng + 0.0008, svgX: 390, svgY: 100, descEn: 'Designated platform for annual Ganesh Nimajjanam and panoramic views.', descTe: 'గణేష్ నిమజ్జనం మరియు సూర్యాస్తమయ వీక్షణ వేదిక.' }
+      ],
+      routeSteps: [
+        { stepNumber: 1, titleEn: 'Arrival & Lakefront Parking', titleTe: 'పార్కింగ్', distance: '0.0 km', timeMins: 0, descEn: 'Park vehicle along Karakambadi Road entrance.', descTe: 'వాహనాన్ని పార్క్ చేయండి.' },
+        { stepNumber: 2, titleEn: 'Waterfront Promenade Walk', titleTe: 'వాకింగ్ ట్రాక్', distance: '60m', timeMins: 15, descEn: 'Walk along the paved scenic jogging pathway.', descTe: 'జాగింగ్ ట్రాక్‌పై ఆహ్లాదకరమైన నడక.' },
+        { stepNumber: 3, titleEn: 'Sunset Deck & Swimming Pool Area', titleTe: 'సూర్యాస్తమయ వీక్షణ', distance: '100m', timeMins: 20, descEn: 'Enjoy the lake breeze or visit the municipal swimming pool.', descTe: 'చల్లని గాలిని ఆస్వాదించండి లేదా స్విమ్మింగ్ పూల్ వైపు వెళ్ళండి.' }
+      ],
+      emergencyContacts: [
+        { titleEn: 'MCT Municipal Helpdesk', titleTe: 'తిరుపతి నగర పాలక సంస్థ హెల్ప్‌లైన్', number: '08772256789' },
+        { titleEn: 'Emergency Helpline', titleTe: 'అత్యవసర హెల్ప్‌లైన్', number: '112' }
+      ]
+    };
+  }
+
+  // 0.3B NGO Colony Park (APHB) - Urban Community Park
+  if (placeId === 'ngo-colony-park' || placeId.includes('ngo-colony-park') || nameLower.includes('ngo colony park')) {
+    const baseLat = fallbackCoords?.lat || 13.6520;
+    const baseLng = fallbackCoords?.lng || 79.4191;
+    return {
+      placeId: 'ngo-colony-park',
+      titleEn: 'NGO Colony Park (APHB) Precinct Map',
+      titleTe: 'ఎన్జీఓ కాలనీ పార్కు ప్రాంగణ మ్యాప్',
+      layoutType: 'urban-park',
+      centerCoordinates: { lat: baseLat, lng: baseLng },
+      defaultZoom: 18,
+      compassBearingDeg: 0,
+      sanctumNameEn: 'Central Garden Lawn & Gazebo',
+      sanctumNameTe: 'పచ్చిక బయలు & గెజిబో',
+      routePath: [[430, 280], [310, 270], [160, 220], [150, 120], [270, 135], [385, 120]],
+      pins: [
+        { 
+          id: 'parking', 
+          nameEn: 'KT Road Visitor & Two-Wheeler Parking', 
+          nameTe: 'వాహనాల పార్కింగ్ స్థలం', 
+          category: 'parking', 
+          lat: baseLat - 0.0006, 
+          lng: baseLng + 0.0005, 
+          svgX: 430, 
+          svgY: 280, 
+          descEn: 'Designated parking for bikes and cars along the KT Road entrance lane.', 
+          descTe: 'కేటీ రోడ్డు ప్రవేశ ద్వారం వద్ద వాహనాల పార్కింగ్.' 
+        },
+        { 
+          id: 'entry', 
+          nameEn: 'Main Park Entrance Gate (KT Road)', 
+          nameTe: 'ప్రధాన ప్రవేశ ద్వారం (కేటీ రోడ్డు)', 
+          category: 'entry', 
+          lat: baseLat - 0.0003, 
+          lng: baseLng, 
+          svgX: 310, 
+          svgY: 270, 
+          descEn: 'Pedestrian entrance gate leading onto the perimeter walking circuit.', 
+          descTe: 'ఉద్యానవనంలోకి ప్రవేశించే ప్రధాన ద్వారం.' 
+        },
+        { 
+          id: 'track', 
+          nameEn: 'Perimeter Walking & Jogging Track', 
+          nameTe: 'వాకింగ్ & జాగింగ్ ట్రాక్', 
+          category: 'info', 
+          lat: baseLat - 0.0001, 
+          lng: baseLng - 0.0005, 
+          svgX: 160, 
+          svgY: 220, 
+          descEn: 'Smooth paved walking track circling the green perimeter, popular for morning fitness.', 
+          descTe: 'ఉదయం మరియు సాయంత్రం వేళల్లో నడక కోసం ఉద్దేశించిన పేవ్మెంట్ ట్రాక్.' 
+        },
+        { 
+          id: 'open-gym', 
+          nameEn: 'Open-Air Fitness Gym Equipment', 
+          nameTe: 'ఓపెన్ వ్యాయామశాల (ఓపెన్ జిమ్)', 
+          category: 'info', 
+          lat: baseLat + 0.0002, 
+          lng: baseLng - 0.0004, 
+          svgX: 150, 
+          svgY: 120, 
+          descEn: 'Public open-air fitness stations with exercise equipment for health enthusiasts.', 
+          descTe: 'స్థానికుల కోసం ఏర్పాటు చేసిన ఓపెన్ జిమ్ వ్యాయామ పరికరాలు.' 
+        },
+        { 
+          id: 'gazebo', 
+          nameEn: 'Central Green Lawn & Shaded Gazebo', 
+          nameTe: 'పచ్చిక బయలు & విశ్రాంతి గెజిబో', 
+          category: 'sanctum', 
+          lat: baseLat, 
+          lng: baseLng, 
+          svgX: 270, 
+          svgY: 135, 
+          descEn: 'Manicured green lawn with shaded seating gazebo, flowering shrubs, and benches.', 
+          descTe: 'పచ్చని పచ్చిక బయలు, నీడను ఇచ్చే చెట్లు మరియు విశ్రాంతి బెంచీలు.' 
+        },
+        { 
+          id: 'kids-play', 
+          nameEn: 'Children\'s Playground & Swings', 
+          nameTe: 'పిల్లల ఆట స్థలం & ఉయ్యాలలు', 
+          category: 'info', 
+          lat: baseLat + 0.0002, 
+          lng: baseLng + 0.0005, 
+          svgX: 385, 
+          svgY: 120, 
+          descEn: 'Dedicated children play area with swings, slides, see-saw, and sand area.', 
+          descTe: 'పిల్లల ఉయ్యాలలు, జారుడు బల్లలతో కూడిన ఆట స్థలం.' 
+        }
+      ],
+      routeSteps: [
+        { stepNumber: 1, titleEn: 'Arrival & KT Road Parking', titleTe: 'చేరుకోవడం & పార్కింగ్', distance: '0.0 km', timeMins: 0, descEn: 'Park vehicle along KT Road entrance.', descTe: 'వాహనాన్ని పార్క్ చేయండి.' },
+        { stepNumber: 2, titleEn: 'Perimeter Walking Track', titleTe: 'వాకింగ్ ట్రాక్', distance: '50m', timeMins: 15, descEn: 'Enjoy a refreshing morning walk along the paved perimeter path.', descTe: 'పచ్చని చెట్ల నీడన నడక సాగించండి.' },
+        { stepNumber: 3, titleEn: 'Open Gym & Central Gazebo Relaxation', titleTe: 'ఓపెన్ జిమ్ & గెజిబో వద్ద విశ్రాంతి', distance: '80m', timeMins: 15, descEn: 'Utilize fitness equipment or relax at the central shaded gazebo benches.', descTe: 'వ్యాయామం చేయండి లేదా విశ్రాంతి తీసుకోండి.' }
+      ],
+      emergencyContacts: [
+        { titleEn: 'MCT Ward Office (KT Road)', titleTe: 'నగర పాలక సంస్థ వార్డు కార్యాలయం', number: '08772256789' },
+        { titleEn: 'Emergency Helpline', titleTe: 'అత్యవసర హెల్ప్‌లైన్', number: '112' }
+      ]
+    };
+  }
+
+  // 0.3C Municipal Park Tirupati - Urban Central Park & Musical Fountain
+  if (placeId === 'municipal-park-tirupati' || placeId === 'municipal-park' || placeId.includes('municipal-park') || nameLower.includes('municipal park')) {
+    const baseLat = fallbackCoords?.lat || 13.6473;
+    const baseLng = fallbackCoords?.lng || 79.4264;
+    return {
+      placeId: 'municipal-park-tirupati',
+      titleEn: 'Municipal Park Precinct Map',
+      titleTe: 'మున్సిపల్ పార్కు ప్రాంగణ మ్యాప్',
+      layoutType: 'urban-park',
+      centerCoordinates: { lat: baseLat, lng: baseLng },
+      defaultZoom: 18,
+      compassBearingDeg: 0,
+      sanctumNameEn: 'Musical Dancing Fountain Plaza',
+      sanctumNameTe: 'సంగీత ఫౌంటెన్ వేదిక',
+      routePath: [[430, 280], [310, 270], [160, 220], [150, 120], [270, 135], [385, 120]],
+      pins: [
+        { id: 'parking', nameEn: 'Municipal Park Parking Bay', nameTe: 'వాహనాల పార్కింగ్ స్థలం', category: 'parking', lat: baseLat - 0.0006, lng: baseLng + 0.0005, svgX: 430, svgY: 280, descEn: 'Designated parking for two-wheelers and cars outside entrance.', descTe: 'పార్కింగ్ ప్రదేశం.' },
+        { id: 'entry', nameEn: 'Main Entrance & Ticket Counter', nameTe: 'ప్రధాన ప్రవేశం & టికెట్ కౌంటర్', category: 'entry', lat: baseLat - 0.0003, lng: baseLng, svgX: 310, svgY: 270, descEn: 'Entry gate with ticket counter (₹10/adult).', descTe: 'ప్రవేశ ద్వారం మరియు టికెట్ కౌంటర్.' },
+        { id: 'walking-track', nameEn: 'Landscaped Walking Promenade', nameTe: 'నడక మార్గం', category: 'info', lat: baseLat - 0.0001, lng: baseLng - 0.0005, svgX: 160, svgY: 220, descEn: 'Illuminated walking track surrounded by ornamental plants.', descTe: 'సుందరమైన నడక మార్గం.' },
+        { id: 'kids-play', nameEn: 'Kids Play Zone & Toy Train', nameTe: 'పిల్లల ఆట స్థలం & టాయ్ ట్రైన్', category: 'info', lat: baseLat + 0.0002, lng: baseLng - 0.0004, svgX: 150, svgY: 120, descEn: 'Children amusement zone with swings, slides, and mini toy train.', descTe: 'పిల్లల వినోద కేంద్రం మరియు ఆట పరికరాలు.' },
+        { id: 'fountain', nameEn: 'Musical Dancing Fountain Plaza', nameTe: 'మ్యూజికల్ డ్యాన్సింగ్ ఫౌంటెన్', category: 'sanctum', lat: baseLat, lng: baseLng, svgX: 270, svgY: 135, descEn: 'Grand musical dancing fountain with laser lights and evening shows (7:00 PM).', descTe: 'సంగీతానికి అనుగుణంగా నాట్యం చేసే రంగురంగుల ఫౌంటెన్.' },
+        { id: 'rose-garden', nameEn: 'Rose Bed & Botanical Corner', nameTe: 'గులాబీ తోట & పూల మొక్కలు', category: 'info', lat: baseLat + 0.0002, lng: baseLng + 0.0005, svgX: 385, svgY: 120, descEn: 'Vibrant flower beds, seating benches, and photography spots.', descTe: 'రంగురంగుల పూల మొక్కలు మరియు విశ్రాంతి ప్రదేశం.' }
+      ],
+      routeSteps: [
+        { stepNumber: 1, titleEn: 'Arrival & Entry Ticket', titleTe: 'ప్రవేశం & టికెట్', distance: '0.0 km', timeMins: 0, descEn: 'Park vehicle and purchase park entry tickets.', descTe: 'టికెట్ తీసుకుని ప్రవేశించండి.' },
+        { stepNumber: 2, titleEn: 'Garden Promenade & Kids Play Area', titleTe: 'నడక & పిల్లల ఆటలు', distance: '60m', timeMins: 20, descEn: 'Walk through flower gardens and visit children play zone.', descTe: 'పూల తోటలు మరియు పిల్లల ఆట స్థలం సందర్శించండి.' },
+        { stepNumber: 3, titleEn: 'Musical Fountain Show (Evening)', titleTe: 'మ్యూజికల్ ఫౌంటెన్ షో', distance: '80m', timeMins: 30, descEn: 'Watch the evening laser-lit musical fountain performance.', descTe: 'సాయంత్రం వేళ రంగుల ఫౌంటెన్ ప్రదర్శనను వీక్షించండి.' }
+      ],
+      emergencyContacts: [
+        { titleEn: 'MCT Park Administration', titleTe: 'మున్సిపల్ పార్కు విభాగం', number: '08772256789' },
+        { titleEn: 'Emergency Helpline', titleTe: 'అత్యవసర హెల్ప్‌లైన్', number: '112' }
+      ]
+    };
+  }
+
+  // 0.3D Divyaramam Park (Nagaravanam) - Urban Nature Forest Park
+  if (placeId === 'divyaramam-park' || placeId.includes('divyaramam') || nameLower.includes('divyaramam') || nameLower.includes('nagaravanam')) {
+    const baseLat = fallbackCoords?.lat || 13.6570;
+    const baseLng = fallbackCoords?.lng || 79.4100;
+    return {
+      placeId: 'divyaramam-park',
+      titleEn: 'Divyaramam Park (Nagaravanam) Map',
+      titleTe: 'దివ్యారామం (నగరవనం) ప్రాంగణ మ్యాప్',
+      layoutType: 'urban-park',
+      centerCoordinates: { lat: baseLat, lng: baseLng },
+      defaultZoom: 17,
+      compassBearingDeg: 0,
+      sanctumNameEn: 'Eco Nature Park & Forest Amphitheater',
+      sanctumNameTe: 'పర్యావరణ ఉద్యానవనం & యాంఫీథియేటర్',
+      routePath: [[430, 280], [310, 270], [160, 220], [150, 120], [270, 135], [385, 120]],
+      pins: [
+        { id: 'parking', nameEn: 'Nagaravanam Visitor Parking', nameTe: 'సందర్శకుల పార్కింగ్', category: 'parking', lat: baseLat - 0.0006, lng: baseLng + 0.0005, svgX: 430, svgY: 280, descEn: 'Ample vehicle parking outside the forest park gate.', descTe: 'వాహనాల పార్కింగ్ స్థలం.' },
+        { id: 'entry', nameEn: 'Foothill Forest Gateway', nameTe: 'అటవీ ముఖద్వారం', category: 'entry', lat: baseLat - 0.0003, lng: baseLng, svgX: 310, svgY: 270, descEn: 'Forest Department eco-tourism entrance checkpoint.', descTe: 'అటవీ శాఖ ప్రవేశ ద్వారం.' },
+        { id: 'forest-trail', nameEn: 'Canopy Nature Trail & Track', nameTe: 'ప్రకృతి నడక మార్గం', category: 'info', lat: baseLat - 0.0001, lng: baseLng - 0.0005, svgX: 160, svgY: 220, descEn: 'Shaded nature trail winding through native banyan, neem, and bamboo groves.', descTe: 'చెట్లతో కూడిన ఆహ్లాదకరమైన అటవీ నడక మార్గం.' },
+        { id: 'adventure-play', nameEn: 'Eco Adventure & Children Play Area', nameTe: 'పిల్లల అడ్వెంచర్ ప్లే ఏరియా', category: 'info', lat: baseLat + 0.0002, lng: baseLng - 0.0004, svgX: 150, svgY: 120, descEn: 'Eco-friendly wooden obstacle courses, swings, and play structures.', descTe: 'పిల్లల కోసం సహజ ఆట పరికరాలు.' },
+        { id: 'amphitheater', nameEn: 'Open-Air Amphitheater & Viewpoint', nameTe: 'ఓపెన్ ఎయిర్ యాంఫీథియేటర్ & వ్యూ పాయింట్', category: 'sanctum', lat: baseLat, lng: baseLng, svgX: 270, svgY: 135, descEn: 'Hill-facing seating amphitheater overlooking the Tirumala ridge.', descTe: 'తిరుమల కొండలను వీక్షించే ఓపెన్ ఎయిర్ వేదిక.' },
+        { id: 'waterfall-view', nameEn: 'Malwadigundam Stream Viewpoint', nameTe: 'మల్వాడిగుండం వాగు వీక్షణ', category: 'info', lat: baseLat + 0.0002, lng: baseLng + 0.0005, svgX: 385, svgY: 120, descEn: 'Scenic seasonal waterfall and crystal stream view from the wooden bridge.', descTe: 'వర్షాకాలంలో ప్రవహించే మనోహరమైన మల్వాడిగుండం జలపాతం దృశ్యం.' }
+      ],
+      routeSteps: [
+        { stepNumber: 1, titleEn: 'Arrival & Forest Checkpost', titleTe: 'ప్రవేశం & పార్కింగ్', distance: '0.0 km', timeMins: 0, descEn: 'Park vehicle and obtain entrance ticket.', descTe: 'టికెట్ తీసుకుని అటవీ పార్కులో ప్రవేశించండి.' },
+        { stepNumber: 2, titleEn: 'Canopy Walkway & Adventure Play', titleTe: 'అటవీ నడక & పిల్లల ఆటలు', distance: '100m', timeMins: 20, descEn: 'Stroll under lush tree canopies to the adventure play area.', descTe: 'పచ్చని చెట్ల నీడన నడుస్తూ సాగండి.' },
+        { stepNumber: 3, titleEn: 'Amphitheater & Malwadigundam View', titleTe: 'యాంఫీథియేటర్ & కొండల వీక్షణ', distance: '150m', timeMins: 25, descEn: 'Enjoy scenic views of Tirumala foothills and Malwadigundam stream.', descTe: 'తిరుమల కొండల దృశ్యాలను తిలకించండి.' }
+      ],
+      emergencyContacts: [
+        { titleEn: 'Tirupati Forest Division Helpdesk', titleTe: 'అటవీ శాఖ హెల్ప్‌లైన్', number: '08772280000' },
+        { titleEn: 'Emergency Helpline', titleTe: 'అత్యవసర హెల్ప్‌లైన్', number: '112' }
+      ]
+    };
+  }
+
+  // 0.4 Papavinasam & Akasa Ganga Theerthams (Holy Waterfalls / Pushkarini)
   if (placeId.includes('papavinasam') || placeId.includes('akasaganga')) {
     const isAkasaGanga = placeId.includes('akasaganga');
     const baseLat = fallbackCoords?.lat || (isAkasaGanga ? 13.7020 : 13.7225);
@@ -3794,6 +4001,13 @@ export function getTempleLayout(placeInput: string | PlaceInputContext, fallback
       layoutType = 'city-shrine';
     }
   } else if (
+    placeId.includes('park') ||
+    nameLower.includes('park') ||
+    category.includes('park') ||
+    tags.includes('park')
+  ) {
+    layoutType = 'urban-park';
+  } else if (
     placeType === 'nature' || 
     category.includes('nature') || 
     category.includes('day trip') ||
@@ -3828,6 +4042,17 @@ export function getTempleLayout(placeInput: string | PlaceInputContext, fallback
       { id: 'spillway', nameEn: 'Siphon Spillway & Barrage Gates', nameTe: 'స్పిల్‌వే & నీటి గేట్లు', category: 'info', lat: baseLat - 0.0002, lng: baseLng - 0.0006, svgX: 170, svgY: 240, descEn: 'Multi-gate spillway and water discharge channels.', descTe: 'నీటి విడుదల గేట్లు మరియు స్పిల్‌వే నిర్మాణం.' },
       { id: 'sanctum', nameEn: `${name} Water Expanse`, nameTe: `${name} జలాశయం`, category: 'sanctum', lat: baseLat, lng: baseLng, svgX: 270, svgY: 140, descEn: 'Scenic reservoir backwaters nestled against Seshachalam hills.', descTe: 'శేషాచలం కొండల నడుమ విస్తరించిన సుందర జలాశయం.' },
       { id: 'viewpoint', nameEn: 'Hill View & Photography Deck', nameTe: 'సూర్యాస్తమయ వ్యూ పాయింట్', category: 'info', lat: baseLat + 0.0004, lng: baseLng + 0.0006, svgX: 390, svgY: 100, descEn: 'Elevated scenic platform for photography and landscape views.', descTe: 'ప్రకృతి అందాలు మరియు కొండల దృశ్యాలను వీక్షించే వేదిక.' }
+    ];
+  } else if (layoutType === 'urban-park') {
+    // 🌳 URBAN COMMUNITY & MUNICIPAL PARK
+    generatedRoute = [[430, 280], [310, 270], [160, 220], [150, 120], [270, 135], [385, 120]];
+    generatedPins = [
+      { id: 'parking', nameEn: 'Park Visitor Parking Bay', nameTe: 'సందర్శకుల పార్కింగ్', category: 'parking', lat: baseLat - 0.0008, lng: baseLng + 0.0006, svgX: 430, svgY: 280, descEn: 'Designated parking for cars and two-wheelers outside park gate.', descTe: 'వాహనాల పార్కింగ్ స్థలం.' },
+      { id: 'entry', nameEn: 'Park Main Entrance Gate', nameTe: 'ప్రధాన ప్రవేశ ద్వారం', category: 'entry', lat: baseLat - 0.0004, lng: baseLng, svgX: 310, svgY: 270, descEn: 'Main entrance gateway leading onto the walking paths.', descTe: 'ఉద్యానవన ప్రధాన ప్రవేశం.' },
+      { id: 'track', nameEn: 'Perimeter Walking & Jogging Track', nameTe: 'వాకింగ్ & జాగింగ్ ట్రాక్', category: 'info', lat: baseLat - 0.0002, lng: baseLng - 0.0006, svgX: 160, svgY: 220, descEn: 'Paved tree-lined perimeter walking and jogging path.', descTe: 'చెట్లతో కూడిన నడక మరియు జాగింగ్ మార్గం.' },
+      { id: 'open-gym', nameEn: 'Open-Air Fitness Gym', nameTe: 'ఓపెన్ వ్యాయామశాల (ఓపెన్ జిమ్)', category: 'info', lat: baseLat + 0.0002, lng: baseLng - 0.0005, svgX: 150, svgY: 120, descEn: 'Public open-air fitness stations and workout equipment.', descTe: 'ప్రజా వ్యాయామ పరికరాలు.' },
+      { id: 'gazebo', nameEn: `${name} Garden Lawn & Gazebo`, nameTe: `${name} పచ్చిక బయలు & గెజిబో`, category: 'sanctum', lat: baseLat, lng: baseLng, svgX: 270, svgY: 135, descEn: 'Manicured green lawn, shaded seating pergola, and flower beds.', descTe: 'పచ్చని ఉద్యానవనం మరియు విశ్రాంతి బెంచీలు.' },
+      { id: 'kids-play', nameEn: 'Children\'s Play Zone & Swings', nameTe: 'పిల్లల ఆట స్థలం', category: 'info', lat: baseLat + 0.0003, lng: baseLng + 0.0006, svgX: 385, svgY: 120, descEn: 'Safe children playground with swings, slides, and sandpit.', descTe: 'పిల్లల ఉయ్యాలలు, జారుడు బల్లలతో కూడిన ఆట స్థలం.' }
     ];
   } else if (layoutType === 'geo-nature-park') {
     // 🌿 GEOLOGICAL & NATURE BOTANICAL PARK (Silathoranam, Udyanavanam)
