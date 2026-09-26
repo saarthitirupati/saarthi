@@ -76,6 +76,17 @@ export default function SplashScreen({
     }
   }, [mode, handleFinish]);
 
+  useEffect(() => {
+    if (mode === 'existing') {
+      const meta = document.querySelector('meta[name="theme-color"]');
+      const prevColor = meta?.getAttribute('content') || '#FAF8F5';
+      if (meta) meta.setAttribute('content', '#071C12');
+      return () => {
+        if (meta) meta.setAttribute('content', prevColor);
+      };
+    }
+  }, [mode]);
+
   // ==========================================
   // 1. EXISTING USER SPLASH SCREEN (Under 2 to 3 seconds)
   // Matching user's exact sacred dark-green sanctum design
@@ -85,7 +96,7 @@ export default function SplashScreen({
       <AnimatePresence mode="wait">
         {isVisible && (
           <motion.div
-            className={styles.splashContainer}
+            className={`${styles.splashContainer} ${styles.existingContainer}`}
             initial={{ opacity: 1 }}
             exit={{ opacity: 0, scale: 1.01 }}
             transition={{ duration: 0.22, ease: [0.4, 0, 0.2, 1] }}
@@ -93,7 +104,8 @@ export default function SplashScreen({
             onClick={handleFinish}
             style={{
               cursor: 'pointer',
-              background: '#0A2518',
+              backgroundColor: '#071C12',
+              background: '#071C12',
               display: 'flex',
               flexDirection: 'column',
               alignItems: 'center',
@@ -164,7 +176,7 @@ export default function SplashScreen({
               style={{
                 width: '180px',
                 height: '3px',
-                background: 'rgba(255, 255, 255, 0.08)',
+                background: 'rgba(255, 255, 255, 0.16)',
                 borderRadius: '3px',
                 overflow: 'hidden'
               }}

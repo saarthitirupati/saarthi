@@ -11,7 +11,7 @@
   width: 100vw;
   height: 100vh;
   z-index: 999999;
-  background: #FAF8F5 !important; /* Divine cream matching video background */
+  background: #FAF8F5; /* Divine cream matching video background */
   display: flex;
   align-items: center;
   justify-content: center;
@@ -19,6 +19,33 @@
   user-select: none;
   -webkit-user-select: none;
   cursor: default;
+  -webkit-tap-highlight-color: transparent;
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+.existingContainer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 999999;
+  background-color: #071C12 !important; /* Sacred Dark Sanctum Green */
+  background: #071C12 !important;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  overflow: hidden;
+  user-select: none;
+  -webkit-user-select: none;
+  cursor: pointer;
   -webkit-tap-highlight-color: transparent;
   transform: translateZ(0);
   -webkit-transform: translateZ(0);
