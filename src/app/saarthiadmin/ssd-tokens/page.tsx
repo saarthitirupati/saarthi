@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Ticket, Clock, CheckCircle2, PauseCircle, XCircle, Save, RefreshCw, AlertCircle, Bot, AlertTriangle } from 'lucide-react';
+import { Ticket, Clock, CheckCircle2, PauseCircle, XCircle, Save, RefreshCw, AlertCircle, Bot, AlertTriangle, Send } from 'lucide-react';
 import styles from '../Dashboard.module.css';
 import { notifyRealtimeUpdate } from '@/lib/useRealtimeStatus';
 import { safeFetchJson } from '@/lib/safeFetch';
@@ -16,6 +16,8 @@ export default function AdminSsdTokensPage() {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
+  const [sendPushNotification, setSendPushNotification] = useState<boolean>(true);
+  const [broadcastingPush, setBroadcastingPush] = useState<boolean>(false);
 
   const [ssdTokenStatus, setSsdTokenStatus] = useState<'issuing' | 'paused' | 'closed-for-day'>('issuing');
   const [ssdNextTokenTime, setSsdNextTokenTime] = useState<string>('2:00 PM');
@@ -59,6 +61,46 @@ export default function AdminSsdTokensPage() {
     fetchSsdData();
   }, []);
 
+  const handleBroadcastPushNow = async () => {
+    setBroadcastingPush(true);
+    try {
+      const adminToken = typeof window !== 'undefined' ? (localStorage.getItem('saarthi_admin_token') || 'saarthi_admin_token_2026') : 'saarthi_admin_token_2026';
+      const pushTitle = ssdTokenStatus === 'closed-for-day'
+        ? 'Today’s SSD Token Quota Closed'
+        : (ssdTokenStatus === 'paused'
+            ? 'SSD Offline Tokens Paused'
+            : `Free SSD Counters Opening at ${ssdNextTokenTime || '5:00 AM'}`);
+      const pushBody = ssdTokenStatus === 'closed-for-day'
+        ? (ssdNotice?.trim() || 'Offline SSD token quota for today is complete. Next issuance tomorrow morning.')
+        : `Offline token counters opening shortly at Vishnu Nivasam & Srinivasam. Bring original Aadhaar cards for biometric issue.${ssdNotice?.trim() ? ` ${ssdNotice.trim()}` : ''}`;
+
+      const res = await fetch('/api/push/send', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${adminToken}`
+        },
+        body: JSON.stringify({
+          title: pushTitle,
+          body: pushBody,
+          url: '/darshan/ssd-token',
+          tag: 'ssd-status',
+          category: 'High Priority'
+        })
+      });
+      const data = await res.json();
+      if (res.ok && !data.error) {
+        alert('Push notification broadcasted successfully to all subscribers!');
+      } else {
+        alert('Push broadcast failed: ' + (data.error || 'Unknown error'));
+      }
+    } catch (e: any) {
+      alert('Error broadcasting push: ' + (e?.message || 'Network error'));
+    } finally {
+      setBroadcastingPush(false);
+    }
+  };
+
   const handleSave = async () => {
     setSaving(true);
     setMessage(null);
@@ -77,7 +119,8 @@ export default function AdminSsdTokensPage() {
           ssdNotice,
           ssdTimingsGuide,
           ssdTokenSlots: ssdSlots,
-          ssdCounters
+          ssdCounters,
+          sendPush: sendPushNotification
         })
       });
 
@@ -90,7 +133,9 @@ export default function AdminSsdTokensPage() {
         if (Array.isArray(data.ssdTokenSlots)) setSsdSlots(data.ssdTokenSlots);
         if (Array.isArray(data.ssdCounters)) setSsdCounters(data.ssdCounters);
 
-        setMessage('SSD Token updates published live successfully!');
+        setMessage(data.pushSent
+          ? 'SSD Token updates published & Push Notification broadcasted to subscribers!'
+          : 'SSD Token updates published live successfully!');
         notifyRealtimeUpdate();
       } else {
         const err = await res.json().catch(() => ({}));
@@ -114,22 +159,33 @@ export default function AdminSsdTokensPage() {
 
   return (
     <div className={styles.dashboard}>
-      <div className={styles.header} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+      <div className={styles.header} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '14px' }}>
         <div>
           <h1 className={styles.title}>SSD Token Management</h1>
           <p className={styles.subtitle}>Manage Slotted Sarva Darshan offline token issuance & slot states</p>
         </div>
-        <button 
-          onClick={handleSave} 
-          disabled={saving}
-          style={{
-            backgroundColor: '#0E6B72', color: '#FFF', border: 'none', borderRadius: '10px',
-            padding: '10px 20px', fontWeight: 700, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '8px'
-          }}
-        >
-          <Save size={16} />
-          {saving ? 'Publishing...' : 'Publish Live Updates'}
-        </button>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+          <label style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '13px', fontWeight: 600, color: '#334155', cursor: 'pointer' }}>
+            <input 
+              type="checkbox" 
+              checked={sendPushNotification} 
+              onChange={(e) => setSendPushNotification(e.target.checked)} 
+              style={{ width: '16px', height: '16px', accentColor: '#0E6B72', cursor: 'pointer' }}
+            />
+            <span>Auto-broadcast Push Notification on publish</span>
+          </label>
+          <button 
+            onClick={handleSave} 
+            disabled={saving}
+            style={{
+              backgroundColor: '#0E6B72', color: '#FFF', border: 'none', borderRadius: '10px',
+              padding: '10px 20px', fontWeight: 700, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '8px'
+            }}
+          >
+            <Save size={16} />
+            {saving ? 'Publishing...' : 'Publish Live Updates'}
+          </button>
+        </div>
       </div>
 
       {message && (
@@ -220,13 +276,36 @@ export default function AdminSsdTokensPage() {
         </div>
       </div>
 
-      {/* Autonomous Push Notification Preview & Connection */}
+      {/* Push Notification Preview & Auto-Broadcast Connection */}
       <div className={styles.dataQualitySection} style={{ marginBottom: '24px', backgroundColor: '#F0FDF4', border: '1px solid #BBF7D0' }}>
-        <h3 className={styles.sectionTitle} style={{ color: '#166534', margin: '0 0 6px 0', display: 'flex', alignItems: 'center', gap: '6px' }}>
-          <Bot size={16} /> Connected Autonomous 5:00 AM Push Alert
-        </h3>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '10px', marginBottom: '8px' }}>
+          <h3 className={styles.sectionTitle} style={{ color: '#166534', margin: 0, display: 'flex', alignItems: 'center', gap: '6px' }}>
+            <Bot size={16} /> Connected Push Alert & Instant Broadcast
+          </h3>
+          <button
+            type="button"
+            onClick={handleBroadcastPushNow}
+            disabled={broadcastingPush}
+            style={{
+              backgroundColor: '#16A34A',
+              color: '#FFFFFF',
+              border: 'none',
+              borderRadius: '8px',
+              padding: '6px 14px',
+              fontSize: '12px',
+              fontWeight: 700,
+              cursor: 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '6px'
+            }}
+          >
+            <Send size={13} />
+            {broadcastingPush ? 'Broadcasting...' : 'Broadcast Push Alert Now'}
+          </button>
+        </div>
         <p style={{ fontSize: '12px', color: '#15803D', margin: '0 0 10px 0' }}>
-          The autonomous engine broadcasts this message to subscribers at 5:00 AM IST without requiring any manual clicks. It updates dynamically with your panel settings above:
+          Whenever you update and click &quot;Publish Live Updates&quot;, this notification is automatically broadcasted to all subscribers. You can also click the button above to broadcast it instantly anytime:
         </p>
         <div style={{
           backgroundColor: '#FFFFFF',

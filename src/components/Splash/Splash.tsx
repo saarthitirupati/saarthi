@@ -2,11 +2,25 @@
 
 import React, { useEffect, useState, useCallback, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import Logo from '@/components/Logo/Logo';
 import styles from './Splash.module.css';
 
-export default function SplashScreen({ onFinish }: { onFinish: () => void }) {
+interface SplashScreenProps {
+  onFinish: () => void;
+  mode?: 'new' | 'existing';
+  userName?: string;
+  language?: 'en' | 'te';
+}
+
+export default function SplashScreen({
+  onFinish,
+  mode = 'existing',
+  userName,
+  language = 'en'
+}: SplashScreenProps) {
   const [isVisible, setIsVisible] = useState(true);
   const [isVideoReady, setIsVideoReady] = useState(false);
+  const [progressWidth, setProgressWidth] = useState(0);
   const videoRef = useRef<HTMLVideoElement>(null);
   const isFinishedRef = useRef(false);
 
@@ -14,7 +28,7 @@ export default function SplashScreen({ onFinish }: { onFinish: () => void }) {
     if (isFinishedRef.current) return;
     isFinishedRef.current = true;
     setIsVisible(false);
-    setTimeout(onFinish, 350); // 350ms smooth exit cross-fade
+    setTimeout(onFinish, 220); // 220ms smooth exit transition
   }, [onFinish]);
 
   const attachVideo = useCallback((node: HTMLVideoElement | null) => {
@@ -31,23 +45,168 @@ export default function SplashScreen({ onFinish }: { onFinish: () => void }) {
   }, []);
 
   useEffect(() => {
-    const v = videoRef.current;
-    if (v) {
-      v.defaultMuted = true;
-      v.muted = true;
-      v.play().then(() => setIsVideoReady(true)).catch(() => {});
+    // Existing users: strictly under 2 to 3 seconds -> 2000ms
+    // New users: 3500ms
+    const duration = mode === 'existing' ? 2000 : 3500;
+
+    if (mode === 'existing') {
+      // Smooth progress bar fill over 1.8 seconds
+      const start = Date.now();
+      const progressInterval = setInterval(() => {
+        const elapsed = Date.now() - start;
+        const pct = Math.min((elapsed / 1800) * 100, 100);
+        setProgressWidth(pct);
+        if (pct >= 100) clearInterval(progressInterval);
+      }, 30);
+
+      const timer = setTimeout(() => {
+        clearInterval(progressInterval);
+        handleFinish();
+      }, duration);
+
+      return () => {
+        clearInterval(progressInterval);
+        clearTimeout(timer);
+      };
+    } else {
+      const timer = setTimeout(() => {
+        handleFinish();
+      }, duration);
+      return () => clearTimeout(timer);
     }
+  }, [mode, handleFinish]);
 
-    // Safety fallback timer (12s) - allows full 9.4s video to finish naturally via onEnded
-    const safetyTimer = setTimeout(() => {
-      handleFinish();
-    }, 12000);
+  // ==========================================
+  // 1. EXISTING USER SPLASH SCREEN (Under 2 to 3 seconds)
+  // Matching user's exact sacred dark-green sanctum design
+  // ==========================================
+  if (mode === 'existing') {
+    return (
+      <AnimatePresence mode="wait">
+        {isVisible && (
+          <motion.div
+            className={styles.splashContainer}
+            initial={{ opacity: 1 }}
+            exit={{ opacity: 0, scale: 1.01 }}
+            transition={{ duration: 0.22, ease: [0.4, 0, 0.2, 1] }}
+            onTouchStart={handleFinish}
+            onClick={handleFinish}
+            style={{
+              cursor: 'pointer',
+              background: '#0A2518',
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              justifyContent: 'center',
+              padding: '24px',
+              position: 'fixed',
+              inset: 0,
+              width: '100vw',
+              height: '100vh',
+              zIndex: 999999
+            }}
+          >
+            {/* Saarthi Pin Logo */}
+            <motion.div
+              initial={{ scale: 0.88, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              transition={{ duration: 0.4, ease: 'easeOut' }}
+              style={{
+                marginBottom: '20px',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center'
+              }}
+            >
+              <Logo size={88} />
+            </motion.div>
 
-    return () => {
-      clearTimeout(safetyTimer);
-    };
-  }, [handleFinish]);
+            {/* Sacred Brand Name */}
+            <motion.h2
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.15, duration: 0.4 }}
+              style={{
+                color: '#F4EFE6',
+                fontSize: 'clamp(24px, 3.5vw, 32px)',
+                fontWeight: 700,
+                fontFamily: 'Playfair Display, Georgia, serif',
+                margin: '0 0 10px 0',
+                letterSpacing: '0.01em',
+                textAlign: 'center'
+              }}
+            >
+              {language === 'te' ? 'సారథి' : 'Saarthi'}
+            </motion.h2>
 
+            {/* Status Tagline */}
+            <motion.p
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.25, duration: 0.4 }}
+              style={{
+                color: '#8A9A90',
+                fontSize: '14px',
+                fontWeight: 400,
+                margin: '0 0 44px 0',
+                letterSpacing: '0.01em',
+                textAlign: 'center'
+              }}
+            >
+              {language === 'te' ? 'మీ యాత్ర మార్గదర్శిని సిద్ధం అవుతోంది...' : 'Getting your guide ready...'}
+            </motion.p>
+
+            {/* Golden Animated Progress Bar */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.2 }}
+              style={{
+                width: '180px',
+                height: '3px',
+                background: 'rgba(255, 255, 255, 0.08)',
+                borderRadius: '3px',
+                overflow: 'hidden'
+              }}
+            >
+              <div
+                style={{
+                  height: '100%',
+                  width: `${progressWidth}%`,
+                  background: '#C89B3C',
+                  borderRadius: '3px',
+                  transition: 'width 0.06s linear'
+                }}
+              />
+            </motion.div>
+
+            {/* Devotional Chant at Bottom */}
+            <motion.p
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 0.9 }}
+              transition={{ delay: 0.35, duration: 0.5 }}
+              style={{
+                color: '#C89B3C',
+                fontSize: '12px',
+                fontWeight: 700,
+                letterSpacing: '0.12em',
+                textTransform: 'uppercase',
+                margin: '52px 0 0 0',
+                textAlign: 'center'
+              }}
+            >
+              {language === 'te' ? 'ఓం శ్రీ వేంకటేశాయ నమః' : 'OM SRI VENKATESHAYA NAMAHA'}
+            </motion.p>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    );
+  }
+
+  // ==========================================
+  // 2. NEW USER SPLASH SCREEN
+  // Sacred full-screen video/poster intro
+  // ==========================================
   return (
     <AnimatePresence mode="wait">
       {isVisible && (
@@ -63,6 +222,7 @@ export default function SplashScreen({ onFinish }: { onFinish: () => void }) {
           <video
             ref={attachVideo}
             src="/banner/splash-screen-logo.mp4"
+            poster="/banner/splash_poster.webp"
             autoPlay
             loop={false}
             muted
@@ -107,10 +267,10 @@ export default function SplashScreen({ onFinish }: { onFinish: () => void }) {
 
           <motion.div
             initial={{ opacity: 0, y: 8 }}
-            animate={{ opacity: [0.7, 1, 0.7], y: 0 }}
+            animate={{ opacity: [0.75, 1, 0.75], y: 0 }}
             transition={{
-              opacity: { repeat: Infinity, duration: 2.4, ease: 'easeInOut' },
-              y: { duration: 0.6, ease: 'easeOut' }
+              opacity: { repeat: Infinity, duration: 2.2, ease: 'easeInOut' },
+              y: { duration: 0.5, ease: 'easeOut' }
             }}
             style={{
               position: 'absolute',
@@ -128,21 +288,21 @@ export default function SplashScreen({ onFinish }: { onFinish: () => void }) {
               style={{
                 fontFamily: "var(--font-heading, 'Plus Jakarta Sans', -apple-system, sans-serif)",
                 fontSize: '12px',
-                fontWeight: 600,
-                letterSpacing: '0.08em',
+                fontWeight: 700,
+                letterSpacing: '0.06em',
                 textTransform: 'uppercase',
                 color: '#FFFFFF',
-                backgroundColor: 'rgba(15, 23, 42, 0.55)',
+                backgroundColor: 'rgba(15, 23, 42, 0.6)',
                 backdropFilter: 'blur(16px)',
                 WebkitBackdropFilter: 'blur(16px)',
-                border: '1px solid rgba(255, 255, 255, 0.22)',
+                border: '1px solid rgba(255, 255, 255, 0.25)',
                 borderRadius: '9999px',
-                padding: '8px 22px',
-                boxShadow: '0 4px 20px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.15)',
+                padding: '9px 24px',
+                boxShadow: '0 4px 20px rgba(0, 0, 0, 0.35)',
                 textShadow: '0 1px 2px rgba(0, 0, 0, 0.6)'
               }}
             >
-              Touch anywhere to enter
+              Begin Pilgrimage →
             </span>
           </motion.div>
         </motion.div>

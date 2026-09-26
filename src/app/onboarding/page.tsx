@@ -123,7 +123,7 @@ export default function OnboardingPage() {
           }
           return t + 1;
         });
-      }, 800);
+      }, 140);
       return () => clearInterval(interval);
     }
   }, [step]);
@@ -150,6 +150,10 @@ export default function OnboardingPage() {
     localStorage.setItem('saarthi_user_name', finalName);
     localStorage.setItem('saarthi_user_language', selectedLanguage);
     
+    // Prevent splash screen from stalling user on next landing
+    sessionStorage.setItem('splashShown', 'true');
+    localStorage.setItem('saarthi_splash_seen', 'true');
+    
     localStorage.setItem('saarthi_location_enabled', locationPerm ? 'true' : 'false');
     localStorage.setItem('saarthi_notif_enabled', notifPerm ? 'true' : 'false');
 
@@ -167,7 +171,9 @@ export default function OnboardingPage() {
     };
     localStorage.setItem('jeevapath_trip_state', JSON.stringify(updatedState));
 
-    window.location.href = '/';
+    // Notify listeners and perform instantaneous client-side navigation (no full page reload)
+    window.dispatchEvent(new Event('storage'));
+    router.replace('/');
   };
 
   if (!isMounted) {

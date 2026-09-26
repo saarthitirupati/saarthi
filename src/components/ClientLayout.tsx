@@ -20,12 +20,18 @@ function LayoutContent({
   handleSplashFinish,
   isMenuOpen,
   setIsMenuOpen,
+  splashMode,
+  userName,
+  language,
 }: {
   children: React.ReactNode;
   showSplash: boolean;
   handleSplashFinish: () => void;
   isMenuOpen: boolean;
   setIsMenuOpen: (val: boolean) => void;
+  splashMode: 'new' | 'existing';
+  userName?: string;
+  language?: 'en' | 'te';
 }) {
   usePageAnalytics();
   const pathname = usePathname();
@@ -38,11 +44,16 @@ function LayoutContent({
 
   useEffect(() => {
     if (typeof window === 'undefined') return;
-    const isApp = window.matchMedia('(display-mode: standalone)').matches;
-    const obKey = isApp ? 'hasSeenOnboarding_app' : 'hasSeenOnboarding';
-    const hasSeenOnboarding = localStorage.getItem(obKey);
-    const hasName = localStorage.getItem(isApp ? 'saarthi_user_name_app' : 'saarthi_user_name');
-    setNeedsOnboarding(!hasSeenOnboarding || !hasName);
+    const checkOnboarding = () => {
+      const isApp = window.matchMedia('(display-mode: standalone)').matches;
+      const obKey = isApp ? 'hasSeenOnboarding_app' : 'hasSeenOnboarding';
+      const hasSeenOnboarding = localStorage.getItem(obKey);
+      const hasName = localStorage.getItem(isApp ? 'saarthi_user_name_app' : 'saarthi_user_name');
+      setNeedsOnboarding(!hasSeenOnboarding || !hasName);
+    };
+    checkOnboarding();
+    window.addEventListener('storage', checkOnboarding);
+    return () => window.removeEventListener('storage', checkOnboarding);
   }, [pathname]);
 
   useEffect(() => {
@@ -65,7 +76,14 @@ function LayoutContent({
 
   return (
     <>
-      {showSplash && !isAdmin && <SplashScreen onFinish={handleSplashFinish} />}
+      {showSplash && !isAdmin && (
+        <SplashScreen
+          onFinish={handleSplashFinish}
+          mode={splashMode}
+          userName={userName}
+          language={language}
+        />
+      )}
       {!isAdmin && !showSplash && !isExcluded && <DesktopHeader />}
       {!isAdmin && !showSplash && !isExcluded && (
         <ActiveAlerts 
@@ -116,6 +134,9 @@ export default function ClientLayout({
   const isHome = pathname === '/' || pathname === '';
   const [showSplash, setShowSplash] = useState<boolean>(isHome);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isExistingUser, setIsExistingUser] = useState<boolean>(true);
+  const [userName, setUserName] = useState<string>('');
+  const [userLanguage, setUserLanguage] = useState<'en' | 'te'>('en');
 
   const isAdmin = pathname?.startsWith('/saarthiadmin');
 
@@ -126,9 +147,20 @@ export default function ClientLayout({
       setShowSplash(false);
       return;
     }
+    const isApp = window.matchMedia('(display-mode: standalone)').matches;
+    const obKey = isApp ? 'hasSeenOnboarding_app' : 'hasSeenOnboarding';
+    const hasSeenOnboarding = localStorage.getItem(obKey) || localStorage.getItem('hasSeenOnboarding');
+    const name = localStorage.getItem(isApp ? 'saarthi_user_name_app' : 'saarthi_user_name') || localStorage.getItem('saarthi_user_name');
+    const lang = localStorage.getItem('saarthi_user_language') as 'en' | 'te';
+    if (lang === 'te' || lang === 'en') setUserLanguage(lang);
+
+    const existing = Boolean(hasSeenOnboarding && name);
+    setIsExistingUser(existing);
+    if (name) setUserName(name);
+
     const splashShown = sessionStorage.getItem('splashShown');
     const isHomePage = pathname === '/' || pathname === '';
-    if (splashShown && isHomePage) {
+    if (existing && splashShown && isHomePage) {
       setShowSplash(false);
     }
   }, [pathname]);
@@ -166,11 +198,10 @@ export default function ClientLayout({
     return () => window.removeEventListener('error', handleChunkError);
   }, []);
 
-
-
   const handleSplashFinish = () => {
     setShowSplash(false);
     sessionStorage.setItem('splashShown', 'true');
+    localStorage.setItem('saarthi_splash_seen', 'true');
   };
 
   // Track page views (skip admin routes)
@@ -192,6 +223,9 @@ export default function ClientLayout({
         handleSplashFinish={handleSplashFinish}
         isMenuOpen={isMenuOpen}
         setIsMenuOpen={setIsMenuOpen}
+        splashMode={isExistingUser ? 'existing' : 'new'}
+        userName={userName}
+        language={userLanguage}
       >
         {children}
       </LayoutContent>

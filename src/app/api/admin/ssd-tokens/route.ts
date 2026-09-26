@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import { readStatus, updateStatus, SsdTokenSlot, SsdCounter } from '@/lib/statusDb';
 import { isAuthorizedAdmin } from '@/lib/authGuard';
-import { notifySsdUpdates } from '@/lib/pushNotify';
+import { notifySsdUpdates, pushNotifyAll } from '@/lib/pushNotify';
 
 export async function GET() {
   try {
@@ -41,13 +41,37 @@ export async function POST(req: Request) {
     const before = await readStatus();
     const updated = await updateStatus(updates);
 
-    // Push notifications for any SSD timings, slot, status, or notice changes
-    notifySsdUpdates(before, updated).catch((err) => {
-      console.error('[PushNotify] Error broadcasting SSD update:', err);
-    });
+    // Automatic push notification matching the live preview
+    const shouldSendPush = body.sendPush !== false;
+    if (shouldSendPush) {
+      const pushTitle = updated.ssdTokenStatus === 'closed-for-day'
+        ? 'Today’s SSD Token Quota Closed'
+        : (updated.ssdTokenStatus === 'paused'
+            ? 'SSD Offline Tokens Paused'
+            : `Free SSD Counters Opening at ${updated.ssdNextTokenTime || '5:00 AM'}`);
+
+      const pushBody = updated.ssdTokenStatus === 'closed-for-day'
+        ? (updated.ssdNotice?.trim() || 'Offline SSD token quota for today is complete. Next issuance tomorrow morning.')
+        : `Offline token counters opening shortly at Vishnu Nivasam & Srinivasam. Bring original Aadhaar cards for biometric issue.${updated.ssdNotice?.trim() ? ` ${updated.ssdNotice.trim()}` : ''}`;
+
+      pushNotifyAll({
+        title: pushTitle,
+        body: pushBody,
+        url: '/darshan/ssd-token',
+        tag: 'ssd-status',
+        category: 'High Priority'
+      }).catch((err) => {
+        console.error('[PushNotify] Error broadcasting SSD update:', err);
+      });
+    } else {
+      notifySsdUpdates(before, updated).catch((err) => {
+        console.error('[PushNotify] Error broadcasting SSD update:', err);
+      });
+    }
 
     return NextResponse.json({
       success: true,
+      pushSent: shouldSendPush,
       ssdTokenStatus: updated.ssdTokenStatus,
       ssdNextTokenTime: updated.ssdNextTokenTime,
       ssdTokenSlots: updated.ssdTokenSlots,
