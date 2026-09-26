@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
-import SplashScreen from '@/components/Splash/Splash';
+import dynamic from 'next/dynamic';
 import SideMenu from '@/components/SideMenu/SideMenu';
 import BottomNav from '@/components/BottomNav/BottomNav';
 import { TripProvider, useTrip } from '@/components/TripContext';
@@ -13,6 +13,10 @@ import { ActiveAlerts } from '@/components/home/ActiveAlerts';
 import { useAlerts } from '@/hooks/useAlerts';
 
 import { syncExistingPushSubscription } from '@/lib/pushClient';
+
+const SplashScreen = dynamic(() => import('@/components/Splash/Splash'), {
+  ssr: false,
+});
 
 function LayoutContent({
   children,
@@ -39,15 +43,7 @@ function LayoutContent({
   const isAdmin = pathname?.startsWith('/saarthiadmin');
   const isStudio = pathname?.startsWith('/studio');
   const { locationPermission, isInitialized } = useTrip();
-  // Initialize synchronously from localStorage so there is no hydration delay/flash
-  const [needsOnboarding, setNeedsOnboarding] = useState<boolean | null>(() => {
-    if (typeof window === 'undefined') return null;
-    const isApp = window.matchMedia('(display-mode: standalone)').matches;
-    const obKey = isApp ? 'hasSeenOnboarding_app' : 'hasSeenOnboarding';
-    const hasSeenOnboarding = localStorage.getItem(obKey) || localStorage.getItem('hasSeenOnboarding');
-    const hasName = localStorage.getItem(isApp ? 'saarthi_user_name_app' : 'saarthi_user_name') || localStorage.getItem('saarthi_user_name');
-    return !hasSeenOnboarding || !hasName;
-  });
+  const [needsOnboarding, setNeedsOnboarding] = useState<boolean | null>(null);
   const alertsHook = useAlerts();
 
   useEffect(() => {
@@ -142,14 +138,7 @@ export default function ClientLayout({
   const isHome = pathname === '/' || pathname === '';
   const [showSplash, setShowSplash] = useState<boolean>(isHome);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isExistingUser, setIsExistingUser] = useState<boolean>(() => {
-    if (typeof window === 'undefined') return true;
-    const isApp = window.matchMedia('(display-mode: standalone)').matches;
-    const obKey = isApp ? 'hasSeenOnboarding_app' : 'hasSeenOnboarding';
-    const hasSeen = localStorage.getItem(obKey) || localStorage.getItem('hasSeenOnboarding');
-    const name = localStorage.getItem(isApp ? 'saarthi_user_name_app' : 'saarthi_user_name') || localStorage.getItem('saarthi_user_name');
-    return Boolean(hasSeen && name);
-  });
+  const [isExistingUser, setIsExistingUser] = useState<boolean>(true);
   const [userName, setUserName] = useState<string>('');
   const [userLanguage, setUserLanguage] = useState<'en' | 'te'>('en');
 

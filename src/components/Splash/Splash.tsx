@@ -46,8 +46,8 @@ export default function SplashScreen({
 
   useEffect(() => {
     // Existing users: strictly under 2 to 3 seconds -> 2000ms
-    // New users: 3500ms
-    const duration = mode === 'existing' ? 2000 : 3500;
+    // New users: full 10s video plays completely -> fallback timer at 11.5s
+    const duration = mode === 'existing' ? 2000 : 11500;
 
     if (mode === 'existing') {
       // Smooth progress bar fill over 1.8 seconds
@@ -227,9 +227,6 @@ export default function SplashScreen({
           initial={{ opacity: 1 }}
           exit={{ opacity: 0, scale: 1.02 }}
           transition={{ duration: 0.35, ease: [0.4, 0, 0.2, 1] }}
-          onTouchStart={handleFinish}
-          onClick={handleFinish}
-          style={{ cursor: 'pointer' }}
         >
           <video
             ref={attachVideo}
@@ -292,11 +289,11 @@ export default function SplashScreen({
               display: 'flex',
               justifyContent: 'center',
               alignItems: 'center',
-              zIndex: 9999999,
-              pointerEvents: 'none'
+              zIndex: 9999999
             }}
           >
             <span
+              onClick={handleFinish}
               style={{
                 fontFamily: "var(--font-heading, 'Plus Jakarta Sans', -apple-system, sans-serif)",
                 fontSize: '12px',
@@ -311,7 +308,9 @@ export default function SplashScreen({
                 borderRadius: '9999px',
                 padding: '9px 24px',
                 boxShadow: '0 4px 20px rgba(0, 0, 0, 0.35)',
-                textShadow: '0 1px 2px rgba(0, 0, 0, 0.6)'
+                textShadow: '0 1px 2px rgba(0, 0, 0, 0.6)',
+                cursor: 'pointer',
+                pointerEvents: 'auto'
               }}
             >
               Begin Pilgrimage →
