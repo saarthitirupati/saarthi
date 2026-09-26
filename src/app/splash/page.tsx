@@ -6,9 +6,22 @@ import SplashScreen from '@/components/Splash/Splash';
 
 export default function SplashPage() {
   const router = useRouter();
-  const [isExisting, setIsExisting] = useState(true);
+  const [isExisting, setIsExisting] = useState(() => {
+    if (typeof window === 'undefined') return true;
+    const isApp = window.matchMedia('(display-mode: standalone)').matches;
+    const obKey = isApp ? 'hasSeenOnboarding_app' : 'hasSeenOnboarding';
+    const hasSeen = localStorage.getItem(obKey) || localStorage.getItem('hasSeenOnboarding');
+    const savedName = localStorage.getItem(isApp ? 'saarthi_user_name_app' : 'saarthi_user_name') || localStorage.getItem('saarthi_user_name');
+    return Boolean(hasSeen && savedName);
+  });
   const [userName, setUserName] = useState('');
   const [userLanguage, setUserLanguage] = useState<'en' | 'te'>('en');
+
+  useEffect(() => {
+    if (!isExisting) {
+      router.prefetch('/onboarding');
+    }
+  }, [isExisting, router]);
 
   useEffect(() => {
     if (typeof window === 'undefined') return;

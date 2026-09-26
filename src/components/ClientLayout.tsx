@@ -39,7 +39,15 @@ function LayoutContent({
   const isAdmin = pathname?.startsWith('/saarthiadmin');
   const isStudio = pathname?.startsWith('/studio');
   const { locationPermission, isInitialized } = useTrip();
-  const [needsOnboarding, setNeedsOnboarding] = useState<boolean | null>(null);
+  // Initialize synchronously from localStorage so there is no hydration delay/flash
+  const [needsOnboarding, setNeedsOnboarding] = useState<boolean | null>(() => {
+    if (typeof window === 'undefined') return null;
+    const isApp = window.matchMedia('(display-mode: standalone)').matches;
+    const obKey = isApp ? 'hasSeenOnboarding_app' : 'hasSeenOnboarding';
+    const hasSeenOnboarding = localStorage.getItem(obKey) || localStorage.getItem('hasSeenOnboarding');
+    const hasName = localStorage.getItem(isApp ? 'saarthi_user_name_app' : 'saarthi_user_name') || localStorage.getItem('saarthi_user_name');
+    return !hasSeenOnboarding || !hasName;
+  });
   const alertsHook = useAlerts();
 
   useEffect(() => {
@@ -59,7 +67,7 @@ function LayoutContent({
   useEffect(() => {
     const isExcluded = pathname === '/onboarding' || pathname === '/splash' || isAdmin || isStudio;
     if (isInitialized && !showSplash && !isExcluded && needsOnboarding === true) {
-      router.push('/onboarding');
+      router.replace('/onboarding');
     }
   }, [isInitialized, showSplash, pathname, router, needsOnboarding]);
 
@@ -84,8 +92,8 @@ function LayoutContent({
           language={language}
         />
       )}
-      {!isAdmin && !showSplash && !isExcluded && <DesktopHeader />}
-      {!isAdmin && !showSplash && !isExcluded && (
+      {!isAdmin && !showSplash && !isExcluded && needsOnboarding === false && <DesktopHeader />}
+      {!isAdmin && !showSplash && !isExcluded && needsOnboarding === false && (
         <ActiveAlerts 
           activePopupAlert={alertsHook.activePopupAlert} 
           dismissAlert={alertsHook.dismissAlert} 
@@ -134,11 +142,24 @@ export default function ClientLayout({
   const isHome = pathname === '/' || pathname === '';
   const [showSplash, setShowSplash] = useState<boolean>(isHome);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isExistingUser, setIsExistingUser] = useState<boolean>(true);
+  const [isExistingUser, setIsExistingUser] = useState<boolean>(() => {
+    if (typeof window === 'undefined') return true;
+    const isApp = window.matchMedia('(display-mode: standalone)').matches;
+    const obKey = isApp ? 'hasSeenOnboarding_app' : 'hasSeenOnboarding';
+    const hasSeen = localStorage.getItem(obKey) || localStorage.getItem('hasSeenOnboarding');
+    const name = localStorage.getItem(isApp ? 'saarthi_user_name_app' : 'saarthi_user_name') || localStorage.getItem('saarthi_user_name');
+    return Boolean(hasSeen && name);
+  });
   const [userName, setUserName] = useState<string>('');
   const [userLanguage, setUserLanguage] = useState<'en' | 'te'>('en');
 
   const isAdmin = pathname?.startsWith('/saarthiadmin');
+
+  useEffect(() => {
+    if (!isExistingUser) {
+      router.prefetch('/onboarding');
+    }
+  }, [isExistingUser, router]);
 
   useEffect(() => {
     if (typeof window === 'undefined') return;
@@ -202,6 +223,9 @@ export default function ClientLayout({
     setShowSplash(false);
     sessionStorage.setItem('splashShown', 'true');
     localStorage.setItem('saarthi_splash_seen', 'true');
+    if (!isExistingUser) {
+      router.replace('/onboarding');
+    }
   };
 
   // Track page views (skip admin routes)

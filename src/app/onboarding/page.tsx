@@ -110,7 +110,8 @@ export default function OnboardingPage() {
     if (savedLanguage && (savedLanguage === 'en' || savedLanguage === 'te')) {
       setSelectedLanguage(savedLanguage);
     }
-  }, []);
+    router.prefetch('/');
+  }, [router]);
 
   useEffect(() => {
     if (step === 4) {
@@ -537,7 +538,7 @@ export default function OnboardingPage() {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.6 }}
-                style={{ width: '180px', height: '3px', background: 'rgba(255,255,255,0.08)', borderRadius: '3px', overflow: 'hidden' }}
+                style={{ width: '180px', height: '3px', background: 'rgba(255,255,255,0.16)', borderRadius: '3px', overflow: 'hidden' }}
               >
                 <motion.div
                   initial={{ width: '0%' }}
