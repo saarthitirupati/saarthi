@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 import { supabase } from '@/lib/supabase';
 import { PLACES } from '@/data/places';
 import { STORIES } from '@/data/stories';
-import { getMemoryLogs } from '@/app/api/v1/telemetry/pageview/route';
+import { getMemoryLogs } from '@/lib/telemetryMemory';
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
