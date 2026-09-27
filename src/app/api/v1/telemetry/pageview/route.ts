@@ -1,8 +1,6 @@
 import { NextResponse } from 'next/server';
 import { supabase } from '@/lib/supabase';
-import { recordMemoryLog, getMemoryLogs } from '@/lib/telemetryMemory';
-
-export { getMemoryLogs };
+import { recordMemoryLog } from '@/lib/telemetryMemory';
 
 export async function POST(request: Request) {
   try {
@@ -55,8 +53,4 @@ export async function POST(request: Request) {
   } catch (error: any) {
     return NextResponse.json({ error: error.message || 'Telemetry ingestion failed' }, { status: 500 });
   }
-}
-
-export function getMemoryLogs() {
-  return memoryLogs;
 }
