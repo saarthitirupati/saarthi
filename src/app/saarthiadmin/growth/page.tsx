@@ -306,11 +306,17 @@ export default function GrowthHubDashboard() {
     });
   }, [visitorAnalytics, pageCategoryFilter, pageSearchQuery]);
 
-  const homePageViewStat = useMemo(() => {
+  const homePageViewStat: PageViewStat = useMemo(() => {
     return visitorAnalytics?.mostViewedPages?.find(p => p.path === '/' || p.path === '') || {
+      path: '/',
+      pageTitle: 'Home Screen',
       totalViews: 3091,
+      views: 3091,
       uniqueVisitors: 923,
-      sharePercentage: 26
+      uniquePilgrims: 923,
+      sharePercentage: 26,
+      percentage: 26,
+      category: 'core'
     };
   }, [visitorAnalytics]);
 
