@@ -28,8 +28,9 @@ export async function POST(request: Request) {
 
     // Async write to Supabase database (analytics_events) & local traffic ledger
     try {
-      const { recordPageView } = await import('@/lib/adminDb');
-      recordPageView(cleanPath);
+      const { recordPageView, recordView } = await import('@/lib/adminDb');
+      const recorder = recordPageView || recordView;
+      if (recorder) recorder(cleanPath);
     } catch {}
 
     try {

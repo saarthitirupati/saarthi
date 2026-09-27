@@ -149,6 +149,8 @@ export function recordView(pagePath: string) {
   fs.writeFileSync(TRAFFIC_FILE, JSON.stringify(entries, null, 2));
 }
 
+export const recordPageView = recordView;
+
 export function getTrafficSummary() {
   const entries = readTraffic();
   const last7: { date: string; total: number }[] = [];
