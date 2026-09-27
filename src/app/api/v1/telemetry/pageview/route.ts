@@ -1,16 +1,8 @@
 import { NextResponse } from 'next/server';
 import { supabase } from '@/lib/supabase';
+import { recordMemoryLog, getMemoryLogs } from '@/lib/telemetryMemory';
 
-// Memory cache fallback for ultra-fast telemetry ingestion
-const memoryLogs: Array<{
-  sessionId: string;
-  path: string;
-  title?: string;
-  placeId?: string;
-  storyId?: string;
-  deviceType?: string;
-  timestamp: string;
-}> = [];
+export { getMemoryLogs };
 
 export async function POST(request: Request) {
   try {
@@ -26,7 +18,7 @@ export async function POST(request: Request) {
     const timestamp = new Date().toISOString();
 
     // Store in-memory fallback cache (max 500 items)
-    memoryLogs.unshift({
+    recordMemoryLog({
       sessionId: cleanSessionId,
       path: cleanPath,
       title: title || cleanPath,
@@ -35,27 +27,26 @@ export async function POST(request: Request) {
       deviceType: deviceType || 'Mobile',
       timestamp
     });
-    if (memoryLogs.length > 500) memoryLogs.pop();
 
-    // Async write to Supabase database
+    // Async write to Supabase database (analytics_events) & local traffic ledger
     try {
-      await supabase.from('page_views').insert({
-        session_id: cleanSessionId,
-        path: cleanPath,
-        page_title: title || cleanPath,
-        place_id: placeId || null,
-        story_id: storyId || null,
-        device_type: deviceType || 'Mobile',
-        referrer: referrer || null,
-        created_at: timestamp
-      });
+      const { recordPageView } = await import('@/lib/adminDb');
+      recordPageView(cleanPath);
+    } catch {}
 
-      // Upsert visitor session
-      await supabase.from('visitor_sessions').upsert({
-        session_id: cleanSessionId,
-        last_seen_at: timestamp,
-        device_type: deviceType || 'Mobile'
-      }, { onConflict: 'session_id' });
+    try {
+      await supabase.from('analytics_events').insert([{
+        action: 'pageview',
+        place_id: placeId || null,
+        metadata: {
+          path: cleanPath,
+          title: title || cleanPath,
+          session_id: cleanSessionId,
+          device_type: deviceType || 'Mobile',
+          referrer: referrer || null,
+          created_at: timestamp
+        }
+      }]);
     } catch {
       // Silently fall back to in-memory store
     }

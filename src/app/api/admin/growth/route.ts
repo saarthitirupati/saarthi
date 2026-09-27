@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { readCampaignsAsync, addCampaignAsync, getGrowthHubMetricsAsync, readScansAsync } from '@/lib/adminDb';
+import { readCampaignsAsync, addCampaignAsync, getGrowthHubMetricsAsync, readScansAsync, getVisitorAnalyticsAsync } from '@/lib/adminDb';
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
@@ -9,12 +9,14 @@ export async function GET() {
     const campaigns = await readCampaignsAsync();
     const metrics = await getGrowthHubMetricsAsync();
     const scans = await readScansAsync(50); // recent 50 scans
+    const visitorAnalytics = await getVisitorAnalyticsAsync();
 
     return NextResponse.json({
       success: true,
       campaigns,
       metrics,
       recentScans: scans,
+      visitorAnalytics,
       serverTime: new Date().toISOString(),
     }, {
       headers: {

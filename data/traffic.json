@@ -478,5 +478,180 @@
     "date": "2026-06-25",
     "path": "/place/venkateswara",
     "count": 1
+  },
+  {
+    "date": "2026-09-21",
+    "path": "/",
+    "count": 117
+  },
+  {
+    "date": "2026-09-21",
+    "path": "/explore",
+    "count": 80
+  },
+  {
+    "date": "2026-09-21",
+    "path": "/planner",
+    "count": 68
+  },
+  {
+    "date": "2026-09-21",
+    "path": "/plans",
+    "count": 58
+  },
+  {
+    "date": "2026-09-21",
+    "path": "/generating",
+    "count": 37
+  },
+  {
+    "date": "2026-09-22",
+    "path": "/",
+    "count": 92
+  },
+  {
+    "date": "2026-09-22",
+    "path": "/explore",
+    "count": 64
+  },
+  {
+    "date": "2026-09-22",
+    "path": "/planner",
+    "count": 67
+  },
+  {
+    "date": "2026-09-22",
+    "path": "/plans",
+    "count": 40
+  },
+  {
+    "date": "2026-09-22",
+    "path": "/generating",
+    "count": 42
+  },
+  {
+    "date": "2026-09-23",
+    "path": "/",
+    "count": 111
+  },
+  {
+    "date": "2026-09-23",
+    "path": "/explore",
+    "count": 75
+  },
+  {
+    "date": "2026-09-23",
+    "path": "/planner",
+    "count": 45
+  },
+  {
+    "date": "2026-09-23",
+    "path": "/plans",
+    "count": 58
+  },
+  {
+    "date": "2026-09-23",
+    "path": "/generating",
+    "count": 69
+  },
+  {
+    "date": "2026-09-24",
+    "path": "/",
+    "count": 96
+  },
+  {
+    "date": "2026-09-24",
+    "path": "/explore",
+    "count": 74
+  },
+  {
+    "date": "2026-09-24",
+    "path": "/planner",
+    "count": 68
+  },
+  {
+    "date": "2026-09-24",
+    "path": "/plans",
+    "count": 37
+  },
+  {
+    "date": "2026-09-24",
+    "path": "/generating",
+    "count": 52
+  },
+  {
+    "date": "2026-09-25",
+    "path": "/",
+    "count": 109
+  },
+  {
+    "date": "2026-09-25",
+    "path": "/explore",
+    "count": 77
+  },
+  {
+    "date": "2026-09-25",
+    "path": "/planner",
+    "count": 47
+  },
+  {
+    "date": "2026-09-25",
+    "path": "/plans",
+    "count": 51
+  },
+  {
+    "date": "2026-09-25",
+    "path": "/generating",
+    "count": 62
+  },
+  {
+    "date": "2026-09-26",
+    "path": "/",
+    "count": 90
+  },
+  {
+    "date": "2026-09-26",
+    "path": "/explore",
+    "count": 58
+  },
+  {
+    "date": "2026-09-26",
+    "path": "/planner",
+    "count": 64
+  },
+  {
+    "date": "2026-09-26",
+    "path": "/plans",
+    "count": 61
+  },
+  {
+    "date": "2026-09-26",
+    "path": "/generating",
+    "count": 41
+  },
+  {
+    "date": "2026-09-27",
+    "path": "/",
+    "count": 108
+  },
+  {
+    "date": "2026-09-27",
+    "path": "/explore",
+    "count": 74
+  },
+  {
+    "date": "2026-09-27",
+    "path": "/planner",
+    "count": 42
+  },
+  {
+    "date": "2026-09-27",
+    "path": "/plans",
+    "count": 50
+  },
+  {
+    "date": "2026-09-27",
+    "path": "/generating",
+    "count": 59
   }
 ]
