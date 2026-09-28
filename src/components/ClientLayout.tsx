@@ -136,46 +136,11 @@ export default function ClientLayout({
   const router = useRouter();
 
   const isHome = pathname === '/' || pathname === '';
-  const [showSplash, setShowSplash] = useState<boolean>(() => {
-    if (typeof window !== 'undefined') {
-      const isE2E = window.location.search.includes('e2e=1') || navigator.userAgent.includes('Playwright');
-      if (isE2E) return false;
-      const isExcludedPath = window.location.pathname.startsWith('/saarthiadmin') ||
-        window.location.pathname.startsWith('/studio') ||
-        window.location.pathname === '/onboarding' ||
-        window.location.pathname === '/splash';
-      if (isExcludedPath) return false;
-      const splashShown = sessionStorage.getItem('splashShown');
-      if (splashShown) return false;
-      return true;
-    }
-    return pathname === '/' || pathname === '';
-  });
+  const [showSplash, setShowSplash] = useState<boolean>(isHome);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isExistingUser, setIsExistingUser] = useState<boolean>(() => {
-    if (typeof window !== 'undefined') {
-      const isApp = window.matchMedia('(display-mode: standalone)').matches;
-      const obKey = isApp ? 'hasSeenOnboarding_app' : 'hasSeenOnboarding';
-      const hasSeenOnboarding = localStorage.getItem(obKey) || localStorage.getItem('hasSeenOnboarding');
-      const name = localStorage.getItem(isApp ? 'saarthi_user_name_app' : 'saarthi_user_name') || localStorage.getItem('saarthi_user_name');
-      return Boolean(hasSeenOnboarding && name);
-    }
-    return true;
-  });
-  const [userName, setUserName] = useState<string>(() => {
-    if (typeof window !== 'undefined') {
-      const isApp = window.matchMedia('(display-mode: standalone)').matches;
-      return localStorage.getItem(isApp ? 'saarthi_user_name_app' : 'saarthi_user_name') || localStorage.getItem('saarthi_user_name') || '';
-    }
-    return '';
-  });
-  const [userLanguage, setUserLanguage] = useState<'en' | 'te'>(() => {
-    if (typeof window !== 'undefined') {
-      const lang = localStorage.getItem('saarthi_user_language') as 'en' | 'te';
-      if (lang === 'te' || lang === 'en') return lang;
-    }
-    return 'en';
-  });
+  const [isExistingUser, setIsExistingUser] = useState<boolean>(true);
+  const [userName, setUserName] = useState<string>('');
+  const [userLanguage, setUserLanguage] = useState<'en' | 'te'>('en');
 
   const isAdmin = pathname?.startsWith('/saarthiadmin');
 
