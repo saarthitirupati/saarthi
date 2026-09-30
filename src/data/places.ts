@@ -1795,6 +1795,89 @@ export const PLACES: Place[] = [
     }
   },
   {
+    id: 'subramanya-swamy-srikalahasti',
+    name: 'Sri Subrahmanya Swamy Temple (Subramanya Tippa)',
+    nameTe: 'శ్రీ సుబ్రహ్మణ్య స్వామి ఆలయం (సుబ్రహ్మణ్య తిప్ప)',
+    category: 'Day Trip',
+    placeType: 'spiritual',
+    location: 'Subramanya Tippa / Bahadur Pet, Srikalahasti',
+    distanceKms: 39,
+    durationMins: 45,
+    budgetLevel: 'budget',
+    entryFeeNum: 0,
+    interests: ['spiritual', 'heritage', 'viewpoint', 'murugan'],
+    openFrom: 6,
+    openTo: 20,
+    isMustVisit: true,
+    description: 'Sri Subrahmanya Swamy Temple (also known as Subramanya Tippa) is a historic hill shrine dedicated to Lord Murugan (Subrahmanya Swamy) in Srikalahasti. Reached via a climb of 150 stone steps up a scenic hillock, it offers devotees an uplifting spiritual darshan alongside breathtaking panoramic views of Srikalahasti town, Swarnamukhi River, and surrounding hill ranges.',
+    descriptionTe: 'శ్రీకాళహస్తిలో ప్రసిద్ధ సుబ్రహ్మణ్య తిప్ప కొండపై కొలువైన ప్రాచీన పుణ్యక్షేత్రం "శ్రీ సుబ్రహ్మణ్య స్వామి ఆలయం". 150 రాతి మెట్లు ఎక్కి కొండపైకి చేరుకుంటే శ్రీ సుబ్రహ్మణ్య స్వామి (షణ్ముఖుడు/మురుగన్) దివ్య దర్శనంతో పాటు శ్రీకాళహస్తి నగరం, స్వర్ణముఖి నది మరియు చుట్టుపక్కల హరిత కొండల విహంగమ దృశ్యాలు మైమరపిస్తాయి.',
+    history: 'Ancient hillock shrine consecrated to Lord Subrahmanya Swamy (Murugan), the commander of divine forces and son of Lord Shiva and Goddess Parvati. Local legends hold that Lord Murugan blessed this hill as a place of spiritual protection for Srikalahasti. The annual Aadi Krithika festival and Skanda Sashti are celebrated here with immense grandeur, drawing thousands of devotees who carry Kavadi and offer special Abhishekam.',
+    historyTe: 'శివపార్వతుల పుత్రుడు, దేవసేనాధిపతి అయిన శ్రీ సుబ్రహ్మణ్య స్వామి ఇక్కడ కొండపై మురుగన్ రూపంలో భక్తులను అనుగ్రహిస్తున్నారు. ప్రతి సంవత్సరం ఆడి కృత్తిక (Aadi Krithika) మరియు స్కంద షష్టి పర్వదినాల్లో వేలాదిమంది భక్తులు కావడులు మోస్తూ కొండపైకి వచ్చి విశేష అభిషేకాలు జరిపి మొక్కుబడులు చెల్లించుకుంటారు.',
+    significance: {
+      traditionType: 'temple',
+      whyVisitTe: 'శ్రీకాళహస్తిలో 150 మెట్లు ఎక్కి కొండపై కొలువైన సుబ్రహ్మణ్య స్వామి వారిని దర్శించి, ఆడి కృత్తిక వేడుకలు మరియు కొండపై నుండి పట్టణ అందాలను తిలకించడానికి అనువైన క్షేత్రం.',
+      whyVisitEn: 'Ascend 150 stone steps for darshan of Lord Murugan (Subrahmanya Swamy) and enjoy 360-degree panoramic views of Srikalahasti and Swarnamukhi River.',
+      actionsTe: [
+        '150 రాతి మెట్లు ఎక్కి కొండపై ఉన్న సుబ్రహ్మణ్య స్వామి వారి ఆలయానికి చేరుకోండి',
+        'ఆడి కృత్తిక మరియు స్కంద షష్టి వేడుకలలో పాల్గొని ప్రసాదం స్వీకరించండి',
+        'కొండపై నుండి శ్రీకాళహస్తి పట్టణం మరియు రాజగోపురం విహంగమ దృశ్యాలను వీక్షించండి',
+        'ప్రశాంత ఆధ్యాత్మిక వాతావరణంలో స్వామివారిని ధ్యానించండి'
+      ],
+      actionsEn: [
+        'Climb the 150 stone steps up Subramanya Tippa hill to reach the sanctum',
+        'Participate in annual Aadi Krithika festival, Kavadi offerings, and Skanda Sashti rituals',
+        'Take in breathtaking panoramic views of Srikalahasti town, Rajagopuram, and Swarnamukhi River',
+        'Enjoy quiet meditation in the refreshing hill breeze'
+      ],
+      culturalMeaningTe: 'దేవసేనాపతి అయిన కుమారస్వామి ఆశీస్సులతో మానసిక ధైర్యం, కుజ దోష నివారణ మరియు కార్యసిద్ధి లభిస్తాయని భక్తుల విశ్వాసం.',
+      culturalMeaningEn: 'Revered for seeking courage, relief from Kuja/Sarpa dosha, and obstacle clearance through the divine grace of Lord Murugan.',
+      saarthiTipTe: 'శ్రీకాళహస్తి ఆలయం లేదా తూర్పు గోపురం నుండి ఆటో ద్వారా 5 నిమిషాల్లో (1 కిమీ) కొండ అడుగుభాగానికి చేరుకోవచ్చు. ఉదయం 6:00-9:00 లేదా సాయంత్రం 4:30-6:30 వేళలు కొండ ఎక్కడానికి మరియు సూర్యాస్తమయ వీక్షణకు ప్రశాంతమైనవి.',
+      saarthiTipEn: 'Located 1 km from main Srikalahasti Temple (5 mins by auto). Early mornings (6:00–9:00 AM) or late afternoons (4:30–6:30 PM) offer comfortable hill climbing and scenic views.'
+    },
+    timings: '6:00 AM - 8:00 PM (All Days)',
+    entryFee: 'Free Entry',
+    address: 'Subramanya Tippa, Bahadur Pet / Srikalahasti, Tirupati District, Andhra Pradesh - 517644',
+    rating: 4.4,
+    reviewCount: 1500,
+    image: 'https://res.cloudinary.com/kniegqlj/image/upload/v1790767432/250px-View_of_Srikalahasti_temple.jpg_gndm2m.jpg',
+    coordinates: { lat: 13.7520619, lng: 79.7051812 },
+    shortIntro: 'Sri Subrahmanya Swamy Temple (Subramanya Tippa) is a 150-step hill shrine in Srikalahasti dedicated to Lord Murugan with panoramic views.',
+    whyVisit: 'Ascend 150 stone steps to worship Lord Murugan, experience grand Aadi Krithika celebrations, and enjoy scenic views of Srikalahasti.',
+    openingTime: '6:00 AM',
+    closingTime: '8:00 PM',
+    duration: '45 mins to 1 hour',
+    travelByRTC: 'Take RTC bus from Tirupati to Srikalahasti (38 km). Take a 5-minute local auto (1 km) from Srikalahasti main temple to Subramanya Tippa base.',
+    travelByCar: 'Drive via NH 71 to Srikalahasti town center, then proceed to Subramanya Tippa approach road near Bahadur Pet. Base parking available.',
+    travelByBike: 'A 45-minute ride on NH 71 highway from Tirupati to Srikalahasti.',
+    approxRTCFare: '₹50 bus from Tirupati + ₹20 local auto',
+    approxCarCost: '₹400 fuel round trip',
+    approxBikeCost: '₹150 petrol round trip',
+    images: [
+      'https://res.cloudinary.com/kniegqlj/image/upload/v1790767432/250px-View_of_Srikalahasti_temple.jpg_gndm2m.jpg'
+    ],
+    visitorTips: {
+      dressCode: 'Modest / Traditional Indian attire recommended for hill shrine entry.',
+      crowdNote: 'Lively during Aadi Krithika, Skanda Sashti, Tuesdays, and festival days.',
+      footwearRule: 'Footwear to be removed at the base of 150 hill steps.',
+      photoRule: 'Photography permitted on hillock for scenic town vistas.',
+      entryRule: 'Free entry. Easily combined with Kannappa Temple and Bharadwaja Tirtham.'
+    },
+    tags: ['Subramanya Swamy', 'Subramanya Tippa', 'Murugan', 'Srikalahasti', 'Hill Temple', 'Aadi Krithika', 'Viewpoint'],
+    bestTime: 'Aadi Krithika festival, early morning (6:00 AM - 9:00 AM), or sunset hours (4:30 PM - 6:30 PM)',
+    practicalInfo: { dressCode: 'Modest', food: 'Eateries near main temple', parking: 'Available at hill base' },
+    travelEstimates: { 'srikalahasti': '3 mins drive', 'bharadwaja-tirtham': '2 mins drive / 5 mins walk', 'kannappa-temple': '3 mins drive', 'tirupati': '45 mins' },
+    searchIntelligence: {
+      aliases: ['Subramanya Swamy Temple Srikalahasti', 'Subramanya Tippa', 'Subrahmanya Swamy Srikalahasti', 'Murugan Temple Srikalahasti', 'Subramanya Konda'],
+      tags: ['Subramanya Swamy', 'Subramanya Tippa', 'Murugan', 'Srikalahasti', 'Hill Temple'],
+      intentQueries: ['Subramanya Swamy Temple Srikalahasti', 'Subramanya Tippa 150 steps', 'Murugan temple in Srikalahasti', 'Aadi Krithika Srikalahasti'],
+      misspellings: ['Subramanya tipa', 'Subrahmanyam temple', 'Subramanya swami']
+    },
+    relationships: {
+      nearby: ['srikalahasti', 'kannappa-temple', 'bharadwaja-tirtham', 'durgamma-konda-srikalahasti'],
+      recommendedTogether: ['srikalahasti', 'kannappa-temple', 'bharadwaja-tirtham']
+    }
+  },
+  {
     id: 'kanipakam',
     name: 'Kanipakam Vinayaka Temple',
     category: 'Day Trip',
