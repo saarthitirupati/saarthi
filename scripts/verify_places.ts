@@ -83,7 +83,13 @@ export function runLocationVerification() {
     'sahasra-lingam-srikalahasti': { lat: 13.6925, lng: 79.7112 },
     'durgamma-konda-srikalahasti': { lat: 13.7481, lng: 79.7042 },
     'subramanya-swamy-srikalahasti': { lat: 13.7520619, lng: 79.7051812 },
-    'dharmaraja-swamy-srikalahasti': { lat: 13.7491, lng: 79.6978 }
+    'dharmaraja-swamy-srikalahasti': { lat: 13.7491, lng: 79.6978 },
+    'dakshina-kalika-devi-vedam': { lat: 13.7145, lng: 79.7125 },
+    'pathala-vinayaka-srikalahasti': { lat: 13.7494728, lng: 79.6974811 },
+    'jala-vinayaka-srikalahasti': { lat: 13.7489, lng: 79.6971 },
+    'kala-bhairava-vedam-srikalahasti': { lat: 13.7142, lng: 79.7128 },
+    'battinayya-kona': { lat: 13.6822, lng: 79.5645 },
+    'prasanna-varadaraja-srikalahasti': { lat: 13.7486, lng: 79.6991 }
   };
 
   for (const place of rawPlaces) {
