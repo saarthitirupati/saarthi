@@ -1878,6 +1878,89 @@ export const PLACES: Place[] = [
     }
   },
   {
+    id: 'dharmaraja-swamy-srikalahasti',
+    name: 'Sri Draupadi Sametha Sri Dharmaraja Swamy Temple',
+    nameTe: 'శ్రీ ద్రౌపదీ సమేత శ్రీ ధర్మరాజు స్వామి ఆలయం',
+    category: 'Day Trip',
+    placeType: 'spiritual',
+    location: 'Srikalahasti Town Center',
+    distanceKms: 38,
+    durationMins: 45,
+    budgetLevel: 'budget',
+    entryFeeNum: 0,
+    interests: ['spiritual', 'culture', 'heritage', 'festivals', 'mahabharata'],
+    openFrom: 6,
+    openTo: 20,
+    isMustVisit: true,
+    description: 'Sri Draupadi Devi Sametha Sri Dharmaraja Swamy Temple is a historically rich sub-temple affiliated with Sri Kalahasteeswara Swamy Devasthanam. Rooted in Mahabharata epic traditions, it is famous for the grand 10-12 day annual Draupadi Amman Tirunallu (July Brahmotsavams) featuring Bakasura Vadha street plays, Arjununi Tapassu, and the intense Agnigunda Mahotsavam (fire-pit walking ritual).',
+    descriptionTe: 'శ్రీకాళహస్తీశ్వర స్వామి దేవస్థానం అనుబంధంగా వెలసిన అతి ప్రాచీన, చారిత్రక క్షేత్రం "శ్రీ ద్రౌపదీ సమేత శ్రీ ధర్మరాజు స్వామి ఆలయం". మహాభారత ఘట్టాలు, ధర్మరాజు నీతి మరియు ద్రౌపదీ దేవి పాతివ్రత్య మహత్యానికి ప్రతీకగా నిలిచే ఈ ఆలయంలో ప్రతి సంవత్సరం జూలై నెలలో 10-12 రోజుల పాటు జరిగే ద్రౌపదీ అమ్మవారి తిరునాళ్లు, అర్జునుని తపస్సు, మరియు అత్యంత వైభవంగా జరిగే "అగ్నిగుండ మహోత్సవం" (నిప్పుల గుండం తొక్కడం) రాష్ట్రప్రసిద్ధి చెందాయి.',
+    history: 'A vital heritage center of the regional Draupadi cult in Andhra Pradesh. Devotees honor Yudhishthira (Dharmaraja), the eldest Pandava and symbol of absolute righteousness (Dharma), along with Draupadi Amman. The annual July festival features dramatic enactments of Mahabharata episodes including Bakasura Vadha, Draupadi Kalyanam, Arjununi Tapassu (where an artist performs penance atop a towering pole), and Duryodhana Vadha. On the Agnigundam night, sacred burning embers are placed directly in the lap (Odi) of the Draupadi Amman idol before thousands of vow-bound devotees (Kankanadharalu) walk barefoot across the glowing fire pit.',
+    historyTe: 'మహాభారత గాథలతో ముడిపడిన ఈ క్షేత్రంలో జూలైలో జరిగే ద్రౌపదీ తిరునాళ్లలో బకాసుర వధ నాటకాలు, ద్రౌపది కల్యాణం, అర్జునుని తపస్సు మానససరోవర ఘట్టాలు, దుర్యోధన వధ ఘట్టాలు వీధి నాటకాలుగా అలరిస్తాయి. అగ్నిగుండం రోజు అమ్మవారి ఒడిలో ఎర్రటి నిప్పులను ఉంచి పూజలు నిర్వహించాక, కంకణధారులు పవిత్ర అగ్నిగుండం దాటుతారు.',
+    significance: {
+      traditionType: 'temple',
+      whyVisitTe: 'శ్రీకాళహస్తిలో మహాభారత సాంప్రదాయాలు, ద్రౌపదీ దేవి దివ్య మహత్యం మరియు జూలై నెలలో జరిగే అగ్నిగుండ మహోత్సవ నిప్పుల గుండం విస్మయాన్ని తిలకించడానికి తప్పక దర్శించాలి.',
+      whyVisitEn: 'Experience intense Mahabharata folk heritage, spiritual drama, and the famous July Agnigunda Mahotsavam where thousands walk barefoot over glowing fire-pits.',
+      actionsTe: [
+        'శ్రీ ధర్మరాజు స్వామి మరియు ద్రౌపదీ అమ్మవార్ల దివ్య మూర్తులను దర్శించండి',
+        'జూలై తిరునాళ్లలో జరిగే అర్జునుని తపస్సు మరియు అగ్నిగుండం వేడుకలను తిలకించండి',
+        'ధర్మం, పాతివ్రత్యం మరియు కష్టాల నివారణ కోసం ప్రత్యేక ప్రార్థనలు చేయండి',
+        'మహాభారత వీధి నాటకాలు మరియు పవిత్ర ఊరేగింపుల్లో పాల్గొనండి'
+      ],
+      actionsEn: [
+        'Seek blessings of Sri Dharmaraja Swamy (Yudhishthira) and Goddess Draupadi Amman',
+        'Witness the July Brahmotsavams featuring Arjununi Tapassu pole penance and Agnigundam fire-walk',
+        'Offer prayers for righteousness, clearing lifelong hurdles, and health blessings',
+        'Experience authentic Mahabharata street theatre and traditional temple processions'
+      ],
+      culturalMeaningTe: 'ధర్మానికి ధర్మరాజు, పాతివ్రత్యానికి ద్రౌపది ప్రతీకలు. అగ్నిగుండంలో నడవడం వలన పాపాలు తొలగి, అనారోగ్యాలు నయమవుతాయని భక్తుల దృఢమైన నమ్మకం.',
+      culturalMeaningEn: 'Symbolizes the triumph of Dharma and female cosmic power. Devotees believe witnessing or walking the Agnigundam fire pit cleanses sins and heals chronic ailments.',
+      saarthiTipTe: 'శ్రీకాళహస్తి ప్రధాన ఆలయం నుండి అతి చేరువలో (500 మీటర్లు) నడక దారిన లేదా ఆటోలో 2 నిమిషాల్లో చేరుకోవచ్చు. జూలై నెలలో అగ్నిగుండ సమయాల్లో విపరీతమైన భక్తుల రద్దీ ఉంటుంది.',
+      saarthiTipEn: 'Located just 500m from main Srikalahasti Temple (2 mins by auto). Peak crowds gather during July Agnigundam festival; visit early morning for peaceful daily darshan.'
+    },
+    timings: '6:00 AM - 8:00 PM (All Days)',
+    entryFee: 'Free Entry',
+    address: 'Sannidhi Street / Town Center, Srikalahasti, Tirupati District, Andhra Pradesh - 517644',
+    rating: 4.8,
+    reviewCount: 3100,
+    image: 'https://res.cloudinary.com/kniegqlj/image/upload/v1790767586/chennai-sembakkam-jambulingeswarar-temple-1_p8hoi7.jpg',
+    coordinates: { lat: 13.7491, lng: 79.6978 },
+    shortIntro: 'Sri Draupadi Sametha Sri Dharmaraja Swamy Temple in Srikalahasti is a historic Pandava sub-temple famous for its July Agnigundam fire-walking festival.',
+    whyVisit: 'Witness authentic Mahabharata folk heritage, the towering Arjununi Tapassu pole ritual, and the iconic July Agnigunda Mahotsavam fire-pit procession.',
+    openingTime: '6:00 AM',
+    closingTime: '8:00 PM',
+    duration: '45 mins to 1 hour',
+    travelByRTC: 'Take RTC bus from Tirupati to Srikalahasti (38 km). The temple is a short 5-minute walk or auto ride from Srikalahasti main bus stand.',
+    travelByCar: 'Drive via NH 71 to Srikalahasti main town center. Park near main temple parking area and walk 2 minutes.',
+    travelByBike: 'A 45-minute ride on NH 71 highway from Tirupati to Srikalahasti.',
+    approxRTCFare: '₹50 bus from Tirupati',
+    approxCarCost: '₹400 fuel round trip',
+    approxBikeCost: '₹150 petrol round trip',
+    images: [
+      'https://res.cloudinary.com/kniegqlj/image/upload/v1790767586/chennai-sembakkam-jambulingeswarar-temple-1_p8hoi7.jpg'
+    ],
+    visitorTips: {
+      dressCode: 'Modest / Traditional Indian attire expected for temple entry.',
+      crowdNote: 'Extremely crowded during July Agnigundam Brahmotsavams; peaceful during remaining months.',
+      footwearRule: 'Footwear to be left at temple entrance.',
+      photoRule: 'Photography permitted in outer mandapam and street festival processions.',
+      entryRule: 'Free entry. Affiliated with Sri Kalahasteeswara Swamy Devasthanam.'
+    },
+    tags: ['Dharmaraja Swamy', 'Draupadi Amman', 'Agnigundam', 'Srikalahasti', 'Mahabharata', 'Fire Walk', 'Brahmotsavam'],
+    bestTime: 'July (for Agnigundam Brahmotsavams) or Winter months (November to February for peaceful darshan)',
+    practicalInfo: { dressCode: 'Traditional', food: 'Eateries on Sannidhi Street', parking: 'Srikalahasti main town parking' },
+    travelEstimates: { 'srikalahasti': '2 mins walk', 'bharadwaja-tirtham': '3 mins drive', 'kannappa-temple': '5 mins walk', 'tirupati': '45 mins' },
+    searchIntelligence: {
+      aliases: ['Dharmaraja Swamy Temple Srikalahasti', 'Draupadi Amman Temple', 'Dharmaraja Swamy Gudi', 'Agnigundam Temple Srikalahasti', 'Draupadi Sametha Dharmaraja Temple'],
+      tags: ['Dharmaraja Swamy', 'Draupadi Amman', 'Agnigundam', 'Srikalahasti', 'Mahabharata', 'Fire Walk'],
+      intentQueries: ['Dharmaraja Swamy Temple Srikalahasti', 'Agnigundam Srikalahasti festival', 'Draupadi Amman fire walk Kalahasti', 'Dharmaraja Brahmotsavam dates'],
+      misspellings: ['Dharmaraja swami', 'Droupadi temple', 'Agnigundam temple']
+    },
+    relationships: {
+      nearby: ['srikalahasti', 'kannappa-temple', 'bharadwaja-tirtham', 'subramanya-swamy-srikalahasti'],
+      recommendedTogether: ['srikalahasti', 'kannappa-temple', 'bharadwaja-tirtham']
+    }
+  },
+  {
     id: 'kanipakam',
     name: 'Kanipakam Vinayaka Temple',
     category: 'Day Trip',

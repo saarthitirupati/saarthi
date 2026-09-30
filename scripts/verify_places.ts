@@ -82,7 +82,8 @@ export function runLocationVerification() {
     'bharadwaja-tirtham': { lat: 13.7485, lng: 79.7022 },
     'sahasra-lingam-srikalahasti': { lat: 13.6925, lng: 79.7112 },
     'durgamma-konda-srikalahasti': { lat: 13.7481, lng: 79.7042 },
-    'subramanya-swamy-srikalahasti': { lat: 13.7520619, lng: 79.7051812 }
+    'subramanya-swamy-srikalahasti': { lat: 13.7520619, lng: 79.7051812 },
+    'dharmaraja-swamy-srikalahasti': { lat: 13.7491, lng: 79.6978 }
   };
 
   for (const place of rawPlaces) {
