@@ -3317,10 +3317,126 @@ export const CURATED_LAYOUTS: Record<string, Partial<TempleLayoutData>> = {
       { stepNumber: 4, titleEn: 'Sri Matsya Veda Narayana Swamy Darshan', titleTe: 'శ్రీ మత్స్య వేదనారాయణ స్వామి మూలవిరాట్టు దర్శనం', distance: '50m', timeMins: 15, descEn: 'Receive the divine blessings of Lord Vishnu in His first incarnation as Matsya with Prayoga Chakra.', descTe: 'మత్స్యావతార స్వామివారి దివ్య దర్శనం మరియు ఆశీస్సులు పొందండి.' },
       { stepNumber: 5, titleEn: 'Sri Vedavalli Thayar & Sub-Shrines Pradakshina', titleTe: 'శ్రీ వేదవల్లి తాయారు & ఉపాలయాల దర్శనం', distance: '80m', timeMins: 12, descEn: 'Offer prayers at Vedavalli Thayar, Lakshmi Varaha, and Narasimha shrines.', descTe: 'వేదవల్లి తాయారు మరియు ఇతర సన్నిధులను దర్శించండి.' },
       { stepNumber: 6, titleEn: 'TTD Prasadam Collection', titleTe: 'టీటీడీ ప్రసాదం స్వీకరణ', distance: '40m', timeMins: 5, descEn: 'Collect consecrated TTD laddu and holy theertham prasadam.', descTe: 'పవిత్ర లడ్డూ ప్రసాదాన్ని స్వీకరించండి.' }
+    ]
+  },
+
+  'jala-vinayaka-srikalahasti': {
+    placeId: 'jala-vinayaka-srikalahasti',
+    titleEn: 'Sri Jalavinayaka Swamy Temple Precinct Map',
+    titleTe: 'శ్రీ జలవినాయక స్వామి ఆలయ ప్రాంగణ మ్యాప్',
+    layoutType: 'city-shrine',
+    centerCoordinates: { lat: 13.7498, lng: 79.7036 },
+    defaultZoom: 18,
+    compassBearingDeg: 0,
+    sanctumNameEn: 'Sri Jalavinayaka Swamy Underground Water Sanctum',
+    sanctumNameTe: 'శ్రీ జలవినాయక స్వామి పవిత్ర జల గర్భాలయం',
+    routePath: [[430, 275], [130, 250], [270, 260], [270, 130], [390, 150], [380, 210]],
+    pins: [
+      {
+        id: 'parking',
+        nameEn: 'Srikalahasti North Gopuram Parking',
+        nameTe: 'ఉత్తర గోపురం పార్కింగ్ స్థలం',
+        category: 'parking',
+        lat: 13.7492,
+        lng: 79.7042,
+        svgX: 430,
+        svgY: 275,
+        descEn: 'Designated parking plaza near Srikalahasti North Gopuram & Swarnamukhi river bank.',
+        descTe: 'ఉత్తర గోపురం సమీపంలో వాహనాల పార్కింగ్ స్థలం.'
+      },
+      {
+        id: 'footwear',
+        nameEn: 'North Gopuram Free Footwear Stand',
+        nameTe: 'పాదరక్షల భద్రతా కేంద్రం',
+        category: 'footwear',
+        lat: 13.7494,
+        lng: 79.7032,
+        svgX: 130,
+        svgY: 250,
+        descEn: 'Free footwear deposit counter near the northern temple entrance.',
+        descTe: 'ఉత్తర ద్వారం వద్ద ఉచిత పాదరక్షల భద్రతా కేంద్రం.'
+      },
+      {
+        id: 'entry',
+        nameEn: 'North Entrance Gate & Jalavinayaka Queue Entry',
+        nameTe: 'జలవినాయక ఆలయ ప్రధాన ప్రవేశ ద్వారం',
+        category: 'entry',
+        lat: 13.7495,
+        lng: 79.7036,
+        svgX: 270,
+        svgY: 260,
+        descEn: 'Entry gateway into the Jalavinayaka shrine sub-complex within Srikalahasteeswara temple precinct.',
+        descTe: 'శ్రీకాళహస్తీశ్వర ఆలయ ప్రాంగణంలోని జలవినాయక సన్నిధి ప్రవేశ ద్వారం.'
+      },
+      {
+        id: 'sanctum',
+        nameEn: 'Sri Jalavinayaka Swamy Water Shrine (Garbhagudi)',
+        nameTe: 'శ్రీ జలవినాయక స్వామి పవిత్ర గర్భాలయం',
+        category: 'sanctum',
+        lat: 13.7498,
+        lng: 79.7036,
+        svgX: 270,
+        svgY: 130,
+        descEn: 'Sacred Swayambhu Lord Ganesha idol naturally surrounded by perpetual water streams. Seek blessings before main Shiva darshan.',
+        descTe: 'శాశ్వత జలధారల నడుమ కొలువైన స్వయంభూ గణపతి స్వామి వారి పవిత్ర గర్భాలయం.'
+      },
+      {
+        id: 'pushkarini',
+        nameEn: 'Swarnamukhi River Bathing Ghat / Pushkarini',
+        nameTe: 'స్వర్ణముఖి నదీ స్నాన ఘట్టం / పుష్కరిణి',
+        category: 'info',
+        lat: 13.7502,
+        lng: 79.7040,
+        svgX: 390,
+        svgY: 150,
+        descEn: 'Holy Swarnamukhi river bank pushkarini where devotees perform ceremonial holy dip before entering shrine.',
+        descTe: 'దర్శనానికి ముందు పవిత్ర స్నానం ఆచరించే స్వర్ణముఖి నదీ తీరం.'
+      },
+      {
+        id: 'prasadam',
+        nameEn: 'Jalavinayaka Harathi & Prasadam Counter',
+        nameTe: 'హారతి & ప్రసాదం కౌంటర్',
+        category: 'food',
+        lat: 13.7496,
+        lng: 79.7039,
+        svgX: 380,
+        svgY: 210,
+        descEn: 'Fresh Modakam, Laddu prasadam and Karpura Harathi tokens counter.',
+        descTe: 'మోదకాలు, లడ్డూ ప్రసాదం మరియు హారతి సేవ కౌంటర్.'
+      }
+    ],
+    routeSteps: [
+      {
+        stepNumber: 1,
+        titleEn: 'Arrival & North Gopuram Parking',
+        titleTe: 'పార్కింగ్ చేరుకోవడం',
+        distance: '0.0 km',
+        timeMins: 0,
+        descEn: 'Park vehicle near Srikalahasti North Gopuram parking bay.',
+        descTe: 'ఉత్తర గోపురం సమీపంలో వాహనాన్ని పార్క్ చేయండి.'
+      },
+      {
+        stepNumber: 2,
+        titleEn: 'Footwear Deposit & North Entrance Walk',
+        titleTe: 'పాదరక్షలు సమర్పణ & ప్రవేశం',
+        distance: '40m',
+        timeMins: 2,
+        descEn: 'Leave shoes at the counter and walk through the northern gopuram arch.',
+        descTe: 'చెప్పులు కౌంటర్ వద్ద అప్పగించి ఉత్తర ద్వారం గుండా లోపలికి నడవండి.'
+      },
+      {
+        stepNumber: 3,
+        titleEn: 'Swarnamukhi Pushkarini & Jalavinayaka Darshan',
+        titleTe: 'జలవినాయక దివ్య దర్శనం',
+        distance: '60m',
+        timeMins: 10,
+        descEn: 'Walk to the water shrine, receive Harathi blessings, and collect fresh Modakam prasadam.',
+        descTe: 'నీటిలో కొలువైన జలవినాయకుని దివ్య దర్శనం చేసుకుని మోదకం ప్రసాదం స్వీకరించండి.'
+      }
     ],
     emergencyContacts: [
-      { titleEn: 'TTD Temple Information Center (Nagalapuram)', titleTe: 'టీటీడీ ఆలయ సమాచార కేంద్రం', number: '08772277777' },
-      { titleEn: 'APSRTC Nagalapuram Bus Stand', titleTe: 'ఆర్టీసీ నాగలాపురం బస్ స్టాండ్', number: '08577222123' },
+      { titleEn: 'Srikalahasti Temple Executive Office', titleTe: 'శ్రీకాళహస్తి దేవస్థాన కార్యాలయం', number: '08578222240' },
+      { titleEn: 'Temple Security Desk', titleTe: 'దేవస్థాన సెక్యూరిటీ హెల్ప్‌లైన్', number: '08578222245' },
       { titleEn: 'Emergency Helpline', titleTe: 'అత్యవసర హెల్ప్‌లైన్', number: '112' }
     ]
   }
