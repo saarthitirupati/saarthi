@@ -246,7 +246,7 @@ export const KNOWLEDGE_ITEMS: KnowledgeItem[] = [
     category: 'Free Facilities',
     importance: 'must-know',
     tag: '100% FREE TTD',
-    status: 'Serving (8:30 AM – 11:00 PM)',
+    status: 'Serving (8:30 AM – 10:30 PM)',
     shortDescription: 'Hygienic, unlimited, traditional vegetarian meals served free to all pilgrims.',
     description: 'Matrusri Tarigonda Vengamamba Annaprasadam Complex and VQC queue halls serve hot, pure satvik vegetarian meals (steamed rice, sambar, rasam, vegetable curry, chutney, buttermilk) to tens of thousands of pilgrims daily. 100% free of charge with zero tickets or tokens required.',
     whyItMatters: 'Lord Venkateswara temple provides unlimited sacred meals as divine prasad. No pilgrim in Tirumala should remain hungry. No token, Aadhaar, or ticket is needed — walk in directly at meal timings, or receive hot food packets delivered directly to your queue seat inside VQC compartments.',
@@ -301,8 +301,8 @@ export const KNOWLEDGE_ITEMS: KnowledgeItem[] = [
       },
       {
         title: 'Evening & Night Dinner',
-        tag: '5:00 PM – 11:00 PM',
-        desc: 'Freshly prepared hot dinner with steamed rice, aromatic sambar, rasam, vegetable curry, and cooling curd/buttermilk served until 11:00 PM.',
+        tag: '5:00 PM – 10:30 PM',
+        desc: 'Freshly prepared hot dinner with steamed rice, aromatic sambar, rasam, vegetable curry, and cooling curd/buttermilk served until 10:30 PM.',
         iconName: 'clock',
         whereToDeposit: 'Matrusri Tarigonda Vengamamba Mega Complex (Central Dining Halls)',
         whyNeeded: 'Ensures devotees exiting the temple after evening and night darshan have access to hot, hygienic food without searching for hotels.'

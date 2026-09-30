@@ -296,6 +296,77 @@ export default function EssentialDetailPage({ params }: { params: Promise<{ id: 
           </div>
         </div>
 
+        {/* OFFICIAL DEPOSIT LOCATIONS (TOP PRIORITY - PROMINENT LISTING) */}
+        {item.id === 'secure-belongings' && item.subLocations && item.subLocations.length > 0 && (
+          <section style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+              <h3 className={styles.sectionTitle} style={{ fontSize: '14.5px', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.04em', margin: 0, color: '#0F172A' }}>
+                {lang === 'te' ? 'అధికారిక భద్రతా కేంద్రాలు (క్రమ అమరిక)' : 'Official Deposit Locations'}
+              </h3>
+              <span style={{ fontSize: '11px', fontWeight: 800, color: '#0F5132', background: '#E6F4EA', padding: '3px 10px', borderRadius: '12px', letterSpacing: '0.02em' }}>
+                {lang === 'te' ? '100% ఉచిత TTD' : '100% FREE TTD'}
+              </span>
+            </div>
+
+            <div className={styles.subLocationsSection}>
+              {item.subLocations.map((sub, idx) => (
+                <div key={idx} className={styles.subLocationCard} style={{ flexDirection: 'column', alignItems: 'stretch', gap: '8px' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: '8px' }}>
+                    <div style={{ display: 'flex', alignItems: 'flex-start', gap: '10px' }}>
+                      <div style={{
+                        width: '26px', height: '26px', borderRadius: '50%', backgroundColor: '#0F5132', color: '#FFFFFF',
+                        fontSize: '12.5px', fontWeight: 800, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, marginTop: '1px'
+                      }}>
+                        {idx + 1}
+                      </div>
+                      <div className={styles.subLocationInfo}>
+                        <h4 className={styles.subLocationName} style={{ fontSize: '15px', fontWeight: 800, color: '#0F172A', lineHeight: 1.3 }}>
+                          {sub.name}
+                        </h4>
+                        <div className={styles.subLocationMeta} style={{ marginTop: '3px', flexWrap: 'wrap', gap: '8px' }}>
+                          <span style={{ display: 'inline-flex', alignItems: 'center', gap: '4px', fontWeight: 700, color: '#0F5132' }}>
+                            <MapPin size={13} color="#0F5132" />
+                            {sub.distance}
+                          </span>
+                          <span className={styles.subLocationWalk}>
+                            {sub.walkTime} {lang === 'te' ? 'నడక' : 'walk'}
+                          </span>
+                          <span style={{ fontSize: '11px', fontWeight: 700, color: '#16A34A', display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
+                            <span style={{ width: '6px', height: '6px', borderRadius: '50%', backgroundColor: '#22C55E', display: 'inline-block' }} />
+                            {sub.status}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {sub.bestFor && (
+                    <div className={styles.subLocationBestFor} style={{ marginTop: '2px' }}>
+                      {sub.bestFor}
+                    </div>
+                  )}
+
+                  {sub.whyRecommended && (
+                    <div className={styles.subLocationWhy}>
+                      {sub.whyRecommended}
+                    </div>
+                  )}
+
+                  <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '4px' }}>
+                    <button 
+                      className={styles.utilityDecisionLink}
+                      style={{ padding: '8px 16px', borderRadius: '20px', background: '#0F5132', color: '#FFFFFF', border: 'none', fontWeight: 700, fontSize: '12.5px', cursor: 'pointer', display: 'inline-flex', alignItems: 'center', gap: '6px' }}
+                      onClick={() => handleOpenMap(sub.name)}
+                    >
+                      <span>{lang === 'te' ? 'మ్యాప్ మార్గం →' : 'Map Directions →'}</span>
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </section>
+        )}
+
         {/* DECISION CARDS (WHAT -> WHERE -> ACTION) */}
         <section style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
           <h3 className={styles.sectionTitle} style={{ fontSize: '14.5px', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.04em', margin: 0, color: '#0F172A' }}>
@@ -444,7 +515,7 @@ export default function EssentialDetailPage({ params }: { params: Promise<{ id: 
                     Tarigonda Vengamamba Complex
                   </p>
                   <p className={styles.utilityDecisionMeta}>
-                    5:00 PM – 11:00 PM · Free satvik meal
+                    5:00 PM – 10:30 PM · Free satvik meal
                   </p>
                   <div className={styles.utilityDecisionActionRow}>
                     <button 
