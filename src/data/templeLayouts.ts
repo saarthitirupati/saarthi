@@ -3320,6 +3320,6594 @@ export const CURATED_LAYOUTS: Record<string, Partial<TempleLayoutData>> = {
     ]
   },
 
+  'papavinasam-theertham': {
+    placeId: 'papavinasam-theertham',
+    titleEn: 'Papavanasam Theertham Precinct Map',
+    titleTe: 'శ్రీ ద్రౌపదీ సమేత శ్రీ ధర్మరాజు స్వామి ఆలయం ప్రాంగణ మ్యాప్',
+    layoutType: 'hill-waterfall',
+    centerCoordinates: { lat: 13.7199523, lng: 79.3445738 },
+    defaultZoom: 18,
+    compassBearingDeg: 0,
+    sanctumNameEn: 'Papavanasam Theertham Sanctum & Main Area',
+    sanctumNameTe: 'శ్రీ ద్రౌపదీ సమేత శ్రీ ధర్మరాజు స్వామి ఆలయం ప్రధాన స్థలం',
+    routePath: [[430, 275], [130, 250], [270, 260], [270, 130], [390, 150], [380, 210]],
+    pins: [
+      {
+        id: 'parking',
+        nameEn: 'Visitor & Vehicle Parking Bay',
+        nameTe: 'వాహనాల పార్కింగ్ స్థలం',
+        category: 'parking',
+        lat: 13.719352,
+        lng: 79.345174,
+        svgX: 430,
+        svgY: 275,
+        descEn: 'Designated parking for cars, bikes, and visitor vehicles near main entry.',
+        descTe: 'వాహనాల పార్కింగ్ ప్రదేశం.'
+      },
+      {
+        id: 'footwear',
+        nameEn: 'Free Footwear Stand & Holding Area',
+        nameTe: 'ఉచిత పాదరక్షల భద్రతా కేంద్రం',
+        category: 'footwear',
+        lat: 13.719552,
+        lng: 79.344174,
+        svgX: 130,
+        svgY: 250,
+        descEn: 'Footwear deposit counter and visitor holding area.',
+        descTe: 'ఉచిత పాదరక్షల కేంద్రం.'
+      },
+      {
+        id: 'entry',
+        nameEn: 'Main Arch & Entry Gate',
+        nameTe: 'ప్రధాన ప్రవేశ ద్వారం',
+        category: 'entry',
+        lat: 13.719652,
+        lng: 79.344574,
+        svgX: 270,
+        svgY: 260,
+        descEn: 'Main entrance gate leading into premises.',
+        descTe: 'ప్రధాన ప్రవేశ ద్వారం.'
+      },
+      {
+        id: 'sanctum',
+        nameEn: 'Papavanasam Theertham Sanctum / Main Point',
+        nameTe: 'శ్రీ ద్రౌపదీ సమేత శ్రీ ధర్మరాజు స్వామి ఆలయం ప్రధాన స్థలం',
+        category: 'sanctum',
+        lat: 13.719952,
+        lng: 79.344574,
+        svgX: 270,
+        svgY: 130,
+        descEn: 'Main shrine and central point of interest.',
+        descTe: 'ముఖ్య దివ్య స్థల ప్రవేశం మరియు దర్శనం.'
+      },
+      {
+        id: 'info',
+        nameEn: 'Information & Utility Desk',
+        nameTe: 'సమాచార విభాగం & తాగునీరు',
+        category: 'info',
+        lat: 13.720352,
+        lng: 79.344974,
+        svgX: 390,
+        svgY: 150,
+        descEn: 'Information counter and RO drinking water point.',
+        descTe: 'సమాచార కేంద్రం మరియు తాగునీటి సదుపాయం.'
+      }
+    ],
+    routeSteps: [
+      {
+        stepNumber: 1,
+        titleEn: 'Arrival & Parking',
+        titleTe: 'పార్కింగ్ చేరుకోవడం',
+        distance: '0.0 km',
+        timeMins: 0,
+        descEn: 'Park vehicle near designated parking area.',
+        descTe: 'వాహనాన్ని నిర్ణీత స్థలంలో పార్క్ చేయండి.'
+      },
+      {
+        stepNumber: 2,
+        titleEn: 'Main Entry & Footwear Deposit',
+        titleTe: 'ప్రవేశం & పాదరక్షలు',
+        distance: '40m',
+        timeMins: 2,
+        descEn: 'Proceed to entrance and deposit shoes if applicable.',
+        descTe: 'ప్రధాన ద్వారం వద్దకు చేరుకోండి.'
+      },
+      {
+        stepNumber: 3,
+        titleEn: 'Main Sanctum & Visitor Experience',
+        titleTe: 'ప్రధాన దర్శనం',
+        distance: '60m',
+        timeMins: 10,
+        descEn: 'Experience the main shrine and serene surroundings.',
+        descTe: 'ముఖ్య స్థలాన్ని దర్శించి ఆనందించండి.'
+      }
+    ],
+    emergencyContacts: [
+      { titleEn: 'Saarthi Helpline', titleTe: 'సారథి హెల్ప్‌లైన్', number: '08772264555' },
+      { titleEn: 'Emergency Services', titleTe: 'అత్యవసర సేవల హెల్ప్‌లైన్', number: '112' }
+    ]
+  },
+
+  'akasaganga-theertham': {
+    placeId: 'akasaganga-theertham',
+    titleEn: 'Akasa Ganga Theertham Precinct Map',
+    titleTe: 'శ్రీ దక్షిణ కాళికా దేవి ఆలయం (వేదం గ్రామం) ప్రాంగణ మ్యాప్',
+    layoutType: 'hill-waterfall',
+    centerCoordinates: { lat: 13.7060875, lng: 79.3401406 },
+    defaultZoom: 18,
+    compassBearingDeg: 0,
+    sanctumNameEn: 'Akasa Ganga Theertham Sanctum & Main Area',
+    sanctumNameTe: 'శ్రీ దక్షిణ కాళికా దేవి ఆలయం (వేదం గ్రామం) ప్రధాన స్థలం',
+    routePath: [[430, 275], [130, 250], [270, 260], [270, 130], [390, 150], [380, 210]],
+    pins: [
+      {
+        id: 'parking',
+        nameEn: 'Visitor & Vehicle Parking Bay',
+        nameTe: 'వాహనాల పార్కింగ్ స్థలం',
+        category: 'parking',
+        lat: 13.705488,
+        lng: 79.340741,
+        svgX: 430,
+        svgY: 275,
+        descEn: 'Designated parking for cars, bikes, and visitor vehicles near main entry.',
+        descTe: 'వాహనాల పార్కింగ్ ప్రదేశం.'
+      },
+      {
+        id: 'footwear',
+        nameEn: 'Free Footwear Stand & Holding Area',
+        nameTe: 'ఉచిత పాదరక్షల భద్రతా కేంద్రం',
+        category: 'footwear',
+        lat: 13.705687,
+        lng: 79.339741,
+        svgX: 130,
+        svgY: 250,
+        descEn: 'Footwear deposit counter and visitor holding area.',
+        descTe: 'ఉచిత పాదరక్షల కేంద్రం.'
+      },
+      {
+        id: 'entry',
+        nameEn: 'Main Arch & Entry Gate',
+        nameTe: 'ప్రధాన ప్రవేశ ద్వారం',
+        category: 'entry',
+        lat: 13.705788,
+        lng: 79.340141,
+        svgX: 270,
+        svgY: 260,
+        descEn: 'Main entrance gate leading into premises.',
+        descTe: 'ప్రధాన ప్రవేశ ద్వారం.'
+      },
+      {
+        id: 'sanctum',
+        nameEn: 'Akasa Ganga Theertham Sanctum / Main Point',
+        nameTe: 'శ్రీ దక్షిణ కాళికా దేవి ఆలయం (వేదం గ్రామం) ప్రధాన స్థలం',
+        category: 'sanctum',
+        lat: 13.706088,
+        lng: 79.340141,
+        svgX: 270,
+        svgY: 130,
+        descEn: 'Main shrine and central point of interest.',
+        descTe: 'ముఖ్య దివ్య స్థల ప్రవేశం మరియు దర్శనం.'
+      },
+      {
+        id: 'info',
+        nameEn: 'Information & Utility Desk',
+        nameTe: 'సమాచార విభాగం & తాగునీరు',
+        category: 'info',
+        lat: 13.706488,
+        lng: 79.340541,
+        svgX: 390,
+        svgY: 150,
+        descEn: 'Information counter and RO drinking water point.',
+        descTe: 'సమాచార కేంద్రం మరియు తాగునీటి సదుపాయం.'
+      }
+    ],
+    routeSteps: [
+      {
+        stepNumber: 1,
+        titleEn: 'Arrival & Parking',
+        titleTe: 'పార్కింగ్ చేరుకోవడం',
+        distance: '0.0 km',
+        timeMins: 0,
+        descEn: 'Park vehicle near designated parking area.',
+        descTe: 'వాహనాన్ని నిర్ణీత స్థలంలో పార్క్ చేయండి.'
+      },
+      {
+        stepNumber: 2,
+        titleEn: 'Main Entry & Footwear Deposit',
+        titleTe: 'ప్రవేశం & పాదరక్షలు',
+        distance: '40m',
+        timeMins: 2,
+        descEn: 'Proceed to entrance and deposit shoes if applicable.',
+        descTe: 'ప్రధాన ద్వారం వద్దకు చేరుకోండి.'
+      },
+      {
+        stepNumber: 3,
+        titleEn: 'Main Sanctum & Visitor Experience',
+        titleTe: 'ప్రధాన దర్శనం',
+        distance: '60m',
+        timeMins: 10,
+        descEn: 'Experience the main shrine and serene surroundings.',
+        descTe: 'ముఖ్య స్థలాన్ని దర్శించి ఆనందించండి.'
+      }
+    ],
+    emergencyContacts: [
+      { titleEn: 'Saarthi Helpline', titleTe: 'సారథి హెల్ప్‌లైన్', number: '08772264555' },
+      { titleEn: 'Emergency Services', titleTe: 'అత్యవసర సేవల హెల్ప్‌లైన్', number: '112' }
+    ]
+  },
+
+  'japali-hanuman': {
+    placeId: 'japali-hanuman',
+    titleEn: 'Japali Hanuman Temple Precinct Map',
+    titleTe: 'శ్రీ జలవినాయక స్వామి ఆలయం ప్రాంగణ మ్యాప్',
+    layoutType: 'city-shrine',
+    centerCoordinates: { lat: 13.69686, lng: 79.33666 },
+    defaultZoom: 18,
+    compassBearingDeg: 0,
+    sanctumNameEn: 'Japali Hanuman Temple Sanctum & Main Area',
+    sanctumNameTe: 'శ్రీ జలవినాయక స్వామి ఆలయం ప్రధాన స్థలం',
+    routePath: [[430, 275], [130, 250], [270, 260], [270, 130], [390, 150], [380, 210]],
+    pins: [
+      {
+        id: 'parking',
+        nameEn: 'Visitor & Vehicle Parking Bay',
+        nameTe: 'వాహనాల పార్కింగ్ స్థలం',
+        category: 'parking',
+        lat: 13.696260,
+        lng: 79.337260,
+        svgX: 430,
+        svgY: 275,
+        descEn: 'Designated parking for cars, bikes, and visitor vehicles near main entry.',
+        descTe: 'వాహనాల పార్కింగ్ ప్రదేశం.'
+      },
+      {
+        id: 'footwear',
+        nameEn: 'Free Footwear Stand & Holding Area',
+        nameTe: 'ఉచిత పాదరక్షల భద్రతా కేంద్రం',
+        category: 'footwear',
+        lat: 13.696460,
+        lng: 79.336260,
+        svgX: 130,
+        svgY: 250,
+        descEn: 'Footwear deposit counter and visitor holding area.',
+        descTe: 'ఉచిత పాదరక్షల కేంద్రం.'
+      },
+      {
+        id: 'entry',
+        nameEn: 'Main Arch & Entry Gate',
+        nameTe: 'ప్రధాన ప్రవేశ ద్వారం',
+        category: 'entry',
+        lat: 13.696560,
+        lng: 79.336660,
+        svgX: 270,
+        svgY: 260,
+        descEn: 'Main entrance gate leading into premises.',
+        descTe: 'ప్రధాన ప్రవేశ ద్వారం.'
+      },
+      {
+        id: 'sanctum',
+        nameEn: 'Japali Hanuman Temple Sanctum / Main Point',
+        nameTe: 'శ్రీ జలవినాయక స్వామి ఆలయం ప్రధాన స్థలం',
+        category: 'sanctum',
+        lat: 13.696860,
+        lng: 79.336660,
+        svgX: 270,
+        svgY: 130,
+        descEn: 'Main shrine and central point of interest.',
+        descTe: 'ముఖ్య దివ్య స్థల ప్రవేశం మరియు దర్శనం.'
+      },
+      {
+        id: 'info',
+        nameEn: 'Information & Utility Desk',
+        nameTe: 'సమాచార విభాగం & తాగునీరు',
+        category: 'info',
+        lat: 13.697260,
+        lng: 79.337060,
+        svgX: 390,
+        svgY: 150,
+        descEn: 'Information counter and RO drinking water point.',
+        descTe: 'సమాచార కేంద్రం మరియు తాగునీటి సదుపాయం.'
+      }
+    ],
+    routeSteps: [
+      {
+        stepNumber: 1,
+        titleEn: 'Arrival & Parking',
+        titleTe: 'పార్కింగ్ చేరుకోవడం',
+        distance: '0.0 km',
+        timeMins: 0,
+        descEn: 'Park vehicle near designated parking area.',
+        descTe: 'వాహనాన్ని నిర్ణీత స్థలంలో పార్క్ చేయండి.'
+      },
+      {
+        stepNumber: 2,
+        titleEn: 'Main Entry & Footwear Deposit',
+        titleTe: 'ప్రవేశం & పాదరక్షలు',
+        distance: '40m',
+        timeMins: 2,
+        descEn: 'Proceed to entrance and deposit shoes if applicable.',
+        descTe: 'ప్రధాన ద్వారం వద్దకు చేరుకోండి.'
+      },
+      {
+        stepNumber: 3,
+        titleEn: 'Main Sanctum & Visitor Experience',
+        titleTe: 'ప్రధాన దర్శనం',
+        distance: '60m',
+        timeMins: 10,
+        descEn: 'Experience the main shrine and serene surroundings.',
+        descTe: 'ముఖ్య స్థలాన్ని దర్శించి ఆనందించండి.'
+      }
+    ],
+    emergencyContacts: [
+      { titleEn: 'Saarthi Helpline', titleTe: 'సారథి హెల్ప్‌లైన్', number: '08772264555' },
+      { titleEn: 'Emergency Services', titleTe: 'అత్యవసర సేవల హెల్ప్‌లైన్', number: '112' }
+    ]
+  },
+
+  'venugopala-swamy-tirumala': {
+    placeId: 'venugopala-swamy-tirumala',
+    titleEn: 'Sri Venugopala Swamy Temple (Tirumala) Precinct Map',
+    titleTe: 'శ్రీ కాల భైరవ స్వామి ఆలయం (వేదం భైరవకోణ) ప్రాంగణ మ్యాప్',
+    layoutType: 'grand-temple',
+    centerCoordinates: { lat: 13.7030482, lng: 79.3448467 },
+    defaultZoom: 18,
+    compassBearingDeg: 0,
+    sanctumNameEn: 'Sri Venugopala Swamy Temple (Tirumala) Sanctum & Main Area',
+    sanctumNameTe: 'శ్రీ కాల భైరవ స్వామి ఆలయం (వేదం భైరవకోణ) ప్రధాన స్థలం',
+    routePath: [[430, 275], [130, 250], [270, 260], [270, 130], [390, 150], [380, 210]],
+    pins: [
+      {
+        id: 'parking',
+        nameEn: 'Visitor & Vehicle Parking Bay',
+        nameTe: 'వాహనాల పార్కింగ్ స్థలం',
+        category: 'parking',
+        lat: 13.702448,
+        lng: 79.345447,
+        svgX: 430,
+        svgY: 275,
+        descEn: 'Designated parking for cars, bikes, and visitor vehicles near main entry.',
+        descTe: 'వాహనాల పార్కింగ్ ప్రదేశం.'
+      },
+      {
+        id: 'footwear',
+        nameEn: 'Free Footwear Stand & Holding Area',
+        nameTe: 'ఉచిత పాదరక్షల భద్రతా కేంద్రం',
+        category: 'footwear',
+        lat: 13.702648,
+        lng: 79.344447,
+        svgX: 130,
+        svgY: 250,
+        descEn: 'Footwear deposit counter and visitor holding area.',
+        descTe: 'ఉచిత పాదరక్షల కేంద్రం.'
+      },
+      {
+        id: 'entry',
+        nameEn: 'Main Arch & Entry Gate',
+        nameTe: 'ప్రధాన ప్రవేశ ద్వారం',
+        category: 'entry',
+        lat: 13.702748,
+        lng: 79.344847,
+        svgX: 270,
+        svgY: 260,
+        descEn: 'Main entrance gate leading into premises.',
+        descTe: 'ప్రధాన ప్రవేశ ద్వారం.'
+      },
+      {
+        id: 'sanctum',
+        nameEn: 'Sri Venugopala Swamy Temple (Tirumala) Sanctum / Main Point',
+        nameTe: 'శ్రీ కాల భైరవ స్వామి ఆలయం (వేదం భైరవకోణ) ప్రధాన స్థలం',
+        category: 'sanctum',
+        lat: 13.703048,
+        lng: 79.344847,
+        svgX: 270,
+        svgY: 130,
+        descEn: 'Main shrine and central point of interest.',
+        descTe: 'ముఖ్య దివ్య స్థల ప్రవేశం మరియు దర్శనం.'
+      },
+      {
+        id: 'info',
+        nameEn: 'Information & Utility Desk',
+        nameTe: 'సమాచార విభాగం & తాగునీరు',
+        category: 'info',
+        lat: 13.703448,
+        lng: 79.345247,
+        svgX: 390,
+        svgY: 150,
+        descEn: 'Information counter and RO drinking water point.',
+        descTe: 'సమాచార కేంద్రం మరియు తాగునీటి సదుపాయం.'
+      }
+    ],
+    routeSteps: [
+      {
+        stepNumber: 1,
+        titleEn: 'Arrival & Parking',
+        titleTe: 'పార్కింగ్ చేరుకోవడం',
+        distance: '0.0 km',
+        timeMins: 0,
+        descEn: 'Park vehicle near designated parking area.',
+        descTe: 'వాహనాన్ని నిర్ణీత స్థలంలో పార్క్ చేయండి.'
+      },
+      {
+        stepNumber: 2,
+        titleEn: 'Main Entry & Footwear Deposit',
+        titleTe: 'ప్రవేశం & పాదరక్షలు',
+        distance: '40m',
+        timeMins: 2,
+        descEn: 'Proceed to entrance and deposit shoes if applicable.',
+        descTe: 'ప్రధాన ద్వారం వద్దకు చేరుకోండి.'
+      },
+      {
+        stepNumber: 3,
+        titleEn: 'Main Sanctum & Visitor Experience',
+        titleTe: 'ప్రధాన దర్శనం',
+        distance: '60m',
+        timeMins: 10,
+        descEn: 'Experience the main shrine and serene surroundings.',
+        descTe: 'ముఖ్య స్థలాన్ని దర్శించి ఆనందించండి.'
+      }
+    ],
+    emergencyContacts: [
+      { titleEn: 'Saarthi Helpline', titleTe: 'సారథి హెల్ప్‌లైన్', number: '08772264555' },
+      { titleEn: 'Emergency Services', titleTe: 'అత్యవసర సేవల హెల్ప్‌లైన్', number: '112' }
+    ]
+  },
+
+  'govindaraja': {
+    placeId: 'govindaraja',
+    titleEn: 'Sri Govinda Raja Swamy Vari Temple Precinct Map',
+    titleTe: 'బత్తినియ్య కోణ (బత్తినయ్య స్వామి గుహాలయం & జలపాతం) ప్రాంగణ మ్యాప్',
+    layoutType: 'grand-temple',
+    centerCoordinates: { lat: 13.629941, lng: 79.4162996 },
+    defaultZoom: 18,
+    compassBearingDeg: 0,
+    sanctumNameEn: 'Sri Govinda Raja Swamy Vari Temple Sanctum & Main Area',
+    sanctumNameTe: 'బత్తినియ్య కోణ (బత్తినయ్య స్వామి గుహాలయం & జలపాతం) ప్రధాన స్థలం',
+    routePath: [[430, 275], [130, 250], [270, 260], [270, 130], [390, 150], [380, 210]],
+    pins: [
+      {
+        id: 'parking',
+        nameEn: 'Visitor & Vehicle Parking Bay',
+        nameTe: 'వాహనాల పార్కింగ్ స్థలం',
+        category: 'parking',
+        lat: 13.629341,
+        lng: 79.416900,
+        svgX: 430,
+        svgY: 275,
+        descEn: 'Designated parking for cars, bikes, and visitor vehicles near main entry.',
+        descTe: 'వాహనాల పార్కింగ్ ప్రదేశం.'
+      },
+      {
+        id: 'footwear',
+        nameEn: 'Free Footwear Stand & Holding Area',
+        nameTe: 'ఉచిత పాదరక్షల భద్రతా కేంద్రం',
+        category: 'footwear',
+        lat: 13.629541,
+        lng: 79.415900,
+        svgX: 130,
+        svgY: 250,
+        descEn: 'Footwear deposit counter and visitor holding area.',
+        descTe: 'ఉచిత పాదరక్షల కేంద్రం.'
+      },
+      {
+        id: 'entry',
+        nameEn: 'Main Arch & Entry Gate',
+        nameTe: 'ప్రధాన ప్రవేశ ద్వారం',
+        category: 'entry',
+        lat: 13.629641,
+        lng: 79.416300,
+        svgX: 270,
+        svgY: 260,
+        descEn: 'Main entrance gate leading into premises.',
+        descTe: 'ప్రధాన ప్రవేశ ద్వారం.'
+      },
+      {
+        id: 'sanctum',
+        nameEn: 'Sri Govinda Raja Swamy Vari Temple Sanctum / Main Point',
+        nameTe: 'బత్తినియ్య కోణ (బత్తినయ్య స్వామి గుహాలయం & జలపాతం) ప్రధాన స్థలం',
+        category: 'sanctum',
+        lat: 13.629941,
+        lng: 79.416300,
+        svgX: 270,
+        svgY: 130,
+        descEn: 'Main shrine and central point of interest.',
+        descTe: 'ముఖ్య దివ్య స్థల ప్రవేశం మరియు దర్శనం.'
+      },
+      {
+        id: 'info',
+        nameEn: 'Information & Utility Desk',
+        nameTe: 'సమాచార విభాగం & తాగునీరు',
+        category: 'info',
+        lat: 13.630341,
+        lng: 79.416700,
+        svgX: 390,
+        svgY: 150,
+        descEn: 'Information counter and RO drinking water point.',
+        descTe: 'సమాచార కేంద్రం మరియు తాగునీటి సదుపాయం.'
+      }
+    ],
+    routeSteps: [
+      {
+        stepNumber: 1,
+        titleEn: 'Arrival & Parking',
+        titleTe: 'పార్కింగ్ చేరుకోవడం',
+        distance: '0.0 km',
+        timeMins: 0,
+        descEn: 'Park vehicle near designated parking area.',
+        descTe: 'వాహనాన్ని నిర్ణీత స్థలంలో పార్క్ చేయండి.'
+      },
+      {
+        stepNumber: 2,
+        titleEn: 'Main Entry & Footwear Deposit',
+        titleTe: 'ప్రవేశం & పాదరక్షలు',
+        distance: '40m',
+        timeMins: 2,
+        descEn: 'Proceed to entrance and deposit shoes if applicable.',
+        descTe: 'ప్రధాన ద్వారం వద్దకు చేరుకోండి.'
+      },
+      {
+        stepNumber: 3,
+        titleEn: 'Main Sanctum & Visitor Experience',
+        titleTe: 'ప్రధాన దర్శనం',
+        distance: '60m',
+        timeMins: 10,
+        descEn: 'Experience the main shrine and serene surroundings.',
+        descTe: 'ముఖ్య స్థలాన్ని దర్శించి ఆనందించండి.'
+      }
+    ],
+    emergencyContacts: [
+      { titleEn: 'Saarthi Helpline', titleTe: 'సారథి హెల్ప్‌లైన్', number: '08772264555' },
+      { titleEn: 'Emergency Services', titleTe: 'అత్యవసర సేవల హెల్ప్‌లైన్', number: '112' }
+    ]
+  },
+
+  'tataiahgunta-gangamma': {
+    placeId: 'tataiahgunta-gangamma',
+    titleEn: 'Sri Tataiahgunta Gangamma Temple Precinct Map',
+    titleTe: 'శ్రీ ముత్యాలమ్మ ఆలయం (జెట్టి పాలెం) ప్రాంగణ మ్యాప్',
+    layoutType: 'grand-temple',
+    centerCoordinates: { lat: 13.6268, lng: 79.4182 },
+    defaultZoom: 18,
+    compassBearingDeg: 0,
+    sanctumNameEn: 'Sri Tataiahgunta Gangamma Temple Sanctum & Main Area',
+    sanctumNameTe: 'శ్రీ ముత్యాలమ్మ ఆలయం (జెట్టి పాలెం) ప్రధాన స్థలం',
+    routePath: [[430, 275], [130, 250], [270, 260], [270, 130], [390, 150], [380, 210]],
+    pins: [
+      {
+        id: 'parking',
+        nameEn: 'Visitor & Vehicle Parking Bay',
+        nameTe: 'వాహనాల పార్కింగ్ స్థలం',
+        category: 'parking',
+        lat: 13.626200,
+        lng: 79.418800,
+        svgX: 430,
+        svgY: 275,
+        descEn: 'Designated parking for cars, bikes, and visitor vehicles near main entry.',
+        descTe: 'వాహనాల పార్కింగ్ ప్రదేశం.'
+      },
+      {
+        id: 'footwear',
+        nameEn: 'Free Footwear Stand & Holding Area',
+        nameTe: 'ఉచిత పాదరక్షల భద్రతా కేంద్రం',
+        category: 'footwear',
+        lat: 13.626400,
+        lng: 79.417800,
+        svgX: 130,
+        svgY: 250,
+        descEn: 'Footwear deposit counter and visitor holding area.',
+        descTe: 'ఉచిత పాదరక్షల కేంద్రం.'
+      },
+      {
+        id: 'entry',
+        nameEn: 'Main Arch & Entry Gate',
+        nameTe: 'ప్రధాన ప్రవేశ ద్వారం',
+        category: 'entry',
+        lat: 13.626500,
+        lng: 79.418200,
+        svgX: 270,
+        svgY: 260,
+        descEn: 'Main entrance gate leading into premises.',
+        descTe: 'ప్రధాన ప్రవేశ ద్వారం.'
+      },
+      {
+        id: 'sanctum',
+        nameEn: 'Sri Tataiahgunta Gangamma Temple Sanctum / Main Point',
+        nameTe: 'శ్రీ ముత్యాలమ్మ ఆలయం (జెట్టి పాలెం) ప్రధాన స్థలం',
+        category: 'sanctum',
+        lat: 13.626800,
+        lng: 79.418200,
+        svgX: 270,
+        svgY: 130,
+        descEn: 'Main shrine and central point of interest.',
+        descTe: 'ముఖ్య దివ్య స్థల ప్రవేశం మరియు దర్శనం.'
+      },
+      {
+        id: 'info',
+        nameEn: 'Information & Utility Desk',
+        nameTe: 'సమాచార విభాగం & తాగునీరు',
+        category: 'info',
+        lat: 13.627200,
+        lng: 79.418600,
+        svgX: 390,
+        svgY: 150,
+        descEn: 'Information counter and RO drinking water point.',
+        descTe: 'సమాచార కేంద్రం మరియు తాగునీటి సదుపాయం.'
+      }
+    ],
+    routeSteps: [
+      {
+        stepNumber: 1,
+        titleEn: 'Arrival & Parking',
+        titleTe: 'పార్కింగ్ చేరుకోవడం',
+        distance: '0.0 km',
+        timeMins: 0,
+        descEn: 'Park vehicle near designated parking area.',
+        descTe: 'వాహనాన్ని నిర్ణీత స్థలంలో పార్క్ చేయండి.'
+      },
+      {
+        stepNumber: 2,
+        titleEn: 'Main Entry & Footwear Deposit',
+        titleTe: 'ప్రవేశం & పాదరక్షలు',
+        distance: '40m',
+        timeMins: 2,
+        descEn: 'Proceed to entrance and deposit shoes if applicable.',
+        descTe: 'ప్రధాన ద్వారం వద్దకు చేరుకోండి.'
+      },
+      {
+        stepNumber: 3,
+        titleEn: 'Main Sanctum & Visitor Experience',
+        titleTe: 'ప్రధాన దర్శనం',
+        distance: '60m',
+        timeMins: 10,
+        descEn: 'Experience the main shrine and serene surroundings.',
+        descTe: 'ముఖ్య స్థలాన్ని దర్శించి ఆనందించండి.'
+      }
+    ],
+    emergencyContacts: [
+      { titleEn: 'Saarthi Helpline', titleTe: 'సారథి హెల్ప్‌లైన్', number: '08772264555' },
+      { titleEn: 'Emergency Services', titleTe: 'అత్యవసర సేవల హెల్ప్‌లైన్', number: '112' }
+    ]
+  },
+
+  'alipiri-mettu': {
+    placeId: 'alipiri-mettu',
+    titleEn: 'Garuda Statue Precinct Map',
+    titleTe: 'పాతాళ వినాయక ఆలయం (పాతాళ గణపతి) ప్రాంగణ మ్యాప్',
+    layoutType: 'city-shrine',
+    centerCoordinates: { lat: 13.647051, lng: 79.405856 },
+    defaultZoom: 18,
+    compassBearingDeg: 0,
+    sanctumNameEn: 'Garuda Statue Sanctum & Main Area',
+    sanctumNameTe: 'పాతాళ వినాయక ఆలయం (పాతాళ గణపతి) ప్రధాన స్థలం',
+    routePath: [[430, 275], [130, 250], [270, 260], [270, 130], [390, 150], [380, 210]],
+    pins: [
+      {
+        id: 'parking',
+        nameEn: 'Visitor & Vehicle Parking Bay',
+        nameTe: 'వాహనాల పార్కింగ్ స్థలం',
+        category: 'parking',
+        lat: 13.646451,
+        lng: 79.406456,
+        svgX: 430,
+        svgY: 275,
+        descEn: 'Designated parking for cars, bikes, and visitor vehicles near main entry.',
+        descTe: 'వాహనాల పార్కింగ్ ప్రదేశం.'
+      },
+      {
+        id: 'footwear',
+        nameEn: 'Free Footwear Stand & Holding Area',
+        nameTe: 'ఉచిత పాదరక్షల భద్రతా కేంద్రం',
+        category: 'footwear',
+        lat: 13.646651,
+        lng: 79.405456,
+        svgX: 130,
+        svgY: 250,
+        descEn: 'Footwear deposit counter and visitor holding area.',
+        descTe: 'ఉచిత పాదరక్షల కేంద్రం.'
+      },
+      {
+        id: 'entry',
+        nameEn: 'Main Arch & Entry Gate',
+        nameTe: 'ప్రధాన ప్రవేశ ద్వారం',
+        category: 'entry',
+        lat: 13.646751,
+        lng: 79.405856,
+        svgX: 270,
+        svgY: 260,
+        descEn: 'Main entrance gate leading into premises.',
+        descTe: 'ప్రధాన ప్రవేశ ద్వారం.'
+      },
+      {
+        id: 'sanctum',
+        nameEn: 'Garuda Statue Sanctum / Main Point',
+        nameTe: 'పాతాళ వినాయక ఆలయం (పాతాళ గణపతి) ప్రధాన స్థలం',
+        category: 'sanctum',
+        lat: 13.647051,
+        lng: 79.405856,
+        svgX: 270,
+        svgY: 130,
+        descEn: 'Main shrine and central point of interest.',
+        descTe: 'ముఖ్య దివ్య స్థల ప్రవేశం మరియు దర్శనం.'
+      },
+      {
+        id: 'info',
+        nameEn: 'Information & Utility Desk',
+        nameTe: 'సమాచార విభాగం & తాగునీరు',
+        category: 'info',
+        lat: 13.647451,
+        lng: 79.406256,
+        svgX: 390,
+        svgY: 150,
+        descEn: 'Information counter and RO drinking water point.',
+        descTe: 'సమాచార కేంద్రం మరియు తాగునీటి సదుపాయం.'
+      }
+    ],
+    routeSteps: [
+      {
+        stepNumber: 1,
+        titleEn: 'Arrival & Parking',
+        titleTe: 'పార్కింగ్ చేరుకోవడం',
+        distance: '0.0 km',
+        timeMins: 0,
+        descEn: 'Park vehicle near designated parking area.',
+        descTe: 'వాహనాన్ని నిర్ణీత స్థలంలో పార్క్ చేయండి.'
+      },
+      {
+        stepNumber: 2,
+        titleEn: 'Main Entry & Footwear Deposit',
+        titleTe: 'ప్రవేశం & పాదరక్షలు',
+        distance: '40m',
+        timeMins: 2,
+        descEn: 'Proceed to entrance and deposit shoes if applicable.',
+        descTe: 'ప్రధాన ద్వారం వద్దకు చేరుకోండి.'
+      },
+      {
+        stepNumber: 3,
+        titleEn: 'Main Sanctum & Visitor Experience',
+        titleTe: 'ప్రధాన దర్శనం',
+        distance: '60m',
+        timeMins: 10,
+        descEn: 'Experience the main shrine and serene surroundings.',
+        descTe: 'ముఖ్య స్థలాన్ని దర్శించి ఆనందించండి.'
+      }
+    ],
+    emergencyContacts: [
+      { titleEn: 'Saarthi Helpline', titleTe: 'సారథి హెల్ప్‌లైన్', number: '08772264555' },
+      { titleEn: 'Emergency Services', titleTe: 'అత్యవసర సేవల హెల్ప్‌లైన్', number: '112' }
+    ]
+  },
+
+  'kodandarama-temple': {
+    placeId: 'kodandarama-temple',
+    titleEn: 'Sri Kodanda Rama Swamy Temple Precinct Map',
+    titleTe: 'వినాయక సాగర్ (వాటర్‌ఫ్రంట్) ప్రాంగణ మ్యాప్',
+    layoutType: 'grand-temple',
+    centerCoordinates: { lat: 13.635037, lng: 79.416753 },
+    defaultZoom: 18,
+    compassBearingDeg: 0,
+    sanctumNameEn: 'Sri Kodanda Rama Swamy Temple Sanctum & Main Area',
+    sanctumNameTe: 'వినాయక సాగర్ (వాటర్‌ఫ్రంట్) ప్రధాన స్థలం',
+    routePath: [[430, 275], [130, 250], [270, 260], [270, 130], [390, 150], [380, 210]],
+    pins: [
+      {
+        id: 'parking',
+        nameEn: 'Visitor & Vehicle Parking Bay',
+        nameTe: 'వాహనాల పార్కింగ్ స్థలం',
+        category: 'parking',
+        lat: 13.634437,
+        lng: 79.417353,
+        svgX: 430,
+        svgY: 275,
+        descEn: 'Designated parking for cars, bikes, and visitor vehicles near main entry.',
+        descTe: 'వాహనాల పార్కింగ్ ప్రదేశం.'
+      },
+      {
+        id: 'footwear',
+        nameEn: 'Free Footwear Stand & Holding Area',
+        nameTe: 'ఉచిత పాదరక్షల భద్రతా కేంద్రం',
+        category: 'footwear',
+        lat: 13.634637,
+        lng: 79.416353,
+        svgX: 130,
+        svgY: 250,
+        descEn: 'Footwear deposit counter and visitor holding area.',
+        descTe: 'ఉచిత పాదరక్షల కేంద్రం.'
+      },
+      {
+        id: 'entry',
+        nameEn: 'Main Arch & Entry Gate',
+        nameTe: 'ప్రధాన ప్రవేశ ద్వారం',
+        category: 'entry',
+        lat: 13.634737,
+        lng: 79.416753,
+        svgX: 270,
+        svgY: 260,
+        descEn: 'Main entrance gate leading into premises.',
+        descTe: 'ప్రధాన ప్రవేశ ద్వారం.'
+      },
+      {
+        id: 'sanctum',
+        nameEn: 'Sri Kodanda Rama Swamy Temple Sanctum / Main Point',
+        nameTe: 'వినాయక సాగర్ (వాటర్‌ఫ్రంట్) ప్రధాన స్థలం',
+        category: 'sanctum',
+        lat: 13.635037,
+        lng: 79.416753,
+        svgX: 270,
+        svgY: 130,
+        descEn: 'Main shrine and central point of interest.',
+        descTe: 'ముఖ్య దివ్య స్థల ప్రవేశం మరియు దర్శనం.'
+      },
+      {
+        id: 'info',
+        nameEn: 'Information & Utility Desk',
+        nameTe: 'సమాచార విభాగం & తాగునీరు',
+        category: 'info',
+        lat: 13.635437,
+        lng: 79.417153,
+        svgX: 390,
+        svgY: 150,
+        descEn: 'Information counter and RO drinking water point.',
+        descTe: 'సమాచార కేంద్రం మరియు తాగునీటి సదుపాయం.'
+      }
+    ],
+    routeSteps: [
+      {
+        stepNumber: 1,
+        titleEn: 'Arrival & Parking',
+        titleTe: 'పార్కింగ్ చేరుకోవడం',
+        distance: '0.0 km',
+        timeMins: 0,
+        descEn: 'Park vehicle near designated parking area.',
+        descTe: 'వాహనాన్ని నిర్ణీత స్థలంలో పార్క్ చేయండి.'
+      },
+      {
+        stepNumber: 2,
+        titleEn: 'Main Entry & Footwear Deposit',
+        titleTe: 'ప్రవేశం & పాదరక్షలు',
+        distance: '40m',
+        timeMins: 2,
+        descEn: 'Proceed to entrance and deposit shoes if applicable.',
+        descTe: 'ప్రధాన ద్వారం వద్దకు చేరుకోండి.'
+      },
+      {
+        stepNumber: 3,
+        titleEn: 'Main Sanctum & Visitor Experience',
+        titleTe: 'ప్రధాన దర్శనం',
+        distance: '60m',
+        timeMins: 10,
+        descEn: 'Experience the main shrine and serene surroundings.',
+        descTe: 'ముఖ్య స్థలాన్ని దర్శించి ఆనందించండి.'
+      }
+    ],
+    emergencyContacts: [
+      { titleEn: 'Saarthi Helpline', titleTe: 'సారథి హెల్ప్‌లైన్', number: '08772264555' },
+      { titleEn: 'Emergency Services', titleTe: 'అత్యవసర సేవల హెల్ప్‌లైన్', number: '112' }
+    ]
+  },
+
+  'iskcon-tirupati': {
+    placeId: 'iskcon-tirupati',
+    titleEn: 'ISKCON Tirupati Precinct Map',
+    titleTe: 'ఎన్జీఓ కాలనీ పార్కు ప్రాంగణ మ్యాప్',
+    layoutType: 'grand-temple',
+    centerCoordinates: { lat: 13.6469, lng: 79.4138 },
+    defaultZoom: 18,
+    compassBearingDeg: 0,
+    sanctumNameEn: 'ISKCON Tirupati Sanctum & Main Area',
+    sanctumNameTe: 'ఎన్జీఓ కాలనీ పార్కు ప్రధాన స్థలం',
+    routePath: [[430, 275], [130, 250], [270, 260], [270, 130], [390, 150], [380, 210]],
+    pins: [
+      {
+        id: 'parking',
+        nameEn: 'Visitor & Vehicle Parking Bay',
+        nameTe: 'వాహనాల పార్కింగ్ స్థలం',
+        category: 'parking',
+        lat: 13.646300,
+        lng: 79.414400,
+        svgX: 430,
+        svgY: 275,
+        descEn: 'Designated parking for cars, bikes, and visitor vehicles near main entry.',
+        descTe: 'వాహనాల పార్కింగ్ ప్రదేశం.'
+      },
+      {
+        id: 'footwear',
+        nameEn: 'Free Footwear Stand & Holding Area',
+        nameTe: 'ఉచిత పాదరక్షల భద్రతా కేంద్రం',
+        category: 'footwear',
+        lat: 13.646500,
+        lng: 79.413400,
+        svgX: 130,
+        svgY: 250,
+        descEn: 'Footwear deposit counter and visitor holding area.',
+        descTe: 'ఉచిత పాదరక్షల కేంద్రం.'
+      },
+      {
+        id: 'entry',
+        nameEn: 'Main Arch & Entry Gate',
+        nameTe: 'ప్రధాన ప్రవేశ ద్వారం',
+        category: 'entry',
+        lat: 13.646600,
+        lng: 79.413800,
+        svgX: 270,
+        svgY: 260,
+        descEn: 'Main entrance gate leading into premises.',
+        descTe: 'ప్రధాన ప్రవేశ ద్వారం.'
+      },
+      {
+        id: 'sanctum',
+        nameEn: 'ISKCON Tirupati Sanctum / Main Point',
+        nameTe: 'ఎన్జీఓ కాలనీ పార్కు ప్రధాన స్థలం',
+        category: 'sanctum',
+        lat: 13.646900,
+        lng: 79.413800,
+        svgX: 270,
+        svgY: 130,
+        descEn: 'Main shrine and central point of interest.',
+        descTe: 'ముఖ్య దివ్య స్థల ప్రవేశం మరియు దర్శనం.'
+      },
+      {
+        id: 'info',
+        nameEn: 'Information & Utility Desk',
+        nameTe: 'సమాచార విభాగం & తాగునీరు',
+        category: 'info',
+        lat: 13.647300,
+        lng: 79.414200,
+        svgX: 390,
+        svgY: 150,
+        descEn: 'Information counter and RO drinking water point.',
+        descTe: 'సమాచార కేంద్రం మరియు తాగునీటి సదుపాయం.'
+      }
+    ],
+    routeSteps: [
+      {
+        stepNumber: 1,
+        titleEn: 'Arrival & Parking',
+        titleTe: 'పార్కింగ్ చేరుకోవడం',
+        distance: '0.0 km',
+        timeMins: 0,
+        descEn: 'Park vehicle near designated parking area.',
+        descTe: 'వాహనాన్ని నిర్ణీత స్థలంలో పార్క్ చేయండి.'
+      },
+      {
+        stepNumber: 2,
+        titleEn: 'Main Entry & Footwear Deposit',
+        titleTe: 'ప్రవేశం & పాదరక్షలు',
+        distance: '40m',
+        timeMins: 2,
+        descEn: 'Proceed to entrance and deposit shoes if applicable.',
+        descTe: 'ప్రధాన ద్వారం వద్దకు చేరుకోండి.'
+      },
+      {
+        stepNumber: 3,
+        titleEn: 'Main Sanctum & Visitor Experience',
+        titleTe: 'ప్రధాన దర్శనం',
+        distance: '60m',
+        timeMins: 10,
+        descEn: 'Experience the main shrine and serene surroundings.',
+        descTe: 'ముఖ్య స్థలాన్ని దర్శించి ఆనందించండి.'
+      }
+    ],
+    emergencyContacts: [
+      { titleEn: 'Saarthi Helpline', titleTe: 'సారథి హెల్ప్‌లైన్', number: '08772264555' },
+      { titleEn: 'Emergency Services', titleTe: 'అత్యవసర సేవల హెల్ప్‌లైన్', number: '112' }
+    ]
+  },
+
+  'talakona-falls': {
+    placeId: 'talakona-falls',
+    titleEn: 'Talakona Waterfalls Precinct Map',
+    titleTe: 'talakona-falls ప్రాంగణ మ్యాప్',
+    layoutType: 'hill-waterfall',
+    centerCoordinates: { lat: 13.8115525, lng: 79.2158779 },
+    defaultZoom: 18,
+    compassBearingDeg: 0,
+    sanctumNameEn: 'Talakona Waterfalls Sanctum & Main Area',
+    sanctumNameTe: 'talakona-falls ప్రధాన స్థలం',
+    routePath: [[430, 275], [130, 250], [270, 260], [270, 130], [390, 150], [380, 210]],
+    pins: [
+      {
+        id: 'parking',
+        nameEn: 'Visitor & Vehicle Parking Bay',
+        nameTe: 'వాహనాల పార్కింగ్ స్థలం',
+        category: 'parking',
+        lat: 13.810952,
+        lng: 79.216478,
+        svgX: 430,
+        svgY: 275,
+        descEn: 'Designated parking for cars, bikes, and visitor vehicles near main entry.',
+        descTe: 'వాహనాల పార్కింగ్ ప్రదేశం.'
+      },
+      {
+        id: 'footwear',
+        nameEn: 'Free Footwear Stand & Holding Area',
+        nameTe: 'ఉచిత పాదరక్షల భద్రతా కేంద్రం',
+        category: 'footwear',
+        lat: 13.811152,
+        lng: 79.215478,
+        svgX: 130,
+        svgY: 250,
+        descEn: 'Footwear deposit counter and visitor holding area.',
+        descTe: 'ఉచిత పాదరక్షల కేంద్రం.'
+      },
+      {
+        id: 'entry',
+        nameEn: 'Main Arch & Entry Gate',
+        nameTe: 'ప్రధాన ప్రవేశ ద్వారం',
+        category: 'entry',
+        lat: 13.811253,
+        lng: 79.215878,
+        svgX: 270,
+        svgY: 260,
+        descEn: 'Main entrance gate leading into premises.',
+        descTe: 'ప్రధాన ప్రవేశ ద్వారం.'
+      },
+      {
+        id: 'sanctum',
+        nameEn: 'Talakona Waterfalls Sanctum / Main Point',
+        nameTe: 'talakona-falls ప్రధాన స్థలం',
+        category: 'sanctum',
+        lat: 13.811552,
+        lng: 79.215878,
+        svgX: 270,
+        svgY: 130,
+        descEn: 'Main shrine and central point of interest.',
+        descTe: 'ముఖ్య దివ్య స్థల ప్రవేశం మరియు దర్శనం.'
+      },
+      {
+        id: 'info',
+        nameEn: 'Information & Utility Desk',
+        nameTe: 'సమాచార విభాగం & తాగునీరు',
+        category: 'info',
+        lat: 13.811953,
+        lng: 79.216278,
+        svgX: 390,
+        svgY: 150,
+        descEn: 'Information counter and RO drinking water point.',
+        descTe: 'సమాచార కేంద్రం మరియు తాగునీటి సదుపాయం.'
+      }
+    ],
+    routeSteps: [
+      {
+        stepNumber: 1,
+        titleEn: 'Arrival & Parking',
+        titleTe: 'పార్కింగ్ చేరుకోవడం',
+        distance: '0.0 km',
+        timeMins: 0,
+        descEn: 'Park vehicle near designated parking area.',
+        descTe: 'వాహనాన్ని నిర్ణీత స్థలంలో పార్క్ చేయండి.'
+      },
+      {
+        stepNumber: 2,
+        titleEn: 'Main Entry & Footwear Deposit',
+        titleTe: 'ప్రవేశం & పాదరక్షలు',
+        distance: '40m',
+        timeMins: 2,
+        descEn: 'Proceed to entrance and deposit shoes if applicable.',
+        descTe: 'ప్రధాన ద్వారం వద్దకు చేరుకోండి.'
+      },
+      {
+        stepNumber: 3,
+        titleEn: 'Main Sanctum & Visitor Experience',
+        titleTe: 'ప్రధాన దర్శనం',
+        distance: '60m',
+        timeMins: 10,
+        descEn: 'Experience the main shrine and serene surroundings.',
+        descTe: 'ముఖ్య స్థలాన్ని దర్శించి ఆనందించండి.'
+      }
+    ],
+    emergencyContacts: [
+      { titleEn: 'Saarthi Helpline', titleTe: 'సారథి హెల్ప్‌లైన్', number: '08772264555' },
+      { titleEn: 'Emergency Services', titleTe: 'అత్యవసర సేవల హెల్ప్‌లైన్', number: '112' }
+    ]
+  },
+
+  'deer-park-tirupati': {
+    placeId: 'deer-park-tirupati',
+    titleEn: 'Deer Park Precinct Map',
+    titleTe: 'deer-park-tirupati ప్రాంగణ మ్యాప్',
+    layoutType: 'hill-waterfall',
+    centerCoordinates: { lat: 13.6702, lng: 79.3785 },
+    defaultZoom: 18,
+    compassBearingDeg: 0,
+    sanctumNameEn: 'Deer Park Sanctum & Main Area',
+    sanctumNameTe: 'deer-park-tirupati ప్రధాన స్థలం',
+    routePath: [[430, 275], [130, 250], [270, 260], [270, 130], [390, 150], [380, 210]],
+    pins: [
+      {
+        id: 'parking',
+        nameEn: 'Visitor & Vehicle Parking Bay',
+        nameTe: 'వాహనాల పార్కింగ్ స్థలం',
+        category: 'parking',
+        lat: 13.669600,
+        lng: 79.379100,
+        svgX: 430,
+        svgY: 275,
+        descEn: 'Designated parking for cars, bikes, and visitor vehicles near main entry.',
+        descTe: 'వాహనాల పార్కింగ్ ప్రదేశం.'
+      },
+      {
+        id: 'footwear',
+        nameEn: 'Free Footwear Stand & Holding Area',
+        nameTe: 'ఉచిత పాదరక్షల భద్రతా కేంద్రం',
+        category: 'footwear',
+        lat: 13.669800,
+        lng: 79.378100,
+        svgX: 130,
+        svgY: 250,
+        descEn: 'Footwear deposit counter and visitor holding area.',
+        descTe: 'ఉచిత పాదరక్షల కేంద్రం.'
+      },
+      {
+        id: 'entry',
+        nameEn: 'Main Arch & Entry Gate',
+        nameTe: 'ప్రధాన ప్రవేశ ద్వారం',
+        category: 'entry',
+        lat: 13.669900,
+        lng: 79.378500,
+        svgX: 270,
+        svgY: 260,
+        descEn: 'Main entrance gate leading into premises.',
+        descTe: 'ప్రధాన ప్రవేశ ద్వారం.'
+      },
+      {
+        id: 'sanctum',
+        nameEn: 'Deer Park Sanctum / Main Point',
+        nameTe: 'deer-park-tirupati ప్రధాన స్థలం',
+        category: 'sanctum',
+        lat: 13.670200,
+        lng: 79.378500,
+        svgX: 270,
+        svgY: 130,
+        descEn: 'Main shrine and central point of interest.',
+        descTe: 'ముఖ్య దివ్య స్థల ప్రవేశం మరియు దర్శనం.'
+      },
+      {
+        id: 'info',
+        nameEn: 'Information & Utility Desk',
+        nameTe: 'సమాచార విభాగం & తాగునీరు',
+        category: 'info',
+        lat: 13.670600,
+        lng: 79.378900,
+        svgX: 390,
+        svgY: 150,
+        descEn: 'Information counter and RO drinking water point.',
+        descTe: 'సమాచార కేంద్రం మరియు తాగునీటి సదుపాయం.'
+      }
+    ],
+    routeSteps: [
+      {
+        stepNumber: 1,
+        titleEn: 'Arrival & Parking',
+        titleTe: 'పార్కింగ్ చేరుకోవడం',
+        distance: '0.0 km',
+        timeMins: 0,
+        descEn: 'Park vehicle near designated parking area.',
+        descTe: 'వాహనాన్ని నిర్ణీత స్థలంలో పార్క్ చేయండి.'
+      },
+      {
+        stepNumber: 2,
+        titleEn: 'Main Entry & Footwear Deposit',
+        titleTe: 'ప్రవేశం & పాదరక్షలు',
+        distance: '40m',
+        timeMins: 2,
+        descEn: 'Proceed to entrance and deposit shoes if applicable.',
+        descTe: 'ప్రధాన ద్వారం వద్దకు చేరుకోండి.'
+      },
+      {
+        stepNumber: 3,
+        titleEn: 'Main Sanctum & Visitor Experience',
+        titleTe: 'ప్రధాన దర్శనం',
+        distance: '60m',
+        timeMins: 10,
+        descEn: 'Experience the main shrine and serene surroundings.',
+        descTe: 'ముఖ్య స్థలాన్ని దర్శించి ఆనందించండి.'
+      }
+    ],
+    emergencyContacts: [
+      { titleEn: 'Saarthi Helpline', titleTe: 'సారథి హెల్ప్‌లైన్', number: '08772264555' },
+      { titleEn: 'Emergency Services', titleTe: 'అత్యవసర సేవల హెల్ప్‌లైన్', number: '112' }
+    ]
+  },
+
+  'anjanadri-jungle-book': {
+    placeId: 'anjanadri-jungle-book',
+    titleEn: 'Sri Prasanna Anjaneya Swamy Temple (7th Mile) Precinct Map',
+    titleTe: 'anjanadri-jungle-book ప్రాంగణ మ్యాప్',
+    layoutType: 'city-shrine',
+    centerCoordinates: { lat: 13.6599318, lng: 79.3842156 },
+    defaultZoom: 18,
+    compassBearingDeg: 0,
+    sanctumNameEn: 'Sri Prasanna Anjaneya Swamy Temple (7th Mile) Sanctum & Main Area',
+    sanctumNameTe: 'anjanadri-jungle-book ప్రధాన స్థలం',
+    routePath: [[430, 275], [130, 250], [270, 260], [270, 130], [390, 150], [380, 210]],
+    pins: [
+      {
+        id: 'parking',
+        nameEn: 'Visitor & Vehicle Parking Bay',
+        nameTe: 'వాహనాల పార్కింగ్ స్థలం',
+        category: 'parking',
+        lat: 13.659332,
+        lng: 79.384816,
+        svgX: 430,
+        svgY: 275,
+        descEn: 'Designated parking for cars, bikes, and visitor vehicles near main entry.',
+        descTe: 'వాహనాల పార్కింగ్ ప్రదేశం.'
+      },
+      {
+        id: 'footwear',
+        nameEn: 'Free Footwear Stand & Holding Area',
+        nameTe: 'ఉచిత పాదరక్షల భద్రతా కేంద్రం',
+        category: 'footwear',
+        lat: 13.659532,
+        lng: 79.383816,
+        svgX: 130,
+        svgY: 250,
+        descEn: 'Footwear deposit counter and visitor holding area.',
+        descTe: 'ఉచిత పాదరక్షల కేంద్రం.'
+      },
+      {
+        id: 'entry',
+        nameEn: 'Main Arch & Entry Gate',
+        nameTe: 'ప్రధాన ప్రవేశ ద్వారం',
+        category: 'entry',
+        lat: 13.659632,
+        lng: 79.384216,
+        svgX: 270,
+        svgY: 260,
+        descEn: 'Main entrance gate leading into premises.',
+        descTe: 'ప్రధాన ప్రవేశ ద్వారం.'
+      },
+      {
+        id: 'sanctum',
+        nameEn: 'Sri Prasanna Anjaneya Swamy Temple (7th Mile) Sanctum / Main Point',
+        nameTe: 'anjanadri-jungle-book ప్రధాన స్థలం',
+        category: 'sanctum',
+        lat: 13.659932,
+        lng: 79.384216,
+        svgX: 270,
+        svgY: 130,
+        descEn: 'Main shrine and central point of interest.',
+        descTe: 'ముఖ్య దివ్య స్థల ప్రవేశం మరియు దర్శనం.'
+      },
+      {
+        id: 'info',
+        nameEn: 'Information & Utility Desk',
+        nameTe: 'సమాచార విభాగం & తాగునీరు',
+        category: 'info',
+        lat: 13.660332,
+        lng: 79.384616,
+        svgX: 390,
+        svgY: 150,
+        descEn: 'Information counter and RO drinking water point.',
+        descTe: 'సమాచార కేంద్రం మరియు తాగునీటి సదుపాయం.'
+      }
+    ],
+    routeSteps: [
+      {
+        stepNumber: 1,
+        titleEn: 'Arrival & Parking',
+        titleTe: 'పార్కింగ్ చేరుకోవడం',
+        distance: '0.0 km',
+        timeMins: 0,
+        descEn: 'Park vehicle near designated parking area.',
+        descTe: 'వాహనాన్ని నిర్ణీత స్థలంలో పార్క్ చేయండి.'
+      },
+      {
+        stepNumber: 2,
+        titleEn: 'Main Entry & Footwear Deposit',
+        titleTe: 'ప్రవేశం & పాదరక్షలు',
+        distance: '40m',
+        timeMins: 2,
+        descEn: 'Proceed to entrance and deposit shoes if applicable.',
+        descTe: 'ప్రధాన ద్వారం వద్దకు చేరుకోండి.'
+      },
+      {
+        stepNumber: 3,
+        titleEn: 'Main Sanctum & Visitor Experience',
+        titleTe: 'ప్రధాన దర్శనం',
+        distance: '60m',
+        timeMins: 10,
+        descEn: 'Experience the main shrine and serene surroundings.',
+        descTe: 'ముఖ్య స్థలాన్ని దర్శించి ఆనందించండి.'
+      }
+    ],
+    emergencyContacts: [
+      { titleEn: 'Saarthi Helpline', titleTe: 'సారథి హెల్ప్‌లైన్', number: '08772264555' },
+      { titleEn: 'Emergency Services', titleTe: 'అత్యవసర సేవల హెల్ప్‌లైన్', number: '112' }
+    ]
+  },
+
+  'sv-zoo-park': {
+    placeId: 'sv-zoo-park',
+    titleEn: 'Sri Venkateswara Zoological Park Precinct Map',
+    titleTe: 'sv-zoo-park ప్రాంగణ మ్యాప్',
+    layoutType: 'hill-waterfall',
+    centerCoordinates: { lat: 13.6248524, lng: 79.3646486 },
+    defaultZoom: 18,
+    compassBearingDeg: 0,
+    sanctumNameEn: 'Sri Venkateswara Zoological Park Sanctum & Main Area',
+    sanctumNameTe: 'sv-zoo-park ప్రధాన స్థలం',
+    routePath: [[430, 275], [130, 250], [270, 260], [270, 130], [390, 150], [380, 210]],
+    pins: [
+      {
+        id: 'parking',
+        nameEn: 'Visitor & Vehicle Parking Bay',
+        nameTe: 'వాహనాల పార్కింగ్ స్థలం',
+        category: 'parking',
+        lat: 13.624252,
+        lng: 79.365249,
+        svgX: 430,
+        svgY: 275,
+        descEn: 'Designated parking for cars, bikes, and visitor vehicles near main entry.',
+        descTe: 'వాహనాల పార్కింగ్ ప్రదేశం.'
+      },
+      {
+        id: 'footwear',
+        nameEn: 'Free Footwear Stand & Holding Area',
+        nameTe: 'ఉచిత పాదరక్షల భద్రతా కేంద్రం',
+        category: 'footwear',
+        lat: 13.624452,
+        lng: 79.364249,
+        svgX: 130,
+        svgY: 250,
+        descEn: 'Footwear deposit counter and visitor holding area.',
+        descTe: 'ఉచిత పాదరక్షల కేంద్రం.'
+      },
+      {
+        id: 'entry',
+        nameEn: 'Main Arch & Entry Gate',
+        nameTe: 'ప్రధాన ప్రవేశ ద్వారం',
+        category: 'entry',
+        lat: 13.624552,
+        lng: 79.364649,
+        svgX: 270,
+        svgY: 260,
+        descEn: 'Main entrance gate leading into premises.',
+        descTe: 'ప్రధాన ప్రవేశ ద్వారం.'
+      },
+      {
+        id: 'sanctum',
+        nameEn: 'Sri Venkateswara Zoological Park Sanctum / Main Point',
+        nameTe: 'sv-zoo-park ప్రధాన స్థలం',
+        category: 'sanctum',
+        lat: 13.624852,
+        lng: 79.364649,
+        svgX: 270,
+        svgY: 130,
+        descEn: 'Main shrine and central point of interest.',
+        descTe: 'ముఖ్య దివ్య స్థల ప్రవేశం మరియు దర్శనం.'
+      },
+      {
+        id: 'info',
+        nameEn: 'Information & Utility Desk',
+        nameTe: 'సమాచార విభాగం & తాగునీరు',
+        category: 'info',
+        lat: 13.625252,
+        lng: 79.365049,
+        svgX: 390,
+        svgY: 150,
+        descEn: 'Information counter and RO drinking water point.',
+        descTe: 'సమాచార కేంద్రం మరియు తాగునీటి సదుపాయం.'
+      }
+    ],
+    routeSteps: [
+      {
+        stepNumber: 1,
+        titleEn: 'Arrival & Parking',
+        titleTe: 'పార్కింగ్ చేరుకోవడం',
+        distance: '0.0 km',
+        timeMins: 0,
+        descEn: 'Park vehicle near designated parking area.',
+        descTe: 'వాహనాన్ని నిర్ణీత స్థలంలో పార్క్ చేయండి.'
+      },
+      {
+        stepNumber: 2,
+        titleEn: 'Main Entry & Footwear Deposit',
+        titleTe: 'ప్రవేశం & పాదరక్షలు',
+        distance: '40m',
+        timeMins: 2,
+        descEn: 'Proceed to entrance and deposit shoes if applicable.',
+        descTe: 'ప్రధాన ద్వారం వద్దకు చేరుకోండి.'
+      },
+      {
+        stepNumber: 3,
+        titleEn: 'Main Sanctum & Visitor Experience',
+        titleTe: 'ప్రధాన దర్శనం',
+        distance: '60m',
+        timeMins: 10,
+        descEn: 'Experience the main shrine and serene surroundings.',
+        descTe: 'ముఖ్య స్థలాన్ని దర్శించి ఆనందించండి.'
+      }
+    ],
+    emergencyContacts: [
+      { titleEn: 'Saarthi Helpline', titleTe: 'సారథి హెల్ప్‌లైన్', number: '08772264555' },
+      { titleEn: 'Emergency Services', titleTe: 'అత్యవసర సేవల హెల్ప్‌లైన్', number: '112' }
+    ]
+  },
+
+  'srikalahasti': {
+    placeId: 'srikalahasti',
+    titleEn: 'Srikalahasti Temple Precinct Map',
+    titleTe: 'srikalahasti ప్రాంగణ మ్యాప్',
+    layoutType: 'city-shrine',
+    centerCoordinates: { lat: 13.7498, lng: 79.6984 },
+    defaultZoom: 18,
+    compassBearingDeg: 0,
+    sanctumNameEn: 'Srikalahasti Temple Sanctum & Main Area',
+    sanctumNameTe: 'srikalahasti ప్రధాన స్థలం',
+    routePath: [[430, 275], [130, 250], [270, 260], [270, 130], [390, 150], [380, 210]],
+    pins: [
+      {
+        id: 'parking',
+        nameEn: 'Visitor & Vehicle Parking Bay',
+        nameTe: 'వాహనాల పార్కింగ్ స్థలం',
+        category: 'parking',
+        lat: 13.749200,
+        lng: 79.699000,
+        svgX: 430,
+        svgY: 275,
+        descEn: 'Designated parking for cars, bikes, and visitor vehicles near main entry.',
+        descTe: 'వాహనాల పార్కింగ్ ప్రదేశం.'
+      },
+      {
+        id: 'footwear',
+        nameEn: 'Free Footwear Stand & Holding Area',
+        nameTe: 'ఉచిత పాదరక్షల భద్రతా కేంద్రం',
+        category: 'footwear',
+        lat: 13.749400,
+        lng: 79.698000,
+        svgX: 130,
+        svgY: 250,
+        descEn: 'Footwear deposit counter and visitor holding area.',
+        descTe: 'ఉచిత పాదరక్షల కేంద్రం.'
+      },
+      {
+        id: 'entry',
+        nameEn: 'Main Arch & Entry Gate',
+        nameTe: 'ప్రధాన ప్రవేశ ద్వారం',
+        category: 'entry',
+        lat: 13.749500,
+        lng: 79.698400,
+        svgX: 270,
+        svgY: 260,
+        descEn: 'Main entrance gate leading into premises.',
+        descTe: 'ప్రధాన ప్రవేశ ద్వారం.'
+      },
+      {
+        id: 'sanctum',
+        nameEn: 'Srikalahasti Temple Sanctum / Main Point',
+        nameTe: 'srikalahasti ప్రధాన స్థలం',
+        category: 'sanctum',
+        lat: 13.749800,
+        lng: 79.698400,
+        svgX: 270,
+        svgY: 130,
+        descEn: 'Main shrine and central point of interest.',
+        descTe: 'ముఖ్య దివ్య స్థల ప్రవేశం మరియు దర్శనం.'
+      },
+      {
+        id: 'info',
+        nameEn: 'Information & Utility Desk',
+        nameTe: 'సమాచార విభాగం & తాగునీరు',
+        category: 'info',
+        lat: 13.750200,
+        lng: 79.698800,
+        svgX: 390,
+        svgY: 150,
+        descEn: 'Information counter and RO drinking water point.',
+        descTe: 'సమాచార కేంద్రం మరియు తాగునీటి సదుపాయం.'
+      }
+    ],
+    routeSteps: [
+      {
+        stepNumber: 1,
+        titleEn: 'Arrival & Parking',
+        titleTe: 'పార్కింగ్ చేరుకోవడం',
+        distance: '0.0 km',
+        timeMins: 0,
+        descEn: 'Park vehicle near designated parking area.',
+        descTe: 'వాహనాన్ని నిర్ణీత స్థలంలో పార్క్ చేయండి.'
+      },
+      {
+        stepNumber: 2,
+        titleEn: 'Main Entry & Footwear Deposit',
+        titleTe: 'ప్రవేశం & పాదరక్షలు',
+        distance: '40m',
+        timeMins: 2,
+        descEn: 'Proceed to entrance and deposit shoes if applicable.',
+        descTe: 'ప్రధాన ద్వారం వద్దకు చేరుకోండి.'
+      },
+      {
+        stepNumber: 3,
+        titleEn: 'Main Sanctum & Visitor Experience',
+        titleTe: 'ప్రధాన దర్శనం',
+        distance: '60m',
+        timeMins: 10,
+        descEn: 'Experience the main shrine and serene surroundings.',
+        descTe: 'ముఖ్య స్థలాన్ని దర్శించి ఆనందించండి.'
+      }
+    ],
+    emergencyContacts: [
+      { titleEn: 'Saarthi Helpline', titleTe: 'సారథి హెల్ప్‌లైన్', number: '08772264555' },
+      { titleEn: 'Emergency Services', titleTe: 'అత్యవసర సేవల హెల్ప్‌లైన్', number: '112' }
+    ]
+  },
+
+  'kannappa-temple': {
+    placeId: 'kannappa-temple',
+    titleEn: 'Bhakta Kannappa Temple Precinct Map',
+    titleTe: 'kannappa-temple ప్రాంగణ మ్యాప్',
+    layoutType: 'grand-temple',
+    centerCoordinates: { lat: 13.7494797, lng: 79.6992368 },
+    defaultZoom: 18,
+    compassBearingDeg: 0,
+    sanctumNameEn: 'Bhakta Kannappa Temple Sanctum & Main Area',
+    sanctumNameTe: 'kannappa-temple ప్రధాన స్థలం',
+    routePath: [[430, 275], [130, 250], [270, 260], [270, 130], [390, 150], [380, 210]],
+    pins: [
+      {
+        id: 'parking',
+        nameEn: 'Visitor & Vehicle Parking Bay',
+        nameTe: 'వాహనాల పార్కింగ్ స్థలం',
+        category: 'parking',
+        lat: 13.748880,
+        lng: 79.699837,
+        svgX: 430,
+        svgY: 275,
+        descEn: 'Designated parking for cars, bikes, and visitor vehicles near main entry.',
+        descTe: 'వాహనాల పార్కింగ్ ప్రదేశం.'
+      },
+      {
+        id: 'footwear',
+        nameEn: 'Free Footwear Stand & Holding Area',
+        nameTe: 'ఉచిత పాదరక్షల భద్రతా కేంద్రం',
+        category: 'footwear',
+        lat: 13.749080,
+        lng: 79.698837,
+        svgX: 130,
+        svgY: 250,
+        descEn: 'Footwear deposit counter and visitor holding area.',
+        descTe: 'ఉచిత పాదరక్షల కేంద్రం.'
+      },
+      {
+        id: 'entry',
+        nameEn: 'Main Arch & Entry Gate',
+        nameTe: 'ప్రధాన ప్రవేశ ద్వారం',
+        category: 'entry',
+        lat: 13.749180,
+        lng: 79.699237,
+        svgX: 270,
+        svgY: 260,
+        descEn: 'Main entrance gate leading into premises.',
+        descTe: 'ప్రధాన ప్రవేశ ద్వారం.'
+      },
+      {
+        id: 'sanctum',
+        nameEn: 'Bhakta Kannappa Temple Sanctum / Main Point',
+        nameTe: 'kannappa-temple ప్రధాన స్థలం',
+        category: 'sanctum',
+        lat: 13.749480,
+        lng: 79.699237,
+        svgX: 270,
+        svgY: 130,
+        descEn: 'Main shrine and central point of interest.',
+        descTe: 'ముఖ్య దివ్య స్థల ప్రవేశం మరియు దర్శనం.'
+      },
+      {
+        id: 'info',
+        nameEn: 'Information & Utility Desk',
+        nameTe: 'సమాచార విభాగం & తాగునీరు',
+        category: 'info',
+        lat: 13.749880,
+        lng: 79.699637,
+        svgX: 390,
+        svgY: 150,
+        descEn: 'Information counter and RO drinking water point.',
+        descTe: 'సమాచార కేంద్రం మరియు తాగునీటి సదుపాయం.'
+      }
+    ],
+    routeSteps: [
+      {
+        stepNumber: 1,
+        titleEn: 'Arrival & Parking',
+        titleTe: 'పార్కింగ్ చేరుకోవడం',
+        distance: '0.0 km',
+        timeMins: 0,
+        descEn: 'Park vehicle near designated parking area.',
+        descTe: 'వాహనాన్ని నిర్ణీత స్థలంలో పార్క్ చేయండి.'
+      },
+      {
+        stepNumber: 2,
+        titleEn: 'Main Entry & Footwear Deposit',
+        titleTe: 'ప్రవేశం & పాదరక్షలు',
+        distance: '40m',
+        timeMins: 2,
+        descEn: 'Proceed to entrance and deposit shoes if applicable.',
+        descTe: 'ప్రధాన ద్వారం వద్దకు చేరుకోండి.'
+      },
+      {
+        stepNumber: 3,
+        titleEn: 'Main Sanctum & Visitor Experience',
+        titleTe: 'ప్రధాన దర్శనం',
+        distance: '60m',
+        timeMins: 10,
+        descEn: 'Experience the main shrine and serene surroundings.',
+        descTe: 'ముఖ్య స్థలాన్ని దర్శించి ఆనందించండి.'
+      }
+    ],
+    emergencyContacts: [
+      { titleEn: 'Saarthi Helpline', titleTe: 'సారథి హెల్ప్‌లైన్', number: '08772264555' },
+      { titleEn: 'Emergency Services', titleTe: 'అత్యవసర సేవల హెల్ప్‌లైన్', number: '112' }
+    ]
+  },
+
+  'bharadwaja-tirtham': {
+    placeId: 'bharadwaja-tirtham',
+    titleEn: 'Bharadwaja Tirtham (Lo Bhavi) Precinct Map',
+    titleTe: 'bharadwaja-tirtham ప్రాంగణ మ్యాప్',
+    layoutType: 'city-shrine',
+    centerCoordinates: { lat: 13.7485, lng: 79.7022 },
+    defaultZoom: 18,
+    compassBearingDeg: 0,
+    sanctumNameEn: 'Bharadwaja Tirtham (Lo Bhavi) Sanctum & Main Area',
+    sanctumNameTe: 'bharadwaja-tirtham ప్రధాన స్థలం',
+    routePath: [[430, 275], [130, 250], [270, 260], [270, 130], [390, 150], [380, 210]],
+    pins: [
+      {
+        id: 'parking',
+        nameEn: 'Visitor & Vehicle Parking Bay',
+        nameTe: 'వాహనాల పార్కింగ్ స్థలం',
+        category: 'parking',
+        lat: 13.747900,
+        lng: 79.702800,
+        svgX: 430,
+        svgY: 275,
+        descEn: 'Designated parking for cars, bikes, and visitor vehicles near main entry.',
+        descTe: 'వాహనాల పార్కింగ్ ప్రదేశం.'
+      },
+      {
+        id: 'footwear',
+        nameEn: 'Free Footwear Stand & Holding Area',
+        nameTe: 'ఉచిత పాదరక్షల భద్రతా కేంద్రం',
+        category: 'footwear',
+        lat: 13.748100,
+        lng: 79.701800,
+        svgX: 130,
+        svgY: 250,
+        descEn: 'Footwear deposit counter and visitor holding area.',
+        descTe: 'ఉచిత పాదరక్షల కేంద్రం.'
+      },
+      {
+        id: 'entry',
+        nameEn: 'Main Arch & Entry Gate',
+        nameTe: 'ప్రధాన ప్రవేశ ద్వారం',
+        category: 'entry',
+        lat: 13.748200,
+        lng: 79.702200,
+        svgX: 270,
+        svgY: 260,
+        descEn: 'Main entrance gate leading into premises.',
+        descTe: 'ప్రధాన ప్రవేశ ద్వారం.'
+      },
+      {
+        id: 'sanctum',
+        nameEn: 'Bharadwaja Tirtham (Lo Bhavi) Sanctum / Main Point',
+        nameTe: 'bharadwaja-tirtham ప్రధాన స్థలం',
+        category: 'sanctum',
+        lat: 13.748500,
+        lng: 79.702200,
+        svgX: 270,
+        svgY: 130,
+        descEn: 'Main shrine and central point of interest.',
+        descTe: 'ముఖ్య దివ్య స్థల ప్రవేశం మరియు దర్శనం.'
+      },
+      {
+        id: 'info',
+        nameEn: 'Information & Utility Desk',
+        nameTe: 'సమాచార విభాగం & తాగునీరు',
+        category: 'info',
+        lat: 13.748900,
+        lng: 79.702600,
+        svgX: 390,
+        svgY: 150,
+        descEn: 'Information counter and RO drinking water point.',
+        descTe: 'సమాచార కేంద్రం మరియు తాగునీటి సదుపాయం.'
+      }
+    ],
+    routeSteps: [
+      {
+        stepNumber: 1,
+        titleEn: 'Arrival & Parking',
+        titleTe: 'పార్కింగ్ చేరుకోవడం',
+        distance: '0.0 km',
+        timeMins: 0,
+        descEn: 'Park vehicle near designated parking area.',
+        descTe: 'వాహనాన్ని నిర్ణీత స్థలంలో పార్క్ చేయండి.'
+      },
+      {
+        stepNumber: 2,
+        titleEn: 'Main Entry & Footwear Deposit',
+        titleTe: 'ప్రవేశం & పాదరక్షలు',
+        distance: '40m',
+        timeMins: 2,
+        descEn: 'Proceed to entrance and deposit shoes if applicable.',
+        descTe: 'ప్రధాన ద్వారం వద్దకు చేరుకోండి.'
+      },
+      {
+        stepNumber: 3,
+        titleEn: 'Main Sanctum & Visitor Experience',
+        titleTe: 'ప్రధాన దర్శనం',
+        distance: '60m',
+        timeMins: 10,
+        descEn: 'Experience the main shrine and serene surroundings.',
+        descTe: 'ముఖ్య స్థలాన్ని దర్శించి ఆనందించండి.'
+      }
+    ],
+    emergencyContacts: [
+      { titleEn: 'Saarthi Helpline', titleTe: 'సారథి హెల్ప్‌లైన్', number: '08772264555' },
+      { titleEn: 'Emergency Services', titleTe: 'అత్యవసర సేవల హెల్ప్‌లైన్', number: '112' }
+    ]
+  },
+
+  'sahasra-lingam-srikalahasti': {
+    placeId: 'sahasra-lingam-srikalahasti',
+    titleEn: 'Sahasra Lingeshwara Swamy Temple (Veyilingala Kona) Precinct Map',
+    titleTe: 'sahasra-lingam-srikalahasti ప్రాంగణ మ్యాప్',
+    layoutType: 'city-shrine',
+    centerCoordinates: { lat: 13.6925, lng: 79.7112 },
+    defaultZoom: 18,
+    compassBearingDeg: 0,
+    sanctumNameEn: 'Sahasra Lingeshwara Swamy Temple (Veyilingala Kona) Sanctum & Main Area',
+    sanctumNameTe: 'sahasra-lingam-srikalahasti ప్రధాన స్థలం',
+    routePath: [[430, 275], [130, 250], [270, 260], [270, 130], [390, 150], [380, 210]],
+    pins: [
+      {
+        id: 'parking',
+        nameEn: 'Visitor & Vehicle Parking Bay',
+        nameTe: 'వాహనాల పార్కింగ్ స్థలం',
+        category: 'parking',
+        lat: 13.691900,
+        lng: 79.711800,
+        svgX: 430,
+        svgY: 275,
+        descEn: 'Designated parking for cars, bikes, and visitor vehicles near main entry.',
+        descTe: 'వాహనాల పార్కింగ్ ప్రదేశం.'
+      },
+      {
+        id: 'footwear',
+        nameEn: 'Free Footwear Stand & Holding Area',
+        nameTe: 'ఉచిత పాదరక్షల భద్రతా కేంద్రం',
+        category: 'footwear',
+        lat: 13.692100,
+        lng: 79.710800,
+        svgX: 130,
+        svgY: 250,
+        descEn: 'Footwear deposit counter and visitor holding area.',
+        descTe: 'ఉచిత పాదరక్షల కేంద్రం.'
+      },
+      {
+        id: 'entry',
+        nameEn: 'Main Arch & Entry Gate',
+        nameTe: 'ప్రధాన ప్రవేశ ద్వారం',
+        category: 'entry',
+        lat: 13.692200,
+        lng: 79.711200,
+        svgX: 270,
+        svgY: 260,
+        descEn: 'Main entrance gate leading into premises.',
+        descTe: 'ప్రధాన ప్రవేశ ద్వారం.'
+      },
+      {
+        id: 'sanctum',
+        nameEn: 'Sahasra Lingeshwara Swamy Temple (Veyilingala Kona) Sanctum / Main Point',
+        nameTe: 'sahasra-lingam-srikalahasti ప్రధాన స్థలం',
+        category: 'sanctum',
+        lat: 13.692500,
+        lng: 79.711200,
+        svgX: 270,
+        svgY: 130,
+        descEn: 'Main shrine and central point of interest.',
+        descTe: 'ముఖ్య దివ్య స్థల ప్రవేశం మరియు దర్శనం.'
+      },
+      {
+        id: 'info',
+        nameEn: 'Information & Utility Desk',
+        nameTe: 'సమాచార విభాగం & తాగునీరు',
+        category: 'info',
+        lat: 13.692900,
+        lng: 79.711600,
+        svgX: 390,
+        svgY: 150,
+        descEn: 'Information counter and RO drinking water point.',
+        descTe: 'సమాచార కేంద్రం మరియు తాగునీటి సదుపాయం.'
+      }
+    ],
+    routeSteps: [
+      {
+        stepNumber: 1,
+        titleEn: 'Arrival & Parking',
+        titleTe: 'పార్కింగ్ చేరుకోవడం',
+        distance: '0.0 km',
+        timeMins: 0,
+        descEn: 'Park vehicle near designated parking area.',
+        descTe: 'వాహనాన్ని నిర్ణీత స్థలంలో పార్క్ చేయండి.'
+      },
+      {
+        stepNumber: 2,
+        titleEn: 'Main Entry & Footwear Deposit',
+        titleTe: 'ప్రవేశం & పాదరక్షలు',
+        distance: '40m',
+        timeMins: 2,
+        descEn: 'Proceed to entrance and deposit shoes if applicable.',
+        descTe: 'ప్రధాన ద్వారం వద్దకు చేరుకోండి.'
+      },
+      {
+        stepNumber: 3,
+        titleEn: 'Main Sanctum & Visitor Experience',
+        titleTe: 'ప్రధాన దర్శనం',
+        distance: '60m',
+        timeMins: 10,
+        descEn: 'Experience the main shrine and serene surroundings.',
+        descTe: 'ముఖ్య స్థలాన్ని దర్శించి ఆనందించండి.'
+      }
+    ],
+    emergencyContacts: [
+      { titleEn: 'Saarthi Helpline', titleTe: 'సారథి హెల్ప్‌లైన్', number: '08772264555' },
+      { titleEn: 'Emergency Services', titleTe: 'అత్యవసర సేవల హెల్ప్‌లైన్', number: '112' }
+    ]
+  },
+
+  'durgamma-konda-srikalahasti': {
+    placeId: 'durgamma-konda-srikalahasti',
+    titleEn: 'Sri Durgamma Konda Temple Precinct Map',
+    titleTe: 'durgamma-konda-srikalahasti ప్రాంగణ మ్యాప్',
+    layoutType: 'city-shrine',
+    centerCoordinates: { lat: 13.7481, lng: 79.7042 },
+    defaultZoom: 18,
+    compassBearingDeg: 0,
+    sanctumNameEn: 'Sri Durgamma Konda Temple Sanctum & Main Area',
+    sanctumNameTe: 'durgamma-konda-srikalahasti ప్రధాన స్థలం',
+    routePath: [[430, 275], [130, 250], [270, 260], [270, 130], [390, 150], [380, 210]],
+    pins: [
+      {
+        id: 'parking',
+        nameEn: 'Visitor & Vehicle Parking Bay',
+        nameTe: 'వాహనాల పార్కింగ్ స్థలం',
+        category: 'parking',
+        lat: 13.747500,
+        lng: 79.704800,
+        svgX: 430,
+        svgY: 275,
+        descEn: 'Designated parking for cars, bikes, and visitor vehicles near main entry.',
+        descTe: 'వాహనాల పార్కింగ్ ప్రదేశం.'
+      },
+      {
+        id: 'footwear',
+        nameEn: 'Free Footwear Stand & Holding Area',
+        nameTe: 'ఉచిత పాదరక్షల భద్రతా కేంద్రం',
+        category: 'footwear',
+        lat: 13.747700,
+        lng: 79.703800,
+        svgX: 130,
+        svgY: 250,
+        descEn: 'Footwear deposit counter and visitor holding area.',
+        descTe: 'ఉచిత పాదరక్షల కేంద్రం.'
+      },
+      {
+        id: 'entry',
+        nameEn: 'Main Arch & Entry Gate',
+        nameTe: 'ప్రధాన ప్రవేశ ద్వారం',
+        category: 'entry',
+        lat: 13.747800,
+        lng: 79.704200,
+        svgX: 270,
+        svgY: 260,
+        descEn: 'Main entrance gate leading into premises.',
+        descTe: 'ప్రధాన ప్రవేశ ద్వారం.'
+      },
+      {
+        id: 'sanctum',
+        nameEn: 'Sri Durgamma Konda Temple Sanctum / Main Point',
+        nameTe: 'durgamma-konda-srikalahasti ప్రధాన స్థలం',
+        category: 'sanctum',
+        lat: 13.748100,
+        lng: 79.704200,
+        svgX: 270,
+        svgY: 130,
+        descEn: 'Main shrine and central point of interest.',
+        descTe: 'ముఖ్య దివ్య స్థల ప్రవేశం మరియు దర్శనం.'
+      },
+      {
+        id: 'info',
+        nameEn: 'Information & Utility Desk',
+        nameTe: 'సమాచార విభాగం & తాగునీరు',
+        category: 'info',
+        lat: 13.748500,
+        lng: 79.704600,
+        svgX: 390,
+        svgY: 150,
+        descEn: 'Information counter and RO drinking water point.',
+        descTe: 'సమాచార కేంద్రం మరియు తాగునీటి సదుపాయం.'
+      }
+    ],
+    routeSteps: [
+      {
+        stepNumber: 1,
+        titleEn: 'Arrival & Parking',
+        titleTe: 'పార్కింగ్ చేరుకోవడం',
+        distance: '0.0 km',
+        timeMins: 0,
+        descEn: 'Park vehicle near designated parking area.',
+        descTe: 'వాహనాన్ని నిర్ణీత స్థలంలో పార్క్ చేయండి.'
+      },
+      {
+        stepNumber: 2,
+        titleEn: 'Main Entry & Footwear Deposit',
+        titleTe: 'ప్రవేశం & పాదరక్షలు',
+        distance: '40m',
+        timeMins: 2,
+        descEn: 'Proceed to entrance and deposit shoes if applicable.',
+        descTe: 'ప్రధాన ద్వారం వద్దకు చేరుకోండి.'
+      },
+      {
+        stepNumber: 3,
+        titleEn: 'Main Sanctum & Visitor Experience',
+        titleTe: 'ప్రధాన దర్శనం',
+        distance: '60m',
+        timeMins: 10,
+        descEn: 'Experience the main shrine and serene surroundings.',
+        descTe: 'ముఖ్య స్థలాన్ని దర్శించి ఆనందించండి.'
+      }
+    ],
+    emergencyContacts: [
+      { titleEn: 'Saarthi Helpline', titleTe: 'సారథి హెల్ప్‌లైన్', number: '08772264555' },
+      { titleEn: 'Emergency Services', titleTe: 'అత్యవసర సేవల హెల్ప్‌లైన్', number: '112' }
+    ]
+  },
+
+  'subramanya-swamy-srikalahasti': {
+    placeId: 'subramanya-swamy-srikalahasti',
+    titleEn: 'Sri Subrahmanya Swamy Temple (Subramanya Tippa) Precinct Map',
+    titleTe: 'subramanya-swamy-srikalahasti ప్రాంగణ మ్యాప్',
+    layoutType: 'grand-temple',
+    centerCoordinates: { lat: 13.7520619, lng: 79.7051812 },
+    defaultZoom: 18,
+    compassBearingDeg: 0,
+    sanctumNameEn: 'Sri Subrahmanya Swamy Temple (Subramanya Tippa) Sanctum & Main Area',
+    sanctumNameTe: 'subramanya-swamy-srikalahasti ప్రధాన స్థలం',
+    routePath: [[430, 275], [130, 250], [270, 260], [270, 130], [390, 150], [380, 210]],
+    pins: [
+      {
+        id: 'parking',
+        nameEn: 'Visitor & Vehicle Parking Bay',
+        nameTe: 'వాహనాల పార్కింగ్ స్థలం',
+        category: 'parking',
+        lat: 13.751462,
+        lng: 79.705781,
+        svgX: 430,
+        svgY: 275,
+        descEn: 'Designated parking for cars, bikes, and visitor vehicles near main entry.',
+        descTe: 'వాహనాల పార్కింగ్ ప్రదేశం.'
+      },
+      {
+        id: 'footwear',
+        nameEn: 'Free Footwear Stand & Holding Area',
+        nameTe: 'ఉచిత పాదరక్షల భద్రతా కేంద్రం',
+        category: 'footwear',
+        lat: 13.751662,
+        lng: 79.704781,
+        svgX: 130,
+        svgY: 250,
+        descEn: 'Footwear deposit counter and visitor holding area.',
+        descTe: 'ఉచిత పాదరక్షల కేంద్రం.'
+      },
+      {
+        id: 'entry',
+        nameEn: 'Main Arch & Entry Gate',
+        nameTe: 'ప్రధాన ప్రవేశ ద్వారం',
+        category: 'entry',
+        lat: 13.751762,
+        lng: 79.705181,
+        svgX: 270,
+        svgY: 260,
+        descEn: 'Main entrance gate leading into premises.',
+        descTe: 'ప్రధాన ప్రవేశ ద్వారం.'
+      },
+      {
+        id: 'sanctum',
+        nameEn: 'Sri Subrahmanya Swamy Temple (Subramanya Tippa) Sanctum / Main Point',
+        nameTe: 'subramanya-swamy-srikalahasti ప్రధాన స్థలం',
+        category: 'sanctum',
+        lat: 13.752062,
+        lng: 79.705181,
+        svgX: 270,
+        svgY: 130,
+        descEn: 'Main shrine and central point of interest.',
+        descTe: 'ముఖ్య దివ్య స్థల ప్రవేశం మరియు దర్శనం.'
+      },
+      {
+        id: 'info',
+        nameEn: 'Information & Utility Desk',
+        nameTe: 'సమాచార విభాగం & తాగునీరు',
+        category: 'info',
+        lat: 13.752462,
+        lng: 79.705581,
+        svgX: 390,
+        svgY: 150,
+        descEn: 'Information counter and RO drinking water point.',
+        descTe: 'సమాచార కేంద్రం మరియు తాగునీటి సదుపాయం.'
+      }
+    ],
+    routeSteps: [
+      {
+        stepNumber: 1,
+        titleEn: 'Arrival & Parking',
+        titleTe: 'పార్కింగ్ చేరుకోవడం',
+        distance: '0.0 km',
+        timeMins: 0,
+        descEn: 'Park vehicle near designated parking area.',
+        descTe: 'వాహనాన్ని నిర్ణీత స్థలంలో పార్క్ చేయండి.'
+      },
+      {
+        stepNumber: 2,
+        titleEn: 'Main Entry & Footwear Deposit',
+        titleTe: 'ప్రవేశం & పాదరక్షలు',
+        distance: '40m',
+        timeMins: 2,
+        descEn: 'Proceed to entrance and deposit shoes if applicable.',
+        descTe: 'ప్రధాన ద్వారం వద్దకు చేరుకోండి.'
+      },
+      {
+        stepNumber: 3,
+        titleEn: 'Main Sanctum & Visitor Experience',
+        titleTe: 'ప్రధాన దర్శనం',
+        distance: '60m',
+        timeMins: 10,
+        descEn: 'Experience the main shrine and serene surroundings.',
+        descTe: 'ముఖ్య స్థలాన్ని దర్శించి ఆనందించండి.'
+      }
+    ],
+    emergencyContacts: [
+      { titleEn: 'Saarthi Helpline', titleTe: 'సారథి హెల్ప్‌లైన్', number: '08772264555' },
+      { titleEn: 'Emergency Services', titleTe: 'అత్యవసర సేవల హెల్ప్‌లైన్', number: '112' }
+    ]
+  },
+
+  'dharmaraja-swamy-srikalahasti': {
+    placeId: 'dharmaraja-swamy-srikalahasti',
+    titleEn: 'Sri Draupadi Sametha Sri Dharmaraja Swamy Temple Precinct Map',
+    titleTe: 'dharmaraja-swamy-srikalahasti ప్రాంగణ మ్యాప్',
+    layoutType: 'grand-temple',
+    centerCoordinates: { lat: 13.7491, lng: 79.6978 },
+    defaultZoom: 18,
+    compassBearingDeg: 0,
+    sanctumNameEn: 'Sri Draupadi Sametha Sri Dharmaraja Swamy Temple Sanctum & Main Area',
+    sanctumNameTe: 'dharmaraja-swamy-srikalahasti ప్రధాన స్థలం',
+    routePath: [[430, 275], [130, 250], [270, 260], [270, 130], [390, 150], [380, 210]],
+    pins: [
+      {
+        id: 'parking',
+        nameEn: 'Visitor & Vehicle Parking Bay',
+        nameTe: 'వాహనాల పార్కింగ్ స్థలం',
+        category: 'parking',
+        lat: 13.748500,
+        lng: 79.698400,
+        svgX: 430,
+        svgY: 275,
+        descEn: 'Designated parking for cars, bikes, and visitor vehicles near main entry.',
+        descTe: 'వాహనాల పార్కింగ్ ప్రదేశం.'
+      },
+      {
+        id: 'footwear',
+        nameEn: 'Free Footwear Stand & Holding Area',
+        nameTe: 'ఉచిత పాదరక్షల భద్రతా కేంద్రం',
+        category: 'footwear',
+        lat: 13.748700,
+        lng: 79.697400,
+        svgX: 130,
+        svgY: 250,
+        descEn: 'Footwear deposit counter and visitor holding area.',
+        descTe: 'ఉచిత పాదరక్షల కేంద్రం.'
+      },
+      {
+        id: 'entry',
+        nameEn: 'Main Arch & Entry Gate',
+        nameTe: 'ప్రధాన ప్రవేశ ద్వారం',
+        category: 'entry',
+        lat: 13.748800,
+        lng: 79.697800,
+        svgX: 270,
+        svgY: 260,
+        descEn: 'Main entrance gate leading into premises.',
+        descTe: 'ప్రధాన ప్రవేశ ద్వారం.'
+      },
+      {
+        id: 'sanctum',
+        nameEn: 'Sri Draupadi Sametha Sri Dharmaraja Swamy Temple Sanctum / Main Point',
+        nameTe: 'dharmaraja-swamy-srikalahasti ప్రధాన స్థలం',
+        category: 'sanctum',
+        lat: 13.749100,
+        lng: 79.697800,
+        svgX: 270,
+        svgY: 130,
+        descEn: 'Main shrine and central point of interest.',
+        descTe: 'ముఖ్య దివ్య స్థల ప్రవేశం మరియు దర్శనం.'
+      },
+      {
+        id: 'info',
+        nameEn: 'Information & Utility Desk',
+        nameTe: 'సమాచార విభాగం & తాగునీరు',
+        category: 'info',
+        lat: 13.749500,
+        lng: 79.698200,
+        svgX: 390,
+        svgY: 150,
+        descEn: 'Information counter and RO drinking water point.',
+        descTe: 'సమాచార కేంద్రం మరియు తాగునీటి సదుపాయం.'
+      }
+    ],
+    routeSteps: [
+      {
+        stepNumber: 1,
+        titleEn: 'Arrival & Parking',
+        titleTe: 'పార్కింగ్ చేరుకోవడం',
+        distance: '0.0 km',
+        timeMins: 0,
+        descEn: 'Park vehicle near designated parking area.',
+        descTe: 'వాహనాన్ని నిర్ణీత స్థలంలో పార్క్ చేయండి.'
+      },
+      {
+        stepNumber: 2,
+        titleEn: 'Main Entry & Footwear Deposit',
+        titleTe: 'ప్రవేశం & పాదరక్షలు',
+        distance: '40m',
+        timeMins: 2,
+        descEn: 'Proceed to entrance and deposit shoes if applicable.',
+        descTe: 'ప్రధాన ద్వారం వద్దకు చేరుకోండి.'
+      },
+      {
+        stepNumber: 3,
+        titleEn: 'Main Sanctum & Visitor Experience',
+        titleTe: 'ప్రధాన దర్శనం',
+        distance: '60m',
+        timeMins: 10,
+        descEn: 'Experience the main shrine and serene surroundings.',
+        descTe: 'ముఖ్య స్థలాన్ని దర్శించి ఆనందించండి.'
+      }
+    ],
+    emergencyContacts: [
+      { titleEn: 'Saarthi Helpline', titleTe: 'సారథి హెల్ప్‌లైన్', number: '08772264555' },
+      { titleEn: 'Emergency Services', titleTe: 'అత్యవసర సేవల హెల్ప్‌లైన్', number: '112' }
+    ]
+  },
+
+  'dakshina-kalika-devi-vedam': {
+    placeId: 'dakshina-kalika-devi-vedam',
+    titleEn: 'Sri Dakshina Kalika Devi Temple (Vedam Village) Precinct Map',
+    titleTe: 'dakshina-kalika-devi-vedam ప్రాంగణ మ్యాప్',
+    layoutType: 'hill-waterfall',
+    centerCoordinates: { lat: 13.7145, lng: 79.7125 },
+    defaultZoom: 18,
+    compassBearingDeg: 0,
+    sanctumNameEn: 'Sri Dakshina Kalika Devi Temple (Vedam Village) Sanctum & Main Area',
+    sanctumNameTe: 'dakshina-kalika-devi-vedam ప్రధాన స్థలం',
+    routePath: [[430, 275], [130, 250], [270, 260], [270, 130], [390, 150], [380, 210]],
+    pins: [
+      {
+        id: 'parking',
+        nameEn: 'Visitor & Vehicle Parking Bay',
+        nameTe: 'వాహనాల పార్కింగ్ స్థలం',
+        category: 'parking',
+        lat: 13.713900,
+        lng: 79.713100,
+        svgX: 430,
+        svgY: 275,
+        descEn: 'Designated parking for cars, bikes, and visitor vehicles near main entry.',
+        descTe: 'వాహనాల పార్కింగ్ ప్రదేశం.'
+      },
+      {
+        id: 'footwear',
+        nameEn: 'Free Footwear Stand & Holding Area',
+        nameTe: 'ఉచిత పాదరక్షల భద్రతా కేంద్రం',
+        category: 'footwear',
+        lat: 13.714100,
+        lng: 79.712100,
+        svgX: 130,
+        svgY: 250,
+        descEn: 'Footwear deposit counter and visitor holding area.',
+        descTe: 'ఉచిత పాదరక్షల కేంద్రం.'
+      },
+      {
+        id: 'entry',
+        nameEn: 'Main Arch & Entry Gate',
+        nameTe: 'ప్రధాన ప్రవేశ ద్వారం',
+        category: 'entry',
+        lat: 13.714200,
+        lng: 79.712500,
+        svgX: 270,
+        svgY: 260,
+        descEn: 'Main entrance gate leading into premises.',
+        descTe: 'ప్రధాన ప్రవేశ ద్వారం.'
+      },
+      {
+        id: 'sanctum',
+        nameEn: 'Sri Dakshina Kalika Devi Temple (Vedam Village) Sanctum / Main Point',
+        nameTe: 'dakshina-kalika-devi-vedam ప్రధాన స్థలం',
+        category: 'sanctum',
+        lat: 13.714500,
+        lng: 79.712500,
+        svgX: 270,
+        svgY: 130,
+        descEn: 'Main shrine and central point of interest.',
+        descTe: 'ముఖ్య దివ్య స్థల ప్రవేశం మరియు దర్శనం.'
+      },
+      {
+        id: 'info',
+        nameEn: 'Information & Utility Desk',
+        nameTe: 'సమాచార విభాగం & తాగునీరు',
+        category: 'info',
+        lat: 13.714900,
+        lng: 79.712900,
+        svgX: 390,
+        svgY: 150,
+        descEn: 'Information counter and RO drinking water point.',
+        descTe: 'సమాచార కేంద్రం మరియు తాగునీటి సదుపాయం.'
+      }
+    ],
+    routeSteps: [
+      {
+        stepNumber: 1,
+        titleEn: 'Arrival & Parking',
+        titleTe: 'పార్కింగ్ చేరుకోవడం',
+        distance: '0.0 km',
+        timeMins: 0,
+        descEn: 'Park vehicle near designated parking area.',
+        descTe: 'వాహనాన్ని నిర్ణీత స్థలంలో పార్క్ చేయండి.'
+      },
+      {
+        stepNumber: 2,
+        titleEn: 'Main Entry & Footwear Deposit',
+        titleTe: 'ప్రవేశం & పాదరక్షలు',
+        distance: '40m',
+        timeMins: 2,
+        descEn: 'Proceed to entrance and deposit shoes if applicable.',
+        descTe: 'ప్రధాన ద్వారం వద్దకు చేరుకోండి.'
+      },
+      {
+        stepNumber: 3,
+        titleEn: 'Main Sanctum & Visitor Experience',
+        titleTe: 'ప్రధాన దర్శనం',
+        distance: '60m',
+        timeMins: 10,
+        descEn: 'Experience the main shrine and serene surroundings.',
+        descTe: 'ముఖ్య స్థలాన్ని దర్శించి ఆనందించండి.'
+      }
+    ],
+    emergencyContacts: [
+      { titleEn: 'Saarthi Helpline', titleTe: 'సారథి హెల్ప్‌లైన్', number: '08772264555' },
+      { titleEn: 'Emergency Services', titleTe: 'అత్యవసర సేవల హెల్ప్‌లైన్', number: '112' }
+    ]
+  },
+
+  'kala-bhairava-vedam-srikalahasti': {
+    placeId: 'kala-bhairava-vedam-srikalahasti',
+    titleEn: 'Sri Kala Bhairava Swamy Temple (Vedam Bhairavakona) Precinct Map',
+    titleTe: 'kala-bhairava-vedam-srikalahasti ప్రాంగణ మ్యాప్',
+    layoutType: 'hill-waterfall',
+    centerCoordinates: { lat: 13.7142, lng: 79.7128 },
+    defaultZoom: 18,
+    compassBearingDeg: 0,
+    sanctumNameEn: 'Sri Kala Bhairava Swamy Temple (Vedam Bhairavakona) Sanctum & Main Area',
+    sanctumNameTe: 'kala-bhairava-vedam-srikalahasti ప్రధాన స్థలం',
+    routePath: [[430, 275], [130, 250], [270, 260], [270, 130], [390, 150], [380, 210]],
+    pins: [
+      {
+        id: 'parking',
+        nameEn: 'Visitor & Vehicle Parking Bay',
+        nameTe: 'వాహనాల పార్కింగ్ స్థలం',
+        category: 'parking',
+        lat: 13.713600,
+        lng: 79.713400,
+        svgX: 430,
+        svgY: 275,
+        descEn: 'Designated parking for cars, bikes, and visitor vehicles near main entry.',
+        descTe: 'వాహనాల పార్కింగ్ ప్రదేశం.'
+      },
+      {
+        id: 'footwear',
+        nameEn: 'Free Footwear Stand & Holding Area',
+        nameTe: 'ఉచిత పాదరక్షల భద్రతా కేంద్రం',
+        category: 'footwear',
+        lat: 13.713800,
+        lng: 79.712400,
+        svgX: 130,
+        svgY: 250,
+        descEn: 'Footwear deposit counter and visitor holding area.',
+        descTe: 'ఉచిత పాదరక్షల కేంద్రం.'
+      },
+      {
+        id: 'entry',
+        nameEn: 'Main Arch & Entry Gate',
+        nameTe: 'ప్రధాన ప్రవేశ ద్వారం',
+        category: 'entry',
+        lat: 13.713900,
+        lng: 79.712800,
+        svgX: 270,
+        svgY: 260,
+        descEn: 'Main entrance gate leading into premises.',
+        descTe: 'ప్రధాన ప్రవేశ ద్వారం.'
+      },
+      {
+        id: 'sanctum',
+        nameEn: 'Sri Kala Bhairava Swamy Temple (Vedam Bhairavakona) Sanctum / Main Point',
+        nameTe: 'kala-bhairava-vedam-srikalahasti ప్రధాన స్థలం',
+        category: 'sanctum',
+        lat: 13.714200,
+        lng: 79.712800,
+        svgX: 270,
+        svgY: 130,
+        descEn: 'Main shrine and central point of interest.',
+        descTe: 'ముఖ్య దివ్య స్థల ప్రవేశం మరియు దర్శనం.'
+      },
+      {
+        id: 'info',
+        nameEn: 'Information & Utility Desk',
+        nameTe: 'సమాచార విభాగం & తాగునీరు',
+        category: 'info',
+        lat: 13.714600,
+        lng: 79.713200,
+        svgX: 390,
+        svgY: 150,
+        descEn: 'Information counter and RO drinking water point.',
+        descTe: 'సమాచార కేంద్రం మరియు తాగునీటి సదుపాయం.'
+      }
+    ],
+    routeSteps: [
+      {
+        stepNumber: 1,
+        titleEn: 'Arrival & Parking',
+        titleTe: 'పార్కింగ్ చేరుకోవడం',
+        distance: '0.0 km',
+        timeMins: 0,
+        descEn: 'Park vehicle near designated parking area.',
+        descTe: 'వాహనాన్ని నిర్ణీత స్థలంలో పార్క్ చేయండి.'
+      },
+      {
+        stepNumber: 2,
+        titleEn: 'Main Entry & Footwear Deposit',
+        titleTe: 'ప్రవేశం & పాదరక్షలు',
+        distance: '40m',
+        timeMins: 2,
+        descEn: 'Proceed to entrance and deposit shoes if applicable.',
+        descTe: 'ప్రధాన ద్వారం వద్దకు చేరుకోండి.'
+      },
+      {
+        stepNumber: 3,
+        titleEn: 'Main Sanctum & Visitor Experience',
+        titleTe: 'ప్రధాన దర్శనం',
+        distance: '60m',
+        timeMins: 10,
+        descEn: 'Experience the main shrine and serene surroundings.',
+        descTe: 'ముఖ్య స్థలాన్ని దర్శించి ఆనందించండి.'
+      }
+    ],
+    emergencyContacts: [
+      { titleEn: 'Saarthi Helpline', titleTe: 'సారథి హెల్ప్‌లైన్', number: '08772264555' },
+      { titleEn: 'Emergency Services', titleTe: 'అత్యవసర సేవల హెల్ప్‌లైన్', number: '112' }
+    ]
+  },
+
+  'battinayya-kona': {
+    placeId: 'battinayya-kona',
+    titleEn: 'Battinayya Kona (Bathinaiah Swamy Cave & Waterfall) Precinct Map',
+    titleTe: 'battinayya-kona ప్రాంగణ మ్యాప్',
+    layoutType: 'city-shrine',
+    centerCoordinates: { lat: 13.6822, lng: 79.5645 },
+    defaultZoom: 18,
+    compassBearingDeg: 0,
+    sanctumNameEn: 'Battinayya Kona (Bathinaiah Swamy Cave & Waterfall) Sanctum & Main Area',
+    sanctumNameTe: 'battinayya-kona ప్రధాన స్థలం',
+    routePath: [[430, 275], [130, 250], [270, 260], [270, 130], [390, 150], [380, 210]],
+    pins: [
+      {
+        id: 'parking',
+        nameEn: 'Visitor & Vehicle Parking Bay',
+        nameTe: 'వాహనాల పార్కింగ్ స్థలం',
+        category: 'parking',
+        lat: 13.681600,
+        lng: 79.565100,
+        svgX: 430,
+        svgY: 275,
+        descEn: 'Designated parking for cars, bikes, and visitor vehicles near main entry.',
+        descTe: 'వాహనాల పార్కింగ్ ప్రదేశం.'
+      },
+      {
+        id: 'footwear',
+        nameEn: 'Free Footwear Stand & Holding Area',
+        nameTe: 'ఉచిత పాదరక్షల భద్రతా కేంద్రం',
+        category: 'footwear',
+        lat: 13.681800,
+        lng: 79.564100,
+        svgX: 130,
+        svgY: 250,
+        descEn: 'Footwear deposit counter and visitor holding area.',
+        descTe: 'ఉచిత పాదరక్షల కేంద్రం.'
+      },
+      {
+        id: 'entry',
+        nameEn: 'Main Arch & Entry Gate',
+        nameTe: 'ప్రధాన ప్రవేశ ద్వారం',
+        category: 'entry',
+        lat: 13.681900,
+        lng: 79.564500,
+        svgX: 270,
+        svgY: 260,
+        descEn: 'Main entrance gate leading into premises.',
+        descTe: 'ప్రధాన ప్రవేశ ద్వారం.'
+      },
+      {
+        id: 'sanctum',
+        nameEn: 'Battinayya Kona (Bathinaiah Swamy Cave & Waterfall) Sanctum / Main Point',
+        nameTe: 'battinayya-kona ప్రధాన స్థలం',
+        category: 'sanctum',
+        lat: 13.682200,
+        lng: 79.564500,
+        svgX: 270,
+        svgY: 130,
+        descEn: 'Main shrine and central point of interest.',
+        descTe: 'ముఖ్య దివ్య స్థల ప్రవేశం మరియు దర్శనం.'
+      },
+      {
+        id: 'info',
+        nameEn: 'Information & Utility Desk',
+        nameTe: 'సమాచార విభాగం & తాగునీరు',
+        category: 'info',
+        lat: 13.682600,
+        lng: 79.564900,
+        svgX: 390,
+        svgY: 150,
+        descEn: 'Information counter and RO drinking water point.',
+        descTe: 'సమాచార కేంద్రం మరియు తాగునీటి సదుపాయం.'
+      }
+    ],
+    routeSteps: [
+      {
+        stepNumber: 1,
+        titleEn: 'Arrival & Parking',
+        titleTe: 'పార్కింగ్ చేరుకోవడం',
+        distance: '0.0 km',
+        timeMins: 0,
+        descEn: 'Park vehicle near designated parking area.',
+        descTe: 'వాహనాన్ని నిర్ణీత స్థలంలో పార్క్ చేయండి.'
+      },
+      {
+        stepNumber: 2,
+        titleEn: 'Main Entry & Footwear Deposit',
+        titleTe: 'ప్రవేశం & పాదరక్షలు',
+        distance: '40m',
+        timeMins: 2,
+        descEn: 'Proceed to entrance and deposit shoes if applicable.',
+        descTe: 'ప్రధాన ద్వారం వద్దకు చేరుకోండి.'
+      },
+      {
+        stepNumber: 3,
+        titleEn: 'Main Sanctum & Visitor Experience',
+        titleTe: 'ప్రధాన దర్శనం',
+        distance: '60m',
+        timeMins: 10,
+        descEn: 'Experience the main shrine and serene surroundings.',
+        descTe: 'ముఖ్య స్థలాన్ని దర్శించి ఆనందించండి.'
+      }
+    ],
+    emergencyContacts: [
+      { titleEn: 'Saarthi Helpline', titleTe: 'సారథి హెల్ప్‌లైన్', number: '08772264555' },
+      { titleEn: 'Emergency Services', titleTe: 'అత్యవసర సేవల హెల్ప్‌లైన్', number: '112' }
+    ]
+  },
+
+  'prasanna-varadaraja-srikalahasti': {
+    placeId: 'prasanna-varadaraja-srikalahasti',
+    titleEn: 'Sri Prasanna Varadaraja Swamy Temple Precinct Map',
+    titleTe: 'prasanna-varadaraja-srikalahasti ప్రాంగణ మ్యాప్',
+    layoutType: 'city-shrine',
+    centerCoordinates: { lat: 13.7486, lng: 79.6991 },
+    defaultZoom: 18,
+    compassBearingDeg: 0,
+    sanctumNameEn: 'Sri Prasanna Varadaraja Swamy Temple Sanctum & Main Area',
+    sanctumNameTe: 'prasanna-varadaraja-srikalahasti ప్రధాన స్థలం',
+    routePath: [[430, 275], [130, 250], [270, 260], [270, 130], [390, 150], [380, 210]],
+    pins: [
+      {
+        id: 'parking',
+        nameEn: 'Visitor & Vehicle Parking Bay',
+        nameTe: 'వాహనాల పార్కింగ్ స్థలం',
+        category: 'parking',
+        lat: 13.748000,
+        lng: 79.699700,
+        svgX: 430,
+        svgY: 275,
+        descEn: 'Designated parking for cars, bikes, and visitor vehicles near main entry.',
+        descTe: 'వాహనాల పార్కింగ్ ప్రదేశం.'
+      },
+      {
+        id: 'footwear',
+        nameEn: 'Free Footwear Stand & Holding Area',
+        nameTe: 'ఉచిత పాదరక్షల భద్రతా కేంద్రం',
+        category: 'footwear',
+        lat: 13.748200,
+        lng: 79.698700,
+        svgX: 130,
+        svgY: 250,
+        descEn: 'Footwear deposit counter and visitor holding area.',
+        descTe: 'ఉచిత పాదరక్షల కేంద్రం.'
+      },
+      {
+        id: 'entry',
+        nameEn: 'Main Arch & Entry Gate',
+        nameTe: 'ప్రధాన ప్రవేశ ద్వారం',
+        category: 'entry',
+        lat: 13.748300,
+        lng: 79.699100,
+        svgX: 270,
+        svgY: 260,
+        descEn: 'Main entrance gate leading into premises.',
+        descTe: 'ప్రధాన ప్రవేశ ద్వారం.'
+      },
+      {
+        id: 'sanctum',
+        nameEn: 'Sri Prasanna Varadaraja Swamy Temple Sanctum / Main Point',
+        nameTe: 'prasanna-varadaraja-srikalahasti ప్రధాన స్థలం',
+        category: 'sanctum',
+        lat: 13.748600,
+        lng: 79.699100,
+        svgX: 270,
+        svgY: 130,
+        descEn: 'Main shrine and central point of interest.',
+        descTe: 'ముఖ్య దివ్య స్థల ప్రవేశం మరియు దర్శనం.'
+      },
+      {
+        id: 'info',
+        nameEn: 'Information & Utility Desk',
+        nameTe: 'సమాచార విభాగం & తాగునీరు',
+        category: 'info',
+        lat: 13.749000,
+        lng: 79.699500,
+        svgX: 390,
+        svgY: 150,
+        descEn: 'Information counter and RO drinking water point.',
+        descTe: 'సమాచార కేంద్రం మరియు తాగునీటి సదుపాయం.'
+      }
+    ],
+    routeSteps: [
+      {
+        stepNumber: 1,
+        titleEn: 'Arrival & Parking',
+        titleTe: 'పార్కింగ్ చేరుకోవడం',
+        distance: '0.0 km',
+        timeMins: 0,
+        descEn: 'Park vehicle near designated parking area.',
+        descTe: 'వాహనాన్ని నిర్ణీత స్థలంలో పార్క్ చేయండి.'
+      },
+      {
+        stepNumber: 2,
+        titleEn: 'Main Entry & Footwear Deposit',
+        titleTe: 'ప్రవేశం & పాదరక్షలు',
+        distance: '40m',
+        timeMins: 2,
+        descEn: 'Proceed to entrance and deposit shoes if applicable.',
+        descTe: 'ప్రధాన ద్వారం వద్దకు చేరుకోండి.'
+      },
+      {
+        stepNumber: 3,
+        titleEn: 'Main Sanctum & Visitor Experience',
+        titleTe: 'ప్రధాన దర్శనం',
+        distance: '60m',
+        timeMins: 10,
+        descEn: 'Experience the main shrine and serene surroundings.',
+        descTe: 'ముఖ్య స్థలాన్ని దర్శించి ఆనందించండి.'
+      }
+    ],
+    emergencyContacts: [
+      { titleEn: 'Saarthi Helpline', titleTe: 'సారథి హెల్ప్‌లైన్', number: '08772264555' },
+      { titleEn: 'Emergency Services', titleTe: 'అత్యవసర సేవల హెల్ప్‌లైన్', number: '112' }
+    ]
+  },
+
+  'muthyalamma-temple-srikalahasti': {
+    placeId: 'muthyalamma-temple-srikalahasti',
+    titleEn: 'Sri Muthyalamma Temple (Jetty Palem) Precinct Map',
+    titleTe: 'muthyalamma-temple-srikalahasti ప్రాంగణ మ్యాప్',
+    layoutType: 'grand-temple',
+    centerCoordinates: { lat: 13.7505, lng: 79.7008 },
+    defaultZoom: 18,
+    compassBearingDeg: 0,
+    sanctumNameEn: 'Sri Muthyalamma Temple (Jetty Palem) Sanctum & Main Area',
+    sanctumNameTe: 'muthyalamma-temple-srikalahasti ప్రధాన స్థలం',
+    routePath: [[430, 275], [130, 250], [270, 260], [270, 130], [390, 150], [380, 210]],
+    pins: [
+      {
+        id: 'parking',
+        nameEn: 'Visitor & Vehicle Parking Bay',
+        nameTe: 'వాహనాల పార్కింగ్ స్థలం',
+        category: 'parking',
+        lat: 13.749900,
+        lng: 79.701400,
+        svgX: 430,
+        svgY: 275,
+        descEn: 'Designated parking for cars, bikes, and visitor vehicles near main entry.',
+        descTe: 'వాహనాల పార్కింగ్ ప్రదేశం.'
+      },
+      {
+        id: 'footwear',
+        nameEn: 'Free Footwear Stand & Holding Area',
+        nameTe: 'ఉచిత పాదరక్షల భద్రతా కేంద్రం',
+        category: 'footwear',
+        lat: 13.750100,
+        lng: 79.700400,
+        svgX: 130,
+        svgY: 250,
+        descEn: 'Footwear deposit counter and visitor holding area.',
+        descTe: 'ఉచిత పాదరక్షల కేంద్రం.'
+      },
+      {
+        id: 'entry',
+        nameEn: 'Main Arch & Entry Gate',
+        nameTe: 'ప్రధాన ప్రవేశ ద్వారం',
+        category: 'entry',
+        lat: 13.750200,
+        lng: 79.700800,
+        svgX: 270,
+        svgY: 260,
+        descEn: 'Main entrance gate leading into premises.',
+        descTe: 'ప్రధాన ప్రవేశ ద్వారం.'
+      },
+      {
+        id: 'sanctum',
+        nameEn: 'Sri Muthyalamma Temple (Jetty Palem) Sanctum / Main Point',
+        nameTe: 'muthyalamma-temple-srikalahasti ప్రధాన స్థలం',
+        category: 'sanctum',
+        lat: 13.750500,
+        lng: 79.700800,
+        svgX: 270,
+        svgY: 130,
+        descEn: 'Main shrine and central point of interest.',
+        descTe: 'ముఖ్య దివ్య స్థల ప్రవేశం మరియు దర్శనం.'
+      },
+      {
+        id: 'info',
+        nameEn: 'Information & Utility Desk',
+        nameTe: 'సమాచార విభాగం & తాగునీరు',
+        category: 'info',
+        lat: 13.750900,
+        lng: 79.701200,
+        svgX: 390,
+        svgY: 150,
+        descEn: 'Information counter and RO drinking water point.',
+        descTe: 'సమాచార కేంద్రం మరియు తాగునీటి సదుపాయం.'
+      }
+    ],
+    routeSteps: [
+      {
+        stepNumber: 1,
+        titleEn: 'Arrival & Parking',
+        titleTe: 'పార్కింగ్ చేరుకోవడం',
+        distance: '0.0 km',
+        timeMins: 0,
+        descEn: 'Park vehicle near designated parking area.',
+        descTe: 'వాహనాన్ని నిర్ణీత స్థలంలో పార్క్ చేయండి.'
+      },
+      {
+        stepNumber: 2,
+        titleEn: 'Main Entry & Footwear Deposit',
+        titleTe: 'ప్రవేశం & పాదరక్షలు',
+        distance: '40m',
+        timeMins: 2,
+        descEn: 'Proceed to entrance and deposit shoes if applicable.',
+        descTe: 'ప్రధాన ద్వారం వద్దకు చేరుకోండి.'
+      },
+      {
+        stepNumber: 3,
+        titleEn: 'Main Sanctum & Visitor Experience',
+        titleTe: 'ప్రధాన దర్శనం',
+        distance: '60m',
+        timeMins: 10,
+        descEn: 'Experience the main shrine and serene surroundings.',
+        descTe: 'ముఖ్య స్థలాన్ని దర్శించి ఆనందించండి.'
+      }
+    ],
+    emergencyContacts: [
+      { titleEn: 'Saarthi Helpline', titleTe: 'సారథి హెల్ప్‌లైన్', number: '08772264555' },
+      { titleEn: 'Emergency Services', titleTe: 'అత్యవసర సేవల హెల్ప్‌లైన్', number: '112' }
+    ]
+  },
+
+  'pathala-vinayaka-srikalahasti': {
+    placeId: 'pathala-vinayaka-srikalahasti',
+    titleEn: 'Pathala Vinayaka Temple (Pathala Ganapathi) Precinct Map',
+    titleTe: 'pathala-vinayaka-srikalahasti ప్రాంగణ మ్యాప్',
+    layoutType: 'city-shrine',
+    centerCoordinates: { lat: 13.7494728, lng: 79.6974811 },
+    defaultZoom: 18,
+    compassBearingDeg: 0,
+    sanctumNameEn: 'Pathala Vinayaka Temple (Pathala Ganapathi) Sanctum & Main Area',
+    sanctumNameTe: 'pathala-vinayaka-srikalahasti ప్రధాన స్థలం',
+    routePath: [[430, 275], [130, 250], [270, 260], [270, 130], [390, 150], [380, 210]],
+    pins: [
+      {
+        id: 'parking',
+        nameEn: 'Visitor & Vehicle Parking Bay',
+        nameTe: 'వాహనాల పార్కింగ్ స్థలం',
+        category: 'parking',
+        lat: 13.748873,
+        lng: 79.698081,
+        svgX: 430,
+        svgY: 275,
+        descEn: 'Designated parking for cars, bikes, and visitor vehicles near main entry.',
+        descTe: 'వాహనాల పార్కింగ్ ప్రదేశం.'
+      },
+      {
+        id: 'footwear',
+        nameEn: 'Free Footwear Stand & Holding Area',
+        nameTe: 'ఉచిత పాదరక్షల భద్రతా కేంద్రం',
+        category: 'footwear',
+        lat: 13.749073,
+        lng: 79.697081,
+        svgX: 130,
+        svgY: 250,
+        descEn: 'Footwear deposit counter and visitor holding area.',
+        descTe: 'ఉచిత పాదరక్షల కేంద్రం.'
+      },
+      {
+        id: 'entry',
+        nameEn: 'Main Arch & Entry Gate',
+        nameTe: 'ప్రధాన ప్రవేశ ద్వారం',
+        category: 'entry',
+        lat: 13.749173,
+        lng: 79.697481,
+        svgX: 270,
+        svgY: 260,
+        descEn: 'Main entrance gate leading into premises.',
+        descTe: 'ప్రధాన ప్రవేశ ద్వారం.'
+      },
+      {
+        id: 'sanctum',
+        nameEn: 'Pathala Vinayaka Temple (Pathala Ganapathi) Sanctum / Main Point',
+        nameTe: 'pathala-vinayaka-srikalahasti ప్రధాన స్థలం',
+        category: 'sanctum',
+        lat: 13.749473,
+        lng: 79.697481,
+        svgX: 270,
+        svgY: 130,
+        descEn: 'Main shrine and central point of interest.',
+        descTe: 'ముఖ్య దివ్య స్థల ప్రవేశం మరియు దర్శనం.'
+      },
+      {
+        id: 'info',
+        nameEn: 'Information & Utility Desk',
+        nameTe: 'సమాచార విభాగం & తాగునీరు',
+        category: 'info',
+        lat: 13.749873,
+        lng: 79.697881,
+        svgX: 390,
+        svgY: 150,
+        descEn: 'Information counter and RO drinking water point.',
+        descTe: 'సమాచార కేంద్రం మరియు తాగునీటి సదుపాయం.'
+      }
+    ],
+    routeSteps: [
+      {
+        stepNumber: 1,
+        titleEn: 'Arrival & Parking',
+        titleTe: 'పార్కింగ్ చేరుకోవడం',
+        distance: '0.0 km',
+        timeMins: 0,
+        descEn: 'Park vehicle near designated parking area.',
+        descTe: 'వాహనాన్ని నిర్ణీత స్థలంలో పార్క్ చేయండి.'
+      },
+      {
+        stepNumber: 2,
+        titleEn: 'Main Entry & Footwear Deposit',
+        titleTe: 'ప్రవేశం & పాదరక్షలు',
+        distance: '40m',
+        timeMins: 2,
+        descEn: 'Proceed to entrance and deposit shoes if applicable.',
+        descTe: 'ప్రధాన ద్వారం వద్దకు చేరుకోండి.'
+      },
+      {
+        stepNumber: 3,
+        titleEn: 'Main Sanctum & Visitor Experience',
+        titleTe: 'ప్రధాన దర్శనం',
+        distance: '60m',
+        timeMins: 10,
+        descEn: 'Experience the main shrine and serene surroundings.',
+        descTe: 'ముఖ్య స్థలాన్ని దర్శించి ఆనందించండి.'
+      }
+    ],
+    emergencyContacts: [
+      { titleEn: 'Saarthi Helpline', titleTe: 'సారథి హెల్ప్‌లైన్', number: '08772264555' },
+      { titleEn: 'Emergency Services', titleTe: 'అత్యవసర సేవల హెల్ప్‌లైన్', number: '112' }
+    ]
+  },
+
+  'silparamam-tirupati': {
+    placeId: 'silparamam-tirupati',
+    titleEn: 'Shilparamam Arts & Crafts Village Precinct Map',
+    titleTe: 'silparamam-tirupati ప్రాంగణ మ్యాప్',
+    layoutType: 'urban-park',
+    centerCoordinates: { lat: 13.614049, lng: 79.439608 },
+    defaultZoom: 18,
+    compassBearingDeg: 0,
+    sanctumNameEn: 'Shilparamam Arts & Crafts Village Sanctum & Main Area',
+    sanctumNameTe: 'silparamam-tirupati ప్రధాన స్థలం',
+    routePath: [[430, 275], [130, 250], [270, 260], [270, 130], [390, 150], [380, 210]],
+    pins: [
+      {
+        id: 'parking',
+        nameEn: 'Visitor & Vehicle Parking Bay',
+        nameTe: 'వాహనాల పార్కింగ్ స్థలం',
+        category: 'parking',
+        lat: 13.613449,
+        lng: 79.440208,
+        svgX: 430,
+        svgY: 275,
+        descEn: 'Designated parking for cars, bikes, and visitor vehicles near main entry.',
+        descTe: 'వాహనాల పార్కింగ్ ప్రదేశం.'
+      },
+      {
+        id: 'footwear',
+        nameEn: 'Free Footwear Stand & Holding Area',
+        nameTe: 'ఉచిత పాదరక్షల భద్రతా కేంద్రం',
+        category: 'footwear',
+        lat: 13.613649,
+        lng: 79.439208,
+        svgX: 130,
+        svgY: 250,
+        descEn: 'Footwear deposit counter and visitor holding area.',
+        descTe: 'ఉచిత పాదరక్షల కేంద్రం.'
+      },
+      {
+        id: 'entry',
+        nameEn: 'Main Arch & Entry Gate',
+        nameTe: 'ప్రధాన ప్రవేశ ద్వారం',
+        category: 'entry',
+        lat: 13.613749,
+        lng: 79.439608,
+        svgX: 270,
+        svgY: 260,
+        descEn: 'Main entrance gate leading into premises.',
+        descTe: 'ప్రధాన ప్రవేశ ద్వారం.'
+      },
+      {
+        id: 'sanctum',
+        nameEn: 'Shilparamam Arts & Crafts Village Sanctum / Main Point',
+        nameTe: 'silparamam-tirupati ప్రధాన స్థలం',
+        category: 'sanctum',
+        lat: 13.614049,
+        lng: 79.439608,
+        svgX: 270,
+        svgY: 130,
+        descEn: 'Main shrine and central point of interest.',
+        descTe: 'ముఖ్య దివ్య స్థల ప్రవేశం మరియు దర్శనం.'
+      },
+      {
+        id: 'info',
+        nameEn: 'Information & Utility Desk',
+        nameTe: 'సమాచార విభాగం & తాగునీరు',
+        category: 'info',
+        lat: 13.614449,
+        lng: 79.440008,
+        svgX: 390,
+        svgY: 150,
+        descEn: 'Information counter and RO drinking water point.',
+        descTe: 'సమాచార కేంద్రం మరియు తాగునీటి సదుపాయం.'
+      }
+    ],
+    routeSteps: [
+      {
+        stepNumber: 1,
+        titleEn: 'Arrival & Parking',
+        titleTe: 'పార్కింగ్ చేరుకోవడం',
+        distance: '0.0 km',
+        timeMins: 0,
+        descEn: 'Park vehicle near designated parking area.',
+        descTe: 'వాహనాన్ని నిర్ణీత స్థలంలో పార్క్ చేయండి.'
+      },
+      {
+        stepNumber: 2,
+        titleEn: 'Main Entry & Footwear Deposit',
+        titleTe: 'ప్రవేశం & పాదరక్షలు',
+        distance: '40m',
+        timeMins: 2,
+        descEn: 'Proceed to entrance and deposit shoes if applicable.',
+        descTe: 'ప్రధాన ద్వారం వద్దకు చేరుకోండి.'
+      },
+      {
+        stepNumber: 3,
+        titleEn: 'Main Sanctum & Visitor Experience',
+        titleTe: 'ప్రధాన దర్శనం',
+        distance: '60m',
+        timeMins: 10,
+        descEn: 'Experience the main shrine and serene surroundings.',
+        descTe: 'ముఖ్య స్థలాన్ని దర్శించి ఆనందించండి.'
+      }
+    ],
+    emergencyContacts: [
+      { titleEn: 'Saarthi Helpline', titleTe: 'సారథి హెల్ప్‌లైన్', number: '08772264555' },
+      { titleEn: 'Emergency Services', titleTe: 'అత్యవసర సేవల హెల్ప్‌లైన్', number: '112' }
+    ]
+  },
+
+  'nagala-falls': {
+    placeId: 'nagala-falls',
+    titleEn: 'Nagalapuram Falls Precinct Map',
+    titleTe: 'nagala-falls ప్రాంగణ మ్యాప్',
+    layoutType: 'hill-waterfall',
+    centerCoordinates: { lat: 13.4755334, lng: 79.7764549 },
+    defaultZoom: 18,
+    compassBearingDeg: 0,
+    sanctumNameEn: 'Nagalapuram Falls Sanctum & Main Area',
+    sanctumNameTe: 'nagala-falls ప్రధాన స్థలం',
+    routePath: [[430, 275], [130, 250], [270, 260], [270, 130], [390, 150], [380, 210]],
+    pins: [
+      {
+        id: 'parking',
+        nameEn: 'Visitor & Vehicle Parking Bay',
+        nameTe: 'వాహనాల పార్కింగ్ స్థలం',
+        category: 'parking',
+        lat: 13.474933,
+        lng: 79.777055,
+        svgX: 430,
+        svgY: 275,
+        descEn: 'Designated parking for cars, bikes, and visitor vehicles near main entry.',
+        descTe: 'వాహనాల పార్కింగ్ ప్రదేశం.'
+      },
+      {
+        id: 'footwear',
+        nameEn: 'Free Footwear Stand & Holding Area',
+        nameTe: 'ఉచిత పాదరక్షల భద్రతా కేంద్రం',
+        category: 'footwear',
+        lat: 13.475133,
+        lng: 79.776055,
+        svgX: 130,
+        svgY: 250,
+        descEn: 'Footwear deposit counter and visitor holding area.',
+        descTe: 'ఉచిత పాదరక్షల కేంద్రం.'
+      },
+      {
+        id: 'entry',
+        nameEn: 'Main Arch & Entry Gate',
+        nameTe: 'ప్రధాన ప్రవేశ ద్వారం',
+        category: 'entry',
+        lat: 13.475233,
+        lng: 79.776455,
+        svgX: 270,
+        svgY: 260,
+        descEn: 'Main entrance gate leading into premises.',
+        descTe: 'ప్రధాన ప్రవేశ ద్వారం.'
+      },
+      {
+        id: 'sanctum',
+        nameEn: 'Nagalapuram Falls Sanctum / Main Point',
+        nameTe: 'nagala-falls ప్రధాన స్థలం',
+        category: 'sanctum',
+        lat: 13.475533,
+        lng: 79.776455,
+        svgX: 270,
+        svgY: 130,
+        descEn: 'Main shrine and central point of interest.',
+        descTe: 'ముఖ్య దివ్య స్థల ప్రవేశం మరియు దర్శనం.'
+      },
+      {
+        id: 'info',
+        nameEn: 'Information & Utility Desk',
+        nameTe: 'సమాచార విభాగం & తాగునీరు',
+        category: 'info',
+        lat: 13.475933,
+        lng: 79.776855,
+        svgX: 390,
+        svgY: 150,
+        descEn: 'Information counter and RO drinking water point.',
+        descTe: 'సమాచార కేంద్రం మరియు తాగునీటి సదుపాయం.'
+      }
+    ],
+    routeSteps: [
+      {
+        stepNumber: 1,
+        titleEn: 'Arrival & Parking',
+        titleTe: 'పార్కింగ్ చేరుకోవడం',
+        distance: '0.0 km',
+        timeMins: 0,
+        descEn: 'Park vehicle near designated parking area.',
+        descTe: 'వాహనాన్ని నిర్ణీత స్థలంలో పార్క్ చేయండి.'
+      },
+      {
+        stepNumber: 2,
+        titleEn: 'Main Entry & Footwear Deposit',
+        titleTe: 'ప్రవేశం & పాదరక్షలు',
+        distance: '40m',
+        timeMins: 2,
+        descEn: 'Proceed to entrance and deposit shoes if applicable.',
+        descTe: 'ప్రధాన ద్వారం వద్దకు చేరుకోండి.'
+      },
+      {
+        stepNumber: 3,
+        titleEn: 'Main Sanctum & Visitor Experience',
+        titleTe: 'ప్రధాన దర్శనం',
+        distance: '60m',
+        timeMins: 10,
+        descEn: 'Experience the main shrine and serene surroundings.',
+        descTe: 'ముఖ్య స్థలాన్ని దర్శించి ఆనందించండి.'
+      }
+    ],
+    emergencyContacts: [
+      { titleEn: 'Saarthi Helpline', titleTe: 'సారథి హెల్ప్‌లైన్', number: '08772264555' },
+      { titleEn: 'Emergency Services', titleTe: 'అత్యవసర సేవల హెల్ప్‌లైన్', number: '112' }
+    ]
+  },
+
+  'kattaputtalamma-temple': {
+    placeId: 'kattaputtalamma-temple',
+    titleEn: 'Sri Sri Sri Kattaputtalamma Temple Precinct Map',
+    titleTe: 'kattaputtalamma-temple ప్రాంగణ మ్యాప్',
+    layoutType: 'grand-temple',
+    centerCoordinates: { lat: 13.6667627, lng: 79.5135769 },
+    defaultZoom: 18,
+    compassBearingDeg: 0,
+    sanctumNameEn: 'Sri Sri Sri Kattaputtalamma Temple Sanctum & Main Area',
+    sanctumNameTe: 'kattaputtalamma-temple ప్రధాన స్థలం',
+    routePath: [[430, 275], [130, 250], [270, 260], [270, 130], [390, 150], [380, 210]],
+    pins: [
+      {
+        id: 'parking',
+        nameEn: 'Visitor & Vehicle Parking Bay',
+        nameTe: 'వాహనాల పార్కింగ్ స్థలం',
+        category: 'parking',
+        lat: 13.666163,
+        lng: 79.514177,
+        svgX: 430,
+        svgY: 275,
+        descEn: 'Designated parking for cars, bikes, and visitor vehicles near main entry.',
+        descTe: 'వాహనాల పార్కింగ్ ప్రదేశం.'
+      },
+      {
+        id: 'footwear',
+        nameEn: 'Free Footwear Stand & Holding Area',
+        nameTe: 'ఉచిత పాదరక్షల భద్రతా కేంద్రం',
+        category: 'footwear',
+        lat: 13.666363,
+        lng: 79.513177,
+        svgX: 130,
+        svgY: 250,
+        descEn: 'Footwear deposit counter and visitor holding area.',
+        descTe: 'ఉచిత పాదరక్షల కేంద్రం.'
+      },
+      {
+        id: 'entry',
+        nameEn: 'Main Arch & Entry Gate',
+        nameTe: 'ప్రధాన ప్రవేశ ద్వారం',
+        category: 'entry',
+        lat: 13.666463,
+        lng: 79.513577,
+        svgX: 270,
+        svgY: 260,
+        descEn: 'Main entrance gate leading into premises.',
+        descTe: 'ప్రధాన ప్రవేశ ద్వారం.'
+      },
+      {
+        id: 'sanctum',
+        nameEn: 'Sri Sri Sri Kattaputtalamma Temple Sanctum / Main Point',
+        nameTe: 'kattaputtalamma-temple ప్రధాన స్థలం',
+        category: 'sanctum',
+        lat: 13.666763,
+        lng: 79.513577,
+        svgX: 270,
+        svgY: 130,
+        descEn: 'Main shrine and central point of interest.',
+        descTe: 'ముఖ్య దివ్య స్థల ప్రవేశం మరియు దర్శనం.'
+      },
+      {
+        id: 'info',
+        nameEn: 'Information & Utility Desk',
+        nameTe: 'సమాచార విభాగం & తాగునీరు',
+        category: 'info',
+        lat: 13.667163,
+        lng: 79.513977,
+        svgX: 390,
+        svgY: 150,
+        descEn: 'Information counter and RO drinking water point.',
+        descTe: 'సమాచార కేంద్రం మరియు తాగునీటి సదుపాయం.'
+      }
+    ],
+    routeSteps: [
+      {
+        stepNumber: 1,
+        titleEn: 'Arrival & Parking',
+        titleTe: 'పార్కింగ్ చేరుకోవడం',
+        distance: '0.0 km',
+        timeMins: 0,
+        descEn: 'Park vehicle near designated parking area.',
+        descTe: 'వాహనాన్ని నిర్ణీత స్థలంలో పార్క్ చేయండి.'
+      },
+      {
+        stepNumber: 2,
+        titleEn: 'Main Entry & Footwear Deposit',
+        titleTe: 'ప్రవేశం & పాదరక్షలు',
+        distance: '40m',
+        timeMins: 2,
+        descEn: 'Proceed to entrance and deposit shoes if applicable.',
+        descTe: 'ప్రధాన ద్వారం వద్దకు చేరుకోండి.'
+      },
+      {
+        stepNumber: 3,
+        titleEn: 'Main Sanctum & Visitor Experience',
+        titleTe: 'ప్రధాన దర్శనం',
+        distance: '60m',
+        timeMins: 10,
+        descEn: 'Experience the main shrine and serene surroundings.',
+        descTe: 'ముఖ్య స్థలాన్ని దర్శించి ఆనందించండి.'
+      }
+    ],
+    emergencyContacts: [
+      { titleEn: 'Saarthi Helpline', titleTe: 'సారథి హెల్ప్‌లైన్', number: '08772264555' },
+      { titleEn: 'Emergency Services', titleTe: 'అత్యవసర సేవల హెల్ప్‌లైన్', number: '112' }
+    ]
+  },
+
+  'mangalam-jambukeswara-temple': {
+    placeId: 'mangalam-jambukeswara-temple',
+    titleEn: 'Sri Jambukeswara Swamy Sivalayam Precinct Map',
+    titleTe: 'mangalam-jambukeswara-temple ప్రాంగణ మ్యాప్',
+    layoutType: 'grand-temple',
+    centerCoordinates: { lat: 13.6621052, lng: 79.4678936 },
+    defaultZoom: 18,
+    compassBearingDeg: 0,
+    sanctumNameEn: 'Sri Jambukeswara Swamy Sivalayam Sanctum & Main Area',
+    sanctumNameTe: 'mangalam-jambukeswara-temple ప్రధాన స్థలం',
+    routePath: [[430, 275], [130, 250], [270, 260], [270, 130], [390, 150], [380, 210]],
+    pins: [
+      {
+        id: 'parking',
+        nameEn: 'Visitor & Vehicle Parking Bay',
+        nameTe: 'వాహనాల పార్కింగ్ స్థలం',
+        category: 'parking',
+        lat: 13.661505,
+        lng: 79.468494,
+        svgX: 430,
+        svgY: 275,
+        descEn: 'Designated parking for cars, bikes, and visitor vehicles near main entry.',
+        descTe: 'వాహనాల పార్కింగ్ ప్రదేశం.'
+      },
+      {
+        id: 'footwear',
+        nameEn: 'Free Footwear Stand & Holding Area',
+        nameTe: 'ఉచిత పాదరక్షల భద్రతా కేంద్రం',
+        category: 'footwear',
+        lat: 13.661705,
+        lng: 79.467494,
+        svgX: 130,
+        svgY: 250,
+        descEn: 'Footwear deposit counter and visitor holding area.',
+        descTe: 'ఉచిత పాదరక్షల కేంద్రం.'
+      },
+      {
+        id: 'entry',
+        nameEn: 'Main Arch & Entry Gate',
+        nameTe: 'ప్రధాన ప్రవేశ ద్వారం',
+        category: 'entry',
+        lat: 13.661805,
+        lng: 79.467894,
+        svgX: 270,
+        svgY: 260,
+        descEn: 'Main entrance gate leading into premises.',
+        descTe: 'ప్రధాన ప్రవేశ ద్వారం.'
+      },
+      {
+        id: 'sanctum',
+        nameEn: 'Sri Jambukeswara Swamy Sivalayam Sanctum / Main Point',
+        nameTe: 'mangalam-jambukeswara-temple ప్రధాన స్థలం',
+        category: 'sanctum',
+        lat: 13.662105,
+        lng: 79.467894,
+        svgX: 270,
+        svgY: 130,
+        descEn: 'Main shrine and central point of interest.',
+        descTe: 'ముఖ్య దివ్య స్థల ప్రవేశం మరియు దర్శనం.'
+      },
+      {
+        id: 'info',
+        nameEn: 'Information & Utility Desk',
+        nameTe: 'సమాచార విభాగం & తాగునీరు',
+        category: 'info',
+        lat: 13.662505,
+        lng: 79.468294,
+        svgX: 390,
+        svgY: 150,
+        descEn: 'Information counter and RO drinking water point.',
+        descTe: 'సమాచార కేంద్రం మరియు తాగునీటి సదుపాయం.'
+      }
+    ],
+    routeSteps: [
+      {
+        stepNumber: 1,
+        titleEn: 'Arrival & Parking',
+        titleTe: 'పార్కింగ్ చేరుకోవడం',
+        distance: '0.0 km',
+        timeMins: 0,
+        descEn: 'Park vehicle near designated parking area.',
+        descTe: 'వాహనాన్ని నిర్ణీత స్థలంలో పార్క్ చేయండి.'
+      },
+      {
+        stepNumber: 2,
+        titleEn: 'Main Entry & Footwear Deposit',
+        titleTe: 'ప్రవేశం & పాదరక్షలు',
+        distance: '40m',
+        timeMins: 2,
+        descEn: 'Proceed to entrance and deposit shoes if applicable.',
+        descTe: 'ప్రధాన ద్వారం వద్దకు చేరుకోండి.'
+      },
+      {
+        stepNumber: 3,
+        titleEn: 'Main Sanctum & Visitor Experience',
+        titleTe: 'ప్రధాన దర్శనం',
+        distance: '60m',
+        timeMins: 10,
+        descEn: 'Experience the main shrine and serene surroundings.',
+        descTe: 'ముఖ్య స్థలాన్ని దర్శించి ఆనందించండి.'
+      }
+    ],
+    emergencyContacts: [
+      { titleEn: 'Saarthi Helpline', titleTe: 'సారథి హెల్ప్‌లైన్', number: '08772264555' },
+      { titleEn: 'Emergency Services', titleTe: 'అత్యవసర సేవల హెల్ప్‌లైన్', number: '112' }
+    ]
+  },
+
+  'historical-govindaraja-idol': {
+    placeId: 'historical-govindaraja-idol',
+    titleEn: 'Historical Govindaraja Swamy Idol (Manchinellagunta) Precinct Map',
+    titleTe: 'historical-govindaraja-idol ప్రాంగణ మ్యాప్',
+    layoutType: 'city-shrine',
+    centerCoordinates: { lat: 13.6330302, lng: 79.4112725 },
+    defaultZoom: 18,
+    compassBearingDeg: 0,
+    sanctumNameEn: 'Historical Govindaraja Swamy Idol (Manchinellagunta) Sanctum & Main Area',
+    sanctumNameTe: 'historical-govindaraja-idol ప్రధాన స్థలం',
+    routePath: [[430, 275], [130, 250], [270, 260], [270, 130], [390, 150], [380, 210]],
+    pins: [
+      {
+        id: 'parking',
+        nameEn: 'Visitor & Vehicle Parking Bay',
+        nameTe: 'వాహనాల పార్కింగ్ స్థలం',
+        category: 'parking',
+        lat: 13.632430,
+        lng: 79.411873,
+        svgX: 430,
+        svgY: 275,
+        descEn: 'Designated parking for cars, bikes, and visitor vehicles near main entry.',
+        descTe: 'వాహనాల పార్కింగ్ ప్రదేశం.'
+      },
+      {
+        id: 'footwear',
+        nameEn: 'Free Footwear Stand & Holding Area',
+        nameTe: 'ఉచిత పాదరక్షల భద్రతా కేంద్రం',
+        category: 'footwear',
+        lat: 13.632630,
+        lng: 79.410872,
+        svgX: 130,
+        svgY: 250,
+        descEn: 'Footwear deposit counter and visitor holding area.',
+        descTe: 'ఉచిత పాదరక్షల కేంద్రం.'
+      },
+      {
+        id: 'entry',
+        nameEn: 'Main Arch & Entry Gate',
+        nameTe: 'ప్రధాన ప్రవేశ ద్వారం',
+        category: 'entry',
+        lat: 13.632730,
+        lng: 79.411272,
+        svgX: 270,
+        svgY: 260,
+        descEn: 'Main entrance gate leading into premises.',
+        descTe: 'ప్రధాన ప్రవేశ ద్వారం.'
+      },
+      {
+        id: 'sanctum',
+        nameEn: 'Historical Govindaraja Swamy Idol (Manchinellagunta) Sanctum / Main Point',
+        nameTe: 'historical-govindaraja-idol ప్రధాన స్థలం',
+        category: 'sanctum',
+        lat: 13.633030,
+        lng: 79.411272,
+        svgX: 270,
+        svgY: 130,
+        descEn: 'Main shrine and central point of interest.',
+        descTe: 'ముఖ్య దివ్య స్థల ప్రవేశం మరియు దర్శనం.'
+      },
+      {
+        id: 'info',
+        nameEn: 'Information & Utility Desk',
+        nameTe: 'సమాచార విభాగం & తాగునీరు',
+        category: 'info',
+        lat: 13.633430,
+        lng: 79.411672,
+        svgX: 390,
+        svgY: 150,
+        descEn: 'Information counter and RO drinking water point.',
+        descTe: 'సమాచార కేంద్రం మరియు తాగునీటి సదుపాయం.'
+      }
+    ],
+    routeSteps: [
+      {
+        stepNumber: 1,
+        titleEn: 'Arrival & Parking',
+        titleTe: 'పార్కింగ్ చేరుకోవడం',
+        distance: '0.0 km',
+        timeMins: 0,
+        descEn: 'Park vehicle near designated parking area.',
+        descTe: 'వాహనాన్ని నిర్ణీత స్థలంలో పార్క్ చేయండి.'
+      },
+      {
+        stepNumber: 2,
+        titleEn: 'Main Entry & Footwear Deposit',
+        titleTe: 'ప్రవేశం & పాదరక్షలు',
+        distance: '40m',
+        timeMins: 2,
+        descEn: 'Proceed to entrance and deposit shoes if applicable.',
+        descTe: 'ప్రధాన ద్వారం వద్దకు చేరుకోండి.'
+      },
+      {
+        stepNumber: 3,
+        titleEn: 'Main Sanctum & Visitor Experience',
+        titleTe: 'ప్రధాన దర్శనం',
+        distance: '60m',
+        timeMins: 10,
+        descEn: 'Experience the main shrine and serene surroundings.',
+        descTe: 'ముఖ్య స్థలాన్ని దర్శించి ఆనందించండి.'
+      }
+    ],
+    emergencyContacts: [
+      { titleEn: 'Saarthi Helpline', titleTe: 'సారథి హెల్ప్‌లైన్', number: '08772264555' },
+      { titleEn: 'Emergency Services', titleTe: 'అత్యవసర సేవల హెల్ప్‌లైన్', number: '112' }
+    ]
+  },
+
+  'tummalagunta-venkateswara-temple': {
+    placeId: 'tummalagunta-venkateswara-temple',
+    titleEn: 'Sri Venkateswara Swamy Temple (Tummalagunta / Pratham Tirupati) Precinct Map',
+    titleTe: 'tummalagunta-venkateswara-temple ప్రాంగణ మ్యాప్',
+    layoutType: 'grand-temple',
+    centerCoordinates: { lat: 13.6132875, lng: 79.3883571 },
+    defaultZoom: 18,
+    compassBearingDeg: 0,
+    sanctumNameEn: 'Sri Venkateswara Swamy Temple (Tummalagunta / Pratham Tirupati) Sanctum & Main Area',
+    sanctumNameTe: 'tummalagunta-venkateswara-temple ప్రధాన స్థలం',
+    routePath: [[430, 275], [130, 250], [270, 260], [270, 130], [390, 150], [380, 210]],
+    pins: [
+      {
+        id: 'parking',
+        nameEn: 'Visitor & Vehicle Parking Bay',
+        nameTe: 'వాహనాల పార్కింగ్ స్థలం',
+        category: 'parking',
+        lat: 13.612687,
+        lng: 79.388957,
+        svgX: 430,
+        svgY: 275,
+        descEn: 'Designated parking for cars, bikes, and visitor vehicles near main entry.',
+        descTe: 'వాహనాల పార్కింగ్ ప్రదేశం.'
+      },
+      {
+        id: 'footwear',
+        nameEn: 'Free Footwear Stand & Holding Area',
+        nameTe: 'ఉచిత పాదరక్షల భద్రతా కేంద్రం',
+        category: 'footwear',
+        lat: 13.612887,
+        lng: 79.387957,
+        svgX: 130,
+        svgY: 250,
+        descEn: 'Footwear deposit counter and visitor holding area.',
+        descTe: 'ఉచిత పాదరక్షల కేంద్రం.'
+      },
+      {
+        id: 'entry',
+        nameEn: 'Main Arch & Entry Gate',
+        nameTe: 'ప్రధాన ప్రవేశ ద్వారం',
+        category: 'entry',
+        lat: 13.612988,
+        lng: 79.388357,
+        svgX: 270,
+        svgY: 260,
+        descEn: 'Main entrance gate leading into premises.',
+        descTe: 'ప్రధాన ప్రవేశ ద్వారం.'
+      },
+      {
+        id: 'sanctum',
+        nameEn: 'Sri Venkateswara Swamy Temple (Tummalagunta / Pratham Tirupati) Sanctum / Main Point',
+        nameTe: 'tummalagunta-venkateswara-temple ప్రధాన స్థలం',
+        category: 'sanctum',
+        lat: 13.613288,
+        lng: 79.388357,
+        svgX: 270,
+        svgY: 130,
+        descEn: 'Main shrine and central point of interest.',
+        descTe: 'ముఖ్య దివ్య స్థల ప్రవేశం మరియు దర్శనం.'
+      },
+      {
+        id: 'info',
+        nameEn: 'Information & Utility Desk',
+        nameTe: 'సమాచార విభాగం & తాగునీరు',
+        category: 'info',
+        lat: 13.613688,
+        lng: 79.388757,
+        svgX: 390,
+        svgY: 150,
+        descEn: 'Information counter and RO drinking water point.',
+        descTe: 'సమాచార కేంద్రం మరియు తాగునీటి సదుపాయం.'
+      }
+    ],
+    routeSteps: [
+      {
+        stepNumber: 1,
+        titleEn: 'Arrival & Parking',
+        titleTe: 'పార్కింగ్ చేరుకోవడం',
+        distance: '0.0 km',
+        timeMins: 0,
+        descEn: 'Park vehicle near designated parking area.',
+        descTe: 'వాహనాన్ని నిర్ణీత స్థలంలో పార్క్ చేయండి.'
+      },
+      {
+        stepNumber: 2,
+        titleEn: 'Main Entry & Footwear Deposit',
+        titleTe: 'ప్రవేశం & పాదరక్షలు',
+        distance: '40m',
+        timeMins: 2,
+        descEn: 'Proceed to entrance and deposit shoes if applicable.',
+        descTe: 'ప్రధాన ద్వారం వద్దకు చేరుకోండి.'
+      },
+      {
+        stepNumber: 3,
+        titleEn: 'Main Sanctum & Visitor Experience',
+        titleTe: 'ప్రధాన దర్శనం',
+        distance: '60m',
+        timeMins: 10,
+        descEn: 'Experience the main shrine and serene surroundings.',
+        descTe: 'ముఖ్య స్థలాన్ని దర్శించి ఆనందించండి.'
+      }
+    ],
+    emergencyContacts: [
+      { titleEn: 'Saarthi Helpline', titleTe: 'సారథి హెల్ప్‌లైన్', number: '08772264555' },
+      { titleEn: 'Emergency Services', titleTe: 'అత్యవసర సేవల హెల్ప్‌లైన్', number: '112' }
+    ]
+  },
+
+  'ttd-namoona-temple': {
+    placeId: 'ttd-namoona-temple',
+    titleEn: 'TTD Namoona Temple (Model Temple) Precinct Map',
+    titleTe: 'ttd-namoona-temple ప్రాంగణ మ్యాప్',
+    layoutType: 'grand-temple',
+    centerCoordinates: { lat: 13.6418597, lng: 79.3997373 },
+    defaultZoom: 18,
+    compassBearingDeg: 0,
+    sanctumNameEn: 'TTD Namoona Temple (Model Temple) Sanctum & Main Area',
+    sanctumNameTe: 'ttd-namoona-temple ప్రధాన స్థలం',
+    routePath: [[430, 275], [130, 250], [270, 260], [270, 130], [390, 150], [380, 210]],
+    pins: [
+      {
+        id: 'parking',
+        nameEn: 'Visitor & Vehicle Parking Bay',
+        nameTe: 'వాహనాల పార్కింగ్ స్థలం',
+        category: 'parking',
+        lat: 13.641260,
+        lng: 79.400337,
+        svgX: 430,
+        svgY: 275,
+        descEn: 'Designated parking for cars, bikes, and visitor vehicles near main entry.',
+        descTe: 'వాహనాల పార్కింగ్ ప్రదేశం.'
+      },
+      {
+        id: 'footwear',
+        nameEn: 'Free Footwear Stand & Holding Area',
+        nameTe: 'ఉచిత పాదరక్షల భద్రతా కేంద్రం',
+        category: 'footwear',
+        lat: 13.641460,
+        lng: 79.399337,
+        svgX: 130,
+        svgY: 250,
+        descEn: 'Footwear deposit counter and visitor holding area.',
+        descTe: 'ఉచిత పాదరక్షల కేంద్రం.'
+      },
+      {
+        id: 'entry',
+        nameEn: 'Main Arch & Entry Gate',
+        nameTe: 'ప్రధాన ప్రవేశ ద్వారం',
+        category: 'entry',
+        lat: 13.641560,
+        lng: 79.399737,
+        svgX: 270,
+        svgY: 260,
+        descEn: 'Main entrance gate leading into premises.',
+        descTe: 'ప్రధాన ప్రవేశ ద్వారం.'
+      },
+      {
+        id: 'sanctum',
+        nameEn: 'TTD Namoona Temple (Model Temple) Sanctum / Main Point',
+        nameTe: 'ttd-namoona-temple ప్రధాన స్థలం',
+        category: 'sanctum',
+        lat: 13.641860,
+        lng: 79.399737,
+        svgX: 270,
+        svgY: 130,
+        descEn: 'Main shrine and central point of interest.',
+        descTe: 'ముఖ్య దివ్య స్థల ప్రవేశం మరియు దర్శనం.'
+      },
+      {
+        id: 'info',
+        nameEn: 'Information & Utility Desk',
+        nameTe: 'సమాచార విభాగం & తాగునీరు',
+        category: 'info',
+        lat: 13.642260,
+        lng: 79.400137,
+        svgX: 390,
+        svgY: 150,
+        descEn: 'Information counter and RO drinking water point.',
+        descTe: 'సమాచార కేంద్రం మరియు తాగునీటి సదుపాయం.'
+      }
+    ],
+    routeSteps: [
+      {
+        stepNumber: 1,
+        titleEn: 'Arrival & Parking',
+        titleTe: 'పార్కింగ్ చేరుకోవడం',
+        distance: '0.0 km',
+        timeMins: 0,
+        descEn: 'Park vehicle near designated parking area.',
+        descTe: 'వాహనాన్ని నిర్ణీత స్థలంలో పార్క్ చేయండి.'
+      },
+      {
+        stepNumber: 2,
+        titleEn: 'Main Entry & Footwear Deposit',
+        titleTe: 'ప్రవేశం & పాదరక్షలు',
+        distance: '40m',
+        timeMins: 2,
+        descEn: 'Proceed to entrance and deposit shoes if applicable.',
+        descTe: 'ప్రధాన ద్వారం వద్దకు చేరుకోండి.'
+      },
+      {
+        stepNumber: 3,
+        titleEn: 'Main Sanctum & Visitor Experience',
+        titleTe: 'ప్రధాన దర్శనం',
+        distance: '60m',
+        timeMins: 10,
+        descEn: 'Experience the main shrine and serene surroundings.',
+        descTe: 'ముఖ్య స్థలాన్ని దర్శించి ఆనందించండి.'
+      }
+    ],
+    emergencyContacts: [
+      { titleEn: 'Saarthi Helpline', titleTe: 'సారథి హెల్ప్‌లైన్', number: '08772264555' },
+      { titleEn: 'Emergency Services', titleTe: 'అత్యవసర సేవల హెల్ప్‌లైన్', number: '112' }
+    ]
+  },
+
+  'regional-science-centre': {
+    placeId: 'regional-science-centre',
+    titleEn: 'Regional Science Centre Precinct Map',
+    titleTe: 'regional-science-centre ప్రాంగణ మ్యాప్',
+    layoutType: 'urban-park',
+    centerCoordinates: { lat: 13.643158, lng: 79.397876 },
+    defaultZoom: 18,
+    compassBearingDeg: 0,
+    sanctumNameEn: 'Regional Science Centre Sanctum & Main Area',
+    sanctumNameTe: 'regional-science-centre ప్రధాన స్థలం',
+    routePath: [[430, 275], [130, 250], [270, 260], [270, 130], [390, 150], [380, 210]],
+    pins: [
+      {
+        id: 'parking',
+        nameEn: 'Visitor & Vehicle Parking Bay',
+        nameTe: 'వాహనాల పార్కింగ్ స్థలం',
+        category: 'parking',
+        lat: 13.642558,
+        lng: 79.398476,
+        svgX: 430,
+        svgY: 275,
+        descEn: 'Designated parking for cars, bikes, and visitor vehicles near main entry.',
+        descTe: 'వాహనాల పార్కింగ్ ప్రదేశం.'
+      },
+      {
+        id: 'footwear',
+        nameEn: 'Free Footwear Stand & Holding Area',
+        nameTe: 'ఉచిత పాదరక్షల భద్రతా కేంద్రం',
+        category: 'footwear',
+        lat: 13.642758,
+        lng: 79.397476,
+        svgX: 130,
+        svgY: 250,
+        descEn: 'Footwear deposit counter and visitor holding area.',
+        descTe: 'ఉచిత పాదరక్షల కేంద్రం.'
+      },
+      {
+        id: 'entry',
+        nameEn: 'Main Arch & Entry Gate',
+        nameTe: 'ప్రధాన ప్రవేశ ద్వారం',
+        category: 'entry',
+        lat: 13.642858,
+        lng: 79.397876,
+        svgX: 270,
+        svgY: 260,
+        descEn: 'Main entrance gate leading into premises.',
+        descTe: 'ప్రధాన ప్రవేశ ద్వారం.'
+      },
+      {
+        id: 'sanctum',
+        nameEn: 'Regional Science Centre Sanctum / Main Point',
+        nameTe: 'regional-science-centre ప్రధాన స్థలం',
+        category: 'sanctum',
+        lat: 13.643158,
+        lng: 79.397876,
+        svgX: 270,
+        svgY: 130,
+        descEn: 'Main shrine and central point of interest.',
+        descTe: 'ముఖ్య దివ్య స్థల ప్రవేశం మరియు దర్శనం.'
+      },
+      {
+        id: 'info',
+        nameEn: 'Information & Utility Desk',
+        nameTe: 'సమాచార విభాగం & తాగునీరు',
+        category: 'info',
+        lat: 13.643558,
+        lng: 79.398276,
+        svgX: 390,
+        svgY: 150,
+        descEn: 'Information counter and RO drinking water point.',
+        descTe: 'సమాచార కేంద్రం మరియు తాగునీటి సదుపాయం.'
+      }
+    ],
+    routeSteps: [
+      {
+        stepNumber: 1,
+        titleEn: 'Arrival & Parking',
+        titleTe: 'పార్కింగ్ చేరుకోవడం',
+        distance: '0.0 km',
+        timeMins: 0,
+        descEn: 'Park vehicle near designated parking area.',
+        descTe: 'వాహనాన్ని నిర్ణీత స్థలంలో పార్క్ చేయండి.'
+      },
+      {
+        stepNumber: 2,
+        titleEn: 'Main Entry & Footwear Deposit',
+        titleTe: 'ప్రవేశం & పాదరక్షలు',
+        distance: '40m',
+        timeMins: 2,
+        descEn: 'Proceed to entrance and deposit shoes if applicable.',
+        descTe: 'ప్రధాన ద్వారం వద్దకు చేరుకోండి.'
+      },
+      {
+        stepNumber: 3,
+        titleEn: 'Main Sanctum & Visitor Experience',
+        titleTe: 'ప్రధాన దర్శనం',
+        distance: '60m',
+        timeMins: 10,
+        descEn: 'Experience the main shrine and serene surroundings.',
+        descTe: 'ముఖ్య స్థలాన్ని దర్శించి ఆనందించండి.'
+      }
+    ],
+    emergencyContacts: [
+      { titleEn: 'Saarthi Helpline', titleTe: 'సారథి హెల్ప్‌లైన్', number: '08772264555' },
+      { titleEn: 'Emergency Services', titleTe: 'అత్యవసర సేవల హెల్ప్‌లైన్', number: '112' }
+    ]
+  },
+
+  'kalyani-dam': {
+    placeId: 'kalyani-dam',
+    titleEn: 'Kalyani Dam Precinct Map',
+    titleTe: 'kalyani-dam ప్రాంగణ మ్యాప్',
+    layoutType: 'hill-waterfall',
+    centerCoordinates: { lat: 13.6576604, lng: 79.2692214 },
+    defaultZoom: 18,
+    compassBearingDeg: 0,
+    sanctumNameEn: 'Kalyani Dam Sanctum & Main Area',
+    sanctumNameTe: 'kalyani-dam ప్రధాన స్థలం',
+    routePath: [[430, 275], [130, 250], [270, 260], [270, 130], [390, 150], [380, 210]],
+    pins: [
+      {
+        id: 'parking',
+        nameEn: 'Visitor & Vehicle Parking Bay',
+        nameTe: 'వాహనాల పార్కింగ్ స్థలం',
+        category: 'parking',
+        lat: 13.657060,
+        lng: 79.269821,
+        svgX: 430,
+        svgY: 275,
+        descEn: 'Designated parking for cars, bikes, and visitor vehicles near main entry.',
+        descTe: 'వాహనాల పార్కింగ్ ప్రదేశం.'
+      },
+      {
+        id: 'footwear',
+        nameEn: 'Free Footwear Stand & Holding Area',
+        nameTe: 'ఉచిత పాదరక్షల భద్రతా కేంద్రం',
+        category: 'footwear',
+        lat: 13.657260,
+        lng: 79.268821,
+        svgX: 130,
+        svgY: 250,
+        descEn: 'Footwear deposit counter and visitor holding area.',
+        descTe: 'ఉచిత పాదరక్షల కేంద్రం.'
+      },
+      {
+        id: 'entry',
+        nameEn: 'Main Arch & Entry Gate',
+        nameTe: 'ప్రధాన ప్రవేశ ద్వారం',
+        category: 'entry',
+        lat: 13.657360,
+        lng: 79.269221,
+        svgX: 270,
+        svgY: 260,
+        descEn: 'Main entrance gate leading into premises.',
+        descTe: 'ప్రధాన ప్రవేశ ద్వారం.'
+      },
+      {
+        id: 'sanctum',
+        nameEn: 'Kalyani Dam Sanctum / Main Point',
+        nameTe: 'kalyani-dam ప్రధాన స్థలం',
+        category: 'sanctum',
+        lat: 13.657660,
+        lng: 79.269221,
+        svgX: 270,
+        svgY: 130,
+        descEn: 'Main shrine and central point of interest.',
+        descTe: 'ముఖ్య దివ్య స్థల ప్రవేశం మరియు దర్శనం.'
+      },
+      {
+        id: 'info',
+        nameEn: 'Information & Utility Desk',
+        nameTe: 'సమాచార విభాగం & తాగునీరు',
+        category: 'info',
+        lat: 13.658060,
+        lng: 79.269621,
+        svgX: 390,
+        svgY: 150,
+        descEn: 'Information counter and RO drinking water point.',
+        descTe: 'సమాచార కేంద్రం మరియు తాగునీటి సదుపాయం.'
+      }
+    ],
+    routeSteps: [
+      {
+        stepNumber: 1,
+        titleEn: 'Arrival & Parking',
+        titleTe: 'పార్కింగ్ చేరుకోవడం',
+        distance: '0.0 km',
+        timeMins: 0,
+        descEn: 'Park vehicle near designated parking area.',
+        descTe: 'వాహనాన్ని నిర్ణీత స్థలంలో పార్క్ చేయండి.'
+      },
+      {
+        stepNumber: 2,
+        titleEn: 'Main Entry & Footwear Deposit',
+        titleTe: 'ప్రవేశం & పాదరక్షలు',
+        distance: '40m',
+        timeMins: 2,
+        descEn: 'Proceed to entrance and deposit shoes if applicable.',
+        descTe: 'ప్రధాన ద్వారం వద్దకు చేరుకోండి.'
+      },
+      {
+        stepNumber: 3,
+        titleEn: 'Main Sanctum & Visitor Experience',
+        titleTe: 'ప్రధాన దర్శనం',
+        distance: '60m',
+        timeMins: 10,
+        descEn: 'Experience the main shrine and serene surroundings.',
+        descTe: 'ముఖ్య స్థలాన్ని దర్శించి ఆనందించండి.'
+      }
+    ],
+    emergencyContacts: [
+      { titleEn: 'Saarthi Helpline', titleTe: 'సారథి హెల్ప్‌లైన్', number: '08772264555' },
+      { titleEn: 'Emergency Services', titleTe: 'అత్యవసర సేవల హెల్ప్‌లైన్', number: '112' }
+    ]
+  },
+
+  'mallimadugu-dam': {
+    placeId: 'mallimadugu-dam',
+    titleEn: 'Mallimadugu Dam (Mallemadugu Reservoir) Precinct Map',
+    titleTe: 'mallimadugu-dam ప్రాంగణ మ్యాప్',
+    layoutType: 'hill-waterfall',
+    centerCoordinates: { lat: 13.6845, lng: 79.4925 },
+    defaultZoom: 18,
+    compassBearingDeg: 0,
+    sanctumNameEn: 'Mallimadugu Dam (Mallemadugu Reservoir) Sanctum & Main Area',
+    sanctumNameTe: 'mallimadugu-dam ప్రధాన స్థలం',
+    routePath: [[430, 275], [130, 250], [270, 260], [270, 130], [390, 150], [380, 210]],
+    pins: [
+      {
+        id: 'parking',
+        nameEn: 'Visitor & Vehicle Parking Bay',
+        nameTe: 'వాహనాల పార్కింగ్ స్థలం',
+        category: 'parking',
+        lat: 13.683900,
+        lng: 79.493100,
+        svgX: 430,
+        svgY: 275,
+        descEn: 'Designated parking for cars, bikes, and visitor vehicles near main entry.',
+        descTe: 'వాహనాల పార్కింగ్ ప్రదేశం.'
+      },
+      {
+        id: 'footwear',
+        nameEn: 'Free Footwear Stand & Holding Area',
+        nameTe: 'ఉచిత పాదరక్షల భద్రతా కేంద్రం',
+        category: 'footwear',
+        lat: 13.684100,
+        lng: 79.492100,
+        svgX: 130,
+        svgY: 250,
+        descEn: 'Footwear deposit counter and visitor holding area.',
+        descTe: 'ఉచిత పాదరక్షల కేంద్రం.'
+      },
+      {
+        id: 'entry',
+        nameEn: 'Main Arch & Entry Gate',
+        nameTe: 'ప్రధాన ప్రవేశ ద్వారం',
+        category: 'entry',
+        lat: 13.684200,
+        lng: 79.492500,
+        svgX: 270,
+        svgY: 260,
+        descEn: 'Main entrance gate leading into premises.',
+        descTe: 'ప్రధాన ప్రవేశ ద్వారం.'
+      },
+      {
+        id: 'sanctum',
+        nameEn: 'Mallimadugu Dam (Mallemadugu Reservoir) Sanctum / Main Point',
+        nameTe: 'mallimadugu-dam ప్రధాన స్థలం',
+        category: 'sanctum',
+        lat: 13.684500,
+        lng: 79.492500,
+        svgX: 270,
+        svgY: 130,
+        descEn: 'Main shrine and central point of interest.',
+        descTe: 'ముఖ్య దివ్య స్థల ప్రవేశం మరియు దర్శనం.'
+      },
+      {
+        id: 'info',
+        nameEn: 'Information & Utility Desk',
+        nameTe: 'సమాచార విభాగం & తాగునీరు',
+        category: 'info',
+        lat: 13.684900,
+        lng: 79.492900,
+        svgX: 390,
+        svgY: 150,
+        descEn: 'Information counter and RO drinking water point.',
+        descTe: 'సమాచార కేంద్రం మరియు తాగునీటి సదుపాయం.'
+      }
+    ],
+    routeSteps: [
+      {
+        stepNumber: 1,
+        titleEn: 'Arrival & Parking',
+        titleTe: 'పార్కింగ్ చేరుకోవడం',
+        distance: '0.0 km',
+        timeMins: 0,
+        descEn: 'Park vehicle near designated parking area.',
+        descTe: 'వాహనాన్ని నిర్ణీత స్థలంలో పార్క్ చేయండి.'
+      },
+      {
+        stepNumber: 2,
+        titleEn: 'Main Entry & Footwear Deposit',
+        titleTe: 'ప్రవేశం & పాదరక్షలు',
+        distance: '40m',
+        timeMins: 2,
+        descEn: 'Proceed to entrance and deposit shoes if applicable.',
+        descTe: 'ప్రధాన ద్వారం వద్దకు చేరుకోండి.'
+      },
+      {
+        stepNumber: 3,
+        titleEn: 'Main Sanctum & Visitor Experience',
+        titleTe: 'ప్రధాన దర్శనం',
+        distance: '60m',
+        timeMins: 10,
+        descEn: 'Experience the main shrine and serene surroundings.',
+        descTe: 'ముఖ్య స్థలాన్ని దర్శించి ఆనందించండి.'
+      }
+    ],
+    emergencyContacts: [
+      { titleEn: 'Saarthi Helpline', titleTe: 'సారథి హెల్ప్‌లైన్', number: '08772264555' },
+      { titleEn: 'Emergency Services', titleTe: 'అత్యవసర సేవల హెల్ప్‌లైన్', number: '112' }
+    ]
+  },
+
+  'sorakayala-swamy': {
+    placeId: 'sorakayala-swamy',
+    titleEn: 'Sri Sorakayala Swamy Temple Precinct Map',
+    titleTe: 'sorakayala-swamy ప్రాంగణ మ్యాప్',
+    layoutType: 'grand-temple',
+    centerCoordinates: { lat: 13.425342, lng: 79.5903495 },
+    defaultZoom: 18,
+    compassBearingDeg: 0,
+    sanctumNameEn: 'Sri Sorakayala Swamy Temple Sanctum & Main Area',
+    sanctumNameTe: 'sorakayala-swamy ప్రధాన స్థలం',
+    routePath: [[430, 275], [130, 250], [270, 260], [270, 130], [390, 150], [380, 210]],
+    pins: [
+      {
+        id: 'parking',
+        nameEn: 'Visitor & Vehicle Parking Bay',
+        nameTe: 'వాహనాల పార్కింగ్ స్థలం',
+        category: 'parking',
+        lat: 13.424742,
+        lng: 79.590950,
+        svgX: 430,
+        svgY: 275,
+        descEn: 'Designated parking for cars, bikes, and visitor vehicles near main entry.',
+        descTe: 'వాహనాల పార్కింగ్ ప్రదేశం.'
+      },
+      {
+        id: 'footwear',
+        nameEn: 'Free Footwear Stand & Holding Area',
+        nameTe: 'ఉచిత పాదరక్షల భద్రతా కేంద్రం',
+        category: 'footwear',
+        lat: 13.424942,
+        lng: 79.589950,
+        svgX: 130,
+        svgY: 250,
+        descEn: 'Footwear deposit counter and visitor holding area.',
+        descTe: 'ఉచిత పాదరక్షల కేంద్రం.'
+      },
+      {
+        id: 'entry',
+        nameEn: 'Main Arch & Entry Gate',
+        nameTe: 'ప్రధాన ప్రవేశ ద్వారం',
+        category: 'entry',
+        lat: 13.425042,
+        lng: 79.590350,
+        svgX: 270,
+        svgY: 260,
+        descEn: 'Main entrance gate leading into premises.',
+        descTe: 'ప్రధాన ప్రవేశ ద్వారం.'
+      },
+      {
+        id: 'sanctum',
+        nameEn: 'Sri Sorakayala Swamy Temple Sanctum / Main Point',
+        nameTe: 'sorakayala-swamy ప్రధాన స్థలం',
+        category: 'sanctum',
+        lat: 13.425342,
+        lng: 79.590350,
+        svgX: 270,
+        svgY: 130,
+        descEn: 'Main shrine and central point of interest.',
+        descTe: 'ముఖ్య దివ్య స్థల ప్రవేశం మరియు దర్శనం.'
+      },
+      {
+        id: 'info',
+        nameEn: 'Information & Utility Desk',
+        nameTe: 'సమాచార విభాగం & తాగునీరు',
+        category: 'info',
+        lat: 13.425742,
+        lng: 79.590750,
+        svgX: 390,
+        svgY: 150,
+        descEn: 'Information counter and RO drinking water point.',
+        descTe: 'సమాచార కేంద్రం మరియు తాగునీటి సదుపాయం.'
+      }
+    ],
+    routeSteps: [
+      {
+        stepNumber: 1,
+        titleEn: 'Arrival & Parking',
+        titleTe: 'పార్కింగ్ చేరుకోవడం',
+        distance: '0.0 km',
+        timeMins: 0,
+        descEn: 'Park vehicle near designated parking area.',
+        descTe: 'వాహనాన్ని నిర్ణీత స్థలంలో పార్క్ చేయండి.'
+      },
+      {
+        stepNumber: 2,
+        titleEn: 'Main Entry & Footwear Deposit',
+        titleTe: 'ప్రవేశం & పాదరక్షలు',
+        distance: '40m',
+        timeMins: 2,
+        descEn: 'Proceed to entrance and deposit shoes if applicable.',
+        descTe: 'ప్రధాన ద్వారం వద్దకు చేరుకోండి.'
+      },
+      {
+        stepNumber: 3,
+        titleEn: 'Main Sanctum & Visitor Experience',
+        titleTe: 'ప్రధాన దర్శనం',
+        distance: '60m',
+        timeMins: 10,
+        descEn: 'Experience the main shrine and serene surroundings.',
+        descTe: 'ముఖ్య స్థలాన్ని దర్శించి ఆనందించండి.'
+      }
+    ],
+    emergencyContacts: [
+      { titleEn: 'Saarthi Helpline', titleTe: 'సారథి హెల్ప్‌లైన్', number: '08772264555' },
+      { titleEn: 'Emergency Services', titleTe: 'అత్యవసర సేవల హెల్ప్‌లైన్', number: '112' }
+    ]
+  },
+
+  'narayanavanam-falls': {
+    placeId: 'narayanavanam-falls',
+    titleEn: 'Narayanavanam Waterfalls Precinct Map',
+    titleTe: 'narayanavanam-falls ప్రాంగణ మ్యాప్',
+    layoutType: 'hill-waterfall',
+    centerCoordinates: { lat: 13.4233744, lng: 79.5886747 },
+    defaultZoom: 18,
+    compassBearingDeg: 0,
+    sanctumNameEn: 'Narayanavanam Waterfalls Sanctum & Main Area',
+    sanctumNameTe: 'narayanavanam-falls ప్రధాన స్థలం',
+    routePath: [[430, 275], [130, 250], [270, 260], [270, 130], [390, 150], [380, 210]],
+    pins: [
+      {
+        id: 'parking',
+        nameEn: 'Visitor & Vehicle Parking Bay',
+        nameTe: 'వాహనాల పార్కింగ్ స్థలం',
+        category: 'parking',
+        lat: 13.422774,
+        lng: 79.589275,
+        svgX: 430,
+        svgY: 275,
+        descEn: 'Designated parking for cars, bikes, and visitor vehicles near main entry.',
+        descTe: 'వాహనాల పార్కింగ్ ప్రదేశం.'
+      },
+      {
+        id: 'footwear',
+        nameEn: 'Free Footwear Stand & Holding Area',
+        nameTe: 'ఉచిత పాదరక్షల భద్రతా కేంద్రం',
+        category: 'footwear',
+        lat: 13.422974,
+        lng: 79.588275,
+        svgX: 130,
+        svgY: 250,
+        descEn: 'Footwear deposit counter and visitor holding area.',
+        descTe: 'ఉచిత పాదరక్షల కేంద్రం.'
+      },
+      {
+        id: 'entry',
+        nameEn: 'Main Arch & Entry Gate',
+        nameTe: 'ప్రధాన ప్రవేశ ద్వారం',
+        category: 'entry',
+        lat: 13.423074,
+        lng: 79.588675,
+        svgX: 270,
+        svgY: 260,
+        descEn: 'Main entrance gate leading into premises.',
+        descTe: 'ప్రధాన ప్రవేశ ద్వారం.'
+      },
+      {
+        id: 'sanctum',
+        nameEn: 'Narayanavanam Waterfalls Sanctum / Main Point',
+        nameTe: 'narayanavanam-falls ప్రధాన స్థలం',
+        category: 'sanctum',
+        lat: 13.423374,
+        lng: 79.588675,
+        svgX: 270,
+        svgY: 130,
+        descEn: 'Main shrine and central point of interest.',
+        descTe: 'ముఖ్య దివ్య స్థల ప్రవేశం మరియు దర్శనం.'
+      },
+      {
+        id: 'info',
+        nameEn: 'Information & Utility Desk',
+        nameTe: 'సమాచార విభాగం & తాగునీరు',
+        category: 'info',
+        lat: 13.423774,
+        lng: 79.589075,
+        svgX: 390,
+        svgY: 150,
+        descEn: 'Information counter and RO drinking water point.',
+        descTe: 'సమాచార కేంద్రం మరియు తాగునీటి సదుపాయం.'
+      }
+    ],
+    routeSteps: [
+      {
+        stepNumber: 1,
+        titleEn: 'Arrival & Parking',
+        titleTe: 'పార్కింగ్ చేరుకోవడం',
+        distance: '0.0 km',
+        timeMins: 0,
+        descEn: 'Park vehicle near designated parking area.',
+        descTe: 'వాహనాన్ని నిర్ణీత స్థలంలో పార్క్ చేయండి.'
+      },
+      {
+        stepNumber: 2,
+        titleEn: 'Main Entry & Footwear Deposit',
+        titleTe: 'ప్రవేశం & పాదరక్షలు',
+        distance: '40m',
+        timeMins: 2,
+        descEn: 'Proceed to entrance and deposit shoes if applicable.',
+        descTe: 'ప్రధాన ద్వారం వద్దకు చేరుకోండి.'
+      },
+      {
+        stepNumber: 3,
+        titleEn: 'Main Sanctum & Visitor Experience',
+        titleTe: 'ప్రధాన దర్శనం',
+        distance: '60m',
+        timeMins: 10,
+        descEn: 'Experience the main shrine and serene surroundings.',
+        descTe: 'ముఖ్య స్థలాన్ని దర్శించి ఆనందించండి.'
+      }
+    ],
+    emergencyContacts: [
+      { titleEn: 'Saarthi Helpline', titleTe: 'సారథి హెల్ప్‌లైన్', number: '08772264555' },
+      { titleEn: 'Emergency Services', titleTe: 'అత్యవసర సేవల హెల్ప్‌లైన్', number: '112' }
+    ]
+  },
+
+  'gogarbham': {
+    placeId: 'gogarbham',
+    titleEn: 'Gogarbham (Pandava Theertham) Precinct Map',
+    titleTe: 'gogarbham ప్రాంగణ మ్యాప్',
+    layoutType: 'city-shrine',
+    centerCoordinates: { lat: 13.6909398, lng: 79.3540774 },
+    defaultZoom: 18,
+    compassBearingDeg: 0,
+    sanctumNameEn: 'Gogarbham (Pandava Theertham) Sanctum & Main Area',
+    sanctumNameTe: 'gogarbham ప్రధాన స్థలం',
+    routePath: [[430, 275], [130, 250], [270, 260], [270, 130], [390, 150], [380, 210]],
+    pins: [
+      {
+        id: 'parking',
+        nameEn: 'Visitor & Vehicle Parking Bay',
+        nameTe: 'వాహనాల పార్కింగ్ స్థలం',
+        category: 'parking',
+        lat: 13.690340,
+        lng: 79.354677,
+        svgX: 430,
+        svgY: 275,
+        descEn: 'Designated parking for cars, bikes, and visitor vehicles near main entry.',
+        descTe: 'వాహనాల పార్కింగ్ ప్రదేశం.'
+      },
+      {
+        id: 'footwear',
+        nameEn: 'Free Footwear Stand & Holding Area',
+        nameTe: 'ఉచిత పాదరక్షల భద్రతా కేంద్రం',
+        category: 'footwear',
+        lat: 13.690540,
+        lng: 79.353677,
+        svgX: 130,
+        svgY: 250,
+        descEn: 'Footwear deposit counter and visitor holding area.',
+        descTe: 'ఉచిత పాదరక్షల కేంద్రం.'
+      },
+      {
+        id: 'entry',
+        nameEn: 'Main Arch & Entry Gate',
+        nameTe: 'ప్రధాన ప్రవేశ ద్వారం',
+        category: 'entry',
+        lat: 13.690640,
+        lng: 79.354077,
+        svgX: 270,
+        svgY: 260,
+        descEn: 'Main entrance gate leading into premises.',
+        descTe: 'ప్రధాన ప్రవేశ ద్వారం.'
+      },
+      {
+        id: 'sanctum',
+        nameEn: 'Gogarbham (Pandava Theertham) Sanctum / Main Point',
+        nameTe: 'gogarbham ప్రధాన స్థలం',
+        category: 'sanctum',
+        lat: 13.690940,
+        lng: 79.354077,
+        svgX: 270,
+        svgY: 130,
+        descEn: 'Main shrine and central point of interest.',
+        descTe: 'ముఖ్య దివ్య స్థల ప్రవేశం మరియు దర్శనం.'
+      },
+      {
+        id: 'info',
+        nameEn: 'Information & Utility Desk',
+        nameTe: 'సమాచార విభాగం & తాగునీరు',
+        category: 'info',
+        lat: 13.691340,
+        lng: 79.354477,
+        svgX: 390,
+        svgY: 150,
+        descEn: 'Information counter and RO drinking water point.',
+        descTe: 'సమాచార కేంద్రం మరియు తాగునీటి సదుపాయం.'
+      }
+    ],
+    routeSteps: [
+      {
+        stepNumber: 1,
+        titleEn: 'Arrival & Parking',
+        titleTe: 'పార్కింగ్ చేరుకోవడం',
+        distance: '0.0 km',
+        timeMins: 0,
+        descEn: 'Park vehicle near designated parking area.',
+        descTe: 'వాహనాన్ని నిర్ణీత స్థలంలో పార్క్ చేయండి.'
+      },
+      {
+        stepNumber: 2,
+        titleEn: 'Main Entry & Footwear Deposit',
+        titleTe: 'ప్రవేశం & పాదరక్షలు',
+        distance: '40m',
+        timeMins: 2,
+        descEn: 'Proceed to entrance and deposit shoes if applicable.',
+        descTe: 'ప్రధాన ద్వారం వద్దకు చేరుకోండి.'
+      },
+      {
+        stepNumber: 3,
+        titleEn: 'Main Sanctum & Visitor Experience',
+        titleTe: 'ప్రధాన దర్శనం',
+        distance: '60m',
+        timeMins: 10,
+        descEn: 'Experience the main shrine and serene surroundings.',
+        descTe: 'ముఖ్య స్థలాన్ని దర్శించి ఆనందించండి.'
+      }
+    ],
+    emergencyContacts: [
+      { titleEn: 'Saarthi Helpline', titleTe: 'సారథి హెల్ప్‌లైన్', number: '08772264555' },
+      { titleEn: 'Emergency Services', titleTe: 'అత్యవసర సేవల హెల్ప్‌లైన్', number: '112' }
+    ]
+  },
+
+  'gandhi-road': {
+    placeId: 'gandhi-road',
+    titleEn: 'Gandhi Road Shopping Precinct Map',
+    titleTe: 'gandhi-road ప్రాంగణ మ్యాప్',
+    layoutType: 'city-shrine',
+    centerCoordinates: { lat: 13.6291, lng: 79.4175 },
+    defaultZoom: 18,
+    compassBearingDeg: 0,
+    sanctumNameEn: 'Gandhi Road Shopping Sanctum & Main Area',
+    sanctumNameTe: 'gandhi-road ప్రధాన స్థలం',
+    routePath: [[430, 275], [130, 250], [270, 260], [270, 130], [390, 150], [380, 210]],
+    pins: [
+      {
+        id: 'parking',
+        nameEn: 'Visitor & Vehicle Parking Bay',
+        nameTe: 'వాహనాల పార్కింగ్ స్థలం',
+        category: 'parking',
+        lat: 13.628500,
+        lng: 79.418100,
+        svgX: 430,
+        svgY: 275,
+        descEn: 'Designated parking for cars, bikes, and visitor vehicles near main entry.',
+        descTe: 'వాహనాల పార్కింగ్ ప్రదేశం.'
+      },
+      {
+        id: 'footwear',
+        nameEn: 'Free Footwear Stand & Holding Area',
+        nameTe: 'ఉచిత పాదరక్షల భద్రతా కేంద్రం',
+        category: 'footwear',
+        lat: 13.628700,
+        lng: 79.417100,
+        svgX: 130,
+        svgY: 250,
+        descEn: 'Footwear deposit counter and visitor holding area.',
+        descTe: 'ఉచిత పాదరక్షల కేంద్రం.'
+      },
+      {
+        id: 'entry',
+        nameEn: 'Main Arch & Entry Gate',
+        nameTe: 'ప్రధాన ప్రవేశ ద్వారం',
+        category: 'entry',
+        lat: 13.628800,
+        lng: 79.417500,
+        svgX: 270,
+        svgY: 260,
+        descEn: 'Main entrance gate leading into premises.',
+        descTe: 'ప్రధాన ప్రవేశ ద్వారం.'
+      },
+      {
+        id: 'sanctum',
+        nameEn: 'Gandhi Road Shopping Sanctum / Main Point',
+        nameTe: 'gandhi-road ప్రధాన స్థలం',
+        category: 'sanctum',
+        lat: 13.629100,
+        lng: 79.417500,
+        svgX: 270,
+        svgY: 130,
+        descEn: 'Main shrine and central point of interest.',
+        descTe: 'ముఖ్య దివ్య స్థల ప్రవేశం మరియు దర్శనం.'
+      },
+      {
+        id: 'info',
+        nameEn: 'Information & Utility Desk',
+        nameTe: 'సమాచార విభాగం & తాగునీరు',
+        category: 'info',
+        lat: 13.629500,
+        lng: 79.417900,
+        svgX: 390,
+        svgY: 150,
+        descEn: 'Information counter and RO drinking water point.',
+        descTe: 'సమాచార కేంద్రం మరియు తాగునీటి సదుపాయం.'
+      }
+    ],
+    routeSteps: [
+      {
+        stepNumber: 1,
+        titleEn: 'Arrival & Parking',
+        titleTe: 'పార్కింగ్ చేరుకోవడం',
+        distance: '0.0 km',
+        timeMins: 0,
+        descEn: 'Park vehicle near designated parking area.',
+        descTe: 'వాహనాన్ని నిర్ణీత స్థలంలో పార్క్ చేయండి.'
+      },
+      {
+        stepNumber: 2,
+        titleEn: 'Main Entry & Footwear Deposit',
+        titleTe: 'ప్రవేశం & పాదరక్షలు',
+        distance: '40m',
+        timeMins: 2,
+        descEn: 'Proceed to entrance and deposit shoes if applicable.',
+        descTe: 'ప్రధాన ద్వారం వద్దకు చేరుకోండి.'
+      },
+      {
+        stepNumber: 3,
+        titleEn: 'Main Sanctum & Visitor Experience',
+        titleTe: 'ప్రధాన దర్శనం',
+        distance: '60m',
+        timeMins: 10,
+        descEn: 'Experience the main shrine and serene surroundings.',
+        descTe: 'ముఖ్య స్థలాన్ని దర్శించి ఆనందించండి.'
+      }
+    ],
+    emergencyContacts: [
+      { titleEn: 'Saarthi Helpline', titleTe: 'సారథి హెల్ప్‌లైన్', number: '08772264555' },
+      { titleEn: 'Emergency Services', titleTe: 'అత్యవసర సేవల హెల్ప్‌లైన్', number: '112' }
+    ]
+  },
+
+  'andhra-spice': {
+    placeId: 'andhra-spice',
+    titleEn: 'Andhra Spice Precinct Map',
+    titleTe: 'andhra-spice ప్రాంగణ మ్యాప్',
+    layoutType: 'shopping-market',
+    centerCoordinates: { lat: 13.6318, lng: 79.4211 },
+    defaultZoom: 18,
+    compassBearingDeg: 0,
+    sanctumNameEn: 'Andhra Spice Sanctum & Main Area',
+    sanctumNameTe: 'andhra-spice ప్రధాన స్థలం',
+    routePath: [[430, 275], [130, 250], [270, 260], [270, 130], [390, 150], [380, 210]],
+    pins: [
+      {
+        id: 'parking',
+        nameEn: 'Visitor & Vehicle Parking Bay',
+        nameTe: 'వాహనాల పార్కింగ్ స్థలం',
+        category: 'parking',
+        lat: 13.631200,
+        lng: 79.421700,
+        svgX: 430,
+        svgY: 275,
+        descEn: 'Designated parking for cars, bikes, and visitor vehicles near main entry.',
+        descTe: 'వాహనాల పార్కింగ్ ప్రదేశం.'
+      },
+      {
+        id: 'footwear',
+        nameEn: 'Free Footwear Stand & Holding Area',
+        nameTe: 'ఉచిత పాదరక్షల భద్రతా కేంద్రం',
+        category: 'footwear',
+        lat: 13.631400,
+        lng: 79.420700,
+        svgX: 130,
+        svgY: 250,
+        descEn: 'Footwear deposit counter and visitor holding area.',
+        descTe: 'ఉచిత పాదరక్షల కేంద్రం.'
+      },
+      {
+        id: 'entry',
+        nameEn: 'Main Arch & Entry Gate',
+        nameTe: 'ప్రధాన ప్రవేశ ద్వారం',
+        category: 'entry',
+        lat: 13.631500,
+        lng: 79.421100,
+        svgX: 270,
+        svgY: 260,
+        descEn: 'Main entrance gate leading into premises.',
+        descTe: 'ప్రధాన ప్రవేశ ద్వారం.'
+      },
+      {
+        id: 'sanctum',
+        nameEn: 'Andhra Spice Sanctum / Main Point',
+        nameTe: 'andhra-spice ప్రధాన స్థలం',
+        category: 'sanctum',
+        lat: 13.631800,
+        lng: 79.421100,
+        svgX: 270,
+        svgY: 130,
+        descEn: 'Main shrine and central point of interest.',
+        descTe: 'ముఖ్య దివ్య స్థల ప్రవేశం మరియు దర్శనం.'
+      },
+      {
+        id: 'info',
+        nameEn: 'Information & Utility Desk',
+        nameTe: 'సమాచార విభాగం & తాగునీరు',
+        category: 'info',
+        lat: 13.632200,
+        lng: 79.421500,
+        svgX: 390,
+        svgY: 150,
+        descEn: 'Information counter and RO drinking water point.',
+        descTe: 'సమాచార కేంద్రం మరియు తాగునీటి సదుపాయం.'
+      }
+    ],
+    routeSteps: [
+      {
+        stepNumber: 1,
+        titleEn: 'Arrival & Parking',
+        titleTe: 'పార్కింగ్ చేరుకోవడం',
+        distance: '0.0 km',
+        timeMins: 0,
+        descEn: 'Park vehicle near designated parking area.',
+        descTe: 'వాహనాన్ని నిర్ణీత స్థలంలో పార్క్ చేయండి.'
+      },
+      {
+        stepNumber: 2,
+        titleEn: 'Main Entry & Footwear Deposit',
+        titleTe: 'ప్రవేశం & పాదరక్షలు',
+        distance: '40m',
+        timeMins: 2,
+        descEn: 'Proceed to entrance and deposit shoes if applicable.',
+        descTe: 'ప్రధాన ద్వారం వద్దకు చేరుకోండి.'
+      },
+      {
+        stepNumber: 3,
+        titleEn: 'Main Sanctum & Visitor Experience',
+        titleTe: 'ప్రధాన దర్శనం',
+        distance: '60m',
+        timeMins: 10,
+        descEn: 'Experience the main shrine and serene surroundings.',
+        descTe: 'ముఖ్య స్థలాన్ని దర్శించి ఆనందించండి.'
+      }
+    ],
+    emergencyContacts: [
+      { titleEn: 'Saarthi Helpline', titleTe: 'సారథి హెల్ప్‌లైన్', number: '08772264555' },
+      { titleEn: 'Emergency Services', titleTe: 'అత్యవసర సేవల హెల్ప్‌లైన్', number: '112' }
+    ]
+  },
+
+  'govinda-restaurant': {
+    placeId: 'govinda-restaurant',
+    titleEn: 'Govinda Restaurant (ISKCON) Precinct Map',
+    titleTe: 'govinda-restaurant ప్రాంగణ మ్యాప్',
+    layoutType: 'shopping-market',
+    centerCoordinates: { lat: 13.6515, lng: 79.4131 },
+    defaultZoom: 18,
+    compassBearingDeg: 0,
+    sanctumNameEn: 'Govinda Restaurant (ISKCON) Sanctum & Main Area',
+    sanctumNameTe: 'govinda-restaurant ప్రధాన స్థలం',
+    routePath: [[430, 275], [130, 250], [270, 260], [270, 130], [390, 150], [380, 210]],
+    pins: [
+      {
+        id: 'parking',
+        nameEn: 'Visitor & Vehicle Parking Bay',
+        nameTe: 'వాహనాల పార్కింగ్ స్థలం',
+        category: 'parking',
+        lat: 13.650900,
+        lng: 79.413700,
+        svgX: 430,
+        svgY: 275,
+        descEn: 'Designated parking for cars, bikes, and visitor vehicles near main entry.',
+        descTe: 'వాహనాల పార్కింగ్ ప్రదేశం.'
+      },
+      {
+        id: 'footwear',
+        nameEn: 'Free Footwear Stand & Holding Area',
+        nameTe: 'ఉచిత పాదరక్షల భద్రతా కేంద్రం',
+        category: 'footwear',
+        lat: 13.651100,
+        lng: 79.412700,
+        svgX: 130,
+        svgY: 250,
+        descEn: 'Footwear deposit counter and visitor holding area.',
+        descTe: 'ఉచిత పాదరక్షల కేంద్రం.'
+      },
+      {
+        id: 'entry',
+        nameEn: 'Main Arch & Entry Gate',
+        nameTe: 'ప్రధాన ప్రవేశ ద్వారం',
+        category: 'entry',
+        lat: 13.651200,
+        lng: 79.413100,
+        svgX: 270,
+        svgY: 260,
+        descEn: 'Main entrance gate leading into premises.',
+        descTe: 'ప్రధాన ప్రవేశ ద్వారం.'
+      },
+      {
+        id: 'sanctum',
+        nameEn: 'Govinda Restaurant (ISKCON) Sanctum / Main Point',
+        nameTe: 'govinda-restaurant ప్రధాన స్థలం',
+        category: 'sanctum',
+        lat: 13.651500,
+        lng: 79.413100,
+        svgX: 270,
+        svgY: 130,
+        descEn: 'Main shrine and central point of interest.',
+        descTe: 'ముఖ్య దివ్య స్థల ప్రవేశం మరియు దర్శనం.'
+      },
+      {
+        id: 'info',
+        nameEn: 'Information & Utility Desk',
+        nameTe: 'సమాచార విభాగం & తాగునీరు',
+        category: 'info',
+        lat: 13.651900,
+        lng: 79.413500,
+        svgX: 390,
+        svgY: 150,
+        descEn: 'Information counter and RO drinking water point.',
+        descTe: 'సమాచార కేంద్రం మరియు తాగునీటి సదుపాయం.'
+      }
+    ],
+    routeSteps: [
+      {
+        stepNumber: 1,
+        titleEn: 'Arrival & Parking',
+        titleTe: 'పార్కింగ్ చేరుకోవడం',
+        distance: '0.0 km',
+        timeMins: 0,
+        descEn: 'Park vehicle near designated parking area.',
+        descTe: 'వాహనాన్ని నిర్ణీత స్థలంలో పార్క్ చేయండి.'
+      },
+      {
+        stepNumber: 2,
+        titleEn: 'Main Entry & Footwear Deposit',
+        titleTe: 'ప్రవేశం & పాదరక్షలు',
+        distance: '40m',
+        timeMins: 2,
+        descEn: 'Proceed to entrance and deposit shoes if applicable.',
+        descTe: 'ప్రధాన ద్వారం వద్దకు చేరుకోండి.'
+      },
+      {
+        stepNumber: 3,
+        titleEn: 'Main Sanctum & Visitor Experience',
+        titleTe: 'ప్రధాన దర్శనం',
+        distance: '60m',
+        timeMins: 10,
+        descEn: 'Experience the main shrine and serene surroundings.',
+        descTe: 'ముఖ్య స్థలాన్ని దర్శించి ఆనందించండి.'
+      }
+    ],
+    emergencyContacts: [
+      { titleEn: 'Saarthi Helpline', titleTe: 'సారథి హెల్ప్‌లైన్', number: '08772264555' },
+      { titleEn: 'Emergency Services', titleTe: 'అత్యవసర సేవల హెల్ప్‌లైన్', number: '112' }
+    ]
+  },
+
+  'minerva-grand': {
+    placeId: 'minerva-grand',
+    titleEn: 'Minerva Grand Precinct Map',
+    titleTe: 'minerva-grand ప్రాంగణ మ్యాప్',
+    layoutType: 'shopping-market',
+    centerCoordinates: { lat: 13.635, lng: 79.405 },
+    defaultZoom: 18,
+    compassBearingDeg: 0,
+    sanctumNameEn: 'Minerva Grand Sanctum & Main Area',
+    sanctumNameTe: 'minerva-grand ప్రధాన స్థలం',
+    routePath: [[430, 275], [130, 250], [270, 260], [270, 130], [390, 150], [380, 210]],
+    pins: [
+      {
+        id: 'parking',
+        nameEn: 'Visitor & Vehicle Parking Bay',
+        nameTe: 'వాహనాల పార్కింగ్ స్థలం',
+        category: 'parking',
+        lat: 13.634400,
+        lng: 79.405600,
+        svgX: 430,
+        svgY: 275,
+        descEn: 'Designated parking for cars, bikes, and visitor vehicles near main entry.',
+        descTe: 'వాహనాల పార్కింగ్ ప్రదేశం.'
+      },
+      {
+        id: 'footwear',
+        nameEn: 'Free Footwear Stand & Holding Area',
+        nameTe: 'ఉచిత పాదరక్షల భద్రతా కేంద్రం',
+        category: 'footwear',
+        lat: 13.634600,
+        lng: 79.404600,
+        svgX: 130,
+        svgY: 250,
+        descEn: 'Footwear deposit counter and visitor holding area.',
+        descTe: 'ఉచిత పాదరక్షల కేంద్రం.'
+      },
+      {
+        id: 'entry',
+        nameEn: 'Main Arch & Entry Gate',
+        nameTe: 'ప్రధాన ప్రవేశ ద్వారం',
+        category: 'entry',
+        lat: 13.634700,
+        lng: 79.405000,
+        svgX: 270,
+        svgY: 260,
+        descEn: 'Main entrance gate leading into premises.',
+        descTe: 'ప్రధాన ప్రవేశ ద్వారం.'
+      },
+      {
+        id: 'sanctum',
+        nameEn: 'Minerva Grand Sanctum / Main Point',
+        nameTe: 'minerva-grand ప్రధాన స్థలం',
+        category: 'sanctum',
+        lat: 13.635000,
+        lng: 79.405000,
+        svgX: 270,
+        svgY: 130,
+        descEn: 'Main shrine and central point of interest.',
+        descTe: 'ముఖ్య దివ్య స్థల ప్రవేశం మరియు దర్శనం.'
+      },
+      {
+        id: 'info',
+        nameEn: 'Information & Utility Desk',
+        nameTe: 'సమాచార విభాగం & తాగునీరు',
+        category: 'info',
+        lat: 13.635400,
+        lng: 79.405400,
+        svgX: 390,
+        svgY: 150,
+        descEn: 'Information counter and RO drinking water point.',
+        descTe: 'సమాచార కేంద్రం మరియు తాగునీటి సదుపాయం.'
+      }
+    ],
+    routeSteps: [
+      {
+        stepNumber: 1,
+        titleEn: 'Arrival & Parking',
+        titleTe: 'పార్కింగ్ చేరుకోవడం',
+        distance: '0.0 km',
+        timeMins: 0,
+        descEn: 'Park vehicle near designated parking area.',
+        descTe: 'వాహనాన్ని నిర్ణీత స్థలంలో పార్క్ చేయండి.'
+      },
+      {
+        stepNumber: 2,
+        titleEn: 'Main Entry & Footwear Deposit',
+        titleTe: 'ప్రవేశం & పాదరక్షలు',
+        distance: '40m',
+        timeMins: 2,
+        descEn: 'Proceed to entrance and deposit shoes if applicable.',
+        descTe: 'ప్రధాన ద్వారం వద్దకు చేరుకోండి.'
+      },
+      {
+        stepNumber: 3,
+        titleEn: 'Main Sanctum & Visitor Experience',
+        titleTe: 'ప్రధాన దర్శనం',
+        distance: '60m',
+        timeMins: 10,
+        descEn: 'Experience the main shrine and serene surroundings.',
+        descTe: 'ముఖ్య స్థలాన్ని దర్శించి ఆనందించండి.'
+      }
+    ],
+    emergencyContacts: [
+      { titleEn: 'Saarthi Helpline', titleTe: 'సారథి హెల్ప్‌లైన్', number: '08772264555' },
+      { titleEn: 'Emergency Services', titleTe: 'అత్యవసర సేవల హెల్ప్‌లైన్', number: '112' }
+    ]
+  },
+
+  'plantain-leaf': {
+    placeId: 'plantain-leaf',
+    titleEn: 'Plantain Leaf Precinct Map',
+    titleTe: 'plantain-leaf ప్రాంగణ మ్యాప్',
+    layoutType: 'shopping-market',
+    centerCoordinates: { lat: 13.645, lng: 79.395 },
+    defaultZoom: 18,
+    compassBearingDeg: 0,
+    sanctumNameEn: 'Plantain Leaf Sanctum & Main Area',
+    sanctumNameTe: 'plantain-leaf ప్రధాన స్థలం',
+    routePath: [[430, 275], [130, 250], [270, 260], [270, 130], [390, 150], [380, 210]],
+    pins: [
+      {
+        id: 'parking',
+        nameEn: 'Visitor & Vehicle Parking Bay',
+        nameTe: 'వాహనాల పార్కింగ్ స్థలం',
+        category: 'parking',
+        lat: 13.644400,
+        lng: 79.395600,
+        svgX: 430,
+        svgY: 275,
+        descEn: 'Designated parking for cars, bikes, and visitor vehicles near main entry.',
+        descTe: 'వాహనాల పార్కింగ్ ప్రదేశం.'
+      },
+      {
+        id: 'footwear',
+        nameEn: 'Free Footwear Stand & Holding Area',
+        nameTe: 'ఉచిత పాదరక్షల భద్రతా కేంద్రం',
+        category: 'footwear',
+        lat: 13.644600,
+        lng: 79.394600,
+        svgX: 130,
+        svgY: 250,
+        descEn: 'Footwear deposit counter and visitor holding area.',
+        descTe: 'ఉచిత పాదరక్షల కేంద్రం.'
+      },
+      {
+        id: 'entry',
+        nameEn: 'Main Arch & Entry Gate',
+        nameTe: 'ప్రధాన ప్రవేశ ద్వారం',
+        category: 'entry',
+        lat: 13.644700,
+        lng: 79.395000,
+        svgX: 270,
+        svgY: 260,
+        descEn: 'Main entrance gate leading into premises.',
+        descTe: 'ప్రధాన ప్రవేశ ద్వారం.'
+      },
+      {
+        id: 'sanctum',
+        nameEn: 'Plantain Leaf Sanctum / Main Point',
+        nameTe: 'plantain-leaf ప్రధాన స్థలం',
+        category: 'sanctum',
+        lat: 13.645000,
+        lng: 79.395000,
+        svgX: 270,
+        svgY: 130,
+        descEn: 'Main shrine and central point of interest.',
+        descTe: 'ముఖ్య దివ్య స్థల ప్రవేశం మరియు దర్శనం.'
+      },
+      {
+        id: 'info',
+        nameEn: 'Information & Utility Desk',
+        nameTe: 'సమాచార విభాగం & తాగునీరు',
+        category: 'info',
+        lat: 13.645400,
+        lng: 79.395400,
+        svgX: 390,
+        svgY: 150,
+        descEn: 'Information counter and RO drinking water point.',
+        descTe: 'సమాచార కేంద్రం మరియు తాగునీటి సదుపాయం.'
+      }
+    ],
+    routeSteps: [
+      {
+        stepNumber: 1,
+        titleEn: 'Arrival & Parking',
+        titleTe: 'పార్కింగ్ చేరుకోవడం',
+        distance: '0.0 km',
+        timeMins: 0,
+        descEn: 'Park vehicle near designated parking area.',
+        descTe: 'వాహనాన్ని నిర్ణీత స్థలంలో పార్క్ చేయండి.'
+      },
+      {
+        stepNumber: 2,
+        titleEn: 'Main Entry & Footwear Deposit',
+        titleTe: 'ప్రవేశం & పాదరక్షలు',
+        distance: '40m',
+        timeMins: 2,
+        descEn: 'Proceed to entrance and deposit shoes if applicable.',
+        descTe: 'ప్రధాన ద్వారం వద్దకు చేరుకోండి.'
+      },
+      {
+        stepNumber: 3,
+        titleEn: 'Main Sanctum & Visitor Experience',
+        titleTe: 'ప్రధాన దర్శనం',
+        distance: '60m',
+        timeMins: 10,
+        descEn: 'Experience the main shrine and serene surroundings.',
+        descTe: 'ముఖ్య స్థలాన్ని దర్శించి ఆనందించండి.'
+      }
+    ],
+    emergencyContacts: [
+      { titleEn: 'Saarthi Helpline', titleTe: 'సారథి హెల్ప్‌లైన్', number: '08772264555' },
+      { titleEn: 'Emergency Services', titleTe: 'అత్యవసర సేవల హెల్ప్‌లైన్', number: '112' }
+    ]
+  },
+
+  'pai-viceroy': {
+    placeId: 'pai-viceroy',
+    titleEn: 'Pai Viceroy Precinct Map',
+    titleTe: 'pai-viceroy ప్రాంగణ మ్యాప్',
+    layoutType: 'shopping-market',
+    centerCoordinates: { lat: 13.629, lng: 79.421 },
+    defaultZoom: 18,
+    compassBearingDeg: 0,
+    sanctumNameEn: 'Pai Viceroy Sanctum & Main Area',
+    sanctumNameTe: 'pai-viceroy ప్రధాన స్థలం',
+    routePath: [[430, 275], [130, 250], [270, 260], [270, 130], [390, 150], [380, 210]],
+    pins: [
+      {
+        id: 'parking',
+        nameEn: 'Visitor & Vehicle Parking Bay',
+        nameTe: 'వాహనాల పార్కింగ్ స్థలం',
+        category: 'parking',
+        lat: 13.628400,
+        lng: 79.421600,
+        svgX: 430,
+        svgY: 275,
+        descEn: 'Designated parking for cars, bikes, and visitor vehicles near main entry.',
+        descTe: 'వాహనాల పార్కింగ్ ప్రదేశం.'
+      },
+      {
+        id: 'footwear',
+        nameEn: 'Free Footwear Stand & Holding Area',
+        nameTe: 'ఉచిత పాదరక్షల భద్రతా కేంద్రం',
+        category: 'footwear',
+        lat: 13.628600,
+        lng: 79.420600,
+        svgX: 130,
+        svgY: 250,
+        descEn: 'Footwear deposit counter and visitor holding area.',
+        descTe: 'ఉచిత పాదరక్షల కేంద్రం.'
+      },
+      {
+        id: 'entry',
+        nameEn: 'Main Arch & Entry Gate',
+        nameTe: 'ప్రధాన ప్రవేశ ద్వారం',
+        category: 'entry',
+        lat: 13.628700,
+        lng: 79.421000,
+        svgX: 270,
+        svgY: 260,
+        descEn: 'Main entrance gate leading into premises.',
+        descTe: 'ప్రధాన ప్రవేశ ద్వారం.'
+      },
+      {
+        id: 'sanctum',
+        nameEn: 'Pai Viceroy Sanctum / Main Point',
+        nameTe: 'pai-viceroy ప్రధాన స్థలం',
+        category: 'sanctum',
+        lat: 13.629000,
+        lng: 79.421000,
+        svgX: 270,
+        svgY: 130,
+        descEn: 'Main shrine and central point of interest.',
+        descTe: 'ముఖ్య దివ్య స్థల ప్రవేశం మరియు దర్శనం.'
+      },
+      {
+        id: 'info',
+        nameEn: 'Information & Utility Desk',
+        nameTe: 'సమాచార విభాగం & తాగునీరు',
+        category: 'info',
+        lat: 13.629400,
+        lng: 79.421400,
+        svgX: 390,
+        svgY: 150,
+        descEn: 'Information counter and RO drinking water point.',
+        descTe: 'సమాచార కేంద్రం మరియు తాగునీటి సదుపాయం.'
+      }
+    ],
+    routeSteps: [
+      {
+        stepNumber: 1,
+        titleEn: 'Arrival & Parking',
+        titleTe: 'పార్కింగ్ చేరుకోవడం',
+        distance: '0.0 km',
+        timeMins: 0,
+        descEn: 'Park vehicle near designated parking area.',
+        descTe: 'వాహనాన్ని నిర్ణీత స్థలంలో పార్క్ చేయండి.'
+      },
+      {
+        stepNumber: 2,
+        titleEn: 'Main Entry & Footwear Deposit',
+        titleTe: 'ప్రవేశం & పాదరక్షలు',
+        distance: '40m',
+        timeMins: 2,
+        descEn: 'Proceed to entrance and deposit shoes if applicable.',
+        descTe: 'ప్రధాన ద్వారం వద్దకు చేరుకోండి.'
+      },
+      {
+        stepNumber: 3,
+        titleEn: 'Main Sanctum & Visitor Experience',
+        titleTe: 'ప్రధాన దర్శనం',
+        distance: '60m',
+        timeMins: 10,
+        descEn: 'Experience the main shrine and serene surroundings.',
+        descTe: 'ముఖ్య స్థలాన్ని దర్శించి ఆనందించండి.'
+      }
+    ],
+    emergencyContacts: [
+      { titleEn: 'Saarthi Helpline', titleTe: 'సారథి హెల్ప్‌లైన్', number: '08772264555' },
+      { titleEn: 'Emergency Services', titleTe: 'అత్యవసర సేవల హెల్ప్‌లైన్', number: '112' }
+    ]
+  },
+
+  'hotel-bliss': {
+    placeId: 'hotel-bliss',
+    titleEn: 'Hotel Bliss Precinct Map',
+    titleTe: 'hotel-bliss ప్రాంగణ మ్యాప్',
+    layoutType: 'shopping-market',
+    centerCoordinates: { lat: 13.634, lng: 79.408 },
+    defaultZoom: 18,
+    compassBearingDeg: 0,
+    sanctumNameEn: 'Hotel Bliss Sanctum & Main Area',
+    sanctumNameTe: 'hotel-bliss ప్రధాన స్థలం',
+    routePath: [[430, 275], [130, 250], [270, 260], [270, 130], [390, 150], [380, 210]],
+    pins: [
+      {
+        id: 'parking',
+        nameEn: 'Visitor & Vehicle Parking Bay',
+        nameTe: 'వాహనాల పార్కింగ్ స్థలం',
+        category: 'parking',
+        lat: 13.633400,
+        lng: 79.408600,
+        svgX: 430,
+        svgY: 275,
+        descEn: 'Designated parking for cars, bikes, and visitor vehicles near main entry.',
+        descTe: 'వాహనాల పార్కింగ్ ప్రదేశం.'
+      },
+      {
+        id: 'footwear',
+        nameEn: 'Free Footwear Stand & Holding Area',
+        nameTe: 'ఉచిత పాదరక్షల భద్రతా కేంద్రం',
+        category: 'footwear',
+        lat: 13.633600,
+        lng: 79.407600,
+        svgX: 130,
+        svgY: 250,
+        descEn: 'Footwear deposit counter and visitor holding area.',
+        descTe: 'ఉచిత పాదరక్షల కేంద్రం.'
+      },
+      {
+        id: 'entry',
+        nameEn: 'Main Arch & Entry Gate',
+        nameTe: 'ప్రధాన ప్రవేశ ద్వారం',
+        category: 'entry',
+        lat: 13.633700,
+        lng: 79.408000,
+        svgX: 270,
+        svgY: 260,
+        descEn: 'Main entrance gate leading into premises.',
+        descTe: 'ప్రధాన ప్రవేశ ద్వారం.'
+      },
+      {
+        id: 'sanctum',
+        nameEn: 'Hotel Bliss Sanctum / Main Point',
+        nameTe: 'hotel-bliss ప్రధాన స్థలం',
+        category: 'sanctum',
+        lat: 13.634000,
+        lng: 79.408000,
+        svgX: 270,
+        svgY: 130,
+        descEn: 'Main shrine and central point of interest.',
+        descTe: 'ముఖ్య దివ్య స్థల ప్రవేశం మరియు దర్శనం.'
+      },
+      {
+        id: 'info',
+        nameEn: 'Information & Utility Desk',
+        nameTe: 'సమాచార విభాగం & తాగునీరు',
+        category: 'info',
+        lat: 13.634400,
+        lng: 79.408400,
+        svgX: 390,
+        svgY: 150,
+        descEn: 'Information counter and RO drinking water point.',
+        descTe: 'సమాచార కేంద్రం మరియు తాగునీటి సదుపాయం.'
+      }
+    ],
+    routeSteps: [
+      {
+        stepNumber: 1,
+        titleEn: 'Arrival & Parking',
+        titleTe: 'పార్కింగ్ చేరుకోవడం',
+        distance: '0.0 km',
+        timeMins: 0,
+        descEn: 'Park vehicle near designated parking area.',
+        descTe: 'వాహనాన్ని నిర్ణీత స్థలంలో పార్క్ చేయండి.'
+      },
+      {
+        stepNumber: 2,
+        titleEn: 'Main Entry & Footwear Deposit',
+        titleTe: 'ప్రవేశం & పాదరక్షలు',
+        distance: '40m',
+        timeMins: 2,
+        descEn: 'Proceed to entrance and deposit shoes if applicable.',
+        descTe: 'ప్రధాన ద్వారం వద్దకు చేరుకోండి.'
+      },
+      {
+        stepNumber: 3,
+        titleEn: 'Main Sanctum & Visitor Experience',
+        titleTe: 'ప్రధాన దర్శనం',
+        distance: '60m',
+        timeMins: 10,
+        descEn: 'Experience the main shrine and serene surroundings.',
+        descTe: 'ముఖ్య స్థలాన్ని దర్శించి ఆనందించండి.'
+      }
+    ],
+    emergencyContacts: [
+      { titleEn: 'Saarthi Helpline', titleTe: 'సారథి హెల్ప్‌లైన్', number: '08772264555' },
+      { titleEn: 'Emergency Services', titleTe: 'అత్యవసర సేవల హెల్ప్‌లైన్', number: '112' }
+    ]
+  },
+
+  'kalyan-residency-veg': {
+    placeId: 'kalyan-residency-veg',
+    titleEn: 'Kalyan Residency Veg Precinct Map',
+    titleTe: 'kalyan-residency-veg ప్రాంగణ మ్యాప్',
+    layoutType: 'shopping-market',
+    centerCoordinates: { lat: 13.63, lng: 79.418 },
+    defaultZoom: 18,
+    compassBearingDeg: 0,
+    sanctumNameEn: 'Kalyan Residency Veg Sanctum & Main Area',
+    sanctumNameTe: 'kalyan-residency-veg ప్రధాన స్థలం',
+    routePath: [[430, 275], [130, 250], [270, 260], [270, 130], [390, 150], [380, 210]],
+    pins: [
+      {
+        id: 'parking',
+        nameEn: 'Visitor & Vehicle Parking Bay',
+        nameTe: 'వాహనాల పార్కింగ్ స్థలం',
+        category: 'parking',
+        lat: 13.629400,
+        lng: 79.418600,
+        svgX: 430,
+        svgY: 275,
+        descEn: 'Designated parking for cars, bikes, and visitor vehicles near main entry.',
+        descTe: 'వాహనాల పార్కింగ్ ప్రదేశం.'
+      },
+      {
+        id: 'footwear',
+        nameEn: 'Free Footwear Stand & Holding Area',
+        nameTe: 'ఉచిత పాదరక్షల భద్రతా కేంద్రం',
+        category: 'footwear',
+        lat: 13.629600,
+        lng: 79.417600,
+        svgX: 130,
+        svgY: 250,
+        descEn: 'Footwear deposit counter and visitor holding area.',
+        descTe: 'ఉచిత పాదరక్షల కేంద్రం.'
+      },
+      {
+        id: 'entry',
+        nameEn: 'Main Arch & Entry Gate',
+        nameTe: 'ప్రధాన ప్రవేశ ద్వారం',
+        category: 'entry',
+        lat: 13.629700,
+        lng: 79.418000,
+        svgX: 270,
+        svgY: 260,
+        descEn: 'Main entrance gate leading into premises.',
+        descTe: 'ప్రధాన ప్రవేశ ద్వారం.'
+      },
+      {
+        id: 'sanctum',
+        nameEn: 'Kalyan Residency Veg Sanctum / Main Point',
+        nameTe: 'kalyan-residency-veg ప్రధాన స్థలం',
+        category: 'sanctum',
+        lat: 13.630000,
+        lng: 79.418000,
+        svgX: 270,
+        svgY: 130,
+        descEn: 'Main shrine and central point of interest.',
+        descTe: 'ముఖ్య దివ్య స్థల ప్రవేశం మరియు దర్శనం.'
+      },
+      {
+        id: 'info',
+        nameEn: 'Information & Utility Desk',
+        nameTe: 'సమాచార విభాగం & తాగునీరు',
+        category: 'info',
+        lat: 13.630400,
+        lng: 79.418400,
+        svgX: 390,
+        svgY: 150,
+        descEn: 'Information counter and RO drinking water point.',
+        descTe: 'సమాచార కేంద్రం మరియు తాగునీటి సదుపాయం.'
+      }
+    ],
+    routeSteps: [
+      {
+        stepNumber: 1,
+        titleEn: 'Arrival & Parking',
+        titleTe: 'పార్కింగ్ చేరుకోవడం',
+        distance: '0.0 km',
+        timeMins: 0,
+        descEn: 'Park vehicle near designated parking area.',
+        descTe: 'వాహనాన్ని నిర్ణీత స్థలంలో పార్క్ చేయండి.'
+      },
+      {
+        stepNumber: 2,
+        titleEn: 'Main Entry & Footwear Deposit',
+        titleTe: 'ప్రవేశం & పాదరక్షలు',
+        distance: '40m',
+        timeMins: 2,
+        descEn: 'Proceed to entrance and deposit shoes if applicable.',
+        descTe: 'ప్రధాన ద్వారం వద్దకు చేరుకోండి.'
+      },
+      {
+        stepNumber: 3,
+        titleEn: 'Main Sanctum & Visitor Experience',
+        titleTe: 'ప్రధాన దర్శనం',
+        distance: '60m',
+        timeMins: 10,
+        descEn: 'Experience the main shrine and serene surroundings.',
+        descTe: 'ముఖ్య స్థలాన్ని దర్శించి ఆనందించండి.'
+      }
+    ],
+    emergencyContacts: [
+      { titleEn: 'Saarthi Helpline', titleTe: 'సారథి హెల్ప్‌లైన్', number: '08772264555' },
+      { titleEn: 'Emergency Services', titleTe: 'అత్యవసర సేవల హెల్ప్‌లైన్', number: '112' }
+    ]
+  },
+
+  'srivari-food-court': {
+    placeId: 'srivari-food-court',
+    titleEn: 'Srivari Brahmotsavam Food Court Precinct Map',
+    titleTe: 'srivari-food-court ప్రాంగణ మ్యాప్',
+    layoutType: 'shopping-market',
+    centerCoordinates: { lat: 13.6835, lng: 79.3495 },
+    defaultZoom: 18,
+    compassBearingDeg: 0,
+    sanctumNameEn: 'Srivari Brahmotsavam Food Court Sanctum & Main Area',
+    sanctumNameTe: 'srivari-food-court ప్రధాన స్థలం',
+    routePath: [[430, 275], [130, 250], [270, 260], [270, 130], [390, 150], [380, 210]],
+    pins: [
+      {
+        id: 'parking',
+        nameEn: 'Visitor & Vehicle Parking Bay',
+        nameTe: 'వాహనాల పార్కింగ్ స్థలం',
+        category: 'parking',
+        lat: 13.682900,
+        lng: 79.350100,
+        svgX: 430,
+        svgY: 275,
+        descEn: 'Designated parking for cars, bikes, and visitor vehicles near main entry.',
+        descTe: 'వాహనాల పార్కింగ్ ప్రదేశం.'
+      },
+      {
+        id: 'footwear',
+        nameEn: 'Free Footwear Stand & Holding Area',
+        nameTe: 'ఉచిత పాదరక్షల భద్రతా కేంద్రం',
+        category: 'footwear',
+        lat: 13.683100,
+        lng: 79.349100,
+        svgX: 130,
+        svgY: 250,
+        descEn: 'Footwear deposit counter and visitor holding area.',
+        descTe: 'ఉచిత పాదరక్షల కేంద్రం.'
+      },
+      {
+        id: 'entry',
+        nameEn: 'Main Arch & Entry Gate',
+        nameTe: 'ప్రధాన ప్రవేశ ద్వారం',
+        category: 'entry',
+        lat: 13.683200,
+        lng: 79.349500,
+        svgX: 270,
+        svgY: 260,
+        descEn: 'Main entrance gate leading into premises.',
+        descTe: 'ప్రధాన ప్రవేశ ద్వారం.'
+      },
+      {
+        id: 'sanctum',
+        nameEn: 'Srivari Brahmotsavam Food Court Sanctum / Main Point',
+        nameTe: 'srivari-food-court ప్రధాన స్థలం',
+        category: 'sanctum',
+        lat: 13.683500,
+        lng: 79.349500,
+        svgX: 270,
+        svgY: 130,
+        descEn: 'Main shrine and central point of interest.',
+        descTe: 'ముఖ్య దివ్య స్థల ప్రవేశం మరియు దర్శనం.'
+      },
+      {
+        id: 'info',
+        nameEn: 'Information & Utility Desk',
+        nameTe: 'సమాచార విభాగం & తాగునీరు',
+        category: 'info',
+        lat: 13.683900,
+        lng: 79.349900,
+        svgX: 390,
+        svgY: 150,
+        descEn: 'Information counter and RO drinking water point.',
+        descTe: 'సమాచార కేంద్రం మరియు తాగునీటి సదుపాయం.'
+      }
+    ],
+    routeSteps: [
+      {
+        stepNumber: 1,
+        titleEn: 'Arrival & Parking',
+        titleTe: 'పార్కింగ్ చేరుకోవడం',
+        distance: '0.0 km',
+        timeMins: 0,
+        descEn: 'Park vehicle near designated parking area.',
+        descTe: 'వాహనాన్ని నిర్ణీత స్థలంలో పార్క్ చేయండి.'
+      },
+      {
+        stepNumber: 2,
+        titleEn: 'Main Entry & Footwear Deposit',
+        titleTe: 'ప్రవేశం & పాదరక్షలు',
+        distance: '40m',
+        timeMins: 2,
+        descEn: 'Proceed to entrance and deposit shoes if applicable.',
+        descTe: 'ప్రధాన ద్వారం వద్దకు చేరుకోండి.'
+      },
+      {
+        stepNumber: 3,
+        titleEn: 'Main Sanctum & Visitor Experience',
+        titleTe: 'ప్రధాన దర్శనం',
+        distance: '60m',
+        timeMins: 10,
+        descEn: 'Experience the main shrine and serene surroundings.',
+        descTe: 'ముఖ్య స్థలాన్ని దర్శించి ఆనందించండి.'
+      }
+    ],
+    emergencyContacts: [
+      { titleEn: 'Saarthi Helpline', titleTe: 'సారథి హెల్ప్‌లైన్', number: '08772264555' },
+      { titleEn: 'Emergency Services', titleTe: 'అత్యవసర సేవల హెల్ప్‌లైన్', number: '112' }
+    ]
+  },
+
+  'jalpaan': {
+    placeId: 'jalpaan',
+    titleEn: 'Jalpaan Precinct Map',
+    titleTe: 'jalpaan ప్రాంగణ మ్యాప్',
+    layoutType: 'shopping-market',
+    centerCoordinates: { lat: 13.6315, lng: 79.417 },
+    defaultZoom: 18,
+    compassBearingDeg: 0,
+    sanctumNameEn: 'Jalpaan Sanctum & Main Area',
+    sanctumNameTe: 'jalpaan ప్రధాన స్థలం',
+    routePath: [[430, 275], [130, 250], [270, 260], [270, 130], [390, 150], [380, 210]],
+    pins: [
+      {
+        id: 'parking',
+        nameEn: 'Visitor & Vehicle Parking Bay',
+        nameTe: 'వాహనాల పార్కింగ్ స్థలం',
+        category: 'parking',
+        lat: 13.630900,
+        lng: 79.417600,
+        svgX: 430,
+        svgY: 275,
+        descEn: 'Designated parking for cars, bikes, and visitor vehicles near main entry.',
+        descTe: 'వాహనాల పార్కింగ్ ప్రదేశం.'
+      },
+      {
+        id: 'footwear',
+        nameEn: 'Free Footwear Stand & Holding Area',
+        nameTe: 'ఉచిత పాదరక్షల భద్రతా కేంద్రం',
+        category: 'footwear',
+        lat: 13.631100,
+        lng: 79.416600,
+        svgX: 130,
+        svgY: 250,
+        descEn: 'Footwear deposit counter and visitor holding area.',
+        descTe: 'ఉచిత పాదరక్షల కేంద్రం.'
+      },
+      {
+        id: 'entry',
+        nameEn: 'Main Arch & Entry Gate',
+        nameTe: 'ప్రధాన ప్రవేశ ద్వారం',
+        category: 'entry',
+        lat: 13.631200,
+        lng: 79.417000,
+        svgX: 270,
+        svgY: 260,
+        descEn: 'Main entrance gate leading into premises.',
+        descTe: 'ప్రధాన ప్రవేశ ద్వారం.'
+      },
+      {
+        id: 'sanctum',
+        nameEn: 'Jalpaan Sanctum / Main Point',
+        nameTe: 'jalpaan ప్రధాన స్థలం',
+        category: 'sanctum',
+        lat: 13.631500,
+        lng: 79.417000,
+        svgX: 270,
+        svgY: 130,
+        descEn: 'Main shrine and central point of interest.',
+        descTe: 'ముఖ్య దివ్య స్థల ప్రవేశం మరియు దర్శనం.'
+      },
+      {
+        id: 'info',
+        nameEn: 'Information & Utility Desk',
+        nameTe: 'సమాచార విభాగం & తాగునీరు',
+        category: 'info',
+        lat: 13.631900,
+        lng: 79.417400,
+        svgX: 390,
+        svgY: 150,
+        descEn: 'Information counter and RO drinking water point.',
+        descTe: 'సమాచార కేంద్రం మరియు తాగునీటి సదుపాయం.'
+      }
+    ],
+    routeSteps: [
+      {
+        stepNumber: 1,
+        titleEn: 'Arrival & Parking',
+        titleTe: 'పార్కింగ్ చేరుకోవడం',
+        distance: '0.0 km',
+        timeMins: 0,
+        descEn: 'Park vehicle near designated parking area.',
+        descTe: 'వాహనాన్ని నిర్ణీత స్థలంలో పార్క్ చేయండి.'
+      },
+      {
+        stepNumber: 2,
+        titleEn: 'Main Entry & Footwear Deposit',
+        titleTe: 'ప్రవేశం & పాదరక్షలు',
+        distance: '40m',
+        timeMins: 2,
+        descEn: 'Proceed to entrance and deposit shoes if applicable.',
+        descTe: 'ప్రధాన ద్వారం వద్దకు చేరుకోండి.'
+      },
+      {
+        stepNumber: 3,
+        titleEn: 'Main Sanctum & Visitor Experience',
+        titleTe: 'ప్రధాన దర్శనం',
+        distance: '60m',
+        timeMins: 10,
+        descEn: 'Experience the main shrine and serene surroundings.',
+        descTe: 'ముఖ్య స్థలాన్ని దర్శించి ఆనందించండి.'
+      }
+    ],
+    emergencyContacts: [
+      { titleEn: 'Saarthi Helpline', titleTe: 'సారథి హెల్ప్‌లైన్', number: '08772264555' },
+      { titleEn: 'Emergency Services', titleTe: 'అత్యవసర సేవల హెల్ప్‌లైన్', number: '112' }
+    ]
+  },
+
+  'sri-krishna-sweets': {
+    placeId: 'sri-krishna-sweets',
+    titleEn: 'Sri Krishna Sweets Precinct Map',
+    titleTe: 'sri-krishna-sweets ప్రాంగణ మ్యాప్',
+    layoutType: 'shopping-market',
+    centerCoordinates: { lat: 13.6305, lng: 79.4195 },
+    defaultZoom: 18,
+    compassBearingDeg: 0,
+    sanctumNameEn: 'Sri Krishna Sweets Sanctum & Main Area',
+    sanctumNameTe: 'sri-krishna-sweets ప్రధాన స్థలం',
+    routePath: [[430, 275], [130, 250], [270, 260], [270, 130], [390, 150], [380, 210]],
+    pins: [
+      {
+        id: 'parking',
+        nameEn: 'Visitor & Vehicle Parking Bay',
+        nameTe: 'వాహనాల పార్కింగ్ స్థలం',
+        category: 'parking',
+        lat: 13.629900,
+        lng: 79.420100,
+        svgX: 430,
+        svgY: 275,
+        descEn: 'Designated parking for cars, bikes, and visitor vehicles near main entry.',
+        descTe: 'వాహనాల పార్కింగ్ ప్రదేశం.'
+      },
+      {
+        id: 'footwear',
+        nameEn: 'Free Footwear Stand & Holding Area',
+        nameTe: 'ఉచిత పాదరక్షల భద్రతా కేంద్రం',
+        category: 'footwear',
+        lat: 13.630100,
+        lng: 79.419100,
+        svgX: 130,
+        svgY: 250,
+        descEn: 'Footwear deposit counter and visitor holding area.',
+        descTe: 'ఉచిత పాదరక్షల కేంద్రం.'
+      },
+      {
+        id: 'entry',
+        nameEn: 'Main Arch & Entry Gate',
+        nameTe: 'ప్రధాన ప్రవేశ ద్వారం',
+        category: 'entry',
+        lat: 13.630200,
+        lng: 79.419500,
+        svgX: 270,
+        svgY: 260,
+        descEn: 'Main entrance gate leading into premises.',
+        descTe: 'ప్రధాన ప్రవేశ ద్వారం.'
+      },
+      {
+        id: 'sanctum',
+        nameEn: 'Sri Krishna Sweets Sanctum / Main Point',
+        nameTe: 'sri-krishna-sweets ప్రధాన స్థలం',
+        category: 'sanctum',
+        lat: 13.630500,
+        lng: 79.419500,
+        svgX: 270,
+        svgY: 130,
+        descEn: 'Main shrine and central point of interest.',
+        descTe: 'ముఖ్య దివ్య స్థల ప్రవేశం మరియు దర్శనం.'
+      },
+      {
+        id: 'info',
+        nameEn: 'Information & Utility Desk',
+        nameTe: 'సమాచార విభాగం & తాగునీరు',
+        category: 'info',
+        lat: 13.630900,
+        lng: 79.419900,
+        svgX: 390,
+        svgY: 150,
+        descEn: 'Information counter and RO drinking water point.',
+        descTe: 'సమాచార కేంద్రం మరియు తాగునీటి సదుపాయం.'
+      }
+    ],
+    routeSteps: [
+      {
+        stepNumber: 1,
+        titleEn: 'Arrival & Parking',
+        titleTe: 'పార్కింగ్ చేరుకోవడం',
+        distance: '0.0 km',
+        timeMins: 0,
+        descEn: 'Park vehicle near designated parking area.',
+        descTe: 'వాహనాన్ని నిర్ణీత స్థలంలో పార్క్ చేయండి.'
+      },
+      {
+        stepNumber: 2,
+        titleEn: 'Main Entry & Footwear Deposit',
+        titleTe: 'ప్రవేశం & పాదరక్షలు',
+        distance: '40m',
+        timeMins: 2,
+        descEn: 'Proceed to entrance and deposit shoes if applicable.',
+        descTe: 'ప్రధాన ద్వారం వద్దకు చేరుకోండి.'
+      },
+      {
+        stepNumber: 3,
+        titleEn: 'Main Sanctum & Visitor Experience',
+        titleTe: 'ప్రధాన దర్శనం',
+        distance: '60m',
+        timeMins: 10,
+        descEn: 'Experience the main shrine and serene surroundings.',
+        descTe: 'ముఖ్య స్థలాన్ని దర్శించి ఆనందించండి.'
+      }
+    ],
+    emergencyContacts: [
+      { titleEn: 'Saarthi Helpline', titleTe: 'సారథి హెల్ప్‌లైన్', number: '08772264555' },
+      { titleEn: 'Emergency Services', titleTe: 'అత్యవసర సేవల హెల్ప్‌లైన్', number: '112' }
+    ]
+  },
+
+  'tada-falls': {
+    placeId: 'tada-falls',
+    titleEn: 'Tada Falls (Ubbalamadugu) Precinct Map',
+    titleTe: 'tada-falls ప్రాంగణ మ్యాప్',
+    layoutType: 'hill-waterfall',
+    centerCoordinates: { lat: 13.6140701, lng: 79.8432711 },
+    defaultZoom: 18,
+    compassBearingDeg: 0,
+    sanctumNameEn: 'Tada Falls (Ubbalamadugu) Sanctum & Main Area',
+    sanctumNameTe: 'tada-falls ప్రధాన స్థలం',
+    routePath: [[430, 275], [130, 250], [270, 260], [270, 130], [390, 150], [380, 210]],
+    pins: [
+      {
+        id: 'parking',
+        nameEn: 'Visitor & Vehicle Parking Bay',
+        nameTe: 'వాహనాల పార్కింగ్ స్థలం',
+        category: 'parking',
+        lat: 13.613470,
+        lng: 79.843871,
+        svgX: 430,
+        svgY: 275,
+        descEn: 'Designated parking for cars, bikes, and visitor vehicles near main entry.',
+        descTe: 'వాహనాల పార్కింగ్ ప్రదేశం.'
+      },
+      {
+        id: 'footwear',
+        nameEn: 'Free Footwear Stand & Holding Area',
+        nameTe: 'ఉచిత పాదరక్షల భద్రతా కేంద్రం',
+        category: 'footwear',
+        lat: 13.613670,
+        lng: 79.842871,
+        svgX: 130,
+        svgY: 250,
+        descEn: 'Footwear deposit counter and visitor holding area.',
+        descTe: 'ఉచిత పాదరక్షల కేంద్రం.'
+      },
+      {
+        id: 'entry',
+        nameEn: 'Main Arch & Entry Gate',
+        nameTe: 'ప్రధాన ప్రవేశ ద్వారం',
+        category: 'entry',
+        lat: 13.613770,
+        lng: 79.843271,
+        svgX: 270,
+        svgY: 260,
+        descEn: 'Main entrance gate leading into premises.',
+        descTe: 'ప్రధాన ప్రవేశ ద్వారం.'
+      },
+      {
+        id: 'sanctum',
+        nameEn: 'Tada Falls (Ubbalamadugu) Sanctum / Main Point',
+        nameTe: 'tada-falls ప్రధాన స్థలం',
+        category: 'sanctum',
+        lat: 13.614070,
+        lng: 79.843271,
+        svgX: 270,
+        svgY: 130,
+        descEn: 'Main shrine and central point of interest.',
+        descTe: 'ముఖ్య దివ్య స్థల ప్రవేశం మరియు దర్శనం.'
+      },
+      {
+        id: 'info',
+        nameEn: 'Information & Utility Desk',
+        nameTe: 'సమాచార విభాగం & తాగునీరు',
+        category: 'info',
+        lat: 13.614470,
+        lng: 79.843671,
+        svgX: 390,
+        svgY: 150,
+        descEn: 'Information counter and RO drinking water point.',
+        descTe: 'సమాచార కేంద్రం మరియు తాగునీటి సదుపాయం.'
+      }
+    ],
+    routeSteps: [
+      {
+        stepNumber: 1,
+        titleEn: 'Arrival & Parking',
+        titleTe: 'పార్కింగ్ చేరుకోవడం',
+        distance: '0.0 km',
+        timeMins: 0,
+        descEn: 'Park vehicle near designated parking area.',
+        descTe: 'వాహనాన్ని నిర్ణీత స్థలంలో పార్క్ చేయండి.'
+      },
+      {
+        stepNumber: 2,
+        titleEn: 'Main Entry & Footwear Deposit',
+        titleTe: 'ప్రవేశం & పాదరక్షలు',
+        distance: '40m',
+        timeMins: 2,
+        descEn: 'Proceed to entrance and deposit shoes if applicable.',
+        descTe: 'ప్రధాన ద్వారం వద్దకు చేరుకోండి.'
+      },
+      {
+        stepNumber: 3,
+        titleEn: 'Main Sanctum & Visitor Experience',
+        titleTe: 'ప్రధాన దర్శనం',
+        distance: '60m',
+        timeMins: 10,
+        descEn: 'Experience the main shrine and serene surroundings.',
+        descTe: 'ముఖ్య స్థలాన్ని దర్శించి ఆనందించండి.'
+      }
+    ],
+    emergencyContacts: [
+      { titleEn: 'Saarthi Helpline', titleTe: 'సారథి హెల్ప్‌లైన్', number: '08772264555' },
+      { titleEn: 'Emergency Services', titleTe: 'అత్యవసర సేవల హెల్ప్‌లైన్', number: '112' }
+    ]
+  },
+
+  'dhyana-vignan-mandiram': {
+    placeId: 'dhyana-vignan-mandiram',
+    titleEn: 'Sri Venkateswara Dhyana Vignan Mandiram Precinct Map',
+    titleTe: 'dhyana-vignan-mandiram ప్రాంగణ మ్యాప్',
+    layoutType: 'city-shrine',
+    centerCoordinates: { lat: 13.680238, lng: 79.346987 },
+    defaultZoom: 18,
+    compassBearingDeg: 0,
+    sanctumNameEn: 'Sri Venkateswara Dhyana Vignan Mandiram Sanctum & Main Area',
+    sanctumNameTe: 'dhyana-vignan-mandiram ప్రధాన స్థలం',
+    routePath: [[430, 275], [130, 250], [270, 260], [270, 130], [390, 150], [380, 210]],
+    pins: [
+      {
+        id: 'parking',
+        nameEn: 'Visitor & Vehicle Parking Bay',
+        nameTe: 'వాహనాల పార్కింగ్ స్థలం',
+        category: 'parking',
+        lat: 13.679638,
+        lng: 79.347587,
+        svgX: 430,
+        svgY: 275,
+        descEn: 'Designated parking for cars, bikes, and visitor vehicles near main entry.',
+        descTe: 'వాహనాల పార్కింగ్ ప్రదేశం.'
+      },
+      {
+        id: 'footwear',
+        nameEn: 'Free Footwear Stand & Holding Area',
+        nameTe: 'ఉచిత పాదరక్షల భద్రతా కేంద్రం',
+        category: 'footwear',
+        lat: 13.679838,
+        lng: 79.346587,
+        svgX: 130,
+        svgY: 250,
+        descEn: 'Footwear deposit counter and visitor holding area.',
+        descTe: 'ఉచిత పాదరక్షల కేంద్రం.'
+      },
+      {
+        id: 'entry',
+        nameEn: 'Main Arch & Entry Gate',
+        nameTe: 'ప్రధాన ప్రవేశ ద్వారం',
+        category: 'entry',
+        lat: 13.679938,
+        lng: 79.346987,
+        svgX: 270,
+        svgY: 260,
+        descEn: 'Main entrance gate leading into premises.',
+        descTe: 'ప్రధాన ప్రవేశ ద్వారం.'
+      },
+      {
+        id: 'sanctum',
+        nameEn: 'Sri Venkateswara Dhyana Vignan Mandiram Sanctum / Main Point',
+        nameTe: 'dhyana-vignan-mandiram ప్రధాన స్థలం',
+        category: 'sanctum',
+        lat: 13.680238,
+        lng: 79.346987,
+        svgX: 270,
+        svgY: 130,
+        descEn: 'Main shrine and central point of interest.',
+        descTe: 'ముఖ్య దివ్య స్థల ప్రవేశం మరియు దర్శనం.'
+      },
+      {
+        id: 'info',
+        nameEn: 'Information & Utility Desk',
+        nameTe: 'సమాచార విభాగం & తాగునీరు',
+        category: 'info',
+        lat: 13.680638,
+        lng: 79.347387,
+        svgX: 390,
+        svgY: 150,
+        descEn: 'Information counter and RO drinking water point.',
+        descTe: 'సమాచార కేంద్రం మరియు తాగునీటి సదుపాయం.'
+      }
+    ],
+    routeSteps: [
+      {
+        stepNumber: 1,
+        titleEn: 'Arrival & Parking',
+        titleTe: 'పార్కింగ్ చేరుకోవడం',
+        distance: '0.0 km',
+        timeMins: 0,
+        descEn: 'Park vehicle near designated parking area.',
+        descTe: 'వాహనాన్ని నిర్ణీత స్థలంలో పార్క్ చేయండి.'
+      },
+      {
+        stepNumber: 2,
+        titleEn: 'Main Entry & Footwear Deposit',
+        titleTe: 'ప్రవేశం & పాదరక్షలు',
+        distance: '40m',
+        timeMins: 2,
+        descEn: 'Proceed to entrance and deposit shoes if applicable.',
+        descTe: 'ప్రధాన ద్వారం వద్దకు చేరుకోండి.'
+      },
+      {
+        stepNumber: 3,
+        titleEn: 'Main Sanctum & Visitor Experience',
+        titleTe: 'ప్రధాన దర్శనం',
+        distance: '60m',
+        timeMins: 10,
+        descEn: 'Experience the main shrine and serene surroundings.',
+        descTe: 'ముఖ్య స్థలాన్ని దర్శించి ఆనందించండి.'
+      }
+    ],
+    emergencyContacts: [
+      { titleEn: 'Saarthi Helpline', titleTe: 'సారథి హెల్ప్‌లైన్', number: '08772264555' },
+      { titleEn: 'Emergency Services', titleTe: 'అత్యవసర సేవల హెల్ప్‌లైన్', number: '112' }
+    ]
+  },
+
+  'parshwanath-jain-temple': {
+    placeId: 'parshwanath-jain-temple',
+    titleEn: 'Sri Brahmeshwar Parshwanath Swarna Jain Mandir Precinct Map',
+    titleTe: 'parshwanath-jain-temple ప్రాంగణ మ్యాప్',
+    layoutType: 'grand-temple',
+    centerCoordinates: { lat: 13.5614963, lng: 79.400321 },
+    defaultZoom: 18,
+    compassBearingDeg: 0,
+    sanctumNameEn: 'Sri Brahmeshwar Parshwanath Swarna Jain Mandir Sanctum & Main Area',
+    sanctumNameTe: 'parshwanath-jain-temple ప్రధాన స్థలం',
+    routePath: [[430, 275], [130, 250], [270, 260], [270, 130], [390, 150], [380, 210]],
+    pins: [
+      {
+        id: 'parking',
+        nameEn: 'Visitor & Vehicle Parking Bay',
+        nameTe: 'వాహనాల పార్కింగ్ స్థలం',
+        category: 'parking',
+        lat: 13.560896,
+        lng: 79.400921,
+        svgX: 430,
+        svgY: 275,
+        descEn: 'Designated parking for cars, bikes, and visitor vehicles near main entry.',
+        descTe: 'వాహనాల పార్కింగ్ ప్రదేశం.'
+      },
+      {
+        id: 'footwear',
+        nameEn: 'Free Footwear Stand & Holding Area',
+        nameTe: 'ఉచిత పాదరక్షల భద్రతా కేంద్రం',
+        category: 'footwear',
+        lat: 13.561096,
+        lng: 79.399921,
+        svgX: 130,
+        svgY: 250,
+        descEn: 'Footwear deposit counter and visitor holding area.',
+        descTe: 'ఉచిత పాదరక్షల కేంద్రం.'
+      },
+      {
+        id: 'entry',
+        nameEn: 'Main Arch & Entry Gate',
+        nameTe: 'ప్రధాన ప్రవేశ ద్వారం',
+        category: 'entry',
+        lat: 13.561196,
+        lng: 79.400321,
+        svgX: 270,
+        svgY: 260,
+        descEn: 'Main entrance gate leading into premises.',
+        descTe: 'ప్రధాన ప్రవేశ ద్వారం.'
+      },
+      {
+        id: 'sanctum',
+        nameEn: 'Sri Brahmeshwar Parshwanath Swarna Jain Mandir Sanctum / Main Point',
+        nameTe: 'parshwanath-jain-temple ప్రధాన స్థలం',
+        category: 'sanctum',
+        lat: 13.561496,
+        lng: 79.400321,
+        svgX: 270,
+        svgY: 130,
+        descEn: 'Main shrine and central point of interest.',
+        descTe: 'ముఖ్య దివ్య స్థల ప్రవేశం మరియు దర్శనం.'
+      },
+      {
+        id: 'info',
+        nameEn: 'Information & Utility Desk',
+        nameTe: 'సమాచార విభాగం & తాగునీరు',
+        category: 'info',
+        lat: 13.561896,
+        lng: 79.400721,
+        svgX: 390,
+        svgY: 150,
+        descEn: 'Information counter and RO drinking water point.',
+        descTe: 'సమాచార కేంద్రం మరియు తాగునీటి సదుపాయం.'
+      }
+    ],
+    routeSteps: [
+      {
+        stepNumber: 1,
+        titleEn: 'Arrival & Parking',
+        titleTe: 'పార్కింగ్ చేరుకోవడం',
+        distance: '0.0 km',
+        timeMins: 0,
+        descEn: 'Park vehicle near designated parking area.',
+        descTe: 'వాహనాన్ని నిర్ణీత స్థలంలో పార్క్ చేయండి.'
+      },
+      {
+        stepNumber: 2,
+        titleEn: 'Main Entry & Footwear Deposit',
+        titleTe: 'ప్రవేశం & పాదరక్షలు',
+        distance: '40m',
+        timeMins: 2,
+        descEn: 'Proceed to entrance and deposit shoes if applicable.',
+        descTe: 'ప్రధాన ద్వారం వద్దకు చేరుకోండి.'
+      },
+      {
+        stepNumber: 3,
+        titleEn: 'Main Sanctum & Visitor Experience',
+        titleTe: 'ప్రధాన దర్శనం',
+        distance: '60m',
+        timeMins: 10,
+        descEn: 'Experience the main shrine and serene surroundings.',
+        descTe: 'ముఖ్య స్థలాన్ని దర్శించి ఆనందించండి.'
+      }
+    ],
+    emergencyContacts: [
+      { titleEn: 'Saarthi Helpline', titleTe: 'సారథి హెల్ప్‌లైన్', number: '08772264555' },
+      { titleEn: 'Emergency Services', titleTe: 'అత్యవసర సేవల హెల్ప్‌లైన్', number: '112' }
+    ]
+  },
+
+  'veshalamma-temple': {
+    placeId: 'veshalamma-temple',
+    titleEn: 'Sri Veshalamma Temple Precinct Map',
+    titleTe: 'veshalamma-temple ప్రాంగణ మ్యాప్',
+    layoutType: 'grand-temple',
+    centerCoordinates: { lat: 13.6296781, lng: 79.4130316 },
+    defaultZoom: 18,
+    compassBearingDeg: 0,
+    sanctumNameEn: 'Sri Veshalamma Temple Sanctum & Main Area',
+    sanctumNameTe: 'veshalamma-temple ప్రధాన స్థలం',
+    routePath: [[430, 275], [130, 250], [270, 260], [270, 130], [390, 150], [380, 210]],
+    pins: [
+      {
+        id: 'parking',
+        nameEn: 'Visitor & Vehicle Parking Bay',
+        nameTe: 'వాహనాల పార్కింగ్ స్థలం',
+        category: 'parking',
+        lat: 13.629078,
+        lng: 79.413632,
+        svgX: 430,
+        svgY: 275,
+        descEn: 'Designated parking for cars, bikes, and visitor vehicles near main entry.',
+        descTe: 'వాహనాల పార్కింగ్ ప్రదేశం.'
+      },
+      {
+        id: 'footwear',
+        nameEn: 'Free Footwear Stand & Holding Area',
+        nameTe: 'ఉచిత పాదరక్షల భద్రతా కేంద్రం',
+        category: 'footwear',
+        lat: 13.629278,
+        lng: 79.412632,
+        svgX: 130,
+        svgY: 250,
+        descEn: 'Footwear deposit counter and visitor holding area.',
+        descTe: 'ఉచిత పాదరక్షల కేంద్రం.'
+      },
+      {
+        id: 'entry',
+        nameEn: 'Main Arch & Entry Gate',
+        nameTe: 'ప్రధాన ప్రవేశ ద్వారం',
+        category: 'entry',
+        lat: 13.629378,
+        lng: 79.413032,
+        svgX: 270,
+        svgY: 260,
+        descEn: 'Main entrance gate leading into premises.',
+        descTe: 'ప్రధాన ప్రవేశ ద్వారం.'
+      },
+      {
+        id: 'sanctum',
+        nameEn: 'Sri Veshalamma Temple Sanctum / Main Point',
+        nameTe: 'veshalamma-temple ప్రధాన స్థలం',
+        category: 'sanctum',
+        lat: 13.629678,
+        lng: 79.413032,
+        svgX: 270,
+        svgY: 130,
+        descEn: 'Main shrine and central point of interest.',
+        descTe: 'ముఖ్య దివ్య స్థల ప్రవేశం మరియు దర్శనం.'
+      },
+      {
+        id: 'info',
+        nameEn: 'Information & Utility Desk',
+        nameTe: 'సమాచార విభాగం & తాగునీరు',
+        category: 'info',
+        lat: 13.630078,
+        lng: 79.413432,
+        svgX: 390,
+        svgY: 150,
+        descEn: 'Information counter and RO drinking water point.',
+        descTe: 'సమాచార కేంద్రం మరియు తాగునీటి సదుపాయం.'
+      }
+    ],
+    routeSteps: [
+      {
+        stepNumber: 1,
+        titleEn: 'Arrival & Parking',
+        titleTe: 'పార్కింగ్ చేరుకోవడం',
+        distance: '0.0 km',
+        timeMins: 0,
+        descEn: 'Park vehicle near designated parking area.',
+        descTe: 'వాహనాన్ని నిర్ణీత స్థలంలో పార్క్ చేయండి.'
+      },
+      {
+        stepNumber: 2,
+        titleEn: 'Main Entry & Footwear Deposit',
+        titleTe: 'ప్రవేశం & పాదరక్షలు',
+        distance: '40m',
+        timeMins: 2,
+        descEn: 'Proceed to entrance and deposit shoes if applicable.',
+        descTe: 'ప్రధాన ద్వారం వద్దకు చేరుకోండి.'
+      },
+      {
+        stepNumber: 3,
+        titleEn: 'Main Sanctum & Visitor Experience',
+        titleTe: 'ప్రధాన దర్శనం',
+        distance: '60m',
+        timeMins: 10,
+        descEn: 'Experience the main shrine and serene surroundings.',
+        descTe: 'ముఖ్య స్థలాన్ని దర్శించి ఆనందించండి.'
+      }
+    ],
+    emergencyContacts: [
+      { titleEn: 'Saarthi Helpline', titleTe: 'సారథి హెల్ప్‌లైన్', number: '08772264555' },
+      { titleEn: 'Emergency Services', titleTe: 'అత్యవసర సేవల హెల్ప్‌లైన్', number: '112' }
+    ]
+  },
+
+  'jagannatha-temple': {
+    placeId: 'jagannatha-temple',
+    titleEn: 'Shri Jagannatha Swamy Temple Precinct Map',
+    titleTe: 'jagannatha-temple ప్రాంగణ మ్యాప్',
+    layoutType: 'grand-temple',
+    centerCoordinates: { lat: 13.6349956, lng: 79.4041733 },
+    defaultZoom: 18,
+    compassBearingDeg: 0,
+    sanctumNameEn: 'Shri Jagannatha Swamy Temple Sanctum & Main Area',
+    sanctumNameTe: 'jagannatha-temple ప్రధాన స్థలం',
+    routePath: [[430, 275], [130, 250], [270, 260], [270, 130], [390, 150], [380, 210]],
+    pins: [
+      {
+        id: 'parking',
+        nameEn: 'Visitor & Vehicle Parking Bay',
+        nameTe: 'వాహనాల పార్కింగ్ స్థలం',
+        category: 'parking',
+        lat: 13.634396,
+        lng: 79.404773,
+        svgX: 430,
+        svgY: 275,
+        descEn: 'Designated parking for cars, bikes, and visitor vehicles near main entry.',
+        descTe: 'వాహనాల పార్కింగ్ ప్రదేశం.'
+      },
+      {
+        id: 'footwear',
+        nameEn: 'Free Footwear Stand & Holding Area',
+        nameTe: 'ఉచిత పాదరక్షల భద్రతా కేంద్రం',
+        category: 'footwear',
+        lat: 13.634596,
+        lng: 79.403773,
+        svgX: 130,
+        svgY: 250,
+        descEn: 'Footwear deposit counter and visitor holding area.',
+        descTe: 'ఉచిత పాదరక్షల కేంద్రం.'
+      },
+      {
+        id: 'entry',
+        nameEn: 'Main Arch & Entry Gate',
+        nameTe: 'ప్రధాన ప్రవేశ ద్వారం',
+        category: 'entry',
+        lat: 13.634696,
+        lng: 79.404173,
+        svgX: 270,
+        svgY: 260,
+        descEn: 'Main entrance gate leading into premises.',
+        descTe: 'ప్రధాన ప్రవేశ ద్వారం.'
+      },
+      {
+        id: 'sanctum',
+        nameEn: 'Shri Jagannatha Swamy Temple Sanctum / Main Point',
+        nameTe: 'jagannatha-temple ప్రధాన స్థలం',
+        category: 'sanctum',
+        lat: 13.634996,
+        lng: 79.404173,
+        svgX: 270,
+        svgY: 130,
+        descEn: 'Main shrine and central point of interest.',
+        descTe: 'ముఖ్య దివ్య స్థల ప్రవేశం మరియు దర్శనం.'
+      },
+      {
+        id: 'info',
+        nameEn: 'Information & Utility Desk',
+        nameTe: 'సమాచార విభాగం & తాగునీరు',
+        category: 'info',
+        lat: 13.635396,
+        lng: 79.404573,
+        svgX: 390,
+        svgY: 150,
+        descEn: 'Information counter and RO drinking water point.',
+        descTe: 'సమాచార కేంద్రం మరియు తాగునీటి సదుపాయం.'
+      }
+    ],
+    routeSteps: [
+      {
+        stepNumber: 1,
+        titleEn: 'Arrival & Parking',
+        titleTe: 'పార్కింగ్ చేరుకోవడం',
+        distance: '0.0 km',
+        timeMins: 0,
+        descEn: 'Park vehicle near designated parking area.',
+        descTe: 'వాహనాన్ని నిర్ణీత స్థలంలో పార్క్ చేయండి.'
+      },
+      {
+        stepNumber: 2,
+        titleEn: 'Main Entry & Footwear Deposit',
+        titleTe: 'ప్రవేశం & పాదరక్షలు',
+        distance: '40m',
+        timeMins: 2,
+        descEn: 'Proceed to entrance and deposit shoes if applicable.',
+        descTe: 'ప్రధాన ద్వారం వద్దకు చేరుకోండి.'
+      },
+      {
+        stepNumber: 3,
+        titleEn: 'Main Sanctum & Visitor Experience',
+        titleTe: 'ప్రధాన దర్శనం',
+        distance: '60m',
+        timeMins: 10,
+        descEn: 'Experience the main shrine and serene surroundings.',
+        descTe: 'ముఖ్య స్థలాన్ని దర్శించి ఆనందించండి.'
+      }
+    ],
+    emergencyContacts: [
+      { titleEn: 'Saarthi Helpline', titleTe: 'సారథి హెల్ప్‌లైన్', number: '08772264555' },
+      { titleEn: 'Emergency Services', titleTe: 'అత్యవసర సేవల హెల్ప్‌లైన్', number: '112' }
+    ]
+  },
+
+  'pallikondeswara-surutapalli': {
+    placeId: 'pallikondeswara-surutapalli',
+    titleEn: 'Sri Pallikondeswara Swamy Temple (Surutapalli) Precinct Map',
+    titleTe: 'pallikondeswara-surutapalli ప్రాంగణ మ్యాప్',
+    layoutType: 'grand-temple',
+    centerCoordinates: { lat: 13.3344873, lng: 79.8746719 },
+    defaultZoom: 18,
+    compassBearingDeg: 0,
+    sanctumNameEn: 'Sri Pallikondeswara Swamy Temple (Surutapalli) Sanctum & Main Area',
+    sanctumNameTe: 'pallikondeswara-surutapalli ప్రధాన స్థలం',
+    routePath: [[430, 275], [130, 250], [270, 260], [270, 130], [390, 150], [380, 210]],
+    pins: [
+      {
+        id: 'parking',
+        nameEn: 'Visitor & Vehicle Parking Bay',
+        nameTe: 'వాహనాల పార్కింగ్ స్థలం',
+        category: 'parking',
+        lat: 13.333887,
+        lng: 79.875272,
+        svgX: 430,
+        svgY: 275,
+        descEn: 'Designated parking for cars, bikes, and visitor vehicles near main entry.',
+        descTe: 'వాహనాల పార్కింగ్ ప్రదేశం.'
+      },
+      {
+        id: 'footwear',
+        nameEn: 'Free Footwear Stand & Holding Area',
+        nameTe: 'ఉచిత పాదరక్షల భద్రతా కేంద్రం',
+        category: 'footwear',
+        lat: 13.334087,
+        lng: 79.874272,
+        svgX: 130,
+        svgY: 250,
+        descEn: 'Footwear deposit counter and visitor holding area.',
+        descTe: 'ఉచిత పాదరక్షల కేంద్రం.'
+      },
+      {
+        id: 'entry',
+        nameEn: 'Main Arch & Entry Gate',
+        nameTe: 'ప్రధాన ప్రవేశ ద్వారం',
+        category: 'entry',
+        lat: 13.334187,
+        lng: 79.874672,
+        svgX: 270,
+        svgY: 260,
+        descEn: 'Main entrance gate leading into premises.',
+        descTe: 'ప్రధాన ప్రవేశ ద్వారం.'
+      },
+      {
+        id: 'sanctum',
+        nameEn: 'Sri Pallikondeswara Swamy Temple (Surutapalli) Sanctum / Main Point',
+        nameTe: 'pallikondeswara-surutapalli ప్రధాన స్థలం',
+        category: 'sanctum',
+        lat: 13.334487,
+        lng: 79.874672,
+        svgX: 270,
+        svgY: 130,
+        descEn: 'Main shrine and central point of interest.',
+        descTe: 'ముఖ్య దివ్య స్థల ప్రవేశం మరియు దర్శనం.'
+      },
+      {
+        id: 'info',
+        nameEn: 'Information & Utility Desk',
+        nameTe: 'సమాచార విభాగం & తాగునీరు',
+        category: 'info',
+        lat: 13.334887,
+        lng: 79.875072,
+        svgX: 390,
+        svgY: 150,
+        descEn: 'Information counter and RO drinking water point.',
+        descTe: 'సమాచార కేంద్రం మరియు తాగునీటి సదుపాయం.'
+      }
+    ],
+    routeSteps: [
+      {
+        stepNumber: 1,
+        titleEn: 'Arrival & Parking',
+        titleTe: 'పార్కింగ్ చేరుకోవడం',
+        distance: '0.0 km',
+        timeMins: 0,
+        descEn: 'Park vehicle near designated parking area.',
+        descTe: 'వాహనాన్ని నిర్ణీత స్థలంలో పార్క్ చేయండి.'
+      },
+      {
+        stepNumber: 2,
+        titleEn: 'Main Entry & Footwear Deposit',
+        titleTe: 'ప్రవేశం & పాదరక్షలు',
+        distance: '40m',
+        timeMins: 2,
+        descEn: 'Proceed to entrance and deposit shoes if applicable.',
+        descTe: 'ప్రధాన ద్వారం వద్దకు చేరుకోండి.'
+      },
+      {
+        stepNumber: 3,
+        titleEn: 'Main Sanctum & Visitor Experience',
+        titleTe: 'ప్రధాన దర్శనం',
+        distance: '60m',
+        timeMins: 10,
+        descEn: 'Experience the main shrine and serene surroundings.',
+        descTe: 'ముఖ్య స్థలాన్ని దర్శించి ఆనందించండి.'
+      }
+    ],
+    emergencyContacts: [
+      { titleEn: 'Saarthi Helpline', titleTe: 'సారథి హెల్ప్‌లైన్', number: '08772264555' },
+      { titleEn: 'Emergency Services', titleTe: 'అత్యవసర సేవల హెల్ప్‌లైన్', number: '112' }
+    ]
+  },
+
+  'divyaramam-park': {
+    placeId: 'divyaramam-park',
+    titleEn: 'Divyaramam Park (Nagaravanam) Precinct Map',
+    titleTe: 'divyaramam-park ప్రాంగణ మ్యాప్',
+    layoutType: 'hill-waterfall',
+    centerCoordinates: { lat: 13.6515, lng: 79.412 },
+    defaultZoom: 18,
+    compassBearingDeg: 0,
+    sanctumNameEn: 'Divyaramam Park (Nagaravanam) Sanctum & Main Area',
+    sanctumNameTe: 'divyaramam-park ప్రధాన స్థలం',
+    routePath: [[430, 275], [130, 250], [270, 260], [270, 130], [390, 150], [380, 210]],
+    pins: [
+      {
+        id: 'parking',
+        nameEn: 'Visitor & Vehicle Parking Bay',
+        nameTe: 'వాహనాల పార్కింగ్ స్థలం',
+        category: 'parking',
+        lat: 13.650900,
+        lng: 79.412600,
+        svgX: 430,
+        svgY: 275,
+        descEn: 'Designated parking for cars, bikes, and visitor vehicles near main entry.',
+        descTe: 'వాహనాల పార్కింగ్ ప్రదేశం.'
+      },
+      {
+        id: 'footwear',
+        nameEn: 'Free Footwear Stand & Holding Area',
+        nameTe: 'ఉచిత పాదరక్షల భద్రతా కేంద్రం',
+        category: 'footwear',
+        lat: 13.651100,
+        lng: 79.411600,
+        svgX: 130,
+        svgY: 250,
+        descEn: 'Footwear deposit counter and visitor holding area.',
+        descTe: 'ఉచిత పాదరక్షల కేంద్రం.'
+      },
+      {
+        id: 'entry',
+        nameEn: 'Main Arch & Entry Gate',
+        nameTe: 'ప్రధాన ప్రవేశ ద్వారం',
+        category: 'entry',
+        lat: 13.651200,
+        lng: 79.412000,
+        svgX: 270,
+        svgY: 260,
+        descEn: 'Main entrance gate leading into premises.',
+        descTe: 'ప్రధాన ప్రవేశ ద్వారం.'
+      },
+      {
+        id: 'sanctum',
+        nameEn: 'Divyaramam Park (Nagaravanam) Sanctum / Main Point',
+        nameTe: 'divyaramam-park ప్రధాన స్థలం',
+        category: 'sanctum',
+        lat: 13.651500,
+        lng: 79.412000,
+        svgX: 270,
+        svgY: 130,
+        descEn: 'Main shrine and central point of interest.',
+        descTe: 'ముఖ్య దివ్య స్థల ప్రవేశం మరియు దర్శనం.'
+      },
+      {
+        id: 'info',
+        nameEn: 'Information & Utility Desk',
+        nameTe: 'సమాచార విభాగం & తాగునీరు',
+        category: 'info',
+        lat: 13.651900,
+        lng: 79.412400,
+        svgX: 390,
+        svgY: 150,
+        descEn: 'Information counter and RO drinking water point.',
+        descTe: 'సమాచార కేంద్రం మరియు తాగునీటి సదుపాయం.'
+      }
+    ],
+    routeSteps: [
+      {
+        stepNumber: 1,
+        titleEn: 'Arrival & Parking',
+        titleTe: 'పార్కింగ్ చేరుకోవడం',
+        distance: '0.0 km',
+        timeMins: 0,
+        descEn: 'Park vehicle near designated parking area.',
+        descTe: 'వాహనాన్ని నిర్ణీత స్థలంలో పార్క్ చేయండి.'
+      },
+      {
+        stepNumber: 2,
+        titleEn: 'Main Entry & Footwear Deposit',
+        titleTe: 'ప్రవేశం & పాదరక్షలు',
+        distance: '40m',
+        timeMins: 2,
+        descEn: 'Proceed to entrance and deposit shoes if applicable.',
+        descTe: 'ప్రధాన ద్వారం వద్దకు చేరుకోండి.'
+      },
+      {
+        stepNumber: 3,
+        titleEn: 'Main Sanctum & Visitor Experience',
+        titleTe: 'ప్రధాన దర్శనం',
+        distance: '60m',
+        timeMins: 10,
+        descEn: 'Experience the main shrine and serene surroundings.',
+        descTe: 'ముఖ్య స్థలాన్ని దర్శించి ఆనందించండి.'
+      }
+    ],
+    emergencyContacts: [
+      { titleEn: 'Saarthi Helpline', titleTe: 'సారథి హెల్ప్‌లైన్', number: '08772264555' },
+      { titleEn: 'Emergency Services', titleTe: 'అత్యవసర సేవల హెల్ప్‌లైన్', number: '112' }
+    ]
+  },
+
+  'municipal-park-tirupati': {
+    placeId: 'municipal-park-tirupati',
+    titleEn: 'Municipal Park (MCT) Precinct Map',
+    titleTe: 'municipal-park-tirupati ప్రాంగణ మ్యాప్',
+    layoutType: 'urban-park',
+    centerCoordinates: { lat: 13.6473327, lng: 79.4263512 },
+    defaultZoom: 18,
+    compassBearingDeg: 0,
+    sanctumNameEn: 'Municipal Park (MCT) Sanctum & Main Area',
+    sanctumNameTe: 'municipal-park-tirupati ప్రధాన స్థలం',
+    routePath: [[430, 275], [130, 250], [270, 260], [270, 130], [390, 150], [380, 210]],
+    pins: [
+      {
+        id: 'parking',
+        nameEn: 'Visitor & Vehicle Parking Bay',
+        nameTe: 'వాహనాల పార్కింగ్ స్థలం',
+        category: 'parking',
+        lat: 13.646733,
+        lng: 79.426951,
+        svgX: 430,
+        svgY: 275,
+        descEn: 'Designated parking for cars, bikes, and visitor vehicles near main entry.',
+        descTe: 'వాహనాల పార్కింగ్ ప్రదేశం.'
+      },
+      {
+        id: 'footwear',
+        nameEn: 'Free Footwear Stand & Holding Area',
+        nameTe: 'ఉచిత పాదరక్షల భద్రతా కేంద్రం',
+        category: 'footwear',
+        lat: 13.646933,
+        lng: 79.425951,
+        svgX: 130,
+        svgY: 250,
+        descEn: 'Footwear deposit counter and visitor holding area.',
+        descTe: 'ఉచిత పాదరక్షల కేంద్రం.'
+      },
+      {
+        id: 'entry',
+        nameEn: 'Main Arch & Entry Gate',
+        nameTe: 'ప్రధాన ప్రవేశ ద్వారం',
+        category: 'entry',
+        lat: 13.647033,
+        lng: 79.426351,
+        svgX: 270,
+        svgY: 260,
+        descEn: 'Main entrance gate leading into premises.',
+        descTe: 'ప్రధాన ప్రవేశ ద్వారం.'
+      },
+      {
+        id: 'sanctum',
+        nameEn: 'Municipal Park (MCT) Sanctum / Main Point',
+        nameTe: 'municipal-park-tirupati ప్రధాన స్థలం',
+        category: 'sanctum',
+        lat: 13.647333,
+        lng: 79.426351,
+        svgX: 270,
+        svgY: 130,
+        descEn: 'Main shrine and central point of interest.',
+        descTe: 'ముఖ్య దివ్య స్థల ప్రవేశం మరియు దర్శనం.'
+      },
+      {
+        id: 'info',
+        nameEn: 'Information & Utility Desk',
+        nameTe: 'సమాచార విభాగం & తాగునీరు',
+        category: 'info',
+        lat: 13.647733,
+        lng: 79.426751,
+        svgX: 390,
+        svgY: 150,
+        descEn: 'Information counter and RO drinking water point.',
+        descTe: 'సమాచార కేంద్రం మరియు తాగునీటి సదుపాయం.'
+      }
+    ],
+    routeSteps: [
+      {
+        stepNumber: 1,
+        titleEn: 'Arrival & Parking',
+        titleTe: 'పార్కింగ్ చేరుకోవడం',
+        distance: '0.0 km',
+        timeMins: 0,
+        descEn: 'Park vehicle near designated parking area.',
+        descTe: 'వాహనాన్ని నిర్ణీత స్థలంలో పార్క్ చేయండి.'
+      },
+      {
+        stepNumber: 2,
+        titleEn: 'Main Entry & Footwear Deposit',
+        titleTe: 'ప్రవేశం & పాదరక్షలు',
+        distance: '40m',
+        timeMins: 2,
+        descEn: 'Proceed to entrance and deposit shoes if applicable.',
+        descTe: 'ప్రధాన ద్వారం వద్దకు చేరుకోండి.'
+      },
+      {
+        stepNumber: 3,
+        titleEn: 'Main Sanctum & Visitor Experience',
+        titleTe: 'ప్రధాన దర్శనం',
+        distance: '60m',
+        timeMins: 10,
+        descEn: 'Experience the main shrine and serene surroundings.',
+        descTe: 'ముఖ్య స్థలాన్ని దర్శించి ఆనందించండి.'
+      }
+    ],
+    emergencyContacts: [
+      { titleEn: 'Saarthi Helpline', titleTe: 'సారథి హెల్ప్‌లైన్', number: '08772264555' },
+      { titleEn: 'Emergency Services', titleTe: 'అత్యవసర సేవల హెల్ప్‌లైన్', number: '112' }
+    ]
+  },
+
+  'vinayaka-sagar': {
+    placeId: 'vinayaka-sagar',
+    titleEn: 'Vinayaka Sagar (Lake & Waterfront) Precinct Map',
+    titleTe: 'vinayaka-sagar ప్రాంగణ మ్యాప్',
+    layoutType: 'hill-waterfall',
+    centerCoordinates: { lat: 13.6459298, lng: 79.4410675 },
+    defaultZoom: 18,
+    compassBearingDeg: 0,
+    sanctumNameEn: 'Vinayaka Sagar (Lake & Waterfront) Sanctum & Main Area',
+    sanctumNameTe: 'vinayaka-sagar ప్రధాన స్థలం',
+    routePath: [[430, 275], [130, 250], [270, 260], [270, 130], [390, 150], [380, 210]],
+    pins: [
+      {
+        id: 'parking',
+        nameEn: 'Visitor & Vehicle Parking Bay',
+        nameTe: 'వాహనాల పార్కింగ్ స్థలం',
+        category: 'parking',
+        lat: 13.645330,
+        lng: 79.441668,
+        svgX: 430,
+        svgY: 275,
+        descEn: 'Designated parking for cars, bikes, and visitor vehicles near main entry.',
+        descTe: 'వాహనాల పార్కింగ్ ప్రదేశం.'
+      },
+      {
+        id: 'footwear',
+        nameEn: 'Free Footwear Stand & Holding Area',
+        nameTe: 'ఉచిత పాదరక్షల భద్రతా కేంద్రం',
+        category: 'footwear',
+        lat: 13.645530,
+        lng: 79.440668,
+        svgX: 130,
+        svgY: 250,
+        descEn: 'Footwear deposit counter and visitor holding area.',
+        descTe: 'ఉచిత పాదరక్షల కేంద్రం.'
+      },
+      {
+        id: 'entry',
+        nameEn: 'Main Arch & Entry Gate',
+        nameTe: 'ప్రధాన ప్రవేశ ద్వారం',
+        category: 'entry',
+        lat: 13.645630,
+        lng: 79.441068,
+        svgX: 270,
+        svgY: 260,
+        descEn: 'Main entrance gate leading into premises.',
+        descTe: 'ప్రధాన ప్రవేశ ద్వారం.'
+      },
+      {
+        id: 'sanctum',
+        nameEn: 'Vinayaka Sagar (Lake & Waterfront) Sanctum / Main Point',
+        nameTe: 'vinayaka-sagar ప్రధాన స్థలం',
+        category: 'sanctum',
+        lat: 13.645930,
+        lng: 79.441068,
+        svgX: 270,
+        svgY: 130,
+        descEn: 'Main shrine and central point of interest.',
+        descTe: 'ముఖ్య దివ్య స్థల ప్రవేశం మరియు దర్శనం.'
+      },
+      {
+        id: 'info',
+        nameEn: 'Information & Utility Desk',
+        nameTe: 'సమాచార విభాగం & తాగునీరు',
+        category: 'info',
+        lat: 13.646330,
+        lng: 79.441468,
+        svgX: 390,
+        svgY: 150,
+        descEn: 'Information counter and RO drinking water point.',
+        descTe: 'సమాచార కేంద్రం మరియు తాగునీటి సదుపాయం.'
+      }
+    ],
+    routeSteps: [
+      {
+        stepNumber: 1,
+        titleEn: 'Arrival & Parking',
+        titleTe: 'పార్కింగ్ చేరుకోవడం',
+        distance: '0.0 km',
+        timeMins: 0,
+        descEn: 'Park vehicle near designated parking area.',
+        descTe: 'వాహనాన్ని నిర్ణీత స్థలంలో పార్క్ చేయండి.'
+      },
+      {
+        stepNumber: 2,
+        titleEn: 'Main Entry & Footwear Deposit',
+        titleTe: 'ప్రవేశం & పాదరక్షలు',
+        distance: '40m',
+        timeMins: 2,
+        descEn: 'Proceed to entrance and deposit shoes if applicable.',
+        descTe: 'ప్రధాన ద్వారం వద్దకు చేరుకోండి.'
+      },
+      {
+        stepNumber: 3,
+        titleEn: 'Main Sanctum & Visitor Experience',
+        titleTe: 'ప్రధాన దర్శనం',
+        distance: '60m',
+        timeMins: 10,
+        descEn: 'Experience the main shrine and serene surroundings.',
+        descTe: 'ముఖ్య స్థలాన్ని దర్శించి ఆనందించండి.'
+      }
+    ],
+    emergencyContacts: [
+      { titleEn: 'Saarthi Helpline', titleTe: 'సారథి హెల్ప్‌లైన్', number: '08772264555' },
+      { titleEn: 'Emergency Services', titleTe: 'అత్యవసర సేవల హెల్ప్‌లైన్', number: '112' }
+    ]
+  },
+
+  'ngo-colony-park': {
+    placeId: 'ngo-colony-park',
+    titleEn: 'NGO Colony Park (APHB) Precinct Map',
+    titleTe: 'ngo-colony-park ప్రాంగణ మ్యాప్',
+    layoutType: 'hill-waterfall',
+    centerCoordinates: { lat: 13.6519631, lng: 79.4190593 },
+    defaultZoom: 18,
+    compassBearingDeg: 0,
+    sanctumNameEn: 'NGO Colony Park (APHB) Sanctum & Main Area',
+    sanctumNameTe: 'ngo-colony-park ప్రధాన స్థలం',
+    routePath: [[430, 275], [130, 250], [270, 260], [270, 130], [390, 150], [380, 210]],
+    pins: [
+      {
+        id: 'parking',
+        nameEn: 'Visitor & Vehicle Parking Bay',
+        nameTe: 'వాహనాల పార్కింగ్ స్థలం',
+        category: 'parking',
+        lat: 13.651363,
+        lng: 79.419659,
+        svgX: 430,
+        svgY: 275,
+        descEn: 'Designated parking for cars, bikes, and visitor vehicles near main entry.',
+        descTe: 'వాహనాల పార్కింగ్ ప్రదేశం.'
+      },
+      {
+        id: 'footwear',
+        nameEn: 'Free Footwear Stand & Holding Area',
+        nameTe: 'ఉచిత పాదరక్షల భద్రతా కేంద్రం',
+        category: 'footwear',
+        lat: 13.651563,
+        lng: 79.418659,
+        svgX: 130,
+        svgY: 250,
+        descEn: 'Footwear deposit counter and visitor holding area.',
+        descTe: 'ఉచిత పాదరక్షల కేంద్రం.'
+      },
+      {
+        id: 'entry',
+        nameEn: 'Main Arch & Entry Gate',
+        nameTe: 'ప్రధాన ప్రవేశ ద్వారం',
+        category: 'entry',
+        lat: 13.651663,
+        lng: 79.419059,
+        svgX: 270,
+        svgY: 260,
+        descEn: 'Main entrance gate leading into premises.',
+        descTe: 'ప్రధాన ప్రవేశ ద్వారం.'
+      },
+      {
+        id: 'sanctum',
+        nameEn: 'NGO Colony Park (APHB) Sanctum / Main Point',
+        nameTe: 'ngo-colony-park ప్రధాన స్థలం',
+        category: 'sanctum',
+        lat: 13.651963,
+        lng: 79.419059,
+        svgX: 270,
+        svgY: 130,
+        descEn: 'Main shrine and central point of interest.',
+        descTe: 'ముఖ్య దివ్య స్థల ప్రవేశం మరియు దర్శనం.'
+      },
+      {
+        id: 'info',
+        nameEn: 'Information & Utility Desk',
+        nameTe: 'సమాచార విభాగం & తాగునీరు',
+        category: 'info',
+        lat: 13.652363,
+        lng: 79.419459,
+        svgX: 390,
+        svgY: 150,
+        descEn: 'Information counter and RO drinking water point.',
+        descTe: 'సమాచార కేంద్రం మరియు తాగునీటి సదుపాయం.'
+      }
+    ],
+    routeSteps: [
+      {
+        stepNumber: 1,
+        titleEn: 'Arrival & Parking',
+        titleTe: 'పార్కింగ్ చేరుకోవడం',
+        distance: '0.0 km',
+        timeMins: 0,
+        descEn: 'Park vehicle near designated parking area.',
+        descTe: 'వాహనాన్ని నిర్ణీత స్థలంలో పార్క్ చేయండి.'
+      },
+      {
+        stepNumber: 2,
+        titleEn: 'Main Entry & Footwear Deposit',
+        titleTe: 'ప్రవేశం & పాదరక్షలు',
+        distance: '40m',
+        timeMins: 2,
+        descEn: 'Proceed to entrance and deposit shoes if applicable.',
+        descTe: 'ప్రధాన ద్వారం వద్దకు చేరుకోండి.'
+      },
+      {
+        stepNumber: 3,
+        titleEn: 'Main Sanctum & Visitor Experience',
+        titleTe: 'ప్రధాన దర్శనం',
+        distance: '60m',
+        timeMins: 10,
+        descEn: 'Experience the main shrine and serene surroundings.',
+        descTe: 'ముఖ్య స్థలాన్ని దర్శించి ఆనందించండి.'
+      }
+    ],
+    emergencyContacts: [
+      { titleEn: 'Saarthi Helpline', titleTe: 'సారథి హెల్ప్‌లైన్', number: '08772264555' },
+      { titleEn: 'Emergency Services', titleTe: 'అత్యవసర సేవల హెల్ప్‌లైన్', number: '112' }
+    ]
+  },
+
+  'parasareswara-swamy-temple': {
+    placeId: 'parasareswara-swamy-temple',
+    titleEn: 'Sri Parasareswara Swamy Temple (Yogimallavaram) Precinct Map',
+    titleTe: 'parasareswara-swamy-temple ప్రాంగణ మ్యాప్',
+    layoutType: 'grand-temple',
+    centerCoordinates: { lat: 13.6074496, lng: 79.4444212 },
+    defaultZoom: 18,
+    compassBearingDeg: 0,
+    sanctumNameEn: 'Sri Parasareswara Swamy Temple (Yogimallavaram) Sanctum & Main Area',
+    sanctumNameTe: 'parasareswara-swamy-temple ప్రధాన స్థలం',
+    routePath: [[430, 275], [130, 250], [270, 260], [270, 130], [390, 150], [380, 210]],
+    pins: [
+      {
+        id: 'parking',
+        nameEn: 'Visitor & Vehicle Parking Bay',
+        nameTe: 'వాహనాల పార్కింగ్ స్థలం',
+        category: 'parking',
+        lat: 13.606850,
+        lng: 79.445021,
+        svgX: 430,
+        svgY: 275,
+        descEn: 'Designated parking for cars, bikes, and visitor vehicles near main entry.',
+        descTe: 'వాహనాల పార్కింగ్ ప్రదేశం.'
+      },
+      {
+        id: 'footwear',
+        nameEn: 'Free Footwear Stand & Holding Area',
+        nameTe: 'ఉచిత పాదరక్షల భద్రతా కేంద్రం',
+        category: 'footwear',
+        lat: 13.607050,
+        lng: 79.444021,
+        svgX: 130,
+        svgY: 250,
+        descEn: 'Footwear deposit counter and visitor holding area.',
+        descTe: 'ఉచిత పాదరక్షల కేంద్రం.'
+      },
+      {
+        id: 'entry',
+        nameEn: 'Main Arch & Entry Gate',
+        nameTe: 'ప్రధాన ప్రవేశ ద్వారం',
+        category: 'entry',
+        lat: 13.607150,
+        lng: 79.444421,
+        svgX: 270,
+        svgY: 260,
+        descEn: 'Main entrance gate leading into premises.',
+        descTe: 'ప్రధాన ప్రవేశ ద్వారం.'
+      },
+      {
+        id: 'sanctum',
+        nameEn: 'Sri Parasareswara Swamy Temple (Yogimallavaram) Sanctum / Main Point',
+        nameTe: 'parasareswara-swamy-temple ప్రధాన స్థలం',
+        category: 'sanctum',
+        lat: 13.607450,
+        lng: 79.444421,
+        svgX: 270,
+        svgY: 130,
+        descEn: 'Main shrine and central point of interest.',
+        descTe: 'ముఖ్య దివ్య స్థల ప్రవేశం మరియు దర్శనం.'
+      },
+      {
+        id: 'info',
+        nameEn: 'Information & Utility Desk',
+        nameTe: 'సమాచార విభాగం & తాగునీరు',
+        category: 'info',
+        lat: 13.607850,
+        lng: 79.444821,
+        svgX: 390,
+        svgY: 150,
+        descEn: 'Information counter and RO drinking water point.',
+        descTe: 'సమాచార కేంద్రం మరియు తాగునీటి సదుపాయం.'
+      }
+    ],
+    routeSteps: [
+      {
+        stepNumber: 1,
+        titleEn: 'Arrival & Parking',
+        titleTe: 'పార్కింగ్ చేరుకోవడం',
+        distance: '0.0 km',
+        timeMins: 0,
+        descEn: 'Park vehicle near designated parking area.',
+        descTe: 'వాహనాన్ని నిర్ణీత స్థలంలో పార్క్ చేయండి.'
+      },
+      {
+        stepNumber: 2,
+        titleEn: 'Main Entry & Footwear Deposit',
+        titleTe: 'ప్రవేశం & పాదరక్షలు',
+        distance: '40m',
+        timeMins: 2,
+        descEn: 'Proceed to entrance and deposit shoes if applicable.',
+        descTe: 'ప్రధాన ద్వారం వద్దకు చేరుకోండి.'
+      },
+      {
+        stepNumber: 3,
+        titleEn: 'Main Sanctum & Visitor Experience',
+        titleTe: 'ప్రధాన దర్శనం',
+        distance: '60m',
+        timeMins: 10,
+        descEn: 'Experience the main shrine and serene surroundings.',
+        descTe: 'ముఖ్య స్థలాన్ని దర్శించి ఆనందించండి.'
+      }
+    ],
+    emergencyContacts: [
+      { titleEn: 'Saarthi Helpline', titleTe: 'సారథి హెల్ప్‌లైన్', number: '08772264555' },
+      { titleEn: 'Emergency Services', titleTe: 'అత్యవసర సేవల హెల్ప్‌లైన్', number: '112' }
+    ]
+  },
+
   'jala-vinayaka-srikalahasti': {
     placeId: 'jala-vinayaka-srikalahasti',
     titleEn: 'Sri Jalavinayaka Swamy Temple Precinct Map',
