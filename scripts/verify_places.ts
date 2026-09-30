@@ -77,7 +77,11 @@ export function runLocationVerification() {
     'jagannatha-temple': { lat: 13.6349956, lng: 79.4041733 },
     'pakala-subramanya': { lat: 13.4452161, lng: 79.1008506 },
     'penchalakona-narasimha': { lat: 14.3364684, lng: 79.4103894 },
-    'nagalapuram-temple': { lat: 13.3876691, lng: 79.7965048 }
+    'nagalapuram-temple': { lat: 13.3876691, lng: 79.7965048 },
+    'kannappa-temple': { lat: 13.7494797, lng: 79.6992368 },
+    'bharadwaja-tirtham': { lat: 13.7485, lng: 79.7022 },
+    'sahasra-lingam-srikalahasti': { lat: 13.6925, lng: 79.7112 },
+    'durgamma-konda-srikalahasti': { lat: 13.7481, lng: 79.7042 }
   };
 
   for (const place of rawPlaces) {

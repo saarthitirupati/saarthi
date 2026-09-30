@@ -1479,7 +1479,320 @@ export const PLACES: Place[] = [
     tags: ['Vayu', 'Shiva'],
     bestTime: "Winter months (November to February). Visit during early mornings for peaceful darshan.",
     practicalInfo: { dressCode: 'Traditional', food: 'Many options', parking: 'Available' },
-    travelEstimates: { 'tirupati': '45 mins' }
+    travelEstimates: { 'tirupati': '45 mins' },
+    relationships: {
+      nearby: ['kannappa-temple'],
+      alternatives: ['kanipakam']
+    }
+  },
+  {
+    id: 'kannappa-temple',
+    name: 'Bhakta Kannappa Temple',
+    category: 'Day Trip',
+    placeType: 'spiritual',
+    location: 'Srikalahasti, Tirupati District',
+    distanceKms: 38,
+    durationMins: 45,
+    budgetLevel: 'budget',
+    entryFeeNum: 0,
+    interests: ['spiritual', 'history', 'architecture'],
+    openFrom: 6,
+    openTo: 21,
+    isMustVisit: true,
+    description: 'Perched on the sacred hillock adjacent to the Sri Kalahasteeswara Swamy Temple in Srikalahasti, the Bhakta Kannappa Temple honors the extraordinary devotion and sacrifice of Kannappa Nayanar, who offered his own eyes to Lord Shiva.',
+    history: 'Kannappa Nayanar (originally named Thinnadu / Dinna), a hunter chieftain born in Andhra Pradesh, was believed to be the reincarnation of Arjuna from the Mahabharata. Deeply devoted to Lord Shiva at Srikalahasti, he worshipped in his innocent, childlike way by offering wild game. When Lord Shiva tested his faith by causing blood to stream from the Shiva Lingam\'s eye, Kannappa unhesitatingly carved out his own eye with an arrow and placed it on the Lingam. When the second eye began bleeding, he placed his foot near the spot to guide his hand and prepared to pluck his second eye out. Moved by his boundless love, Lord Shiva manifested, restored his sight, and elevated him as one of the celebrated 63 Nayanmar saints.',
+    timings: '6:00 AM - 9:00 PM (All Days)',
+    entryFee: 'Free Entry (No ticket required)',
+    address: 'Kannappa Hillock, Srikalahasti, Tirupati District, Andhra Pradesh - 517644',
+    rating: 4.8,
+    reviewCount: 18500,
+    image: 'https://res.cloudinary.com/kniegqlj/image/upload/v1790765942/kannappa-temple_ngmekp.jpg',
+    coordinates: { lat: 13.7494797, lng: 79.6992368 },
+    shortIntro: 'Bhakta Kannappa Temple is a legendary hilltop shrine in Srikalahasti celebrating the supreme sacrifice of Kannappa Nayanar, the hunter saint who offered his eyes to Lord Shiva.',
+    whyVisit: 'Offers a profound spiritual message of pure, selfless devotion, alongside a panoramic view of the ancient Sri Kalahasteeswara Swamy Temple, the Swarnamukhi River, and surrounding sacred hills.',
+    openingTime: '6:00 AM',
+    closingTime: '9:00 PM',
+    duration: '1 to 2 hours',
+    travelByRTC: 'Take frequent APSRTC buses from Tirupati Central Bus Stand to Srikalahasti (38 km, ~50 mins). From Srikalahasti main temple, walk 5 minutes up the Kannappa Hillock steps.',
+    travelByCar: 'Drive via Tirupati-Srikalahasti Road (NH 71). Park near Srikalahasti main temple parking and walk up the hill steps.',
+    travelByBike: 'A scenic 45-minute ride on NH 71 from Tirupati to Srikalahasti.',
+    approxRTCFare: '₹50 per person one-way',
+    approxCarCost: '₹400 fuel round trip',
+    approxBikeCost: '₹150 petrol round trip',
+    images: [
+      'https://res.cloudinary.com/kniegqlj/image/upload/v1790765942/kannappa-temple_ngmekp.jpg',
+      'https://res.cloudinary.com/kniegqlj/image/upload/v1790765940/eyJidWNrZXQiOiJ1dGEtaW1hZ2VzIiwia2V5IjoicGxhY2VfaW1nLzAzZDY0MDJiYmY3YjQ1MTlhZGNlYzFkYmQ1ZjBlNTZiIiwiZWRpdHMiOnsicmVzaXplIjp7IndpZHRoIjo2NDAsImhlaWdodCI6NjQwLCJmaXQiOiJpbnNpZGUifSwicm90YXRlIjpudWxsLCJ0b0Zvcm1hdCI6ICJ3ZWJwIn19_wk2zxp.webp'
+    ],
+    visitorTips: {
+      dressCode: 'Modest / Traditional Indian attire recommended for temple entry.',
+      crowdNote: 'Most crowded during Maha Shivaratri, Karthika Masam, and Mondays. Morning hours offer peaceful darshan and cool hill breezes.',
+      footwearRule: 'Footwear must be removed before climbing temple hill steps.',
+      photoRule: 'Photography permitted on the hillock offering beautiful views of Srikalahasti town and temple Rajagopuram.',
+      entryRule: 'Combines perfectly with Srikalahasteeswara Swamy Temple and Rahu-Ketu Puja on the same visit.'
+    },
+    tags: ['Kannappa', 'Shiva', 'Nayanmar', 'Srikalahasti', 'Hilltop'],
+    bestTime: 'October to March (Winter months). Visit early morning or late afternoon for gentle hill climbing.',
+    practicalInfo: { dressCode: 'Traditional', food: 'Vegetarian restaurants nearby', parking: 'Srikalahasti Town Parking' },
+    travelEstimates: { 'tirupati': '45 mins' },
+    searchIntelligence: {
+      aliases: ['Kannappa Temple', 'Bhakta Kannappa', 'Kannappa Nayanar', 'Kannappa Hill', 'Thinnadu Temple', 'Kannappan Temple'],
+      tags: ['Kannappa', 'Shiva', 'Nayanmar', 'Srikalahasti', 'Hilltop'],
+      intentQueries: ['Kannappa Temple', 'Bhakta Kannappa story', 'Kannappa Hill Srikalahasti', 'Kannappa eye sacrifice'],
+      misspellings: ['Kanappa', 'Kannapan', 'Kanhappa']
+    },
+    relationships: {
+      nearby: ['srikalahasti', 'bharadwaja-tirtham'],
+      alternatives: ['srikalahasti']
+    }
+  },
+  {
+    id: 'bharadwaja-tirtham',
+    name: 'Bharadwaja Tirtham (Lo Bhavi)',
+    nameTe: 'భరద్వాజ తీర్థం (లో బావి)',
+    category: 'Day Trip',
+    placeType: 'spiritual',
+    location: 'Bahadur Pet, Srikalahasti',
+    distanceKms: 38.5,
+    durationMins: 45,
+    budgetLevel: 'budget',
+    entryFeeNum: 0,
+    interests: ['spiritual', 'history', 'nature', 'water'],
+    openFrom: 6,
+    openTo: 18,
+    isMustVisit: true,
+    description: 'Bharadwaja Tirtham (also known as Lo Bhavi) is a sacred historic water tank and meditative sanctuary situated 0.5 km east of the main Srikalahasti Temple. Enclosed between three small hills and natural stone cliffs, it features the iconic Thapo Vinayaka statue in the center of the pushkarini and the hilltop Panchamukheswara shrine.',
+    descriptionTe: 'శ్రీకాళహస్తి శ్రీ కాళహస్తీశ్వర స్వామి ఆలయానికి తూర్పున 0.5 కిమీ దూరంలో మూడు కొండల నడుమ ప్రకృతి సిద్ధంగా వెలసిన పవిత్ర పుణ్యతీర్థం "భరద్వాజ తీర్థం" (లో బావి). పుష్కరిణి మధ్యలో తపస్సు చేస్తున్న రూపంలో కొలువైన "తపో వినాయకుడి" విగ్రహం మరియు కొండపై ప్రాచీన పంచముఖేశ్వర ఆలయం ఇక్కడ విశేష ఆకర్షణలు.',
+    history: 'Dating back to the Krita Yuga (Krutha Yuga), this sacred site is where Maharishi Bharadwaja established his ashram and performed intense penance. His spiritual energy manifested a natural spring and sacred water body. Every morning, Maharishi Bharadwaja bathed in these holy waters before walking to the main Srikalahasti Vayu Lingam shrine to offer daily prayers to Lord Shiva. Locals call it "Lo Bhavi" (meaning Deep Well/Inside Well) because the water body is set deep inside three hills, appearing like a massive natural well.',
+    historyTe: 'కృతయుగం నాటి పవిత్ర స్థలమిది. భరద్వాజ మహర్షి ఇక్కడ ఆశ్రమం ఏర్పాటు చేసుకుని ఉగ్రతపస్సు చేశారు. ఆయన తపోమహిమచే పవిత్ర సహజ జలధార ఉద్భవించి పుష్కరిణిగా మారింది. మహర్షి రోజూ ఈ తీర్థంలో స్నానమాచరించి శ్రీకాళహస్తీశ్వరునికి పూజలు నిర్వహించేవారు. మూడు కొండల మధ్య లోతుగా ఉండటంచేత స్థానికులు దీనిని "లో బావి" అని పిలుస్తారు.',
+    significance: {
+      traditionType: 'temple',
+      whyVisitTe: 'శ్రీకాళహస్తి క్షేత్రంలో శ్రీకాళహస్తీశ్వరుడు మరియు కన్నప్ప కొండ దర్శనంతో పాటు తప్పక సందర్శించవలసిన ప్రశాంత ఆధ్యాత్మిక కేంద్రం. నీటి మధ్య కొలువైన తపో వినాయకుడి దర్శనం మరియు పంచముఖేశ్వర స్వామి ఆశీస్సులు లభిస్తాయి.',
+      whyVisitEn: 'A serene spiritual and meditative oasis right next to Srikalahasti Temple featuring Lord Ganesha in deep meditation (Thapo Vinayaka) inside the water tank and 5-faced Lord Shiva (Panchamukheswara) on the adjacent hillock.',
+      actionsTe: [
+        'పుష్కరిణి మధ్యలో ప్రశాంతంగా వెలిసిన తపో వినాయకుడిని దర్శించండి',
+        'తెల్లటి మెట్లు ఎక్కి దక్షిణ కొండపై ఉన్న ప్రాచీన పంచముఖేశ్వర స్వామి ఆలయాన్ని సందర్శించండి',
+        'మహర్షి భరద్వాజుల వారి ప్రధాన ఆలయంలో దర్శనం చేసుకోండి',
+        'పుష్కరిణిలోని పవిత్ర చేపలకు ఆహారం అందించి ధ్యానం చేసుకోండి'
+      ],
+      actionsEn: [
+        'Admire and pray to Thapo Vinayaka standing in a meditative posture at the center of the pushkarini',
+        'Climb the stone steps up the southern hillock to visit the ancient Panchamukheswara (5-faced Shiva) shrine',
+        'Offer prayers at the main Sage Bharadwaja shrine housed within the compound',
+        'Feed the sacred fishes in the pond and enjoy meditative quietude surrounded by three green hills'
+      ],
+      culturalMeaningTe: 'కృతయుగం నుండి పరమశివుడిని ఆరాధించిన భరద్వాజ మహర్షి తపోభూమి. ప్రకృతి సౌందర్యం, కొండలు, జలతీర్థం కలగలసిన ఈ ప్రదేశం మనశ్శాంతికి నిలయం.',
+      culturalMeaningEn: 'Sanctified by Sage Bharadwaja in Krutha Yuga, this multi-level tank compound blends Vedic rishi heritage with hillock nature, serving as an active spiritual sanctuary maintained by the Srikalahasti Temple Board.',
+      saarthiTipTe: 'శ్రీకాళహస్తి ఆలయ తూర్పు గోపురం లేదా కన్నప్ప కొండ దిగువ భాగం నుండి నడక దారిన లేదా షేర్ ఆటో ద్వారా 5 నిమిషాల్లో చేరుకోవచ్చు. ఉదయం 6:00-9:00 లేదా సాయంత్రం 4:00-6:00 వేళలు అత్యంత ఆహ్లాదకరంగా ఉంటాయి.',
+      saarthiTipEn: 'Located right near the start of the Kannappa Temple ghat path in Bahadur Pet (0.5 km from main temple). Best visited early morning or late afternoon for serene hill breezes and photography.'
+    },
+    timings: '6:00 AM - 6:00 PM (All Days)',
+    entryFee: 'Free Entry',
+    address: 'Bharadwaja Tirtham, Bahadur Pet, Srikalahasti, Tirupati District, Andhra Pradesh - 517644',
+    rating: 4.6,
+    reviewCount: 3400,
+    image: 'https://res.cloudinary.com/kniegqlj/image/upload/v1790766322/srikalahasti_P2533_i9a7zu.webp',
+    coordinates: { lat: 13.7485, lng: 79.7022 },
+    shortIntro: 'Bharadwaja Tirtham (Lo Bhavi) is an ancient sacred pushkarini in Srikalahasti nestled between 3 hills, famous for the Thapo Vinayaka idol in the water center and Panchamukheswara hill shrine.',
+    whyVisit: 'Sanctified in Krutha Yuga by Sage Bharadwaja, featuring the striking Thapo Vinayaka in the pushkarini center, Panchamukheswara hill shrine, and peaceful green surroundings.',
+    openingTime: '6:00 AM',
+    closingTime: '6:00 PM',
+    duration: '45 mins to 1 hour',
+    travelByRTC: 'Take APSRTC bus from Tirupati to Srikalahasti (38 km). From Srikalahasti main temple / bus stand, take a short 5-minute auto or walk 500m to Bahadur Pet.',
+    travelByCar: 'Drive via NH 71 to Srikalahasti. Turn towards Bahadur Pet near Kannappa hill approach road. Parking available near the tank gate.',
+    travelByBike: 'A scenic 45-minute ride from Tirupati on NH 71 to Srikalahasti.',
+    approxRTCFare: '₹50 bus fare from Tirupati + ₹20 local auto',
+    approxCarCost: '₹400 fuel round trip',
+    approxBikeCost: '₹150 petrol round trip',
+    images: [
+      'https://res.cloudinary.com/kniegqlj/image/upload/v1790766322/srikalahasti_P2533_i9a7zu.webp'
+    ],
+    visitorTips: {
+      dressCode: 'Modest / Traditional attire expected as it is an extension of Srikalahasti Temple board.',
+      crowdNote: 'Generally peaceful and quiet. Peaceful spot for meditation after temple darshan.',
+      footwearRule: 'Footwear to be left at the tank steps entrance.',
+      photoRule: 'Photography permitted. The Ganesha statue in the middle of the water with background hills is very picturesque.',
+      entryRule: 'Free entry. Combine with Srikalahasteeswara Swamy Temple and Bhakta Kannappa Temple.'
+    },
+    tags: ['Bharadwaja', 'Tirtham', 'Lo Bhavi', 'Ganesha', 'Thapo Vinayaka', 'Panchamukheswara', 'Srikalahasti'],
+    bestTime: 'Early morning (6:00 AM - 9:00 AM) or late afternoon (4:00 PM - 6:00 PM)',
+    practicalInfo: { dressCode: 'Modest', food: 'Restaurants near main temple area', parking: 'Available at site entrance' },
+    travelEstimates: { 'srikalahasti': '2 mins drive / 5 mins walk', 'kannappa-temple': '3 mins walk', 'tirupati': '45 mins' },
+    searchIntelligence: {
+      aliases: ['Bharadwaja Tirtham', 'Lo Bhavi', 'Bharadwaja Theertham', 'Bharadwaja Pushkarini', 'Thapo Vinayaka Srikalahasti', 'Lo Bhavi Srikalahasti'],
+      tags: ['Bharadwaja', 'Tirtham', 'Lo Bhavi', 'Ganesha', 'Thapo Vinayaka', 'Panchamukheswara', 'Srikalahasti'],
+      intentQueries: ['Bharadwaja Tirtham Srikalahasti', 'Lo Bhavi temple', 'Thapo Vinayaka Ganesha tank', 'Panchamukheswara Srikalahasti'],
+      misspellings: ['Bharadwaja theertam', 'Bharadwaja teertham', 'Lobhavi', 'Lo Bavi']
+    },
+    relationships: {
+      nearby: ['srikalahasti', 'kannappa-temple'],
+      recommendedTogether: ['srikalahasti', 'kannappa-temple']
+    }
+  },
+  {
+    id: 'sahasra-lingam-srikalahasti',
+    name: 'Sahasra Lingeshwara Swamy Temple (Veyilingala Kona)',
+    nameTe: 'సహస్ర లింగేశ్వర స్వామి ఆలయం (వేయిలింగాల కోణ)',
+    category: 'Day Trip',
+    placeType: 'spiritual',
+    location: 'Srikalahasti - Masalapadu Road',
+    distanceKms: 45,
+    durationMins: 120,
+    budgetLevel: 'budget',
+    entryFeeNum: 0,
+    interests: ['spiritual', 'trekking', 'nature', 'waterfalls', 'adventure'],
+    openFrom: 10,
+    openTo: 16,
+    isMustVisit: true,
+    description: 'Sahasra Lingeshwara Swamy Temple (Veyilingala Kona) is an ancient, secluded Lord Shiva shrine located 7-8 km south of Srikalahasti. Deep within a peaceful forest setting with bamboo groves, it features a massive stone Lingam carved with 1,000 miniature lingams on its surface alongside the medicinal Veyilingala Kona Waterfall.',
+    descriptionTe: 'శ్రీకాళహస్తికి దక్షిణాన 7-8 కిమీ దూరంలో దట్టమైన అడవులు, వెదురు పొదలు మరియు హరిత కొండల మధ్య కొలువైన అతి ప్రాచీన శైవ క్షేత్రం "సహస్ర లింగేశ్వర స్వామి ఆలయం" (వేయిలింగాల కోణ). ఒకే ప్రధాన లింగంపై 1,000 చిన్న లింగాలు శిల్పబద్ధంగా చెక్కబడటం మరియు సమీపంలో మూలికా జలాలతో ప్రవహించే వేయిలింగాల కోణ జలపాతం ఇక్కడి విశేషం.',
+    history: 'Ancient temple tradition links this secluded forest sanctum to Bhakta Kannappa (Thinnadu), who worshipped here in isolation. The Moola Virat is a single monolithic Shiva Lingam intricately sculpted with 1,000 individual micro-lingams across its face. Surrounding the shrine is Veyilingala Kona ("The Valley of a Thousand Lingams"), where seasonal waterfalls cascade through rare medicinal herbs from the surrounding Seshachalam hill ranges.',
+    historyTe: 'భక్తుల కథనాల ప్రకారం భక్త కన్నప్ప ఈ దట్టమైన అడవిలో శివుడిని ధ్యానిస్తూ పూజలు జరిపిన పవిత్ర స్థలం. 1,000 లింగాలు రూపుదిద్దుకున్న మహా లింగానికి కుడివైపున పార్వతీ దేవి అమ్మవారి ఆలయం ఉంటుంది. చుట్టూ కొండల నుండి పారే వేయిలింగాల కోణ జలపాతంలో స్నానం చేయడం వలన చర్మ వ్యాధులు నయమవుతాయని భక్తుల విశ్వాసం.',
+    significance: {
+      traditionType: 'temple',
+      whyVisitTe: 'శ్రీకాళహస్తి క్షేత్రంలో సాహసోపేతమైన ఫారెస్ట్ ట్రెక్కింగ్ మరియు ఆధ్యాత్మిక ప్రశాంతత కలగలిసిన అరుదైన ప్రదేశం. వేయిలింగాల కోణ మూలికా జలపాతంలో స్నానం మరియు 1,000 లింగాల మహా లింగ దర్శనం ప్రాప్తిస్తాయి.',
+      whyVisitEn: 'An adventurous pilgrimage combining a scenic bamboo valley jungle trek with worship of a massive 1,000-micro-lingam monolith and bathing in the medicinal Veyilingala Kona waterfall.',
+      actionsTe: [
+        'దట్టమైన వెదురు పొదల నడుమ మెట్లు మరియు కొండ మార్గంలో ఫారెస్ట్ ట్రెక్కింగ్ చేయండి',
+        'ఒకే లింగంపై 1,000 లింగాలు చెక్కిన శ్రీ సహస్ర లింగేశ్వర స్వామి మరియు పార్వతీ దేవిని దర్శించండి',
+        'మధ్యలో ప్రవహించే పవిత్ర వేయిలింగాల కోణ మూలికా జలపాతంలో స్నానమాచరించండి',
+        'స్థానిక మార్గదర్శకత్వం (గ్రామ వృద్ధుల సహాయం) తీసుకుని సురక్షితంగా ట్రెక్ పూర్తి చేయండి'
+      ],
+      actionsEn: [
+        'Embark on a jungle trek down paved steps into a bamboo valley and up the opposite hillock',
+        'Worship the massive Sahasra Lingam (1,000 miniature carved lingams) and Goddess Parvati shrine',
+        'Take a dip in the medicinal Veyilingala Kona forest waterfall flowing past rare herbs',
+        'Utilize local elder women village guides at the base path for safe navigation inside the network-free trail'
+      ],
+      culturalMeaningTe: 'ప్రకృతి ఒడిలో దట్టమైన అడవి నడుమ వెలసిన ఈ క్షేత్రం, మానవ రద్దీకి దూరంగా శివుని సహస్ర రూపాలను ఏకకాలంలో దర్శించుకునే దైవిక అనుభూతిని ఇస్తుంది.',
+      culturalMeaningEn: 'A pristine wilderness sanctum bridging epic Kannappa lore with medicinal nature springs, allowing pilgrims to worship a thousand manifestations of Lord Shiva in a single sacred monolith.',
+      saarthiTipTe: 'సమయం ఉదయం 10:00 నుండి సాయంత్రం 4:00 వరకు మాత్రమే అనుమతిస్తారు. మార్గంలో షాపులు, నీరు ఉండవు; తగినంత తాగునీరు, స్నాక్స్ వెంట తెచ్చుకోండి. అడవిలో సిగ్నల్ ఉండదు.',
+      saarthiTipEn: 'Strict visiting window from 10:00 AM to 4:00 PM daily. There are no food or water stalls on the trail; carry sufficient drinking water and snacks. Mobile network coverage is non-existent in the forest.'
+    },
+    timings: '10:00 AM - 4:00 PM (Strict Forest Hours)',
+    entryFee: 'Free Entry',
+    address: 'Veyilingala Kona, off Srikalahasti - Masalapadu Road, Tirupati District, Andhra Pradesh - 517644',
+    rating: 4.7,
+    reviewCount: 2900,
+    image: 'https://res.cloudinary.com/kniegqlj/image/upload/v1790766462/107081306_eiusff.jpg',
+    coordinates: { lat: 13.6925, lng: 79.7112 },
+    shortIntro: 'Sahasra Lingeshwara Swamy (Veyilingala Kona) is an ancient forest temple near Srikalahasti featuring a monolithic 1,000-micro-lingam statue and medicinal waterfalls.',
+    whyVisit: 'A rustic forest trek through bamboo valleys to worship a single Shiva Lingam with 1,000 micro-carvings, linked to Bhakta Kannappa and healing medicinal waterfalls.',
+    openingTime: '10:00 AM',
+    closingTime: '4:00 PM',
+    duration: '2 to 3 hours (including trek)',
+    travelByRTC: 'Take RTC bus or train to Srikalahasti. Hire a local auto-rickshaw or cab for the 20-minute drive (8 km) to the Masalapadu Road forest trail base.',
+    travelByCar: 'Drive 8 km south from Srikalahasti town center via Srikalahasti - Masalapadu Road to the trail base point. Park near the step entrance.',
+    travelByBike: 'A 20-minute ride from Srikalahasti town through scenic rural roads.',
+    approxRTCFare: '₹50 bus from Tirupati + ₹150-200 auto ride from Srikalahasti',
+    approxCarCost: '₹450 fuel round trip',
+    approxBikeCost: '₹150 petrol round trip',
+    images: [
+      'https://res.cloudinary.com/kniegqlj/image/upload/v1790766462/107081306_eiusff.jpg'
+    ],
+    visitorTips: {
+      dressCode: 'Modest clothing suited for walking/trekking. Carry comfortable footwear.',
+      crowdNote: 'Quiet and serene. Moderate crowds on Mondays, Shivaratri, and post-monsoon weekends.',
+      footwearRule: 'Wear sturdy walking/hiking shoes for the forest trail; remove near the sanctum.',
+      photoRule: 'Photography permitted in forest and waterfall areas.',
+      entryRule: 'Free entry. Strictly open 10 AM to 4 PM. No food stalls on trail — carry drinking water.'
+    },
+    tags: ['Sahasra Lingam', 'Veyilingala Kona', 'Srikalahasti', 'Waterfall', 'Jungle Trek', 'Shiva', 'Kannappa'],
+    bestTime: 'October to February (Monsoon & Winter for waterfall flow and pleasant weather)',
+    practicalInfo: { dressCode: 'Trekking attire & shoes', food: 'No shops on trail; carry water', parking: 'Base point roadside parking' },
+    travelEstimates: { 'srikalahasti': '20 mins drive', 'kannappa-temple': '20 mins drive', 'tirupati': '50 mins' },
+    searchIntelligence: {
+      aliases: ['Sahasra Lingeshwara Swamy', 'Veyilingala Kona', 'Sahasra Lingam Temple Srikalahasti', 'Veyi Lingala Kona Waterfalls', 'Sahasra Lingam Kalahasti'],
+      tags: ['Sahasra Lingam', 'Veyilingala Kona', 'Srikalahasti', 'Waterfall', 'Jungle Trek', 'Shiva'],
+      intentQueries: ['Sahasra Lingam Srikalahasti', 'Veyilingala Kona waterfall timings', 'Sahasra Lingeshwara temple trek', 'waterfalls near srikalahasti'],
+      misspellings: ['Sahasralinga', 'Veyilingala', 'Veyi lingala kona', 'Sahasra lingam']
+    },
+    relationships: {
+      nearby: ['srikalahasti', 'kannappa-temple', 'bharadwaja-tirtham'],
+      recommendedTogether: ['srikalahasti', 'kannappa-temple', 'bharadwaja-tirtham']
+    }
+  },
+  {
+    id: 'durgamma-konda-srikalahasti',
+    name: 'Sri Durgamma Konda Temple',
+    nameTe: 'శ్రీ దుర్గమ్మ కొండ ఆలయం (గొలుసుల దుర్గమ్మ)',
+    category: 'Day Trip',
+    placeType: 'spiritual',
+    location: 'Kondamitta / Bahadur Pet, Srikalahasti',
+    distanceKms: 39.5,
+    durationMins: 45,
+    budgetLevel: 'budget',
+    entryFeeNum: 0,
+    interests: ['spiritual', 'shakti', 'viewpoint', 'culture', 'history'],
+    openFrom: 6,
+    openTo: 20,
+    isMustVisit: true,
+    description: 'Sri Durgamma Konda Temple is an ancient, revered hill shrine situated 1.5 km east of Srikalahasti main temple. Perched atop a scenic hillock ("Konda"), it is famous for its unique tradition where Goddess Durga\'s deity is symbolically restrained by sacred metal chains (Golusula Durgamma) to channel her fierce divine energy into protective blessings.',
+    descriptionTe: 'శ్రీకాళహస్తి ప్రధాన ఆలయానికి తూర్పున 1.5 కిమీ దూరంలో కొండపై ప్రశాంత ప్రకృతి వాతావరణంలో కొలువైన శక్తి పీఠం "శ్రీ దుర్గమ్మ కొండ ఆలయం". ఇక్కడ అమ్మవారి ఉగ్రరూప దివ్య శక్తి జగత్కళ్యాణానికి, పరిరక్షణకు మాత్రమే ఉపయోగపడేలా అమ్మవారి విగ్రహాన్ని పవిత్ర ఇనుప గొలుసులతో (గొలుసుల దుర్గమ్మ) బంధించే విశిష్ట సాంప్రదాయం శతాబ్దాలుగా అమల్లో ఉంది.',
+    history: 'Ancient hill shrine holds intense spiritual significance for local Shakti worshippers. Legend recounts that Goddess Durga manifested on this hill with fiery cosmic energy. To soften and channel her intense power into benevolent protection for the people of Srikalahasti, ancient priests instituted the sacred tradition of binding the idol with metal chains. The hill steps offer breathtaking 360-degree panoramic views of Srikalahasti town, Swarnamukhi River, and surrounding hill ranges.',
+    historyTe: 'స్థానిక ఐతిహ్యాల ప్రకారం దుర్గాదేవి ఇక్కడ స్వయంభూగా ఉగ్రరూపంతో ప్రత్యక్షమయ్యారు. అమ్మవారి ప్రచండ శక్తి ఊరును దహించకుండా, ప్రజలను కాపాడే రక్షణ కవచంగా మారడానికి పవిత్ర గొలుసులతో విగ్రహాన్ని నిబంధించి పూజలు చేయడం ఇక్కడి ప్రత్యేకత. దసరా నవరాత్రులలో వేలాదిమంది భక్తులు ఇక్కడికి తరలివస్తారు.',
+    significance: {
+      traditionType: 'temple',
+      whyVisitTe: 'శ్రీకాళహస్తి క్షేత్రంలో గొలుసులతో బంధించబడిన అమ్మవారి (గొలుసుల దుర్గమ్మ) అరుదైన దివ్య రూప దర్శనం మరియు కొండపై నుండి నగరం, స్వర్ణముఖి నది యొక్క విహంగమ వీక్షణం కోసం తప్పక దర్శించాలి.',
+      whyVisitEn: 'Witness the fascinating ancient tradition of Goddess Durga bound by chains (Golusula Durgamma) alongside magnificent hilltop views of Srikalahasti temple Rajagopuram and valley.',
+      actionsTe: [
+        'కొండపైకి రాతి మెట్లు ఎక్కి పవిత్ర గొలుసులతో కొలువైన దుర్గమ్మ అమ్మవారిని దర్శించండి',
+        'దసరా నవరాత్రులు మరియు దుర్గాష్టమి వేడుకల్లో పాల్గొనండి',
+        'కొండపై నుండి శ్రీకాళహస్తి పట్టణం మరియు స్వర్ణముఖి నది అందాలను తిలకించండి',
+        'ప్రశాంత వాతావరణంలో ధ్యానం చేసుకోండి'
+      ],
+      actionsEn: [
+        'Ascend the stone steps to attain darshan of Goddess Durga bound in sacred metal chains',
+        'Participate in vibrant Dasara Navaratri and Durgashtami celebrations',
+        'Enjoy 360-degree panoramic views of Srikalahasti town, Rajagopuram, and Swarnamukhi River',
+        'Spend peaceful moments meditating in the quiet hill breeze'
+      ],
+      culturalMeaningTe: 'అమ్మవారి అపరిమిత శక్తిని అదుపులో ఉంచి సమాజ క్షేమానికి, రక్షణకు మళ్లించే సంకేతంగా ఈ గొలుసుల బంధనం నిలుస్తుంది. ఇది శ్రీకాళహస్తి సంస్కృతిలో ఒక విశిష్ట విశ్వాసం.',
+      culturalMeaningEn: 'The ritual chain binding symbolizes controlling divine cosmic fury for societal protection and harmony, making it one of Andhra Pradesh\'s most unique Shakti traditions.',
+      saarthiTipTe: 'శ్రీకాళహస్తి తూర్పు గోపురం లేదా కొండమిట్ట నుండి ఆటో ద్వారా 5 నిమిషాల్లో కొండ అడుగుభాగానికి చేరుకోవచ్చు. ఉదయం 6:00-9:00 లేదా సాయంత్రం 5:00-7:00 వేళలు దర్శనానికి మరియు సూర్యాస్తమయ వీక్షణకు అనువైనవి.',
+      saarthiTipEn: 'Reachable in 5 minutes by auto from Srikalahasti East Gate or Kondamitta (1.5 km). Early mornings (6:00–9:00 AM) or sunset hours (5:00–7:00 PM) offer ideal hill darshan and panoramic valley views.'
+    },
+    timings: '6:00 AM - 8:00 PM (All Days)',
+    entryFee: 'Free Entry',
+    address: 'Durgamma Konda, Kondamitta / Bahadur Pet, Srikalahasti, Tirupati District, Andhra Pradesh - 517644',
+    rating: 4.9,
+    reviewCount: 2300,
+    image: 'https://res.cloudinary.com/kniegqlj/image/upload/v1790766738/IMG-20180106-WA0026_amybm5.jpg',
+    coordinates: { lat: 13.7481, lng: 79.7042 },
+    shortIntro: 'Sri Durgamma Konda is a revered hill shrine in Srikalahasti famous for Goddess Durga\'s idol symbolically bound in sacred metal chains (Golusula Durgamma).',
+    whyVisit: 'Witness the rare tradition of Goddess Durga bound with chains for town protection, combined with panoramic hilltop views of Srikalahasti and Swarnamukhi River.',
+    openingTime: '6:00 AM',
+    closingTime: '8:00 PM',
+    duration: '1 to 1.5 hours',
+    travelByRTC: 'Take RTC bus from Tirupati to Srikalahasti (38 km). From Srikalahasti main temple / Kondamitta, take a 5-minute auto (1.5 km) to Durgamma Konda base.',
+    travelByCar: 'Drive via NH 71 to Srikalahasti town center, then take Bahadur Pet / Kondamitta road to the hill base. Limited parking at hill bottom.',
+    travelByBike: 'A scenic 45-minute ride on NH 71 from Tirupati to Srikalahasti.',
+    approxRTCFare: '₹50 bus from Tirupati + ₹30 local auto',
+    approxCarCost: '₹400 fuel round trip',
+    approxBikeCost: '₹150 petrol round trip',
+    images: [
+      'https://res.cloudinary.com/kniegqlj/image/upload/v1790766738/IMG-20180106-WA0026_amybm5.jpg'
+    ],
+    visitorTips: {
+      dressCode: 'Modest / Traditional Indian attire expected for hill temple entry.',
+      crowdNote: 'Lively during Dasara (Vijaya Dasami), Durgashtami, Fridays, and Tuesdays.',
+      footwearRule: 'Footwear to be left at the hill step entrance.',
+      photoRule: 'Photography permitted on hillock for panoramic town views; refrain in sanctum.',
+      entryRule: 'Free entry. Easily combined with Bharadwaja Tirtham and Kannappa Temple.'
+    },
+    tags: ['Durgamma Konda', 'Golusula Durgamma', 'Durga Temple', 'Srikalahasti', 'Hill Temple', 'Viewpoint', 'Dasara'],
+    bestTime: 'Dasara Navaratri season, early mornings (6:00 AM - 9:00 AM), or sunset hours (5:00 PM - 6:30 PM)',
+    practicalInfo: { dressCode: 'Modest', food: 'Eateries near Srikalahasti main gate', parking: 'Limited parking at hill base' },
+    travelEstimates: { 'srikalahasti': '5 mins drive', 'bharadwaja-tirtham': '3 mins drive / 8 mins walk', 'kannappa-temple': '5 mins drive', 'tirupati': '45 mins' },
+    searchIntelligence: {
+      aliases: ['Durgamma Konda', 'Sri Durgamma Konda', 'Golusula Durgamma', 'Srikalahasti Durga Temple', 'Durgamma Hill Srikalahasti'],
+      tags: ['Durgamma Konda', 'Golusula Durgamma', 'Durga Temple', 'Srikalahasti', 'Hill Temple', 'Viewpoint'],
+      intentQueries: ['Durgamma Konda Srikalahasti', 'Golusula Durgamma temple', 'Durga temple on hill Srikalahasti', 'Srikalahasti viewpoint temple'],
+      misspellings: ['Durgama konda', 'Durgamukonda', 'Golusula durgama']
+    },
+    relationships: {
+      nearby: ['srikalahasti', 'kannappa-temple', 'bharadwaja-tirtham', 'sahasra-lingam-srikalahasti'],
+      recommendedTogether: ['srikalahasti', 'kannappa-temple', 'bharadwaja-tirtham']
+    }
   },
   {
     id: 'kanipakam',
