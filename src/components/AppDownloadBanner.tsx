@@ -36,15 +36,16 @@ export function TopAppDownloadBanner() {
         animate={{ height: 'auto', opacity: 1 }}
         exit={{ height: 0, opacity: 0 }}
         style={{
-          background: 'linear-gradient(135deg, #0F5132 0%, #064E3B 100%)',
-          color: '#FFFFFF',
-          padding: '10px 16px',
+          background: '#FFFFFF',
+          borderBottom: '1px solid #E2E8F0',
+          color: '#0F5132',
+          padding: '8px 16px',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
           gap: '12px',
           fontSize: '13px',
-          boxShadow: '0 2px 8px rgba(15,81,50,0.25)',
+          boxShadow: '0 1px 3px rgba(0,0,0,0.05)',
           position: 'relative',
           zIndex: 100,
         }}
@@ -55,25 +56,24 @@ export function TopAppDownloadBanner() {
               width: '36px',
               height: '36px',
               borderRadius: '10px',
-              background: 'rgba(255,255,255,0.15)',
-              backdropFilter: 'blur(4px)',
+              background: '#ECFDF5',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
               flexShrink: 0,
-              border: '1px solid rgba(255,255,255,0.2)'
+              border: '1px solid #A7F3D0'
             }}
           >
-            <Smartphone size={20} color="#FDE047" />
+            <Smartphone size={20} color="#059669" />
           </div>
           <div style={{ minWidth: 0 }}>
-            <div style={{ fontWeight: 700, fontSize: '13px', lineHeight: 1.2, display: 'flex', alignItems: 'center', gap: '6px' }}>
+            <div style={{ fontWeight: 700, fontSize: '13px', lineHeight: 1.2, display: 'flex', alignItems: 'center', gap: '6px', color: '#0F5132' }}>
               <span>{lang === 'te' ? 'సారథి అఫీషియల్ ఆండ్రాయిడ్ యాప్' : 'Official Saarthi Android App'}</span>
-              <span style={{ background: '#FDE047', color: '#0F5132', fontSize: '10px', fontWeight: 800, padding: '1px 5px', borderRadius: '4px' }}>
+              <span style={{ background: '#0F5132', color: '#FFFFFF', fontSize: '10px', fontWeight: 800, padding: '1px 5px', borderRadius: '4px' }}>
                 FREE
               </span>
             </div>
-            <div style={{ fontSize: '11px', color: '#D1FAE5', marginTop: '2px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+            <div style={{ fontSize: '11px', color: '#047857', marginTop: '2px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
               {lang === 'te' 
                 ? 'ఆఫ్‌లైన్ ఆలయ మ్యాప్‌లు & ప్రత్యక్ష దర్శన సమాచారం' 
                 : '100% Offline Maps, Real-time Tokens & Darshan Alerts'}
@@ -87,8 +87,8 @@ export function TopAppDownloadBanner() {
             target="_blank"
             rel="noopener noreferrer"
             style={{
-              background: '#FDE047',
-              color: '#0F5132',
+              background: '#0F5132',
+              color: '#FFFFFF',
               fontWeight: 800,
               fontSize: '12px',
               padding: '7px 14px',
@@ -97,7 +97,7 @@ export function TopAppDownloadBanner() {
               display: 'flex',
               alignItems: 'center',
               gap: '6px',
-              boxShadow: '0 2px 6px rgba(0,0,0,0.2)',
+              boxShadow: '0 2px 6px rgba(15,81,50,0.2)',
               transition: 'transform 0.15s ease'
             }}
           >
@@ -111,7 +111,7 @@ export function TopAppDownloadBanner() {
             style={{
               background: 'transparent',
               border: 'none',
-              color: 'rgba(255,255,255,0.7)',
+              color: '#64748B',
               cursor: 'pointer',
               padding: '4px',
               display: 'flex',
