@@ -13,9 +13,11 @@ export function TopAppDownloadBanner() {
 
   useEffect(() => {
     if (typeof window === 'undefined') return;
+    const ua = navigator.userAgent || '';
+    const isWebView = /wv|Android.*Version\/[0-9.]+|SaarthiApp/i.test(ua) || (window as any).AndroidInterface !== undefined;
     const isStandalone = window.matchMedia('(display-mode: standalone)').matches || (navigator as any).standalone;
     const dismissed = sessionStorage.getItem('saarthi_app_banner_dismissed');
-    if (!isStandalone && !dismissed) {
+    if (!isWebView && !isStandalone && !dismissed) {
       setIsVisible(true);
     }
   }, []);
@@ -126,6 +128,17 @@ export function TopAppDownloadBanner() {
 
 export function ContextualAppDownloadCard({ title, subtitle }: { title?: string; subtitle?: string }) {
   const lang = useLanguage();
+  const [isWebView, setIsWebView] = useState(false);
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const ua = navigator.userAgent || '';
+    if (/wv|Android.*Version\/[0-9.]+|SaarthiApp/i.test(ua) || (window as any).AndroidInterface !== undefined) {
+      setIsWebView(true);
+    }
+  }, []);
+
+  if (isWebView) return null;
 
   return (
     <div

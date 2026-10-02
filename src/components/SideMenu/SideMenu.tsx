@@ -1,5 +1,6 @@
 'use client';
 
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, Home, Compass, Calendar, Award, Info, ChevronRight, Languages } from 'lucide-react';
 import Link from 'next/link';
@@ -45,6 +46,15 @@ interface SideMenuProps {
 export default function SideMenu({ isOpen, onClose }: SideMenuProps) {
   const lang = useLanguage();
   const t = TEXTS[lang];
+  const [isWebView, setIsWebView] = useState(false);
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const ua = navigator.userAgent || '';
+    if (/wv|Android.*Version\/[0-9.]+|SaarthiApp/i.test(ua) || (window as any).AndroidInterface !== undefined) {
+      setIsWebView(true);
+    }
+  }, []);
 
   const menuItems = [
     { name: t.home, icon: Home, href: '/' },
@@ -158,28 +168,30 @@ export default function SideMenu({ isOpen, onClose }: SideMenuProps) {
             </div>
 
             <div className={styles.footer}>
-              <a
-                href="https://play.google.com/store/apps/details?id=in.saarthiguide.travel"
-                target="_blank"
-                rel="noopener noreferrer"
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  gap: '8px',
-                  background: 'linear-gradient(135deg, #0F5132 0%, #064E3B 100%)',
-                  color: '#FFFFFF',
-                  padding: '12px 16px',
-                  borderRadius: '12px',
-                  textDecoration: 'none',
-                  fontWeight: 700,
-                  fontSize: '13px',
-                  marginBottom: '12px',
-                  boxShadow: '0 4px 12px rgba(15,81,50,0.2)'
-                }}
-              >
-                <span>{lang === 'te' ? '📲 ఆండ్రాయిడ్ యాప్ డౌన్‌లోడ్ చేయండి' : '📲 Download Android App'}</span>
-              </a>
+              {!isWebView && (
+                <a
+                  href="https://play.google.com/store/apps/details?id=in.saarthiguide.travel"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: '8px',
+                    background: 'linear-gradient(135deg, #0F5132 0%, #064E3B 100%)',
+                    color: '#FFFFFF',
+                    padding: '12px 16px',
+                    borderRadius: '12px',
+                    textDecoration: 'none',
+                    fontWeight: 700,
+                    fontSize: '13px',
+                    marginBottom: '12px',
+                    boxShadow: '0 4px 12px rgba(15,81,50,0.2)'
+                  }}
+                >
+                  <span>{lang === 'te' ? '📲 ఆండ్రాయిడ్ యాప్ డౌన్‌లోడ్ చేయండి' : '📲 Download Android App'}</span>
+                </a>
+              )}
 
               <div className={styles.spiritualTip}>
                 <div className={styles.tipHeader}>
