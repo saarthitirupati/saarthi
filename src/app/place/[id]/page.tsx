@@ -20,6 +20,7 @@ import { findNearestPlaceCandidates } from '@/lib/location';
 import { useLanguage } from '@/lib/useLanguage';
 import { getFestivalCrowdIntelligence } from '@/utils/festivalCrowd';
 import OfflineTempleMap from '@/components/place/OfflineTempleMap';
+import { ContextualAppDownloadCard } from '@/components/AppDownloadBanner';
 
 export default function PlaceDetails() {
   const routeParams = useParams();
@@ -1068,6 +1069,14 @@ export default function PlaceDetails() {
     </div>
   );
 
+  // 6. APP DOWNLOAD PROMPT
+  const appDownloadCardNode = (
+    <ContextualAppDownloadCard
+      title={lang === 'te' ? 'సారథి యాప్‌ను ఉచితంగా డౌన్‌లోడ్ చేసుకోండి' : 'Download Saarthi App for 100% Offline Access'}
+      subtitle={lang === 'te' ? 'తిరుమల కొండపై ఇంటర్నెట్ లేకపోయినా ప్రత్యక్ష మ్యాప్‌లు & వివరాలు చూడవచ్చు.' : 'Access 100% offline precinct maps, live darshan wait times & SSD token updates.'}
+    />
+  );
+
 
 
   // 7. ABOUT THIS PLACE / TEMPLE
@@ -1668,6 +1677,7 @@ export default function PlaceDetails() {
         {ctaButtonsNode}
         {offlineMapNode}
         {essentialFacilitiesNode}
+        {appDownloadCardNode}
         {aboutTempleNode}
         {nearbyTemplesNode}
         {heritageAccordionsNode}
@@ -1681,6 +1691,7 @@ export default function PlaceDetails() {
         <div className="place-desktop-main">
           {closureAlertNode}
           {offlineMapNode}
+          {appDownloadCardNode}
           {aboutTempleNode}
           {heritageAccordionsNode}
           {nearbyTemplesNode}

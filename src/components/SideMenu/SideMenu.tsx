@@ -158,6 +158,29 @@ export default function SideMenu({ isOpen, onClose }: SideMenuProps) {
             </div>
 
             <div className={styles.footer}>
+              <a
+                href="https://play.google.com/store/apps/details?id=in.saarthiguide.travel"
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  gap: '8px',
+                  background: 'linear-gradient(135deg, #0F5132 0%, #064E3B 100%)',
+                  color: '#FFFFFF',
+                  padding: '12px 16px',
+                  borderRadius: '12px',
+                  textDecoration: 'none',
+                  fontWeight: 700,
+                  fontSize: '13px',
+                  marginBottom: '12px',
+                  boxShadow: '0 4px 12px rgba(15,81,50,0.2)'
+                }}
+              >
+                <span>{lang === 'te' ? '📲 ఆండ్రాయిడ్ యాప్ డౌన్‌లోడ్ చేయండి' : '📲 Download Android App'}</span>
+              </a>
+
               <div className={styles.spiritualTip}>
                 <div className={styles.tipHeader}>
                   <Info size={16} />

@@ -11,6 +11,7 @@ import GoogleTranslate from '@/components/GoogleTranslate';
 import { DesktopHeader } from '@/components/DesktopHeader';
 import { ActiveAlerts } from '@/components/home/ActiveAlerts';
 import { useAlerts } from '@/hooks/useAlerts';
+import { TopAppDownloadBanner } from '@/components/AppDownloadBanner';
 
 import { syncExistingPushSubscription } from '@/lib/pushClient';
 
@@ -88,6 +89,7 @@ function LayoutContent({
           language={language}
         />
       )}
+      {!isAdmin && !showSplash && !isExcluded && needsOnboarding === false && <TopAppDownloadBanner />}
       {!isAdmin && !showSplash && !isExcluded && needsOnboarding === false && <DesktopHeader />}
       {!isAdmin && !showSplash && !isExcluded && needsOnboarding === false && (
         <ActiveAlerts 

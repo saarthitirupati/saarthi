@@ -83,6 +83,27 @@ export function DesktopHeader({ weather, temperature }: DesktopHeaderProps) {
             <span>{displayWeather}</span>
           </div>
 
+          <a
+            href="https://play.google.com/store/apps/details?id=in.saarthiguide.travel"
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{
+              background: '#0F5132',
+              color: '#FFFFFF',
+              fontWeight: 700,
+              fontSize: '12px',
+              padding: '6px 14px',
+              borderRadius: '20px',
+              textDecoration: 'none',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '6px',
+              boxShadow: '0 2px 6px rgba(15,81,50,0.2)'
+            }}
+          >
+            <span>{lang === 'te' ? 'యాప్ డౌన్‌లోడ్' : 'Get App'}</span>
+          </a>
+
           <button
             type="button"
             onClick={() => setAppLanguage(lang === 'en' ? 'te' : 'en')}
