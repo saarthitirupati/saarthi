@@ -383,8 +383,12 @@ export function LocationPill({
   const lang = useLanguage();
   
   // Look up Telugu name if language is set to Telugu
-  const matchedLoc = PRESET_LOCATIONS.find(l => l.shortName.toLowerCase() === (locationName || 'Tirupati').toLowerCase());
-  const displayName = lang === 'te' && matchedLoc ? matchedLoc.shortName : (locationName || 'Tirupati');
+  const matchedLoc = PRESET_LOCATIONS.find(l => 
+    l.shortName.toLowerCase() === (locationName || 'Tirupati').toLowerCase() ||
+    l.nameEn.toLowerCase().includes((locationName || 'Tirupati').toLowerCase()) ||
+    l.id.toLowerCase() === (locationName || 'Tirupati').toLowerCase()
+  );
+  const displayName = lang === 'te' && matchedLoc ? (matchedLoc.nameTe || matchedLoc.shortName) : (locationName || 'Tirupati');
 
   return (
     <button
