@@ -9,10 +9,10 @@ android {
 
     defaultConfig {
         applicationId 'in.saarthiguide.travel'
-        minSdk 21
+        minSdk 24
         targetSdk 36
-        versionCode 17
-        versionName '1.0.14'
+        versionCode 22
+        versionName '1.0.15'
 
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
     }
