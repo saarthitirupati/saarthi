@@ -54,17 +54,23 @@ export default function PrivacyPolicyPage() {
             <div>
               <strong style={{ color: '#0F172A' }}>a. Location Data (Optional):</strong>
               <p style={{ margin: '4px 0 0' }}>
-                With your explicit permission, Saarthi accesses your device&apos;s GPS location strictly to calculate real-time driving distances and walking times to nearby temples, lockers, and pilgrim amenities. Your precise location is processed locally on your device and is never stored on or transmitted to external servers.
+                With your explicit permission, Saarthi accesses your device&apos;s GPS location (Approximate and Precise) strictly to calculate real-time driving distances, walking times, and offline map route guidance to nearby temples, lockers, and pilgrim amenities in Tirupati and Tirumala.
               </p>
             </div>
             <div>
-              <strong style={{ color: '#0F172A' }}>b. Local Preferences & Storage:</strong>
+              <strong style={{ color: '#0F172A' }}>b. Device Tokens & Push Notifications (Optional):</strong>
+              <p style={{ margin: '4px 0 0' }}>
+                To deliver real-time TTD darshan wait times, free SSD token counter status, weather warnings, and emergency crowd advisories, Saarthi registers a Firebase Cloud Messaging (FCM) device token. This token is used solely for push notification delivery and is never sold or shared.
+              </p>
+            </div>
+            <div>
+              <strong style={{ color: '#0F172A' }}>c. Local Preferences & Storage:</strong>
               <p style={{ margin: '4px 0 0' }}>
                 Saved places, itinerary checklists, and language preferences (English / Telugu) are stored locally on your device via browser LocalStorage.
               </p>
             </div>
             <div>
-              <strong style={{ color: '#0F172A' }}>c. No Personal Information Sale:</strong>
+              <strong style={{ color: '#0F172A' }}>d. No Personal Information Sale:</strong>
               <p style={{ margin: '4px 0 0' }}>
                 We do not collect names, phone numbers, email addresses, or government ID numbers. We do not sell, rent, or monetize any user data.
               </p>
