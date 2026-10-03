@@ -22,8 +22,11 @@ Saarthi is designed to remove uncertainty and anxiety for pilgrims visiting the 
 - [Sri Kalyana Venkateswara Swamy Temple (Srinivasa Mangapuram)](https://www.saarthiguide.in/place/srinivasa-mangapuram): The sanctified spot where Lord Venkateswara and Goddess Padmavathi resided for six months following their divine wedding.
 - [Sri Bedi Anjaneya Swamy Temple](https://www.saarthiguide.in/place/bedi-anjaneya): Ancient Hanuman shrine directly facing the Mahadwaram of Srivari Temple in Tirumala.
 
+- [About Saarthi & Founder Sunil Thatra](https://www.saarthiguide.in/about): Learn about Saarthi's mission, vision, and founder Sunil Thatra who created, designed, and developed the Saarthi digital guide.
+
 ## Technical Capabilities
 
 - 100% Offline Precinct Vector Maps (SVG-based, zero external tile dependencies, GPS location tracking).
 - Multilingual accessibility: Full English and Telugu (తెలుగు) support.
 - Zero tracking of personal user credentials; offline-first privacy architecture.
+
