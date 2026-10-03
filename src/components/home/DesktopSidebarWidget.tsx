@@ -234,6 +234,50 @@ export function DesktopSidebarWidget() {
         </div>
       </div>
 
+      {/* ── CARD 5: PILGRIM DRESS CODE & ENTRY RULES ── */}
+      <div 
+        style={{
+          backgroundColor: '#FFFFFF',
+          borderRadius: '20px',
+          padding: '16px 18px',
+          border: '1px solid #E2E8F0',
+          boxShadow: '0 4px 16px rgba(15, 23, 42, 0.03)',
+          display: 'flex',
+          flexDirection: 'column',
+          gap: '10px'
+        }}
+      >
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+          <h3 style={{ fontSize: '15px', fontWeight: 800, color: '#0F172A', margin: 0, display: 'flex', alignItems: 'center', gap: '7px' }}>
+            <ShieldAlert size={17} color="#7C3AED" />
+            <span>{isTe ? 'ఆలయ సాంప్రదాయ దుస్తుల నియమావళి' : 'Mandatory Temple Dress Code'}</span>
+          </h3>
+          <span style={{ fontSize: '10.5px', fontWeight: 800, color: '#6D28D9', backgroundColor: '#F5F3FF', border: '1px solid #DDD6FE', padding: '2px 7px', borderRadius: '6px' }}>
+            {isTe ? 'తప్పనిసరి' : 'Mandatory'}
+          </span>
+        </div>
+
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px' }}>
+          <div style={{ backgroundColor: '#F5F3FF', border: '1px solid #DDD6FE', borderRadius: '12px', padding: '9px 10px' }}>
+            <div style={{ fontSize: '11px', fontWeight: 800, color: '#6D28D9' }}>
+              {isTe ? 'పురుషులు (Men)' : 'Men Attire'}
+            </div>
+            <div style={{ fontSize: '11.5px', fontWeight: 700, color: '#4C1D95', marginTop: '2px', lineHeight: 1.3 }}>
+              {isTe ? 'ధోవతి / పంచె లేదా కుర్తా పైజామా' : 'Dhoti / Uttareeyam or Kurta Pyjama'}
+            </div>
+          </div>
+
+          <div style={{ backgroundColor: '#F5F3FF', border: '1px solid #DDD6FE', borderRadius: '12px', padding: '9px 10px' }}>
+            <div style={{ fontSize: '11px', fontWeight: 800, color: '#6D28D9' }}>
+              {isTe ? 'మహిళలు (Women)' : 'Women Attire'}
+            </div>
+            <div style={{ fontSize: '11.5px', fontWeight: 700, color: '#4C1D95', marginTop: '2px', lineHeight: 1.3 }}>
+              {isTe ? 'చీర / లంగా ఒణి లేదా చుడీదార్' : 'Saree, Half-Saree or Chudidar'}
+            </div>
+          </div>
+        </div>
+      </div>
+
     </div>
   );
 }
