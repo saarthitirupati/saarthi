@@ -190,6 +190,50 @@ export function DesktopSidebarWidget() {
         </div>
       </div>
 
+      {/* ── CARD 4: GHAT ROAD SPEED RULES & TIMINGS ── */}
+      <div 
+        style={{
+          backgroundColor: '#FFFFFF',
+          borderRadius: '20px',
+          padding: '16px 18px',
+          border: '1px solid #E2E8F0',
+          boxShadow: '0 4px 16px rgba(15, 23, 42, 0.03)',
+          display: 'flex',
+          flexDirection: 'column',
+          gap: '10px'
+        }}
+      >
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+          <h3 style={{ fontSize: '15px', fontWeight: 800, color: '#0F172A', margin: 0, display: 'flex', alignItems: 'center', gap: '7px' }}>
+            <Clock size={17} color="#0284C7" />
+            <span>{isTe ? 'ఘాట్ రోడ్ వేగ పరిమితి & నిబంధనలు' : 'Ghat Road Rules & Speeds'}</span>
+          </h3>
+          <span style={{ fontSize: '10.5px', fontWeight: 800, color: '#0369A1', backgroundColor: '#F0F9FF', border: '1px solid #BAE6FD', padding: '2px 7px', borderRadius: '6px' }}>
+            {isTe ? 'TTD సెక్యూరిటీ' : 'TTD Security'}
+          </span>
+        </div>
+
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px' }}>
+          <div style={{ backgroundColor: '#F0F9FF', border: '1px solid #BAE6FD', borderRadius: '12px', padding: '9px 10px' }}>
+            <div style={{ fontSize: '11px', fontWeight: 800, color: '#0369A1' }}>
+              {isTe ? 'మొదటి ఘాట్ (పైకి)' : '1st Ghat (Upward)'}
+            </div>
+            <div style={{ fontSize: '12px', fontWeight: 800, color: '#0C4A6E', marginTop: '2px' }}>
+              {isTe ? 'కనీసం 28 నిమిషాలు (40 km/h)' : 'Min 28 Mins (40 km/h)'}
+            </div>
+          </div>
+
+          <div style={{ backgroundColor: '#F0F9FF', border: '1px solid #BAE6FD', borderRadius: '12px', padding: '9px 10px' }}>
+            <div style={{ fontSize: '11px', fontWeight: 800, color: '#0369A1' }}>
+              {isTe ? 'రెండవ ఘాట్ (కిందికి)' : '2nd Ghat (Downward)'}
+            </div>
+            <div style={{ fontSize: '12px', fontWeight: 800, color: '#0C4A6E', marginTop: '2px' }}>
+              {isTe ? 'కనీసం 40 నిమిషాలు (30 km/h)' : 'Min 40 Mins (30 km/h)'}
+            </div>
+          </div>
+        </div>
+      </div>
+
     </div>
   );
 }
