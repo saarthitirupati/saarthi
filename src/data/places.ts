@@ -2255,7 +2255,7 @@ export const PLACES: Place[] = [
     rating: 4.8,
     reviewCount: 1900,
     image: 'https://res.cloudinary.com/kniegqlj/image/upload/v1790768612/oar2_pwllcu.jpg',
-    coordinates: { lat: 13.6822, lng: 79.5645 },
+    coordinates: { lat: 13.6237941, lng: 79.6513604 },
     shortIntro: 'Battinayya Kona is a sacred forest cave shrine and waterfall near Musilipedu featuring a Swayambhu Shiva Lingam inside a rock cave.',
     whyVisit: 'Trek 2,000 stone hill steps to a natural cave shrine with a Swayambhu Shiva Lingam, Venkateswara Padam, and scenic mountain stream.',
     openingTime: '6:00 AM',

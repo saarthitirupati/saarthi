@@ -88,7 +88,7 @@ export function runLocationVerification() {
     'pathala-vinayaka-srikalahasti': { lat: 13.7494728, lng: 79.6974811 },
     'jala-vinayaka-srikalahasti': { lat: 13.7489, lng: 79.6971 },
     'kala-bhairava-vedam-srikalahasti': { lat: 13.7142, lng: 79.7128 },
-    'battinayya-kona': { lat: 13.6822, lng: 79.5645 },
+    'battinayya-kona': { lat: 13.6237941, lng: 79.6513604 },
     'prasanna-varadaraja-srikalahasti': { lat: 13.7486, lng: 79.6991 }
   };
 
