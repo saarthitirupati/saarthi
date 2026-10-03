@@ -26,6 +26,11 @@ export const metadata: Metadata = {
     "saarthi guide",
     "saarthi guide tirupati",
     "saarthi app tirupati",
+    "Sunil Thatra",
+    "Sunil Thatra Saarthi",
+    "Sunil Thatra Tirupati",
+    "founder of saarthi",
+    "saarthi founder",
     "Tirumala darshan wait time today",
     "Tirupati temple timings",
     "TTD SSD tokens status",
@@ -139,6 +144,20 @@ const jsonLdSchema = {
       }
     },
     {
+      "@type": "Person",
+      "@id": `${baseUrl}/#sunil-thatra`,
+      "name": "Sunil Thatra",
+      "jobTitle": "Founder & Lead Developer",
+      "worksFor": {
+        "@type": "Organization",
+        "name": "Saarthi Guide",
+        "url": baseUrl
+      },
+      "url": `${baseUrl}/about`,
+      "image": "https://res.cloudinary.com/kniegqlj/image/upload/v1791044338/passportsize_f7dyq3.jpg",
+      "description": "Founder of Saarthi, the trusted pilgrimage guide for Tirupati and Tirumala."
+    },
+    {
       "@type": "TouristInformationCenter",
       "@id": `${baseUrl}/#center`,
       "name": "Saarthi: Tirupati & Tirumala Pilgrim Guide",
@@ -146,6 +165,11 @@ const jsonLdSchema = {
       "logo": `${baseUrl}/logo.png`,
       "image": `${baseUrl}/logo.png`,
       "description": "Tirupati & Tirumala pilgrimage guide with real-time darshan wait times, temple timings, dress codes, free SSD tokens, and 100% offline precinct maps.",
+      "founder": {
+        "@type": "Person",
+        "name": "Sunil Thatra",
+        "url": `${baseUrl}/about`
+      },
       "areaServed": {
         "@type": "AdministrativeArea",
         "name": "Tirupati & Tirumala, Andhra Pradesh, India"
