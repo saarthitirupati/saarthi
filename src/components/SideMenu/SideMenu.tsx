@@ -18,6 +18,7 @@ const TEXTS = {
     liveUpdates: 'Live Tirumala Updates',
     festivals: 'Festivals & Events',
     liveAlerts: 'Live Alerts & Advisories',
+    aboutUs: 'About Saarthi',
     adminDashboard: 'Admin Dashboard',
     darshanTip: 'Darshan Tip',
     darshanTipDesc: 'Morning slots are usually less crowded. Visit Kapila Theertham first for a traditional start.'
@@ -32,6 +33,7 @@ const TEXTS = {
     liveUpdates: 'తిరుమల లైవ్ అప్డేట్స్',
     festivals: 'పండుగలు & ఈవెంట్స్',
     liveAlerts: 'లైవ్ అలర్ట్స్ & సూచనలు',
+    aboutUs: 'సారథి గురించి (About Us)',
     adminDashboard: 'అడ్మిన్ డాష్బోర్డ్',
     darshanTip: 'దర్శన సూచన',
     darshanTipDesc: 'ఉదయపు స్లాట్లలో సాధారణంగా తక్కువ రద్దీ ఉంటుంది. సాంప్రదాయ ప్రారంభం కోసం ముందు కపిల తీర్థం సందర్శించండి.'
@@ -64,6 +66,7 @@ export default function SideMenu({ isOpen, onClose }: SideMenuProps) {
     { name: t.smartPlanner, icon: Compass, href: '/planner' },
     { name: t.festivals, icon: Calendar, href: '/festivals' },
     { name: t.liveAlerts, icon: Info, href: '/alerts' },
+    { name: t.aboutUs, icon: Info, href: '/about' },
     { name: t.adminDashboard, icon: Award, href: '/saarthiadmin' },
   ];
 
