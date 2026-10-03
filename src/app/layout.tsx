@@ -73,7 +73,7 @@ export const metadata: Metadata = {
     images: [`${baseUrl}/twitter-image`],
   },
   verification: {
-    google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION || 'G-SAARTHI-VERIFY',
+    google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION || 'google87ea9a2096386d74',
   },
   robots: {
     index: true,
