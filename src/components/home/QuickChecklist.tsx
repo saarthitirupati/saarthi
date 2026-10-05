@@ -128,8 +128,8 @@ export function QuickChecklist(props: any) {
             </div>
           </div>
 
-          {/* DYNAMIC ISSUING TIME OR ADVISORY BANNER (SINGLE NON-REDUNDANT ALERT) */}
-          {cleanNotice ? (
+          {/* DYNAMIC ADVISORY BANNER IF NOTICE EXISTS */}
+          {cleanNotice && (
             <div style={{
               background: '#FEF2F2',
               border: '1px solid #FECACA',
@@ -150,44 +150,43 @@ export function QuickChecklist(props: any) {
                 </span>
               </div>
             </div>
-          ) : (
-            <>
-              <div style={{
-                background: liveStatus.ssdTokenStatus === 'issuing' ? '#F0FDF4' : liveStatus.ssdTokenStatus === 'paused' ? '#FFFBEB' : '#FEF2F2',
-                border: `1px solid ${liveStatus.ssdTokenStatus === 'issuing' ? '#BBF7D0' : liveStatus.ssdTokenStatus === 'paused' ? '#FDE68A' : '#FECACA'}`,
-                borderRadius: '12px',
-                padding: '10px 12px',
-                marginBottom: '8px',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-                gap: '10px'
-              }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                  <Clock size={16} color={liveStatus.ssdTokenStatus === 'issuing' ? '#16A34A' : liveStatus.ssdTokenStatus === 'paused' ? '#D97706' : '#DC2626'} style={{ flexShrink: 0 }} />
-                  <div>
-                    <span style={{ fontSize: '10.5px', fontWeight: 600, color: '#64748B', display: 'block' }}>
-                      {t.nextRelease}
-                    </span>
-                    <span style={{ fontSize: '14px', fontWeight: 800, color: liveStatus.ssdTokenStatus === 'issuing' ? '#15803D' : liveStatus.ssdTokenStatus === 'paused' ? '#B45309' : '#991B1B', marginTop: '1px', display: 'block' }}>
-                      {formattedNextTime ? formattedNextTime : (liveStatus.ssdTokenStatus === 'issuing' ? t.tokensBeingIssued : '4:00 AM')}
-                    </span>
-                  </div>
-                </div>
-              </div>
+          )}
 
-              {/* Status helper text */}
-              <div style={{ display: 'flex', alignItems: 'center', gap: '5px', marginBottom: '10px' }}>
-                <span style={{ fontSize: '11.5px', color: '#64748B', fontWeight: 500, lineHeight: 1.35 }}>
-                  {liveStatus.ssdTokenStatus === 'issuing'
-                    ? t.activelyIssuing
-                    : liveStatus.ssdTokenStatus === 'paused'
-                    ? t.issuingPaused
-                    : t.quotaCompleted}
+          {/* NEXT RELEASE TIME BANNER */}
+          <div style={{
+            background: liveStatus.ssdTokenStatus === 'issuing' ? '#F0FDF4' : liveStatus.ssdTokenStatus === 'paused' ? '#FFFBEB' : '#FEF2F2',
+            border: `1px solid ${liveStatus.ssdTokenStatus === 'issuing' ? '#BBF7D0' : liveStatus.ssdTokenStatus === 'paused' ? '#FDE68A' : '#FECACA'}`,
+            borderRadius: '12px',
+            padding: '10px 12px',
+            marginBottom: '8px',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            gap: '10px'
+          }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <Clock size={16} color={liveStatus.ssdTokenStatus === 'issuing' ? '#16A34A' : liveStatus.ssdTokenStatus === 'paused' ? '#D97706' : '#DC2626'} style={{ flexShrink: 0 }} />
+              <div>
+                <span style={{ fontSize: '10.5px', fontWeight: 600, color: '#64748B', display: 'block' }}>
+                  {t.nextRelease}
+                </span>
+                <span style={{ fontSize: '14px', fontWeight: 800, color: liveStatus.ssdTokenStatus === 'issuing' ? '#15803D' : liveStatus.ssdTokenStatus === 'paused' ? '#B45309' : '#991B1B', marginTop: '1px', display: 'block' }}>
+                  {formattedNextTime ? formattedNextTime : (liveStatus.ssdTokenStatus === 'issuing' ? t.tokensBeingIssued : '4:00 AM')}
                 </span>
               </div>
-            </>
-          )}
+            </div>
+          </div>
+
+          {/* Status helper text */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: '5px', marginBottom: '10px' }}>
+            <span style={{ fontSize: '11.5px', color: '#64748B', fontWeight: 500, lineHeight: 1.35 }}>
+              {liveStatus.ssdTokenStatus === 'issuing'
+                ? t.activelyIssuing
+                : liveStatus.ssdTokenStatus === 'paused'
+                ? t.issuingPaused
+                : t.quotaCompleted}
+            </span>
+          </div>
 
           {/* VISUAL TILES FOR COLLECTION CENTRES (STRICTLY NO EMOJIS, LUCIDE ICONS) */}
           <div style={{ borderTop: '1px solid #F1F5F9', paddingTop: '10px', marginTop: '4px' }}>
