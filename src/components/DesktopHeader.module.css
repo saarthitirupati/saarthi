@@ -20,7 +20,7 @@
 .innerHeader {
   max-width: 1440px;
   margin: 0 auto;
-  padding: 11px 24px;
+  padding: 14px 24px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -29,7 +29,7 @@
 
 @media (min-width: 1280px) {
   .innerHeader {
-    padding: 11px 32px;
+    padding: 14px 32px;
   }
 }
 

@@ -1256,24 +1256,25 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
           width: '100%',
           maxWidth: '100vw',
           overflowX: 'hidden',
-          boxSizing: 'border-box'
+          boxSizing: 'border-box',
+          paddingTop: 'max(6px, env(safe-area-inset-top, 0px))'
         }}>
           <div style={{
             maxWidth: '100%',
-            padding: '0 clamp(8px, 2.5vw, 14px)',
-            height: '60px',
+            padding: '8px 16px',
+            minHeight: '56px',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
-            gap: '6px',
+            gap: '8px',
             boxSizing: 'border-box'
           }}>
 
             {/* Left — Official Saarthi Brand Lockup */}
-            <Link href="/" style={{ display: 'flex', alignItems: 'center', gap: '5px', textDecoration: 'none', flexShrink: 0 }}>
-              <Logo size={28} />
+            <Link href="/" style={{ display: 'flex', alignItems: 'center', gap: '6px', textDecoration: 'none', flexShrink: 0 }}>
+              <Logo size={32} />
               <span className="notranslate" style={{
-                fontSize: 'clamp(17px, 4.2vw, 20px)',
+                fontSize: 'clamp(18px, 4.5vw, 21px)',
                 fontWeight: 900,
                 color: '#0F5132',
                 letterSpacing: '-0.02em',
@@ -1285,17 +1286,18 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
               </span>
             </Link>
 
-            {/* Right — Location Badge, Language Toggle & Notification Bell */}
-            <div style={{ display: 'flex', alignItems: 'center', gap: '4px', minWidth: 0, flexShrink: 1, justifyContent: 'flex-end' }}>
+            {/* Right — Action group */}
+            <div style={{ display: 'flex', alignItems: 'center', gap: '6px', minWidth: 0, flexShrink: 1, justifyContent: 'flex-end' }}>
               <LocationPill 
                 locationName={selectedLocation} 
                 isGpsActive={locationPermission === 'granted'}
                 onClick={() => setIsLocationModalOpen(true)} 
                 style={{ 
-                  padding: '4px 8px', 
-                  fontSize: '11px', 
-                  gap: '3px', 
-                  maxWidth: 'clamp(94px, 30vw, 140px)' 
+                  height: '32px',
+                  padding: '4px 9px', 
+                  fontSize: '12px', 
+                  gap: '4px', 
+                  maxWidth: 'clamp(95px, 30vw, 145px)' 
                 }}
               />
 
@@ -1308,13 +1310,14 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
                 style={{
                   display: 'inline-flex',
                   alignItems: 'center',
-                  gap: '3px',
-                  padding: '4px 7px',
+                  gap: '4px',
+                  height: '32px',
+                  padding: '4px 9px',
                   borderRadius: '9999px',
-                  border: '1px solid #E2E8F0',
+                  border: '1px solid #CBD5E1',
                   background: '#F8FAFC',
                   color: '#0F5132',
-                  fontSize: '11px',
+                  fontSize: '12px',
                   fontWeight: 700,
                   cursor: 'pointer',
                   userSelect: 'none',
@@ -1325,7 +1328,7 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
                   flexShrink: 0,
                 }}
               >
-                <Languages size={13} color="#0F5132" strokeWidth={2.2} />
+                <Languages size={14} color="#0F5132" strokeWidth={2.2} />
                 <span>{lang === 'en' ? 'తెలుగు' : 'EN'}</span>
               </button>
 
@@ -1338,7 +1341,7 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
                 {(activeAlertsCount ?? 0) > 0 && (
                   <span style={{
                     position: 'absolute',
-                    top: '1px', right: '1px',
+                    top: '0px', right: '0px',
                     minWidth: '15px', height: '15px',
                     borderRadius: '8px',
                     background: '#DC2626',

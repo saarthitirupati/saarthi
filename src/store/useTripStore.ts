@@ -116,6 +116,22 @@ export function useTripStore() {
                   }).catch(() => {});
                 }
               }).catch(() => {});
+
+              // Start real-time GPS tracking after initial fix resolves
+              if (!activeWatchId && source === 'gps') {
+                activeWatchId = watchCoordinates((updatedCoords, updatedAccuracy) => {
+                  const updatedRegion = resolveLocationName(updatedCoords.lat, updatedCoords.lng);
+                  syncLocationToServiceWorker(updatedCoords, updatedRegion);
+                  setState(prev => ({
+                    ...prev,
+                    userLocation: updatedCoords,
+                    locationPermission: 'granted',
+                    locationSource: 'gps',
+                    locationAccuracyMeters: updatedAccuracy,
+                    locationName: updatedRegion
+                  }));
+                }, accuracyMeters || Infinity);
+              }
             },
             (err) => {
               const isExplicitDenial = err && err.code === 1;
@@ -126,20 +142,6 @@ export function useTripStore() {
               }));
             }
           );
-
-          // Real-time GPS tracking as the pilgrim moves
-          activeWatchId = watchCoordinates((coords, accuracyMeters) => {
-            const region = resolveLocationName(coords.lat, coords.lng);
-            syncLocationToServiceWorker(coords, region);
-            setState(prev => ({
-              ...prev,
-              userLocation: coords,
-              locationPermission: 'granted',
-              locationSource: 'gps',
-              locationAccuracyMeters: accuracyMeters,
-              locationName: region
-            }));
-          });
         } else if (!loadedState.userLocation) {
           const { TIRUPATI_CENTER } = await import('@/lib/location');
           setState(prev => ({ ...prev, userLocation: TIRUPATI_CENTER }));

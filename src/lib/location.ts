@@ -207,7 +207,7 @@ export function detectCoordinates(
           { enableHighAccuracy: false, timeout: 5000, maximumAge: 300000 }
         );
       },
-      { enableHighAccuracy: true, timeout: 6000, maximumAge: 60000 }
+      { enableHighAccuracy: true, timeout: 6000, maximumAge: 0 }
     );
   } else {
     fallbackToIP();
@@ -235,12 +235,13 @@ export function detectCoordinates(
  * or when GPS satellite accuracy refines.
  */
 export function watchCoordinates(
-  onUpdate: (coords: LatLng, accuracyMeters?: number) => void
+  onUpdate: (coords: LatLng, accuracyMeters?: number) => void,
+  initialAccuracy: number = Infinity
 ): number | null {
   if (typeof window === 'undefined' || !navigator.geolocation) return null;
 
   let lastCoords: LatLng | null = null;
-  let bestAccuracy = Infinity;
+  let bestAccuracy = initialAccuracy;
 
   return navigator.geolocation.watchPosition(
     (position) => {
@@ -249,6 +250,11 @@ export function watchCoordinates(
       const accuracy = Math.round(position.coords.accuracy || 0);
 
       if (!isValidCoordinates(lat, lng)) return;
+
+      // Ignore updates with significantly degraded accuracy (e.g. jump from ±10m to ±300m fix)
+      if (accuracy > 0 && bestAccuracy < 100 && accuracy > bestAccuracy * 3 + 50) {
+        return;
+      }
 
       let shouldUpdate = false;
       if (!lastCoords) {
