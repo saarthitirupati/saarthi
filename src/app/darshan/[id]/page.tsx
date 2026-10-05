@@ -427,7 +427,8 @@ export default function DarshanDetailsPage() {
                       : idx === 1
                       ? "https://www.google.com/maps/place/Srinivasam/@13.6315627,79.4288389"
                       : "https://www.google.com/maps/place/Bhudevi+complex/@13.6464948,79.4097309";
-                    const icon = idx === 0 ? <Train size={16} color="#E11D48" /> : idx === 1 ? <Bus size={16} color="#E11D48" /> : <Mountain size={16} color="#E11D48" />;
+                    const icon = idx === 0 ? <Train size={16} color="#2563EB" /> : idx === 1 ? <Bus size={16} color="#D97706" /> : <Mountain size={16} color="#059669" />;
+                    const iconBg = idx === 0 ? '#EFF6FF' : idx === 1 ? '#FEF3C7' : '#D1FAE5';
                     return (
                       <a key={idx} href={mapsUrl} target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none' }}>
                         <div style={{
@@ -443,14 +444,14 @@ export default function DarshanDetailsPage() {
                           <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
                             <div style={{
                               width: '32px', height: '32px', borderRadius: '8px',
-                              background: '#FFE4E6', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0
+                              background: iconBg, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0
                             }}>
                               {icon}
                             </div>
                             <div>
                               <div style={{ fontSize: '12.5px', fontWeight: 800, color: '#0F172A' }}>{loc.name}</div>
                               <div style={{ fontSize: '11px', color: '#64748B', fontWeight: 500 }}>{loc.landmark}</div>
-                              <div style={{ fontSize: '10.5px', color: '#E11D48', fontWeight: 700, marginTop: '2px' }}>⏱ {loc.counterHours}</div>
+                              <div style={{ fontSize: '10.5px', color: '#DC2626', fontWeight: 700, marginTop: '2px' }}>⏱ {loc.counterHours}</div>
                             </div>
                           </div>
                           <Compass size={16} color="#64748B" style={{ flexShrink: 0 }} />
