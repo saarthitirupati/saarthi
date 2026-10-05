@@ -464,10 +464,25 @@ export default function DarshanDetailsPage() {
 
             {/* DYNAMIC NOTICE BANNER (STRICTLY SCOPED TO SSD TOKENS PAGE ONLY WHEN ACTIVE) */}
             {id === 'ssd-token' && ssdNotice && (
-              <div className={styles.groundNoticeBox} style={{ marginTop: '12px' }}>
-                <Clock size={16} className={styles.groundNoticeIcon} />
-                <div className={styles.groundNoticeText}>
-                  <span>{ssdNotice}</span>
+              <div style={{
+                background: '#FEF2F2',
+                border: '1px solid #FECACA',
+                borderRadius: '12px',
+                padding: '12px 14px',
+                marginTop: '12px',
+                display: 'flex',
+                alignItems: 'flex-start',
+                gap: '10px',
+                boxShadow: '0 2px 8px rgba(220, 38, 38, 0.06)'
+              }}>
+                <ShieldAlert size={20} color="#DC2626" style={{ flexShrink: 0, marginTop: '2px' }} />
+                <div style={{ flex: 1, minWidth: 0 }}>
+                  <span style={{ fontSize: '10px', fontWeight: 800, color: '#991B1B', letterSpacing: '0.04em', textTransform: 'uppercase', display: 'block' }}>
+                    {lang === 'te' ? 'ముఖ్యమైన హెచ్చరిక' : 'IMPORTANT ADVISORY'}
+                  </span>
+                  <span style={{ fontSize: '13px', fontWeight: 800, color: '#7F1D1D', lineHeight: 1.4, display: 'block', marginTop: '2px' }}>
+                    {ssdNotice}
+                  </span>
                 </div>
               </div>
             )}
