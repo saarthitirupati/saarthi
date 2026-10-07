@@ -28,7 +28,7 @@ import {
 } from '../../lib/audioIdentity';
 import { triggerBeadHaptic } from '../../lib/audioBell';
 import { generateJapaCard, shareOrDownloadCard } from '../../lib/shareCardGenerator';
-import { LotusMandalaVector } from '../common/DevotionalSvgIcons';
+import { LotusMandalaVector, SrivariNamamVector } from '../common/DevotionalSvgIcons';
 import { useSpeechSynthesis } from '../../utils/useSpeechSynthesis';
 import { useLanguage } from '../../lib/useLanguage';
 
