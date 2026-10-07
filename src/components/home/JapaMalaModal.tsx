@@ -405,13 +405,13 @@ export function JapaMalaModal({ isOpen, onClose, lang }: JapaMalaModalProps) {
           WebkitUserSelect: 'none'
         }}
       >
-        {/* Subtle Sacred Lotus Mandala Background (8-10% opacity) */}
+        {/* Subtle Sacred Lotus Mandala Background */}
         <LotusMandalaVector
-          size={320}
-          opacity={0.08}
+          size={340}
+          opacity={0.06}
           style={{
             position: 'absolute',
-            top: '42%',
+            top: '40%',
             left: '50%',
             transform: 'translate(-50%, -50%)',
             pointerEvents: 'none',
@@ -419,131 +419,159 @@ export function JapaMalaModal({ isOpen, onClose, lang }: JapaMalaModalProps) {
           }}
         />
 
-        {/* 1. Top Header Bar */}
-        <div style={{ position: 'relative', zIndex: 2, display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', marginBottom: '14px' }}>
-          <div style={{ display: 'flex', alignItems: 'flex-start', gap: '10px' }}>
+        {/* 1. Header Bar: Safe Area Top Padding & Srivari Thirunamam Center Lockup */}
+        <div style={{
+          position: 'relative',
+          zIndex: 2,
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          marginBottom: '16px',
+          paddingTop: 'max(4px, env(safe-area-inset-top, 0px))'
+        }}>
+          {/* Top Control Action Row: Back Button (Left), Srivari Thirunamam (Center), Language + Settings/Close (Right) */}
+          <div style={{
+            width: '100%',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            marginBottom: '8px'
+          }}>
+            {/* Back Button */}
             <button
               onClick={onClose}
               aria-label="Back"
               style={{
-                background: 'none',
-                border: 'none',
-                padding: '3px 0 0 0',
+                background: 'rgba(255, 255, 255, 0.05)',
+                border: '1px solid rgba(217, 164, 65, 0.25)',
+                borderRadius: '50%',
+                width: '38px',
+                height: '38px',
                 color: '#FFF8E7',
                 cursor: 'pointer',
                 display: 'flex',
                 alignItems: 'center',
-                justifyContent: 'center'
+                justifyContent: 'center',
+                transition: 'all 0.15s ease'
               }}
             >
-              <ArrowLeft size={19} />
+              <ArrowLeft size={18} />
             </button>
-            <div>
-              <h2 style={{ 
-                fontSize: '16px', 
-                fontWeight: 700, 
-                color: '#FFF8E7', 
-                margin: 0,
-                letterSpacing: '0.01em',
-                fontFamily: "var(--font-sacred-serif), Georgia, serif"
-              }}>
-                {currentLang === 'te' ? 'శ్రీవారి జపమాల' : 'Sri Vari Japa Mala'}
-              </h2>
-              <div style={{ fontSize: '11.5px', color: '#94A3B8', marginTop: '2px', lineHeight: 1.3 }}>
-                <div>{currentLang === 'te' ? '108 దివ్య నామాలు' : '108 Sacred Names'}</div>
-                <div style={{ color: '#64748B' }}>{currentLang === 'te' ? 'నిత్య నామస్మరణ' : 'Daily devotional chanting'}</div>
-              </div>
+
+            {/* Sacred Srivari Thirunamam Icon (Center Emblem) */}
+            <div style={{ display: 'flex', justifyContent: 'center' }}>
+              <SrivariNamamVector size={38} />
+            </div>
+
+            {/* Right Controls: Language Selector + Settings/Close Button */}
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+              {/* Language Switcher */}
+              <button 
+                type="button"
+                onClick={handleToggleLang}
+                title="Switch Language"
+                style={{
+                  background: 'rgba(217, 164, 65, 0.12)',
+                  border: '1px solid rgba(217, 164, 65, 0.35)',
+                  borderRadius: '20px',
+                  padding: '5px 12px',
+                  color: '#FDE047',
+                  fontSize: '12px',
+                  fontWeight: 800,
+                  cursor: 'pointer',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '5px'
+                }}
+              >
+                <Languages size={13} color="#FDE047" />
+                <span>{currentLang === 'te' ? 'తెలుగు' : 'English'}</span>
+              </button>
+
+              {/* Settings / Close Button */}
+              <button 
+                onClick={onClose}
+                aria-label="Close modal"
+                style={{
+                  background: 'rgba(255, 255, 255, 0.05)',
+                  border: '1px solid rgba(217, 164, 65, 0.25)',
+                  borderRadius: '50%',
+                  width: '38px',
+                  height: '38px',
+                  color: '#CBD5E1',
+                  cursor: 'pointer',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  transition: 'background 0.15s ease'
+                }}
+              >
+                <X size={18} />
+              </button>
             </div>
           </div>
 
-          {/* Right Header Controls: Language Switcher + Close Button */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            {/* Language Switcher Button */}
-            <button 
-              type="button"
-              onClick={handleToggleLang}
-              title="Switch Language"
-              style={{
-                background: 'rgba(217, 164, 65, 0.14)',
-                border: '1px solid rgba(217, 164, 65, 0.35)',
-                borderRadius: '12px',
-                padding: '4px 9px',
-                color: '#D9A441',
-                fontSize: '11px',
-                fontWeight: 800,
-                cursor: 'pointer',
-                display: 'flex',
-                alignItems: 'center',
-                gap: '4px'
-              }}
-            >
-              <Languages size={13} color="#D9A441" />
-              <span>{currentLang === 'te' ? 'English' : 'తెలుగు'}</span>
-            </button>
-
-            {/* Close button */}
-            <button 
-              onClick={onClose}
-              aria-label="Close modal"
-              style={{
-                background: 'rgba(255, 255, 255, 0.06)',
-                border: '1px solid rgba(255, 255, 255, 0.12)',
-                borderRadius: '50%',
-                width: '32px',
-                height: '32px',
-                color: '#CBD5E1',
-                cursor: 'pointer',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                transition: 'background 0.15s ease'
-              }}
-            >
-              <X size={16} />
-            </button>
+          {/* Prominent Header Titles */}
+          <h2 style={{ 
+            fontSize: '20px', 
+            fontWeight: 800, 
+            color: '#FFF8E7', 
+            margin: '2px 0 0 0',
+            letterSpacing: '0.04em',
+            textTransform: 'uppercase',
+            textAlign: 'center',
+            fontFamily: "var(--font-sacred-serif), Georgia, serif",
+            textShadow: '0 2px 10px rgba(217, 164, 65, 0.3)'
+          }}>
+            {currentLang === 'te' ? 'శ్రీవారి జపమాల' : 'SRI VARI JAPA MALA'}
+          </h2>
+          <div style={{ fontSize: '12px', color: '#CBD5E1', marginTop: '3px', textAlign: 'center', fontWeight: 500 }}>
+            <span>{currentLang === 'te' ? '108 దివ్య నామాలు' : '108 Sacred Names'}</span>
+            <span style={{ margin: '0 6px', color: '#D9A441' }}>•</span>
+            <span>{currentLang === 'te' ? 'నిత్య నామస్మరణ' : 'Daily devotional chanting'}</span>
           </div>
         </div>
 
-        {/* 2. Visual 7-Bead Japa Strand */}
+        {/* 2. Visual 108-Bead Japa Strand Progress */}
         {!justCompletedMala && (
           <div style={{
             position: 'relative',
-            padding: '12px 0 10px',
-            marginBottom: '12px',
+            padding: '10px 0 14px',
+            marginBottom: '14px',
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
             justifyContent: 'center'
           }}>
-            {/* Top Indicator: Current Bead Number & Subtle Dash */}
-            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginBottom: '8px' }}>
-              <span style={{ fontSize: '13px', fontWeight: 800, color: '#D9A441' }}>
+            {/* Top Bead Number Indicator with Underline */}
+            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginBottom: '10px' }}>
+              <span style={{ fontSize: '16px', fontWeight: 900, color: '#FDE047', lineHeight: 1 }}>
                 {activeBead}
               </span>
-              <div style={{ width: '28px', height: '1.5px', background: '#D9A441', marginTop: '2px', borderRadius: '1px' }} />
+              <div style={{ width: '28px', height: '2px', background: '#D9A441', marginTop: '4px', borderRadius: '1px' }} />
             </div>
 
             {/* Connecting Strand Thread */}
-            <div style={{ position: 'relative', width: '100%', maxWidth: '280px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <div style={{ position: 'relative', width: '100%', maxWidth: '300px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
               <div style={{
                 position: 'absolute',
                 top: '50%',
-                left: '6%',
-                right: '6%',
-                height: '1.5px',
-                background: 'linear-gradient(90deg, transparent 0%, rgba(217, 164, 65, 0.25) 25%, rgba(217, 164, 65, 0.55) 50%, rgba(217, 164, 65, 0.25) 75%, transparent 100%)',
+                left: '4%',
+                right: '4%',
+                height: '2px',
+                background: 'linear-gradient(90deg, transparent 0%, rgba(217, 164, 65, 0.3) 20%, rgba(217, 164, 65, 0.7) 50%, rgba(217, 164, 65, 0.3) 80%, transparent 100%)',
                 transform: 'translateY(-50%)',
                 zIndex: 1
               }} />
 
-              {/* 7 Beads Row: 3 past, 1 center, 3 future */}
+              {/* 7 Visible Beads Row: 3 past, 1 active center, 3 future */}
               <div style={{
                 position: 'relative',
                 zIndex: 2,
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                gap: '12px'
+                gap: '14px'
               }}>
                 {visibleBeadNumbers.map((beadNum, idx) => {
                   const isCenter = idx === 3;
@@ -556,22 +584,23 @@ export function JapaMalaModal({ isOpen, onClose, lang }: JapaMalaModalProps) {
                       onClick={() => triggerBeadChange(beadNum)}
                       title={`Bead #${beadNum}`}
                       style={{
-                        border: isCenter ? '2px solid #FFF8E7' : '1px solid rgba(217, 164, 65, 0.3)',
+                        border: isCenter ? '2px solid #FDE047' : isPast ? '1px solid rgba(217, 164, 65, 0.5)' : '1px solid rgba(255, 248, 231, 0.25)',
                         borderRadius: '50%',
                         background: isCenter
-                          ? '#D9A441'
+                          ? 'radial-gradient(circle at 35% 35%, #FEF08A 0%, #D9A441 60%, #92400E 100%)'
                           : isPast
                           ? 'rgba(217, 164, 65, 0.45)'
                           : 'rgba(255, 248, 231, 0.12)',
-                        boxShadow: isCenter ? '0 0 14px rgba(217, 164, 65, 0.55)' : 'none',
-                        width: isCenter ? '22px' : '13px',
-                        height: isCenter ? '22px' : '13px',
+                        boxShadow: isCenter ? '0 0 18px rgba(253, 224, 71, 0.65), inset 0 0 6px rgba(255, 255, 255, 0.8)' : 'none',
+                        width: isCenter ? '26px' : '15px',
+                        height: isCenter ? '26px' : '15px',
                         cursor: 'pointer',
                         padding: 0,
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
-                        transition: 'all 0.22s ease'
+                        transition: 'all 0.22s cubic-bezier(0.16, 1, 0.3, 1)',
+                        transform: isCenter ? 'scale(1.15)' : 'scale(1)'
                       }}
                     >
                       {isCenter && (
@@ -584,38 +613,39 @@ export function JapaMalaModal({ isOpen, onClose, lang }: JapaMalaModalProps) {
             </div>
 
             {/* Bottom Strand Counter: 1 / 108 */}
-            <div style={{ fontSize: '12px', fontWeight: 700, color: '#94A3B8', marginTop: '10px' }}>
+            <div style={{ fontSize: '13px', fontWeight: 800, color: '#FDE047', marginTop: '10px', letterSpacing: '0.04em' }}>
               {activeBead} / 108
             </div>
           </div>
         )}
 
-        {/* 3. Main Content: Celebration vs Mantra Card */}
+        {/* 3. Main Content: Celebration vs Main Mantra Card */}
         {justCompletedMala ? (
           /* MALA COMPLETION CELEBRATION */
           <div style={{
-            background: 'rgba(15, 81, 50, 0.25)',
-            border: '1.5px solid rgba(74, 222, 128, 0.4)',
-            borderRadius: '20px',
-            padding: '20px 16px',
+            background: 'linear-gradient(135deg, rgba(15, 81, 50, 0.4) 0%, rgba(6, 78, 59, 0.5) 100%)',
+            border: '1.5px solid #D9A441',
+            borderRadius: '24px',
+            padding: '24px 20px',
             textAlign: 'center',
-            marginBottom: '16px'
+            marginBottom: '16px',
+            boxShadow: '0 8px 32px rgba(0, 0, 0, 0.4)'
           }}>
-            <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '8px' }}>
-              <Award size={32} color="#86EFAC" />
+            <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '10px' }}>
+              <Award size={36} color="#FDE047" />
             </div>
             <div style={{
-              fontSize: '18px',
+              fontSize: '20px',
               fontWeight: 800,
               color: '#FEF08A',
-              marginBottom: '10px',
+              marginBottom: '12px',
               lineHeight: 1.35
             }}>
               {currentLang === 'te' ? 'అష్టోత్తర శత నామ జప మాల సంపూర్ణం!' : '108 Sacred Names Completed!'}
             </div>
             <p style={{
-              margin: '0 0 14px 0',
-              fontSize: '13px',
+              margin: '0 0 16px 0',
+              fontSize: '13.5px',
               lineHeight: 1.6,
               color: '#F1F5F9'
             }}>
@@ -627,16 +657,16 @@ export function JapaMalaModal({ isOpen, onClose, lang }: JapaMalaModalProps) {
               display: 'inline-flex',
               alignItems: 'center',
               gap: '6px',
-              background: 'rgba(34, 197, 94, 0.18)',
-              border: '1px solid rgba(74, 222, 128, 0.35)',
-              borderRadius: '12px',
-              padding: '4px 12px',
-              fontSize: '12px',
-              fontWeight: 700,
-              color: '#86EFAC',
-              marginBottom: '16px'
+              background: 'rgba(217, 164, 65, 0.2)',
+              border: '1px solid #D9A441',
+              borderRadius: '14px',
+              padding: '6px 14px',
+              fontSize: '12.5px',
+              fontWeight: 800,
+              color: '#FDE047',
+              marginBottom: '18px'
             }}>
-              <Check size={14} color="#86EFAC" />
+              <Check size={15} color="#FDE047" />
               <span>{currentLang === 'te' ? `మొత్తం పూర్తయిన మాలలు: ${completedMalas}` : `Total Completed Malas: ${completedMalas}`}</span>
             </div>
 
@@ -646,8 +676,8 @@ export function JapaMalaModal({ isOpen, onClose, lang }: JapaMalaModalProps) {
               style={{
                 width: '100%',
                 padding: '14px',
-                borderRadius: '14px',
-                background: '#0F5132',
+                borderRadius: '16px',
+                background: 'linear-gradient(135deg, #0F5132 0%, #064E3B 100%)',
                 border: '1.5px solid #D9A441',
                 color: '#FFF8E7',
                 fontSize: '15px',
@@ -661,101 +691,92 @@ export function JapaMalaModal({ isOpen, onClose, lang }: JapaMalaModalProps) {
                 transition: 'all 0.15s ease'
               }}
             >
-              <Sparkles size={16} color="#D9A441" />
+              <Sparkles size={17} color="#FDE047" />
               <span>{currentLang === 'te' ? 'నూతన 108 మాల ప్రారంభించండి' : 'Start Next 108 Mala'}</span>
             </button>
           </div>
         ) : (
-          /* MAIN MANTRA HERO CARD */
+          /* MAIN MANTRA HERO CARD (EMERALD GREEN + REFINED GOLD BORDER & DEVOTIONAL FRAME) */
           <div style={{
-            background: 'rgba(15, 81, 50, 0.16)',
-            border: '1px solid rgba(217, 164, 65, 0.22)',
-            borderRadius: '20px',
-            padding: '20px 16px',
-            marginBottom: '12px',
+            background: 'linear-gradient(180deg, rgba(7, 34, 25, 0.85) 0%, rgba(4, 24, 18, 0.95) 100%)',
+            border: '1.5px solid rgba(217, 164, 65, 0.4)',
+            borderRadius: '24px',
+            padding: '24px 20px 22px 20px',
+            marginBottom: '16px',
             textAlign: 'center',
+            boxShadow: '0 12px 40px rgba(0, 0, 0, 0.6), inset 0 1px 1px rgba(255, 255, 255, 0.1)',
+            position: 'relative',
             transform: isCardTransitioning ? 'scale(0.985)' : 'scale(1)',
-            opacity: isCardTransitioning ? 0.85 : 1,
+            opacity: isCardTransitioning ? 0.88 : 1,
             transition: 'all 0.16s ease'
           }}>
-            {/* Milestone Badge (If 27, 54, 81) */}
-            {isMilestoneBead && (
+            {/* Top Pill: BEAD 1 OF 108 (Devotional Gold Frame Badge) */}
+            <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '16px' }}>
               <div style={{
-                marginBottom: '10px',
+                background: 'rgba(217, 164, 65, 0.12)',
+                border: '1px solid rgba(217, 164, 65, 0.4)',
+                borderRadius: '20px',
+                padding: '4px 16px',
+                fontSize: '11px',
+                fontWeight: 800,
+                color: '#FDE047',
+                letterSpacing: '0.08em',
+                textTransform: 'uppercase',
                 display: 'inline-flex',
                 alignItems: 'center',
-                gap: '5px',
-                padding: '2px 10px',
-                borderRadius: '10px',
-                background: 'rgba(217, 164, 65, 0.2)',
-                border: '1px solid rgba(217, 164, 65, 0.4)',
-                color: '#D9A441',
-                fontSize: '11px',
-                fontWeight: 800
+                gap: '6px'
               }}>
-                <Zap size={12} color="#D9A441" />
+                {isMilestoneBead && <Zap size={12} color="#FDE047" />}
                 <span>
-                  {activeBead === 27 ? 'Quarter Mala (#27)' : activeBead === 54 ? 'Half Mala (#54)' : 'Sacred Milestone (#81)'}
+                  {isBrowsingOtherBead 
+                    ? (currentLang === 'te' ? `నామ పఠనం #${activeBead} / 108` : `BROWSING BEAD ${activeBead} OF 108`)
+                    : (currentLang === 'te' ? `శ్రీవారి నామం #${activeBead} / 108` : `BEAD ${activeBead} OF 108`)}
                 </span>
               </div>
-            )}
-
-            {/* Top Bead Label */}
-            <div style={{
-              fontSize: '11px',
-              fontWeight: 800,
-              color: '#D9A441',
-              letterSpacing: '0.08em',
-              textTransform: 'uppercase',
-              marginBottom: '12px'
-            }}>
-              {isBrowsingOtherBead 
-                ? (currentLang === 'te' ? `నామ పఠనం #${activeBead} / 108` : `BROWSING BEAD ${activeBead} OF 108`)
-                : (currentLang === 'te' ? `శ్రీవారి నామం #${activeBead} / 108` : `BEAD ${activeBead} OF 108`)}
             </div>
 
-            {/* Telugu Sacred Mantra (Visual Hero - Largest Text) */}
+            {/* Telugu Sacred Mantra (Large, Centered, Highly Readable) */}
             <div style={{
-              fontSize: 'clamp(26px, 7vw, 32px)',
+              fontSize: 'clamp(28px, 7.5vw, 34px)',
               fontWeight: 800,
               fontFamily: "var(--font-telugu-serif), 'Noto Serif Telugu', Georgia, serif",
-              color: '#FFF8E7',
-              margin: '0 0 6px 0',
+              color: '#FFFFFF',
+              margin: '0 0 8px 0',
               lineHeight: 1.35,
               letterSpacing: '0.01em',
-              textShadow: '0 2px 20px rgba(217, 164, 65, 0.35)'
+              textShadow: '0 2px 24px rgba(253, 224, 71, 0.25)'
             }}>
               {activeNama.namaTe}
             </div>
 
             {/* Romanized Transliteration */}
             <div style={{
-              fontSize: '15px',
+              fontSize: '16px',
               fontWeight: 600,
-              color: '#D9A441',
+              color: '#FDE047',
               fontStyle: 'italic',
               lineHeight: 1.4,
-              margin: '0 0 10px 0'
+              margin: '0 0 16px 0'
             }}>
               {transliteration}
             </div>
 
-            {/* Sacred Meaning - Directly Down of Namam (Translates Dynamically by Language) */}
+            {/* Meaning Section (Refined Card with Heading + English Explanation) */}
             <div style={{
-              margin: '0 auto 12px',
-              maxWidth: '350px',
-              padding: '10px 14px',
-              background: 'rgba(255, 248, 231, 0.04)',
-              borderRadius: '12px',
-              border: '1px solid rgba(217, 164, 65, 0.15)',
+              margin: '0 auto 20px',
+              maxWidth: '360px',
+              padding: '14px 16px',
+              background: 'rgba(15, 81, 50, 0.25)',
+              borderRadius: '16px',
+              border: '1px solid rgba(217, 164, 65, 0.2)',
               textAlign: 'center'
             }}>
               {localizedMeaningTitle && (
                 <div style={{
-                  fontSize: '13.5px',
-                  fontWeight: 700,
+                  fontSize: '14px',
+                  fontWeight: 800,
                   color: '#FEF08A',
-                  marginBottom: '4px',
+                  marginBottom: '6px',
                   lineHeight: 1.4,
                   fontFamily: currentLang === 'te' ? "var(--font-telugu-serif), 'Noto Serif Telugu', Georgia, serif" : 'inherit'
                 }}>
@@ -764,58 +785,128 @@ export function JapaMalaModal({ isOpen, onClose, lang }: JapaMalaModalProps) {
               )}
               <div style={{
                 fontSize: currentLang === 'te' ? '13px' : '12.5px',
-                lineHeight: 1.55,
-                color: '#CBD5E1',
+                lineHeight: 1.6,
+                color: '#E2E8F0',
                 fontFamily: currentLang === 'te' ? "var(--font-telugu-serif), 'Noto Serif Telugu', Georgia, serif" : 'inherit'
               }}>
                 "{localizedBlessingBody}"
               </div>
             </div>
 
-            {/* Functional Audio Pronunciation Button ("Listen") */}
-            <div style={{ marginTop: '8px' }}>
+            {/* Audio & Symmetrical Navigation Controls Row */}
+            <div style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: '14px',
+              marginBottom: '6px'
+            }}>
+              {/* Previous Bead Button */}
+              <button
+                type="button"
+                onClick={() => triggerBeadChange(Math.max(1, activeBead - 1))}
+                disabled={activeBead <= 1}
+                aria-label="Previous Bead"
+                style={{
+                  width: '44px',
+                  height: '44px',
+                  borderRadius: '50%',
+                  background: 'rgba(255, 255, 255, 0.05)',
+                  border: '1px solid rgba(217, 164, 65, 0.3)',
+                  color: activeBead <= 1 ? '#475569' : '#FFF8E7',
+                  opacity: activeBead <= 1 ? 0.4 : 1,
+                  cursor: activeBead <= 1 ? 'not-allowed' : 'pointer',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  transition: 'all 0.15s ease'
+                }}
+              >
+                <ArrowLeft size={18} />
+              </button>
+
+              {/* Functional Gold Audio "Listen" Button */}
               <button
                 type="button"
                 onClick={handleListenPronunciation}
                 style={{
+                  height: '44px',
+                  padding: '0 24px',
+                  borderRadius: '22px',
+                  background: 'linear-gradient(135deg, #B8860B 0%, #D9A441 50%, #F5C563 100%)',
+                  border: 'none',
+                  color: '#071A14',
+                  fontSize: '14px',
+                  fontWeight: 900,
                   display: 'inline-flex',
                   alignItems: 'center',
-                  gap: '6px',
-                  background: isSpeaking ? 'rgba(217, 164, 65, 0.25)' : 'rgba(255, 248, 231, 0.08)',
-                  border: isSpeaking ? '1px solid #D9A441' : '1px solid rgba(217, 164, 65, 0.25)',
-                  borderRadius: '20px',
-                  padding: '6px 14px',
-                  color: '#FFF8E7',
-                  fontSize: '12px',
-                  fontWeight: 700,
+                  gap: '8px',
                   cursor: 'pointer',
-                  transition: 'all 0.16s ease'
+                  boxShadow: '0 4px 16px rgba(217, 164, 65, 0.4)',
+                  transition: 'all 0.15s ease'
                 }}
               >
-                <Volume2 size={14} color={isSpeaking ? '#D9A441' : '#FFF8E7'} />
+                <Volume2 size={18} color="#071A14" />
                 <span>{isSpeaking ? (currentLang === 'te' ? 'వింటున్నారు...' : 'Listening...') : (currentLang === 'te' ? 'ఉచ్చారణ వినండి' : 'Listen')}</span>
               </button>
-              <div style={{ fontSize: '10.5px', color: '#64748B', marginTop: '4px' }}>
-                {currentLang === 'te' ? 'స్పష్టమైన ఉచ్చారణ కోసం నొక్కండి' : 'Tap to hear pronunciation'}
-              </div>
+
+              {/* Next Bead Button */}
+              <button
+                type="button"
+                onClick={() => {
+                  if (activeBead < 108) {
+                    triggerBeadChange(activeBead + 1);
+                  }
+                }}
+                disabled={activeBead >= 108}
+                aria-label="Next Bead"
+                style={{
+                  width: '44px',
+                  height: '44px',
+                  borderRadius: '50%',
+                  background: 'rgba(255, 255, 255, 0.05)',
+                  border: '1px solid rgba(217, 164, 65, 0.3)',
+                  color: activeBead >= 108 ? '#475569' : '#FFF8E7',
+                  opacity: activeBead >= 108 ? 0.4 : 1,
+                  cursor: activeBead >= 108 ? 'not-allowed' : 'pointer',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  transition: 'all 0.15s ease'
+                }}
+              >
+                <ArrowLeft size={18} style={{ transform: 'rotate(180deg)' }} />
+              </button>
+            </div>
+
+            {/* Muted Subtext */}
+            <div style={{ fontSize: '11px', color: '#94A3B8', marginTop: '4px' }}>
+              {currentLang === 'te' ? 'ఉచ్చారణ కోసం Listen నొక్కండి' : 'Tap to hear pronunciation'}
             </div>
           </div>
         )}
 
-        {/* 4. Japa Progress Bar */}
+        {/* 4. Japa Progress Section */}
         {!justCompletedMala && (
-          <div style={{ width: '100%', marginBottom: '14px' }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '6px' }}>
-              <span style={{ fontSize: '12px', fontWeight: 700, color: '#FFF8E7' }}>
+          <div style={{
+            width: '100%',
+            marginBottom: '16px',
+            backgroundColor: 'rgba(7, 34, 25, 0.6)',
+            border: '1px solid rgba(217, 164, 65, 0.2)',
+            borderRadius: '16px',
+            padding: '12px 16px'
+          }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
+              <span style={{ fontSize: '13px', fontWeight: 800, color: '#FFF8E7' }}>
                 {currentLang === 'te' ? 'జప ప్రగతి' : 'Japa Progress'}
               </span>
-              <span style={{ fontSize: '12px', fontWeight: 800, color: '#D9A441' }}>
+              <span style={{ fontSize: '13px', fontWeight: 900, color: '#FDE047' }}>
                 {chantCount} / 108
               </span>
             </div>
             <div style={{
               width: '100%',
-              height: '5px',
+              height: '6px',
               backgroundColor: 'rgba(255, 255, 255, 0.1)',
               borderRadius: '3px',
               overflow: 'hidden'
@@ -824,7 +915,7 @@ export function JapaMalaModal({ isOpen, onClose, lang }: JapaMalaModalProps) {
                 width: `${Math.min(100, (chantCount / 108) * 100)}%`,
                 height: '100%',
                 backgroundColor: '#D9A441',
-                boxShadow: '0 0 10px rgba(217, 164, 65, 0.5)',
+                boxShadow: '0 0 10px rgba(253, 224, 71, 0.6)',
                 borderRadius: '3px',
                 transition: 'width 0.25s ease'
               }} />
@@ -834,7 +925,7 @@ export function JapaMalaModal({ isOpen, onClose, lang }: JapaMalaModalProps) {
 
         {/* 5. Primary Action Chanting Button */}
         {!justCompletedMala && (
-          <div style={{ marginBottom: '14px' }}>
+          <div style={{ marginBottom: '16px' }}>
             {isBrowsingOtherBead ? (
               <button
                 type="button"
@@ -867,7 +958,7 @@ export function JapaMalaModal({ isOpen, onClose, lang }: JapaMalaModalProps) {
                   width: '100%',
                   height: '52px',
                   borderRadius: '16px',
-                  background: '#0F5132',
+                  background: 'linear-gradient(135deg, #0F5132 0%, #064E3B 100%)',
                   border: '1.5px solid #D9A441',
                   color: '#FFF8E7',
                   fontSize: '16px',
@@ -881,7 +972,7 @@ export function JapaMalaModal({ isOpen, onClose, lang }: JapaMalaModalProps) {
                   transition: 'all 0.15s ease'
                 }}
               >
-                <Sparkles size={17} color="#D9A441" />
+                <Sparkles size={18} color="#FDE047" />
                 <span>{currentLang === 'te' ? 'జపం ప్రారంభించండి' : 'Start Japa'}</span>
               </button>
             ) : (
@@ -961,9 +1052,9 @@ export function JapaMalaModal({ isOpen, onClose, lang }: JapaMalaModalProps) {
           alignItems: 'center',
           justifyContent: 'space-between',
           borderTop: '1px solid rgba(217, 164, 65, 0.15)',
-          paddingTop: '10px'
+          paddingTop: '12px'
         }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
             {/* Ambient Sound Toggle */}
             <button
               type="button"
